@@ -8,7 +8,7 @@ import java.security.InvalidKeyException;
 
 public class Configuration {
 
-	private static final String DEFAULT_TAXONOMY_ROOT = "target/taxonomy";
+	private static final String DEFAULT_TAXONOMY_ROOT = "api/target/taxonomy";
 
     private static final String DEFAULT_ZEBEDEE_URL = "http://localhost:8082";
 
