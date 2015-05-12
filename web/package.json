@@ -1,0 +1,27 @@
+{
+  "name": "babbage-web",
+  "version": "0.0.1",
+  "description": "Web front-end of ONS Website Babbage",
+  "main": " ",
+  "scripts": {
+    "test": " "
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:ONSdigital/babbage.git"
+  },
+  "keywords": [
+    "ons",
+    "statistics",
+    "web",
+    "babbage"
+  ],
+  "author": "Bren",
+  "license": "Open Government License v2.0",
+  "bugs": {
+    "url": "https://github.com/ONSdigital/babbage/issues"
+  },
+  "devDependencies": {
+    "gulp": "~3.8.11"
+  }
+}

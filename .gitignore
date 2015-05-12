@@ -26,8 +26,8 @@ Thumbs.db
 *~HEAD
 src/main/scss/dist
 sonar-project.properties
-/coverage/
-src/test/js/node_modules/karma-coverage/node_modules
-src/test/js/node_modules/karma/node_modules
+web/node_modules/
+web/dist/
 .tmp
+
 
