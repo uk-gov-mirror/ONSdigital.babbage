@@ -35,8 +35,6 @@ mvn process-resources && \
 
 # Development: reloadable
 java $JAVA_OPTS \
- -Drestolino.username=$USERNAME \
- -Drestolino.password=$PASSWORD \
  -Drestolino.realm=$REALM \
  -Drestolino.files=$RESTOLINO_STATIC \
  -Drestolino.classes=$RESTOLINO_CLASSES \
