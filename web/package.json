@@ -5,7 +5,7 @@
   "main": " ",
   "scripts": {
     "clean": "rimraf dist",
-    "copy": "mkdir dist && copyfiles app/**/*.html dist && cp *.html dist && cp *.md dist && cp *.txt dist",
+    "copy": "mkdir dist && ncp templates dist/templates && cp *.html dist && cp *.md dist && cp *.txt dist",
     "build": "npm run clean && npm run copy"
   },
   "repository": {
@@ -28,8 +28,6 @@
   },
   "devDependencies": {
     "rimraf": "latest",
-    "cat": "latest",
-    "cpy": "~3.1.0",
-    "copyfiles": "~0.2.1"
+    "ncp": "~2.0.0"
   }
 }

@@ -28,6 +28,7 @@ src/main/scss/dist
 sonar-project.properties
 web/node_modules/
 web/dist/
+npm-debug.log
 .tmp
 
 
