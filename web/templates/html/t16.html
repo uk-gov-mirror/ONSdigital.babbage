@@ -3,14 +3,14 @@
 	<head lang="en">
 	  <meta charset="UTF-8">
 	  <title>T16</title>
-	  <link rel="stylesheet" type="text/css" href="http://onsdigital.github.io/pattern-library/dist/css/main.css">
-		<script src="http://onsdigital.github.io/pattern-library/dist/js/header.js"></script>
+	  <link rel="stylesheet" type="text/css" href="../../node_modules/ONS-Pattern-Library/dist/css/main.css">
+		<script src="../../node_modules/ONS-Pattern-Library/dist/js/header.js"></script>
 	</head>
 	<body>
 		<header class="global-header">
 		  <div class="global-header__wrapper">
 		    <a class="main-logo" href="/">
-		      <img src="http://onsdigital.github.io/pattern-library/ui/img/ons-logo.svg" alt="Office for National Statistics">
+		      <img src="../../node_modules/ONS-Pattern-Library/ui/img/ons-logo.svg" alt="Office for National Statistics">
 		    </a>
 		    <ul class="nav globaltop-nav">
 		      <li>
@@ -198,7 +198,7 @@
 		<!-- / nav -->
 		<div class="page-header slate">
 		  <div class="wrapper">
-				  <ol class="nav nav--heavy breadcrumb mini flush">
+				  <ol class="nav nav--heavy breadcrumb mini flush--half--top">
 				    <li>
 				      <a href="#">Home</a>
 				    </li>
@@ -218,7 +218,7 @@
 				<div class="grid-wrap">
 					<div class="grid-col desktop-grid-one-quarter">
 						<p>
-							<img src="http://alpha.ons.gov.uk/ui/img/national-statistics.png" alt="ONS logo" width="25%">
+							<img src="../../node_modules/ONS-Pattern-Library/ui/img/national-statistics.png" alt="ONS logo" width="50rem">
 							<span>Contact:</span>
 							</br>
 							John Smith
@@ -294,8 +294,8 @@
 					<!-- / box solid box--blue--separated--left -->
 
 					<article class="box solid box--blue--separated--left">
-						<div class="box__inner border box--padded">
-							<h3>Datasets</h3>
+						<div class="flush box__inner border box--padded">
+							<h2 class="delta">Datasets</h2>
 							<div class="grid-wrap">
 								<div class="grid-col desktop-grid-one-third">
 									<h4><a href="http://alpha.ons.gov.uk">Dataset title 1</a></h4>
@@ -335,7 +335,7 @@
 						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum fermentum vitae tortor vel iaculis. Donec.
 					</p>
 
-					<div class="accordion is-expanded">
+					<div class="accordion is-collapsed">
 						<h2 id="sc-1" class="accordion__title delta" aria-controls="content-1">Pre-release access list for August 2015</h2>
 						<div id="content-1" class="accordion__content" aria-labelledby="sc-1">
 							<p>
@@ -434,7 +434,7 @@
 	  <div class="slate--mid-grey">
 	    <div class="wrapper">
 	      <div class="footer__license">
-	        <img class="footer__license__img" alt="OGL" width="60" src="http://onsdigital.github.io/pattern-library/ui/img/ogl.png">
+	        <img class="footer__license__img" alt="OGL" width="60" src="../../node_modules/ONS-Pattern-Library/ui/img/ogl.png">
 	        <p class="footer__license__body">
 	          All content is available under the Open Government Licence v2.0, except where otherwise stated
 	        </p>
@@ -442,7 +442,8 @@
 	    </div>
 	  </div>
 
-		<script src="js/jquery.min.js"></script>
+		<script src="../../node_modules/ONS-Pattern-Library/node_modules/jquery/dist/jquery.min.js"></script>
 		<script src="http://onsdigital.github.io/pattern-library/dist/js/footer.js"></script>
+		<!-- <script src="../../node_modules/ONS-Pattern-Library/dist/js/footer.js"></script> To FIX - Relative path to footer.js breaks accordion at the moment -->
 	</footer>
 </html>
