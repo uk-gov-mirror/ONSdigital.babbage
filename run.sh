@@ -22,7 +22,7 @@ export JAVA_OPTS="-Xdebug -Xrunjdwp:transport=dt_socket,address=8000,server=y,su
 #export TAXONOMY_DIR=api/target/taxonomy
 
 # Restolino configuration
-export RESTOLINO_STATIC="web/src"
+export RESTOLINO_STATIC="web"
 export RESTOLINO_CLASSES="api/target/classes"
 export PACKAGE_PREFIX=com.github.onsdigital
 

@@ -4,7 +4,9 @@
   "description": "Web front-end of ONS Website Babbage",
   "main": " ",
   "scripts": {
-    "test": " "
+    "clean": "rimraf dist",
+    "copy": "mkdir dist && copyfiles app/**/*.html dist && cp *.html dist && cp *.md dist && cp *.txt dist",
+    "build": "npm run clean && npm run copy"
   },
   "repository": {
     "type": "git",
@@ -21,7 +23,13 @@
   "bugs": {
     "url": "https://github.com/ONSdigital/babbage/issues"
   },
+  "dependencies": {
+    "ONS-Pattern-Library": "git://github.com/ONSdigital/pattern-library"
+  },
   "devDependencies": {
-    "gulp": "~3.8.11"
+    "rimraf": "latest",
+    "cat": "latest",
+    "cpy": "~3.1.0",
+    "copyfiles": "~0.2.1"
   }
 }
