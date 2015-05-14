@@ -1,1 +1,1 @@
-npm install && npm un build
+npm install && npm run build
