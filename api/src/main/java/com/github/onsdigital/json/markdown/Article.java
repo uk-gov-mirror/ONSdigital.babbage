@@ -13,17 +13,19 @@ public class Article extends CollectionItem {
 
 	// Top section
 	public String nextRelease;
+	public String releaseDate;
 	public Email contact = new Email();
 
-	// Exec summary
-	public String lede;
-	public String more;
-
 	// Table of contents
-	public List<Section> sections = new ArrayList<Section>();
-	public List<Section> accordion = new ArrayList<Section>();
+	public List<Section> sections = new ArrayList<>();
+	public List<Section> accordion = new ArrayList<>();
 
-	// Used to help place bulletins in the taxonomy
+	// Additional fields for migration:
+	public String phone;
+	public String[] keywords;
+	public String _abstract;
+
+	// Used to help place articles in the taxonomy
 	public transient String theme;
 	public transient String level2;
 	public transient String level3;

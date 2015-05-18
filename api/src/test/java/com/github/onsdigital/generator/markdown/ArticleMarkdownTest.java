@@ -28,11 +28,10 @@ public class ArticleMarkdownTest {
 		String theme = "Economy";
 		String level2 = "Government, Public Sector and Taxes";
 		String level3 = "Public Sector Finance";
-		String lede = "man";
-		String more = "nation";
 		String contactName = "Jukesie";
 		String contactEmail = "jukesie@gmail.com";
 		String nextRelease = "soon";
+		String releaseDate = "01/06/2015";
 		ClassLoader classLoader = ArticleMarkdownTest.class.getClassLoader();
 		String resourceName = "com/github/onsdigital/json/markdown/article.md";
 		Path path = Paths.get(classLoader.getResource(resourceName).toURI());
@@ -46,11 +45,10 @@ public class ArticleMarkdownTest {
 		assertEquals(theme, article.theme);
 		assertEquals(level2, article.level2);
 		assertEquals(level3, article.level3);
-		assertEquals(lede, article.lede);
-		assertEquals(more, article.more);
 		assertEquals(contactName, article.contact.name);
 		assertEquals(contactEmail, article.contact.email);
 		assertEquals(nextRelease, article.nextRelease);
+		assertEquals(releaseDate, article.releaseDate);
 
 		// Title
 		assertEquals("What happened to all the money?", article.title);

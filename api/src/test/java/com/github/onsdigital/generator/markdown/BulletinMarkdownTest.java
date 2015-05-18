@@ -28,15 +28,13 @@ public class BulletinMarkdownTest {
 		String theme = "Economy";
 		String level2 = "Government, Public Sector and Taxes";
 		String level3 = "Public Sector Finance";
-		String lede = "man";
-		String more = "nation";
 		String summary = "summarizor";
 		String headline1 = "Old English revived";
 		String headline2 = "leed";
 		String headline3 = "leode";
 		String contactName = "Jukesie";
 		String contactEmail = "jukesie@gmail.com";
-		String nextRelease = "soon";
+		String releaseDate = "soon";
 		ClassLoader classLoader = BulletinMarkdownTest.class.getClassLoader();
 		String resourceName = "com/github/onsdigital/json/markdown/bulletin.md";
 		Path path = Paths.get(classLoader.getResource(resourceName).toURI());
@@ -50,15 +48,13 @@ public class BulletinMarkdownTest {
 		assertEquals(theme, bulletin.theme);
 		assertEquals(level2, bulletin.level2);
 		assertEquals(level3, bulletin.level3);
-		assertEquals(lede, bulletin.lede);
-		assertEquals(more, bulletin.more);
 		assertEquals(summary, bulletin.summary);
 		assertEquals(headline1, bulletin.headline1);
 		assertEquals(headline2, bulletin.headline2);
 		assertEquals(headline3, bulletin.headline3);
 		assertEquals(contactName, bulletin.contact.name);
 		assertEquals(contactEmail, bulletin.contact.email);
-		assertEquals(nextRelease, bulletin.nextRelease);
+		assertEquals(releaseDate, bulletin.releaseDate);
 
 		// Title
 		assertEquals("Analysis of consumer price inflation", bulletin.title);

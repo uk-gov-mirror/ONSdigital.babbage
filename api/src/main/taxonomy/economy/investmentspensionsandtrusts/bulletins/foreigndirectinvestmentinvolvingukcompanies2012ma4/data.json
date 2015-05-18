@@ -1,11 +1,9 @@
 {
-  "nextRelease": "18 December 2014",
   "contact": {
     "name": "Ciara Williams",
     "email": "fdi@ons.gsi.gov.uk"
   },
-  "lede": "Producer Price Inflation (PPI) measures the price changes of goods bought and sold by UK manufacturers this month compared to the same month a year ago. PPI provides a key measure of inflation alongside other indicators such as the Consumer Prices Index (CPI) and Services Producer Price Index (SPPI).PPI is split into two components: output price inflation and input price inflation. The input price indices capture changes in the cost of the material and fuel inputs that producers face whereas the output price indices capture the changing prices of goods sold by producers.This article looks at the trends in both producer price indices since 2000 and which components contribute most towards changes in each price index in recent years.",
-  "more": "Annual output and input price changes follow similar trends, but with the latter tending to have higher price growth1. In Figure 1, trends in producer price inflation can be split into three distinct periods: 2000 to 2005, 2005 to 2012 and 2012 to June 2014.  Both indices experience greater variability within the second period of 2005 to 2012 than compared with the first and third period. From 2005 to 2012 the average growth rate was 2.9% for output price inflation and 8.1% for input price inflation.  The largest peaks and troughs experienced for both indices throughout the time series shown below occurred in the second period of 2005 to 2012. Output price inflation rose to 8.9% in July 2008 while input price inflation rose to 34.8% in June 2008 and both fell to their lowest rates in July 2009: output price inflation falling by 1.6% and input price inflation falling by 14.8%.",
+  "summary": "Provides a detailed breakdown of UK foreign direct investment flows, positions (stocks) and earnings (both inward and outward), by country, component and industry.",
   "sections": [
     {
       "title": "Key points",
@@ -52,11 +50,9 @@
   "headline1": "Net investment flows into the UK (inward investment) increased in 2012 to £35.4 billion (current prices), from £28.9 billion in 2011.",
   "headline2": "Both of these estimates are well below flows of net investment into the UK seen between 2005 and 2007.",
   "headline3": "The net flow of direct investment abroad by UK companies (outward investment) decreased from £60.1 billion in 2011 to £26.5 billion in 2012, a fall of £33.6 billion.",
-  "summary": "Provides a detailed breakdown of UK foreign direct investment flows, positions (stocks) and earnings (both inward and outward), by country, component and industry.",
   "nationalStatistic": false,
   "relatedBulletins": [],
   "title": "Foreign Direct Investment Involving UK Companies, 2012 (MA4)",
-  "releaseDate": "19 August 2014",
   "type": "bulletin",
   "name": "Foreign Direct Investment Involving UK Companies, 2012 (MA4)",
   "uri": "/economy/investmentspensionsandtrusts/bulletins/foreigndirectinvestmentinvolvingukcompanies2012ma4",
