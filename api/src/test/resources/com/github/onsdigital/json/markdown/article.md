@@ -1,11 +1,10 @@
 Theme  : Economy
 Level 2: Government, Public Sector and Taxes
 Level 3: Public Sector Finance
-Lede: man
-More: nation
 Contact name: Jukesie
 Contact email: jukesie@gmail.com
 Next release: soon
+Release Date: 01/06/2015
 
 # What happened to all the money?
 

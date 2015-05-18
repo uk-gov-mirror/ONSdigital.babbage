@@ -1,11 +1,9 @@
 {
-  "nextRelease": "21 November 2014",
   "contact": {
     "name": "Cecil Prescott",
     "email": "esociety@ons.gsi.gov.uk"
   },
-  "lede": "Producer Price Inflation (PPI) measures the price changes of goods bought and sold by UK manufacturers this month compared to the same month a year ago. PPI provides a key measure of inflation alongside other indicators such as the Consumer Prices Index (CPI) and Services Producer Price Index (SPPI).PPI is split into two components: output price inflation and input price inflation. The input price indices capture changes in the cost of the material and fuel inputs that producers face whereas the output price indices capture the changing prices of goods sold by producers.This article looks at the trends in both producer price indices since 2000 and which components contribute most towards changes in each price index in recent years.",
-  "more": "Annual output and input price changes follow similar trends, but with the latter tending to have higher price growth1. In Figure 1, trends in producer price inflation can be split into three distinct periods: 2000 to 2005, 2005 to 2012 and 2012 to June 2014.  Both indices experience greater variability within the second period of 2005 to 2012 than compared with the first and third period. From 2005 to 2012 the average growth rate was 2.9% for output price inflation and 8.1% for input price inflation.  The largest peaks and troughs experienced for both indices throughout the time series shown below occurred in the second period of 2005 to 2012. Output price inflation rose to 8.9% in July 2008 while input price inflation rose to 34.8% in June 2008 and both fell to their lowest rates in July 2009: output price inflation falling by 1.6% and input price inflation falling by 14.8%.",
+  "summary": "Mix-adjusted average house prices and house price indices for the UK and its component countries and regions.",
   "sections": [
     {
       "title": "Key Findings",
@@ -65,11 +63,9 @@
   "headline1": "44.6 million adults (87%) in the UK had used the Internet in Q1 2014, an increase of 1.1 million since Q1 2013.",
   "headline2": "6.4 million adults (13%) had never used the Internet, falling by 659,000 since Q1 2013.",
   "headline3": "Almost all (99%) 16 to 24 year olds had used the Internet, compared with 37% of adults aged 75 years and over.",
-  "summary": "Mix-adjusted average house prices and house price indices for the UK and its component countries and regions.",
   "nationalStatistic": false,
   "relatedBulletins": [],
   "title": "House Price Index, May 2014",
-  "releaseDate": "19 August 2014",
   "type": "bulletin",
   "name": "House Price Index, May 2014",
   "uri": "/peoplepopulationandcommunity/housing/bulletins/housepriceindexmay2014",

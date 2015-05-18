@@ -68,19 +68,17 @@ public class BulletinMarkdown {
      * <li>Theme</li>
      * <li>Level 2</li>
      * <li>Level 3</li>
-     * <li>Lede</li>
-     * <li>More</li>
      * <li>Summary</li>
      * <li>Headline 1</li>
      * <li>Headline 2</li>
      * <li>Headline 3</li>
      * <li>Contact name</li>
      * <li>Contact email</li>
-     * <li>Next release</li>
      * <li>Phone</li>
+     * <li>Search keywords</li>
      * <li>National statistic</li>
      * <li>Language</li>
-     * <li>Search keywords</li>
+     * <li>Release Date</li>
      * </ul>
      *
      * @param bulletin The {@link Bulletin} containing the data.
@@ -96,15 +94,13 @@ public class BulletinMarkdown {
         bulletin.level3 = StringUtils.defaultIfBlank(properties.remove("level 3"), bulletin.level3);
 
         // Additional details
-        bulletin.lede = StringUtils.defaultIfBlank(properties.remove("lede"), bulletin.lede);
-        bulletin.more = StringUtils.defaultIfBlank(properties.remove("more"), bulletin.more);
         bulletin.summary = StringUtils.defaultIfBlank(properties.remove("summary"), bulletin.summary);
         bulletin.headline1 = StringUtils.defaultIfBlank(properties.remove("headline 1"), bulletin.headline1);
         bulletin.headline2 = StringUtils.defaultIfBlank(properties.remove("headline 2"), bulletin.headline2);
         bulletin.headline3 = StringUtils.defaultIfBlank(properties.remove("headline 3"), bulletin.headline3);
         bulletin.contact.name = StringUtils.defaultIfBlank(properties.remove("contact name"), bulletin.contact.name);
         bulletin.contact.email = StringUtils.defaultIfBlank(properties.remove("contact email"), bulletin.contact.email);
-        bulletin.nextRelease = StringUtils.defaultIfBlank(properties.remove("next release"), bulletin.nextRelease);
+        bulletin.releaseDate = StringUtils.defaultIfBlank(properties.remove("release date"), bulletin.releaseDate);
 
         // Additional fields for migration:
         bulletin.phone = StringUtils.defaultIfBlank(properties.remove("phone"), bulletin.phone);
