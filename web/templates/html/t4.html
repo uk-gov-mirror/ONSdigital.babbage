@@ -224,7 +224,6 @@
         
         <!-- title and social icons -->
         <div class="page-header flush--half--bottom  page-header--article page-header--stat-bulletin slate--blue">
-            <div class="wrapper">
                 <div class="wrapper [panel--small]" >
                     <ol class="nav nav--heavy breadcrumb breadcrumb_hero mini" >
                         <li>
@@ -239,6 +238,7 @@
                     </ol>
                     <!-- /Wrapper panel -->
                 </div>
+            <div class="wrapper">
                 <p class="page-header__title page-header--stat-bulletin-desc">
                     <strong>Statistical bulletin</strong>
                 </p>
@@ -496,8 +496,8 @@
                                         <h2>Related bulletins</h2>
                                     </header>
                                     <!-- Dynamic: -->
-                                    <div class="grid-wrap" ng-show="{{content.hasRelatedBulletins}}">
-                                        <article class="box--padded" ng-repeat="relatedBulletin in content.relatedBulletinData" class="grid-col desktop-grid-one-third tablet-grid-one-half">
+                                    <div class="grid-wrap" >
+                                        <article class="box--padded" class="grid-col desktop-grid-one-third tablet-grid-one-half">
                                             <header class="[box__header]">
                                                 <h3>
                                                 <a href="#">Producer Price Inflation, January 2014</a>
@@ -514,7 +514,7 @@
                                         </article>
                                     </div>
                                     <!-- or placeholder: -->
-                                    <div class="grid-wrap" ng-show="{{!content.hasRelatedBulletins}}">
+                                    <div class="grid-wrap" >
                                         <article class="box--padded">
                                             <header class="box__header">
                                                 <h3>
