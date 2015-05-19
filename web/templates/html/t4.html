@@ -224,7 +224,6 @@
         
         <!-- title and social icons -->
         <div class="page-header flush--half--bottom  page-header--article page-header--stat-bulletin slate--blue">
-            <div class="wrapper">
                 <div class="wrapper [panel--small]" >
                     <ol class="nav nav--heavy breadcrumb breadcrumb_hero mini" >
                         <li>
@@ -239,6 +238,7 @@
                     </ol>
                     <!-- /Wrapper panel -->
                 </div>
+            <div class="wrapper">
                 <p class="page-header__title page-header--stat-bulletin-desc">
                     <strong>Statistical bulletin</strong>
                 </p>
@@ -292,15 +292,13 @@
                 <div class="page-header__icons">
                     <a href="https://twitter.com/intent/tweet?text={{getAbsoluteUrl()}}"
                         onclick="return !window.open(this.href, 'Google', 'width=500,height=450')"
-                        target="_blank"><span class="icon icon-twitter icon--grey"><span class="visuallyhidden">Share on Twitter</span></span></a><!--squeezed up to fix underline issue!-->
-                        <a href="#" class="link-complex"> Lin
-                            <span class="icon [icon-linkedin] icon--grey">
-                                <span class="visuallyhidden">Share on Linkedin</span>
-                            </span>
-                        </a>
-                        <a href="http://facebook.com/sharer/sharer.php?u={{getFbAbsoluteUrl()}}" onclick="return !window.open(this.href, 'Google', 'width=500,height=450')" target="_blank">
+                        target="_blank"><span class="icon icon-twitter icon--grey"><span class="visuallyhidden">Share on Twitter</span></span></a><!--squeezed up to fix underline issue!--> <a href="http://facebook.com/sharer/sharer.php?u={{getFbAbsoluteUrl()}}" onclick="return !window.open(this.href, 'Google', 'width=500,height=450')" target="_blank">
                             <span class="icon icon-facebook icon--grey">
                                 <span class="visuallyhidden">Share on Facebook</span>
+                            </span>
+                        </a><!--squeezed up to fix underline issue!--><a href="#" class="link-complex">Lin
+                            <span class="icon [icon-linkedin] icon--grey">
+                                <span class="visuallyhidden">Share on Linkedin</span>
                             </span>
                         </a>
                     </div>
@@ -498,8 +496,8 @@
                                         <h2>Related bulletins</h2>
                                     </header>
                                     <!-- Dynamic: -->
-                                    <div class="grid-wrap" ng-show="{{content.hasRelatedBulletins}}">
-                                        <article class="box--padded" ng-repeat="relatedBulletin in content.relatedBulletinData" class="grid-col desktop-grid-one-third tablet-grid-one-half">
+                                    <div class="grid-wrap" >
+                                        <article class="box--padded" class="grid-col desktop-grid-one-third tablet-grid-one-half">
                                             <header class="[box__header]">
                                                 <h3>
                                                 <a href="#">Producer Price Inflation, January 2014</a>
@@ -516,7 +514,7 @@
                                         </article>
                                     </div>
                                     <!-- or placeholder: -->
-                                    <div class="grid-wrap" ng-show="{{!content.hasRelatedBulletins}}">
+                                    <div class="grid-wrap" >
                                         <article class="box--padded">
                                             <header class="box__header">
                                                 <h3>
