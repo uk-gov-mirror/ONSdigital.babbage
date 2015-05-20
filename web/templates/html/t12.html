@@ -245,7 +245,7 @@
                 </p>
                 <p class="grid-col desktop-grid-one-quarter">
                     Series ID: UK <a href="#">what is this?</a><br/>
-                    Units: Inex 2010=100<br/>
+                    Units: Index 2010=100<br/>
                     Not seasonally adjusted
                 </p>
             </div>
@@ -285,6 +285,59 @@
                 <h2>
                     Select data revision dates
                 </h2>
+
+                <div class="grid-wrap">
+                    <div class="grid-col desktop-grid-five-sixths">
+                        <div class="grid-wrap">
+                            <!-- data FROM select boxes -->
+                            <div class="grid-col desktop-grid-one-half">
+                                <div class="grid-wrap">
+                                    <p class="grid-col grid-one-half">
+                                        Data published between
+                                    </p>
+                                    <select class="input grid-col grid-one-quarter" id="select-month" name="month">
+                                        <option value="1" selected>Sept</option>
+                                        <option value="2">Oct</option>
+                                    </select>
+                                    <select class="input grid-col grid-one-quarter" id="select-year" name="year">
+                                        <option value="1" selected>2014</option>
+                                        <option value="2">2015</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <!-- end of data from select boxes -->
+                            <!-- data TO select boxes -->
+                            <div class="grid-col desktop-grid-one-half">
+                                <div class="grid-wrap">
+                                    <p class="grid-col grid-one-quarter">
+                                        To
+                                    </p>
+                                    <select class="input grid-col grid-one-quarter" id="select-month" name="month">
+                                        <option value="1" selected>Nov</option>
+                                        <option value="2">Dec</option>
+                                    </select>
+                                    <select class="input grid-col grid-one-quarter" id="select-year" name="year">
+                                        <option value="1" selected>2014</option>
+                                        <option value="2">2015</option>
+                                    </select>
+                                    <div class="grid-col grid-one-quarter">
+                                        <a href="#" class="btn btn--primary btn--small btn--thin btn--narrow">
+                                            Show
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- end of data to select boxes -->
+                        </div>
+                    </div>
+                    <div class="grid-col desktop-grid-one-sixth">
+                        <div class="grid-wrap">
+                            <div class="grid-col desktop-grid-full-width">
+                                <p>Select all <input type="checkbox" name="checkbox" value="1"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <table width="100%" class="tablesaw">
                     <thead>
@@ -326,8 +379,26 @@
                             <td></td>
                             <td><input type="checkbox" name="checkbox" value="1"></td>
                         </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td>Include latest data with download</td>
+                            <td><input type="checkbox" name="checkbox" value="1"></td>
+                        </tr>
                     </tbody>
                 </table>
+                <div class="slate--mid-grey panel--pad-small panel--bottom-mar">
+                    <div class="grid-wrap">
+                        <div class="grid-col desktop-grid-one-third desktop-grid-push-two-thirds">
+                            <a href="#" class="btn btn--primary btn--thin btn--narrow">.CSV
+                                <span class="icon icon-download icon--button-inline"></span>
+                            </a>
+                            <a href="#" class="btn btn--primary btn--thin btn--narrow">.XLSX
+                                <span class="icon icon-download icon--button-inline"></span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
                 <h2>
                     Important notes and usuage information
                 </h2>
