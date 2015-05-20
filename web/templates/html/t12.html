@@ -21,6 +21,7 @@
     <!--[if gt IE 8]><!-->
 <link rel="stylesheet" href="../../node_modules/ONS-Pattern-Library/dist/css/main.min.css"/>
 <![endif]-->
+    <script src="../../node_modules/ONS-Pattern-Library/node_modules/jquery/dist/jquery.min.js"></script>
     <script src="../../node_modules/ONS-Pattern-Library/dist/js/header.js"></script>
   </head>
   <body class="">
@@ -287,7 +288,7 @@
                 </h2>
 
                 <div class="grid-wrap">
-                    <div class="grid-col desktop-grid-five-sixths">
+                    <div class="grid-col desktop-grid-two-thirds">
                         <div class="grid-wrap">
                             <!-- data FROM select boxes -->
                             <div class="grid-col desktop-grid-one-half">
@@ -309,7 +310,7 @@
                             <!-- data TO select boxes -->
                             <div class="grid-col desktop-grid-one-half">
                                 <div class="grid-wrap">
-                                    <p class="grid-col grid-one-quarter">
+                                    <p class="grid-col grid-one-half">
                                         To
                                     </p>
                                     <select class="input grid-col grid-one-quarter" id="select-month" name="month">
@@ -320,73 +321,73 @@
                                         <option value="1" selected>2014</option>
                                         <option value="2">2015</option>
                                     </select>
-                                    <div class="grid-col grid-one-quarter">
-                                        <a href="#" class="btn btn--primary btn--small btn--thin btn--narrow">
-                                            Show
-                                        </a>
-                                    </div>
                                 </div>
                             </div>
                             <!-- end of data to select boxes -->
                         </div>
                     </div>
-                    <div class="grid-col desktop-grid-one-sixth">
+                    <div class="grid-col desktop-grid-one-third">
                         <div class="grid-wrap">
-                            <div class="grid-col desktop-grid-full-width">
+                            <div class="grid-col grid-one-half">
+                                <a href="#" class="btn btn--primary btn--small btn--thin btn--narrow">
+                                    Show
+                                </a>
+                            </div>
+                            <div class="grid-col grid-one-half">
                                 <p>Select all <input type="checkbox" name="checkbox" value="1"></p>
                             </div>
                         </div>
                     </div>
                 </div>
+                    <table width="100%" class="tablesaw">
+                        <thead>
+                            <tr>
+                                <th>Date updated</th>
+                                <th>Reason for update</th>
+                                <th>More information</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>12 Feb 2015</td>
+                                <td>Release: Consumer price inflation</td>
+                                <td></td>
+                                <td><input type="checkbox" name="checkbox" value="1"></td>
+                            </tr>
+                            <tr>
+                                <td>12 Feb 2015</td>
+                                <td>Correction</td>
+                                <td>View correction note</td>
+                                <td><input type="checkbox" name="checkbox" value="1"></td>
+                            </tr>
+                            <tr>
+                                <td>12 Feb 2015</td>
+                                <td>Release: Consumer price inflation</td>
+                                <td></td>
+                                <td><input type="checkbox" name="checkbox" value="1"></td>
+                            </tr>
+                            <tr>
+                                <td>12 Feb 2015</td>
+                                <td>Release: Consumer price inflation</td>
+                                <td></td>
+                                <td><input type="checkbox" name="checkbox" value="1"></td>
+                            </tr>
+                            <tr>
+                                <td>12 Feb 2015</td>
+                                <td>Release: Consumer price inflation</td>
+                                <td></td>
+                                <td><input type="checkbox" name="checkbox" value="1"></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td>Include latest data with download</td>
+                                <td><input type="checkbox" name="checkbox" value="1"></td>
+                            </tr>
+                        </tbody>
+                    </table>
 
-                <table width="100%" class="tablesaw">
-                    <thead>
-                        <tr>
-                            <th>Date updated</th>
-                            <th>Reason for update</th>
-                            <th>More information</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>12 Feb 2015</td>
-                            <td>Release: Consumer price inflation</td>
-                            <td></td>
-                            <td><input type="checkbox" name="checkbox" value="1"></td>
-                        </tr>
-                        <tr>
-                            <td>12 Feb 2015</td>
-                            <td>Correction</td>
-                            <td>View correction note</td>
-                            <td><input type="checkbox" name="checkbox" value="1"></td>
-                        </tr>
-                        <tr>
-                            <td>12 Feb 2015</td>
-                            <td>Release: Consumer price inflation</td>
-                            <td></td>
-                            <td><input type="checkbox" name="checkbox" value="1"></td>
-                        </tr>
-                        <tr>
-                            <td>12 Feb 2015</td>
-                            <td>Release: Consumer price inflation</td>
-                            <td></td>
-                            <td><input type="checkbox" name="checkbox" value="1"></td>
-                        </tr>
-                        <tr>
-                            <td>12 Feb 2015</td>
-                            <td>Release: Consumer price inflation</td>
-                            <td></td>
-                            <td><input type="checkbox" name="checkbox" value="1"></td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td>Include latest data with download</td>
-                            <td><input type="checkbox" name="checkbox" value="1"></td>
-                        </tr>
-                    </tbody>
-                </table>
                 <div class="slate--mid-grey panel--pad-small panel--bottom-mar">
                     <div class="grid-wrap">
                         <div class="grid-col desktop-grid-one-third desktop-grid-push-two-thirds">
@@ -521,8 +522,8 @@
         </div>
       </div>
     </footer>
-    <script src="../../node_modules/ONS-Pattern-Library/dist/js/dist/footer.js"></script>
+    <script src="../../node_modules/ONS-Pattern-Library/dist/js/footer.js"></script>
 </body>
-<script src="js/jquery.min.js"></script>
+
 
 </html>
