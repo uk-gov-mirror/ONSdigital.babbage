@@ -1,13 +1,33 @@
+<!--[if IE]><![endif]-->
 <!DOCTYPE html>
-<html>
-	<head lang="en">
-	  <meta charset="UTF-8">
-	  <title>T10</title>
-	  <link rel="stylesheet" type="text/css" href="../../node_modules/ONS-Pattern-Library/dist/css/main.css">
-		<script src="../../node_modules/ONS-Pattern-Library/dist/js/header.js"></script>
-	</head>
-	<body>
-		<header class="global-header">
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7"><![endif]-->
+<!--[if IE 7]><html class="no-js lt-ie9 lt-ie8 ie7"><![endif]-->
+<!--[if IE 8]><html class="no-js lt-ie9 ie8"><![endif]-->
+<!--[if IE 9]><html class="no-js ie9"><![endif]-->
+<!--[if gt IE 8]><!--><!-->
+<html class="no-js">
+  <!--<![endif]-->
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>T10 - search results</title>
+    <meta charset="utf-8" />
+    <meta content="width=device-width,initial-scale=1.0" name="viewport" />
+    <meta content="on" http-equiv="cleartype" />
+    <meta name="format-detection" content="telephone=no">
+    <!--[if IE]><![endif]-->
+    <!--[if lte IE 8]>
+<link rel="stylesheet" href="./dist/css/oldie.css"/>
+<![endif]-->
+    <!--[if gt IE 8]><!-->
+		<link rel="stylesheet" href="../../node_modules/ONS-Pattern-Library/dist/css/main.min.css"/>
+		<![endif]-->
+  	<script src="../../node_modules/ONS-Pattern-Library/dist/js/header.js"></script>
+  </head>
+  <body class="">
+    <a class="skiplink visuallyhidden focusable" href="#main" tabindex="0">
+      <span>Skip to main content</span>
+    </a>
+			<header class="global-header">
 		  <div class="global-header__wrapper">
 		    <a class="main-logo" href="/">
 		      <img src="../../node_modules/ONS-Pattern-Library/ui/img/ons-logo.svg" alt="Office for National Statistics">
@@ -197,59 +217,64 @@
 		</nav>
 		<!-- / nav -->
 	  <div class="wrapper panel--mar">
-		<h1 class="page-header__title delta">Search</h1>
+			<h1 class="page-header__title delta">Search</h1>
 			<p>
 				42 results for 'CPI' showing statistical bulletins <span class="icon icon-cancel" role="presentation"></span> articles <span class="icon icon-cancel" role="presentation"></span> datasets <span class="icon icon-cancel" role="presentation"></span>
 			</p>
 			<div class="grid-wrap">
-				<div class="grid-col mini desktop-grid-one-third desktop-grid-push-two-thirds">
-					<p class="flush">
-						Get updates to this list
-						<a href="#" class="icon-mail">Email</a>
-						<a href="#" class="icon-mail">RSS</a>
-					</p>
+				<div class="grid-col mini desktop-grid-one-quarter desktop-grid-push-three-quarters">
+					<label for="select">Sort by
+							<div class="field ">
+									<select class="input" id="select" name="">
+											<option value="1" selected>Relevance</option>
+											<option value="2">Other option</option>
+									</select>
+							</div>
+					</label>
 				</div>
 				<!-- /desktop-grid -->
 			</div>
 			<!-- /grid-wrap -->
 			<div class="grid-wrap">
 				<div class="grid-col desktop-grid-one-third">
-					<article class="box box--padded lifted sectioned">
+					<article class="box box--padded sectioned">
 						<header class="box__header">
 							<h3 class="flush panel panel--separated--bottom">Refine results</h3>
 						</header>
 						<div class="box__content">
 							<p class="panel panel--separated--bottom">Content types to show</p>
-							<div>
-								<input type="checkbox" name="checkbox-statsbulletin" value="1">
-	                        	<label for="checkbox-statsbulletin">
-                                	Statistical bulletin
-	                        	</label>
-							</div>
-							<div>
-								<input type="checkbox" name="checkbox-article" value="1">
-		                        <label for="checkbox-article">
-		                                Article
-		                        </label>
-							</div>
-							<div>
-								<input type="checkbox" name="checkbox-dataset" value="1">
-	                        	<label for="checkbox-dataset">
-	                                Dataset
-	                        	</label>
-							</div>
-							<div>
-								<input type="checkbox" name="checkbox-methodology" value="1">
-	                        	<label for="checkbox-methodology">
-	                                Methodology
-	                        	</label>
-							</div>
-							<div>
-								<input type="checkbox" name="checkbox-timeseries" value="1">
-	                        	<label for="checkbox-timeseries">
-	                                Time series and data slices
-	                        	</label>
-							</div>
+							<ul class="list--neutral">
+								<li>
+									<input type="checkbox" name="checkbox-statsbulletin" value="1" checked>
+										<label for="checkbox-statsbulletin">
+											Statistical bulletin
+										</label>
+								</li>
+								<li>
+									<input type="checkbox" name="checkbox-article" value="1" checked>
+										<label for="checkbox-article">
+											Article
+										</label>
+								</li>
+								<li>
+									<input type="checkbox" name="checkbox-dataset" value="1" checked>
+										<label for="checkbox-dataset">
+											Dataset
+										</label>
+								</li>
+								<li>
+									<input type="checkbox" name="checkbox-methodology" value="1" checked>
+										<label for="checkbox-methodology">
+											Methodology
+										</label>
+								</li>
+								<li>
+									<input type="checkbox" name="checkbox-timeseries" value="1" checked>
+										<label for="checkbox-timeseries">
+											Time series and data slices
+										</label>
+								</li>
+							</ul>
 							<p class="panel--mar-small">You can also expand your search results to include the following:</p>
 							<div>
 								<input type="checkbox" name="checkbox" value="1">
@@ -284,173 +309,115 @@
 				</div>
 				<!-- /desktop-grid-one-third -->
 				<div class="grid-col desktop-grid-two-thirds">
+					<article class="box box--padded sectioned">
+						<div class="box__content">
+							<div class="grid-wrap">
+								<div class="grid-col desktop-grid-one-half">
+									<p class="alpha">
+										chart
+									</p>
+								</div>
+								<div class="grid-col desktop-grid-one-half">
+									<p>
+										Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer mauris nisl, posuere at risus at, eleifend volutpat massa. Sed aliquam augue sed venenatis bibendum. In venenatis lectus at varius tincidunt. In vel tincidunt libero, vitae porta orci.
+									</p>
+									<a href="#">http://www.ons.gov.uk/economy/inflationandpriceindices</a>
+								</div>
+								<!-- /desktop-grid -->
+							</div>
+							<!-- /grid-wrap -->
+						</div>
+						<!-- /box__content -->
+					</article>
+					<!-- /box 'refine results' -->
 					<ul class="list--neutral">
 						<li>
 							<a href="#"><h3 class="flush">Link to child page</h3></a>
-							<div class="grid-wrap">
-								<p class="mini description flush grid-col desktop-grid-one-third">
-									Released 22 August 2015
-								</p>
-								<!-- /desktop-grid-one-quarter -->
-								<p class="mini description flush grid-col desktop-grid-one-third">
-									Ref: 004111
-								</p>
-								<!-- /desktop-grid -->
-							</div>
-							<!-- grid-wrap -->
+							<span class="lozenge">Statistical bulletin</span>
+							<p class="mini description flush">
+								Released 22 August 2015
+							</p>
 							<p>
 								Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec at eros eget felis consequat tincidunt.
 							</p>
 						</li>
 						<li>
 							<a href="#"><h3 class="flush">Link to child page</h3></a>
-							<div class="grid-wrap">
-								<p class="mini description flush grid-col desktop-grid-one-third">
-									Released 22 August 2015
-								</p>
-								<!-- /desktop-grid-one-quarter -->
-								<p class="mini description flush grid-col desktop-grid-one-third">
-									Ref: 004111
-								</p>
-								<!-- /desktop-grid -->
-							</div>
-							<!-- grid-wrap -->
+							<p class="mini description flush">
+								Released 22 August 2015
+							</p>
 							<p>
 								Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec at eros eget felis consequat tincidunt.
 							</p>
 						</li>
 						<li>
 							<a href="#"><h3 class="flush">Link to child page</h3></a>
-							<div class="grid-wrap">
-								<p class="mini description flush grid-col desktop-grid-one-third">
-									Released 22 August 2015
-								</p>
-								<!-- /desktop-grid-one-quarter -->
-								<p class="mini description flush grid-col desktop-grid-one-third">
-									Ref: 004111
-								</p>
-								<!-- /desktop-grid -->
-							</div>
-							<!-- grid-wrap -->
+							<p class="mini description flush">
+								Released 22 August 2015
+							</p>
 							<p>
 								Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec at eros eget felis consequat tincidunt.
 							</p>
 						</li>
 						<li>
 							<a href="#"><h3 class="flush">Link to child page</h3></a>
-							<div class="grid-wrap">
-								<p class="mini description flush grid-col desktop-grid-one-third">
-									Released 22 August 2015
-								</p>
-								<!-- /desktop-grid-one-quarter -->
-								<p class="mini description flush grid-col desktop-grid-one-third">
-									Ref: 004111
-								</p>
-								<!-- /desktop-grid -->
-							</div>
-							<!-- grid-wrap -->
+							<p class="mini description flush">
+								Released 22 August 2015
+							</p>
 							<p>
 								Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec at eros eget felis consequat tincidunt.
 							</p>
 						</li>
 						<li>
 							<a href="#"><h3 class="flush">Link to child page</h3></a>
-							<div class="grid-wrap">
-								<p class="mini description flush grid-col desktop-grid-one-third">
-									Released 22 August 2015
-								</p>
-								<!-- /desktop-grid-one-quarter -->
-								<p class="mini description flush grid-col desktop-grid-one-third">
-									Ref: 004111
-								</p>
-								<!-- /desktop-grid -->
-							</div>
-							<!-- grid-wrap -->
+							<p class="mini description flush">
+								Released 22 August 2015
+							</p>
 							<p>
 								Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec at eros eget felis consequat tincidunt.
 							</p>
 						</li>
 						<li>
 							<a href="#"><h3 class="flush">Link to child page</h3></a>
-							<div class="grid-wrap">
-								<p class="mini description flush grid-col desktop-grid-one-third">
-									Released 22 August 2015
-								</p>
-								<!-- /desktop-grid-one-quarter -->
-								<p class="mini description flush grid-col desktop-grid-one-third">
-									Ref: 004111
-								</p>
-								<!-- /desktop-grid -->
-							</div>
-							<!-- grid-wrap -->
+							<p class="mini description flush">
+								Released 22 August 2015
+							</p>
 							<p>
 								Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec at eros eget felis consequat tincidunt.
 							</p>
 						</li>
 						<li>
 							<a href="#"><h3 class="flush">Link to child page</h3></a>
-							<div class="grid-wrap">
-								<p class="mini description flush grid-col desktop-grid-one-third">
-									Released 22 August 2015
-								</p>
-								<!-- /desktop-grid-one-quarter -->
-								<p class="mini description flush grid-col desktop-grid-one-third">
-									Ref: 004111
-								</p>
-								<!-- /desktop-grid -->
-							</div>
-							<!-- grid-wrap -->
+							<p class="mini description flush">
+								Released 22 August 2015
+							</p>
 							<p>
 								Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec at eros eget felis consequat tincidunt.
 							</p>
 						</li>
 						<li>
 							<a href="#"><h3 class="flush">Link to child page</h3></a>
-							<div class="grid-wrap">
-								<p class="mini description flush grid-col desktop-grid-one-third">
-									Released 22 August 2015
-								</p>
-								<!-- /desktop-grid-one-quarter -->
-								<p class="mini description flush grid-col desktop-grid-one-third">
-									Ref: 004111
-								</p>
-								<!-- /desktop-grid -->
-							</div>
-							<!-- grid-wrap -->
+							<p class="mini description flush">
+								Released 22 August 2015
+							</p>
 							<p>
 								Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec at eros eget felis consequat tincidunt.
 							</p>
 						</li>
 						<li>
 							<a href="#"><h3 class="flush">Link to child page</h3></a>
-							<div class="grid-wrap">
-								<p class="mini description flush grid-col desktop-grid-one-third">
-									Released 22 August 2015
-								</p>
-								<!-- /desktop-grid-one-quarter -->
-								<p class="mini description flush grid-col desktop-grid-one-third">
-									Ref: 004111
-								</p>
-								<!-- /desktop-grid -->
-							</div>
-							<!-- grid-wrap -->
+							<p class="mini description flush">
+								Released 22 August 2015
+							</p>
 							<p>
 								Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec at eros eget felis consequat tincidunt.
 							</p>
 						</li>
 						<li>
 							<a href="#"><h3 class="flush">Link to child page</h3></a>
-							<div class="grid-wrap">
-								<p class="mini description flush grid-col desktop-grid-one-third">
-									Released 22 August 2015
-								</p>
-								<!-- /desktop-grid-one-quarter -->
-								<p class="mini description flush grid-col desktop-grid-one-third">
-									Ref: 004111
-								</p>
-								<!-- /desktop-grid -->
-							</div>
-							<!-- grid-wrap -->
+							<p class="mini description flush">
+								Released 22 August 2015
+							</p>
 							<p>
 								Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec at eros eget felis consequat tincidunt.
 							</p>
