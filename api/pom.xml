@@ -10,6 +10,7 @@
 
 	<properties>
 		<java.version>1.8</java.version>
+        <handlebars-java-version>2.1.0</handlebars-java-version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<powermock.version>1.5.6</powermock.version>
 		<es.version>1.3.2</es.version>
@@ -70,6 +71,21 @@
 			<artifactId>poi-ooxml</artifactId>
 			<version>3.10.1</version>
 		</dependency>
+
+        <!-- Handlebars Java-->
+        <dependency>
+            <groupId>com.github.jknack</groupId>
+            <artifactId>handlebars</artifactId>
+            <version>${handlebars-java-version}</version>
+        </dependency>
+
+        <!-- Handlebars Java Server, used for working on handlebars templates without actual server working-->
+        <dependency>
+            <groupId>com.github.jknack</groupId>
+            <artifactId>handlebars-proto</artifactId>
+            <version>${handlebars-java-version}</version>
+            <scope>test</scope>
+        </dependency>
 
 		<!-- Test -->
 		<dependency>
@@ -207,6 +223,15 @@
 					</execution>
 				</executions>
 			</plugin>
+
+
+            <!-- Using dependency plugins to fetch dependencies without compiling code to run handlebars server-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>2.10</version>
+            </plugin>
+
 
 		</plugins>
 		<pluginManagement>
