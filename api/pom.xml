@@ -79,14 +79,6 @@
             <version>${handlebars-java-version}</version>
         </dependency>
 
-        <!-- Handlebars Java Server, used for working on handlebars templates without actual server working-->
-        <dependency>
-            <groupId>com.github.jknack</groupId>
-            <artifactId>handlebars-proto</artifactId>
-            <version>${handlebars-java-version}</version>
-            <scope>test</scope>
-        </dependency>
-
 		<!-- Test -->
 		<dependency>
 			<groupId>junit</groupId>
@@ -223,16 +215,6 @@
 					</execution>
 				</executions>
 			</plugin>
-
-
-            <!-- Using dependency plugins to fetch dependencies without compiling code to run handlebars server-->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <version>2.10</version>
-            </plugin>
-
-
 		</plugins>
 		<pluginManagement>
 			<plugins>

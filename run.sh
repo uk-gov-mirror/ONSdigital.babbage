@@ -6,8 +6,7 @@
 # build.sh && \
 # cd ..
 
-### 2 - BUILD API
-
+## 2 - BUILD API
 cd api && \
 ./build.sh && \
 cd ..

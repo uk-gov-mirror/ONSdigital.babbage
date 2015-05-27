@@ -17,6 +17,6 @@ cd ..
 #2- Run the server
 
 $JAVA_HOME/bin/java $JAVA_OPTS \
- -jar api/target/dependency/handlebars-proto-2.1.0.jar \
+ -jar handlebars-proto/handlebars-proto-2.1.0.jar \
  -dir web/templates/handlebars \
  -suffix .handlebars
