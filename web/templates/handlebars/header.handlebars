@@ -1,0 +1,85 @@
+<a class="skiplinks visuallyhidden focusable" href="#main" tabindex="0">
+	<span>Skip to main content</span>
+</a>
+
+<header class="global-header">
+	<div class="global-header__wrapper">
+		<a class="main-logo" href="/">
+			<img src="../../node_modules/ONS-Pattern-Library/dist/img/ons-logo.png" alt="Office for National Statistics">
+		</a>
+		<ul class="nav globaltop-nav">
+			<li>
+				<a href="#">Release Calendar</a>
+			</li>
+			<li>
+				<a href="#">Methodology</a>
+			</li>
+			<li>
+				<a href="#">About</a>
+			</li>
+		</ul>
+	</div>
+</header>
+<nav class="ons-nav">
+	<ul class="nav nav--controls">
+		<li class="nav--controls__menu">
+			<a href="#nav-primary" id="menu-toggle" aria-controls="nav-primary">
+				<span class="nav--controls__icon icon-menu icon--inline icon--large" role="presentation"></span>
+				<span class="nav--controls__text">Menu</span>
+			</a>
+		</li>
+		<li class="nav--controls__search">
+			<a href="#nav-search" id="search-toggle" aria-controls="nav-search">
+				<span class="nav--controls__icon icon-search-1 icon--inline icon--large" role="presentation"></span>
+				<span class="nav--controls__text">Search</span>
+			</a>
+		</li>
+	</ul>
+	<ul class="nav nav--block nav--primary" id="nav-primary">
+		<li class="nav--primary__hide-small-med">
+			<a href="/pages/t1">Home</a>
+		</li>
+		{{#each themes}}
+			<li class="nav__expandable js-expandable">
+				<a href="{{url}}">{{name}}</a>
+				{{#if children}}
+					<ul class="nav--primary__sub js-expandable__content js-nav-hidden">
+						{{#each}}
+							<li>
+								<a href="{{url}}">{{name}}</a>
+							</li>
+						{{/each}} <!-- /each to find 2nd level nodes -->
+					</ul>
+				{{/if}}
+			</li>
+		{{/each}} <!-- /each to find 1st level nodes -->
+		<li class="nav--primary__respondents">
+			<a href="#">
+				<span class="icon-comment icon--inline" role="presentation"></span>
+				Taking part in a survey?
+			</a>
+		</li>
+		<li class="nav--primary__secondary-content">
+			<a href="#">Release calendar</a>
+		</li>
+		<li class="nav--primary__secondary-content">
+			<a href="#">Methodology</a>
+		</li>
+		<li class="nav--primary__secondary-content">
+			<a href="#">About</a>
+		</li>
+	</ul> <!-- /nav-primary -->
+
+	<div class="slate--grey search-wrapper">
+		<form class="nav-search nav-search--hidden" id="searchBar">
+			<div class="nav-search__container">
+				<label class="visuallyhidden" for="nav-search">Search for keyword or time series ID</label>
+				<input type="search" class="nav-search__field" id="nav-search" name="nav-search" value="" placeholder="Search for keyword or time series ID">
+			</div>
+			<button type="submit" class="btn btn--primary btn--nav-search" id="nav-search-submit">
+			<span class="icon-search-1" role="presentation"></span>
+			<span class="visuallyhidden">Search</span>
+			</button>
+		</form>
+	</div>
+</nav>
