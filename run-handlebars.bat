@@ -13,6 +13,6 @@ cd api && ^
 mvn dependency:copy-dependencies && ^
 cd .. && ^
 java ^
- -jar api/target/dependency/handlebars-proto-2.1.0.jar ^
+ -jar handlebars-proto/handlebars-proto-2.1.0.jar ^
  -dir web/templates/handlebars ^
  -suffix .handlebars^
