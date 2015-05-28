@@ -52,7 +52,7 @@ public class Download {
 		// Process URIs
 		if (downloadRequest.uriList != null) {
 			for (String uri : downloadRequest.uriList) {
-				try (InputStream input = DataService.getDataStream(uri)) {
+				try (InputStream input = DataService.getInstance().getDataStream(uri)) {
 					timeseries.add(Serialiser.deserialise(input, Timeseries.class));
 				}
 			}
