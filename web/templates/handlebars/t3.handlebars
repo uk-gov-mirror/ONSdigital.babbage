@@ -1,0 +1,73 @@
+<head>
+	<link rel="stylesheet" href="../../node_modules/ONS-Pattern-Library/dist/css/main.min.css"/>
+	<script src="../../node_modules/ONS-Pattern-Library/dist/js/header.js"></script>
+</head>
+
+<div class="page-header slate">
+	<div class="wrapper [panel--small]" >
+		<ol class="nav nav--heavy breadcrumb breadcrumb_hero mini">
+			<li>
+					<a href="#">Home</a>
+			</li>
+			{{#each breadcrumb}}
+				<li>
+					<a href="{{fileName}}">{{name}}</a>
+				</li>
+			{{/each}}
+			<li class="nav__active breadcrumb">
+				{{name}}
+			</li>
+		</ol>
+		<!-- /breadcrumb -->
+	</div>
+	<!-- /wrapper -->
+
+	<div class="wrapper">
+	  <h1 class="page-header__title flush--half--bottom">{{name}}</h1>
+	  <div class="lede content-reveal">
+			<p>
+				{{{lede}}}
+			</p>
+		</div>
+		<!-- /lede -->
+
+		<div class="grid-wrap">
+			<div class="grid-col tablet-grid-one-half headline--box-container">
+				<div class="box--padded solid panel--bottom-mar">
+					<h2>Latest data</h2>
+					<header class="box___section">
+							<h3 class="navpanel-list-heading lede box--padded-bottom-small">
+								<a href="">{{headline.name}}</a>
+							</h3>
+					</header>
+					<div class="grid-wrap">
+							<div class="grid-col grid-two-thirds">
+									<div class="box box--padded--small headline--stat-centred">
+											[sparkline goes here]
+									</div>
+							</div>
+							<div class="grid-col grid-one-third">
+									<div class="stat">
+											<div class="stat__figure ">
+													<div>
+															{{headline.figure}}<span class="stat__figure__unit">{{headline.unit}}</span>
+													</div>
+													<div class="stat__description">{{headline.period}}</div>
+											</div>
+									</div>
+									<dl class="micro definition-list definition-list--inline flush--half--vertical">
+											<dt>Last updated:</dt>
+											<dd>16 Sep 2014</dd>
+											<dt>Next update:</dt>
+											<dd class="[red_highlight]" >14 Oct 2014</dd>
+									</dl>
+							</div>
+					</div>
+				</div>
+				<!-- /box--padded -->
+			</div>
+			<!-- /grid-col -->
+		</div>
+		<!-- /wrapper -->
+	</div>
+	<!-- /page-header -->
