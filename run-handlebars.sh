@@ -18,5 +18,5 @@ cd ..
 
 $JAVA_HOME/bin/java $JAVA_OPTS \
  -jar handlebars-proto/handlebars-proto-2.1.0.jar \
- -dir web/templates/handlebars \
+ -dir web \
  -suffix .handlebars
