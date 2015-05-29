@@ -5,7 +5,18 @@
     "uri": "/economy/inflationandpriceindices/timeseries/d7g7",
 		"figure": "1.2",
 		"unit": "%",
-		"period": "February 2015"
+		"period": "February 2015",
+    "lastUpdate": "16 Sep 2014",
+    "nextUpdate": "14 Oct 2014"
+  },
+  "statsBulletinHeadline": {
+    "summary": "CPI, CPIH, RPI and RPIJ inflation price indices for February 2015 - brief description and analysis",
+    "name": "Consumer Price Inflation, February 2015",
+    "uri": "/economy/inflationandpriceindices/bulletins/consumerpriceinflationfebruary2015",
+    "data": [
+      {"item": "1.2% growth in Consumer Prices Index (CPI) in the year to February 2015, down from 2.0% in January 2014."},
+      {"item": "1.8% growth in CPIH in the year to February 2015, down from 1.9% in January 2014."}
+    ]
   },
   "items": [
     {
@@ -49,11 +60,6 @@
       "uri": "/economy/inflationandpriceindices/timeseries/k646"
     }
   ],
-  "statsBulletinHeadline": {
-    "summary": "CPI, CPIH, RPI and RPIJ inflation price indices for June 2014 - brief description and analysis",
-    "name": "Consumer Price Inflation, June 2014",
-    "uri": "/economy/inflationandpriceindices/bulletins/consumerpriceinflationjune2014"
-  },
   "statsBulletins": [
     {
       "summary": "CPI, CPIH, RPI and RPIJ inflation price indices for June 2014 - brief description and analysis",
@@ -95,7 +101,7 @@
 			"index": 0,
 			"type": "home",
 			"name": "Breadcrumb test",
-			"fileName": "economy/breadcrumbtest"
+			"fileName": "breadcrumbtest"
 		}
   ]
 }
