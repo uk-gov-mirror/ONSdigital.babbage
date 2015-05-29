@@ -37,7 +37,7 @@ public class DataList {
 			arrayList.add("/economy/inflationandpriceindices/timeseries/d7g7");
 			arrayList.add("/economy/inflationandpriceindices");
 			
-			response.getWriter().write(DataService.getDataAsString(dataListRequest.uriList).toString());
+			response.getWriter().write(DataService.getInstance().getDataAsString(dataListRequest.uriList).toString());
 		} catch (IOException e) {
 			response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR_500);
 			response.setContentType("text/plain");

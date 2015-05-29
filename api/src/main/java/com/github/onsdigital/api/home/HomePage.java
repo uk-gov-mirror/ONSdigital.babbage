@@ -1,0 +1,17 @@
+package com.github.onsdigital.api.home;
+
+import java.io.IOException;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.github.davidcarboni.restolino.framework.Home;
+
+public class HomePage implements Home {
+
+    @Override
+    public Object get(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        return RequestDelegator.handle(request, response);
+    }
+
+}

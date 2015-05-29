@@ -20,7 +20,7 @@ public class DataServiceTest {
 		String uri = "cats/MEOW";
 
 		// When
-		String path = DataService.cleanPath(URI.create(uri));
+		String path = DataService.getInstance().cleanPath(URI.create(uri));
 
 		// Then
 		assertEquals(uri.toLowerCase(), path);
@@ -33,7 +33,7 @@ public class DataServiceTest {
 		String uri = "dogs/woof/";
 
 		// When
-		String path = DataService.cleanPath(URI.create(uri));
+		String path = DataService.getInstance().cleanPath(URI.create(uri));
 
 		// Then
 		assertEquals(uri.substring(0, uri.length() - 1), path);
@@ -46,7 +46,7 @@ public class DataServiceTest {
 		String uri = "/data/is/awesome";
 
 		// When
-		String path = DataService.cleanPath(URI.create(uri));
+		String path = DataService.getInstance().cleanPath(URI.create(uri));
 
 		// Then
 		assertEquals(uri.replace("/data/", ""), path);
