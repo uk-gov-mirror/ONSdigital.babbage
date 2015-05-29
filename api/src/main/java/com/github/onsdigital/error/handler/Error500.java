@@ -1,4 +1,4 @@
-package com.github.onsdigital.errors;
+package com.github.onsdigital.error.handler;
 
 import com.github.davidcarboni.ResourceUtils;
 import com.github.davidcarboni.restolino.api.RequestHandler;

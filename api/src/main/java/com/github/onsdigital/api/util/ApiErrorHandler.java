@@ -1,6 +1,7 @@
 package com.github.onsdigital.api.util;
 
 import com.github.onsdigital.data.DataNotFoundException;
+import com.github.onsdigital.error.ResourceNotFoundException;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
@@ -13,12 +14,12 @@ import java.util.Map;
  */
 public class ApiErrorHandler {
 
-    public static Map<String,String> handle(Exception e, HttpServletResponse response) {
+    public static Map<String, String> handle(Exception e, HttpServletResponse response) {
 
         logError(e);
         Map<String, String> errorResponse = new HashMap<String, String>();
 
-        if (e instanceof DataNotFoundException) {
+        if (e instanceof ResourceNotFoundException) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             errorResponse.put("message", "Data you are looking for is not available");
             errorResponse.put("status", String.valueOf(HttpServletResponse.SC_NOT_FOUND));

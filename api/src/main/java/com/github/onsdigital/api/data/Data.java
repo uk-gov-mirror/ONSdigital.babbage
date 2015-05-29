@@ -1,9 +1,9 @@
 package com.github.onsdigital.api.data;
 
 import com.github.davidcarboni.restolino.framework.Api;
-import com.github.onsdigital.api.handler.DataRequestHandler;
+import com.github.onsdigital.request.handler.DataRequestHandler;
 import com.github.onsdigital.api.util.ApiErrorHandler;
-import com.github.onsdigital.api.util.URIUtils;
+import com.github.onsdigital.api.util.URIUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,7 +19,7 @@ public class Data {
 
 
         try {
-            new DataRequestHandler().handleDataRequest(URIUtils.extractUri(request.getRequestURI()), response);
+            new DataRequestHandler().handleDataRequest(URIUtil.removeEndpoint(request.getRequestURI()), response);
             return "";
         } catch (Exception e) {
             return ApiErrorHandler.handle(e, response);

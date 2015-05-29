@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.github.davidcarboni.restolino.framework.Home;
+import com.github.onsdigital.request.RequestDelegator;
 
 public class HomePage implements Home {
 
