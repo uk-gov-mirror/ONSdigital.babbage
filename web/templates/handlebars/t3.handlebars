@@ -7,15 +7,7 @@
 	<div class="wrapper [panel--small]" >
 		<ol class="nav nav--heavy breadcrumb breadcrumb_hero mini">
 			<li>
-					<a href="#">Home</a>
-			</li>
-			{{#each breadcrumb}}
-				<li>
-					<a href="{{fileName}}">{{name}}</a>
-				</li>
-			{{/each}}
-			<li class="nav__active breadcrumb">
-				{{name}}
+				Need to add breadcrumb partial
 			</li>
 		</ol>
 		<!-- /breadcrumb -->
@@ -52,22 +44,68 @@
 													<div>
 															{{headline.figure}}<span class="stat__figure__unit">{{headline.unit}}</span>
 													</div>
-													<div class="stat__description">{{headline.period}}</div>
+													<div class="stat__description">
+														{{headline.period}}
+													</div>
 											</div>
 									</div>
 									<dl class="micro definition-list definition-list--inline flush--half--vertical">
 											<dt>Last updated:</dt>
-											<dd>16 Sep 2014</dd>
+											<dd>{{headline.lastUpdate}}</dd>
 											<dt>Next update:</dt>
-											<dd class="[red_highlight]" >14 Oct 2014</dd>
+											<dd class="[red_highlight]">{{headline.nextUpdate}}</dd>
 									</dl>
 							</div>
+							<!-- /grid-col -->
 					</div>
+					<!-- /grid-wrap -->
 				</div>
 				<!-- /box--padded -->
+        <a href="#" class="btn btn--primary">view latest data
+            <span class="icon icon-down-open-big icon--button-inline"></span>
+        </a>
+			</div>
+			<!-- /grid-col -->
+
+			<div class="grid-col tablet-grid-one-half headline--box-container">
+				<div class="panel--bottom-mar box--padded solid">
+					<h2>Latest statistical bulletin</h2>
+					<header class="box___section">
+							<h3 class="navpanel-list-heading lede box--padded-bottom-small">
+							<a href="{{statsBulletinHeadline.uri}}">{{statsBulletinHeadline.name}}</a>
+							</h3>
+					</header>
+					<h3>What's in the bulletin?</h3>
+					<ul class="list--bullet mini flush--half--top navpanel-list headline--box-container-text">
+						{{#each statsBulletinHeadline.data}}
+						<li>
+							{{item}}
+						</li>
+						{{/each}}
+					</ul>
+				</div>
+				<a href="#" class="btn btn--primary">view latest reports
+					<span class="icon icon-down-open-big icon--button-inline"></span>
+				</a>
 			</div>
 			<!-- /grid-col -->
 		</div>
-		<!-- /wrapper -->
+		<!-- /grid-wrap -->
 	</div>
-	<!-- /page-header -->
+	<!-- /wrapper -->
+</div>
+<!-- /page-header -->
+
+<!-- Body sections -->
+<section class="panel wrapper panel--bottom-mar">
+	<div class="box box--green box--green--separated--left" >
+		<div class="box__inner border box--padded">
+			<div class="box__section">
+			</div>
+			<!-- /box-section -->
+		</div>
+		<!-- /box__inner -->
+	</div>
+	<!-- /box -->
+</section>
+<!-- /panel wrapper -->
