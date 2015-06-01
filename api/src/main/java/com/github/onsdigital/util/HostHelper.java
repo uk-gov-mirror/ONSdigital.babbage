@@ -9,7 +9,7 @@ import org.apache.commons.lang.StringUtils;
 
 public class HostHelper {
 
-	private static String localhost = "localhost";
+	private static final String localhost = "localhost";
 
 	public static boolean isLocalhost(HttpServletRequest request) {
 		URL url = getUrl(request);

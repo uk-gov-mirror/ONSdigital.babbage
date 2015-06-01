@@ -1,15 +1,12 @@
 package com.github.onsdigital.request;
 
-import com.github.onsdigital.error.ResourceNotFoundException;
-import com.github.onsdigital.request.handler.DataRequestHandler;
-import com.github.onsdigital.request.handler.PageRequestHandler;
 import com.github.onsdigital.api.util.URIUtil;
 import com.github.onsdigital.request.handler.base.RequestHandler;
 import org.reflections.Reflections;
+import org.reflections.util.ConfigurationBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -30,47 +27,44 @@ public class RequestDelegator {
 
     //Find request handlers and register
     static {
-        resolveRequestHandlers();
+        registerRequestHandlers();
     }
 
-    public static Object handle(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public static Object handle(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-        String requestType = URIUtil.resolveRequestType(request.getRequestURI());
+        RequestHandler handler = resolveRequestHandler(request.getRequestURI());
+        return handler.handle(URIUtil.resolveResouceUri(request.getRequestURI()), request, response);
+    }
 
+    //Resolves Request handler to be used for requested uri
+    static RequestHandler resolveRequestHandler(String requestedUri) {
+        String requestType = URIUtil.resolveRequestType(requestedUri);
         RequestHandler handler = handlers.get(requestType);
-        if(handler == null) {
-            throw new ResourceNotFoundException("Could not found appropriate handlers to handle this request");
+        if (handler == null) { //If handler not registered for request type use / handler
+            handler = handlers.get("/");
         }
-
+        return handler;
     }
 
-
-    public static void handleDataRequest(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        new DataRequestHandler().handleDataRequest(getResourceUri(request), response);
-    }
-
-    public static void handlePageRequest(HttpServletRequest request, HttpServletResponse response) {
-    }
-
-
-    private static String getResourceUri(HttpServletRequest request) {
-        return URIUtil.resolveResouceUri(request.getRequestURI());
-    }
-
-    private static void resolveRequestHandlers() {
+    private static void registerRequestHandlers() {
         System.out.println("Resolving request handlers");
+        try {
 
-        Set<Class<? extends RequestHandler>> requestHandlerClasses = new Reflections().getSubTypesOf(RequestHandler.class);
-        for (Class<? extends RequestHandler> handlerClass : requestHandlerClasses) {
-            String className = handlerClass.getSimpleName();
-            System.out.println("Registering request handler: " + className);
-            try {
-                handlers.put(handlerClass.getSimpleName(), handlerClass.newInstance());
-            } catch (Exception e) {
-                System.err.println("Failed initializing request handler:" + className);
-                e.printStackTrace();
+            ConfigurationBuilder configurationBuilder = new ConfigurationBuilder().addUrls(RequestHandler.class.getProtectionDomain().getCodeSource().getLocation());
+            configurationBuilder.addClassLoader(RequestHandler.class.getClassLoader());
+            Set<Class<? extends RequestHandler>> requestHandlerClasses = new Reflections(configurationBuilder).getSubTypesOf(RequestHandler.class);
+
+            for (Class<? extends RequestHandler> handlerClass : requestHandlerClasses) {
+                String className = handlerClass.getSimpleName();
+                RequestHandler handlerInstance = handlerClass.newInstance();
+                System.out.println("Registering request handler: " + className);
+                handlers.put(handlerInstance.getRequestType(), handlerClass.newInstance());
             }
+        } catch (Exception e) {
+            System.err.println("Failed initializing request handlers");
+            e.printStackTrace();
         }
 
     }
+
 }

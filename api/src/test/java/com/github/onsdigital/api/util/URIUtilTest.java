@@ -27,6 +27,8 @@ public class URIUtilTest {
         testInvalidUri("//data/economy"); //Multiple slashes should fail
         testInvalidUri("/data//economy"); //Multiple slashes should fail
         testInvalidUri("data/economy/"); //Missing leading slash should fail
+        testInvalidUri("/data/economy?a=b"); //Multiple slashes should fail
+        testInvalidUri("/data/economy?a=b&c=d"); //Multiple slashes should fail
     }
 
     @Test
@@ -43,6 +45,15 @@ public class URIUtilTest {
         assertEquals("data", resolveRequestType("/data"));
         assertEquals("data", resolveRequestType("/economy/inflationpriceindices/data"));
         assertEquals("s", resolveRequestType("/a/b/a/s/"));
+    }
+
+    @Test
+    public void testRemoveEndpoint() {
+        assertEquals("/", removeEndpoint("/"));
+        assertEquals("/", removeEndpoint("/data"));
+        assertEquals("/economy/inflationpriceindices", removeEndpoint("/data/economy/inflationpriceindices"));
+        assertEquals("/inflationpriceindices", removeEndpoint("/economy/inflationpriceindices"));
+        assertEquals("/b/a/s", removeEndpoint("/a/b/a/s/"));
     }
 
 

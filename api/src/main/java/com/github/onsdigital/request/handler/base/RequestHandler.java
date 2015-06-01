@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  */
 public interface RequestHandler {
-    Object handle(HttpServletRequest request, HttpServletResponse response) throws Exception;
+    Object handle(String requestedUri, HttpServletRequest request,  HttpServletResponse response) throws Exception;
 
     /**
      *

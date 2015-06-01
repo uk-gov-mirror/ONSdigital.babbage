@@ -30,11 +30,11 @@ public class URIUtil {
         uriString = cleanUri(uriString);
         validate(uriString);
 
-        int indexOfSecondSlash = StringUtils.indexOf("/", 1);
+        int indexOfSecondSlash = StringUtils.indexOf(uriString, "/", 1);
         if (indexOfSecondSlash == -1) {
             return "/";
         } else {
-            return StringUtils.substring(uriString, indexOfSecondSlash);  //Remove endpoint name
+            return StringUtils.substring(uriString, indexOfSecondSlash );  //Remove endpoint name
         }
     }
 
@@ -63,7 +63,7 @@ public class URIUtil {
      * Extracts uri resoure from request type suffixed uris.
      * <p>
      * e.g.
-     * for uri "/economy/inflationandpriceindices/data" request type is "/economy/inflationandpriceindices"
+     * for uri "/economy/inflationandpriceindices/data" resource uri "/economy/inflationandpriceindices"
      *
      * @return uri
      */
