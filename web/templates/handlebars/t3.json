@@ -21,50 +21,83 @@
   "items": [
     {
       "name": "CPI: Consumer Prices Index (% change)",
-      "uri": "/economy/inflationandpriceindices/timeseries/d7g7"
+      "uri": "/economy/inflationandpriceindices/timeseries/d7g7",
+      "figure": "1.2",
+      "unit": "%",
+      "period": "February 2015",
+      "lastUpdate": "19 Feb 2015",
+      "nextUpdate": "19 Mar 2015"
     },
     {
       "name": "RPI: Retail Price Index (% change)",
-      "uri": "/economy/inflationandpriceindices/timeseries/czbh"
+      "uri": "/economy/inflationandpriceindices/timeseries/czbh",
+      "figure": "2.3",
+      "unit": "%",
+      "period": "February 2015",
+      "lastUpdate": "19 Feb 2015",
+      "nextUpdate": "19 Mar 2015"
     },
     {
       "name": "CPIH (% change)",
-      "uri": "/economy/inflationandpriceindices/timeseries/l55o"
+      "uri": "/economy/inflationandpriceindices/timeseries/l55o",
+      "figure": "1.2",
+      "unit": "%",
+      "period": "February 2015",
+      "lastUpdate": "19 Feb 2015",
+      "nextUpdate": "19 Mar 2015"
     },
     {
       "name": "RPIJ (% change)",
-      "uri": "/economy/inflationandpriceindices/timeseries/kvr9"
+      "uri": "/economy/inflationandpriceindices/timeseries/kvr9",
+      "figure": "1.6",
+      "unit": "%",
+      "period": "February 2015",
+      "lastUpdate": "19 Feb 2015",
+      "nextUpdate": "19 Mar 2015"
     },
     {
       "name": "CPI: Consumer Prices Index",
-      "uri": "/economy/inflationandpriceindices/timeseries/d7bt"
-    },
-    {
-      "name": "RPI: Retail Price Index",
-      "uri": "/economy/inflationandpriceindices/timeseries/chaw"
-    },
-    {
-      "name": "CPIH",
-      "uri": "/economy/inflationandpriceindices/timeseries/l522"
-    },
-    {
-      "name": "RPIJ",
-      "uri": "/economy/inflationandpriceindices/timeseries/kvr8"
-    },
-    {
-      "name": "Output of manufactured product",
-      "uri": "/economy/inflationandpriceindices/timeseries/jvz7"
-    },
-    {
-      "name": "Input of all manufacturing",
-      "uri": "/economy/inflationandpriceindices/timeseries/k646"
+      "uri": "/economy/inflationandpriceindices/timeseries/d7bt",
+      "figure": "128.4",
+      "unit": "index",
+      "period": "February 2015",
+      "lastUpdate": "19 Feb 2015",
+      "nextUpdate": "19 Mar 2015",
+      "description": "Index, 2005 = 100"
     }
   ],
   "statsBulletins": [
     {
-      "summary": "CPI, CPIH, RPI and RPIJ inflation price indices for June 2014 - brief description and analysis",
-      "name": "Consumer Price Inflation, June 2014",
-      "uri": "/economy/inflationandpriceindices/bulletins/consumerpriceinflationjune2014"
+      "summary": "The Consumer Price Inflation is a monthly release that contains percentage changes and weights for the CPI, CPIH, RPI and RPIJ.",
+      "name": "Consumer Price Inflation, February 2015",
+      "uri": "/economy/inflationandpriceindices/bulletins/consumeconsumerpriceinflationfebruary2015"
+    },
+    {
+      "summary": "The ONS House Price Index (HPI) is a monthly release that publishes figures for mix-adjusted average house prices",
+      "name": "House Price Index: February 2015",
+      "uri": "/economy/inflationandpriceindices/bulletins/housepriceindexfebruary2015"
+    },
+    {
+      "summary": "A first estimate of retail sales in volume and value terms, seasonally and non-seasonally adjusted.",
+      "name": "Retails Sales: February 2015",
+      "uri": "/economy/inflationandpriceindices/bulletins/retailsalefebruary2015"
+    }
+  ],
+  "articles": [
+    {
+      "summary": "A comprehensive review on the UK economy, including the latest GDP estimate and other statistical outputs of ONS.",
+      "name": "Economic review: January 2015",
+      "uri": "/economy/inflationandpriceindices/articles/economicreviewjanuary2015"
+    },
+    {
+      "summary": "Membership and contributions, by contracted out status, is presented for private sector defined benefit occupational schemes.",
+      "name": "Contracting out of private sector defined benefit pension schemes: 2013",
+      "uri": "/economy/inflationandpriceindices/articles/contraccontractingoutofprivatesectordefinedbenefitpensionschemes2013"
+    },
+    {
+      "summary": "Gives an overview of the cases ONS expects to decide over the next 12 months, in order of when they are expected to be completed.",
+      "name": "National accounts classifications, forward workplan: March 2015",
+      "uri": "/economy/inflationandpriceindices/articles/nationalaccountsclassificationsforwardworkplanmarch2015"
     }
   ],
   "datasets": [
