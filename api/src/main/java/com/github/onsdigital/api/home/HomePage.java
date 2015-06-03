@@ -6,12 +6,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.github.davidcarboni.restolino.framework.Home;
+import com.github.onsdigital.api.util.ApiErrorHandler;
+import com.github.onsdigital.request.RequestDelegator;
 
 public class HomePage implements Home {
 
     @Override
     public Object get(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        return RequestDelegator.handle(request, response);
+        try {
+            return RequestDelegator.handle(request, response);
+        } catch (Exception e) {
+            ApiErrorHandler.handle(e, response);
+            return null;
+        }
     }
 
 }

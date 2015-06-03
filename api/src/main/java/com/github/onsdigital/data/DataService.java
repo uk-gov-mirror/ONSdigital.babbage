@@ -1,8 +1,6 @@
 package com.github.onsdigital.data;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.URI;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
@@ -11,11 +9,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.github.davidcarboni.ResourceUtils;
+import com.github.onsdigital.util.JsonPrettyprint;
 import com.github.onsdigital.util.Validator;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
 import org.apache.commons.io.IOUtils;
 
 import com.github.onsdigital.api.data.Data;
 import com.github.onsdigital.configuration.Configuration;
+import org.apache.commons.lang3.CharEncoding;
+import org.apache.commons.lang3.CharSet;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Centralized service to serve data. Coded as a singleton rather than a collection of static methods for testing and mocking purposes.
@@ -40,13 +46,13 @@ public class DataService {
      * @return
      * @throws IOException
      */
-    public String getDataAsString(String uri) throws IOException {
+    public String getDataAsString(String uri, boolean pretty) throws IOException {
         InputStream stream = getDataStream(uri);
         if (stream == null) {
             return "";
         }
-        try (InputStreamReader reader = new InputStreamReader(stream)) {
-            return IOUtils.toString(reader);
+        try (InputStreamReader reader = new InputStreamReader(stream, CharEncoding.UTF_8)) {
+            return readJson(reader, pretty);
         }
     }
 
@@ -59,7 +65,7 @@ public class DataService {
             throws IOException {
         ArrayList<String> data = new ArrayList<String>();
         for (String uri : uriList) {
-            String dataString = getDataAsString(uri);
+            String dataString = getDataAsString(uri, false);
             if (dataString != null) {
                 data.add(dataString);
             }
@@ -71,8 +77,8 @@ public class DataService {
     public InputStream getDataStream(String uriString)
             throws IOException {
         // Standardise the path:
-        URI uri = URI.create(uriString);
-        String uriPath = cleanPath(uri);
+        String uriPath = cleanPath(uriString);
+        System.out.println("Reading data under uri:" + uriPath);
         Path taxonomy = FileSystems.getDefault().getPath(
                 Configuration.getTaxonomyPath());
 
@@ -89,35 +95,25 @@ public class DataService {
         throw new DataNotFoundException(uriPath);
     }
 
-    /**
-     * @param uri The URI to get a standardised path from.
-     * @return The URI path, lowercased, without the endpoint name or trailing
-     * slash.
-     */
-    public String cleanPath(URI uri) {
+    //Remove leading slash
+    private String cleanPath(String uri) {
+        return StringUtils.removeStart(uri, "/");
+    }
 
-        // It would be nice to use StringBuilder,
-        // but it doesn't have the manipulation methods we need
-        String result = uri.getPath();
 
-        // Remove endpoint name:
-        String endpointName = "/" + Data.class.getSimpleName().toLowerCase();
-        if (result.startsWith(endpointName)) {
-            result = result.substring(endpointName.length());
+    private String readJson(InputStreamReader reader, boolean pretty) throws IOException {
+        StringWriter out = new StringWriter();
+
+        JsonReader jsonReader = new JsonReader(reader);
+        JsonWriter jsonWriter = new JsonWriter(out);
+        if (pretty) {
+            jsonWriter.setIndent("    ");
         }
 
-        // Remove slashes:
-        if (result.startsWith("/")) {
-            result = result.substring(1);
-        }
-        if (result.endsWith("/")) {
-            result = result.substring(0, result.length() - 1);
-        }
-
-        // Lowercase
-        result = result.toLowerCase();
-
-        return result;
+        JsonPrettyprint.prettyprint(jsonReader, jsonWriter);
+        jsonReader.close();
+        jsonWriter.close();
+        return out.toString();
     }
 
 

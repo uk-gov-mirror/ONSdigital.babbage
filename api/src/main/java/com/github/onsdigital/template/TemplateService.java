@@ -23,9 +23,10 @@ public class TemplateService {
     }
 
     public String renderPage(String data) throws IOException {
-        JsonObject object =  new JsonParser().parse(data).getAsJsonObject();
-        String contentType = object.get("type").getAsString();
-        return templateRenderer.renderTemplate(contentType,data);
+        JsonObject object = new JsonParser().parse(data).getAsJsonObject();
+        String contentType = object.get("level").getAsString();
+        System.out.println("Page rendering requested for content type: " + contentType);
+        return templateRenderer.renderTemplate(contentType, data);
     }
 
 }

@@ -1,8 +1,10 @@
-package com.github.onsdigital.errors;
+package com.github.onsdigital.error.handler;
 
 import com.github.davidcarboni.ResourceUtils;
 import com.github.davidcarboni.restolino.framework.Api;
 import com.github.davidcarboni.restolino.framework.NotFound;
+import com.github.onsdigital.api.util.ApiErrorHandler;
+import com.github.onsdigital.request.RequestDelegator;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,7 +20,7 @@ public class Error404 implements NotFound {
 	}
 
 	@Override
-	public Object handle(HttpServletRequest req, HttpServletResponse res) throws IOException {
+	public Object handle(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
 		// Ensure ResourceUtils "sees" the reloadable classloader in
 		// development:
@@ -28,9 +30,14 @@ public class Error404 implements NotFound {
 //			res.setCharacterEncoding("UTF8");
 //			IOUtils.copy(input, res.getWriter());
 //		}
-		
-		res.sendRedirect("/#!/404");
-		return null;
+
+		try {
+			return RequestDelegator.handle(request, response);
+		} catch (Exception e) {
+			ApiErrorHandler.handle(e, response);
+			return null;
+		}
+
 	}
 
 }
