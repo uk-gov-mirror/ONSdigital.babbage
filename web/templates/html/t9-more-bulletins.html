@@ -258,18 +258,21 @@
         <div class="grid-wrap panel--mar">
             <div class="grid-col desktop-grid-one-third">
                 <article class="box box--padded sectioned">
-					<header class="box__header">
-						<h3>Refine results</h3>
-					</header>
-					<div class="box__content">
-						<p>
-                            You can also expand these results to include the following:
-                        </p>
-                        <input type="checkbox" name="checkbox" value="1" checked>
-                        <label for="checkbox">
-                                Show all releases over time
-                        </label>
-					</div>
+                    <form id="filters">
+                        <div class="panel panel--bottom-pad panel--separated--bottom flush">
+                            <h3 class="flush float-left">Refine results</h3>
+                            <button type="reset" value="Reset" class="btn btn--primary btn--small btn--thin btn--narrow float-right">Clear</button>
+                        </div>
+    					<div class="box__content">
+    						<p>
+                                You can also expand these results to include the following:
+                            </p>
+                            <input type="checkbox" name="checkbox" value="1" checked>
+                            <label for="checkbox">
+                                    Show all releases over time
+                            </label>
+    					</div>
+                    </form>
 				</article><!-- /box box--padded sectioned -->
                 <article class="box box--purple box--purple--separated--left">
                     <div class="box__inner border box--padded">
