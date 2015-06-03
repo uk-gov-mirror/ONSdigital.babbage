@@ -238,58 +238,61 @@
 			<div class="grid-wrap">
 				<div class="grid-col desktop-grid-one-third">
 					<article class="box box--padded sectioned">
-						<header class="box__header">
-							<h3 class="flush panel panel--separated--bottom">Refine results</h3>
-						</header>
-						<div class="box__content">
-							<p class="panel panel--separated--bottom">Content types to show</p>
-							<ul class="list--neutral">
-								<li>
-									<input type="checkbox" name="checkbox-statsbulletin" value="1" checked>
-										<label for="checkbox-statsbulletin">
-											Statistical bulletin
-										</label>
-								</li>
-								<li>
-									<input type="checkbox" name="checkbox-article" value="1" checked>
-										<label for="checkbox-article">
-											Article
-										</label>
-								</li>
-								<li>
-									<input type="checkbox" name="checkbox-dataset" value="1" checked>
-										<label for="checkbox-dataset">
-											Dataset
-										</label>
-								</li>
-								<li>
-									<input type="checkbox" name="checkbox-methodology" value="1" checked>
-										<label for="checkbox-methodology">
-											Methodology
-										</label>
-								</li>
-								<li>
-									<input type="checkbox" name="checkbox-timeseries" value="1" checked>
-										<label for="checkbox-timeseries">
-											Time series and data slices
-										</label>
-								</li>
-							</ul>
-							<p class="panel--mar-small">You can also expand your search results to include the following:</p>
-							<div>
-								<input type="checkbox" name="checkbox" value="1">
-	                        	<label for="checkbox">
-	                                Include all induvidual time series data and data slices (currently max 5 shown by default)
-	                        	</label>
-							</div>
-							<div>
-								<input type="checkbox" name="checkbox" value="1">
-	                        	<label for="checkbox">
-	                                Include all induvidual time series data and data slices (currently max 5 shown by default)
-	                        	</label>
-							</div>
-						</div>
+                        <form id="fitlers">
+                            <div class="panel panel--bottom-pad panel--separated--bottom flush">
+                                <h3 class="flush float-left">Refine results</h3>
+                                <button type="reset" value="Reset" class="btn btn--primary btn--small btn--thin btn--narrow float-right">Clear</button>
+                            </div>
+    						<div class="box__content">
+    							<p class="panel panel--separated--bottom">Content types to show</p>
+    							<ul class="list--neutral">
+    								<li>
+    									<input type="checkbox" name="checkbox-statsbulletin" value="1" checked>
+    										<label for="checkbox-statsbulletin">
+    											Statistical bulletin
+    										</label>
+    								</li>
+    								<li>
+    									<input type="checkbox" name="checkbox-article" value="1" checked>
+    										<label for="checkbox-article">
+    											Article
+    										</label>
+    								</li>
+    								<li>
+    									<input type="checkbox" name="checkbox-dataset" value="1" checked>
+    										<label for="checkbox-dataset">
+    											Dataset
+    										</label>
+    								</li>
+    								<li>
+    									<input type="checkbox" name="checkbox-methodology" value="1" checked>
+    										<label for="checkbox-methodology">
+    											Methodology
+    										</label>
+    								</li>
+    								<li>
+    									<input type="checkbox" name="checkbox-timeseries" value="1" checked>
+    										<label for="checkbox-timeseries">
+    											Time series and data slices
+    										</label>
+    								</li>
+    							</ul>
+    							<p class="panel--mar-small">You can also expand your search results to include the following:</p>
+    							<div>
+    								<input type="checkbox" name="checkbox" value="1">
+    	                        	<label for="checkbox">
+    	                                Include all induvidual time series data and data slices (currently max 5 shown by default)
+    	                        	</label>
+    							</div>
+    							<div>
+    								<input type="checkbox" name="checkbox" value="1">
+    	                        	<label for="checkbox">
+    	                                Include all induvidual time series data and data slices (currently max 5 shown by default)
+    	                        	</label>
+    							</div>
+    						</div>
 						<!-- /box__content -->
+                        </form>
 					</article>
 					<!-- /box 'refine results' -->
 					<article class="box box--purple box--purple--separated--left">
