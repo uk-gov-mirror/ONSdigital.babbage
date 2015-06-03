@@ -9,7 +9,7 @@
     <!--<![endif]-->
     <head>
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-        <title>T4</title>
+        <title>T4.1</title>
         <meta charset="utf-8" />
         <meta content="width=device-width,initial-scale=1.0" name="viewport" />
         <meta content="on" http-equiv="cleartype" />
@@ -236,40 +236,32 @@
                         Consumer Price Inflation, June 2014
                     </li>
                 </ol>
-                <!-- /Wrapper panel -->
-            </div>
-            <div class="wrapper">
                 <p class="page-header__title page-header--stat-bulletin-desc">
                     <strong>Statistical bulletin</strong>
                 </p>
                 <h1 class="page-header__title flush--half--bottom">Consumer Price Inflation, June 2014</h1>
                 <div class="grid-wrap">
                     <p class="grid-col tablet-grid-one-quarter page-header__meta-block-with-img">
-                        <img src="http://alpha.ons.gov.uk/ui/img/national-statistics.png" alt="" />Contact:<br/>Katherine Pegler
+                        <img src="http://alpha.ons.gov.uk/ui/img/national-statistics.png" alt="" />
+                        <span>Contact: </span><br/>Katherine Pegler
                     </p>
                     <p class="grid-col tablet-grid-one-quarter divider--border-left">
-                        Release date:<br/>19 Feb 2014<br/><a href="#">previous versions</a>
+                        <span>Release date: </span><br/>19 Feb 2014<br/><a href="#">previous versions</a>
                     </p>
                     <p class="grid-col tablet-grid-one-quarter divider--border-left">
-                        Next release:<br/>19 Mar 2014
+                        <span>Next release: </span><br/>19 Mar 2014
                     </p>
                     <div class="grid-col tablet-grid-one-quarter divider--border-left page-header__meta-block-with-ul">
                         <ul class="list--neutral">
                             <li>
                                 <span class="icon icon-print icon--blue-alt">
-                                    <span class="visuallyhidden">Print</span>&nbsp;Print summary
-                                    <ons-help-tooltip tip="This link will not be available on the prototype, however in the future you will be able to print the summary section of the statistical bulletin"></ons-help-tooltip>
-                                </span>
-                            </li>
-                            <li>
-                                <span class="icon icon-print icon--blue-alt">
-                                    <span class="visuallyhidden">Print full report</span>&nbsp;Print full report
+                                    <span class="visuallyhidden">Print full report</span>&nbsp;Print full report (38 pages)
                                     <ons-help-tooltip tip="This link will not be available on the prototype, however in the future you will be able to print the full report"></ons-help-tooltip>
                                 </span>
                             </li>
                             <li>
                                 <span class="icon icon-download icon--blue-alt">
-                                    <span class="visuallyhidden">Download PDF</span>&nbsp;Download PDF
+                                    <span class="visuallyhidden">Download PDF</span>&nbsp;Download PDF (95KB)
                                 </span>
                             </li>
                         </ul>
@@ -388,32 +380,38 @@
 
                     </article>
 
-                    <div class="[accordionItem]">
-                        <!-- box__header -->
-                        <header class="[box__header__acc]">
-                            <h3 class="">Background notes and methodology
-                            </h3>
-                            <span class="icon-up-open-big"></span>
-                            <!-- /box__header -->
-                        </header>
-                        <p>
-                            <a href="#">Quality and Methodology Information (QMI)</a>
-                        </p>
-                        <p>
-                            <a href="#">Impact of rebasing the Consumer Price Index to 2010=100</a>
-                        </p>
-                        <p>  <a href="#">Consumer Price Index and Retail Price Index methodology</a></p>
+                    <!-- Accordian -->
+                    <div class"panel--mar">
+                        <div class="accordion is-expanded">
+    						<h2 id="sc-1" class="accordion__title" aria-controls="content-1">Background notes and methodology</h2>
+    						<div id="content-1" class="accordion__content" aria-labelledby="sc-1">
+    							<ul class="list--neutral">
+    								<li>
+                                        <a>Quality and Methodology Information (QMI)</a>
+    								</li>
+                                    <li>
+                                        <a>Impact of rebasing the Consumer Price Index to 2010=100</a>
+    								</li>
+                                    <li>
+                                        <a>Consumer Price Index and Retail Price Index methodology</a>
+    								</li>
+    							</ul>
+    						</div>
+    					</div>
+                        <div class="accordion is-collapsed panel--bottom-mar">
+    						<h2 id="sc-1" class="accordion__title" aria-controls="content-1">Footnotes</h2>
+    						<div id="content-1" class="accordion__content" aria-labelledby="sc-1">
+    							<ul class="list--neutral">
+    								<li>
+    									<p>
+                                            Some footnotes here.
+    									</p>
+    								</li>
+    							</ul>
+    						</div>
+    					</div>
                     </div>
-                    <div class="[accordionItem]">
-                        <!-- box__header -->
-                        <header class="[box__header__acc]">
-                            <h3 class="">Footnotes
-                            </h3>
-                            <span class="icon-down-open-big"></span>
-                            <!-- /box__header -->
-                        </header>
-                    </div>
-
+                    <!-- /Accordian -->
                 </div>
                 <!-- Sidebar -->
                 <div class="grid-col desktop-grid-one-third tablet-grid-full-width">
@@ -462,61 +460,31 @@
                 <div class="grid-col desktop-grid-two-thirds tablet-grid-full-width">
                     <article class="box box--blue box--blue--separated--left">
                         <div class="box__inner border box--padded">
-                            <div class="box__section">
-                                <header class="box__header">
-                                    <h3>Related bulletins</h3>
-                                </header>
-                                <!-- Dynamic: -->
-                                <div class="grid-wrap" >
-                                    <article class="box--padded" class="grid-col desktop-grid-one-third tablet-grid-one-half">
-                                        <header class="box__header">
-                                            <h3>
-                                            <a href="#">Producer Price Inflation, January 2014</a>
-                                            </h3>
-                                        </header>
-                                        <div class="box__content">
-                                            <ul class="list--table">
-                                                <li>
-                                                    The Consumer Price Inflation is a monthly release that contains percentage
-                                                    changes and weights for the CPI, CPIH, RPI and RPIJ.
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </article>
-                                </div>
-                                <!-- or placeholder: -->
-                                <div class="grid-wrap" >
-                                    <article class="box--padded">
-                                        <header class="box__header">
-                                            <h3>
-                                            <a href="#!/alpha">Prototype version</a>
-                                            </h3>
-                                        </header>
-                                        <div class="box__content">
-                                            <ul class="list--table">
-                                                <li class="">In the future this box will display links to other statistical bulletins that are relevant to this bulletin.</li>
-                                            </ul>
-                                        </div>
-                                    </article>
-                                </div>
-                            </div>
-                            <!-- /box__content -->
+                            <h3>Related bulletins</h3>
+                            <ul class="list--neutral">
+                                <li>
+                                    <h3 class="flush--bottom">
+                                    <a href="#">Producer Price Inflation, January 2014</a>
+                                    </h3>
+
+                                    <p>The Consumer Price Inflation is a monthly release that contains percentage changes and weights for the CPI, CPIH, RPI and RPIJ.
+                                </li>
+                                <li>
+                                    <h3 class="flush--bottom">
+                                    <a href="#">Prototype version</a>
+                                    </h3>
+                                    <p>In the future this box will display links to other statistical bulletins that are relevant to this bulletin.</p>
+                                </li>
+                            </ul>
                         </div>
-                        <!-- /box__actions -->
                     </article>
             </div>
             <div class="grid-col desktop-grid-one-third tablet-grid-full-width">
                 <!-- article__content -->
                 <article class="box box--orange box--orange--separated-left">
                     <div class="box__inner border box--padded ">
-                        <header class="box__header">
-                            <h3><a href="#!/localstats">Looking for local statistics?</a></h3>
-                        </header>
-                        <!-- /box__header -->
-                        <div class="box__content">
-                            <p>A handy guide to let you know where to find local statistics.</p>
-                        </div>
-                        <!-- /box__content -->
+                        <h3 class="flush--bottom"><a href="">Looking for local statistics?</a></h3>
+                        <p>A handy guide to let you know where to find local statistics.</p>
                     </div>
                 </article>
             </div>
