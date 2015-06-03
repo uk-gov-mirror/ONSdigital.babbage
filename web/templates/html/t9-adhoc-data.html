@@ -216,25 +216,25 @@
 		  </div>
 		</nav>
 		<!-- / nav -->
-	  <div class="wrapper panel--top-mar">
-			  <ol class="nav nav--heavy breadcrumb mini flush--half--top">
-			    <li>
-			      <a href="#">Home</a>
-			    </li>
-			    <li>
-			      <a href="#">Economy</a>
-			    </li>
-			    <li class="nav__active">
-			     National accounts
-			    </li>
-			  </ol>
-			<!-- / breadcrumb -->
+	<div class="wrapper panel--top-mar">
+		<ol class="nav nav--heavy breadcrumb mini flush--half--top">
+			<li>
+			    <a href="#">Home</a>
+			</li>
+			<li>
+			    <a href="#">Economy</a>
+			</li>
+			<li class="nav__active">
+			    National accounts
+			</li>
+		</ol>
+		<!-- / breadcrumb -->
 
-            <h1 class="page-header__title flush--half--bottom">User requested data</h1>
-			<p>
-				<span class="lede">42</span> results for user requested data related to the economy.
-			</p>
-	  </div>
+        <h1 class="page-header__title flush--half--bottom">User requested data</h1>
+		<p>
+			<span class="lede">42</span> results for user requested data related to the economy.
+		</p>
+	</div>
 		<!-- / wrapper -->
 		<div class="wrapper panel--mar ">
 			<div class="grid-wrap">
@@ -251,35 +251,38 @@
 			<div class="grid-wrap">
 				<div class="grid-col desktop-grid-one-third">
 					<article class="box box--padded lifted sectioned">
-						<header class="box__header">
-							<h3 class="flush panel panel--separated--bottom">Refine results</h3>
-						</header>
-						<div class="box__content">
-							<label class="field flush field--spaced field--text">
-								<p class="panel panel--separated--bottom">Contains</p>
-								<input class="input input--med" type="text" placeholder="Keywords">
-							</label>
-							<label class="field field--spaced field--text">
-								<p class="panel panel--separated--bottom">Release date</p>
-								<p class="flush">Published after</p>
-								<input class="input input--med" type="text" placeholder="eg 01/01/2015">
-								<p class="flush">Published after</p>
-								<input class="input input--med" type="text" placeholder="eg 01/02/2015">
-							</label>
-							<div class="panel panel--separated--bottom">
-								<label for="select">Topics</label>
-							</div>
-							<div class="field field--spaced">
-								<select class="input input--mini" id="select" name="Topics">
-							    <option value="1" selected>All</option>
-							    <option value="2">Business, industry and trade</option>
-							    <option value="3">Economy</option>
-							    <option value="4">Employment and labour market</option>
-							    <option value="5">People, population and community</option>
-							  </select>
-							</div>
-							<!-- /field drop-down -->
-						</div>
+                        <form id="filters">
+                            <div class="panel panel--bottom-pad panel--separated--bottom flush">
+    							<h3 class="flush float-left">Refine results</h3>
+                                <button type="reset" value="Reset" class="btn btn--primary btn--small btn--thin btn--narrow float-right">Clear</button>
+                            </div>
+    						<div class="box__content">
+    							<label class="field flush field--spaced field--text">
+    								<p class="panel panel--separated--bottom">Contains</p>
+    								<input class="input input--med" type="text" placeholder="Keywords">
+    							</label>
+    							<label class="field field--spaced field--text">
+    								<p class="panel panel--separated--bottom">Release date</p>
+    								<p class="flush">Published after</p>
+    								<input class="input input--med" type="text" placeholder="eg 01/01/2015">
+    								<p class="flush">Published after</p>
+    								<input class="input input--med" type="text" placeholder="eg 01/02/2015">
+    							</label>
+    							<div class="panel panel--separated--bottom">
+    								<label for="select">Topics</label>
+    							</div>
+    							<div class="field field--spaced">
+    								<select class="input input--mini" id="select" name="Topics">
+    							    <option value="1" selected>All</option>
+    							    <option value="2">Business, industry and trade</option>
+    							    <option value="3">Economy</option>
+    							    <option value="4">Employment and labour market</option>
+    							    <option value="5">People, population and community</option>
+    							  </select>
+    							</div>
+    							<!-- /field drop-down -->
+    						</div>
+                        </form>
 						<!-- /box__content -->
 					</article>
 					<!-- /box 'refine results' -->
