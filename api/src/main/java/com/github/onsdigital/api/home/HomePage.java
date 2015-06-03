@@ -13,11 +13,11 @@ public class HomePage implements Home {
 
     @Override
     public Object get(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        //TODO:Dlete HomePage ( no longer needed, not found delegates urls to handlers)
         try {
             return RequestDelegator.handle(request, response);
         } catch (Exception e) {
-            return ApiErrorHandler.handle(e, response);
+            ApiErrorHandler.handle(e, response);
+            return null;
         }
     }
 

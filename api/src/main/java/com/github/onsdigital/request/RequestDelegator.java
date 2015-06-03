@@ -2,6 +2,7 @@ package com.github.onsdigital.request;
 
 import com.github.onsdigital.api.util.URIUtil;
 import com.github.onsdigital.request.handler.base.RequestHandler;
+import org.apache.commons.lang3.StringUtils;
 import org.reflections.Reflections;
 import org.reflections.util.ConfigurationBuilder;
 
@@ -24,7 +25,6 @@ public class RequestDelegator {
 
     private static Map<String, RequestHandler> handlers = new HashMap<String, RequestHandler>();
 
-
     //Find request handlers and register
     static {
         registerRequestHandlers();
@@ -32,17 +32,22 @@ public class RequestDelegator {
 
     public static Object handle(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-        RequestHandler handler = resolveRequestHandler(request.getRequestURI());
-        return handler.handle(URIUtil.resolveResouceUri(request.getRequestURI()), request, response);
+        String fullUri = URIUtil.cleanUri(request.getRequestURI());
+        String requestType = URIUtil.resolveRequestType(fullUri);
+        RequestHandler handler = resolveRequestHandler(requestType);
+        if (handler == null) {
+            handler = handlers.get("/"); //default handler
+            return handler.handle(fullUri, request, response);
+        } else {
+            return handler.handle(URIUtil.resolveResouceUri(fullUri), request, response);
+        }
+
+
     }
 
     //Resolves Request handler to be used for requested uri
-    static RequestHandler resolveRequestHandler(String requestedUri) {
-        String requestType = URIUtil.resolveRequestType(requestedUri);
+    static RequestHandler resolveRequestHandler(String requestType) {
         RequestHandler handler = handlers.get(requestType);
-        if (handler == null) { //If handler not registered for request type use / handler
-            handler = handlers.get("/");
-        }
         return handler;
     }
 

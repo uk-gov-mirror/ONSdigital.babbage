@@ -77,7 +77,7 @@ public class URIUtil {
     }
 
 
-    private static void validate(String uriString) {
+    public static void validate(String uriString) {
         uriString = StringUtils.defaultIfBlank(uriString, "/");
         try {
             Matcher matcher = uriPattern.matcher(uriString);
@@ -92,7 +92,7 @@ public class URIUtil {
     }
 
     //Remove trailing slash if any and make lowercase
-    private static String cleanUri(String uriString) {
+    public static String cleanUri(String uriString) {
         uriString = StringUtils.trim(StringUtils.defaultIfBlank(uriString, "/"));
         if ("/".equals(uriString)) {
             return uriString;

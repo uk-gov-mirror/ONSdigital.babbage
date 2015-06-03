@@ -1,4 +1,4 @@
-package com.github.onsdigital.zebedee;
+package com.github.onsdigital.data.zebedee;
 
 /**
  * Created by bren on 01/06/15.

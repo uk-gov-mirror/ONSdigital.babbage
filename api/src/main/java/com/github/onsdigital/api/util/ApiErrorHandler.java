@@ -1,9 +1,12 @@
 package com.github.onsdigital.api.util;
 
+import com.github.davidcarboni.restolino.json.Serialiser;
 import com.github.onsdigital.data.DataNotFoundException;
 import com.github.onsdigital.error.ResourceNotFoundException;
+import org.apache.commons.io.IOUtils;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,7 +17,7 @@ import java.util.Map;
  */
 public class ApiErrorHandler {
 
-    public static Map<String, String> handle(Exception e, HttpServletResponse response) {
+    public static void handle(Exception e, HttpServletResponse response) throws IOException {
 
         logError(e);
         Map<String, String> errorResponse = new HashMap<String, String>();
@@ -28,8 +31,7 @@ public class ApiErrorHandler {
             errorResponse.put("message", "Internal Server Error Occurred!");
             errorResponse.put("status", String.valueOf(HttpServletResponse.SC_INTERNAL_SERVER_ERROR));
         }
-
-        return errorResponse;
+        Serialiser.serialise(response, errorResponse);
     }
 
     private static void logError(Exception e) {

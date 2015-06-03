@@ -21,7 +21,8 @@ public class Data {
         try {
             return new DataRequestHandler().handle(URIUtil.removeEndpoint(request.getRequestURI()), request, response);
         } catch (Exception e) {
-            return ApiErrorHandler.handle(e, response);
+            ApiErrorHandler.handle(e, response);
+            return null;
         }
     }
 

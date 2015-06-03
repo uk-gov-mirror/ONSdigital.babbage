@@ -13,7 +13,7 @@ public class URIUtilTest {
     private void testInvalidUri(String uriString) {
         // this catch block should be as small as possible, as you want to make sure you only catch exceptions from your code
         try {
-            URIUtil.resolveRequestType(uriString);
+            URIUtil.validate(uriString);
             fail("Resolving request type should have failed for" + uriString);
         } catch (URIUtil.InvalidUriException e) { //Expected exception
             return;
@@ -22,14 +22,24 @@ public class URIUtilTest {
 
 
     @Test
-    public void testInvalidUris() {
+    public void testValidate() {
         testInvalidUri("/////");
         testInvalidUri("//data/economy"); //Multiple slashes should fail
         testInvalidUri("/data//economy"); //Multiple slashes should fail
         testInvalidUri("data/economy/"); //Missing leading slash should fail
-        testInvalidUri("/data/economy?a=b"); //Multiple slashes should fail
-        testInvalidUri("/data/economy?a=b&c=d"); //Multiple slashes should fail
+
+        validate("/data/economy");
+        validate("/Data/economy");
+        validate("/DATA/ECONOMY");
     }
+
+    @Test
+    public void testCleanUri() {
+
+        assertEquals("/data/inflation", cleanUri("/DATA/INFLATION/"));//Clean trailing slash and lowercase
+        assertEquals("/a/b/c", cleanUri("/A/b/c")); //);//Clean trailing slash and lowercase
+    }
+
 
     @Test
     public void testResolveRequestType() {
@@ -55,6 +65,5 @@ public class URIUtilTest {
         assertEquals("/inflationpriceindices", removeEndpoint("/economy/inflationpriceindices"));
         assertEquals("/b/a/s", removeEndpoint("/a/b/a/s/"));
     }
-
 
 }

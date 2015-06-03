@@ -1,7 +1,6 @@
-package com.github.onsdigital.zebedee;
+package com.github.onsdigital.data.zebedee;
 
 import com.github.onsdigital.configuration.Configuration;
-import com.github.onsdigital.error.ResourceNotFoundException;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -38,7 +37,12 @@ public class ZebedeeClient {
             openConnection();
         }
 
-        String uriPath = request.getUri() + "/data.json";
+        String uriPath;
+        if ("/".equals(request.getUri())) {
+            uriPath = request.getUri() + "data.json";
+        } else {
+            uriPath = request.getUri() + "/data.json";
+        }
 
         InputStream data = null;
         String url = Configuration.getZebedeeUrl() + "/content/" + request.getCollectionName();
