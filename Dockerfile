@@ -21,9 +21,9 @@ RUN git clone https://github.com/ONSdigital/babbage.git
 WORKDIR babbage
 RUN git checkout develop
 
-# Pre-download dependencies:
+# Build the jar-with-dependencies:
 
-RUN mvn install
+RUN mvn install -DskipTests
 
 # Expose port
 
