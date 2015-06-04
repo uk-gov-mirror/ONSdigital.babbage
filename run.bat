@@ -2,10 +2,8 @@ REM #!/bin/bash
 
 set JAVA_OPTS="-Xdebug -Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=n"
 
-cd api
-
 rem # Restolino configuration
-set RESTOLINO_STATIC="../web"
+set RESTOLINO_STATIC="src/main/web"
 set RESTOLINO_CLASSES="target/classes"
 set PACKAGE_PREFIX=com.github.onsdigital
 

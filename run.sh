@@ -2,14 +2,12 @@
 
 ### 1 - BUILD WEB FRONT-END
 
-# cd web && \
+# cd src/main/web && \
 # build.sh && \
-# cd ..
+# cd ../../..
 
 ## 2 - BUILD API
-cd api && \
-./build.sh && \
-cd ..
+./build.sh
 
 ### 3 - START SERVER
 
@@ -21,8 +19,8 @@ export JAVA_OPTS="-Xdebug -Xrunjdwp:transport=dt_socket,address=8000,server=y,su
 #export TAXONOMY_DIR=api/target/taxonomy
 
 # Restolino configuration
-export RESTOLINO_STATIC="web"
-export RESTOLINO_CLASSES="api/target/classes"
+export RESTOLINO_STATIC="src/main/web"
+export RESTOLINO_CLASSES="target/classes"
 export PACKAGE_PREFIX=com.github.onsdigital
 
 # For testing out HTTP basic auth
@@ -48,7 +46,7 @@ $JAVA_HOME/bin/java $JAVA_OPTS \
  -Drestolino.packageprefix=$PACKAGE_PREFIX \
  -Dmongo.user=$MONGO_USER \
  -Dmongo.password=$MONGO_PASSWORD \
- -cp "api/target/dependency/*" \
+ -cp "target/dependency/*" \
  com.github.davidcarboni.restolino.Main
 
 # Production: non-reloadable

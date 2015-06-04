@@ -9,10 +9,8 @@ rem ###For more info: https://github.com/jknack/handlebars.java#the-handlebarsja
 
 rem #1- Download Handlebars java server using maven without compiling the code (Actually downloads all dependencies :) )
 
-cd api && ^
 mvn dependency:copy-dependencies && ^
-cd .. && ^
 java ^
  -jar handlebars-proto/handlebars-proto-2.1.0.jar ^
- -dir web ^
+ -dir src/main/web ^
  -suffix .handlebars^

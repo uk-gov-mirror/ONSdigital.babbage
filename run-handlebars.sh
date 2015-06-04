@@ -9,14 +9,12 @@
 
 #1- Download Handlebars java server using maven without compiling the code (Actually downloads all dependencies :) )
 
-cd api && \
-mvn dependency:copy-dependencies && \
-cd ..
+mvn dependency:copy-dependencies
 
 
 #2- Run the server
 
 $JAVA_HOME/bin/java $JAVA_OPTS \
  -jar handlebars-proto/handlebars-proto-2.1.0.jar \
- -dir web \
+ -dir src/main/web \
  -suffix .handlebars
