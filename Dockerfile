@@ -21,7 +21,7 @@ RUN git clone https://github.com/ONSdigital/babbage.git
 WORKDIR babbage
 RUN git checkout develop
 
-# Pne-download dependencies:
+# Pre-download dependencies:
 
 RUN mvn install
 
@@ -34,6 +34,7 @@ EXPOSE 8080
 ENV PACKAGE_PREFIX com.github.onsdigital.babbage.api
 RUN echo "#!/bin/bash" >> container.sh
 # Disabled for now: RUN echo "consul agent -data-dir /tmp/consul -config-dir /etc/consul.d -join=dockerhost &" > container.sh
+RUN echo `pwd`
 RUN echo "java -Drestolino.packageprefix=$PACKAGE_PREFIX -jar target/*-jar-with-dependencies.jar" >> container.sh
 RUN chmod u+x container.sh
 
