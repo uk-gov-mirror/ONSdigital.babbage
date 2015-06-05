@@ -10,15 +10,12 @@
 	<div class="wrapper">
 		<p>Add breadcrumb partial</p>
 	  <p class="page-header__title">
-			<strong>User requested data</strong>
+			<strong>Freedom of information (FOI)</strong>
 		</p>
 		<h1 class="page-header__title flush--half--bottom">{{name}}</h1>
 		<div class="grid-wrap">
 			<p class="grid-col tablet-grid-one-quarter">
 				<span>Release date: </span><br/>{{releaseDate}}
-			</p>
-			<p class="grid-col tablet-grid-one-quarter divider--border-left">
-				<span>Reference number: </span><br/>{{ref}}
 			</p>
 		</div>
 		<p>Add social icons partial</p>
@@ -30,21 +27,23 @@
 		<div class="grid-col desktop-grid-two-thirds">
 			<h2>Summary of request</h2>
 			<p>
-				{{summary}}
+				{{requestSummary}}
 			</p>
-			<h2>Data provided for request</h2>
-			<p><a href="{{download.uri}}">{{name}}</a></p>
+			<h2>Summary of response</h2>
+			<p>
+				{{responseSummary}}
+			</p>
 		</div>
 		<!-- /desktop-grid-two-thirds -->
 		<div class="grid-col desktop-grid-one-third">
 			<article class="box solid box--purple--separated--left">
 				<div class="box__inner border box--padded">
 					<h3 class="box__section__header">
-							Data provided for request
+							Making an FOI request
 					</h3>
 					<!-- /box__header -->
 					<div class="box__content">
-						<a href="{{download.uri}}">{{download.title}}</a> ({{download.size}} {{download.format}})
+						<a href="#">Everything you need to know about Freedom of Information and how to go about making a request.</a>
 					</div>
 					<!-- /box__content -->
 				</div>
