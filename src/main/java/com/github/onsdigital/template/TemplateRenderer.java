@@ -7,6 +7,6 @@ import java.io.IOException;
  */
 public interface TemplateRenderer {
 
-    public String renderTemplate(String templateName, String data) throws IOException;
+    public String renderTemplate(String templateName, Object data) throws IOException;
 
 }

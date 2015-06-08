@@ -1,5 +1,7 @@
 package com.github.onsdigital.template;
 
+import com.github.onsdigital.content.base.Content;
+import com.github.onsdigital.content.base.ContentType;
 import com.github.onsdigital.template.handlebars.HandlebarsRenderer;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -24,9 +26,9 @@ public class TemplateService {
 
     public String renderPage(String data) throws IOException {
         JsonObject object = new JsonParser().parse(data).getAsJsonObject();
-        String contentType = object.get("level").getAsString();
+        String contentType = object.get("type").getAsString();
         System.out.println("Page rendering requested for content type: " + contentType);
-        return templateRenderer.renderTemplate(contentType, data);
+        return templateRenderer.renderTemplate(TemplateMapping.getTemplateName(ContentType.valueOf(contentType)) , object);
     }
 
 }

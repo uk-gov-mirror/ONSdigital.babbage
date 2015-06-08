@@ -5,6 +5,7 @@ import com.github.jknack.handlebars.Template;
 import com.github.jknack.handlebars.io.FileTemplateLoader;
 import com.github.jknack.handlebars.io.TemplateSource;
 import com.github.onsdigital.configuration.Configuration;
+import com.github.onsdigital.content.base.Content;
 import com.github.onsdigital.template.TemplateRenderer;
 
 import java.io.IOException;
@@ -22,7 +23,7 @@ public class HandlebarsRenderer implements TemplateRenderer {
     private static Map<String, Template> templatesCache = new ConcurrentHashMap<>();
 
     @Override
-    public String renderTemplate(String templateName, String data) throws IOException {
+    public String renderTemplate(String templateName, Object data) throws IOException {
         Template template = getTemplate(templateName);
         return template.apply(data);
     }
