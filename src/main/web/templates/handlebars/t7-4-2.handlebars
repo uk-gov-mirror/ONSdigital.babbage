@@ -15,7 +15,6 @@
 	<!-- /wrapper -->
 </div>
 <!-- /page-header -->
-
 <div class="wrapper panel--mar ">
 	<div class="grid-wrap">
 		<div class="grid-col desktop-grid-full-width">
@@ -58,6 +57,27 @@
 		</div>
 		<!-- /desktop-grid-one-third -->
 		{{/if}}
+		<div class="grid-col desktop-grid-two-thirds">
+			<div class="panel panel--separated--top">
+				<div class="grid-wrap">
+					<div class="grid-col desktop-grid-one-half">
+						<h3>{{more.title}}</h3>
+					</div>
+					<!-- /desktop-grid-one-half -->
+					<div class="grid-col desktop-grid-one-half">
+						<ul class="list--neutral flush">
+							{{#each more.items}}
+							<li><a href="{{uri}}">{{title}}</a></li>
+							{{/each}}
+						</ul>
+					</div>
+					<!-- /desktop-grid-one-half -->
+				</div>
+				<!-- /grid-wrap -->
+			</div>
+			<!-- /panel--separated--top -->
+		</div>
+		<!-- /desk-grid-two-thirds -->
 	</div>
 	<!-- /grid-wrap -->
 </div>

@@ -63,5 +63,10 @@
       "index": 8,
 			"description": "Net investment flows into the UK and investment abroad by UK companies."
     }
-  ]
+],
+
+"box": {
+    "title": "Call to action",
+    "content": "Other useful CTAs can appear down here. Important notices for instance"
+}
 }
