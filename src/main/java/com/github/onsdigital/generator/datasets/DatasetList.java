@@ -1,9 +1,9 @@
 package com.github.onsdigital.generator.datasets;
 
+import com.github.onsdigital.content.statistic.Dataset;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import com.github.onsdigital.json.dataset.Dataset;
 
 class DatasetList {
 

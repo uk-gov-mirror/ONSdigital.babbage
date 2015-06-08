@@ -1,5 +1,11 @@
 package com.github.onsdigital.generator.data;
 
+import au.com.bytecode.opencsv.CSVReader;
+import com.github.onsdigital.content.statistic.data.TimeSeries;
+import com.github.onsdigital.content.statistic.data.timeseries.TimeseriesValue;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -16,14 +22,6 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
-import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang3.StringUtils;
-
-import au.com.bytecode.opencsv.CSVReader;
-
-import com.github.onsdigital.json.timeseries.Timeseries;
-import com.github.onsdigital.json.timeseries.TimeseriesValue;
 
 /**
  * Handles the data CSVs under the {@value #resourceName} folder.
@@ -71,7 +69,7 @@ public class DataCSV {
 			} else {
 				name = FilenameUtils.getBaseName(file.getFileName().toString());
 			}
-			Set<Timeseries> dataset = Data.oldDataset(name);
+			Set<TimeSeries> dataset = Data.oldDataset(name);
 			if (dataset == null) {
 				dataset = Data.addOldDataset(name);
 			}
@@ -80,7 +78,7 @@ public class DataCSV {
 			// int duplicates = 0;
 			String[] header = csvReader.readNext();
 			for (int i = 1; i < header.length; i++) {
-				Timeseries timeseries = Data.timeseries(header[i]);
+				TimeSeries timeseries = Data.timeseries(header[i]);
 				if (timeseries == null) {
 					timeseries = Data.addTimeseries(header[i]);
 				}
@@ -104,7 +102,7 @@ public class DataCSV {
 				Data.addDateOption(date);
 				for (int i = 1; i < Math.min(header.length, row.length); i++) {
 					if (StringUtils.isNotBlank(header[i]) && StringUtils.isNotBlank(row[i])) {
-						Timeseries timeseries = Data.timeseries(header[i]);
+						TimeSeries timeseries = Data.timeseries(header[i]);
 						String cdid = header[i];
 						if (cdid == null) {
 							// This one was marked as a duplicate
@@ -119,11 +117,11 @@ public class DataCSV {
 						// if ("404".equals(value)) {
 						// System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 404: "
 						// + cdid + ": " + timeseriesValue + " (" +
-						// timeseries.name + ")");
+						// timeseries.title + ")");
 						// }
 
 						// Scale values if necessary:
-						if (timeseries.cdid().equalsIgnoreCase("abmi")) {
+						if (timeseries.cdid.equalsIgnoreCase("abmi")) {
 							// System.out.println("ABMI: " +
 							// timeseries.multiply());
 						}
@@ -135,7 +133,7 @@ public class DataCSV {
 			// Print out some sanity-check information:
 			for (int i = 1; i < header.length; i++) {
 				if (StringUtils.isNotBlank(header[i])) {
-					Timeseries timeseries = Data.timeseries(header[i]);
+					TimeSeries timeseries = Data.timeseries(header[i]);
 					if (timeseries.years.size() == 0 && timeseries.quarters.size() == 0 && timeseries.months.size() == 0) {
 						System.out.println(timeseries + " has no data.");
 					}
@@ -143,7 +141,7 @@ public class DataCSV {
 			}
 
 			// if (duplicates > 0) {
-			// System.out.println(name + " contains " + dataset.size() +
+			// System.out.println(title + " contains " + dataset.size() +
 			// " timeseries (" + duplicates + " duplicates)");
 			// } else {
 			System.out.println(name + " contains " + dataset.size() + " timeseries");
@@ -163,7 +161,7 @@ public class DataCSV {
 	 * @param timeseries
 	 *            The timeseries to match the scale of the value to.
 	 */
-	static void scale(TimeseriesValue timeseriesValue, Timeseries timeseries) {
+	static void scale(TimeseriesValue timeseriesValue, TimeSeries timeseries) {
 
 		// If there's no scale, do nothing:
 		if (timeseries.getScaleFactor() == 1) {

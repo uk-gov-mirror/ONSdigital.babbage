@@ -4,7 +4,7 @@ import com.github.davidcarboni.restolino.framework.Api;
 import com.github.davidcarboni.restolino.json.Serialiser;
 import com.github.onsdigital.bean.CdidRequest;
 import com.github.onsdigital.configuration.Configuration;
-import com.github.onsdigital.json.timeseries.Timeseries;
+import com.github.onsdigital.content.statistic.data.TimeSeries;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -35,28 +35,28 @@ import java.util.concurrent.ConcurrentHashMap;
 @Api
 public class Cdid {
 
-	static Map<String, Timeseries> cache = new ConcurrentHashMap<String, Timeseries>();
+static Map<String, TimeSeries> cache = new ConcurrentHashMap<String, TimeSeries>();
 
 	@POST
-	public Map<String, Timeseries> post(@Context HttpServletRequest request, @Context HttpServletResponse response, CdidRequest cdidRequest) throws IOException {
+	public Map<String, TimeSeries> post(@Context HttpServletRequest request, @Context HttpServletResponse response, CdidRequest cdidRequest) throws IOException {
 		System.out.println("Download request recieved" + cdidRequest);
 		return processRequest(cdidRequest);
 	}
 
-	private Map<String, Timeseries> processRequest(CdidRequest cdidRequest) throws IOException {
-		return getTimeseries(cdidRequest.cdids);
+	private Map<String, TimeSeries> processRequest(CdidRequest cdidRequest) throws IOException {
+		return getTimeSeries(cdidRequest.cdids);
 	}
 
-	static Map<String, Timeseries> getTimeseries(List<String> cdids) throws IOException {
-		Map<String, Timeseries> result = new HashMap<>();
+	static Map<String, TimeSeries> getTimeSeries(List<String> cdids) throws IOException {
+		Map<String, TimeSeries> result = new HashMap<>();
 
 		// Start with cache hits:
 		List<String> missing = new ArrayList<>();
 		for (String cdid : cdids) {
-			Timeseries timeseries = cache.get(cdid.toUpperCase());
-			if (timeseries != null) {
+			TimeSeries TimeSeries = cache.get(cdid.toUpperCase());
+			if (TimeSeries != null) {
 				System.out.println("Cache hit for : " + cdid);
-				result.put(timeseries.cdid(), timeseries);
+				result.put(TimeSeries.cdid, TimeSeries);
 			} else {
 				System.out.println("Cache miss for : " + cdid);
 				missing.add(cdid);
@@ -65,13 +65,13 @@ public class Cdid {
 
 		// Load any missing items:
 		if (missing.size() > 0) {
-			List<Path> timeseriesPaths = findTimeseries(missing);
-			for (Path path : timeseriesPaths) {
+			List<Path> TimeSeriesPaths = findTimeSeries(missing);
+			for (Path path : TimeSeriesPaths) {
 				try (InputStream input = Files.newInputStream(path)) {
 					System.out.println(path);
-					Timeseries timeseries = Serialiser.deserialise(input, Timeseries.class);
-					result.put(timeseries.cdid(), timeseries);
-					cache.put(timeseries.cdid(), timeseries);
+					TimeSeries TimeSeries = Serialiser.deserialise(input, TimeSeries.class);
+					result.put(TimeSeries.cdid, TimeSeries);
+					cache.put(TimeSeries.cdid, TimeSeries);
 				}
 			}
 		}
@@ -80,17 +80,17 @@ public class Cdid {
 	}
 
 	/**
-	 * Scans the taxonomy to find the requested timeseries.
+	 * Scans the taxonomy to find the requested TimeSeries.
 	 * 
 	 * @param cdids
 	 *            The list of CDIDs to find.
 	 * @return A list of paths for the given CDIDs, if found.
 	 * @throws IOException
 	 */
-	private static List<Path> findTimeseries(final List<String> cdids) throws IOException {
+	private static List<Path> findTimeSeries(final List<String> cdids) throws IOException {
 		final List<Path> result = new ArrayList<>();
 
-		Path taxonomy = FileSystems.getDefault().getPath(Configuration.getTaxonomyPath());
+		Path taxonomy = FileSystems.getDefault().getPath(Configuration.getContentPath());
 
 		/**
 		 * Finds json files inside folders that match a cdid value.

@@ -1,16 +1,15 @@
 package com.github.onsdigital.generator.markdown;
 
-import static org.junit.Assert.assertEquals;
+import com.github.onsdigital.content.statistic.document.Bulletin;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import org.junit.Before;
-import org.junit.Test;
-
-import com.github.onsdigital.json.markdown.Bulletin;
+import static org.junit.Assert.assertEquals;
 
 public class BulletinMarkdownTest {
 
@@ -18,7 +17,7 @@ public class BulletinMarkdownTest {
 
 	@Before
 	public void setup() {
-		bulletin = new Bulletin();
+		bulletin = new Bulletin(null,null,null,null);
 	}
 
 	@Test
@@ -49,9 +48,9 @@ public class BulletinMarkdownTest {
 		assertEquals(level2, bulletin.level2);
 		assertEquals(level3, bulletin.level3);
 		assertEquals(summary, bulletin.summary);
-		assertEquals(headline1, bulletin.headline1);
-		assertEquals(headline2, bulletin.headline2);
-		assertEquals(headline3, bulletin.headline3);
+		assertEquals(headline1, bulletin.headlines[0]);
+		assertEquals(headline2, bulletin.headlines[1]);
+		assertEquals(headline3, bulletin.headlines[2]);
 		assertEquals(contactName, bulletin.contact.name);
 		assertEquals(contactEmail, bulletin.contact.email);
 		assertEquals(releaseDate, bulletin.releaseDate);

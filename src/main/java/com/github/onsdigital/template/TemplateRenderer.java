@@ -1,7 +1,5 @@
 package com.github.onsdigital.template;
 
-import com.github.onsdigital.json.DataItem;
-
 import java.io.IOException;
 
 /**

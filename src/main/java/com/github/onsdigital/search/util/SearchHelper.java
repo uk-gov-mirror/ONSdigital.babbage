@@ -1,11 +1,11 @@
 package com.github.onsdigital.search.util;
 
-import java.io.IOException;
-import java.net.URI;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
+import com.github.onsdigital.content.base.ContentType;
+import com.github.onsdigital.content.statistic.data.TimeSeries;
+import com.github.onsdigital.search.ElasticSearchServer;
+import com.github.onsdigital.search.SearchService;
+import com.github.onsdigital.search.bean.AggregatedSearchResult;
+import com.github.onsdigital.search.bean.SearchResult;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.action.search.SearchRequestBuilder;
@@ -16,12 +16,11 @@ import org.elasticsearch.search.suggest.Suggest.Suggestion.Entry;
 import org.elasticsearch.search.suggest.Suggest.Suggestion.Entry.Option;
 import org.elasticsearch.search.suggest.term.TermSuggestionBuilder;
 
-import com.github.onsdigital.json.ContentType;
-import com.github.onsdigital.json.timeseries.Timeseries;
-import com.github.onsdigital.search.ElasticSearchServer;
-import com.github.onsdigital.search.SearchService;
-import com.github.onsdigital.search.bean.AggregatedSearchResult;
-import com.github.onsdigital.search.bean.SearchResult;
+import java.io.IOException;
+import java.net.URI;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 public class SearchHelper {
 
@@ -51,11 +50,11 @@ public class SearchHelper {
 	}
 
 	/**
-	 * Performs timeseries search with given cdid and returns a single result if
+	 * Performs TimeSeries search with given cdid and returns a single result if
 	 * found
 	 * 
 	 */
-	public static Timeseries searchCdid(String cdid) {
+	public static TimeSeries searchCdid(String cdid) {
 
 		cdid = cdid.toUpperCase();
 
@@ -69,12 +68,12 @@ public class SearchHelper {
 			return null;
 		}
 
-		Map<String, Object> timeSeriesProperties = result.getResults().iterator().next();
-		Timeseries timeseries = new Timeseries();
-		timeseries.setCdid((String) timeSeriesProperties.get("cdid"));
-		timeseries.name = (String) timeSeriesProperties.get("name");
-		timeseries.uri = URI.create((String) timeSeriesProperties.get("url"));
-		return timeseries;
+		Map<String, Object> TimeSeriesProperties = result.getResults().iterator().next();
+		TimeSeries TimeSeries = new TimeSeries(null,null,null,null,null);
+		TimeSeries.setCdid((String) TimeSeriesProperties.get("cdid"));
+		TimeSeries.title = (String) TimeSeriesProperties.get("title");
+		TimeSeries.uri = URI.create((String) TimeSeriesProperties.get("url"));
+		return TimeSeries;
 
 	}
 
@@ -131,23 +130,23 @@ public class SearchHelper {
 	private static AggregatedSearchResult searchMultiple(String searchTerm, int page) {
 		// If no filter and first page, include one home type result at the top
 		List<SearchResult> responses = SearchService.multiSearch(buildHomeQuery(searchTerm, page), buildContentQuery(searchTerm, page));
-		long timeseriesCount = SearchService.count(buildTimeseriesCountQuery(searchTerm));
+		long timeSeriesCount = SearchService.count(buildTimeSeriesCountQuery(searchTerm));
 		Iterator<SearchResult> resultsIterator = responses.iterator();
 		AggregatedSearchResult result = new AggregatedSearchResult();
 		result.homeSearchResult = resultsIterator.next();
 		result.contentSearchResult =  resultsIterator.next();
-		result.timeseriesCount = timeseriesCount;
+		result.timeseriesCount = timeSeriesCount;
 		return result;
 	}
 
 	private static ONSQueryBuilder buildHomeQuery(String searchTerm, int page) {
-		ONSQueryBuilder homeQuery = new ONSQueryBuilder("ons").setType(ContentType.home.toString()).setPage(page).setSearchTerm(searchTerm).setSize(1).setFields(TITLE, "url");
+		ONSQueryBuilder homeQuery = new ONSQueryBuilder("ons").setType("home").setPage(page).setSearchTerm(searchTerm).setSize(1).setFields(TITLE, "url");
 		return homeQuery;
 	}
 	
-	private static ONSQueryBuilder buildTimeseriesCountQuery(String searchTerm) {
-		ONSQueryBuilder timeseriesCountQuery = new ONSQueryBuilder("ons").setType(ContentType.timeseries.toString()).setSearchTerm(searchTerm).setFields(TITLE, "url");
-		return timeseriesCountQuery;
+	private static ONSQueryBuilder buildTimeSeriesCountQuery(String searchTerm) {
+		ONSQueryBuilder TimeSeriesCountQuery = new ONSQueryBuilder("ons").setType(ContentType.timeseries.toString()).setSearchTerm(searchTerm).setFields(TITLE, "url");
+		return TimeSeriesCountQuery;
 	}
 
 	private static ONSQueryBuilder buildContentQuery(String searchTerm, int page, String... types) {

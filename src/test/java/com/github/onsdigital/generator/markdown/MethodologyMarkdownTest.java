@@ -1,16 +1,15 @@
 package com.github.onsdigital.generator.markdown;
 
-import static org.junit.Assert.assertEquals;
+import com.github.onsdigital.content.methodology.Methodology;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import org.junit.Before;
-import org.junit.Test;
-
-import com.github.onsdigital.json.markdown.Methodology;
+import static org.junit.Assert.assertEquals;
 
 public class MethodologyMarkdownTest {
 
@@ -18,7 +17,7 @@ public class MethodologyMarkdownTest {
 
 	@Before
 	public void setup() {
-		methodology = new Methodology();
+		methodology = new Methodology(null,null,null,null);
 	}
 
 	@Test
@@ -43,8 +42,7 @@ public class MethodologyMarkdownTest {
 		assertEquals(theme, methodology.theme);
 		assertEquals(level2, methodology.level2);
 		assertEquals(level3, methodology.level3);
-		assertEquals(lede, methodology.lede);
-		assertEquals(more, methodology.more);
+		assertEquals(lede, methodology.summary);
 
 		// Title
 		assertEquals("How do we work out the numbers?", methodology.title);

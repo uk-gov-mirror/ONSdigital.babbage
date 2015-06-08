@@ -1,7 +1,6 @@
 package com.github.onsdigital.data;
 
 import java.io.*;
-import java.net.URI;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -11,16 +10,12 @@ import java.util.List;
 import com.github.davidcarboni.ResourceUtils;
 import com.github.onsdigital.util.JsonPrettyprint;
 import com.github.onsdigital.util.Validator;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import org.apache.commons.io.IOUtils;
 
 import com.github.onsdigital.api.data.Data;
 import com.github.onsdigital.configuration.Configuration;
 import org.apache.commons.lang3.CharEncoding;
-import org.apache.commons.lang3.CharSet;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -80,7 +75,7 @@ public class DataService {
         String uriPath = cleanPath(uriString);
         System.out.println("Reading data under uri:" + uriPath);
         Path taxonomy = FileSystems.getDefault().getPath(
-                Configuration.getTaxonomyPath());
+                Configuration.getContentPath());
 
         // Look for a data.json file, or
         // fall back to adding a .json file extension

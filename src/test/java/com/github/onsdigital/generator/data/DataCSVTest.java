@@ -2,14 +2,14 @@ package com.github.onsdigital.generator.data;
 
 import static org.junit.Assert.assertEquals;
 
+import com.github.onsdigital.content.statistic.data.TimeSeries;
+import com.github.onsdigital.content.statistic.data.timeseries.TimeseriesValue;
 import org.junit.Test;
 
-import com.github.onsdigital.json.timeseries.Timeseries;
-import com.github.onsdigital.json.timeseries.TimeseriesValue;
 
 public class DataCSVTest {
 
-	Timeseries timeseries = new Timeseries();
+	TimeSeries timeseries = new TimeSeries(null,null,null,null, null);
 	TimeseriesValue timeseriesValue = new TimeseriesValue();
 
 	@Test

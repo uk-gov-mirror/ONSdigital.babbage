@@ -250,9 +250,9 @@
                         <h3>Related series</h3>
 
                         <div class="padded">
-                            <div ng-repeat="relatedTimeseries in taxonomy.data.relatedTimeseriesData | orderBy:'name'">
+                            <div ng-repeat="relatedTimeseries in taxonomy.data.relatedTimeseriesData | orderBy:'title'">
                                 <div>
-                                    <a href=#!{{relatedTimeseries.uri}}>{{relatedTimeseries.name}}</a>
+                                    <a href=#!{{relatedTimeseries.uri}}>{{relatedTimeseries.title}}</a>
                                 </div>
                             </div>
                         </div>

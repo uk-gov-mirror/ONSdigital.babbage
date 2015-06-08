@@ -1,15 +1,19 @@
 package com.github.onsdigital.generator.markdown;
 
-import com.github.onsdigital.generator.Folder;
+import com.github.onsdigital.content.partial.Contact;
+import com.github.onsdigital.content.statistic.document.Bulletin;
+import com.github.onsdigital.generator.ContentNode;
 import com.github.onsdigital.generator.data.Data;
-import com.github.onsdigital.json.markdown.Bulletin;
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
 
 import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Path;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,15 +31,15 @@ public class BulletinMarkdown {
             Bulletin bulletin = readBulletin(file);
 
             // Set the URI if necessary:
-            Folder folder = Data.getFolder(bulletin.theme, bulletin.level2, bulletin.level3);
+            ContentNode folder = Data.getFolder(bulletin.theme, bulletin.level2, bulletin.level3);
             if (bulletin.uri == null) {
                 bulletin.uri = toUri(folder, bulletin);
             }
 
             // Add it to the taxonomy:
             folder.bulletins.add(bulletin);
-            bulletins.put(bulletin.name, bulletin);
-            if (StringUtils.isNotBlank(bulletin.headline1)) {
+            bulletins.put(bulletin.title, bulletin);
+            if (StringUtils.isNotBlank(bulletin.headlines[0])) {
                 folder.headlineBulletin = bulletin;
             }
         }
@@ -48,14 +52,14 @@ public class BulletinMarkdown {
         Markdown markdown = new Markdown(file);
 
         // Set up the bulletin
-        Bulletin bulletin = new Bulletin();
-        bulletin.name = markdown.title;
+        Bulletin bulletin = new Bulletin(null, null, null, null);
+        bulletin.title = markdown.title;
         bulletin.title = markdown.title;
         setProperties(bulletin, markdown);
         bulletin.sections.clear();
         bulletin.sections.addAll(markdown.sections);
         bulletin.accordion.addAll(markdown.accordion);
-        bulletin.fileName = markdown.toFilename();
+//        bulletin.fileName = markdown.toFilename();
 
         return bulletin;
     }
@@ -72,7 +76,7 @@ public class BulletinMarkdown {
      * <li>Headline 1</li>
      * <li>Headline 2</li>
      * <li>Headline 3</li>
-     * <li>Contact name</li>
+     * <li>Contact title</li>
      * <li>Contact email</li>
      * <li>Phone</li>
      * <li>Search keywords</li>
@@ -95,12 +99,16 @@ public class BulletinMarkdown {
 
         // Additional details
         bulletin.summary = StringUtils.defaultIfBlank(properties.remove("summary"), bulletin.summary);
-        bulletin.headline1 = StringUtils.defaultIfBlank(properties.remove("headline 1"), bulletin.headline1);
-        bulletin.headline2 = StringUtils.defaultIfBlank(properties.remove("headline 2"), bulletin.headline2);
-        bulletin.headline3 = StringUtils.defaultIfBlank(properties.remove("headline 3"), bulletin.headline3);
-        bulletin.contact.name = StringUtils.defaultIfBlank(properties.remove("contact name"), bulletin.contact.name);
+//        bulletin.headline1 = StringUtils.defaultIfBlank(properties.remove("headline 1"), bulletin.headline1);
+//        bulletin.headline2 = StringUtils.defaultIfBlank(properties.remove("headline 2"), bulletin.headline2);
+//        bulletin.headline3 = StringUtils.defaultIfBlank(properties.remove("headline 3"), bulletin.headline3);
+        bulletin.contact = new Contact();
+        bulletin.contact.name = StringUtils.defaultIfBlank(properties.remove("contact title"), bulletin.contact.name);
         bulletin.contact.email = StringUtils.defaultIfBlank(properties.remove("contact email"), bulletin.contact.email);
-        bulletin.releaseDate = StringUtils.defaultIfBlank(properties.remove("release date"), bulletin.releaseDate);
+
+        //TODO: Where is next release?
+        Date releaseDate = toDate(properties.remove("release date"));
+        bulletin.releaseDate = releaseDate == null ? bulletin.releaseDate : releaseDate;
 
         // Additional fields for migration:
         bulletin.phone = StringUtils.defaultIfBlank(properties.remove("phone"), bulletin.phone);
@@ -122,24 +130,53 @@ public class BulletinMarkdown {
 
     }
 
-    static URI toUri(Folder folder, Bulletin bulletin) {
+    static URI toUri(ContentNode folder, Bulletin bulletin) {
         URI result = null;
 
         if (bulletin != null) {
             if (bulletin.uri == null) {
                 String baseUri = "/" + folder.filename();
-                Folder parent = folder.parent;
+                ContentNode parent = folder.parent;
                 while (parent != null) {
                     baseUri = "/" + parent.filename() + baseUri;
                     parent = parent.parent;
                 }
                 baseUri += "/bulletins";
-                bulletin.uri = URI.create(baseUri + "/" + StringUtils.trim(bulletin.fileName));
+                bulletin.uri = URI.create(baseUri + "/" + StringUtils.trim(toFilename(bulletin)));
             }
             result = bulletin.uri;
         }
 
         return result;
+    }
+
+    /**
+     * Sanitises an article title to <code>[a-zA-Z0-9]</code>.
+     *
+     * @return A sanitised string.
+     */
+    public static String toFilename(Bulletin bulletin) {
+        StringBuilder result = new StringBuilder();
+        for (int i = 0; i < bulletin.title.length(); i++) {
+            String character = bulletin.title.substring(i, i + 1);
+            if (character.matches("[a-zA-Z0-9]")) {
+                result.append(character);
+            }
+        }
+        return result.toString().toLowerCase();
+    }
+
+    static Date toDate(String date)  {
+        if (StringUtils.isBlank(date)) {
+            return null;
+        }
+
+        try {
+            return new SimpleDateFormat("dd MMMM yyyy").parse(date);
+        } catch (ParseException e) {
+            throw new RuntimeException("Date formatting failed, date:" + date);
+        }
+
     }
 
 

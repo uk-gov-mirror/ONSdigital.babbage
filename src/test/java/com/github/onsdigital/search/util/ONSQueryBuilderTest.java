@@ -15,7 +15,7 @@ public class ONSQueryBuilderTest {
 
 	static final String SEARCH_TERM = "searchme";
 	static final String SEARCH_INDEX = "i am an index";
-	static final String SEARCH_TYPE = "i am not really a type name";
+	static final String SEARCH_TYPE = "i am not really a type title";
 	static final String MATCH_ALL_QUERY = "match_all";
 	static final String MULTI_MATCH_QUERY = "multi_match";
 	static final String FUNCTION_SCORE_QUERY = "function_score";

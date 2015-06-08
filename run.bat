@@ -20,7 +20,7 @@ export MONGO_PASSWORD=uJlVY2FDGI5SFawS/PN+jnZpymKWpU7C
 rem # Generate taxonomy
 rem #mvn clean compile dependency:copy-dependencies && ^
 rem #rm -rf src/main/taxonomy && ^
-rem #java -cp "target/classes:target/dependency/*" com.github.onsdigital.generator.TaxonomyGenerator
+rem #java -cp "target/classes:target/dependency/*" com.github.onsdigital.generator.ContentGenerator
 
 rem # Build and run:
 mvn -Dmaven.test.skip=true clean compile dependency:copy-dependencies && ^

@@ -4,9 +4,9 @@ import com.github.davidcarboni.restolino.framework.Api;
 import com.github.davidcarboni.restolino.json.Serialiser;
 import com.github.onsdigital.bean.DateVal;
 import com.github.onsdigital.bean.DownloadRequest;
+import com.github.onsdigital.content.statistic.data.TimeSeries;
+import com.github.onsdigital.content.statistic.data.timeseries.TimeseriesValue;
 import com.github.onsdigital.data.DataService;
-import com.github.onsdigital.json.timeseries.Timeseries;
-import com.github.onsdigital.json.timeseries.TimeseriesValue;
 import com.github.onsdigital.util.CSVGenerator;
 import com.github.onsdigital.util.XLSXGenerator;
 import org.apache.commons.lang.StringUtils;
@@ -47,27 +47,27 @@ public class Download {
 
 		// Normally only uriList or cdidList should be present in the request,
 		// but let's be lenient in what we'll accept:
-		List<Timeseries> timeseries = new ArrayList<Timeseries>();
+		List<TimeSeries> TimeSeries = new ArrayList<TimeSeries>();
 
 		// Process URIs
 		if (downloadRequest.uriList != null) {
 			for (String uri : downloadRequest.uriList) {
 				try (InputStream input = DataService.getInstance().getDataStream(uri)) {
-					timeseries.add(Serialiser.deserialise(input, Timeseries.class));
+					TimeSeries.add(Serialiser.deserialise(input, TimeSeries.class));
 				}
 			}
 		}
 
 		// Process CDIDs
 		if (downloadRequest.cdidList != null) {
-			Map<String, Timeseries> timeseriesMap = Cdid.getTimeseries(downloadRequest.cdidList);
-			for (Timeseries timeseries2 : timeseriesMap.values()) {
-				timeseries.add(timeseries2);
+			Map<String, TimeSeries> TimeSeriesMap = Cdid.getTimeSeries(downloadRequest.cdidList);
+			for (TimeSeries TimeSeries2 : TimeSeriesMap.values()) {
+				TimeSeries.add(TimeSeries2);
 			}
 		}
 
 		// Collate into a "grid":
-		Map<String, TimeseriesValue[]> data = collateData(timeseries, downloadRequest);
+		Map<String, TimeseriesValue[]> data = collateData(TimeSeries, downloadRequest);
 
 		// Apply the range:
 		Date from = toDate(downloadRequest.from);
@@ -77,9 +77,9 @@ public class Download {
 		// Debug:
 		// System.out.println("Data grid:");
 		// System.out.println("---");
-		// for (Entry<String, TimeseriesValue[]> row : data.entrySet()) {
+		// for (Entry<String, TimeSeriesValue[]> row : data.entrySet()) {
 		// System.out.print(row.getKey());
-		// for (TimeseriesValue value : row.getValue()) {
+		// for (TimeSeriesValue value : row.getValue()) {
 		// System.out.print("\t" + (value == null ? "null" : value.value));
 		// }
 		// System.out.println();
@@ -88,9 +88,9 @@ public class Download {
 
 		switch (downloadRequest.type) {
 		case "xlsx":
-			new XLSXGenerator(timeseries, data).write(output);
+			new XLSXGenerator(TimeSeries, data).write(output);
 		case "csv":
-			new CSVGenerator(timeseries, data).write(output);
+			new CSVGenerator(TimeSeries, data).write(output);
 		default:
 			break;
 		}
@@ -113,13 +113,13 @@ public class Download {
 	}
 
 	/**
-	 * Collates data from the given timeseries into an ordered map. This
+	 * Collates data from the given TimeSeries into an ordered map. This
 	 * provides a "data grid" suitable for writing out in tabular format.
 	 * 
-	 * @param timeseriesList
+	 * @param TimeSeriesList
 	 * @return
 	 */
-	private Map<String, TimeseriesValue[]> collateData(List<Timeseries> timeseriesList, DownloadRequest downloadRequest) {
+	private Map<String, TimeseriesValue[]> collateData(List<TimeSeries> TimeSeriesList, DownloadRequest downloadRequest) {
 
 		// We want an ordered map of date strings -> values as the result:
 		Map<String, TimeseriesValue[]> result = new LinkedHashMap<>();
@@ -144,9 +144,9 @@ public class Download {
 		if (year) {
 			// Collate years:
 			Map<Date, TimeseriesValue[]> years = new TreeMap<>();
-			for (int l = 0; l < timeseriesList.size(); l++) {
-				for (TimeseriesValue value : timeseriesList.get(l).years) {
-					addValue(value, l, timeseriesList, years);
+			for (int l = 0; l < TimeSeriesList.size(); l++) {
+				for (TimeseriesValue value : TimeSeriesList.get(l).years) {
+					addValue(value, l, TimeSeriesList, years);
 				}
 			}
 			addToResult(years, result);
@@ -155,9 +155,9 @@ public class Download {
 		if (quarter) {
 			// Collate quarters:
 			Map<Date, TimeseriesValue[]> quarters = new TreeMap<>();
-			for (int l = 0; l < timeseriesList.size(); l++) {
-				for (TimeseriesValue value : timeseriesList.get(l).quarters) {
-					addValue(value, l, timeseriesList, quarters);
+			for (int l = 0; l < TimeSeriesList.size(); l++) {
+				for (TimeseriesValue value : TimeSeriesList.get(l).quarters) {
+					addValue(value, l, TimeSeriesList, quarters);
 				}
 			}
 			addToResult(quarters, result);
@@ -166,9 +166,9 @@ public class Download {
 		if (month) {
 			// Collate years:
 			Map<Date, TimeseriesValue[]> months = new TreeMap<>();
-			for (int l = 0; l < timeseriesList.size(); l++) {
-				for (TimeseriesValue value : timeseriesList.get(l).months) {
-					addValue(value, l, timeseriesList, months);
+			for (int l = 0; l < TimeSeriesList.size(); l++) {
+				for (TimeseriesValue value : TimeSeriesList.get(l).months) {
+					addValue(value, l, TimeSeriesList, months);
 				}
 			}
 			addToResult(months, result);
@@ -204,27 +204,27 @@ public class Download {
 	}
 
 	/**
-	 * Adds a single timeseries value to a data block (yearly, quarterly or
+	 * Adds a single TimeSeries value to a data block (yearly, quarterly or
 	 * monthly).
 	 * 
 	 * @param value
 	 *            The value to be added.
 	 * @param listIndex
-	 *            The index of the current timeseries within the collection of
-	 *            timeseries to be downloaded.
-	 * @param timeseriesList
-	 *            The collection of timeseries to be downloaded - used to get a
+	 *            The index of the current TimeSeries within the collection of
+	 *            TimeSeries to be downloaded.
+	 * @param TimeSeriesList
+	 *            The collection of TimeSeries to be downloaded - used to get a
 	 *            length for the array.
 	 * @param data
 	 *            The map into which the value will be added.
 	 */
-	private void addValue(TimeseriesValue value, int listIndex, List<Timeseries> timeseriesList, Map<Date, TimeseriesValue[]> data) {
+	private void addValue(TimeseriesValue value, int listIndex, List<TimeSeries> TimeSeriesList, Map<Date, TimeseriesValue[]> data) {
 
 		Date key = value.toDate();
 
 		// Ensure we have a "row" for this date:
 		if (!data.containsKey(key)) {
-			data.put(key, new TimeseriesValue[timeseriesList.size()]);
+			data.put(key, new TimeseriesValue[TimeSeriesList.size()]);
 		}
 
 		// Put the value into the "grid":

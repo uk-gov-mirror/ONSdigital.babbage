@@ -5,9 +5,9 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import com.github.onsdigital.generator.ContentNode;
 import org.apache.commons.lang3.StringUtils;
 
-import com.github.onsdigital.generator.Folder;
 import com.github.onsdigital.generator.data.Csv;
 
 public class TaxonomyCsv {
@@ -22,7 +22,7 @@ public class TaxonomyCsv {
 
 	static Csv csv;
 
-	public static Set<Folder> parse() throws IOException {
+	public static Set<ContentNode> parse() throws IOException {
 
 		// Read the first worksheet - "Data":
 		csv = new Csv(resourceName, "cp1252");
@@ -33,15 +33,15 @@ public class TaxonomyCsv {
 		String subject = null;
 		String topic = null;
 		// String subTopic = null;
-		Folder themeFolder = null;
-		Folder subjectFolder = null;
-		Folder topicFolder = null;
+		ContentNode themeFolder = null;
+		ContentNode subjectFolder = null;
+		ContentNode topicFolder = null;
 		// Folder subTopicFolder = null;
 		int themeCounter = 0;
 		int subjectCounter = 0;
 		int topicCounter = 0;
 
-		Set<Folder> folders = new HashSet<>();
+		Set<ContentNode> folders = new HashSet<>();
 
 		for (Map<String, String> row : csv) {
 
@@ -49,7 +49,7 @@ public class TaxonomyCsv {
 			if (StringUtils.isNotBlank(row.get(THEME))) {
 				theme = row.get(THEME);
 				System.out.println("Theme: " + theme);
-				themeFolder = new Folder();
+				themeFolder = new ContentNode();
 				themeFolder.name = theme;
 				themeFolder.index = themeCounter++;
 				subjectCounter = 0;
@@ -67,8 +67,8 @@ public class TaxonomyCsv {
 
 			if (StringUtils.isNotBlank(row.get(SUBJECT))) {
 				subject = row.get(SUBJECT);
-				System.out.println("Subject: " + subject);
-				subjectFolder = new Folder();
+//				System.out.println("Subject: " + subject);
+				subjectFolder = new ContentNode();
 				subjectFolder.name = subject;
 				subjectFolder.parent = themeFolder;
 				subjectFolder.index = subjectCounter++;
@@ -85,8 +85,8 @@ public class TaxonomyCsv {
 
 			if (StringUtils.isNotBlank(row.get(TOPIC))) {
 				topic = row.get(TOPIC);
-				System.out.println("Topic: " + topic);
-				topicFolder = new Folder();
+//				System.out.println("Topic: " + topic);
+				topicFolder = new ContentNode();
 				topicFolder.name = topic;
 				topicFolder.parent = subjectFolder;
 				topicFolder.index = topicCounter++;

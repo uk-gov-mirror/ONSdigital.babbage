@@ -16,7 +16,7 @@
 export JAVA_OPTS="-Xdebug -Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=n"
 
 #External Taxonomy
-#export TAXONOMY_DIR=api/target/taxonomy
+#export TAXONOMY_DIR=target/content
 
 # Restolino configuration
 export RESTOLINO_STATIC="src/main/web"
