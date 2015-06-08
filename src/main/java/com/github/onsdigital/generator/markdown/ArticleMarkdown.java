@@ -1,13 +1,16 @@
 package com.github.onsdigital.generator.markdown;
 
-import com.github.onsdigital.generator.Folder;
+import com.github.onsdigital.content.statistic.document.Article;
+import com.github.onsdigital.generator.ContentNode;
 import com.github.onsdigital.generator.data.Data;
-import com.github.onsdigital.json.markdown.Article;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -24,7 +27,7 @@ public class ArticleMarkdown {
 			Article article = readArticle(file);
 
 			// Add it to the taxonomy:
-			Folder folder = Data.getFolder(article.theme, article.level2, article.level3);
+			ContentNode folder = Data.getFolder(article.theme, article.level2, article.level3);
 			folder.articles.add(article);
 		}
 	}
@@ -36,13 +39,13 @@ public class ArticleMarkdown {
 		Markdown markdown = new Markdown(file);
 
 		// Set up the article
-		Article article = new Article();
-		article.name = markdown.title;
+		Article article = new Article(null, null , null ,null );
+		article.title = markdown.title;
 		article.title = markdown.title;
 		setProperties(article, markdown);
 		article.sections.addAll(markdown.sections);
 		article.accordion.addAll(markdown.accordion);
-		article.fileName = markdown.toFilename();
+//		article.fileName = markdown.toFilename();
 
 		return article;
 	}
@@ -55,7 +58,7 @@ public class ArticleMarkdown {
 	 * <li>Theme</li>
 	 * <li>Level 2</li>
 	 * <li>Level 3</li>
-	 * <li>Contact name</li>
+	 * <li>Contact title</li>
 	 * <li>Contact email</li>
 	 * <li>Next release</li>
      * <li>Release date</li>
@@ -75,10 +78,16 @@ public class ArticleMarkdown {
 		article.level3 = StringUtils.defaultIfBlank(properties.remove("level 3"), article.level3);
 
 		// Additional details
-		article.contact.name = StringUtils.defaultIfBlank(properties.remove("contact name"), article.theme);
+		article.contact.name = StringUtils.defaultIfBlank(properties.remove("contact title"), article.theme);
 		article.contact.email = StringUtils.defaultIfBlank(properties.remove("contact email"), article.theme);
-		article.nextRelease = StringUtils.defaultIfBlank(properties.remove("next release"), article.theme);
-		article.releaseDate = StringUtils.defaultIfBlank(properties.remove("release date"), article.theme);
+
+
+		//TODO: Where is next release?
+		Date releaseDate = toDate(properties.remove("release date"));
+		Date nextReleaseDate = toDate(properties.remove("next release"));
+
+		article.releaseDate = releaseDate == null ? article.releaseDate : releaseDate;
+		article.nextReleaseDate = nextReleaseDate == null ? article.nextReleaseDate: releaseDate;
 
 		// Note any unexpected information
 		for (String property : properties.keySet()) {
@@ -86,4 +95,35 @@ public class ArticleMarkdown {
 		}
 
 	}
+
+
+	static Date toDate(String date)  {
+		if (org.apache.commons.lang.StringUtils.isBlank(date)) {
+			return null;
+		}
+
+		try {
+			return new SimpleDateFormat("dd MMMM yyyy").parse(date);
+		} catch (ParseException e) {
+			throw new RuntimeException("Date formatting failed, date:" + date);
+		}
+
+	}
+
+
+    /**
+     * Sanitises an article title to <code>[a-zA-Z0-9]</code>.
+     *
+     * @return A sanitised string.
+     */
+    public static String toFilename(Article article) {
+        StringBuilder result = new StringBuilder();
+        for (int i = 0; i < article.title.length(); i++) {
+            String character = article.title.substring(i, i + 1);
+            if (character.matches("[a-zA-Z0-9]")) {
+                result.append(character);
+            }
+        }
+        return result.toString().toLowerCase();
+    }
 }

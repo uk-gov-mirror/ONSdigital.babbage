@@ -1,14 +1,13 @@
 package com.github.onsdigital.generator.data;
 
+import com.github.onsdigital.content.statistic.data.TimeSeries;
+import com.github.onsdigital.content.statistic.data.timeseries.TimeseriesValue;
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.HashSet;
 import java.util.Set;
-
-import org.apache.commons.lang3.StringUtils;
-
-import com.github.onsdigital.json.timeseries.Timeseries;
-import com.github.onsdigital.json.timeseries.TimeseriesValue;
 
 /**
  * Handles the non-CDID data in the {@value #resourceName} spreadsheet.
@@ -45,7 +44,7 @@ class NonCdidCSV {
 				}
 
 				// Get the timeseries object for this CDID:
-				Timeseries timeseries = Data.timeseries(cdid);
+				TimeSeries timeseries = Data.timeseries(cdid);
 				if (timeseries == null) {
 					// System.out.println("Sheet " + sheetIndex + ", column " +
 					// c + " - new timeseries " + cdid);
@@ -64,7 +63,7 @@ class NonCdidCSV {
 						if (StringUtils.equalsIgnoreCase("Note", date)) {
 
 							// End of data, there may be a note:
-							timeseries.note1 = StringUtils.trim(row[1]);
+							timeseries.notes.add(StringUtils.trim(row[1]));
 							break data;
 
 						} else if (StringUtils.isNotEmpty(date) && StringUtils.isNotEmpty(figure)) {

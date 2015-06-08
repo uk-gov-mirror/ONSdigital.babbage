@@ -1,5 +1,10 @@
 package com.github.onsdigital.generator.data;
 
+import au.com.bytecode.opencsv.CSVReader;
+import com.github.onsdigital.content.statistic.data.TimeSeries;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -10,19 +15,9 @@ import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Collection;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
-import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang3.StringUtils;
-
-import au.com.bytecode.opencsv.CSVReader;
-
-import com.github.onsdigital.json.timeseries.Timeseries;
 
 /**
  * Handles the metadata CSVs under the {@value #resourceName} folder.
@@ -51,7 +46,7 @@ public class MetadataCSV {
 		readRobsFile();
 
 		// Report on "other":
-		Set<Timeseries> other = Data.oldDataset("other");
+		Set<TimeSeries> other = Data.oldDataset("other");
 		if (other != null) {
 			System.out.println("'other' dataset contains " + other.size() + " CDIDs.");
 		}
@@ -64,16 +59,17 @@ public class MetadataCSV {
 		csv.getHeadings();
 		for (Map<String, String> row : csv) {
 			String cdid = row.get("CDID");
-			Timeseries timeseries = Data.timeseries(cdid);
+			TimeSeries timeseries = Data.timeseries(cdid);
 			if (timeseries == null) {
 				timeseries = Data.addTimeseries(cdid);
 			}
-			timeseries.name = row.get("Name");
+			timeseries.title = row.get("Name");
 			timeseries.seasonalAdjustment = row.get("Seasonal adjustment");
 			timeseries.mainMeasure = row.get("Main measure");
 			timeseries.description = row.get("Description");
-			timeseries.note1 = StringUtils.defaultIfBlank(row.get("Note 1"), timeseries.note1);
-			timeseries.note2 = StringUtils.defaultIfBlank(row.get("Note 2"), timeseries.note2);
+			timeseries.notes = new ArrayList<String>();
+			timeseries.notes.add(StringUtils.defaultIfBlank(row.get("Note 1"), null));
+			timeseries.notes.add(StringUtils.defaultIfBlank(row.get("Note 2"), null));
 		}
 	}
 
@@ -81,28 +77,28 @@ public class MetadataCSV {
 		try (CSVReader csvReader = new CSVReader(new BufferedReader(new InputStreamReader(Files.newInputStream(file), Charset.forName("UTF8"))))) {
 
 			String datasetName = FilenameUtils.getBaseName(file.getFileName().toString()).replace("_", "");
-			Set<Timeseries> dataset = Data.oldDataset(datasetName);
+			Set<TimeSeries> dataset = Data.oldDataset(datasetName);
 			if (dataset == null) {
 				dataset = Data.addOldDataset(datasetName);
 			}
 
 			// There are no header rows in these CSVs.
-			// Column 0 is CDID, column 1 is the name:
+			// Column 0 is CDID, column 1 is the title:
 			String[] row;
 			int ok = 0;
 			while ((row = csvReader.readNext()) != null) {
-				// Add the name to each timeseries:
+				// Add the title to each timeseries:
 				String cdid = row[0];
 				String name = row[1];
-				Timeseries timeseries = Data.timeseries(cdid);
+				TimeSeries timeseries = Data.timeseries(cdid);
 				if (timeseries == null) {
 					timeseries = Data.addTimeseries(cdid);
 				} else {
 					ok++;
 				}
 				dataset.add(timeseries);
-				// System.out.println(file.getFileName() + ": " + name);
-				timeseries.name = name;
+				// System.out.println(file.getFileName() + ": " + title);
+				timeseries.title = name;
 			}
 			System.out.println("Updated " + ok + " timeseries.");
 		}

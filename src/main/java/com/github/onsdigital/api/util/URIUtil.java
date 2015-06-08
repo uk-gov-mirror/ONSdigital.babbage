@@ -22,7 +22,7 @@ public class URIUtil {
      * <p>
      * e.g. uri for /data/economy/inflationandpriceindices is /economy/inflationandpriceindices
      *
-     * @return The URI path, lowercased, without the endpoint name or trailing
+     * @return The URI path, lowercased, without the endpoint title or trailing
      * slash.
      * @throws com.github.onsdigital.api.util.URIUtil.InvalidUriException
      */
@@ -34,7 +34,7 @@ public class URIUtil {
         if (indexOfSecondSlash == -1) {
             return "/";
         } else {
-            return StringUtils.substring(uriString, indexOfSecondSlash );  //Remove endpoint name
+            return StringUtils.substring(uriString, indexOfSecondSlash );  //Remove endpoint title
         }
     }
 

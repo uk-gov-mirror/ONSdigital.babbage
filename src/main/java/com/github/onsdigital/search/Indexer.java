@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import com.github.onsdigital.content.base.ContentType;
 import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.action.ListenableActionFuture;
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequestBuilder;
@@ -22,12 +23,11 @@ import org.elasticsearch.common.settings.ImmutableSettings;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 
 import com.github.onsdigital.configuration.Configuration;
-import com.github.onsdigital.json.ContentType;
 
 public class Indexer {
 
 	public static void loadIndex(Client client) throws IOException {
-		List<String> absoluteFilePaths = LoadIndexHelper.getAbsoluteFilePaths(Configuration.getTaxonomyPath());
+		List<String> absoluteFilePaths = LoadIndexHelper.getAbsoluteFilePaths(Configuration.getContentPath());
 		if (absoluteFilePaths.isEmpty()) {
 			throw new IllegalStateException("No items were found for indexing");
 		}
@@ -49,7 +49,9 @@ public class Indexer {
 		System.out.println("Adding document mappings");
 
 		indexBuilder.addMapping(ContentType.dataset.toString(), getMappingProperties(ContentType.dataset.toString()));
-		indexBuilder.addMapping(ContentType.home.toString(), getMappingProperties(ContentType.home.toString()));
+
+		//TODO:Change home type to taxonomy
+		indexBuilder.addMapping("home", getMappingProperties("home"));
 		indexBuilder.addMapping(ContentType.bulletin.toString(), getMappingProperties(ContentType.bulletin.toString()));
 		indexBuilder.addMapping(ContentType.article.toString(), getMappingProperties(ContentType.article.toString()));
 		indexBuilder.addMapping(ContentType.methodology.toString(), getMappingProperties(ContentType.methodology.toString()));

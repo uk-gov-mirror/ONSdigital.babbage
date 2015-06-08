@@ -1,5 +1,12 @@
 package com.github.onsdigital.util;
 
+import com.github.davidcarboni.restolino.json.Serialiser;
+import com.github.onsdigital.configuration.Configuration;
+import com.github.onsdigital.content.taxonomy.base.TaxonomyPage;
+import com.google.gson.JsonSyntaxException;
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.w3c.dom.DOMException;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -10,14 +17,6 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
-import org.w3c.dom.DOMException;
-
-import com.github.davidcarboni.restolino.json.Serialiser;
-import com.github.onsdigital.configuration.Configuration;
-import com.github.onsdigital.json.taxonomy.TaxonomyHome;
-import com.google.gson.JsonSyntaxException;
 
 public class NavigationUtil {
 
@@ -86,16 +85,16 @@ public class NavigationUtil {
 	}
 
 	private static Path getHomePath() {
-		return FileSystems.getDefault().getPath(Configuration.getTaxonomyPath());
+		return FileSystems.getDefault().getPath(Configuration.getContentPath());
 	}
 
-	private static TaxonomyHome getDataJson(Path path) throws IOException {
-		TaxonomyHome result = null;
+	private static TaxonomyPage getDataJson(Path path) throws IOException {
+		TaxonomyPage result = null;
 
 		Path dataJson = path.resolve("data.json");
 		if (Files.exists(dataJson)) {
 			try (InputStream input = Files.newInputStream(dataJson)) {
-				result = Serialiser.deserialise(input, TaxonomyHome.class);
+				result = Serialiser.deserialise(input, TaxonomyPage.class);
 			}
 		}
 
@@ -113,15 +112,11 @@ public class NavigationUtil {
 		int index;
 		List<NavigationNode> children = new ArrayList<NavigationNode>();
 
-		public NavigationNode(TaxonomyHome taxonomyHome) {
-			this.name = taxonomyHome.name;
-			this.fileName = taxonomyHome.fileName;
+		public NavigationNode(TaxonomyPage taxonomyHome) {
+			this.name = taxonomyHome.title;
+			this.fileName = taxonomyHome.title;
 			this.index = taxonomyHome.index;
-			url = "";
-			for (TaxonomyHome node : taxonomyHome.breadcrumb) {
-				url += "/" + node.fileName;
-			}
-			url += "/" + taxonomyHome.fileName;
+			url = taxonomyHome.uri.toString();
 		}
 
 		@Override

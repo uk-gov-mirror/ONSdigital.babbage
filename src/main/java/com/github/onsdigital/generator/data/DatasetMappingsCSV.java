@@ -1,5 +1,9 @@
 package com.github.onsdigital.generator.data;
 
+import com.github.onsdigital.content.statistic.data.TimeSeries;
+import com.github.onsdigital.generator.ContentNode;
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -8,11 +12,6 @@ import java.nio.file.Paths;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
-
-import org.apache.commons.lang3.StringUtils;
-
-import com.github.onsdigital.generator.Folder;
-import com.github.onsdigital.json.timeseries.Timeseries;
 
 /**
  * Handles the data CSVs under the {@value #resourceName} folder.
@@ -36,7 +35,7 @@ public class DatasetMappingsCSV {
 	 * This is a List rather than a Set because several datasets map to the same
 	 * folders.
 	 */
-	public static Map<String, Folder> mappedFolders = new TreeMap<>();
+	public static Map<String, ContentNode> mappedFolders = new TreeMap<>();
 
 	public static void parse() throws IOException {
 
@@ -56,14 +55,14 @@ public class DatasetMappingsCSV {
 
 			// Get the dataset details:
 			String datasetName = StringUtils.trim(row.get(name));
-			Set<Timeseries> dataset = Data.oldDataset(datasetName);
+			Set<TimeSeries> dataset = Data.oldDataset(datasetName);
 			if (dataset == null) {
-				throw new RuntimeException("Unable to find a dataset for name '" + datasetName);
+				throw new RuntimeException("Unable to find a dataset for title '" + datasetName);
 			}
 			Data.addMappedDataset(datasetName);
 
 			// Find the folder this dataset is associated with:
-			Folder folder = Data.getFolder(row.get(theme), row.get(level2), row.get(level3));
+			ContentNode folder = Data.getFolder(row.get(theme), row.get(level2), row.get(level3));
 			if (folder.getChildren().size() > 0) {
 				throw new RuntimeException("It looks like folder " + folder + " is not a T3.");
 			}
@@ -72,7 +71,7 @@ public class DatasetMappingsCSV {
 			// NB if a timeseries is already specifically associated with a
 			// different folder in the taxonomy, we don't want to change that
 			// URI.
-			for (Timeseries timeseries : dataset) {
+			for (TimeSeries timeseries : dataset) {
 				if (timeseries.uri == null) {
 					timeseries.uri = AlphaContentCSV.toUri(folder, timeseries);
 				}

@@ -16,7 +16,7 @@ import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;
 
 public class LoadIndexHelperTest {
-	private final static String RESOURCE_FILE_PATH = "api/target/taxonomy";
+	private final static String RESOURCE_FILE_PATH = "target/content";
 
 	@Test
 	public void testGetFileNames() throws IOException {
@@ -33,7 +33,7 @@ public class LoadIndexHelperTest {
 
 	@Test
 	public void testGetDocumentMapForContentType() throws JsonIOException, JsonSyntaxException, IOException {
-		Map<String, String> documentMap = LoadIndexHelper.getDocumentMap("api/target/taxonomy/economy/inflationandpriceindices/bulletins/consumerpriceinflationjune2014/data.json");
+		Map<String, String> documentMap = LoadIndexHelper.getDocumentMap("target/content/economy/inflationandpriceindices/bulletins/consumerpriceinflationjune2014/data.json");
 		assertEquals("url should math file structure", "/economy/inflationandpriceindices/bulletins/consumerpriceinflationjune2014/", documentMap.get("url"));
 		assertEquals("type should be bulletins", "bulletin", documentMap.get("type"));
 		assertEquals("title should be data.json", "Consumer Price Inflation, June 2014", documentMap.get("title"));
@@ -42,7 +42,7 @@ public class LoadIndexHelperTest {
 
 	@Test
 	public void testGetDocumentMapForHomePage() throws JsonIOException, JsonSyntaxException, IOException {
-		Map<String, String> documentMap = LoadIndexHelper.getDocumentMap("api/target/taxonomy/economy/data.json");
+		Map<String, String> documentMap = LoadIndexHelper.getDocumentMap("target/content/economy/data.json");
 		assertEquals("url should match file structure", "/economy/", documentMap.get("url"));
 		assertEquals("type should be bulletins", "home", documentMap.get("type"));
 		assertEquals("title should be uksectoraccounts", "Economy", documentMap.get("title"));

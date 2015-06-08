@@ -7,18 +7,19 @@ import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import com.github.onsdigital.content.statistic.document.Article;
 import org.junit.Before;
 import org.junit.Test;
-
-import com.github.onsdigital.json.markdown.Article;
 
 public class ArticleMarkdownTest {
 
 	Article article;
 
+
+	//TODO: Get rid of all null initialized fields
 	@Before
 	public void setup() {
-		article = new Article();
+		article = new Article(null,null, null,null);
 	}
 
 	@Test
@@ -47,7 +48,7 @@ public class ArticleMarkdownTest {
 		assertEquals(level3, article.level3);
 		assertEquals(contactName, article.contact.name);
 		assertEquals(contactEmail, article.contact.email);
-		assertEquals(nextRelease, article.nextRelease);
+		assertEquals(nextRelease, article.nextReleaseDate);
 		assertEquals(releaseDate, article.releaseDate);
 
 		// Title

@@ -1,5 +1,10 @@
 package com.github.onsdigital.generator.markdown;
 
+import com.github.onsdigital.content.partial.markdown.MarkdownSection;
+import com.github.onsdigital.generator.data.DataCSV;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.IOException;
 import java.io.Reader;
 import java.net.URISyntaxException;
@@ -9,21 +14,8 @@ import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 import java.util.regex.Pattern;
-
-import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang3.StringUtils;
-
-import com.github.onsdigital.generator.data.DataCSV;
-import com.github.onsdigital.json.markdown.Section;
 
 class Markdown {
 
@@ -31,8 +23,8 @@ class Markdown {
 	private String filename;
 	String title;
 	Map<String, String> properties = new HashMap<>();
-	List<Section> sections = new ArrayList<>();
-	List<Section> accordion = new ArrayList<>();
+	List<MarkdownSection> sections = new ArrayList<>();
+	List<MarkdownSection> accordion = new ArrayList<>();
 
 	public Markdown(Path file) throws IOException {
 
@@ -68,7 +60,7 @@ class Markdown {
 	 * an empty line. The recognised keys are as follows.
 	 * <ul>
 	 * <li>Next release</li>
-	 * <li>Contact name</li>
+	 * <li>Contact title</li>
 	 * <li>Contact email</li>
 	 * <li>Lede</li>
 	 * <li>More</li>
@@ -121,7 +113,7 @@ class Markdown {
 	 */
 	private void readContent(Scanner scanner) {
 
-		Section currentSection = null;
+		MarkdownSection currentSection = null;
 
 		while (scanner.hasNextLine()) {
 
@@ -139,7 +131,7 @@ class Markdown {
 
 			// Section heading
 			if (!matched) {
-				Section newSection = matchHeading(line);
+				MarkdownSection newSection = matchHeading(line);
 				if (newSection != null) {
 					if (newSection.title.matches("\\[accordion\\].*")) {
 						// Remove the marker, case insensitively with "(?i)"
@@ -169,10 +161,8 @@ class Markdown {
 	}
 
 	/**
-	 * Sanitises an article name to <code>[a-zA-Z0-9]</code>.
+	 * Sanitises an article title to <code>[a-zA-Z0-9]</code>.
 	 * 
-	 * @param name
-	 *            The string to be sanitised.
 	 * @return A sanitised string.
 	 */
 	String toFilename() {
@@ -243,13 +233,13 @@ class Markdown {
 	 * @see <a
 	 *      href="http://daringfireball.net/projects/markdown/syntax">http://daringfireball.net/projects/markdown/syntax</a>
 	 */
-	static Section matchHeading(String line) {
-		Section result = null;
+	static MarkdownSection matchHeading(String line) {
+		MarkdownSection result = null;
 
 		// Set the section title
 		String h2Regex = "##\\s+";
 		if (line.matches(h2Regex + ".*")) {
-			result = new Section();
+			result = new MarkdownSection();
 			result.title = line.replaceFirst(h2Regex, "").trim();
 			result.markdown = StringUtils.EMPTY;
 		}
@@ -279,4 +269,5 @@ class Markdown {
 
 		return result;
 	}
+
 }

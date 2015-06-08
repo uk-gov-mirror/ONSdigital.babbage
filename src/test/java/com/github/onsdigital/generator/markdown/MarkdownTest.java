@@ -4,9 +4,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
+import com.github.onsdigital.content.partial.markdown.MarkdownSection;
 import org.junit.Test;
-
-import com.github.onsdigital.json.markdown.Section;
 
 public class MarkdownTest {
 
@@ -76,7 +75,7 @@ public class MarkdownTest {
 		String markdown = "## \t" + heading;
 
 		// When
-		Section section = Markdown.matchHeading(markdown);
+		MarkdownSection section = Markdown.matchHeading(markdown);
 
 		// Then
 		assertNotNull(section);
@@ -91,7 +90,7 @@ public class MarkdownTest {
 		String markdown = "## \t" + title;
 
 		// When
-		Section section = Markdown.matchHeading(markdown);
+		MarkdownSection section = Markdown.matchHeading(markdown);
 
 		// Then
 		assertNotNull(section);
@@ -106,7 +105,7 @@ public class MarkdownTest {
 		String markdown = " # " + title;
 
 		// When
-		Section section = Markdown.matchHeading(markdown);
+		MarkdownSection section = Markdown.matchHeading(markdown);
 
 		// Then
 		assertNull(section);
@@ -120,7 +119,7 @@ public class MarkdownTest {
 		String markdown = " ## " + title;
 
 		// When
-		Section section = Markdown.matchHeading(markdown);
+		MarkdownSection section = Markdown.matchHeading(markdown);
 
 		// Then
 		assertNull(section);
@@ -130,7 +129,7 @@ public class MarkdownTest {
 	public void shouldReadProperty() {
 
 		// Given
-		String name = "name";
+		String name = "title";
 		String value = "value";
 		String line = name + ":" + value;
 
@@ -147,7 +146,7 @@ public class MarkdownTest {
 	public void shouldReadPropertyWithSpaces() {
 
 		// Given
-		String name = "name";
+		String name = "title";
 		String value = "value";
 		String line = "   " + name + " :  " + value + "\t";
 

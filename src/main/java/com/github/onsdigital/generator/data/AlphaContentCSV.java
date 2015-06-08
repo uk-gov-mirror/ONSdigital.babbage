@@ -1,5 +1,11 @@
 package com.github.onsdigital.generator.data;
 
+import com.github.onsdigital.content.statistic.data.TimeSeries;
+import com.github.onsdigital.generator.ContentNode;
+import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang.BooleanUtils;
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.IOException;
 import java.net.URI;
 import java.text.DecimalFormat;
@@ -7,12 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang.ArrayUtils;
-import org.apache.commons.lang.BooleanUtils;
-import org.apache.commons.lang3.StringUtils;
-
-import com.github.onsdigital.generator.Folder;
-import com.github.onsdigital.json.timeseries.Timeseries;
 
 /**
  * Handles the {@value #resourceName} CSV file.
@@ -77,20 +77,20 @@ class AlphaContentCSV {
 			String cdid = row.get(CDID);
 
 			// Get the timeseries to work with:
-			Timeseries timeseries = Data.timeseries(cdid);
+			TimeSeries timeseries = Data.timeseries(cdid);
 			if (timeseries == null) {
 				// We haven't seen this one before, so add it:
 				timeseries = Data.addTimeseries(cdid);
 			}
 
 			// Set the URI if necessary:
-			Folder folder = Data.getFolder(row.get(THEME), row.get(LEVEL2), row.get(LEVEL3));
+			ContentNode folder = Data.getFolder(row.get(THEME), row.get(LEVEL2), row.get(LEVEL3));
 			if (timeseries.uri == null) {
 				timeseries.uri = toUri(folder, timeseries);
 			}
 
 			// Set the other properties:
-			timeseries.name = row.get(NAME);
+			timeseries.title = row.get(NAME);
 			if (BooleanUtils.toBoolean(row.get(KEY))) {
 				folder.headline = timeseries;
 			}
@@ -132,9 +132,9 @@ class AlphaContentCSV {
 			String relatedCdidColumn = row.get(RELATED_CDID);
 			if (StringUtils.isNotBlank(relatedCdidColumn)) {
 				String[] relatedCdidTokens = relatedCdidColumn.split(",");
-				List<Timeseries> relatedTimeserieses = new ArrayList<Timeseries>();
+				List<TimeSeries> relatedTimeserieses = new ArrayList<TimeSeries>();
 				for (String relatedCdid : relatedCdidTokens) {
-					Timeseries relatedTimeseries = Data.timeseries(relatedCdid);
+					TimeSeries relatedTimeseries = Data.timeseries(relatedCdid);
 					if (relatedTimeseries == null) {
 						// We haven't seen this one before, so add it:
 						relatedTimeseries = Data.addTimeseries(relatedCdid.trim());
@@ -164,20 +164,20 @@ class AlphaContentCSV {
 		}
 	}
 
-	static URI toUri(Folder folder, Timeseries timeseries) {
+	static URI toUri(ContentNode folder, TimeSeries timeseries) {
 		URI result = null;
 
 		if (timeseries != null) {
 			if (timeseries.uri == null) {
 				String baseUri = "/" + folder.filename();
-				Folder parent = folder.parent;
+				ContentNode parent = folder.parent;
 				while (parent != null) {
 					baseUri = "/" + parent.filename() + baseUri;
 					parent = parent.parent;
 				}
 				baseUri += "/timeseries";
-				timeseries.uri = URI.create(baseUri + "/" + StringUtils.trim(timeseries.fileName));
-			}
+                timeseries.uri = URI.create(baseUri + "/" + StringUtils.trim(StringUtils.lowerCase(timeseries.cdid)));
+            }
 			result = timeseries.uri;
 		}
 

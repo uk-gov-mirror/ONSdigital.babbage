@@ -3,13 +3,14 @@ package com.github.onsdigital.search.bean;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.github.davidcarboni.restolino.json.Serialiser;
-import com.github.onsdigital.json.collection.CollectionItem;
+import com.github.onsdigital.content.partial.reference.StatisticsReference;
 
 /**
  * Holds the details for a collection of content types
@@ -25,11 +26,12 @@ public class CollectionSearchResult {
 	private long numberOfResults;
 	private List<Map<String, String>> results;
 	private int page;
+    private static final String datePattern = "dd MMM yyyy";
 
 	/**
 	 * ctor that parses the files and stores information about these files into
 	 * a map
-	 * 
+	 *
 	 * @param files
 	 *            collection of files representing the content types
 	 * @param page
@@ -68,9 +70,9 @@ public class CollectionSearchResult {
 	private void init(List<File> files) {
 		for (File file : files) {
 			Map<String, String> item = new HashMap<String, String>();
-			CollectionItem collectionItemJson = getCollectionItem(file);
+			StatisticsReference collectionItemJson = getCollectionItem(file);
 			item.put(TITLE, collectionItemJson.title);
-			item.put(RELEASE_DATE, collectionItemJson.releaseDate);
+            item.put(RELEASE_DATE, new SimpleDateFormat(datePattern).format(collectionItemJson.releaseDate));
 
 			String[] urlWithoutJson = getUrl(file);
 			item.put(URL, urlWithoutJson[0]);
@@ -89,9 +91,9 @@ public class CollectionSearchResult {
 		return urlWithoutJson;
 	}
 
-	private CollectionItem getCollectionItem(File file) {
+	private StatisticsReference getCollectionItem(File file) {
 		try {
-			return Serialiser.deserialise(new FileInputStream(file), CollectionItem.class);
+			return Serialiser.deserialise(new FileInputStream(file), StatisticsReference.class);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}

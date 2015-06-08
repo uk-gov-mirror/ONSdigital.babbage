@@ -62,7 +62,7 @@ public class CollectionSearchResultTest {
 	private List<File> setUpFiles(String fileName) {
 		File file;
 		if (StringUtils.isEmpty(fileName)) {
-			file = new File("api/target/taxonomy/economy/inflationandpriceindices/bulletins/consumerpriceinflationjune2014/data.json");
+			file = new File("target/content/economy/inflationandpriceindices/bulletins/consumerpriceinflationjune2014/data.json");
 		} else {
 			file = new File(fileName);
 		}

@@ -8,7 +8,7 @@ import java.security.InvalidKeyException;
 
 public class Configuration {
 
-    private static final String DEFAULT_TAXONOMY_ROOT = "target/taxonomy";
+    private static final String DEFAULT_CONTENT_DIRECTORY = "target/content";
 
     private static final String DEFAULT_ZEBEDEE_URL = "http://localhost:8082";
 
@@ -38,8 +38,8 @@ public class Configuration {
         return StringUtils.defaultIfBlank(getValue("ZEBEDEE_URL"), DEFAULT_ZEBEDEE_URL);
     }
 
-    public static String getTaxonomyPath() {
-        return StringUtils.defaultIfBlank(getValue("TAXONOMY_DIR"), DEFAULT_TAXONOMY_ROOT);
+    public static String getContentPath() {
+        return StringUtils.defaultIfBlank(getValue("CONTENT_DIR"), DEFAULT_CONTENT_DIRECTORY);
     }
 
     public static String getPrerenderToken() {
@@ -110,7 +110,7 @@ public class Configuration {
      * <p>
      * Copied from {@link com.github.davidcarboni.restolino.Configuration}.
      *
-     * @param key The name of the configuration value.
+     * @param key The title of the configuration value.
      * @return The system property corresponding to the given key (e.g.
      * -Dkey=value). If that is blank, the environment variable
      * corresponding to the given key (e.g. EXPORT key=value). If that

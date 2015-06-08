@@ -1,5 +1,9 @@
 package com.github.onsdigital.util;
 
+import au.com.bytecode.opencsv.CSVWriter;
+import com.github.onsdigital.content.statistic.data.TimeSeries;
+import com.github.onsdigital.content.statistic.data.timeseries.TimeseriesValue;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -8,25 +12,21 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import au.com.bytecode.opencsv.CSVWriter;
-
-import com.github.onsdigital.json.timeseries.Timeseries;
-import com.github.onsdigital.json.timeseries.TimeseriesValue;
 
 /**
  * 
- * Transforms timeseries data into CSV format
+ * Transforms TimeSeries data into CSV format
  * 
  * @author Brn
  *
  */
 public class CSVGenerator {
 
-	private List<Timeseries> timeseries;
+	private List<com.github.onsdigital.content.statistic.data.TimeSeries> TimeSeries;
 	public Map<String, TimeseriesValue[]> data;
 
-	public CSVGenerator(List<Timeseries> timeseries, Map<String, TimeseriesValue[]> data) {
-		this.timeseries = timeseries;
+	public CSVGenerator(List<TimeSeries> TimeSeries, Map<String, TimeseriesValue[]> data) {
+		this.TimeSeries = TimeSeries;
 		this.data = data;
 	}
 
@@ -50,8 +50,8 @@ public class CSVGenerator {
 			int i = 0;
 			row = new String[size];
 			row[i++] = rowData.getKey();
-			for (TimeseriesValue timeseriesValue : rowData.getValue()) {
-				row[i++] = (timeseriesValue ==null ? null : timeseriesValue.value);
+			for (TimeseriesValue TimeSeriesValue : rowData.getValue()) {
+				row[i++] = (TimeSeriesValue ==null ? null : TimeSeriesValue.value);
 			}
 			writer.writeNext(row);
 		}
@@ -59,7 +59,7 @@ public class CSVGenerator {
 
 	private int generateCsvHeaders(CSVWriter writer) {
 
-		int size = timeseries.size() + 1;
+		int size = TimeSeries.size() + 1;
 
 		// Rows
 		int row = 9;
@@ -87,18 +87,18 @@ public class CSVGenerator {
 		column++;
 
 		// Data
-		for (Timeseries timeseries : this.timeseries) {
-			name[column] = timeseries.name;
-			cdid[column] = timeseries.cdid();
-			preUnit[column] = timeseries.preUnit;
-			unit[column] = timeseries.unit;
-			source[column] = timeseries.source;
-			keyNote[column] = timeseries.keyNote;
-			additionalText[column] = timeseries.additionalText;
-			note1[column] = timeseries.note1;
-			note2[column] = timeseries.note2;
+		for (TimeSeries TimeSeries : this.TimeSeries) {
+			name[column] = TimeSeries.title;
+			cdid[column] = TimeSeries.cdid;
+			preUnit[column] = TimeSeries.preUnit;
+			unit[column] = TimeSeries.unit;
+			source[column] = TimeSeries.source;
+			keyNote[column] = TimeSeries.keyNote;
+			additionalText[column] = TimeSeries.additionalText;
+			note1[column] = TimeSeries.notes.get(0);
+			note2[column] = TimeSeries.notes.get(1);
 			column++;
-			System.out.println("Geneararing CSV for: " + timeseries.name + " at: " + timeseries.uri);
+			System.out.println("Geneararing CSV for: " + TimeSeries.title + " at: " + TimeSeries.uri);
 		}
 		writer.writeNext(name);
 		writer.writeNext(cdid);

@@ -6,9 +6,9 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Scanner;
 
-import com.github.onsdigital.generator.Folder;
+import com.github.onsdigital.content.methodology.Methodology;
+import com.github.onsdigital.generator.ContentNode;
 import com.github.onsdigital.generator.data.Data;
-import com.github.onsdigital.json.markdown.Methodology;
 
 public class MethodologyMarkdown {
 
@@ -23,7 +23,7 @@ public class MethodologyMarkdown {
 			Methodology methodology = readMethodology(file);
 
 			// Add it to the taxonomy:
-			Folder folder = Data.getFolder(methodology.theme, methodology.level2, methodology.level3);
+			ContentNode folder = Data.getFolder(methodology.theme, methodology.level2, methodology.level3);
 			folder.methodology.add(methodology);
 		}
 	}
@@ -35,13 +35,13 @@ public class MethodologyMarkdown {
 		Markdown markdown = new Markdown(file);
 
 		// Set up the methodology
-		Methodology methodology = new Methodology();
-		methodology.name = markdown.title;
+		Methodology methodology = new Methodology(null,null,null,null);
+		methodology.title = markdown.title;
 		methodology.title = markdown.title;
 		setProperties(methodology, markdown);
 		methodology.sections.addAll(markdown.sections);
 		methodology.accordion.addAll(markdown.accordion);
-		methodology.fileName = markdown.toFilename();
+//		methodology.fileName = markdown.toFilename();
 
 		return methodology;
 	}
@@ -57,9 +57,6 @@ public class MethodologyMarkdown {
 	 * <li>Lede</li>
 	 * <li>More</li>
 	 * </ul>
-	 * 
-	 * @param scanner
-	 *            The {@link Scanner} to read lines from.
 	 */
 	private static void setProperties(Methodology methodology, Markdown markdown) {
 
@@ -71,14 +68,31 @@ public class MethodologyMarkdown {
 		methodology.level3 = properties.remove("level 3");
 
 		// Additional details
-		methodology.lede = properties.remove("lede");
-		methodology.more = properties.remove("more");
+		methodology.summary = properties.remove("lede");
+//		methodology.more = properties.remove("more");
 
 		// Note any unexpected information
 		for (String property : properties.keySet()) {
 			System.out.println("Methodology key not recognised: " + property + " (for value '" + properties.get(property) + "')");
 		}
 
+	}
+
+
+	/**
+	 * Sanitises an methodology title to <code>[a-zA-Z0-9]</code>.
+	 *
+	 * @return A sanitised string.
+	 */
+	public static String toFilename(Methodology methodology) {
+		StringBuilder result = new StringBuilder();
+		for (int i = 0; i < methodology.title.length(); i++) {
+			String character = methodology.title.substring(i, i + 1);
+			if (character.matches("[a-zA-Z0-9]")) {
+				result.append(character);
+			}
+		}
+		return result.toString().toLowerCase();
 	}
 
 }
