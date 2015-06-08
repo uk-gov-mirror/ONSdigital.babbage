@@ -4,7 +4,7 @@
         <div class="wrapper">
             <h1 class="page-header__title flush--half--bottom">{{taxonomy.data.name}}</h1>
             <div class="content-reveal lede">
-                <p>{{taxonomy.data.lede}}
+                <p>{{taxonomy.data.summary}}
                     <a href="" toggler="more" toggler-widget-var="w_toggler" ng-if="taxonomy.data.more" class="content-reveal__action">{{w_toggler.isVisible() ? 'Show less' : 'Show more'}}</a>
                 </p>
                 <div toggleable="more" class="content-reveal__hidden">
@@ -22,18 +22,20 @@
 <!-- /grid-col -->
 
 <section class="panel panel--pad-small panel--bottom-mar  wrapper flush--vertical">
+
     <div class="grid-wrap" ng-repeat="sections in taxonomy.data.sections">
         <div ng-repeat="section in sections" class="grid-col tablet-grid-one-third clearfix">
             <article ng-if="!section.nondata" class="box box--padded-vertical">
                 <header class="box__header">
                     <h3>
-                        <a href="#!{{getPath()}}/{{section.link}}">{{section.name}}</a>
+                        <a href="#!{{section.uri}}">{{section.name}}</a>
                     </h3>
                 </header>
                 <!-- /box__header -->
                 <div class="box__content">
                     <p >
-                       Includes: {{section.items | join:', ': 'name' | charLimit:120:'...'}}
+                       <!--Includes: {{section.items | join:', ': 'name' | charLimit:120:'...'}}-->
+                        {{section.summary | charLimit:120:'...'}}
                     </p>
 
 

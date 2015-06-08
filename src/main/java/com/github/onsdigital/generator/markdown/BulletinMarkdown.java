@@ -38,8 +38,8 @@ public class BulletinMarkdown {
 
             // Add it to the taxonomy:
             folder.bulletins.add(bulletin);
-            bulletins.put(bulletin.title, bulletin);
-            if (StringUtils.isNotBlank(bulletin.headlines[0])) {
+            bulletins.put(bulletin.name, bulletin);
+            if (StringUtils.isNotBlank(bulletin.headline1)) {
                 folder.headlineBulletin = bulletin;
             }
         }
@@ -53,8 +53,8 @@ public class BulletinMarkdown {
 
         // Set up the bulletin
         Bulletin bulletin = new Bulletin(null, null, null, null);
-        bulletin.title = markdown.title;
-        bulletin.title = markdown.title;
+        bulletin.name = markdown.title;
+        bulletin.name = markdown.title;
         setProperties(bulletin, markdown);
         bulletin.sections.clear();
         bulletin.sections.addAll(markdown.sections);
@@ -99,11 +99,11 @@ public class BulletinMarkdown {
 
         // Additional details
         bulletin.summary = StringUtils.defaultIfBlank(properties.remove("summary"), bulletin.summary);
-//        bulletin.headline1 = StringUtils.defaultIfBlank(properties.remove("headline 1"), bulletin.headline1);
-//        bulletin.headline2 = StringUtils.defaultIfBlank(properties.remove("headline 2"), bulletin.headline2);
-//        bulletin.headline3 = StringUtils.defaultIfBlank(properties.remove("headline 3"), bulletin.headline3);
+        bulletin.headline1 = StringUtils.defaultIfBlank(properties.remove("headline 1"), bulletin.headline1);
+        bulletin.headline2 = StringUtils.defaultIfBlank(properties.remove("headline 2"), bulletin.headline2);
+        bulletin.headline3 = StringUtils.defaultIfBlank(properties.remove("headline 3"), bulletin.headline3);
         bulletin.contact = new Contact();
-        bulletin.contact.name = StringUtils.defaultIfBlank(properties.remove("contact title"), bulletin.contact.name);
+        bulletin.contact.name = StringUtils.defaultIfBlank(properties.remove("contact name"), bulletin.contact.name);
         bulletin.contact.email = StringUtils.defaultIfBlank(properties.remove("contact email"), bulletin.contact.email);
 
         //TODO: Where is next release?
@@ -157,8 +157,8 @@ public class BulletinMarkdown {
      */
     public static String toFilename(Bulletin bulletin) {
         StringBuilder result = new StringBuilder();
-        for (int i = 0; i < bulletin.title.length(); i++) {
-            String character = bulletin.title.substring(i, i + 1);
+        for (int i = 0; i < bulletin.name.length(); i++) {
+            String character = bulletin.name.substring(i, i + 1);
             if (character.matches("[a-zA-Z0-9]")) {
                 result.append(character);
             }

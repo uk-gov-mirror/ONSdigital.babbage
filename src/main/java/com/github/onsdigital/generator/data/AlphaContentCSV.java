@@ -90,7 +90,7 @@ class AlphaContentCSV {
 			}
 
 			// Set the other properties:
-			timeseries.title = row.get(NAME);
+			timeseries.name = row.get(NAME);
 			if (BooleanUtils.toBoolean(row.get(KEY))) {
 				folder.headline = timeseries;
 			}

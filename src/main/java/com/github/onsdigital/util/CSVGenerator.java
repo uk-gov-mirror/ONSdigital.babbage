@@ -88,7 +88,7 @@ public class CSVGenerator {
 
 		// Data
 		for (TimeSeries TimeSeries : this.TimeSeries) {
-			name[column] = TimeSeries.title;
+			name[column] = TimeSeries.name;
 			cdid[column] = TimeSeries.cdid;
 			preUnit[column] = TimeSeries.preUnit;
 			unit[column] = TimeSeries.unit;
@@ -98,7 +98,7 @@ public class CSVGenerator {
 			note1[column] = TimeSeries.notes.get(0);
 			note2[column] = TimeSeries.notes.get(1);
 			column++;
-			System.out.println("Geneararing CSV for: " + TimeSeries.title + " at: " + TimeSeries.uri);
+			System.out.println("Geneararing CSV for: " + TimeSeries.name + " at: " + TimeSeries.uri);
 		}
 		writer.writeNext(name);
 		writer.writeNext(cdid);

@@ -52,16 +52,16 @@ public class ArticleMarkdownTest {
 		assertEquals(releaseDate, article.releaseDate);
 
 		// Title
-		assertEquals("What happened to all the money?", article.title);
+		assertEquals("What happened to all the money?", article.name);
 
 		// Sections
 		assertEquals(3, article.sections.size());
-		assertEquals("Article summary", article.sections.get(0).title);
+		assertEquals("Article summary", article.sections.get(0).name);
 		assertEquals("Summarise article.\n", article.sections.get(0).markdown);
-		assertEquals("Section one", article.sections.get(1).title);
+		assertEquals("Section one", article.sections.get(1).name);
 		String markdown1 = "Jarogonium est jargonius et dameleie statisticum seculum mondi.\n";
 		assertEquals(markdown1, article.sections.get(1).markdown);
-		assertEquals("Section two", article.sections.get(2).title);
+		assertEquals("Section two", article.sections.get(2).name);
 		String markdown2 = "Lorem ipsum article\n";
 		markdown2 += " * bullet1\n";
 		markdown2 += " * bullet2\n";
@@ -69,7 +69,7 @@ public class ArticleMarkdownTest {
 
 		// Accordion
 		assertEquals(1, article.accordion.size());
-		assertEquals("Footnotes", article.accordion.get(0).title);
+		assertEquals("Footnotes", article.accordion.get(0).name);
 		assertEquals("Article footer", article.accordion.get(0).markdown);
 	}
 

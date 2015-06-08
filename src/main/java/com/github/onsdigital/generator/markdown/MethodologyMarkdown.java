@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Collection;
 import java.util.Map;
-import java.util.Scanner;
 
 import com.github.onsdigital.content.methodology.Methodology;
 import com.github.onsdigital.generator.ContentNode;
@@ -36,8 +35,8 @@ public class MethodologyMarkdown {
 
 		// Set up the methodology
 		Methodology methodology = new Methodology(null,null,null,null);
-		methodology.title = markdown.title;
-		methodology.title = markdown.title;
+		methodology.name = markdown.title;
+		methodology.name = markdown.title;
 		setProperties(methodology, markdown);
 		methodology.sections.addAll(markdown.sections);
 		methodology.accordion.addAll(markdown.accordion);
@@ -86,8 +85,8 @@ public class MethodologyMarkdown {
 	 */
 	public static String toFilename(Methodology methodology) {
 		StringBuilder result = new StringBuilder();
-		for (int i = 0; i < methodology.title.length(); i++) {
-			String character = methodology.title.substring(i, i + 1);
+		for (int i = 0; i < methodology.name.length(); i++) {
+			String character = methodology.name.substring(i, i + 1);
 			if (character.matches("[a-zA-Z0-9]")) {
 				result.append(character);
 			}
