@@ -1,5 +1,14 @@
 package com.github.onsdigital.generator.data;
 
+import au.com.bytecode.opencsv.CSVReader;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
@@ -10,23 +19,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
-
-import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.xssf.usermodel.XSSFCell;
-import org.apache.poi.xssf.usermodel.XSSFRow;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
-import au.com.bytecode.opencsv.CSVReader;
+import java.util.*;
 
 /**
  * Convenience class for handling CSV and Excel data.
@@ -66,7 +59,7 @@ public class Csv implements Iterable<Map<String, String>> {
 
 	/**
 	 * 
-	 * @param path
+	 * @param resourceName
 	 *            The resource path to the file to be read (.csv or .xlsx)
 	 * @param encoding
 	 *            Optional: for csv, the character encoding to use when reading

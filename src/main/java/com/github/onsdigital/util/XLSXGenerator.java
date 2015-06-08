@@ -1,26 +1,26 @@
 package com.github.onsdigital.util;
 
+import com.github.onsdigital.content.statistic.data.TimeSeries;
+import com.github.onsdigital.content.statistic.data.timeseries.TimeseriesValue;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
-import com.github.onsdigital.json.timeseries.Timeseries;
-import com.github.onsdigital.json.timeseries.TimeseriesValue;
 
 public class XLSXGenerator {
 
-	private List<Timeseries> timeseries;
+	private List<TimeSeries> TimeSeries;
 	public Map<String, TimeseriesValue[]> data;
 
-	public XLSXGenerator(List<Timeseries> timeseries, Map<String, TimeseriesValue[]> data) {
-		this.timeseries = timeseries;
+	public XLSXGenerator(List<TimeSeries> TimeSeries, Map<String, TimeseriesValue[]> data) {
+		this.TimeSeries = TimeSeries;
 		this.data = data;
 	}
 
@@ -28,25 +28,25 @@ public class XLSXGenerator {
 
 		Workbook wb = new XSSFWorkbook();
 		Sheet sheet = wb.createSheet("data");
-		int startRow = generateHeaders(wb, sheet, timeseries);
-		generateRows(sheet, timeseries, startRow);
+		int startRow = generateHeaders(wb, sheet, TimeSeries);
+		generateRows(sheet, TimeSeries, startRow);
 		wb.write(output);
 	}
 
-	private void generateRows(Sheet sheet, List<Timeseries> timeseriesList, int startRow) {
+	private void generateRows(Sheet sheet, List<TimeSeries> TimeSeriesList, int startRow) {
 		int rownum = startRow + 1;
 
 		for (Entry<String, TimeseriesValue[]> rowValues : data.entrySet()) {
 			int i = 0;
 			Row row = sheet.createRow(rownum++);
 			row.createCell(i++).setCellValue(rowValues.getKey());
-			for (TimeseriesValue timeseriesValue : rowValues.getValue()) {
-				row.createCell(i++).setCellValue(timeseriesValue == null ? null : timeseriesValue.value);
+			for (TimeseriesValue TimeSeriesValue : rowValues.getValue()) {
+				row.createCell(i++).setCellValue(TimeSeriesValue == null ? null : TimeSeriesValue.value);
 			}
 		}
 	}
 
-	private int generateHeaders(Workbook wb, Sheet sheet, List<Timeseries> timeseriesList) {
+	private int generateHeaders(Workbook wb, Sheet sheet, List<TimeSeries> TimeSeriesList) {
 
 		// Rows
 		int row = 0;
@@ -74,18 +74,18 @@ public class XLSXGenerator {
 		column++;
 
 		// Data
-		for (Timeseries timeseries : this.timeseries) {
-			name.createCell(column).setCellValue(timeseries.name);
-			cdid.createCell(column).setCellValue(timeseries.cdid());
-			preUnit.createCell(column).setCellValue(timeseries.preUnit);
-			unit.createCell(column).setCellValue(timeseries.unit);
-			source.createCell(column).setCellValue(timeseries.source);
-			keyNote.createCell(column).setCellValue(timeseries.keyNote);
-			additionalText.createCell(column).setCellValue(timeseries.additionalText);
-			note1.createCell(column).setCellValue(timeseries.note1);
-			note2.createCell(column).setCellValue(timeseries.note2);
+		for (TimeSeries TimeSeries : this.TimeSeries) {
+			name.createCell(column).setCellValue(TimeSeries.title);
+			cdid.createCell(column).setCellValue(TimeSeries.cdid);
+			preUnit.createCell(column).setCellValue(TimeSeries.preUnit);
+			unit.createCell(column).setCellValue(TimeSeries.unit);
+			source.createCell(column).setCellValue(TimeSeries.source);
+			keyNote.createCell(column).setCellValue(TimeSeries.keyNote);
+			additionalText.createCell(column).setCellValue(TimeSeries.additionalText);
+			note1.createCell(column).setCellValue(TimeSeries.notes.get(0));
+			note2.createCell(column).setCellValue(TimeSeries.notes.get(1));
 			column++;
-			System.out.println("Geneararing XLSX for: " + timeseries.name + " at: " + timeseries.uri);
+			System.out.println("Geneararing XLSX for: " + TimeSeries.title + " at: " + TimeSeries.uri);
 		}
 
 		return row;

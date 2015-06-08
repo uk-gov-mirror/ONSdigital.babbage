@@ -47,7 +47,7 @@ public class CollectionTaxonomyFileSystem {
 
 	private List<File> getFiles(String query, String type) throws IOException {
 		List<File> files = new ArrayList<File>();
-		String taxonomyRoot = Configuration.getTaxonomyPath() + query;
+		String taxonomyRoot = Configuration.getContentPath() + query;
 		final Path rootDir = Paths.get(taxonomyRoot);
 		files = ScanFileSystem.getFiles(files, rootDir, type);
 		return files;

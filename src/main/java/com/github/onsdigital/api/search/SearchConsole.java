@@ -3,8 +3,8 @@ package com.github.onsdigital.api.search;
 import com.github.davidcarboni.restolino.framework.Api;
 import com.github.davidcarboni.restolino.json.Serialiser;
 import com.github.onsdigital.configuration.Configuration;
-import com.github.onsdigital.json.ContentType;
-import com.github.onsdigital.json.timeseries.Timeseries;
+import com.github.onsdigital.content.base.ContentType;
+import com.github.onsdigital.content.statistic.data.TimeSeries;
 import com.github.onsdigital.search.bean.AggregatedSearchResult;
 import com.mongodb.*;
 import org.apache.commons.lang3.StringUtils;
@@ -43,8 +43,8 @@ public class SearchConsole {
 
 	static void save(final String query, final int page, final Object searchResult) {
 
-		if (Timeseries.class.isAssignableFrom(searchResult.getClass())) {
-			saveTimeseries(query, page, (Timeseries) searchResult);
+		if (TimeSeries.class.isAssignableFrom(searchResult.getClass())) {
+			saveTimeSeries(query, page, (TimeSeries) searchResult);
 		} else {
 			saveSearchResult(query, page, (AggregatedSearchResult) searchResult);
 		}
@@ -199,7 +199,7 @@ public class SearchConsole {
 	/**
 	 * Generates an approximation of when a record with a null date was created.
 	 * The earliest iteration of this feature didn't include a date.
-	 * 
+	 *
 	 * @param nullDate
 	 *            Pass in the last result of this method to generate the next
 	 *            date in the sequence.
@@ -219,7 +219,7 @@ public class SearchConsole {
 		return result;
 	}
 
-	private static void saveTimeseries(String query, int page, Timeseries timeseries) {
+	private static void saveTimeSeries(String query, int page, TimeSeries timeseries) {
 
 		Search search = new Search();
 		search.query = query;
@@ -227,8 +227,8 @@ public class SearchConsole {
 
 		// Single hit:
 		Result result = new Result();
-		result.name = timeseries.cdid();
-		result.description = timeseries.name;
+		result.title = timeseries.cdid;
+		result.description = timeseries.title;
 		result.type = ContentType.timeseries;
 		result.uri = timeseries.uri;
 		search.hits.add(result);
@@ -245,9 +245,9 @@ public class SearchConsole {
 		// Add the hits:
 		for (Map<String, Object> hit : searchResult.getAllResults()) {
 			Result result = new Result();
-			result.name = hit.get("title").toString();
+			result.title = hit.get("title").toString();
 			Object lede = hit.get("lede");
-			// Timeseries results does not have lede
+			// TimeSeries results does not have lede
 			result.description = lede == null ? "" : lede.toString();
 			result.type = ContentType.valueOf(hit.get("type").toString());
 			result.uri = URI.create(hit.get("url").toString());
@@ -337,13 +337,13 @@ public class SearchConsole {
 
 	static class Result extends BasicDBObject {
 		static final long serialVersionUID = 7760752367684896714L;
-		String name;
+		String title;
 		String description;
 		URI uri;
 		ContentType type;
 
 		void build() {
-			append("name", name);
+			append("title", title);
 			append("description", description);
 			append("uri", uri.toString());
 			append("type", type.toString());

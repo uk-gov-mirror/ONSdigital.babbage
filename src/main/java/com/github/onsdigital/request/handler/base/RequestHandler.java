@@ -6,7 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Created by bren on 29/05/15.
  *
- * Classes implementing RequestHandler will automatically be registered to handle urls ending in with that class name.
+ * Classes implementing RequestHandler will automatically be registered to handle urls ending in with that class title.
  *
  * See {@link com.github.onsdigital.request.RequestDelegator} documentation for more info on url design
  *

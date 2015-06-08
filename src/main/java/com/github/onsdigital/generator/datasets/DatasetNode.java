@@ -1,11 +1,10 @@
 package com.github.onsdigital.generator.datasets;
 
-import java.util.HashSet;
-import java.util.Set;
-
+import com.github.onsdigital.content.statistic.Dataset;
 import org.apache.commons.lang3.StringUtils;
 
-import com.github.onsdigital.json.dataset.Dataset;
+import java.util.HashSet;
+import java.util.Set;
 
 class DatasetNode {
 
@@ -50,7 +49,7 @@ class DatasetNode {
 	 * Gets a child node, creating it if it doesn't exist.
 	 * 
 	 * @param name
-	 *            The name for the child
+	 *            The title for the child
 	 * @return The requested child
 	 */
 	DatasetNode getChild(String name) {
