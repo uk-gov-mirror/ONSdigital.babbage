@@ -31,7 +31,7 @@ public class TemplateService {
         JsonObject object = new JsonParser().parse(data).getAsJsonObject();
         String contentType = object.get("type").getAsString();
         System.out.println("Page rendering requested for content type: " + contentType);
-        return templateRenderer.renderTemplate(TemplateMapping.getTemplateName(ContentType.valueOf(contentType)) , new ContentSerialiser().deserialise(data, ProductPage.class));
+        return templateRenderer.renderTemplate(TemplateMapping.getTemplateName(ContentType.valueOf(contentType)) , new ContentSerialiser().deserialise(data, TaxonomyLandingPage.class));
     }
 
 }
