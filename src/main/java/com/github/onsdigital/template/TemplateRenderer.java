@@ -1,5 +1,7 @@
 package com.github.onsdigital.template;
 
+import com.github.onsdigital.content.base.Content;
+
 import java.io.IOException;
 
 /**
@@ -7,6 +9,6 @@ import java.io.IOException;
  */
 public interface TemplateRenderer {
 
-    public String renderTemplate(String templateName, Object data) throws IOException;
+    public String renderTemplate(String templateName, Content data) throws IOException;
 
 }

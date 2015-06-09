@@ -1,9 +1,9 @@
 package com.github.onsdigital.template.handlebars;
 
-import com.github.jknack.handlebars.Handlebars;
-import com.github.jknack.handlebars.Template;
+import com.github.jknack.handlebars.*;
+import com.github.jknack.handlebars.context.FieldValueResolver;
+import com.github.jknack.handlebars.helper.StringHelpers;
 import com.github.jknack.handlebars.io.FileTemplateLoader;
-import com.github.jknack.handlebars.io.TemplateSource;
 import com.github.onsdigital.configuration.Configuration;
 import com.github.onsdigital.content.base.Content;
 import com.github.onsdigital.template.TemplateRenderer;
@@ -18,29 +18,57 @@ import java.util.concurrent.ConcurrentHashMap;
 public class HandlebarsRenderer implements TemplateRenderer {
 
     private static FileTemplateLoader templateLoader = new FileTemplateLoader(Configuration.getTemplatesDirectory(), Configuration.getTemplatesSuffix());
+    private static Handlebars handlebars = new Handlebars(templateLoader);
+
+    static {
+        /**
+         * Helper wont work in the stand-alone version, so we add a default helper
+         * that render the plain text.
+         */
+        handlebars.registerHelper(HelperRegistry.HELPER_MISSING, new Helper<Object>() {
+            @Override
+            public CharSequence apply(final Object context,
+                                      final com.github.jknack.handlebars.Options options)
+                    throws IOException {
+                return new Handlebars.SafeString(options.fn.text());
+            }
+        });
+        handlebars.registerHelper("json", Jackson2Helper.INSTANCE);
+        handlebars.registerHelper("md", new MarkdownHelper());
+        // String helpers
+        StringHelpers.register(handlebars);
+        // Humanize helpers
+        HumanizeHelper.register(handlebars);
+    }
 
     //Compiled templates cache
     private static Map<String, Template> templatesCache = new ConcurrentHashMap<>();
 
     @Override
-    public String renderTemplate(String templateName, Object data) throws IOException {
+    public String renderTemplate(String templateName, Content data) throws IOException {
         Template template = getTemplate(templateName);
-        return template.apply(data);
+
+        Context context = Context
+                .newBuilder(data)
+                .resolver(FieldValueResolver.INSTANCE)
+                .build();
+        return template.apply(context);
     }
 
     private Template getTemplate(String templateName) throws IOException {
-        Template template = templatesCache.get(templateName);
-        if (template == null) {
-            template = compileTemplate(templateName);
-            templatesCache.put(templateName, template);
-        }
-        return template;
+        return compileTemplate(templateName);
+
+//        Template template = templatesCache.get(templateName);
+//        if (template == null) {
+//            template = compileTemplate(templateName);
+//            templatesCache.put(templateName, template);
+//        }
+//        return template;
     }
 
     private Template compileTemplate(String templateName) throws IOException {
         System.out.println("Compiling template for " + templateName + " for the first time");
-        return new Handlebars(templateLoader).compile(templateName);
+        return handlebars.compile(templateName);
     }
-
 
 }

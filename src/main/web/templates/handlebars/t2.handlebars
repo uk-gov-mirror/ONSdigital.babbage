@@ -10,13 +10,13 @@
 				<a href="#">Home</a>
 			</li>
 			<li class="nav__active">
-				{{name}}
+				{{title}}
 			</li>
 		</ul>
-		<h1 class="page-header__title flush--half--bottom">{{name}}</h1>
+		<h1 class="page-header__title flush--half--bottom">{{title}}</h1>
 		<div class="content-reveal lede">
 			<p>
-				{{lede}}
+				{{summary}}
 				<a href="#" class="content-reveal__action hidden" data-content-reveal>See more</a>
 			</p>
 		</div>
@@ -48,9 +48,9 @@
 		{{#each sections}}
             <li class="grid-col desktop-grid-one-third box--padded-vertical nav--block-landing">
              	<h3>
-					<a href="">{{name}}</a>
+					<a href="">{{title}}</a>
 				</h3>
-				<p>{{description}}</p>
+				<p>{{summary}}</p>
 			</li>
 		{{/each}}
 		</ul>

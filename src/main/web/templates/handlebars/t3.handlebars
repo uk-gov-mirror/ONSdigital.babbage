@@ -9,10 +9,10 @@
 <div class="page-header slate">
 	<div class="wrapper" >
 		<p>Add breadcrumb partial</p>
-	  	<h1 class="page-header__title flush--half--bottom">{{name}}</h1>
+	  	<h1 class="page-header__title flush--half--bottom">{{title}}</h1>
 	  	<div class="lede content-reveal">
 			<p>
-				{{lede}}
+				{{summary}}
 			</p>
 		</div>
 		<!-- /lede -->
@@ -23,7 +23,7 @@
 					<h2>Latest data</h2>
 					<header class="box___section">
 							<h3 class="navpanel-list-heading lede box--padded-bottom-small">
-								<a href="">{{headline.name}}</a>
+								<a href="">{{headline.title}}</a>
 							</h3>
 					</header>
 					<div class="grid-wrap">
@@ -66,7 +66,7 @@
 					<h2>Latest statistical bulletin</h2>
 					<header class="box___section">
 							<h3 class="navpanel-list-heading lede box--padded-bottom-small">
-							<a href="{{statsBulletinHeadline.uri}}">{{statsBulletinHeadline.name}}</a>
+							<a href="{{statsBulletinHeadline.uri}}">{{statsBulletinHeadline.title}}</a>
 							</h3>
 					</header>
 					<h3>What's in the bulletin?</h3>
@@ -96,14 +96,14 @@
 		<div class="box__inner border box--padded">
 			<div class="box__section">
 				<header>
-					<h2 class="list--table-header panel--pad">Time series related to {{name}}</h2>
+					<h2 class="list--table-header panel--pad">Time series related to {{title}}</h2>
 				</header>
 				<ol class="list--table list--table--complex table--striped-light table-light--sectioned">
 					{{#each items}}
 						<li class="list--table__item list--table__body">
 							<div class="list--table__item__body list--table__item__body--caption">
 								<h3 class="flush--half--bottom">
-									<a href="{{uri}}">{{name}}</a>
+									<a href="{{uri}}">{{title}}</a>
 								</h3>
 								{{#if description}}
 									<p class="list--table__item__description">
@@ -150,8 +150,8 @@
 								{{#each datasets}}
 								<li class="grid-col desktop-grid-one-half panel--bottom-mar-small">
 									<h3 class="flush">
-										<a href="{{uri}}" title="{{name}}">
-											{{name}}
+										<a href="{{uri}}" title="{{title}}">
+											{{title}}
 										</a>
 									</h3>
 									<p>
@@ -216,8 +216,8 @@
 								{{#each statsBulletins}}
 								<li class="grid-col desktop-grid-one-third panel--bottom-mar-small">
 									<h3 class="flush">
-										<a href="{{uri}}" title="{{name}}">
-											{{name}}
+										<a href="{{uri}}" title="{{title}}">
+											{{title}}
 										</a>
 									</h3>
 									<p>
@@ -244,8 +244,8 @@
 								{{#each articles}}
 								<li class="grid-col desktop-grid-one-third panel--bottom-mar-small">
 									<h3 class="flush">
-										<a href="{{uri}}" title="{{name}}">
-											{{name}}
+										<a href="{{uri}}" title="{{title}}">
+											{{title}}
 										</a>
 									</h3>
 									<p>

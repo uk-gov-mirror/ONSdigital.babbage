@@ -82,11 +82,31 @@
 		</dependency>
 
         <!-- Handlebars Java-->
-        <dependency>
-            <groupId>com.github.jknack</groupId>
-            <artifactId>handlebars</artifactId>
-            <version>${handlebars-java-version}</version>
-        </dependency>
+		<dependency>
+			<groupId>com.github.jknack</groupId>
+			<artifactId>handlebars</artifactId>
+			<version>${handlebars-java-version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.github.jknack</groupId>
+			<artifactId>handlebars-jackson2</artifactId>
+			<version>${handlebars-java-version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.github.jknack</groupId>
+			<artifactId>handlebars-markdown</artifactId>
+			<version>${handlebars-java-version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.github.jknack</groupId>
+			<artifactId>handlebars-humanize</artifactId>
+			<version>${handlebars-java-version}</version>
+		</dependency>
+
+
 
 		<!-- Test -->
 		<dependency>
@@ -130,7 +150,7 @@
         <dependency>
             <groupId>com.github.onsdigital</groupId>
             <artifactId>content-library</artifactId>
-            <version>1.0.6-SNAPSHOT</version>
+            <version>1.0.9-SNAPSHOT</version>
         </dependency>
 
 	</dependencies>

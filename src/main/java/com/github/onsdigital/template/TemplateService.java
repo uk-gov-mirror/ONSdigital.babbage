@@ -2,6 +2,9 @@ package com.github.onsdigital.template;
 
 import com.github.onsdigital.content.base.Content;
 import com.github.onsdigital.content.base.ContentType;
+import com.github.onsdigital.content.serialiser.ContentSerialiser;
+import com.github.onsdigital.content.taxonomy.ProductPage;
+import com.github.onsdigital.content.taxonomy.TaxonomyLandingPage;
 import com.github.onsdigital.template.handlebars.HandlebarsRenderer;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -28,7 +31,7 @@ public class TemplateService {
         JsonObject object = new JsonParser().parse(data).getAsJsonObject();
         String contentType = object.get("type").getAsString();
         System.out.println("Page rendering requested for content type: " + contentType);
-        return templateRenderer.renderTemplate(TemplateMapping.getTemplateName(ContentType.valueOf(contentType)) , object);
+        return templateRenderer.renderTemplate(TemplateMapping.getTemplateName(ContentType.valueOf(contentType)) , new ContentSerialiser().deserialise(data, ProductPage.class));
     }
 
 }
