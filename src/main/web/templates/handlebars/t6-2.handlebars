@@ -56,7 +56,7 @@
 	<ol class="table-of-contents-ordered-list">
 		{{#each sections}}
 		<li>
-			{{title}}
+			<a href="#{{uri}}">{{title}}</a>
 		</li>
 		{{/each}}
 	</ol>
@@ -67,7 +67,7 @@
 	<div class="grid-wrap">
 		<div class="grid-col desktop-grid-two-thirds">
 			{{#each sections}}
-			<h2>{{title}}</h2>
+			<h2 id="{{uri}}">{{title}}</h2>
 			<p>
 				{{markdown}}
 			</p>
@@ -133,25 +133,21 @@
 			<div class="grid-col desktop-grid-full-width">
 				<div class="grid-wrap">
 					<div class="grid-col desktop-grid-two-thirds">
-						<article class="box solid box--teal--separated--left">
+						<article class="box box--teal--separated--left">
 							<div class="box__inner border box--padded">
 								<header class="box__header">
 									<h3>Related articles and bulletins</h3>
 								</header>
 								<div class="box__content">
 									<ul class="list--neutral">
+										{{#each relatedBulletins}}
 										<li>
-											<h4 class="flush"><a href="#">Title of article/bulletin</a></h4>
+											<h4 class="flush"><a href="{{uri}}">{{title}}</a></h4>
 											<p>
-												Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+												{{description}}
 											</p>
 										</li>
-										<li>
-											<h4 class="flush"><a href="#">Title of article/bulletin</a></h4>
-											<p>
-												Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-											</p>
-										</li>
+										{{/each}}
 									</ul>
 								</div>
 							</div>
@@ -164,11 +160,11 @@
 						<article class="box box--orange box--orange--separated-left">
 							<div class="box__inner border box--padded has-icon">
 								<header class="box__header">
-									<h3><a href="#">Looking for local statistics?</a></h3>
+									<h3><a href="{{local.uri}}">{{local.title}}</a></h3>
 								</header>
 								<div class="box__content">
 									<p>
-										A handy guide to let you know where to find local statistics.
+										{{local.description}}
 									</p>
 								</div>
 							</div>
