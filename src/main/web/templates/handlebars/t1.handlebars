@@ -5,16 +5,16 @@
 
 <div class="page-header slate">
     <div class="wrapper">
-        <h2 class="page-header__title flush--half--bottom">{{title}}</h2>
+        <h1 class="page-header__title flush--half--bottom">{{title}}</h1>
 
-        <p>{{lede}}</p>
-
-        <h3><a href="#">Browse our statistics<span class="icon-right-open-big"></span></a></h3>
+        <p>{{lede}}
+		<br/>
+        <a href="#">Browse our statistics<span class="icon-right-open-big"></span></a></p>
   </div>
     <!-- / wrapper -->
 </div>
 <!-- panel -->
-<section class="wrapper panel--mar">
+<div class="wrapper panel--mar">
     <!-- grid-wrap -->
     <div class="grid-wrap grid-wrap--home-hero panel--separated--bottom">
       <!-- grid-col -->
@@ -70,19 +70,15 @@
         </div>
         <!-- /panel-->
     </div>
-</section>
+</div>
 
-<!-- section -->
-<section class="panel wrapper panel--separated--bottom">
-    <header class="actionable-header__title">
-        <h2 class="actionable-header__title">New this week</h2>
-        <!-- <a class="hide-med-down [actionable-header--asidelink]" href="#">View new and upcoming releases</a> -->
-    </header>
+<div class="panel wrapper panel--separated--bottom">
+    <h2 class="delta flush">New this week</h2>
     <div class="grid-wrap">
         <ul class="list--neutral">
             {{#each releases}}
 				<li class="grid-col desktop-grid-one-third">
-					<a href="{{link}}" title="{{name}}"><h3>{{name}}</h3></a>
+					<h3><a href="{{link}}" title="{{name}}">{{name}}</a></h3>
 					<p>
                         {{description}}
 					</p>
@@ -93,13 +89,13 @@
     </div>
     <a href="#">View new and upcoming releases</a>
     <!-- /section -->
-</section>
+</div>
 <!-- wrapper -->
-<section class="wrapper panel--mar">
+<div class="wrapper panel--mar">
     <div class="grid-wrap">
 		{{#each oneThirdBoxes}}
         <div class="grid-col desktop-grid-one-third">
-            <h3 class="flush--half">{{name}}</h3>
+			<h2 class="delta flush--half">{{name}}</h3>
             <article class="box  flush--half--bottom">
                 <div class="box__inner border box--padded">
                     <div class="box__section">
@@ -123,12 +119,12 @@
     <div class="grid-wrap panel--top-mar">
 		{{#each oneHalfBoxes}}
         <div class="grid-col desktop-grid-one-half">
-            <h3 class="flush--half">{{name}}</h3>
+			<h2 class="delta flush--half">{{name}}</h3>
             <article class="box border flush--half--bottom">
                 <div class="box__inner box--padded">
                     <div class="grid-wrap">
                         <div class="grid-col grid-one-half grid-push-one-half">
-							<h2>{{boxText}}</h2>
+							<p>{{boxText}}</p>
                         </div>
                     </div>
                 </div>
@@ -139,6 +135,6 @@
 		{{/each}}
     </div>
     <!-- /grid-wrap -->
-</section>
+</div>
 
 <script src="../../node_modules/ONS-Pattern-Library/dist/js/footer.js"></script>
