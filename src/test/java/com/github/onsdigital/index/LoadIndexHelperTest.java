@@ -36,7 +36,7 @@ public class LoadIndexHelperTest {
 		Map<String, String> documentMap = LoadIndexHelper.getDocumentMap("target/content/economy/inflationandpriceindices/bulletins/consumerpriceinflationjune2014/data.json");
 		assertEquals("url should math file structure", "/economy/inflationandpriceindices/bulletins/consumerpriceinflationjune2014/", documentMap.get("url"));
 		assertEquals("type should be bulletins", "bulletin", documentMap.get("type"));
-		assertEquals("title should be data.json", "Consumer Price Inflation, June 2014", documentMap.get("title"));
+		assertEquals("name should be data.json", "Consumer Price Inflation, June 2014", documentMap.get("title"));
 		assertTrue("tags should contain subdirs", documentMap.get("tags").contains("inflation"));
 	}
 
@@ -45,7 +45,7 @@ public class LoadIndexHelperTest {
 		Map<String, String> documentMap = LoadIndexHelper.getDocumentMap("target/content/economy/data.json");
 		assertEquals("url should match file structure", "/economy/", documentMap.get("url"));
 		assertEquals("type should be bulletins", "home", documentMap.get("type"));
-		assertEquals("title should be uksectoraccounts", "Economy", documentMap.get("title"));
+		assertEquals("name should be uksectoraccounts", "Economy", documentMap.get("title"));
 		assertFalse("tags should not contain content type subdir", documentMap.get("tags").contains("CONTENT_TYPE"));
 	}
 

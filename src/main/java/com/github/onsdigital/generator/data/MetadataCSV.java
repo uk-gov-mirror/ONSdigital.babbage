@@ -63,7 +63,7 @@ public class MetadataCSV {
 			if (timeseries == null) {
 				timeseries = Data.addTimeseries(cdid);
 			}
-			timeseries.title = row.get("Name");
+			timeseries.name = row.get("Name");
 			timeseries.seasonalAdjustment = row.get("Seasonal adjustment");
 			timeseries.mainMeasure = row.get("Main measure");
 			timeseries.description = row.get("Description");
@@ -98,7 +98,7 @@ public class MetadataCSV {
 				}
 				dataset.add(timeseries);
 				// System.out.println(file.getFileName() + ": " + title);
-				timeseries.title = name;
+				timeseries.name = name;
 			}
 			System.out.println("Updated " + ok + " timeseries.");
 		}

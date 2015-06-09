@@ -12,7 +12,7 @@
 		autoCompleteLimit: 5,
 
 		//Debug logs
-		debugEnabled: false
+		debugEnabled: true
 	}
 
 	angular.module('onsAppConfig', [])

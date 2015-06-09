@@ -68,7 +68,7 @@ public class DatasetContent {
             ContentNode folder = Data.getFolder(row.get(THEME), row.get(LEVEL2), row.get(LEVEL3));
 
             Dataset dataset = new Dataset(null, null, null, null, null);
-            dataset.title = StringUtils.trim(row.get(NAME));
+            dataset.name = StringUtils.trim(row.get(NAME));
 //			dataset.title = dataset.title; //Title no more there
 //			dataset.fileName = sanitise(dataset.title.toLowerCase());
             if (StringUtils.isNotBlank(row.get(SUMMARY))) {
@@ -78,7 +78,7 @@ public class DatasetContent {
             if (StringUtils.isNotBlank(row.get(SERIES))) {
 
                 DownloadSection downloadSection = new DownloadSection();
-                downloadSection.title = dataset.title;
+                downloadSection.title = dataset.name;
                 downloadSection.cdids = new ArrayList<String>();
                 dataset.downloads.add(downloadSection);
 
@@ -110,7 +110,7 @@ public class DatasetContent {
 
             } else if (StringUtils.isNotBlank(row.get("Link (latest)"))) {
                 DownloadSection downloadSection = new DownloadSection();
-                downloadSection.title = dataset.title;
+                downloadSection.title = dataset.name;
                 downloadSection.xls = row.get("Link (latest)");
                 dataset.downloads.add(downloadSection);
             }

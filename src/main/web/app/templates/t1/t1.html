@@ -1,12 +1,11 @@
 <!--New homepage starts here!-->
 
 
-
 <div class="wrapper panel">
     <article class="box flush">
         <header class="box__header">
             <h2>
-            Welcome to the Office for National Statistics
+                Welcome to the Office for National Statistics
             </h2>
         </header>
         <!-- /box__header -->
@@ -30,30 +29,31 @@
     <div class="wrapper nav-panels">
         <div class="grid-wrap">
             <div ng-repeat="section in taxonomy.data.sections" class="grid-col tablet-wide-grid-one-fifth">
-                <article ng-repeat="item in section.items" class="nav-panel nav-panel--stats sectioned">
+                <article ng-init="statistics = section.statistics" class="nav-panel nav-panel--stats sectioned">
                     <div class="navpanel_wrapper_home">
-                        <a href="#!{{item.uri}}"><span class="navpanel_wrapper_home__link"></span></a>
+                        <a href="#!{{statistics.uri}}"><span class="navpanel_wrapper_home__link"></span></a>
                         <header class="nav-panel__header nav-panel__header_home nav-panel__roomy--med">
-                            <h2 class="delta">{{item.name}}</h2>
+                            <h2 class="delta">{{statistics.name}}</h2>
                         </header>
                         <div class="nav-panel__roomy box flush">
                             <ul class="list--neutral nav-panel__list flush">
                                 <li class="nav-panel__body flush spaced">
-                                    <dl class="homeicon_{{section.link}} flush--bottom">
+                                    <dl class="flush--bottom">
                                         <dd class="nav-panel__value">
                                             <div class="stat">
                                                 <div class="stat__figure nav_home-stats">
-                                                    <span class="stat__figure__unit">{{item.data.preUnit}}</span> {{item.data.number}} <span class="stat__figure__unit">{{item.data.unit}}</span>
-                                                    <div class="stat__description-large">{{item.data.date}}</div>
+                                                    <span class="stat__figure__unit">{{statistics.data.preUnit}}</span> {{statistics.data.number}} <span class="stat__figure__unit">{{statistics.data.unit}}</span>
+
+                                                    <div class="stat__description-large">{{statistics.data.date}}</div>
                                                 </div>
                                             </div>
                                         </dd>
                                     </dl>
                                 </li>
-                                <ons-loading condition="!item.data"></ons-loading>
+                                <ons-loading condition="!statistics.data"></ons-loading>
                                 <li class="nav-panel__item homeicon_sparkline">
                                     <div style="height:30px"></div>
-                                    <ons-sparkline chart-data="item.chartData" width="120" height="50"></ons-sparkline>
+                                    <ons-sparkline chart-data="statistics.chartData" width="120" height="50"></ons-sparkline>
                                 </li>
                             </ul>
                             <!-- /nav-panel__roomy -->
@@ -62,7 +62,7 @@
                     </div>
                     <footer class="nav-panel__footer-home">
                         <div class="nav-panel__action background_neutral ">
-                            <a class="nav-panel__roomy--med right-small centred-med-up" href="#!{{getPath()}}{{section.link}}">Explore {{section.name}}</a>
+                            <a class="nav-panel__roomy--med right-small centred-med-up" href="#!{{section.theme.uri}}">Explore {{section.theme.name}}</a>
                         </div>
                     </footer>
                 </article>
@@ -85,8 +85,8 @@
             <article class="box--padded-vertical">
                 <header class="box__header">
                     <h3>
-               <a href="#!/releases/populationestimates">Population Estimates</a>
-             </h3>
+                        <a href="#!/releases/populationestimates">Population Estimates</a>
+                    </h3>
                     <!-- /box__header -->
                 </header>
 
@@ -106,8 +106,8 @@
             <article class="box--padded-vertical">
                 <header class="box__header">
                     <h3>
-               <a href="#!/releases/inflationandpriceindices">Inflation and Price Indices</a>
-             </h3>
+                        <a href="#!/releases/inflationandpriceindices">Inflation and Price Indices</a>
+                    </h3>
                     <!-- /box__header -->
                 </header>
 
@@ -127,8 +127,8 @@
             <article class="box--padded-vertical">
                 <header class="box__header">
                     <h3>
-               <a href="#!/releases/drugusealcoholandsmoking">Drug Use, Alcohol and Smoking</a>
-             </h3>
+                        <a href="#!/releases/drugusealcoholandsmoking">Drug Use, Alcohol and Smoking</a>
+                    </h3>
                     <!-- /box__header -->
                 </header>
 
@@ -165,12 +165,12 @@
                             <div class="media__body">
                                 <header class="box__header pad_regional_header">
                                     <h2 class="callout-header">
-                          <ul class="list--neutral">
-                            <li>Who we are.</li>
-                            <li>How we live.</li>
-                            <li>What we do.</li>
-                          </ul>
-                        </h2>
+                                        <ul class="list--neutral">
+                                            <li>Who we are.</li>
+                                            <li>How we live.</li>
+                                            <li>What we do.</li>
+                                        </ul>
+                                    </h2>
                                     <!-- /box__header -->
                                 </header>
                             </div>
@@ -193,10 +193,10 @@
                             <div class="media__body">
                                 <header class="box__header pad_regional_header">
                                     <h2 class="callout-header">
-                          <ul class="list--neutral">
-                            <li>Introducing Visual.ONS</li>
-                          </ul>
-                        </h2>
+                                        <ul class="list--neutral">
+                                            <li>Introducing Visual.ONS</li>
+                                        </ul>
+                                    </h2>
                                     <!-- /box__header -->
                                 </header>
                             </div>
@@ -216,7 +216,6 @@
 </div>
 
 
-
 <section class="panel wrapper">
     <div class="box box--padded--med box--orange--separated-left solid border">
         <header class="actionable-header__title">
@@ -227,8 +226,8 @@
                 <article class="box--padded--med">
                     <header class="box__header">
                         <h3>
-                  <a href="#!/localstats">Local data explained </a>
-                </h3>
+                            <a href="#!/localstats">Local data explained </a>
+                        </h3>
                         <!-- /box__header -->
                     </header>
 
@@ -247,13 +246,13 @@
                 <article class="box--padded--med">
                     <header class="box__header">
                         <h3>
-                  <a href="https://www.nomisweb.co.uk/">Official Labour Market Statistics (nomis) </a>
-                </h3>
+                            <a href="https://www.nomisweb.co.uk/">Official Labour Market Statistics (nomis) </a>
+                        </h3>
                     </header>
                     <!-- /box__header -->
                     <div class="box__content">
                         <ul class="list--table">
-                            <li>Access to the most detailed and up-to-date UK labour market statistics from official sources. </li>
+                            <li>Access to the most detailed and up-to-date UK labour market statistics from official sources.</li>
                         </ul>
                         <!-- /box__content -->
                     </div>
@@ -265,13 +264,13 @@
                 <article class="box--padded--med">
                     <header class="box__header">
                         <h3>
-                  <a href="http://www.neighbourhood.statistics.gov.uk/dissemination/">Neighbourhood Statistics (NeSS)</a>
-                </h3>
+                            <a href="http://www.neighbourhood.statistics.gov.uk/dissemination/">Neighbourhood Statistics (NeSS)</a>
+                        </h3>
                     </header>
                     <!-- /box__header -->
                     <div class="box__content">
                         <ul class="list--table">
-                            <li>Datasets that describe the characteristics of a neighbourhood, with a particular focus on deprivation. </li>
+                            <li>Datasets that describe the characteristics of a neighbourhood, with a particular focus on deprivation.</li>
                         </ul>
                         <!-- /box__content -->
                     </div>
@@ -284,13 +283,13 @@
                 <article class="box--padded--med">
                     <header class="box__header">
                         <h3>
-                  <a href=" http://www.ons.gov.uk/ons/data/area-first/">2011 Census Data Explorer (Beta)</a>
-                </h3>
+                            <a href=" http://www.ons.gov.uk/ons/data/area-first/">2011 Census Data Explorer (Beta)</a>
+                        </h3>
                     </header>
                     <!-- /box__header -->
                     <div class="box__content">
                         <ul class="list--table">
-                            <li>Discover relevant census datasets for your needs and view or download them. </li>
+                            <li>Discover relevant census datasets for your needs and view or download them.</li>
                         </ul>
                         <!-- /box__content -->
                     </div>
@@ -300,6 +299,7 @@
             <!-- /grid-wrap -->
         </div>
         <!-- /panel wrapper -->
+    </div>
 </section>
 
 <section class="panel wrapper box box--padded--med ">
@@ -311,14 +311,14 @@
             <article class="box--padded-vertical">
                 <header class="box__header">
                     <h3 class="beta">
-                <a href="https://www.gov.uk/government/statistics">GOV.UK</a>
-              </h3>
+                        <a href="https://www.gov.uk/government/statistics">GOV.UK</a>
+                    </h3>
                     <!-- /box__header -->
                 </header>
 
                 <div class="box__content">
                     <ul class="list--table">
-                        <li class="">Official statistics produced by other government departments. </li>
+                        <li class="">Official statistics produced by other government departments.</li>
                     </ul>
                 </div>
             </article>
@@ -329,33 +329,14 @@
             <article class="box--padded-vertical">
                 <header class="box__header">
                     <h3 class="beta">
-                <a href="https://statswales.wales.gov.uk/Catalogue">StatsWales</a>
-              </h3>
+                        <a href="https://statswales.wales.gov.uk/Catalogue">StatsWales</a>
+                    </h3>
                     <!-- /box__header -->
                 </header>
 
                 <div class="box__content">
                     <ul class="list--table">
-                        <li class="">View, manipulate, create and download tables from Welsh data. </li>
-                    </ul>
-                </div>
-            </article>
-            <!-- /grid-col -->
-        </div>
-
-
-        <div class="grid-col desktop-grid-one-quarter tablet-grid-one-half">
-            <article class="box--padded-vertical">
-                <header class="box__header">
-                    <h3 class="beta">
-                <a href="http://www.scotland.gov.uk/Topics/Statistics">ScotStat</a>
-              </h3>
-                    <!-- /box__header -->
-                </header>
-
-                <div class="box__content">
-                    <ul class="list--table">
-                        <li class="">Scottish Government Statistics provides an accurate and up-to-date picture of the economy and society in Scotland. </li>
+                        <li class="">View, manipulate, create and download tables from Welsh data.</li>
                     </ul>
                 </div>
             </article>
@@ -367,14 +348,33 @@
             <article class="box--padded-vertical">
                 <header class="box__header">
                     <h3 class="beta">
-              <a href="http://www.nisra.gov.uk/">NISRA</a>
-            </h3>
+                        <a href="http://www.scotland.gov.uk/Topics/Statistics">ScotStat</a>
+                    </h3>
                     <!-- /box__header -->
                 </header>
 
                 <div class="box__content">
                     <ul class="list--table">
-                        <li class="">Principal source of official statistics and social research on Northern Ireland. </li>
+                        <li class="">Scottish Government Statistics provides an accurate and up-to-date picture of the economy and society in Scotland.</li>
+                    </ul>
+                </div>
+            </article>
+            <!-- /grid-col -->
+        </div>
+
+
+        <div class="grid-col desktop-grid-one-quarter tablet-grid-one-half">
+            <article class="box--padded-vertical">
+                <header class="box__header">
+                    <h3 class="beta">
+                        <a href="http://www.nisra.gov.uk/">NISRA</a>
+                    </h3>
+                    <!-- /box__header -->
+                </header>
+
+                <div class="box__content">
+                    <ul class="list--table">
+                        <li class="">Principal source of official statistics and social research on Northern Ireland.</li>
                     </ul>
                 </div>
             </article>

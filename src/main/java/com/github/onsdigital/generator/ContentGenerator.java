@@ -4,6 +4,7 @@ import com.github.davidcarboni.restolino.json.Serialiser;
 import com.github.onsdigital.content.base.Content;
 import com.github.onsdigital.content.home.HomePage;
 import com.github.onsdigital.content.methodology.Methodology;
+import com.github.onsdigital.content.partial.HomeSection;
 import com.github.onsdigital.content.partial.link.ContentLink;
 import com.github.onsdigital.content.partial.reference.BulletinReference;
 import com.github.onsdigital.content.partial.reference.ContentReference;
@@ -51,9 +52,9 @@ public class ContentGenerator {
     private File contentsDirectory;
 
 
-    //    private HomePage homePage;
-//    private Map<URI, TaxonomyPage> taxonomyPages;
-    private List<TimeSeries> generatedTimeSeries = new ArrayList<>();
+    private HomePage homePage;
+    private Map<URI, TaxonomyPage> taxonomyPages = new HashMap<>();
+    private Map<URI, TimeSeries> generatedTimeSeries = new HashMap<>();
     private List<ContentNode> oldDatasetsCreated = new ArrayList<>();
     private Set<TimeSeries> noData = new TreeSet<>();
     private Map<ProductPage, Release> releases = new HashMap<>();
@@ -93,9 +94,11 @@ public class ContentGenerator {
         ContentNode rootNode = new ContentNode();
         rootNode.addChildren(Data.folders());
 
-        HomePage page = generateHomepage(rootNode);
-        persistData(contentsDirectory, page);
+        homePage = generateHomepage(rootNode);
         generateTaxonomyPages(contentsDirectory, rootNode, null);
+
+        setHomepageDefaults();
+        persistData(contentsDirectory, homePage);
 
         // Releases:
         createReleases();
@@ -115,56 +118,53 @@ public class ContentGenerator {
     private void buildHomeSections(HomePage homePage, List<TaxonomyPage> taxonomyPages) {
         for (TaxonomyPage taxonomyPage : taxonomyPages) {
             if (taxonomyPage instanceof TaxonomyLandingPage == false) {
-                throw new RuntimeException("Taxonomy page " + taxonomyPage.title + " is not a taxonomy landing page");
+                throw new RuntimeException("Taxonomy page " + taxonomyPage.name + " is not a taxonomy landing page");
             }
         }
     }
 
-    private List<TaxonomyPage> generateTaxonomyPages(File parentDirectory, ContentNode contentNode, TaxonomyLandingPage parentContent) throws IOException {
-        List<TaxonomyPage> taxonomyPages = new ArrayList<>();
+    private void generateTaxonomyPages(File parentDirectory, ContentNode contentNode, TaxonomyLandingPage parentContent) throws IOException {
         for (ContentNode node : contentNode.getChildren()) {
             //Create folder for taxonomy page
             File directory = createSubDirectory(parentDirectory, node.filename());
             System.out.println("Content Folder  : " + directory.getAbsolutePath());
 
+            TaxonomyPage taxonomyPage = null;
             //No children means this is a product page, otherwise a taxonomy landing page
             if (node.getChildren().size() == 0) {
-                ProductPage productPage = generateProductPage(directory, node, parentContent);
+                taxonomyPage = generateProductPage(directory, node, parentContent);
             } else {
                 TaxonomyLandingPage taxonomyLandingPage = generateTaxonomyLandingPage(directory, node, parentContent);
-                taxonomyPages.add(taxonomyLandingPage);
+                //Recursively create sub folders and data
+                generateTaxonomyPages(directory, node, taxonomyLandingPage);
+                Collections.sort(taxonomyLandingPage.sections);
+                taxonomyPage = taxonomyLandingPage;
             }
+
+            persistData(directory, taxonomyPage);
+            taxonomyPages.put(taxonomyPage.uri, taxonomyPage);
         }
-        return taxonomyPages;
     }
 
     private TaxonomyLandingPage generateTaxonomyLandingPage(File directory, ContentNode node, TaxonomyLandingPage parent) throws IOException {
         TaxonomyLandingPage landingPage = new TaxonomyLandingPage(node.name, createUri(node.filename(), parent), node.lede, parent);
         landingPage.index = node.index;
-        landingPage.sections = new ArrayList<>();
         if (node.oldDataset.size() > 0) {
             throw new RuntimeException("A dataset has been mapped to " + node + " but this folder is a Taxonomy Landing page.");
         }
 
         if (parent != null) {
             //Each taxonomy page recursively added to its parent's sections
-            parent.sections.add(new ContentReference<>(landingPage, landingPage.index));
+            parent.sections.add(new ContentReference<>(landingPage, node.index));
         }
-
-        //Recursively create sub folders and data
-        generateTaxonomyPages(directory, node, landingPage);
-
-        persistData(directory, landingPage);
-
         return landingPage;
     }
 
 
     private ProductPage generateProductPage(File directory, ContentNode node, TaxonomyLandingPage parent) throws IOException {
         ProductPage productPage = new ProductPage(node.name, createUri(node.filename(), parent), node.lede, parent);
-        productPage.index = node.index;
         //Each taxonomy page recursively added to its parent's sections
-        parent.sections.add(new ContentReference<>(productPage, productPage.index));
+        parent.sections.add(new ContentReference<>(productPage, node.index));
         addTimeseriesReferences(node, productPage);
 
         createStatsBulletinHeadline(node, productPage);
@@ -173,10 +173,13 @@ public class ContentGenerator {
 
         persistData(directory, productPage);
 
-        createBulletin(node, directory, productPage);
-        createArticle(node, directory, productPage);
-        createMethodology(node, directory, productPage);
-        createDataset(node, directory, productPage);
+        persistBulletins(node, directory, productPage);
+        persistArticles(node, directory, productPage);
+        persistMethodologies(node, directory, productPage);
+        persistDatasets(node, directory, productPage);
+
+
+
         createTimeseries(node, directory, productPage);
 
         releases.put(productPage, new Release(productPage, URI.create(RELEASES_DIRECTORY + "/" + node.filename())));
@@ -335,7 +338,7 @@ public class ContentGenerator {
         String baseUri = productPage.uri + "/bulletins";
         String bulletinFileName = fileName;
         if (bulletinFileName == null) {
-            System.out.println("No filename for : " + bulletin.title);
+            System.out.println("No filename for : " + bulletin.name);
         }
         String sanitizedBulletinFileName = bulletinFileName.replaceAll("\\W", "");
         return URI.create(baseUri + "/" + StringUtils.deleteWhitespace(sanitizedBulletinFileName));
@@ -350,7 +353,7 @@ public class ContentGenerator {
             parent = parent.parent;
         }
         baseUri += "/datasets";
-        String datasetFileName = dataset.title;
+        String datasetFileName = dataset.name;
         String sanitizedDatasetFileName = datasetFileName.replaceAll("\\W", "");
         return URI.create(baseUri + "/" + StringUtils.deleteWhitespace(sanitizedDatasetFileName));
     }
@@ -432,54 +435,54 @@ public class ContentGenerator {
                     }
                 }
 
-                String json = Serialiser.serialise(timeseries);
-                FileUtils.writeStringToFile(timeseriesFile, json, Charset.forName("UTF8"));
-                generatedTimeSeries.add(timeseries);
+                persistData(timeseriesFolder, timeseries);
+                generatedTimeSeries.put(timeseries.uri, timeseries);
                 result = true;
             }
         }
         return result;
     }
 
-    private void createBulletin(ContentNode folder, File file, ProductPage productPage) throws IOException {
+    private void persistBulletins(ContentNode folder, File file, ProductPage productPage) throws IOException {
         if (folder.bulletins.size() > 0) {
-            File bulletinsFolder = createSubDirectory(file, BULLETINS_DIRECTORY);
+            File bulletinsDir = createSubDirectory(file, BULLETINS_DIRECTORY);
             for (Bulletin bulletin : folder.bulletins) {
                 bulletin.buildBreadcrumb(productPage);
-
+                File bulletinDir = createSubDirectory(bulletinsDir, StringUtils.deleteWhitespace(BulletinMarkdown.toFilename(bulletin)));
+                persistData(bulletinDir, bulletin);
             }
         }
     }
 
-    private void createArticle(ContentNode folder, File file, ProductPage productPage) throws IOException {
+    private void persistArticles(ContentNode folder, File file, ProductPage productPage) throws IOException {
         if (folder.articles.size() > 0) {
-            File articlesFolder = createSubDirectory(file, ARTICLES_DIRECTORY);
+            File articlesDir = createSubDirectory(file, ARTICLES_DIRECTORY);
             for (Article article : folder.articles) {
                 article.buildBreadcrumb(productPage);
-                File bulletinDir = createSubDirectory(articlesFolder, StringUtils.deleteWhitespace(ArticleMarkdown.toFilename(article)));
-                persistData(bulletinDir, article);
+                File articleDir = createSubDirectory(articlesDir, StringUtils.deleteWhitespace(ArticleMarkdown.toFilename(article)));
+                persistData(articleDir, article);
             }
         }
     }
 
-    private void createMethodology(ContentNode folder, File file, ProductPage productPage) throws IOException {
+    private void persistMethodologies(ContentNode folder, File file, ProductPage productPage) throws IOException {
         if (folder.methodology.size() > 0) {
-            File methodologyFolder = createSubDirectory(file, METHODOLOGIES_DIRECTORY);
+            File methodologiesDir = createSubDirectory(file, METHODOLOGIES_DIRECTORY);
             for (Methodology methodology : folder.methodology) {
                 methodology.buildBreadcrumb(productPage);
-                File bulletinDir = createSubDirectory(methodologyFolder, StringUtils.deleteWhitespace(MethodologyMarkdown.toFilename(methodology)));
-                persistData(bulletinDir, methodology);
+                File methodologyDir = createSubDirectory(methodologiesDir, StringUtils.deleteWhitespace(MethodologyMarkdown.toFilename(methodology)));
+                persistData(methodologyDir, methodology);
             }
         }
     }
 
-    private void createDataset(ContentNode folder, File file, ProductPage productPage) throws IOException {
+    private void persistDatasets(ContentNode folder, File file, ProductPage productPage) throws IOException {
 
         if (folder.datasets.size() > 0) {
             File datasetsFolder = createSubDirectory(file, DATASETS_DIRECTORY);
             for (Dataset dataset : folder.datasets) {
                 dataset.buildBreadcrumb(productPage);
-                String datasetFileName = dataset.title.replaceAll("\\W", "");
+                String datasetFileName = dataset.name.replaceAll("\\W", "");
                 File bulletinDir = createSubDirectory(datasetsFolder, datasetFileName.toLowerCase());
                 persistData(bulletinDir, dataset);
             }
@@ -520,6 +523,35 @@ public class ContentGenerator {
     //Persists content data as json in given folder (data.json)
     private void persistData(File folder, Content content) throws IOException {
         FileUtils.writeStringToFile(new File(folder, DATA_FILE_NAME), content.toJson(), Charset.forName("UTF8"));
+    }
+
+
+    private void setHomepageDefaults() {
+        homePage.sections = new ArrayList<>();
+
+        homePage.sections.add(createHomeSection("/economy", "/economy/inflationandpriceindices/timeseries/d7g7"));
+        homePage.sections.add(createHomeSection("/economy", "/economy/grossdomesticproductgdp/timeseries/ihyq"));
+        homePage.sections.add(createHomeSection("/businessindustryandtrade", "/businessindustryandtrade/internationaltrade/timeseries/ikbj"));
+        homePage.sections.add(createHomeSection("/employmentandlabourmarket", "/employmentandlabourmarket/peopleinwork/employmentandemployeetypes/timeseries/lf24"));
+        homePage.sections.add(createHomeSection("/peoplepopulationandcommunity", "/peoplepopulationandcommunity/populationandmigration/populationestimates/timeseries/raid121"));
+
+    }
+
+    private HomeSection createHomeSection(String landingPageUri, String timeseriesUri) {
+        TimeSeries timeseries = generatedTimeSeries.get(URI.create(timeseriesUri));
+        TaxonomyLandingPage taxonomyLandingPage = (TaxonomyLandingPage) taxonomyPages.get(URI.create(landingPageUri));
+
+        if (timeseries == null) {
+            throw new RuntimeException("Could not find timeseries " + timeseriesUri);
+        }
+        if (taxonomyLandingPage == null) {
+            throw new RuntimeException("Could not find landing page " + landingPageUri);
+        }
+
+        ContentLink timeseriesReference = new ContentLink(timeseries);
+        ContentReference landingPageReference = new ContentReference<>(taxonomyLandingPage);
+
+        return new HomeSection(landingPageReference, timeseriesReference);
     }
 
     public static void main(String[] args) throws IOException {

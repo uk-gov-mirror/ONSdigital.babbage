@@ -1,16 +1,16 @@
     <ons-loading condition="!taxonomy.data"></ons-loading>
 
     <!-- T1, T2 , T3 -->
-    <span ng-if="taxonomy.data.type === 'home'">
-        <span ng-if="taxonomy.data.level === 't2'" ng-controller="T2Ctrl">
-            <span ng-include="'app/templates/t2/t2.html'"></span>
-        </span>
-        <span ng-if="taxonomy.data.level === 't1'" ng-controller="T1Controller as t1">
-            <span ng-include="'app/templates/t1/t1.html'"></span>
-        </span>
-        <span ng-if="taxonomy.data.level === 't3'" ng-controller="T3Controller as t3">
-            <span ng-include="'app/templates/t3/t3.html'"></span>
-        </span>
+    <span ng-if="taxonomy.data.type === 'home_page'" ng-controller="T1Controller as t1">
+        <span ng-include="'app/templates/t1/t1.html'"></span>
+    </span>
+
+    <span ng-if="taxonomy.data.type === 'taxonomy_landing_page'" ng-controller="T2Ctrl">
+        <span ng-include="'app/templates/t2/t2.html'"></span>
+    </span>
+
+    <span ng-if="taxonomy.data.type === 'product_page'" ng-controller="T3Controller as t3">
+        <span ng-include="'app/templates/t3/t3.html'"></span>
     </span>
 
     <!-- Bulletin -->
