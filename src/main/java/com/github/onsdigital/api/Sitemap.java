@@ -3,7 +3,7 @@
 //import com.github.davidcarboni.restolino.framework.Api;
 //import com.github.davidcarboni.restolino.json.Serialiser;
 //import com.github.onsdigital.configuration.Configuration;
-//import com.github.onsdigital.content.taxonomy.base.TaxonomyPage;
+//import com.github.onsdigital.content.taxonomy.base.TaxonomyNode;
 //import com.github.onsdigital.json.ContentType;
 //import com.github.onsdigital.json.taxonomy.TaxonomyHome;
 //import org.apache.commons.lang3.StringUtils;
@@ -137,7 +137,7 @@
 //
 //	private int addPath(Path path, double priority, Document document, Element rootElement, URL requestUrl) throws IOException {
 //		int result = 0;
-//		TaxonomyPage data = getDataJson(path);
+//		TaxonomyNode data = getDataJson(path);
 //		if (data != null && data.type == ContentType.home) {
 //			try {
 //				URI uri = toUri(data, requestUrl);

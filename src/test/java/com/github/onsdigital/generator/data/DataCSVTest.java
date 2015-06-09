@@ -9,7 +9,7 @@ import org.junit.Test;
 
 public class DataCSVTest {
 
-	TimeSeries timeseries = new TimeSeries(null,null,null,null, null);
+	TimeSeries timeseries = new TimeSeries();
 	TimeseriesValue timeseriesValue = new TimeseriesValue();
 
 	@Test

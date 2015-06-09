@@ -79,7 +79,7 @@ public class MarkdownTest {
 
 		// Then
 		assertNotNull(section);
-		assertEquals(heading, section.name);
+		assertEquals(heading, section.title);
 	}
 
 	@Test
@@ -94,7 +94,7 @@ public class MarkdownTest {
 
 		// Then
 		assertNotNull(section);
-		assertEquals(title, section.name);
+		assertEquals(title, section.title);
 	}
 
 	@Test

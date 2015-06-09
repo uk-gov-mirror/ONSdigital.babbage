@@ -17,7 +17,7 @@ import com.github.onsdigital.content.statistic.document.Article;
 import com.github.onsdigital.content.statistic.document.Bulletin;
 import com.github.onsdigital.content.taxonomy.ProductPage;
 import com.github.onsdigital.content.taxonomy.TaxonomyLandingPage;
-import com.github.onsdigital.content.taxonomy.base.TaxonomyPage;
+import com.github.onsdigital.content.taxonomy.base.TaxonomyNode;
 import com.github.onsdigital.generator.data.Data;
 import com.github.onsdigital.generator.data.DatasetMappingsCSV;
 import com.github.onsdigital.generator.markdown.ArticleMarkdown;
@@ -53,7 +53,7 @@ public class ContentGenerator {
 
 
     private HomePage homePage;
-    private Map<URI, TaxonomyPage> taxonomyPages = new HashMap<>();
+    private Map<URI, TaxonomyNode> themePages = new HashMap<>();
     private Map<URI, TimeSeries> generatedTimeSeries = new HashMap<>();
     private List<ContentNode> oldDatasetsCreated = new ArrayList<>();
     private Set<TimeSeries> noData = new TreeSet<>();
@@ -95,7 +95,7 @@ public class ContentGenerator {
         rootNode.addChildren(Data.folders());
 
         homePage = generateHomepage(rootNode);
-        generateTaxonomyPages(contentsDirectory, rootNode, null);
+        generateThemePages(contentsDirectory, rootNode, homePage);
 
         setHomepageDefaults();
         persistData(contentsDirectory, homePage);
@@ -115,56 +115,78 @@ public class ContentGenerator {
     }
 
 
-    private void buildHomeSections(HomePage homePage, List<TaxonomyPage> taxonomyPages) {
-        for (TaxonomyPage taxonomyPage : taxonomyPages) {
+    private void buildHomeSections(HomePage homePage, List<TaxonomyNode> taxonomyPages) {
+        for (TaxonomyNode taxonomyPage : taxonomyPages) {
             if (taxonomyPage instanceof TaxonomyLandingPage == false) {
-                throw new RuntimeException("Taxonomy page " + taxonomyPage.name + " is not a taxonomy landing page");
+                throw new RuntimeException("Taxonomy page " + taxonomyPage.title + " is not a taxonomy landing page");
             }
         }
     }
 
-    private void generateTaxonomyPages(File parentDirectory, ContentNode contentNode, TaxonomyLandingPage parentContent) throws IOException {
+
+    private void generateThemePages(File parentDirectory, ContentNode contentNode, HomePage homePage) throws IOException {
         for (ContentNode node : contentNode.getChildren()) {
             //Create folder for taxonomy page
             File directory = createSubDirectory(parentDirectory, node.filename());
             System.out.println("Content Folder  : " + directory.getAbsolutePath());
 
-            TaxonomyPage taxonomyPage = null;
-            //No children means this is a product page, otherwise a taxonomy landing page
             if (node.getChildren().size() == 0) {
-                taxonomyPage = generateProductPage(directory, node, parentContent);
-            } else {
-                TaxonomyLandingPage taxonomyLandingPage = generateTaxonomyLandingPage(directory, node, parentContent);
-                //Recursively create sub folders and data
-                generateTaxonomyPages(directory, node, taxonomyLandingPage);
-                Collections.sort(taxonomyLandingPage.sections);
-                taxonomyPage = taxonomyLandingPage;
+                throw new RuntimeException("Could not find any folders under theme " + contentNode.name);
             }
 
-            persistData(directory, taxonomyPage);
-            taxonomyPages.put(taxonomyPage.uri, taxonomyPage);
+            TaxonomyLandingPage themepage = generateTaxonomyLandingPage(directory, node, homePage);
+            generateSubLevels(directory, node, themepage);
+            themePages.put(themepage.uri, themepage);
+            persistData(directory, themepage);
         }
     }
 
-    private TaxonomyLandingPage generateTaxonomyLandingPage(File directory, ContentNode node, TaxonomyLandingPage parent) throws IOException {
-        TaxonomyLandingPage landingPage = new TaxonomyLandingPage(node.name, createUri(node.filename(), parent), node.lede, parent);
+    private void generateSubLevels(File parentDirectory, ContentNode contentNode, TaxonomyLandingPage parent) throws IOException {
+        for (ContentNode node : contentNode.getChildren()) {
+            //Create folder for taxonomy page
+            File directory = createSubDirectory(parentDirectory, node.filename());
+            System.out.println("Content Folder  : " + directory.getAbsolutePath());
+
+            TaxonomyNode taxonomyPage = null;
+            //No children means this is a product page, otherwise a taxonomy landing page
+            if (node.getChildren().size() == 0) {
+                taxonomyPage = generateProductPage(directory, node, parent);
+            } else {
+                TaxonomyLandingPage taxonomyLandingPage = generateTaxonomyLandingPage(directory, node, parent);
+                //Recursively create sub folders and data
+                generateSubLevels(directory, node, taxonomyLandingPage);
+                taxonomyPage = taxonomyLandingPage;
+            }
+
+            //Each taxonomy page recursively added to its parent's sections
+            parent.sections.add(new ContentReference<>(taxonomyPage, node.index));
+            persistData(directory, taxonomyPage);
+        }
+        Collections.sort(parent.sections);
+    }
+
+    private TaxonomyLandingPage generateTaxonomyLandingPage(File directory, ContentNode node, TaxonomyNode parent) throws IOException {
+        TaxonomyLandingPage landingPage = new TaxonomyLandingPage();
+        landingPage.title = node.name;
+        landingPage.uri = createUri(node.filename(), parent);
+        landingPage.summary = node.lede;
         landingPage.index = node.index;
+        landingPage.buildBreadcrumb(parent);
         if (node.oldDataset.size() > 0) {
             throw new RuntimeException("A dataset has been mapped to " + node + " but this folder is a Taxonomy Landing page.");
-        }
-
-        if (parent != null) {
-            //Each taxonomy page recursively added to its parent's sections
-            parent.sections.add(new ContentReference<>(landingPage, node.index));
         }
         return landingPage;
     }
 
 
-    private ProductPage generateProductPage(File directory, ContentNode node, TaxonomyLandingPage parent) throws IOException {
-        ProductPage productPage = new ProductPage(node.name, createUri(node.filename(), parent), node.lede, parent);
-        //Each taxonomy page recursively added to its parent's sections
-        parent.sections.add(new ContentReference<>(productPage, node.index));
+    private ProductPage generateProductPage(File directory, ContentNode node, TaxonomyNode parent) throws IOException {
+        ProductPage productPage = new ProductPage();
+        productPage.title = node.name;
+        productPage.uri = createUri(node.filename(), parent);
+        productPage.summary = node.lede;
+        productPage.index = node.index;
+        productPage.buildBreadcrumb(parent);
+
         addTimeseriesReferences(node, productPage);
 
         createStatsBulletinHeadline(node, productPage);
@@ -179,10 +201,13 @@ public class ContentGenerator {
         persistDatasets(node, directory, productPage);
 
 
-
         createTimeseries(node, directory, productPage);
 
-        releases.put(productPage, new Release(productPage, URI.create(RELEASES_DIRECTORY + "/" + node.filename())));
+        Release release = new Release();
+        release.title = productPage.title;
+        release.summary = productPage.summary;
+        release.uri = URI.create(RELEASES_DIRECTORY + "/" + node.filename());
+        releases.put(productPage, release);
 
         return productPage;
     }
@@ -329,7 +354,7 @@ public class ContentGenerator {
 
     private static URI createUri(String fileName, Content parent) {
         String sanitizedFilename = fileName.replaceAll("\\W", "");
-        String parentUri = parent != null ? parent.uri.toString() : "";
+        String parentUri = (parent != null && !"/".equals(parent.uri.toString())) ? parent.uri.toString() : "";
         return URI.create(parentUri + "/" + StringUtils.deleteWhitespace(sanitizedFilename));
     }
 
@@ -338,7 +363,7 @@ public class ContentGenerator {
         String baseUri = productPage.uri + "/bulletins";
         String bulletinFileName = fileName;
         if (bulletinFileName == null) {
-            System.out.println("No filename for : " + bulletin.name);
+            System.out.println("No filename for : " + bulletin.title);
         }
         String sanitizedBulletinFileName = bulletinFileName.replaceAll("\\W", "");
         return URI.create(baseUri + "/" + StringUtils.deleteWhitespace(sanitizedBulletinFileName));
@@ -353,7 +378,7 @@ public class ContentGenerator {
             parent = parent.parent;
         }
         baseUri += "/datasets";
-        String datasetFileName = dataset.name;
+        String datasetFileName = dataset.title;
         String sanitizedDatasetFileName = datasetFileName.replaceAll("\\W", "");
         return URI.create(baseUri + "/" + StringUtils.deleteWhitespace(sanitizedDatasetFileName));
     }
@@ -482,7 +507,7 @@ public class ContentGenerator {
             File datasetsFolder = createSubDirectory(file, DATASETS_DIRECTORY);
             for (Dataset dataset : folder.datasets) {
                 dataset.buildBreadcrumb(productPage);
-                String datasetFileName = dataset.name.replaceAll("\\W", "");
+                String datasetFileName = dataset.title.replaceAll("\\W", "");
                 File bulletinDir = createSubDirectory(datasetsFolder, datasetFileName.toLowerCase());
                 persistData(bulletinDir, dataset);
             }
@@ -539,7 +564,7 @@ public class ContentGenerator {
 
     private HomeSection createHomeSection(String landingPageUri, String timeseriesUri) {
         TimeSeries timeseries = generatedTimeSeries.get(URI.create(timeseriesUri));
-        TaxonomyLandingPage taxonomyLandingPage = (TaxonomyLandingPage) taxonomyPages.get(URI.create(landingPageUri));
+        TaxonomyLandingPage taxonomyLandingPage = (TaxonomyLandingPage) themePages.get(URI.create(landingPageUri));
 
         if (timeseries == null) {
             throw new RuntimeException("Could not find timeseries " + timeseriesUri);
@@ -548,7 +573,7 @@ public class ContentGenerator {
             throw new RuntimeException("Could not find landing page " + landingPageUri);
         }
 
-        ContentLink timeseriesReference = new ContentLink(timeseries);
+        ContentReference timeseriesReference = new ContentReference(timeseries);
         ContentReference landingPageReference = new ContentReference<>(taxonomyLandingPage);
 
         return new HomeSection(landingPageReference, timeseriesReference);

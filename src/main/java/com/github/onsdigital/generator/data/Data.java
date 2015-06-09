@@ -207,7 +207,7 @@ public class Data implements Iterable<TimeSeries> {
      * @return The new timeseries.
      */
     public static TimeSeries addTimeseries(String cdid) {
-        TimeSeries timeseries = new TimeSeries(cdid, null, null, null,null);
+        TimeSeries timeseries = new TimeSeries();
         timeseries.setCdid(cdid);
         addTimeseries(timeseries);
         return timeseries;

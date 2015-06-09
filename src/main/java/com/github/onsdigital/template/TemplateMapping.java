@@ -20,7 +20,7 @@ public class TemplateMapping {
         put(ContentType.article, "t4-2");
         put(ContentType.timeseries, "t5-1");
         put(ContentType.data_slice, "t5-2");
-        put(ContentType.compendium_browse_page, "t6-1");
+        put(ContentType.compendium_landing_page, "t6-1");
         put(ContentType.compendium, "t6-2");
     }
 

@@ -166,7 +166,7 @@
 						function(Taxonomy, PageUtil) {
 							var promise = Taxonomy.loadData()
 							promise.then(function(data) {
-								PageUtil.setTitle(data.name)
+								PageUtil.setTitle(data.title)
 							})
 							return promise
 						}

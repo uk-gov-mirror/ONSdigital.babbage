@@ -2,8 +2,9 @@ package com.github.onsdigital.util;
 
 import com.github.onsdigital.configuration.Configuration;
 import com.github.onsdigital.content.partial.link.ContentLink;
+import com.github.onsdigital.content.partial.reference.ContentReference;
 import com.github.onsdigital.content.serialiser.ContentSerialiser;
-import com.github.onsdigital.content.taxonomy.base.TaxonomyPage;
+import com.github.onsdigital.content.taxonomy.base.TaxonomyNode;
 import com.google.gson.JsonSyntaxException;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.w3c.dom.DOMException;
@@ -90,14 +91,14 @@ public class NavigationUtil {
         return FileSystems.getDefault().getPath(Configuration.getContentPath());
     }
 
-    private static ContentLink<TaxonomyPage> getDataJson(Path path) throws IOException {
-        ContentLink result = null;
+    private static ContentReference<TaxonomyNode> getDataJson(Path path) throws IOException {
+        ContentReference result = null;
 
         Path dataJson = path.resolve("data.json");
         if (Files.exists(dataJson)) {
             try (InputStream input = Files.newInputStream(dataJson)) {
-                TaxonomyPage taxonomyPage = new ContentSerialiser().deserialise(input, TaxonomyPage.class);
-                result = new ContentLink<>(taxonomyPage, taxonomyPage.index);
+                TaxonomyNode taxonomyPage = new ContentSerialiser().deserialise(input, TaxonomyNode.class);
+                result = new ContentReference<>(taxonomyPage, taxonomyPage.index);
             }
         }
         return result;
@@ -109,16 +110,14 @@ public class NavigationUtil {
 
     public static class NavigationNode implements Comparable<NavigationNode> {
         String name;
-        String url;
         URI uri;
-        int index;
+        Integer index;
         List<NavigationNode> children = new ArrayList<NavigationNode>();
 
-        public NavigationNode(ContentLink<TaxonomyPage> taxonomy) {
-            this.name = taxonomy.name;
+        public NavigationNode(ContentReference<TaxonomyNode> taxonomy) {
+            this.name = taxonomy.title;
             this.uri = taxonomy.uri;
             this.index = taxonomy.index;
-            url = taxonomy.uri.toString();
         }
 
         @Override

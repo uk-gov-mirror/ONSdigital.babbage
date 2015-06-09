@@ -26,7 +26,7 @@ public class EmbeddedElasticSearchServer {
 	public EmbeddedElasticSearchServer(Settings settings, String clusterName) throws IOException {
 
 		this.dataDirectory = Files.createTempDirectory("searchindex");
-		ImmutableSettings.Builder settingsBuilder = ImmutableSettings.settingsBuilder().put("cluster.name", clusterName).put("http.enabled", true).put("path.data", dataDirectory)
+		ImmutableSettings.Builder settingsBuilder = ImmutableSettings.settingsBuilder().put("cluster.title", clusterName).put("http.enabled", true).put("path.data", dataDirectory)
 				.put("node.data", true);
 		System.out.println("Creating index data in: " + this.dataDirectory);
 

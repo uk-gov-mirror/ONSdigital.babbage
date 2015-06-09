@@ -228,7 +228,7 @@ public class SearchConsole {
 		// Single hit:
 		Result result = new Result();
 		result.title = timeseries.cdid;
-		result.description = timeseries.name;
+		result.description = timeseries.title;
 		result.type = ContentType.timeseries;
 		result.uri = timeseries.uri;
 		search.hits.add(result);

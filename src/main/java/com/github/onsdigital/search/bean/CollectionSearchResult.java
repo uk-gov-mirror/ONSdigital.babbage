@@ -71,7 +71,7 @@ public class CollectionSearchResult {
 		for (File file : files) {
 			Map<String, String> item = new HashMap<String, String>();
 			StatisticsReference collectionItemJson = getCollectionItem(file);
-			item.put(TITLE, collectionItemJson.name);
+			item.put(TITLE, collectionItemJson.title);
             item.put(RELEASE_DATE, new SimpleDateFormat(datePattern).format(collectionItemJson.releaseDate));
 
 			String[] urlWithoutJson = getUrl(file);
