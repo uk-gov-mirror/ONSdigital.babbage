@@ -2,7 +2,7 @@
 {
     "title": "Welcome to the Office for National Statistics",
     "lede": "The UK's largest independent producer official statistics and the recognised national statistical institute of the UK, producing a variety of statistics covering business and industry, the UK economy, employment and the population.",
-  "sections": [
+  "highlightedData": [
     {
       "name": "Economy",
       "link": "economy",
@@ -103,7 +103,7 @@
       "description": "Statistics on drug use, alcohol and smoking focus on deaths and illnesses related to these areas."
     }
 ],
-  "oneThirdBoxes": [
+  "highlightedContent": [
     {
       "name": "What's coming and when?",
       "link": "#",
@@ -121,22 +121,20 @@
       "link": "#",
       "index": 0,
       "description": "A handy guide to let you know where to find local statistics."
+    },
+    {
+      "name": "Census",
+      "link": "#",
+      "index": 0,
+      "boxText": "Who we are. How we live. What we do.",
+      "description": "Discover how our census statistics help paint a picture of the nation and how we live."
+    },
+    {
+      "name": "Visual.ONS",
+      "link": "#",
+      "index": 0,
+      "boxText": "Introducing Visual.ONS",
+      "description": "Visual.ONS is a website exploring new approaches to making ONS statistics accessible and relevant to a wide public audience."
     }
-],
-"oneHalfBoxes": [
-  {
-    "name": "Census",
-    "link": "#",
-    "index": 0,
-    "boxText": "Who we are. How we live. What we do.",
-    "description": "Discover how our census statistics help paint a picture of the nation and how we live."
-  },
-  {
-    "name": "Visual.ONS",
-    "link": "#",
-    "index": 0,
-    "boxText": "Introducing Visual.ONS",
-    "description": "Visual.ONS is a website exploring new approaches to making ONS statistics accessible and relevant to a wide public audience."
-  }
 ]
 }

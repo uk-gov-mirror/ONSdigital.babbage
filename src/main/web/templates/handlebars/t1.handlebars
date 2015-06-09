@@ -18,7 +18,7 @@
     <!-- grid-wrap -->
     <div class="grid-wrap grid-wrap--home-hero panel--separated--bottom">
       <!-- grid-col -->
-        {{#each sections}}
+        {{#each highlightedData}}
         <div class="grid-col grid-col--home-hero tablet-wide-grid-one-fifth">
             <article class="nav-panel nav-panel--stats nav-panel--home-hero sectioned">
                 <a href="#">Stat link, apply to whole panel<span class="[navpanel_wrapper_home__link]"></span></a>
@@ -93,10 +93,10 @@
 <!-- wrapper -->
 <div class="wrapper panel--mar">
     <div class="grid-wrap">
-		{{#each oneThirdBoxes}}
-        <div class="grid-col desktop-grid-one-third">
+		{{#each highlightedContent}}
+        <div class="grid-col box--padded-vertical nav--block-home-highlighted-content">
 			<h2 class="delta flush--half">{{name}}</h3>
-            <article class="box  flush--half--bottom">
+            <article class="box flush--half--bottom">
                 <div class="box__inner border box--padded">
                     <div class="box__section">
                         <h3 class="box__section__header">
@@ -116,24 +116,6 @@
         </div>
 		{{/each}}
 	</div>
-    <div class="grid-wrap panel--top-mar">
-		{{#each oneHalfBoxes}}
-        <div class="grid-col desktop-grid-one-half">
-			<h2 class="delta flush--half">{{name}}</h3>
-            <article class="box border flush--half--bottom">
-                <div class="box__inner box--padded">
-                    <div class="grid-wrap">
-                        <div class="grid-col grid-one-half grid-push-one-half">
-							<p>{{boxText}}</p>
-                        </div>
-                    </div>
-                </div>
-            </article>
-            <p class="flush--half">{{description}}</p>
-        <!-- /grid-col -->
-        </div>
-		{{/each}}
-    </div>
     <!-- /grid-wrap -->
 </div>
 
