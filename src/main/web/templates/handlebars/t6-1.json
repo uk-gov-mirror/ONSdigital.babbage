@@ -13,7 +13,7 @@
 	"breadcrumb": {
 		"type": "home",
 		"name": "Economy",
-		"uri": "/economy/bluebook/2014"
+		"uri": "economy/"
 	},
 	"print": {
 		"uri": "economy/bluebook/print",
