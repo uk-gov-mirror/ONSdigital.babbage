@@ -44,21 +44,17 @@
 
 <div class="wrapper box box--padded-vertical">
 	<div class="grid-wrap">
+		<ul class="list--neutral">
 		{{#each sections}}
-		<div class="grid-col tablet-grid-one-third clearfix nav--block-landing">
-			<article class="box box--padded-vertical">
-				<header class="box__header">
-						<h3 class="flush">
-							<a href="">{{name}}</a>
-						</h3>
-				</header>
-				<div class="box__content">
-					<p>{{description}}</p>
-				</div>
-			</article>
-		</div>
+            <li class="grid-col desktop-grid-one-third box--padded-vertical nav--block-landing">
+             	<h3>
+					<a href="">{{name}}</a>
+				</h3>
+				<p>{{description}}</p>
+			</li>
 		{{/each}}
-		<div class="grid-col tablet-grid-one-third clearfix nav--block-landing">
+		</ul>
+		<div class="grid-col tablet-grid-one-third nav--block-landing clear-left">
 				<article class="box box--orange">
 					<div class="box__inner border box--padded has-icon box--orange--separated-left">
 						<header class="box__header">
