@@ -6,7 +6,7 @@
             <p class="page-header__title page-header--time-series-desc">
                 <strong>{{header}}</strong>
             </p>
-            <h1 class="page-header__title flush--half--bottom">{{chart.timeseries.name}}</h1>
+            <h1 class="page-header__title flush--half--bottom">{{chart.timeseries.title}}</h1>
             <a href="#!/nationalstats"><img class="page-header--article__img" src="/ui/img/national-statistics.png" alt="The official National Statistics badge"></a>
 
             <div class="page-header--article__body">
@@ -207,10 +207,10 @@
                                 <h4 class="top10">Related time series</h4>
                                 <div ng-repeat="relatedTimeseries in taxonomy.data.relatedTimeseriesData | orderBy:'name'">
                                     <div style="margin-left:10px">
-                                        <a href=#!{{relatedTimeseries.uri}}>{{relatedTimeseries.name}}</a>
+                                        <a href=#!{{relatedTimeseries.uri}}>{{relatedTimeseries.title}}</a>
                                     </div>
                                 </div>
-                                <h4 class="top10">Datasets that contain {{chart.timeseries.name}} and related time series</h4>
+                                <h4 class="top10">Datasets that contain {{chart.timeseries.title}} and related time series</h4>
                                 <div style="margin-left:10px; margin-bottom:15px">
                                     <div>This content is not available in the prototype but in future will include datasets that contain this time series and other related time series
                                     </div>

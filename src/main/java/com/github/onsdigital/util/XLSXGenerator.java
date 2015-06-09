@@ -75,7 +75,7 @@ public class XLSXGenerator {
 
 		// Data
 		for (TimeSeries TimeSeries : this.TimeSeries) {
-			name.createCell(column).setCellValue(TimeSeries.name);
+			name.createCell(column).setCellValue(TimeSeries.title);
 			cdid.createCell(column).setCellValue(TimeSeries.cdid);
 			preUnit.createCell(column).setCellValue(TimeSeries.preUnit);
 			unit.createCell(column).setCellValue(TimeSeries.unit);
@@ -85,7 +85,7 @@ public class XLSXGenerator {
 			note1.createCell(column).setCellValue(TimeSeries.notes.get(0));
 			note2.createCell(column).setCellValue(TimeSeries.notes.get(1));
 			column++;
-			System.out.println("Geneararing XLSX for: " + TimeSeries.name + " at: " + TimeSeries.uri);
+			System.out.println("Geneararing XLSX for: " + TimeSeries.title + " at: " + TimeSeries.uri);
 		}
 
 		return row;

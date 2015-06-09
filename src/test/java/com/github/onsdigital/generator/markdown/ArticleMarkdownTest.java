@@ -19,7 +19,7 @@ public class ArticleMarkdownTest {
 	//TODO: Get rid of all null initialized fields
 	@Before
 	public void setup() {
-		article = new Article(null,null, null,null);
+		article = new Article();
 	}
 
 	@Test
@@ -52,16 +52,16 @@ public class ArticleMarkdownTest {
 		assertEquals(releaseDate, article.releaseDate);
 
 		// Title
-		assertEquals("What happened to all the money?", article.name);
+		assertEquals("What happened to all the money?", article.title);
 
 		// Sections
 		assertEquals(3, article.sections.size());
-		assertEquals("Article summary", article.sections.get(0).name);
+		assertEquals("Article summary", article.sections.get(0).title);
 		assertEquals("Summarise article.\n", article.sections.get(0).markdown);
-		assertEquals("Section one", article.sections.get(1).name);
+		assertEquals("Section one", article.sections.get(1).title);
 		String markdown1 = "Jarogonium est jargonius et dameleie statisticum seculum mondi.\n";
 		assertEquals(markdown1, article.sections.get(1).markdown);
-		assertEquals("Section two", article.sections.get(2).name);
+		assertEquals("Section two", article.sections.get(2).title);
 		String markdown2 = "Lorem ipsum article\n";
 		markdown2 += " * bullet1\n";
 		markdown2 += " * bullet2\n";
@@ -69,7 +69,7 @@ public class ArticleMarkdownTest {
 
 		// Accordion
 		assertEquals(1, article.accordion.size());
-		assertEquals("Footnotes", article.accordion.get(0).name);
+		assertEquals("Footnotes", article.accordion.get(0).title);
 		assertEquals("Article footer", article.accordion.get(0).markdown);
 	}
 

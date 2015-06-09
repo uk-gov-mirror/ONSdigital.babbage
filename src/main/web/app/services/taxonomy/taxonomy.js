@@ -48,7 +48,7 @@
 			} else if (ArrayUtil.isNotEmpty(data.months)) {
 				chartData = data.months
 			} else {
-				$log.error("No timeseries data found for ", timeseries.name)
+				$log.error("No timeseries data found for ", timeseries.title)
 				return
 			}
 			return chartData

@@ -17,7 +17,7 @@
 			}
 			$scope.breadcrumb = {}
 			$scope.breadcrumb.parent = data.breadcrumb
-			$scope.breadcrumb.current = data.name
+			$scope.breadcrumb.current = data.title
 		}
 	}
 	

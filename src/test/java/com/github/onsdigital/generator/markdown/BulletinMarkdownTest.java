@@ -17,7 +17,7 @@ public class BulletinMarkdownTest {
 
 	@Before
 	public void setup() {
-		bulletin = new Bulletin(null,null,null,null);
+		bulletin = new Bulletin();
 	}
 
 	@Test
@@ -56,16 +56,16 @@ public class BulletinMarkdownTest {
 		assertEquals(releaseDate, bulletin.releaseDate);
 
 		// Title
-		assertEquals("Analysis of consumer price inflation", bulletin.name);
+		assertEquals("Analysis of consumer price inflation", bulletin.title);
 
 		// Sections
 		assertEquals(3, bulletin.sections.size());
-		assertEquals("Bulletin summary", bulletin.sections.get(0).name);
+		assertEquals("Bulletin summary", bulletin.sections.get(0).title);
 		assertEquals("Summarise bulletin.\n", bulletin.sections.get(0).markdown);
-		assertEquals("Section one", bulletin.sections.get(1).name);
+		assertEquals("Section one", bulletin.sections.get(1).title);
 		String markdown1 = "Jarogonium est jargonius et dameleie statisticum seculum mondi.\n";
 		assertEquals(markdown1, bulletin.sections.get(1).markdown);
-		assertEquals("Section two", bulletin.sections.get(2).name);
+		assertEquals("Section two", bulletin.sections.get(2).title);
 		String markdown2 = "Lorem ipsum bulletin\n";
 		markdown2 += " * bullet1\n";
 		markdown2 += " * bullet2\n";
@@ -73,7 +73,7 @@ public class BulletinMarkdownTest {
 
 		// Accordion
 		assertEquals(1, bulletin.accordion.size());
-		assertEquals("Footnotes", bulletin.accordion.get(0).name);
+		assertEquals("Footnotes", bulletin.accordion.get(0).title);
 		assertEquals("Bulletin footer", bulletin.accordion.get(0).markdown);
 	}
 

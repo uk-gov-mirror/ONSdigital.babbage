@@ -69,9 +69,9 @@ public class SearchHelper {
 		}
 
 		Map<String, Object> TimeSeriesProperties = result.getResults().iterator().next();
-		TimeSeries TimeSeries = new TimeSeries(null,null,null,null,null);
+		TimeSeries TimeSeries = new TimeSeries();
 		TimeSeries.setCdid((String) TimeSeriesProperties.get("cdid"));
-		TimeSeries.name = (String) TimeSeriesProperties.get("title");
+		TimeSeries.title = (String) TimeSeriesProperties.get("title");
 		TimeSeries.uri = URI.create((String) TimeSeriesProperties.get("url"));
 		return TimeSeries;
 

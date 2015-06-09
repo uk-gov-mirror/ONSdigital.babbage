@@ -57,7 +57,7 @@ public class DatasetMappingsCSV {
 			String datasetName = StringUtils.trim(row.get(name));
 			Set<TimeSeries> dataset = Data.oldDataset(datasetName);
 			if (dataset == null) {
-				throw new RuntimeException("Unable to find a dataset for name '" + datasetName);
+				throw new RuntimeException("Unable to find a dataset for title '" + datasetName);
 			}
 			Data.addMappedDataset(datasetName);
 

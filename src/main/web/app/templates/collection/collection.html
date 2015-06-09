@@ -7,7 +7,7 @@
       <div class="grid-wrap">
         <div class="grid-col tablet-wide-grid-two-thirds">
            <div class="collection-header"> 
-		      <h2><span class="collection_content_type">{{collection.contentType}}</span> related to {{collection.content.name}}</h2>
+		      <h2><span class="collection_content_type">{{collection.contentType}}</span> related to {{collection.content.title}}</h2>
 		      <!-- <p>Frequency:  <span id="frequency"><strong>{{content.frequency}}</strong></span> -->
 			<div class="content-reveal">
 				<p> 
@@ -45,7 +45,7 @@
                <div ng-show="collection.searchResponse.results.length === 0" id="search-results-total" class="search-results-total">
                     Sorry, there were no {{collection.contentType}} found for 
                     <span class='results-search-term'>
-                        '{{collection.content.name}}'
+                        '{{collection.content.title}}'
                     </span>          
                 </div>  
             </div>

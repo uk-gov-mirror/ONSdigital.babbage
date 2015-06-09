@@ -5,16 +5,16 @@
 
 <div class="page-header slate">
     <div class="wrapper">
-        <h2 class="page-header__title flush--half--bottom">{{title}}</h2>
+        <h1 class="page-header__title flush--half--bottom">{{title}}</h1>
 
-        <p>{{lede}}</p>
-
-        <h3><a href="#">Browse our statistics<span class="icon-right-open-big"></span></a></h3>
+        <p>{{lede}}
+		<br/>
+        <a href="#">Browse our statistics<span class="icon-right-open-big"></span></a></p>
   </div>
     <!-- / wrapper -->
 </div>
 <!-- panel -->
-<section class="wrapper panel--mar">
+<div class="wrapper panel--mar">
     <!-- grid-wrap -->
     <div class="grid-wrap grid-wrap--home-hero panel--separated--bottom">
       <!-- grid-col -->
@@ -70,19 +70,15 @@
         </div>
         <!-- /panel-->
     </div>
-</section>
+</div>
 
-<!-- section -->
-<section class="panel wrapper panel--separated--bottom">
-    <header class="actionable-header__title">
-        <h2 class="actionable-header__title">New this week</h2>
-        <!-- <a class="hide-med-down [actionable-header--asidelink]" href="#">View new and upcoming releases</a> -->
-    </header>
+<div class="panel wrapper panel--separated--bottom">
+    <h2 class="delta flush">New this week</h2>
     <div class="grid-wrap">
         <ul class="list--neutral">
             {{#each releases}}
 				<li class="grid-col desktop-grid-one-third">
-					<a href="{{link}}" title="{{name}}"><h3>{{name}}</h3></a>
+					<h3><a href="{{link}}" title="{{name}}">{{name}}</a></h3>
 					<p>
                         {{description}}
 					</p>
@@ -93,13 +89,14 @@
     </div>
     <a href="#">View new and upcoming releases</a>
     <!-- /section -->
-</section>
+</div>
 <!-- wrapper -->
-<section class="wrapper panel--mar">
+<div class="wrapper panel--mar">
     <div class="grid-wrap">
+		{{#each oneThirdBoxes}}
         <div class="grid-col desktop-grid-one-third">
-            <h3 class="flush--half">What's coming and when?</h3>
-            <article class="box box--purple box--purple--separated--left flush--half--bottom">
+			<h2 class="delta flush--half">{{name}}</h3>
+            <article class="box  flush--half--bottom">
                 <div class="box__inner border box--padded">
                     <div class="box__section">
                         <h3 class="box__section__header">
@@ -108,114 +105,36 @@
                     </header>
                     <!-- /box__header -->
                     <div class="box__content">
-                            <a href="#">Link to release calendar</a>
+                            <a href="#">Link</a>
                     </div>
                     <!-- /box__content -->
                 </div>
                 <!-- /box__inner -->
             </article>
 
-            <p class="flush--half">Find out when our statistics are released and sign-up to receive notiﬁcations.</p>
+            <p class="flush--half">{{description}}</p>
         </div>
-        <div class="grid-col desktop-grid-one-third">
-            <h3 class="flush--half">Other official statistics</h3>
-            <article class="box box--purple box--purple--separated--left flush--half--bottom">
-                <div class="box__inner border box--padded">
-                    <div class="box__section">
-                        <h3 class="box__section__header">
-                            Image here
-                        </h3>
-                    </header>
-                    <!-- /box__header -->
-                    <div class="box__content">
-                            <a href="#">Link to .gov</a>
-                    </div>
-                    <!-- /box__content -->
-                </div>
-                <!-- /box__inner -->
-            </article>
-            <p class="flush--half">Find oﬃcial statistics produced by other government departments.</p>
-        </div>
-        <div class="grid-col desktop-grid-one-third">
-            <h3 class="flush--half">Looking for local statistics?</h3>
-            <article class="box box--orange box--orange--separated-left flush--half--bottom">
-                <div class="box__inner border box--padded">
-                    <div class="box__section">
-                        <h3 class="box__section__header">
-                            Image here
-                        </h3>
-                    </header>
-                    <!-- /box__header -->
-                    <div class="box__content">
-                            <a href="#">Link to local</a>
-                    </div>
-                    <!-- /box__content -->
-                </div>
-                <!-- /box__inner -->
-            </article>
-            <p class="flush--half">A handy guide to let you know where to ﬁnd local statistics.</p>
-        </div>
-    </div> <!--/grid-wrap -->
+		{{/each}}
+	</div>
     <div class="grid-wrap panel--top-mar">
+		{{#each oneHalfBoxes}}
         <div class="grid-col desktop-grid-one-half">
-            <h3 class="flush--half">Census</h3>
-            <article class="box border box--purple box--purple--separated--left flush--half--bottom [home_callout] [homeicon_census]">
+			<h2 class="delta flush--half">{{name}}</h3>
+            <article class="box border flush--half--bottom">
                 <div class="box__inner box--padded">
                     <div class="grid-wrap">
-                        <div class="grid-col grid-one-half ">
-                        </div>
-                        <div class="grid-col grid-one-half [floater-right]">
-                            <div class="media__body">
-                                <header class="[box__header] [pad_regional_header]">
-                                    <h2 class="[callout-header]">
-                                        <ul class="list--neutral">
-                                            <li>Who we are.</li>
-                                            <li>How we live.</li>
-                                            <li>What we do.</li>
-                                        </ul>
-                                    </h2>
-                                    <!-- /box__header -->
-                                </header>
-                            </div>
-                        </div>
-                        <div class="box__content [list--table__item__body--icon] [div_panel_link]">
-                            <a class="" href="http://www.ons.gov.uk/ons/data/area-first/">2011 Census <span class="icon-right-open-big"></span></a>
+                        <div class="grid-col grid-one-half grid-push-one-half">
+							<p>{{boxText}}</p>
                         </div>
                     </div>
                 </div>
             </article>
-            <p class="flush--half">Discover how our census statistics help paint a picture of the nation and how we live.</p>
+            <p class="flush--half">{{description}}</p>
         <!-- /grid-col -->
         </div>
-        <div class="grid-col desktop-grid-one-half">
-            <h3 class="flush--half">Visual.ONS</h3>
-            <article class="box border box--green--separated--left flush--half--bottom [home_callout] [homeicon_datavis]">
-                <div class="box__inner box--padded ">
-                    <div class="grid-wrap">
-                        <div class="grid-col grid-one-half [floater-right]">
-                            <div class="media__body">
-                                <header class="[box__header] [pad_regional_header]">
-                                    <h2 class="[callout-header]">
-                                        <ul class="list--neutral">
-                                            <li>Introducing Visual.ONS</li>
-                                        </ul>
-                                    </h2>
-                                    <!-- /box__header -->
-                                </header>
-                            </div>
-                        </div>
-                        <div class="media__body">
-                            <div class="box__content [list--table__item__body--icon] [div_panel_link]">
-                                <span class="[callout--link_inactive]">Coming soon</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </article>
-            <p class="flush--half">Visual.ONS is a website exploring new approaches to making ONS statistics accessible and relevant to a wide public audience.</p>
-        </div>
+		{{/each}}
     </div>
     <!-- /grid-wrap -->
-</section>
+</div>
 
 <script src="../../node_modules/ONS-Pattern-Library/dist/js/footer.js"></script>

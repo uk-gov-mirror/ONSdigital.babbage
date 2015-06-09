@@ -7,7 +7,7 @@
             <p class="page-header__title page-header--stat-bulletin-desc">
                 <strong>{{header}}</strong>
             </p>
-            <h1 class="page-header__title flush--half--bottom">{{content.name}}</h1>
+            <h1 class="page-header__title flush--half--bottom">{{content.title}}</h1>
             <a href="#!/nationalstats"><img class="page-header--article__img" src="/ui/img/national-statistics.png" alt="The official National Statistics badge"></a>
 
             <div class="page-header--article__body">
@@ -73,7 +73,7 @@
             <h3 id="top">Table of contents</h3>
             <div id="toc-content">
                 <ol class="toc-columns">
-                    <li ng-repeat="section in content.sections track by $index"><a ng-click="scrollTo('section' + ($index + 1))">{{section.name}}</a>
+                    <li ng-repeat="section in content.sections track by $index"><a ng-click="scrollTo('section' + ($index + 1))">{{section.title}}</a>
                     </li>
                 </ol>
             </div>
@@ -86,7 +86,7 @@
             <div class="grid-col {{sidebar ? 'desktop-grid-two-thirds tablet-grid-full-width' : ''}}">
                 <article class="box border-horizontal-single content-section" ng-repeat="section in content.sections">
                     <header class="box__header">
-                        <h2 id="section{{$index + 1}}">{{$index + 1}}. {{section.name}}</h2>
+                        <h2 id="section{{$index + 1}}">{{$index + 1}}. {{section.title}}</h2>
                     <!-- Check this in the static version -->
                         <!-- <h2>
                         <a id="Summary"></a>1. Summary</h2> -->
@@ -108,7 +108,7 @@
  -->
                 <ons-accordion multiple="true">
                     <article class="box border-horizontal-single" ng-repeat="tab in content.accordion">
-                        <ons-accordion-item header="{{tab.name}}">
+                        <ons-accordion-item header="{{tab.title}}">
                             <!-- /box__header -->
                             <div class="box__content">
                                 <div markdown link="{{tab.markdown}}"></div>
@@ -145,7 +145,7 @@
 						            <article class="box--padded" ng-repeat="relatedBulletin in content.relatedBulletinData" class="grid-col desktop-grid-one-third tablet-grid-one-half">
 						                <header class="box__header">
 						                    <h3>
-						                        <a href="#!{{relatedBulletin.uri}}">{{relatedBulletin.name}}</a>
+						                        <a href="#!{{relatedBulletin.uri}}">{{relatedBulletin.title}}</a>
 						                    </h3>
 						                </header>
 						                <div class="box__content">

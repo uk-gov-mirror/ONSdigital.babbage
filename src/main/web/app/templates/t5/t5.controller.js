@@ -122,7 +122,7 @@
                 ctrl.years = getYears()
                 ctrl.tenYears = tenYears(ctrl.years)
                 ctrl.chartConfig.options.xAxis.tickInterval = tickInterval(ctrl.chartData.length);
-                ctrl.chartConfig.options.title.text = ctrl.timeseries.name
+                ctrl.chartConfig.options.title.text = ctrl.timeseries.title
                 ctrl.chartConfig.options.yAxis.title.text = ctrl.timeseries.preUnit + ' ' + ctrl.timeseries.unit
                 ctrl.chartConfig.options.yAxis.min = ctrl.min;
                 ctrl.chartConfig.subtitle.text = 'Source: ' + ctrl.timeseries.source;
@@ -250,7 +250,7 @@
         //Initialize controller and configuration
         function initialize() {
             resolveChartTypes(ArrayUtil)
-            ctrl.chartConfig.series[0].name = ctrl.timeseries.name
+            ctrl.chartConfig.series[0].name = ctrl.timeseries.title
             ctrl.chartConfig.series[0].unit = ctrl.timeseries.unit
             ctrl.chartConfig.series[0].preUnit = ctrl.timeseries.preUnit ? ctrl.timeseries.preUnit + ' ' : ' '
             prepareData()

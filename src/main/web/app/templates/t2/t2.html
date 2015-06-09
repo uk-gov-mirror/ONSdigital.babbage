@@ -2,7 +2,7 @@
     <div class="page-header flush--half--bottom slate">
         <ons-breadcrumb data="breadcrumb"></ons-breadcrumb>
         <div class="wrapper">
-            <h1 class="page-header__title flush--half--bottom">{{taxonomy.data.name}}</h1>
+            <h1 class="page-header__title flush--half--bottom">{{taxonomy.data.title}}</h1>
             <div class="content-reveal lede">
                 <p>{{taxonomy.data.summary}}
                     <a href="" toggler="more" toggler-widget-var="w_toggler" ng-if="taxonomy.data.more" class="content-reveal__action">{{w_toggler.isVisible() ? 'Show less' : 'Show more'}}</a>
@@ -28,13 +28,13 @@
             <article ng-if="!section.nondata" class="box box--padded-vertical">
                 <header class="box__header">
                     <h3>
-                        <a href="#!{{section.uri}}">{{section.name}}</a>
+                        <a href="#!{{section.uri}}">{{section.title}}</a>
                     </h3>
                 </header>
                 <!-- /box__header -->
                 <div class="box__content">
                     <p >
-                       <!--Includes: {{section.items | join:', ': 'name' | charLimit:120:'...'}}-->
+                       <!--Includes: {{section.items | join:', ': 'title' | charLimit:120:'...'}}-->
                         {{section.summary | charLimit:120:'...'}}
                     </p>
 

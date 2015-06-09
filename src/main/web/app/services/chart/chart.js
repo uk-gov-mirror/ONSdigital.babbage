@@ -142,7 +142,7 @@
 
 	                        // series names and values
 	                        $.each(this.points, function(i, val) {
-	                            content += '<div class="tiptext"><i>' + val.point.series.chart.series[i].name + "</i><br/><b>Value: " + Highcharts.numberFormat(val.y, 2) + '</b></div>';
+	                            content += '<div class="tiptext"><i>' + val.point.series.chart.series[i].title + "</i><br/><b>Value: " + Highcharts.numberFormat(val.y, 2) + '</b></div>';
 	                        });
 	                        content += "</div>";
 	                        return content;
@@ -564,7 +564,7 @@
             //Initialize controller and configuration
             function initialize() {
                 resolveChartTypes()
-                ctrl.chartConfig.series[0].name = ctrl.timeseries.name
+                ctrl.chartConfig.series[0].name = ctrl.timeseries.title
                 prepareData()
 
                 function resolveChartTypes() {

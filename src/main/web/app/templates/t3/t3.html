@@ -4,7 +4,7 @@
 <div class="page-header flush--half--bottom slate_original">
     <ons-breadcrumb data="breadcrumb"></ons-breadcrumb>
     <div class="wrapper">
-        <h1 class="page-header__title flush--half--bottom">{{taxonomy.data.name}}</h1>
+        <h1 class="page-header__title flush--half--bottom">{{taxonomy.data.title}}</h1>
         <div class="content-reveal lede">
             <p>{{taxonomy.data.summary}}
                 <a href="" toggler="more" toggler-widget-var="w_toggler" ng-if="taxonomy.data.more" class="content-reveal__action">{{w_toggler.isVisible() ? 'Show less' : 'Show more'}}</a>
@@ -26,9 +26,9 @@
     <section id="headline" class="box box--padded-vertical-med box--padded-horizontal box--blue  solid border lifted offset-top border-defined flush--bottom" style="padding-bottom: 10px; overflow:hidden;">
         <div class="box__section__header flush">
             <h2 class="beta">
-                {{taxonomy.data.statsBulletinHeadline.name}}</h2>
-            <h2 class="beta" ng-if="!taxonomy.data.statsBulletinHeadline.name">
-                {{taxonomy.data.headline.name}}</h2>
+                {{taxonomy.data.statsBulletinHeadline.title}}</h2>
+            <h2 class="beta" ng-if="!taxonomy.data.statsBulletinHeadline.title">
+                {{taxonomy.data.headline.title}}</h2>
             <!-- <h2 class="beta">,{{taxonomy.data.headline.data.date}}</h2> -->
         </div>
         <div class="grid-wrap">
@@ -37,7 +37,7 @@
                 <div class="box box--padded--med box--green--separated-left box--inline flush sparkline_area">
                     <header class="box___section">
                         <h3 class="navpanel-list-heading lede box--padded-bottom-small">
-                            <a href="#!{{taxonomy.data.headline.uri}}">{{taxonomy.data.headline.name}}</a>
+                            <a href="#!{{taxonomy.data.headline.uri}}">{{taxonomy.data.headline.title}}</a>
                             <ons-info-tooltip tip="{{taxonomy.data.headline.data.keyNote}}" tip-class="icon--inline--large-text icon--small"></ons-info-tooltip>
                         </h3>
                     </header>
@@ -108,17 +108,17 @@
 <!-- List/Table with data -->
 
 <section id="timeseries" class="panel--large wrapper flush--top">
-    <h2 id="related" class="list--table-header panel--pad">Time series related to {{taxonomy.data.name}}</h2>
+    <h2 id="related" class="list--table-header panel--pad">Time series related to {{taxonomy.data.title}}</h2>
     <ol class="list--table list--table--complex table--striped-light table-light--sectioned">
         <!-- /list- -table__head -->
         <li ng-repeat="item in taxonomy.data.items | limitTo:(t3.allVisible?t3.loadedTimseriesCount : t3.timeseriesDefaultLimit)" class="list--table__item list--table__body">
             <div class="list--table__item__body list--table__item__body--caption">
                  <h3 >
-                    <a ng-if="item.chartData" href="#!{{item.uri}}" class="no_underline"> {{item.name}}</a>
-                    <span ng-if="!item.chartData"> {{item.name}}</span>
+                    <a ng-if="item.chartData" href="#!{{item.uri}}" class="no_underline"> {{item.title}}</a>
+                    <span ng-if="!item.chartData"> {{item.title}}</span>
                     <a class="information" href="">
                         <ons-info-tooltip tip="{{item.data.keyNote}}"></ons-info-tooltip>
-                        <span class="visuallyhidden">More information about {{item.name}}</span>
+                        <span class="visuallyhidden">More information about {{item.title}}</span>
                     </a>
                 </h3>
                 <p class="list--table__item__description">{{item.data.additionalText}}</p>
@@ -201,7 +201,7 @@
             <article class="box box--padded">
                 <header class="box__header">
                     <h3>
-                        <a href="#!{{dataset.uri}}">{{dataset.name}}</a>
+                        <a href="#!{{dataset.uri}}">{{dataset.title}}</a>
                     </h3>
                 </header>
                 <!-- /box__header -->
