@@ -11,24 +11,9 @@
 		t1.sparklineWidth = 120
 		initialize()
 		
-		// listenResize()
-
-
 		function initialize() {
 			for (var i = 0; i < sections.length; i++) {
-				for (var j = 0; j < sections[i].items.length; j++) {
-					// if (sections[i].name.indexOf("Economy") != -1) {
-					// 	sections[i].name = "Economy"
-					// } else if (sections[i].name.indexOf("Business") != -1) {
-					// 	sections[i].name = "Business"
-					// } else if (sections[i].name.indexOf("Employment") != -1) {
-					// 	sections[i].name = "Employment"
-					// } else if (sections[i].name.indexOf("Population") != -1) {
-					// 	sections[i].name = "Population"
-					// }
-
-					loadItemData(sections[i].items[j])
-				};
+					loadItemData(sections[i].statistics)
 			};
 
 		}

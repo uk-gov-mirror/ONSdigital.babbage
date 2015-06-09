@@ -40,8 +40,8 @@ public class ArticleMarkdown {
 
 		// Set up the article
 		Article article = new Article(null, null , null ,null );
-		article.title = markdown.title;
-		article.title = markdown.title;
+		article.name = markdown.title;
+		article.name = markdown.title;
 		setProperties(article, markdown);
 		article.sections.addAll(markdown.sections);
 		article.accordion.addAll(markdown.accordion);
@@ -78,7 +78,7 @@ public class ArticleMarkdown {
 		article.level3 = StringUtils.defaultIfBlank(properties.remove("level 3"), article.level3);
 
 		// Additional details
-		article.contact.name = StringUtils.defaultIfBlank(properties.remove("contact title"), article.theme);
+		article.contact.name = StringUtils.defaultIfBlank(properties.remove("contact name"), article.theme);
 		article.contact.email = StringUtils.defaultIfBlank(properties.remove("contact email"), article.theme);
 
 
@@ -118,8 +118,8 @@ public class ArticleMarkdown {
      */
     public static String toFilename(Article article) {
         StringBuilder result = new StringBuilder();
-        for (int i = 0; i < article.title.length(); i++) {
-            String character = article.title.substring(i, i + 1);
+        for (int i = 0; i < article.name.length(); i++) {
+            String character = article.name.substring(i, i + 1);
             if (character.matches("[a-zA-Z0-9]")) {
                 result.append(character);
             }

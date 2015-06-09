@@ -36,11 +36,11 @@
 
             function loadRelatedBulletins(data) {
                 var dataPath = '/data'
-                var bulletins = data.relatedBulletins;
+                var bulletins = data.relatedDocuments;
 
                 if (bulletins != null) {
                     for (var i = 0; i < bulletins.length; i++) {
-                        var bulletin = bulletins[i]
+                        var bulletin = bulletins[i].uri
                         var relatedBulletinPath = dataPath + bulletin
                         DataLoader.load(relatedBulletinPath)
                             .then(function(relatedBulletin) {
@@ -57,7 +57,7 @@
 
 	            if (relatedTimeserieses != null) {
 	                for (var i = 0; i < relatedTimeserieses.length; i++) {
-	                    var timeseries = relatedTimeserieses[i]
+	                    var timeseries = relatedTimeserieses[i].uri
 	                    var relatedTimeseriesPath = dataPath + timeseries
 	                    DataLoader.load(relatedTimeseriesPath)
 	                    	.then(function(relatedTimeseries) {

@@ -15,11 +15,11 @@
 		initialize()
 
 		function initialize() {
-			var download = data.download
-			for (var i = 0; i < download.length; i++) {
-				if (download[i].cdids) {
+			var downloads = data.downloads
+			for (var i = 0; i < downloads.length; i++) {
+				if (downloads[i].cdids) {
 					ctrl.timeseries = true
-					ctrl.timeseriesItem = download[i]
+					ctrl.timeseriesItem = downloads[i]
 					break
 				}
 			};
