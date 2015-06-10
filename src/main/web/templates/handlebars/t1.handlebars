@@ -1,15 +1,10 @@
-<head>
-		<link rel="stylesheet" href="../../node_modules/ONS-Pattern-Library/dist/css/main.min.css"/>
-  	<script src="../../node_modules/ONS-Pattern-Library/dist/js/header.js"></script>
-</head>
+{{> partials/header}}
 
 <div class="page-header slate">
     <div class="wrapper">
         <h1 class="page-header__title flush--half--bottom">{{title}}</h1>
 
-        <p>{{lede}}
-		<br/>
-        <a href="#">Browse our statistics<span class="icon-right-open-big"></span></a></p>
+        <p>{{summary}}
   </div>
     <!-- / wrapper -->
 </div>
@@ -18,13 +13,12 @@
     <!-- grid-wrap -->
     <div class="grid-wrap grid-wrap--home-hero panel--separated--bottom">
       <!-- grid-col -->
-        {{#each highlightedData}}
+        {{#each sections}}
         <div class="grid-col grid-col--home-hero tablet-wide-grid-one-fifth">
             <article class="nav-panel nav-panel--stats nav-panel--home-hero sectioned">
                 <a href="#">Stat link, apply to whole panel<span class="[navpanel_wrapper_home__link]"></span></a>
-                {{#each items}}
                 <header class="nav-panel__header nav-panel__roomy">
-                    <h2 class="delta flush">{{name}}</h2>
+                    <h2 class="delta flush">{{statistics.title}}</h2>
                 </header>
                 <div class="nav-panel__roomy">
                     <ul class="list--neutral">
@@ -33,14 +27,14 @@
                                 <dd class="nav-panel__value">
                                     <div class="stat stat--small">
                                         <div class="stat__figure">
-                                            {{#if prefixUnit}}
-                                            <span class="stat__figure__unit">{{prefixUnit}}</span>
+                                            {{#if statistics.preUnit}}
+                                            <span class="stat__figure__unit">{{statistics.preUnit}}</span>
                                             {{/if}}
-                                            {{this.figure}}
-                                            <span class="stat__figure__unit">{{unit}}</span>
+                                            {{statistics.figure}}
+                                            <span class="stat__figure__unit">{{statistics.preUnit}}</span>
                                         </div>
                                         <div class="stat__description">
-                                            {{this.releaseDate}}
+                                            {{statistics.releaseDate}}
                                         </div>
                                     </div>
                                 </dd>
@@ -56,10 +50,9 @@
                         </li>
                     </ul>
                 </div>
-                {{/each}}
                 <footer class="nav-panel__footer">
                     <div class="nav-panel__action">
-                        <a class="nav-panel__roomy" href="#">View all {{this.name}}</a>
+                        <a class="nav-panel__roomy" href="{{theme.uri}}">View all {{theme.title}}</a>
                     </div>
                 </footer>
             </article>
@@ -119,4 +112,4 @@
     <!-- /grid-wrap -->
 </div>
 
-<script src="../../node_modules/ONS-Pattern-Library/dist/js/footer.js"></script>
+{{> partials/footer}}
