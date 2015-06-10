@@ -1,7 +1,7 @@
 package com.github.onsdigital.template;
 
 import com.github.onsdigital.configuration.Configuration;
-import com.github.onsdigital.content.base.Content;
+import com.github.onsdigital.content.page.base.Page;
 import com.github.onsdigital.template.handlebars.HandlebarsRenderer;
 
 import java.io.IOException;
@@ -22,9 +22,9 @@ public class TemplateService {
         return instance;
     }
 
-    public String renderPage(Content data) throws IOException {
-        System.out.println("Page rendering requested for content type: " + data.getType());
-        return templateRenderer.renderTemplate(TemplateMapping.getTemplateName(data.getType()), data);
+    public String renderPage(Page page) throws IOException {
+        System.out.println("Page rendering requested for content type: " + page.getType());
+        return templateRenderer.renderTemplate(TemplateMapping.getTemplateName(page.getType()), page);
     }
 
 }

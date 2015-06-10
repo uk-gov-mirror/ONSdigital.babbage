@@ -1,6 +1,6 @@
 package com.github.onsdigital.request.handler;
 
-import com.github.onsdigital.content.base.Content;
+import com.github.onsdigital.content.page.base.Page;
 import com.github.onsdigital.content.util.ContentUtil;
 import com.github.onsdigital.request.handler.base.RequestHandler;
 import com.github.onsdigital.template.TemplateService;
@@ -24,8 +24,8 @@ public class PageRequestHandler implements RequestHandler {
     public Object handle(String requestedUri, HttpServletRequest request, HttpServletResponse response) throws Exception {
         DataRequestHandler dataRequestHandler = new DataRequestHandler();
         String data = dataRequestHandler.getDataAsString(requestedUri, request);
-        Content content = ContentUtil.deserialise(data);
-        String html = TemplateService.getInstance().renderPage(content);
+        Page page = ContentUtil.deserialisePage(data);
+        String html = TemplateService.getInstance().renderPage(page);
         response.setCharacterEncoding(CharEncoding.UTF_8);
         response.setContentType(CONTENT_TYPE);
         response.setStatus(HttpServletResponse.SC_OK);

@@ -1,6 +1,6 @@
 package com.github.onsdigital.generator.data;
 
-import com.github.onsdigital.content.statistic.data.TimeSeries;
+import com.github.onsdigital.content.page.statistics.data.TimeSeries;
 import com.github.onsdigital.generator.ContentNode;
 import org.apache.commons.lang3.StringUtils;
 

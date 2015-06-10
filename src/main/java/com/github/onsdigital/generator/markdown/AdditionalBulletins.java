@@ -4,8 +4,8 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.Map;
 
-import com.github.onsdigital.content.statistic.data.TimeSeries;
-import com.github.onsdigital.content.statistic.document.Bulletin;
+import com.github.onsdigital.content.page.statistics.data.TimeSeries;
+import com.github.onsdigital.content.page.statistics.document.Bulletin;
 import com.github.onsdigital.generator.ContentNode;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;

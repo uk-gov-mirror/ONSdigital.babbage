@@ -1,7 +1,7 @@
 package com.github.onsdigital.search.util;
 
-import com.github.onsdigital.content.base.ContentType;
-import com.github.onsdigital.content.statistic.data.TimeSeries;
+import com.github.onsdigital.content.page.base.PageType;
+import com.github.onsdigital.content.page.statistics.data.TimeSeries;
 import com.github.onsdigital.search.ElasticSearchServer;
 import com.github.onsdigital.search.SearchService;
 import com.github.onsdigital.search.bean.AggregatedSearchResult;
@@ -145,14 +145,14 @@ public class SearchHelper {
 	}
 	
 	private static ONSQueryBuilder buildTimeSeriesCountQuery(String searchTerm) {
-		ONSQueryBuilder TimeSeriesCountQuery = new ONSQueryBuilder("ons").setType(ContentType.timeseries.toString()).setSearchTerm(searchTerm).setFields(TITLE, "url");
+		ONSQueryBuilder TimeSeriesCountQuery = new ONSQueryBuilder("ons").setType(PageType.timeseries.toString()).setSearchTerm(searchTerm).setFields(TITLE, "url");
 		return TimeSeriesCountQuery;
 	}
 
 	private static ONSQueryBuilder buildContentQuery(String searchTerm, int page, String... types) {
 		ONSQueryBuilder contentQuery = new ONSQueryBuilder("ons").setSearchTerm(searchTerm).setFields(TITLE, "url");
 		if (ArrayUtils.isEmpty(types)) {
-			contentQuery.setTypes(ContentType.bulletin.toString(), ContentType.dataset.toString(), ContentType.methodology.toString(), ContentType.article.toString()).setPage(page);
+			contentQuery.setTypes(PageType.bulletin.toString(), PageType.dataset.toString(), PageType.methodology.toString(), PageType.article.toString()).setPage(page);
 
 		} else {
 			contentQuery.setTypes(types).setPage(page);
@@ -163,8 +163,8 @@ public class SearchHelper {
 
 	private static ONSQueryBuilder buildAutocompleteQuery(String searchTerm) {
 		ONSQueryBuilder autocompleteQuery = new ONSQueryBuilder("ons").setSearchTerm(searchTerm).setFields(TITLE, "url");
-		autocompleteQuery.setTypes(ContentType.timeseries.toString(), ContentType.bulletin.toString(), ContentType.dataset.toString(), ContentType.methodology.toString(),
-				ContentType.article.toString());
+		autocompleteQuery.setTypes(PageType.timeseries.toString(), PageType.bulletin.toString(), PageType.dataset.toString(), PageType.methodology.toString(),
+				PageType.article.toString());
 		return autocompleteQuery;
 	}
 }

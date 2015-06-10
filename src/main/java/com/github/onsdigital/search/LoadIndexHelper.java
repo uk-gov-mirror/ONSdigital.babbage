@@ -1,7 +1,7 @@
 package com.github.onsdigital.search;
 
 import com.github.onsdigital.configuration.Configuration;
-import com.github.onsdigital.content.base.ContentType;
+import com.github.onsdigital.content.page.base.PageType;
 import com.google.gson.*;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -63,13 +63,13 @@ public class LoadIndexHelper {
         String type = getField(jsonObject, TYPE);
 
         Map<String, String> documentMap = null;
-        ContentType contentType = ContentType.valueOf(type);
+        PageType pageType = PageType.valueOf(type);
         String splitUrl = url.substring(0, url.indexOf("data.json"));
         String title = getField(jsonObject, TITLE);
         String summary = getField(jsonObject, SUMMARY);
         String name = getField(jsonObject, NAME);
         String lede = getField(jsonObject, LEDE);
-        switch (contentType) {
+        switch (pageType) {
             case taxonomy_landing_page:
             case product_page:
                 documentMap = buildDocumentMap(splitUrl, splitPathAsList, type, name, lede, summary);
@@ -79,7 +79,7 @@ public class LoadIndexHelper {
                 documentMap = buildTimeseriesMap(splitUrl, splitPathAsList, type, name, cdid);
                 break;
             case unknown:
-                System.out.println("json file: " + absoluteFilePath + "has unknown content type: " + contentType);
+                System.out.println("json file: " + absoluteFilePath + "has unknown content type: " + pageType);
                 break;
             default:
                 documentMap = buildDocumentMap(splitUrl, splitPathAsList, type, title, lede, summary);
@@ -129,7 +129,7 @@ public class LoadIndexHelper {
 
         JsonElement jsonElement = jsonObject.get(field);
         if (jsonElement == null) {
-            return ContentType.unknown.name();
+            return PageType.unknown.name();
         }
 
         return jsonElement.getAsString();

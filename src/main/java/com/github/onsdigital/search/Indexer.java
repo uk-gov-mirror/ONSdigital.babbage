@@ -1,6 +1,15 @@
 package com.github.onsdigital.search;
 
-import static org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder;
+import com.github.onsdigital.configuration.Configuration;
+import com.github.onsdigital.content.page.base.PageType;
+import org.apache.commons.lang3.StringUtils;
+import org.elasticsearch.action.ListenableActionFuture;
+import org.elasticsearch.action.admin.indices.create.CreateIndexRequestBuilder;
+import org.elasticsearch.action.index.IndexRequestBuilder;
+import org.elasticsearch.action.index.IndexResponse;
+import org.elasticsearch.client.Client;
+import org.elasticsearch.common.settings.ImmutableSettings;
+import org.elasticsearch.common.xcontent.XContentBuilder;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,17 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import com.github.onsdigital.content.base.ContentType;
-import org.apache.commons.lang3.StringUtils;
-import org.elasticsearch.action.ListenableActionFuture;
-import org.elasticsearch.action.admin.indices.create.CreateIndexRequestBuilder;
-import org.elasticsearch.action.index.IndexRequestBuilder;
-import org.elasticsearch.action.index.IndexResponse;
-import org.elasticsearch.client.Client;
-import org.elasticsearch.common.settings.ImmutableSettings;
-import org.elasticsearch.common.xcontent.XContentBuilder;
-
-import com.github.onsdigital.configuration.Configuration;
+import static org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder;
 
 public class Indexer {
 
@@ -48,16 +47,16 @@ public class Indexer {
 		CreateIndexRequestBuilder indexBuilder = client.admin().indices().prepareCreate("ons").setSettings(buildSettings());
 		System.out.println("Adding document mappings");
 
-		indexBuilder.addMapping(ContentType.dataset.toString(), getMappingProperties(ContentType.dataset.toString()));
+		indexBuilder.addMapping(PageType.dataset.toString(), getMappingProperties(PageType.dataset.toString()));
 
 		//TODO:Change home type to taxonomy
 		indexBuilder.addMapping("home", getMappingProperties("home"));
-		indexBuilder.addMapping(ContentType.bulletin.toString(), getMappingProperties(ContentType.bulletin.toString()));
-		indexBuilder.addMapping(ContentType.article.toString(), getMappingProperties(ContentType.article.toString()));
-		indexBuilder.addMapping(ContentType.methodology.toString(), getMappingProperties(ContentType.methodology.toString()));
+		indexBuilder.addMapping(PageType.bulletin.toString(), getMappingProperties(PageType.bulletin.toString()));
+		indexBuilder.addMapping(PageType.article.toString(), getMappingProperties(PageType.article.toString()));
+		indexBuilder.addMapping(PageType.methodology.toString(), getMappingProperties(PageType.methodology.toString()));
 
 		System.out.println("Adding timeseries mappings");
-		indexBuilder.addMapping(ContentType.timeseries.toString(), getTimeseriesMappingProperties(ContentType.timeseries.toString()));
+		indexBuilder.addMapping(PageType.timeseries.toString(), getTimeseriesMappingProperties(PageType.timeseries.toString()));
 
 		indexBuilder.execute();
 	}
@@ -106,7 +105,7 @@ public class Indexer {
 
 			Map<String, String> documentMap = LoadIndexHelper.getDocumentMap(absoluteFilePath);
 			if (documentMap != null && StringUtils.isNotEmpty(documentMap.get("title"))) {
-				if (documentMap.get("type").equals(ContentType.timeseries.toString())) {
+				if (documentMap.get("type").equals(PageType.timeseries.toString())) {
 					buildTimeseries(client, documentMap, idCounter.getAndIncrement());
 				} else {
 					buildDocument(client, documentMap, idCounter.getAndIncrement());

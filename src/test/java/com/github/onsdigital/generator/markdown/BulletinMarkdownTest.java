@@ -1,6 +1,6 @@
 package com.github.onsdigital.generator.markdown;
 
-import com.github.onsdigital.content.statistic.document.Bulletin;
+import com.github.onsdigital.content.page.statistics.document.Bulletin;
 import org.junit.Before;
 import org.junit.Test;
 

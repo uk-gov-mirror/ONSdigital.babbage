@@ -24,8 +24,8 @@ public class Navigation {
 
 		response.setCharacterEncoding("UTF8");
 		response.setContentType("application/json");
-		
-		return NavigationUtil.getNavigationNodes();
+
+		return NavigationUtil.getNavigation();
 
 	}
 

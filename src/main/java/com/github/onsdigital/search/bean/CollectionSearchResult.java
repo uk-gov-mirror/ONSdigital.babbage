@@ -1,5 +1,8 @@
 package com.github.onsdigital.search.bean;
 
+import com.github.davidcarboni.restolino.json.Serialiser;
+import com.github.onsdigital.content.partial.metadata.StatisticsMetadata;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -8,9 +11,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import com.github.davidcarboni.restolino.json.Serialiser;
-import com.github.onsdigital.content.partial.reference.StatisticsReference;
 
 /**
  * Holds the details for a collection of content types
@@ -70,7 +70,7 @@ public class CollectionSearchResult {
 	private void init(List<File> files) {
 		for (File file : files) {
 			Map<String, String> item = new HashMap<String, String>();
-			StatisticsReference collectionItemJson = getCollectionItem(file);
+			StatisticsMetadata collectionItemJson = getCollectionItem(file);
 			item.put(TITLE, collectionItemJson.title);
             item.put(RELEASE_DATE, new SimpleDateFormat(datePattern).format(collectionItemJson.releaseDate));
 
@@ -91,9 +91,9 @@ public class CollectionSearchResult {
 		return urlWithoutJson;
 	}
 
-	private StatisticsReference getCollectionItem(File file) {
+	private StatisticsMetadata getCollectionItem(File file) {
 		try {
-			return Serialiser.deserialise(new FileInputStream(file), StatisticsReference.class);
+			return Serialiser.deserialise(new FileInputStream(file), StatisticsMetadata.class);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}

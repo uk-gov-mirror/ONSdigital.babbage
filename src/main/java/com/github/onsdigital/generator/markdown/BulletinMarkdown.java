@@ -1,7 +1,7 @@
 package com.github.onsdigital.generator.markdown;
 
+import com.github.onsdigital.content.page.statistics.document.Bulletin;
 import com.github.onsdigital.content.partial.Contact;
-import com.github.onsdigital.content.statistic.document.Bulletin;
 import com.github.onsdigital.generator.ContentNode;
 import com.github.onsdigital.generator.data.Data;
 import org.apache.commons.lang.BooleanUtils;
@@ -112,7 +112,7 @@ public class BulletinMarkdown {
 
         // Additional fields for migration:
         bulletin.phone = StringUtils.defaultIfBlank(properties.remove("phone"), bulletin.phone);
-        bulletin.nationalStatistic = BooleanUtils.toBoolean(StringUtils.defaultIfBlank(properties.remove("national statistic"), BooleanUtils.toString(bulletin.nationalStatistic, "yes", "no")));
+        bulletin.nationalStatistic = BooleanUtils.toBoolean(StringUtils.defaultIfBlank(properties.remove("national statistics"), BooleanUtils.toString(bulletin.nationalStatistic, "yes", "no")));
         bulletin.language = StringUtils.defaultIfBlank(properties.remove("language"), bulletin.language);
         // Split keywords by commas:
         String searchKeywordsString = StringUtils.defaultIfBlank(properties.remove("search keywords"), StringUtils.join(bulletin.searchKeywords, ','));

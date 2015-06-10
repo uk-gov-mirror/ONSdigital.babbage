@@ -5,7 +5,7 @@ import java.nio.file.Path;
 import java.util.Collection;
 import java.util.Map;
 
-import com.github.onsdigital.content.methodology.Methodology;
+import com.github.onsdigital.content.page.methodology.Methodology;
 import com.github.onsdigital.generator.ContentNode;
 import com.github.onsdigital.generator.data.Data;
 

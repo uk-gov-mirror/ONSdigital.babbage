@@ -6,6 +6,7 @@ import com.github.jknack.handlebars.helper.StringHelpers;
 import com.github.jknack.handlebars.io.FileTemplateLoader;
 import com.github.onsdigital.configuration.Configuration;
 import com.github.onsdigital.content.base.Content;
+import com.github.onsdigital.content.page.base.Page;
 import com.github.onsdigital.template.TemplateRenderer;
 import com.github.onsdigital.template.handlebars.helpers.DateFormatHelper;
 
@@ -50,7 +51,7 @@ public class HandlebarsRenderer implements TemplateRenderer {
     private static Map<String, Template> templatesCache = new ConcurrentHashMap<>();
 
     @Override
-    public String renderTemplate(String templateName, Content data) throws IOException {
+    public String renderTemplate(String templateName, Page data) throws IOException {
         Template template = getTemplate(templateName);
 
         Context context = Context

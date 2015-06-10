@@ -7,7 +7,7 @@ import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import com.github.onsdigital.content.statistic.document.Article;
+import com.github.onsdigital.content.page.statistics.document.Article;
 import org.junit.Before;
 import org.junit.Test;
 

@@ -1,6 +1,6 @@
 package com.github.onsdigital.template;
 
-import com.github.onsdigital.content.base.ContentType;
+import com.github.onsdigital.content.page.base.PageType;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -10,27 +10,27 @@ import java.util.Map;
  */
 public class TemplateMapping {
 
-    private final static Map<ContentType, String> templateMapping = new HashMap<>();
+    private final static Map<PageType, String> templateMapping = new HashMap<>();
 
     static {
-        put(ContentType.home_page, "t1");
-        put(ContentType.taxonomy_landing_page, "t2");
-        put(ContentType.product_page, "t3");
-        put(ContentType.bulletin, "t4-1");
-        put(ContentType.article, "t4-2");
-        put(ContentType.timeseries, "t5-1");
-        put(ContentType.data_slice, "t5-2");
-        put(ContentType.compendium_landing_page, "t6-1");
-        put(ContentType.compendium, "t6-2");
+        put(PageType.home_page, "t1");
+        put(PageType.taxonomy_landing_page, "t2");
+        put(PageType.product_page, "t3");
+        put(PageType.bulletin, "t4-1");
+        put(PageType.article, "t4-2");
+        put(PageType.timeseries, "t5-1");
+        put(PageType.data_slice, "t5-2");
+        put(PageType.compendium_landing_page, "t6-1");
+        put(PageType.compendium, "t6-2");
     }
 
 
-    private static void put(ContentType type , String templateName) {
+    private static void put(PageType type , String templateName) {
         templateMapping.put(type, templateName);
     }
 
-    public static String getTemplateName(ContentType contentType) {
-        return templateMapping.get(contentType);
+    public static String getTemplateName(PageType pageType) {
+        return templateMapping.get(pageType);
     }
 
 }

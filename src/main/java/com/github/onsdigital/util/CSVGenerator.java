@@ -1,8 +1,8 @@
 package com.github.onsdigital.util;
 
 import au.com.bytecode.opencsv.CSVWriter;
-import com.github.onsdigital.content.statistic.data.TimeSeries;
-import com.github.onsdigital.content.statistic.data.timeseries.TimeseriesValue;
+import com.github.onsdigital.content.page.statistics.data.TimeSeries;
+import com.github.onsdigital.content.partial.TimeseriesValue;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -22,7 +22,7 @@ import java.util.Map.Entry;
  */
 public class CSVGenerator {
 
-	private List<com.github.onsdigital.content.statistic.data.TimeSeries> TimeSeries;
+	private List<TimeSeries> TimeSeries;
 	public Map<String, TimeseriesValue[]> data;
 
 	public CSVGenerator(List<TimeSeries> TimeSeries, Map<String, TimeseriesValue[]> data) {

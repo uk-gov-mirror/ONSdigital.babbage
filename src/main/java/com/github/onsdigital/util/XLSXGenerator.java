@@ -1,7 +1,7 @@
 package com.github.onsdigital.util;
 
-import com.github.onsdigital.content.statistic.data.TimeSeries;
-import com.github.onsdigital.content.statistic.data.timeseries.TimeseriesValue;
+import com.github.onsdigital.content.page.statistics.data.TimeSeries;
+import com.github.onsdigital.content.partial.TimeseriesValue;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;

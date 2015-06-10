@@ -1,6 +1,6 @@
 package com.github.onsdigital.generator.markdown;
 
-import com.github.onsdigital.content.methodology.Methodology;
+import com.github.onsdigital.content.page.methodology.Methodology;
 import org.junit.Before;
 import org.junit.Test;
 

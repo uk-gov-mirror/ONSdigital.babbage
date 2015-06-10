@@ -3,8 +3,8 @@ package com.github.onsdigital.api.search;
 import com.github.davidcarboni.restolino.framework.Api;
 import com.github.davidcarboni.restolino.json.Serialiser;
 import com.github.onsdigital.configuration.Configuration;
-import com.github.onsdigital.content.base.ContentType;
-import com.github.onsdigital.content.statistic.data.TimeSeries;
+import com.github.onsdigital.content.page.base.PageType;
+import com.github.onsdigital.content.page.statistics.data.TimeSeries;
 import com.github.onsdigital.search.bean.AggregatedSearchResult;
 import com.mongodb.*;
 import org.apache.commons.lang3.StringUtils;
@@ -229,7 +229,7 @@ public class SearchConsole {
 		Result result = new Result();
 		result.title = timeseries.cdid;
 		result.description = timeseries.title;
-		result.type = ContentType.timeseries;
+		result.type = PageType.timeseries;
 		result.uri = timeseries.uri;
 		search.hits.add(result);
 
@@ -249,7 +249,7 @@ public class SearchConsole {
 			Object lede = hit.get("lede");
 			// TimeSeries results does not have lede
 			result.description = lede == null ? "" : lede.toString();
-			result.type = ContentType.valueOf(hit.get("type").toString());
+			result.type = PageType.valueOf(hit.get("type").toString());
 			result.uri = URI.create(hit.get("url").toString());
 			search.hits.add(result);
 		}
@@ -304,7 +304,7 @@ public class SearchConsole {
 				result.put("title", "The Newport Explorers");
 				result.put("lede", "This prototype (\"Alpha\") ONS website was brobugt to you by, amongst many other heroes, a band of brothers who left kin and country "
 						+ "to make this happen - and it's been great. Here's a bit more about the guys..");
-				result.put("type", ContentType.unknown);
+				result.put("type", PageType.unknown);
 				result.put("url", "http://davidcarboni.github.io/newport-explorers/");
 				searchResult.contentSearchResult.getResults().add(result);
 			}
@@ -340,7 +340,7 @@ public class SearchConsole {
 		String title;
 		String description;
 		URI uri;
-		ContentType type;
+		PageType type;
 
 		void build() {
 			append("title", title);

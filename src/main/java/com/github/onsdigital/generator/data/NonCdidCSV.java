@@ -1,7 +1,7 @@
 package com.github.onsdigital.generator.data;
 
-import com.github.onsdigital.content.statistic.data.TimeSeries;
-import com.github.onsdigital.content.statistic.data.timeseries.TimeseriesValue;
+import com.github.onsdigital.content.page.statistics.data.TimeSeries;
+import com.github.onsdigital.content.partial.TimeseriesValue;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;

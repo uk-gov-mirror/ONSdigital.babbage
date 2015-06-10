@@ -1,6 +1,6 @@
 package com.github.onsdigital.generator.markdown;
 
-import com.github.onsdigital.content.statistic.document.Article;
+import com.github.onsdigital.content.page.statistics.document.Article;
 import com.github.onsdigital.generator.ContentNode;
 import com.github.onsdigital.generator.data.Data;
 import org.apache.commons.lang3.StringUtils;

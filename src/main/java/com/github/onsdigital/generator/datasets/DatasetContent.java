@@ -1,7 +1,7 @@
 package com.github.onsdigital.generator.datasets;
 
+import com.github.onsdigital.content.page.statistics.Dataset;
 import com.github.onsdigital.content.partial.DownloadSection;
-import com.github.onsdigital.content.statistic.Dataset;
 import com.github.onsdigital.generator.ContentNode;
 import com.github.onsdigital.generator.data.Csv;
 import com.github.onsdigital.generator.data.Data;

@@ -1,7 +1,7 @@
 package com.github.onsdigital.generator.data;
 
 import au.com.bytecode.opencsv.CSVReader;
-import com.github.onsdigital.content.statistic.data.TimeSeries;
+import com.github.onsdigital.content.page.statistics.data.TimeSeries;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 

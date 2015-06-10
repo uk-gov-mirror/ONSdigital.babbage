@@ -1,6 +1,6 @@
 package com.github.onsdigital.generator.datasets;
 
-import com.github.onsdigital.content.statistic.Dataset;
+import com.github.onsdigital.content.page.statistics.Dataset;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.HashSet;
