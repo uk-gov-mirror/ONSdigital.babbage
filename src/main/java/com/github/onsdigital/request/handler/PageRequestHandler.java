@@ -1,5 +1,7 @@
 package com.github.onsdigital.request.handler;
 
+import com.github.onsdigital.content.base.Content;
+import com.github.onsdigital.content.serialiser.ContentSerialiser;
 import com.github.onsdigital.request.handler.base.RequestHandler;
 import com.github.onsdigital.template.TemplateService;
 import org.apache.commons.lang3.CharEncoding;
@@ -22,8 +24,8 @@ public class PageRequestHandler implements RequestHandler {
     public Object handle(String requestedUri, HttpServletRequest request, HttpServletResponse response) throws Exception {
         DataRequestHandler dataRequestHandler = new DataRequestHandler();
         String data = dataRequestHandler.getDataAsString(requestedUri, request);
-//        response.getWriter().write(data);
-        String html = TemplateService.getInstance().renderPage(data);
+        Content content = new ContentSerialiser().deserialise(data);
+        String html = TemplateService.getInstance().renderPage(content);
         response.setCharacterEncoding(CharEncoding.UTF_8);
         response.setContentType(CONTENT_TYPE);
         response.setStatus(HttpServletResponse.SC_OK);

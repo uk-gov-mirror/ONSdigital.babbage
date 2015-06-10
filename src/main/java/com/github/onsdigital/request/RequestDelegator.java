@@ -63,7 +63,7 @@ public class RequestDelegator {
                 String className = handlerClass.getSimpleName();
                 RequestHandler handlerInstance = handlerClass.newInstance();
                 System.out.println("Registering request handler: " + className);
-                handlers.put(handlerInstance.getRequestType(), handlerClass.newInstance());
+                handlers.put(handlerInstance.getRequestType(), handlerInstance);
             }
         } catch (Exception e) {
             System.err.println("Failed initializing request handlers");

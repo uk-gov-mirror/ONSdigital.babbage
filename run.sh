@@ -2,9 +2,9 @@
 
 ### 1 - BUILD WEB FRONT-END
 
-# cd src/main/web && \
-# build.sh && \
-# cd ../../..
+cd src/main/web && \
+./build.sh && \
+cd ../../..
 
 ## 2 - BUILD API
 ./build.sh

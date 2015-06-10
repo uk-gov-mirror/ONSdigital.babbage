@@ -17,10 +17,14 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class HandlebarsRenderer implements TemplateRenderer {
 
-    private static FileTemplateLoader templateLoader = new FileTemplateLoader(Configuration.getTemplatesDirectory(), Configuration.getTemplatesSuffix());
-    private static Handlebars handlebars = new Handlebars(templateLoader);
+    private Handlebars handlebars;
 
-    static {
+    public HandlebarsRenderer(String templatesDirectory, String templatesSuffix) {
+        handlebars = new Handlebars(new FileTemplateLoader(Configuration.getTemplatesDirectory(), Configuration.getTemplatesSuffix()));
+        initializeHelpers();
+    }
+
+    private void initializeHelpers() {
         /**
          * Helper wont work in the stand-alone version, so we add a default helper
          * that render the plain text.

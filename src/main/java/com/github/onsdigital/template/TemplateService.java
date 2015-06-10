@@ -1,9 +1,9 @@
 package com.github.onsdigital.template;
 
+import com.github.onsdigital.configuration.Configuration;
 import com.github.onsdigital.content.base.Content;
 import com.github.onsdigital.content.base.ContentType;
 import com.github.onsdigital.content.serialiser.ContentSerialiser;
-import com.github.onsdigital.content.taxonomy.ProductPage;
 import com.github.onsdigital.content.taxonomy.TaxonomyLandingPage;
 import com.github.onsdigital.template.handlebars.HandlebarsRenderer;
 import com.google.gson.JsonObject;
@@ -18,7 +18,7 @@ public class TemplateService {
 
     private static TemplateService instance = new TemplateService();
 
-    private static TemplateRenderer templateRenderer = new HandlebarsRenderer();
+    private static TemplateRenderer templateRenderer = new HandlebarsRenderer(Configuration.getTemplatesDirectory(), Configuration.getTemplatesSuffix());
 
     private TemplateService() {
     }
@@ -27,11 +27,9 @@ public class TemplateService {
         return instance;
     }
 
-    public String renderPage(String data) throws IOException {
-        JsonObject object = new JsonParser().parse(data).getAsJsonObject();
-        String contentType = object.get("type").getAsString();
-        System.out.println("Page rendering requested for content type: " + contentType);
-        return templateRenderer.renderTemplate(TemplateMapping.getTemplateName(ContentType.valueOf(contentType)) , new ContentSerialiser().deserialise(data, TaxonomyLandingPage.class));
+    public String renderPage(Content data) throws IOException {
+        System.out.println("Page rendering requested for content type: " + data.getType());
+        return templateRenderer.renderTemplate(TemplateMapping.getTemplateName(data.getType()), data);
     }
 
 }

@@ -97,7 +97,7 @@ public class NavigationUtil {
         Path dataJson = path.resolve("data.json");
         if (Files.exists(dataJson)) {
             try (InputStream input = Files.newInputStream(dataJson)) {
-                TaxonomyNode taxonomyPage = new ContentSerialiser().deserialise(input, TaxonomyNode.class);
+                TaxonomyNode taxonomyPage = (TaxonomyNode) new ContentSerialiser().deserialise(input);
                 result = new ContentReference<>(taxonomyPage, taxonomyPage.index);
             }
         }
