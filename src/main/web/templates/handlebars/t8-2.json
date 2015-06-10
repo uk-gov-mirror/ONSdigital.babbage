@@ -46,8 +46,8 @@
   "title": "Population by age and sex",
   "uri": "peoplepopulationandcommunity/populationandmigration/populationestimates/populationbyageandsex",
   "lede": "This dataset includes population estimates by sex and single year of age for countries, regions and smaller geographic breakdowns.",
-  "releaseDate": "26 Jun 2014",
-  "nextRelease": "25 Jun 2015",
+  "releaseDate": "26 June 2014",
+  "nextRelease": "25 June 2015",
   "contact": {
       "name": "Pete Large",
       "email": "pop.info@email.address.com",
@@ -59,21 +59,10 @@
       "uri": "/"
     }
 ],
-"notes": [
-    {
-        "note": "These estimates are rounded to the nearest hundred and are diﬀerent to the unrounded estimates in other published tables."
+"notes": {
+        "markdown": " - These estimates are rounded to the nearest hundred and are different to the unrounded estimates in other published tables.\n - The estimates are produced using a variety of data sources and statistical models, including some statistical disclosure control methods, and small estimates should not be taken to refer to particular individuals.\n - The estimated resident population of an area includes all those people who usually live there, regardless of nationality. Arriving international migrants are included in the usually resident population if they remain in the UK for at least a year. Emigrants are excluded if they remain outside the UK for at least a year. This is consistent with the United Nations definition of a long-term migrant. Armed forces stationed outside of the UK are excluded. Students are taken to be usually resident at their term time address.\n - Note that age 90 comprises data for ages 90 and above."
     },
-    {
-        "note": "The estimates are produced using a variety of data sources and statistical models, including some statistical disclosure control methods, and small estimates should not be taken to refer to particular individuals."
-    },
-    {
-        "note": "The estimated resident population of an area includes all those people who usually live there, regardless of nationality. Arriving international migrants are included in the usually resident population if they remain in the UK for at least a year. Emigrants are excluded if they remain outside the UK for at least a year. This is consistent with the United Nations definition of a long-term migrant. Armed forces stationed outside of the UK are excluded. Students are taken to be usually resident at their term time address."
-    },
-    {
-        "note": "Note that age 90 comprises data for ages 90 and above."
-    }
-],
-  "methodology": [
+"methodology": [
     {
       "title": "Link to methodology 1",
       "uri": "#",
