@@ -95,7 +95,11 @@
 					</header>
 					<div class="box__content">
 						<ul class="list--neutral">
-							<li><a>Link to data</a></li>
+							{{#each related}}
+							<li>
+								<a href="{{uri}}" title="{{title}}">{{title}}</a>
+							</li>
+							{{/each}}
 						</ul>
 					</div>
 				</div>
