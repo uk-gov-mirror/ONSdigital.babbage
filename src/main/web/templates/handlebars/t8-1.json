@@ -1,0 +1,106 @@
+{
+  "datasets": [
+    {
+      "summary": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam bibendum, odio sit amet accumsan dignissim, mi est tristique enim.",
+      "title": "Link to dataset 1",
+      "uri": "#",
+      "index": 0
+    },
+    {
+        "summary": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam bibendum, odio sit amet accumsan dignissim, mi est tristique enim.",
+        "title": "Link to dataset 2",
+        "uri": "#",
+        "index": 1
+    },
+    {
+        "summary": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam bibendum, odio sit amet accumsan dignissim, mi est tristique enim.",
+        "title": "Link to dataset 3",
+        "uri": "#",
+        "index": 2
+    },
+    {
+        "summary": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam bibendum, odio sit amet accumsan dignissim, mi est tristique enim.",
+        "title": "Link to dataset 4",
+        "uri": "#",
+        "index": 3
+    },
+    {
+        "summary": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam bibendum, odio sit amet accumsan dignissim, mi est tristique enim.",
+        "title": "Link to dataset 5",
+        "uri": "#",
+        "index": 4
+    },
+    {
+        "summary": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam bibendum, odio sit amet accumsan dignissim, mi est tristique enim.",
+        "title": "Link to dataset 6",
+        "uri": "#",
+        "index": 5
+    },
+    {
+        "summary": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam bibendum, odio sit amet accumsan dignissim, mi est tristique enim.",
+        "title": "Link to dataset 7",
+        "uri": "#",
+        "index": 6
+    },
+    {
+        "summary": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam bibendum, odio sit amet accumsan dignissim, mi est tristique enim.",
+        "title": "Link to dataset 8",
+        "uri": "#",
+        "index": 7
+    },
+    {
+        "summary": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam bibendum, odio sit amet accumsan dignissim, mi est tristique enim.",
+        "title": "Link to dataset 9",
+        "uri": "#",
+        "index": 8
+    },
+    {
+        "summary": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam bibendum, odio sit amet accumsan dignissim, mi est tristique enim.",
+        "title": "Link to dataset 10",
+        "uri": "#",
+        "index": 9
+    }
+  ],
+  "index": 1,
+  "type": "dataset",
+  "title": "Labour market statistics",
+  "uri": "employmentandlabour market/peopleinwork/employmentandemployeetypes",
+  "lede": "This dataset contains estimates of labour market statistics (including employment, unemployment and economic inactivity) for the United Kingdom.",
+  "releaseDate": "22 Aug 2014",
+  "nextRelease": "24 Sep 2015",
+  "contact": {
+      "name": "John Smith",
+      "email": "john.smith@email.address.com",
+      "telephone": "+44 (0)1633 900000"
+  },
+  "breadcrumb": [
+    {
+      "title": "Home",
+      "uri": "/"
+    }
+],
+  "methodology": [
+    {
+      "title": "Link to methodology 1",
+      "uri": "#",
+      "index": 0
+    },
+    {
+      "title": "Link to methodology 2",
+      "uri": "#",
+      "index": 1
+    },
+    {
+      "title": "Link to methodology 3",
+      "uri": "#",
+      "index": 2
+    }
+],
+"related": [
+  {
+    "title": "Statistical bulletin",
+    "uri": "#",
+    "index": 0
+  }
+  ]
+}
