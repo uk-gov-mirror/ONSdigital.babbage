@@ -3,13 +3,13 @@
 	<div class="slate--light panel--pad-large panel--separated">
 		<div class="wrapper">
 			<nav class="grid-wrap">
-				{{#each sections}}
+				{{#each footer}}
 					<div class="grid-col tablet-grid-one-third">
-						<h3 class="delta headline-separated">{{name}}</h3>
+						<h3 class="delta headline-separated">{{title}}</h3>
 						<ul class="list--neutral list--grid list--spaced">
-							{{#each data}}
+							{{#each items}}
 								<li>
-									<a href="{{url}}">{{item}}</a>
+									<a href="{{uri}}">{{title}}</a>
 								</li>
 							{{/each}}
 						</ul>
@@ -24,4 +24,6 @@
 	<!-- /slate -->
 </footer>
 
-<script src="/node_modules/ONS-Pattern-Library/dist/js/footer.js"></script>
+<script src="http://onsdigital.github.io/pattern-library/dist/js/footer.js"></script>
+</body>
+</html>
