@@ -1,0 +1,159 @@
+<head>
+		<link rel="stylesheet" href="../../node_modules/ONS-Pattern-Library/dist/css/main.min.css"/>
+  	<script src="../../node_modules/ONS-Pattern-Library/dist/js/header.js"></script>
+</head>
+
+<!-- Pattern Library Header -->
+<p>Add header partial</p>
+
+<div class="page-header slate slate--light-green">
+
+	<div class="wrapper">
+		<p>Add breadcrumb partial</p>
+		<p class="page-header__title">
+			<strong>Dataset</strong>
+		</p>
+
+		<h1 class="page-header__title flush--half--bottom">{{title}}</h1>
+
+		<div class="grid-wrap">
+			<p class="grid-col tablet-grid-one-quarter page-header__meta-block-with-img">
+
+					<img src="../../node_modules/ONS-Pattern-Library/ui/img/national-statistics.png" alt="National Statistics">
+					<span>Contact: </span><a href="mailto:{{contact.email}}" title="Email {{contact.email}}">{{contact.name}}</a>
+
+			<p class="grid-col tablet-grid-one-quarter divider--border-left">
+
+					<span>Release date: </span>{{releaseDate}}
+					</br>
+					<a href="#">previous versions</a>
+
+			</p>
+			<p class="grid-col tablet-grid-one-quarter divider--border-left">
+
+					<span>Next release: </span>{{nextRelease}}
+
+			</p>
+			<p class="grid-col tablet-grid-one-quarter divider--border-left">
+
+				<span>Dataset id: </span>{{dataSetID}}
+				<a href="#">what is this?</a>
+
+			</p>
+		</div>
+		<!-- /grip-wrap -->
+
+		<p>Add social partial</p>
+		<!-- / page-header__icons  -->
+	</div>
+	<!-- / wrapper -->
+</div>
+<!-- / page-header -->
+
+<div class="wrapper panel--mar ">
+	<div class="grid-wrap">
+		<div class="grid-col desktop-grid-full-width">
+			<article class="box box--warning">
+				<div class="box__inner box--padded">
+					<div class="box__content">
+						<p>
+							This content has been migrated directly from our previous site for this beta and is currently in a temporary format. We are working to update these to a new format during the course of the beta.
+						</p>
+					</div>
+				</div>
+				<!-- /box__inner -->
+			</article>
+			<!-- /box -->
+			<p class="lede">
+				{{lede}}
+			</p>
+			<p>
+				<span class="stand-out-text">{{#each datasets}}{{#if @last}}{{@index}}{{/if}}{{/each}}</span> results
+			</p>
+		</div>
+		<!-- /grid-col -->
+
+		<div class="grid-col desktop-grid-two-thirds">
+			<ul class="list--neutral">
+				{{#each datasets}}
+				<li>
+					<h3 class="flush"><a href="{{uri}}" title="{{title}}">{{title}}</a></h3>
+					<p>
+						{{summary}}
+					</p>
+				</li>
+				{{/each}}
+			</ul>
+		</div>
+		<!-- /grid-col desktop-grid-two-thirds -->
+
+		<div class="grid-col desktop-grid-one-third">
+			<article class="box solid box--teal--separated--left">
+				<div class="ox__inner border box--padded">
+					<header class="box__header">
+						<h3>Statistical bulletins and articles that use this time series</h3>
+					</header>
+					<div class="box__content">
+						<ul class="list--neutral">
+							<li><a>Link to data</a></li>
+						</ul>
+					</div>
+				</div>
+				<!-- /box__inner -->
+			</article>
+			<!-- /box -->
+		</div>
+		<!-- /grid-col -->
+		<div class="grid-col desktop-grid-full-width">
+			<div class="grid-wrap">
+				<div class="grid-col desktop-grid-one-half">
+					<article class="box box--padded sectioned">
+						<header class="box__header">
+							<h3>Methodology</h3>
+						</header>
+						<div class="box__content">
+							<ul class="list--neutral">
+								{{#each methodology}}
+								<li>
+									<a href="{{uri}}" title="{{title}}">{{title}}</a>
+								</li>
+								{{/each}}
+							</ul>
+						</div>
+					</article>
+				</div>
+				<!-- /grid-desktop-one-half -->
+				<div class="grid-col desktop-grid-one-half">
+					<article class="box box--padded sectioned">
+						<header class="box__header">
+							<h3>Contact details</h3>
+						</header>
+						<div class="box__content">
+							<ul class="list--neutral">
+								<li>
+									{{contact.name}}
+								</li>
+								<li>
+									<a href="mailto:{{contact.email}}" title="Email {{contact.email}}">{{contact.email}}</a>
+								</li>
+								<li>
+									{{contact.telephone}}
+								</li>
+							</ul>
+						</div>
+					</article>
+				</div>
+				<!-- /grid-desktop-one-half -->
+			</div>
+			<!-- /grid-wrap -->
+		</div>
+		<!--/grid-col desktop-grid-full-width -->
+	</div>
+	<!-- /grid-wrap -->
+</div>
+<!-- /wrapper -->
+<p>
+	Add footer partial
+</p>
+
+<script src="../../node_modules/ONS-Pattern-Library/dist/js/footer.js"></script>
