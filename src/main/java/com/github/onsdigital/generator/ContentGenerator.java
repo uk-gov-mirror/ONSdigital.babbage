@@ -159,7 +159,7 @@ public class ContentGenerator {
             }
 
             //Each taxonomy page recursively added to its parent's sections
-            parent.sections.add(new PageReference<>(taxonomyPage, node.index));
+            parent.sections.add(new PageReference(taxonomyPage, node.index));
             persistData(directory, taxonomyPage);
         }
         Collections.sort(parent.sections);
@@ -221,14 +221,14 @@ public class ContentGenerator {
             System.out.println("Using the first item from the timeseries list instead: " + headline);
         }
 
-        productPage.headline = new PageReference<StatisticalData>(headline);
+        productPage.headline = new PageReference(headline);
 
         List<TimeSeries> timeserieses = node.timeserieses;
         productPage.items = new ArrayList<>();
 
         for (TimeSeries timeseries : timeserieses) {
             if (timeseries.uri != null) {
-                productPage.items.add(new PageReference<StatisticalData>(timeseries));
+                productPage.items.add(new PageReference(timeseries));
             } else {
                 System.out.println("No URI set for " + timeseries);
             }
@@ -288,7 +288,7 @@ public class ContentGenerator {
                 if (dataset.uri == null) {
                     dataset.uri = toDatasetUri(folder, dataset);
                 }
-                productPage.datasets.add(new PageReference<>(dataset));
+                productPage.datasets.add(new PageReference(dataset));
             }
         }
     }
@@ -300,13 +300,13 @@ public class ContentGenerator {
             if (bulletin.uri == null) {
                 bulletin.uri = toStatsBulletinUri(BulletinMarkdown.toFilename(bulletin), bulletin, productPage);
             }
-            productPage.statsBulletins.add(new PageReference<>(bulletin));
+            productPage.statsBulletins.add(new PageReference(bulletin));
         }
         if (folder.additonalBulletin != null) {
             if (folder.additonalBulletin.uri == null) {
                 throw new RuntimeException("No URI yet - this is a design issue.");
             }
-            productPage.statsBulletins.add(new PageReference<>(folder.additonalBulletin));
+            productPage.statsBulletins.add(new PageReference(folder.additonalBulletin));
         }
 
         // All bulletins at this node, plus the additional bulletin (if any) are
@@ -319,7 +319,7 @@ public class ContentGenerator {
             bulletin.relatedBulletins.addAll(productPage.statsBulletins);
 
             // Now remove self-references:
-            Iterator<PageReference<Bulletin>> iterator = bulletin.relatedBulletins.iterator();
+            Iterator<PageReference> iterator = bulletin.relatedBulletins.iterator();
             while (iterator.hasNext()) {
                 PageReference next = iterator.next();
                 if (next == null || next.getUri() == null || bulletin == null || bulletin.uri == null) {
@@ -347,7 +347,7 @@ public class ContentGenerator {
             if (node.headlineBulletin.uri == null) {
                 node.headlineBulletin.uri = toStatsBulletinUri(BulletinMarkdown.toFilename(node.headlineBulletin), node.headlineBulletin, productPage);
             }
-            productPage.statsBulletinHeadline = new PageReference<Bulletin>(node.headlineBulletin);
+            productPage.statsBulletinHeadline = new PageReference(node.headlineBulletin);
         }
     }
 
@@ -449,14 +449,14 @@ public class ContentGenerator {
                 }
 
                 for (Bulletin bulletin : folder.bulletins) {
-                    timeseries.relatedDocuments.add(new PageReference<>(bulletin));
+                    timeseries.relatedDocuments.add(new PageReference(bulletin));
                 }
 
                 List<TimeSeries> relatedCdids = Data.relatedTimeseries(timeseries);
                 if (relatedCdids != null && !relatedCdids.isEmpty()) {
                     for (TimeSeries relatedCdid : relatedCdids) {
                         TimeSeries relatedTimeseries = Data.timeseries(relatedCdid.cdid);
-                        timeseries.relatedTimeseries.add(new PageReference<>(relatedTimeseries));
+                        timeseries.relatedTimeseries.add(new PageReference(relatedTimeseries));
                     }
                 }
 
@@ -574,7 +574,7 @@ public class ContentGenerator {
         }
 
         PageReference timeseriesReference = new PageReference(timeseries);
-        PageReference landingPageReference = new PageReference<>(taxonomyLandingPage);
+        PageReference landingPageReference = new PageReference(taxonomyLandingPage);
 
         return new HomeSection(landingPageReference, timeseriesReference);
     }

@@ -1,16 +1,13 @@
 package com.github.onsdigital.search.util;
 
-import static org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder;
-
-import java.io.IOException;
-
+import com.github.onsdigital.search.EmbeddedElasticSearchServer;
 import org.elasticsearch.ElasticsearchException;
 import org.elasticsearch.common.settings.ImmutableSettings;
 import org.elasticsearch.common.settings.Settings;
-import org.junit.Assert;
 
-import com.github.onsdigital.search.EmbeddedElasticSearchServer;
-import com.github.onsdigital.search.bean.SearchResult;
+import java.io.IOException;
+
+import static org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder;
 
 public class SearchHelperTest {
 
