@@ -2,12 +2,7 @@ package com.github.onsdigital.template;
 
 import com.github.onsdigital.configuration.Configuration;
 import com.github.onsdigital.content.base.Content;
-import com.github.onsdigital.content.base.ContentType;
-import com.github.onsdigital.content.serialiser.ContentSerialiser;
-import com.github.onsdigital.content.taxonomy.TaxonomyLandingPage;
 import com.github.onsdigital.template.handlebars.HandlebarsRenderer;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
 import java.io.IOException;
 

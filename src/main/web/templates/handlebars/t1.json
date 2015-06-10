@@ -1,86 +1,68 @@
 
 {
-    "title": "Welcome to the Office for National Statistics",
-    "lede": "The UK's largest independent producer official statistics and the recognised national statistical institute of the UK, producing a variety of statistics covering business and industry, the UK economy, employment and the population.",
-  "highlightedData": [
+  "sections": [
     {
-      "name": "Economy",
-      "link": "economy",
-      "index": 0,
-      "items": [
-        {
-          "name": "CPI: Consumer Prices Index (% change)",
-          "uri": "/economy/inflationakendpriceindices/timeseries/d7g7",
-          "figure": "1.2",
-          "unit": "%",
-          "releaseDate": "September 2014"
-        }
-      ]
+      "theme": {
+        "summary": "An economy or economic system consists of the production, distribution, consumption and trade of limited goods and services by different agents in a given geographical location. The economic agents can be individuals, businesses, organisations, or governments. ",
+        "title": "Economy",
+        "uri": "/economy"
+      },
+      "statistics": {
+        "title": "CPI: Consumer Prices Index (% change)",
+        "uri": "/economy/inflationandpriceindices/timeseries/d7g7"
+      }
     },
     {
-      "name": "Economy",
-      "link": "economy",
-      "index": 0,
-      "items": [
-        {
-          "name": "GDP Quarter on Quarter growth (CVM)",
-          "uri": "/economy/grossdomesticproductgdp/timeseries/ihyq",
-          "figure": "0.9",
-          "unit": "%",
-          "releaseDate": "Q2 2014"
-        }
-      ]
+      "theme": {
+        "summary": "An economy or economic system consists of the production, distribution, consumption and trade of limited goods and services by different agents in a given geographical location. The economic agents can be individuals, businesses, organisations, or governments. ",
+        "title": "Economy",
+        "uri": "/economy"
+      },
+      "statistics": {
+        "title": "GDP quarter on quarter growth - CVM",
+        "uri": "/economy/grossdomesticproductgdp/timeseries/ihyq"
+      }
     },
     {
-      "name": "Business, industry and trade",
-      "link": "businessindustryandtrade",
-      "index": 0,
-      "items": [
-        {
-          "name": "Trade in goods and services deficit (or surplus)",
-          "uri": "/businessindustryandtrade/internationaltrade/timeseries/ikbj",
-          "prefixUnit": "£",
-          "figure": "-6.5",
-          "unit": "m",
-          "releaseDate": "September 2014"
-        }
-      ]
+      "theme": {
+        "summary": "Statistics in this area are related to the production and trade of good and services. These statistics are important for users looking to learn more about this section of the UK economy. Key statistics here are figures on retail sales, business activity, indices for the construction and manufacturing industries and international trade.",
+        "title": "Business, industry and trade",
+        "uri": "/businessindustryandtrade"
+      },
+      "statistics": {
+        "title": "Trade in goods and services deficit (or surplus)",
+        "uri": "/businessindustryandtrade/internationaltrade/timeseries/ikbj"
+      }
     },
     {
-      "name": "Employment and Labour market",
-      "link": "employmentandlabourmarket",
-      "index": 0,
-      "items": [
-        {
-          "name": "Employment rate (aged 16-64)",
-          "uri": "/employmentandlabourmarket/peopleinwork/employmentandemployeetypes/timeseries/lf24",
-          "figure": "73",
-          "unit": "%",
-          "releaseDate": "September 2014"
-        }
-      ]
+      "theme": {
+        "summary": "Labour market statistics tell us about people in and out of work. They cover a wide range of areas, such as: employment, unemployment, participation in the labour force, types of work, earnings, benefits, working patterns and workplace disputes.",
+        "title": "Employment and Labour market",
+        "uri": "/employmentandlabourmarket"
+      },
+      "statistics": {
+        "title": "Employment rate (aged 16 to 64)",
+        "uri": "/employmentandlabourmarket/peopleinwork/employmentandemployeetypes/timeseries/lf24"
+      }
     },
     {
-      "name": "People, population and community",
-      "link": "peoplepopulationandcommunity",
-      "index": 0,
-      "items": [
-        {
-          "name": "UK population",
-          "uri": "/peoplepopulationandcommunity/populationandmigration/populationestimates/timeseries/raid121",
-          "figure": "64.1",
-          "unit": "m",
-          "releaseDate": "Mid-2013"
-        }
-      ]
+      "theme": {
+        "summary": "Statistics in this area tell us a lot about the people living in the UK. From the level and growth in the population, to data and analysis on how households spend their money. We also have data on crime, divorce, diseases and religion here as well as much more. These statistics have a wide range of users and uses and they help us build a detailed picture of the country we live in. ",
+        "title": "People, population and community",
+        "uri": "/peoplepopulationandcommunity"
+      },
+      "statistics": {
+        "title": "UK population",
+        "uri": "/peoplepopulationandcommunity/populationandmigration/populationestimates/timeseries/raid121"
+      }
     }
   ],
 
-  "level": "t1",
-  "index": 0,
-  "type": "home",
-  "name": "Home",
-  "fileName": "/",
+  "type": "home_page",
+  "title": "Home",
+  "intro" : "###Welcome to the Office for National Statistics \nThe UK's largest independent producer of official statistics and the recognised national statistical institute of the UK.",
+  "uri": "/",
+  "summary": "The UK\u0027s largest independent producer of official statistics and the recognised national statistical institute of the UK.",
   "breadcrumb": [],
 
   "releases": [

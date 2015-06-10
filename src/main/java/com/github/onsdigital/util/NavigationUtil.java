@@ -1,10 +1,9 @@
 package com.github.onsdigital.util;
 
 import com.github.onsdigital.configuration.Configuration;
-import com.github.onsdigital.content.partial.link.ContentLink;
 import com.github.onsdigital.content.partial.reference.ContentReference;
-import com.github.onsdigital.content.serialiser.ContentSerialiser;
 import com.github.onsdigital.content.taxonomy.base.TaxonomyNode;
+import com.github.onsdigital.content.util.ContentUtil;
 import com.google.gson.JsonSyntaxException;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.w3c.dom.DOMException;
@@ -97,7 +96,7 @@ public class NavigationUtil {
         Path dataJson = path.resolve("data.json");
         if (Files.exists(dataJson)) {
             try (InputStream input = Files.newInputStream(dataJson)) {
-                TaxonomyNode taxonomyPage = (TaxonomyNode) new ContentSerialiser().deserialise(input);
+                TaxonomyNode taxonomyPage = (TaxonomyNode) ContentUtil.deserialise(input);
                 result = new ContentReference<>(taxonomyPage, taxonomyPage.index);
             }
         }
