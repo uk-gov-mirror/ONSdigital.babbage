@@ -1,5 +1,16 @@
 #!/bin/bash
 
+mvn clean compile dependency:copy-dependencies
+
+ if [ $? -eq 0 ]
+    then
+      echo "Successfully compiled"
+    else
+       echo "Compilation failed"
+       exit 1
+ fi
+
+
 #Generate content if not generated before
 if [ -d src/main/content ]
    then
@@ -7,13 +18,14 @@ if [ -d src/main/content ]
        mvn clean compile dependency:copy-dependencies
    else
    	   echo "Content not available, generating now"
-       mvn clean compile dependency:copy-dependencies && $JAVA_HOME/bin/java -Xmx2048m -cp "target/classes:target/dependency/*" com.github.onsdigital.generator.ContentGenerator
+       $JAVA_HOME/bin/java -Xmx2048m -cp "target/classes:target/dependency/*" com.github.onsdigital.generator.ContentGenerator
 	   if [ $? -eq 0 ]
 	   		then
 	   			echo "Content successfully generated"
 	   		else
 	   			echo "Failed generating content"
 	   			rm -rf src/main/content
+	   			exit 1
    		fi
 fi
 

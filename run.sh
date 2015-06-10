@@ -9,6 +9,15 @@ cd ../../..
 ## 2 - BUILD API
 ./build.sh
 
+ if [ $? -eq 0 ]
+    then
+      echo "Everything alright, starting server"
+    else
+       echo "Something went wrong, server will not be started"
+       exit 1
+ fi
+
+
 ### 3 - START SERVER
 
 #Back to project root
