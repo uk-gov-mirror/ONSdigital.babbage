@@ -1,5 +1,4 @@
 {
-	"name": "Consumer Price Inflation",
 	"title": "Consumer Price Inflation",
 	"themes": [
 	{
@@ -250,6 +249,22 @@
 		      "children": []
 		  }
 		]
+		}
+	],
+	"name": "Consumer Price Inflation",
+	"uri": "economy/breadcrumbtest/inflationandpriceindices",
+    "breadcrumb": [
+	    {
+	        "type": "home",
+	        "name": "Economy",
+	        "fileName": "economy",
+	        "uri": "economy"
+	    },
+		{
+			"type": "home",
+			"name": "Inflation and price indices",
+			"fileName": "inflationandpriceindices",
+	        "uri": "economy/inflationandpriceindices"
 		}
 	],
 	"contact": {

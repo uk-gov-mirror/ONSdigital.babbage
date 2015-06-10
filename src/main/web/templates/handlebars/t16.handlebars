@@ -1,14 +1,7 @@
-<head>
-	<link rel="stylesheet" href="../../node_modules/ONS-Pattern-Library/dist/css/main.min.css"/>
-	<script src="../../node_modules/ONS-Pattern-Library/dist/js/header.js"></script>
-</head>
-
-<!-- Pattern Library Header -->
-<p>Add header partial</p>
-
+{{> templates/handlebars/partials/header}}
 <div class="page-header slate slate--green">
 	<div class="wrapper">
-		<p>Add breadcrumb partial</p>
+		{{> templates/handlebars/partials/breadcrumb}}
 		<p class="page-header__title">
 			<strong>Release</strong>
 		</p>
@@ -37,9 +30,7 @@
 			</p>
 		</div>
 		<!-- /grip-wrap -->
-		<p>
-			Add social icons partial
-		</p>
+		{{> templates/handlebars/partials/social-icons}}
 	</div>
 </div>
 <!-- /page-header -->
@@ -106,8 +97,4 @@
 	<!-- / grid-wrap -->
 </div>
 <!-- / wrapper panel--mar -->
-<p>
-	Add footer partial
-</p>
-
-<script src="http://onsdigital.github.io/pattern-library/dist/js/footer.js"></script>
+{{> templates/handlebars/partials/footer}}
