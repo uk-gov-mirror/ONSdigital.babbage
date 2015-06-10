@@ -1,12 +1,5 @@
 {
 	"title": "Chapter 1: An introduction to the UK national accounts",
-	"releaseDate": "19 August 2014",
-	"nextRelease": "22 August 2015",
-	"contact": {
-		"name": "Philip Gooding",
-		"email": "cpi@ons.gsi.gov.uk",
-		"telephone": "+44 (0)1633 456468"
-	},
 	"themes": [
 	{
 		"name": "Business, industry and trade",
@@ -260,13 +253,26 @@
 	],
 	"type": "compendium",
 	"name": "Chapter 1: An introduction to the UK national accounts",
+	"uri": "chapter1anintroduction",
 	"breadcrumb": [
 		{
 			"type": "home",
 			"name": "Economy",
-			"uri": "/economy/bluebook/2014"
+			"uri": "/economy/"
+		},
+		{
+			"type": "home",
+			"name": "Blue book",
+			"uri": "/economy/bluebook"
 		}
 	],
+	"releaseDate": "19 August 2014",
+	"nextRelease": "22 August 2015",
+	"contact": {
+		"name": "Philip Gooding",
+		"email": "cpi@ons.gsi.gov.uk",
+		"telephone": "+44 (0)1633 456468"
+	},
 	"print": {
 		"uri": "economy/bluebook/print",
 		"size": 37
