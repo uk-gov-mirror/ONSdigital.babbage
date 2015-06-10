@@ -2,7 +2,7 @@
 
 <div class="page-header slate">
     <div class="wrapper">
-        <h1 class="page-header__title flush--half--bottom">{{title}}</h1>
+        <h1 class="page-header__title flush--half--bottom">{{md intro}}</h1>
 
         <p>{{summary}}
   </div>
@@ -11,12 +11,13 @@
 <!-- panel -->
 <div class="wrapper panel--mar">
     <!-- grid-wrap -->
+
     <div class="grid-wrap grid-wrap--home-hero panel--separated--bottom">
       <!-- grid-col -->
         {{#each sections}}
         <div class="grid-col grid-col--home-hero tablet-wide-grid-one-fifth">
             <article class="nav-panel nav-panel--stats nav-panel--home-hero sectioned">
-                <a href="#">Stat link, apply to whole panel<span class="[navpanel_wrapper_home__link]"></span></a>
+                <a href="{{statistics.uri}}">Stat link, apply to whole panel<span class="[navpanel_wrapper_home__link]"></span></a>
                 <header class="nav-panel__header nav-panel__roomy">
                     <h2 class="delta flush">{{statistics.title}}</h2>
                 </header>

@@ -7,6 +7,7 @@ import com.github.jknack.handlebars.io.FileTemplateLoader;
 import com.github.onsdigital.configuration.Configuration;
 import com.github.onsdigital.content.base.Content;
 import com.github.onsdigital.template.TemplateRenderer;
+import com.github.onsdigital.template.handlebars.helpers.DateFormatHelper;
 
 import java.io.IOException;
 import java.util.Map;
@@ -26,19 +27,19 @@ public class HandlebarsRenderer implements TemplateRenderer {
 
     private void initializeHelpers() {
         /**
-         * Helper wont work in the stand-alone version, so we add a default helper
-         * that render the plain text.
+         *
          */
-        handlebars.registerHelper(HelperRegistry.HELPER_MISSING, new Helper<Object>() {
-            @Override
-            public CharSequence apply(final Object context,
-                                      final com.github.jknack.handlebars.Options options)
-                    throws IOException {
-                return new Handlebars.SafeString(options.fn.text());
-            }
-        });
+        //        handlebars.registerHelper(HelperRegistry.HELPER_MISSING, new Helper<Object>() {
+        //            @Override
+        //            public CharSequence apply(final Object context,
+        //                                      final com.github.jknack.handlebars.Options options)
+        //                    throws IOException {
+        //                return new Handlebars.SafeString(options.fn.text());
+        //            }
+        //        });
         handlebars.registerHelper("json", Jackson2Helper.INSTANCE);
         handlebars.registerHelper("md", new MarkdownHelper());
+        handlebars.registerHelper("df", new DateFormatHelper());
         // String helpers
         StringHelpers.register(handlebars);
         // Humanize helpers

@@ -7,6 +7,7 @@ Headline 2: The largest contributions to the rise in the rate came from the clot
 Headline 3: CPIH grew by 1.8% in the year to June 2014, up from 1.4% in May. RPIJ grew by 2.0%, up from 1.7% in May.
 Contact name: Philip Gooding
 Contact email: cpi@ons.gsi.gov.uk
+Release date: 19 June 2014
 Next release: 19 August 2014
 
 ## Key points
