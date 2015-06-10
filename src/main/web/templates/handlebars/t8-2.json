@@ -1,0 +1,106 @@
+{
+  "datasets": [
+    {
+      "summary": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam bibendum, odio sit amet accumsan dignissim, mi est tristique enim.",
+      "title": "Mid-2013",
+      "uri": "#",
+      "fileType": "xlsx",
+      "fileSize": "1.6MB",
+      "index": 0
+    },
+    {
+        "summary": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam bibendum, odio sit amet accumsan dignissim, mi est tristique enim.",
+        "title": "Mid-2012",
+        "uri": "#",
+        "fileType": "xlsx",
+        "fileSize": "1.3MB",
+        "index": 1
+    },
+    {
+        "summary": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam bibendum, odio sit amet accumsan dignissim, mi est tristique enim.",
+        "title": "Mid-2011",
+        "uri": "#",
+        "fileType": "xlsx",
+        "fileSize": "1.2MB",
+        "index": 2
+    },
+    {
+        "summary": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam bibendum, odio sit amet accumsan dignissim, mi est tristique enim.",
+        "title": "Mid-2010",
+        "uri": "#",
+        "fileType": "xlsx",
+        "fileSize": "1.2MB",
+        "index": 3
+    },
+    {
+        "summary": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam bibendum, odio sit amet accumsan dignissim, mi est tristique enim.",
+        "title": "Mid-2009",
+        "uri": "#",
+        "fileType": "xlsx",
+        "fileSize": "968KB",
+        "index": 4
+    }
+  ],
+  "index": 1,
+  "type": "dataset",
+  "title": "Population by age and sex",
+  "uri": "peoplepopulationandcommunity/populationandmigration/populationestimates/populationbyageandsex",
+  "lede": "This dataset includes population estimates by sex and single year of age for countries, regions and smaller geographic breakdowns.",
+  "releaseDate": "26 June 2014",
+  "nextRelease": "25 June 2015",
+  "contact": {
+      "name": "Pete Large",
+      "email": "pop.info@email.address.com",
+      "telephone": "+44 (0)1633 900000"
+  },
+  "breadcrumb": [
+    {
+      "title": "Home",
+      "uri": "/"
+    }
+],
+"notes": {
+        "markdown": " - These estimates are rounded to the nearest hundred and are different to the unrounded estimates in other published tables.\n - The estimates are produced using a variety of data sources and statistical models, including some statistical disclosure control methods, and small estimates should not be taken to refer to particular individuals.\n - The estimated resident population of an area includes all those people who usually live there, regardless of nationality. Arriving international migrants are included in the usually resident population if they remain in the UK for at least a year. Emigrants are excluded if they remain outside the UK for at least a year. This is consistent with the United Nations definition of a long-term migrant. Armed forces stationed outside of the UK are excluded. Students are taken to be usually resident at their term time address.\n - Note that age 90 comprises data for ages 90 and above."
+    },
+"methodology": [
+    {
+      "title": "Link to methodology 1",
+      "uri": "#",
+      "index": 0
+    },
+    {
+      "title": "Link to methodology 2",
+      "uri": "#",
+      "index": 1
+    },
+    {
+      "title": "Link to methodology 3",
+      "uri": "#",
+      "index": 2
+    }
+],
+"relatedData": [
+  {
+    "title": "Principal population projection - UK",
+    "uri": "#",
+    "index": 0
+},
+  {
+    "title": "National population projections, 2012- based projections",
+    "uri": "#",
+    "index": 1
+  }
+  ],
+"relatedContent": [
+  {
+    "title": "Annual mid-year population estimates, 2013",
+    "uri": "#",
+    "index": 0
+},
+{
+  "title": "National population projections, 2012- based projection",
+  "uri": "#",
+  "index": 1
+}
+  ]
+}

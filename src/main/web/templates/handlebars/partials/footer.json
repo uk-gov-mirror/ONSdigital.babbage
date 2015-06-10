@@ -1,36 +1,57 @@
 {
-	"sections": [
+	"footer": [
 		{
-			"name": "Legal",
-			"data": [
-				{"item": "Accessibility"},
-				{"item": "Cookies and privacy"}
+			"title": "Legal",
+			"items": [
+				{
+					"title": "Accessibility",
+					"uri": "accessibility"
+				},
+				{
+					"title": "Cookies and privacy",
+					"uri": "cookiesandprivacy"
+				}
 			]
 		},
 		{
-			"name": "About ONS",
-			"data": [
-				{"item": "Who we are"},
-				{"item": "Careers"},
-				{"item": "Products and services"},
-				{"item": "Contact us"},
-				{"item": "Our offices"}
+			"title": "About ONS",
+			"items": [
+				{
+					"title": "Who we are",
+					"uri": "whoweare"
+				},
+				{
+					"title": "Careers",
+					"uri": "careers"
+				},
+				{
+					"title": "Products and services",
+					"uri": "productsandservices"
+				},
+				{
+					"title": "Contact us",
+					"uri": "contactus"
+				},
+				{
+					"item": "Our offices",
+					"uri": "ouroffices"
+				}
 			]
 		},
 		{
-			"name": "Connect with us",
-			"data": [
+			"title": "Connect with us",
+			"items": [
 				{
-					"item": "Twitter",
-					"url": "https://twitter.com/ONS"
+					"title": "Twitter",
+					"uri": "https://twitter.com/ONS"
 				},
 				{
-					"item": "Facebook",
-					"url": "https://www.facebook.com/ONS"
+					"title": "Facebook",
+					"uri": "https://www.facebook.com/ONS"
 				},
 				{
-					"item": "Linked",
-					"url": "https://www.linkedin.com/company/office-for-national-statistics"
+					"title": "LinkedIn",
+					"uri": "https://www.linkedin.com/company/office-for-national-statistics"
 				}
 			]
 		}

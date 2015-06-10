@@ -1,6 +1,4 @@
 {
-	"title": "Office for National Statistics",
-
 	"themes": [
 	{
 		"name": "Business, industry and trade",
@@ -250,6 +248,6 @@
 		      "children": []
 		  }
 		]
-	}
-]
+		}
+	]
 }
