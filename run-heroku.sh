@@ -6,9 +6,13 @@
 
 ### 1 - BUILD WEB FRONT-END
 
-cd target/web && \
+### 1 - BUILD WEB FRONT-END
+
+cd src/main/web && \
 ./build.sh && \
-cd ../..
+cd ../../..
+
+mvn generate-resources
 
 ### 2 - Start server
 java $JAVA_OPTS -Drestolino.files="target/web" -Drestolino.classes="target/classes" -Drestolino.packageprefix=com.github.onsdigital -cp "target/dependency/*" com.github.davidcarboni.restolino.Main
