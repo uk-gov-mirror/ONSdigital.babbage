@@ -162,13 +162,14 @@
 			<resource>
 				<directory>src/main/resources</directory>
 			</resource>
-			<!-- Generated taxonomy fucture -->
+			<!-- Generated contents-->
 			<resource>
-				<!-- Copies the remainder of the taxonomy. NB: the resource plugin "overwrite"
-					setting defaults to false so this won't replace any manually edited files
-					already copied in from under src/main/taxonomy_override -->
 				<directory>src/main/content</directory>
 				<targetPath>${project.build.directory}/content</targetPath>
+			</resource>
+			<resource>
+				<directory>src/main/web</directory>
+				<targetPath>${project.build.directory}/web</targetPath>
 			</resource>
 			<!-- Pre-rendered files - we're doing everything on Prerender.io for now -->
 			<!-- <resource> -->

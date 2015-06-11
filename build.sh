@@ -12,12 +12,9 @@ mvn clean compile dependency:copy-dependencies
 
 
 #Generate content if not generated before
-if [ -d src/main/content ]
+if [ ! -d src/main/content ] || [ "$1" == "-r"  ]
    then
-       echo "Content already generated. Skipping content generation"
-       mvn clean compile dependency:copy-dependencies
-   else
-   	   echo "Content not available, generating now"
+       echo "Generating content now"
        $JAVA_HOME/bin/java -Xmx2048m -cp "target/classes:target/dependency/*" com.github.onsdigital.generator.ContentGenerator
 	   if [ $? -eq 0 ]
 	   		then
@@ -27,6 +24,9 @@ if [ -d src/main/content ]
 	   			rm -rf src/main/content
 	   			exit 1
    		fi
+   else
+        echo "Content already generated. Skipping content generation"
+        mvn clean compile dependency:copy-dependencies
 fi
 
 

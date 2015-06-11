@@ -1,6 +1,7 @@
 package com.github.onsdigital.generator.markdown;
 
 import com.github.onsdigital.content.page.statistics.document.Article;
+import com.github.onsdigital.content.partial.Contact;
 import com.github.onsdigital.generator.ContentNode;
 import com.github.onsdigital.generator.data.Data;
 import org.apache.commons.lang3.StringUtils;
@@ -78,6 +79,7 @@ public class ArticleMarkdown {
 		article.level3 = StringUtils.defaultIfBlank(properties.remove("level 3"), article.level3);
 
 		// Additional details
+		article.contact = new Contact();
 		article.contact.name = StringUtils.defaultIfBlank(properties.remove("contact title"), article.theme);
 		article.contact.email = StringUtils.defaultIfBlank(properties.remove("contact email"), article.theme);
 
