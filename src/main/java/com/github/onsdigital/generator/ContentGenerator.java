@@ -455,7 +455,8 @@ public class ContentGenerator {
                 if (relatedCdids != null && !relatedCdids.isEmpty()) {
                     for (TimeSeries relatedCdid : relatedCdids) {
                         TimeSeries relatedTimeseries = Data.timeseries(relatedCdid.cdid);
-                        timeseries.relatedTimeseries.add(new Metadata(relatedTimeseries));
+                        //TODO:Related timeseries
+//                        timeseries.relatedTimeseries.add(new Metadata(relatedTimeseries));
                     }
                 }
 
