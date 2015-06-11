@@ -23,14 +23,14 @@
   ],
   "datasets": [
     {
-      "title": "Deaths from drug-related poisoning and drug misuse, by sex",
-      "summary": "Brief description of dataset",
-      "uri": "/peoplepopulationandcommunity/healthandsocialcare/drugusealcoholandsmoking/datasets/deathsfromdrugrelatedpoisoninganddrugmisusebysex"
-    },
-    {
       "title": "Alcohol-related deaths, UK",
       "summary": "Brief description of dataset",
       "uri": "/peoplepopulationandcommunity/healthandsocialcare/drugusealcoholandsmoking/datasets/alcoholrelateddeathsuk"
+    },
+    {
+      "title": "Deaths from drug-related poisoning and drug misuse, by sex",
+      "summary": "Brief description of dataset",
+      "uri": "/peoplepopulationandcommunity/healthandsocialcare/drugusealcoholandsmoking/datasets/deathsfromdrugrelatedpoisoninganddrugmisusebysex"
     }
   ],
   "statsBulletins": [

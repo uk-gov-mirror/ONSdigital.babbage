@@ -38,9 +38,9 @@
   ],
   "datasets": [
     {
-      "title": "Population for Local Authorities",
-      "summary": "Components of population change for countries; regions, counties and smaller geographic breakdowns",
-      "uri": "/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/populationforlocalauthorities"
+      "title": "Population data collection",
+      "summary": "Population estimates data overview by age group for the United Kingdom, England and Wales, and Great Britain",
+      "uri": "/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/populationdatacollection"
     },
     {
       "title": "Population by age and sex",
@@ -48,9 +48,9 @@
       "uri": "/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/populationbyageandsex"
     },
     {
-      "title": "Population data collection",
-      "summary": "Population estimates data overview by age group for the United Kingdom, England and Wales, and Great Britain",
-      "uri": "/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/populationdatacollection"
+      "title": "Population for Local Authorities",
+      "summary": "Components of population change for countries; regions, counties and smaller geographic breakdowns",
+      "uri": "/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/populationforlocalauthorities"
     }
   ],
   "statsBulletins": [

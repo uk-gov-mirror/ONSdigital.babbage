@@ -38,14 +38,14 @@
   ],
   "datasets": [
     {
-      "title": "Average Weekly Earnings",
-      "summary": "Covering total pay, bonus pay and regular pay",
-      "uri": "/employmentandlabourmarket/peopleinwork/earningsandworkinghours/datasets/averageweeklyearnings"
-    },
-    {
       "title": "Actual and usual weekly hours worked",
       "summary": "Brief description of dataset",
       "uri": "/employmentandlabourmarket/peopleinwork/earningsandworkinghours/datasets/actualandusualweeklyhoursworked"
+    },
+    {
+      "title": "Average Weekly Earnings",
+      "summary": "Covering total pay, bonus pay and regular pay",
+      "uri": "/employmentandlabourmarket/peopleinwork/earningsandworkinghours/datasets/averageweeklyearnings"
     }
   ],
   "statsBulletins": [

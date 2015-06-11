@@ -7,7 +7,7 @@ cd src/main/web && \
 cd ../../..
 
 ## 2 - BUILD API
-./build.sh -r
+./build.sh "$1" 
 
  if [ $? -eq 0 ]
     then

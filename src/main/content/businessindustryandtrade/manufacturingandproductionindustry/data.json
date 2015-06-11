@@ -26,14 +26,14 @@
   ],
   "datasets": [
     {
-      "title": "Output by Manufacturing sub-sectors",
-      "summary": "Brief description of dataset",
-      "uri": "/businessindustryandtrade/manufacturingandproductionindustry/datasets/outputbymanufacturingsubsectors"
-    },
-    {
       "title": "Output of the production industries",
       "summary": "Broad industry groups and main industrial groupings.",
       "uri": "/businessindustryandtrade/manufacturingandproductionindustry/datasets/outputoftheproductionindustries"
+    },
+    {
+      "title": "Output by Manufacturing sub-sectors",
+      "summary": "Brief description of dataset",
+      "uri": "/businessindustryandtrade/manufacturingandproductionindustry/datasets/outputbymanufacturingsubsectors"
     }
   ],
   "statsBulletins": [

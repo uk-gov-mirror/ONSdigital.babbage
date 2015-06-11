@@ -32,14 +32,14 @@
   ],
   "datasets": [
     {
-      "title": "Construction output",
-      "summary": "Range of construction figures by sector and region",
-      "uri": "/businessindustryandtrade/constructionindustry/datasets/constructionoutput"
-    },
-    {
       "title": "Construction - All work summary",
       "summary": "Brief description of dataset",
       "uri": "/businessindustryandtrade/constructionindustry/datasets/constructionallworksummary"
+    },
+    {
+      "title": "Construction output",
+      "summary": "Range of construction figures by sector and region",
+      "uri": "/businessindustryandtrade/constructionindustry/datasets/constructionoutput"
     }
   ],
   "statsBulletins": [

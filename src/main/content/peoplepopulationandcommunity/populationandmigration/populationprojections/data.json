@@ -17,6 +17,11 @@
   ],
   "datasets": [
     {
+      "title": "Principal population projection - Great Britain",
+      "summary": "Includes: population totals in broad age groups, components of change, births, deaths…",
+      "uri": "/peoplepopulationandcommunity/populationandmigration/populationprojections/datasets/principalpopulationprojectiongreatbritain"
+    },
+    {
       "title": "Principal population projection - UK",
       "summary": "Includes: population totals in broad age groups, components of change, births, deaths…",
       "uri": "/peoplepopulationandcommunity/populationandmigration/populationprojections/datasets/principalpopulationprojectionuk"
@@ -25,11 +30,6 @@
       "title": "Principal population projection - England and Wales",
       "summary": "Includes: population totals in broad age groups, components of change, births, deaths…",
       "uri": "/peoplepopulationandcommunity/populationandmigration/populationprojections/datasets/principalpopulationprojectionenglandandwales"
-    },
-    {
-      "title": "Principal population projection - Great Britain",
-      "summary": "Includes: population totals in broad age groups, components of change, births, deaths…",
-      "uri": "/peoplepopulationandcommunity/populationandmigration/populationprojections/datasets/principalpopulationprojectiongreatbritain"
     }
   ],
   "statsBulletins": [

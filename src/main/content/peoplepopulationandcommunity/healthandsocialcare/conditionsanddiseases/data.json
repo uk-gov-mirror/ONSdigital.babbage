@@ -23,6 +23,11 @@
   ],
   "datasets": [
     {
+      "title": "Deaths involving  MRSA",
+      "summary": "Brief description of dataset",
+      "uri": "/peoplepopulationandcommunity/healthandsocialcare/conditionsanddiseases/datasets/deathsinvolvingmrsa"
+    },
+    {
       "title": "Cancer registration statistics",
       "summary": "Brief description of dataset",
       "uri": "/peoplepopulationandcommunity/healthandsocialcare/conditionsanddiseases/datasets/cancerregistrationstatistics"
@@ -31,11 +36,6 @@
       "title": "Deaths involving Clostridium difficile",
       "summary": "Brief description of dataset",
       "uri": "/peoplepopulationandcommunity/healthandsocialcare/conditionsanddiseases/datasets/deathsinvolvingclostridiumdifficile"
-    },
-    {
-      "title": "Deaths involving  MRSA",
-      "summary": "Brief description of dataset",
-      "uri": "/peoplepopulationandcommunity/healthandsocialcare/conditionsanddiseases/datasets/deathsinvolvingmrsa"
     }
   ],
   "statsBulletins": [

@@ -32,14 +32,14 @@
   ],
   "datasets": [
     {
-      "title": "Deaths data collection",
-      "summary": "Brief description of dataset",
-      "uri": "/peoplepopulationandcommunity/birthsdeathsandmarriages/deaths/datasets/deathsdatacollection"
-    },
-    {
       "title": "Causes of death",
       "summary": "Brief description of dataset",
       "uri": "/peoplepopulationandcommunity/birthsdeathsandmarriages/deaths/datasets/causesofdeath"
+    },
+    {
+      "title": "Deaths data collection",
+      "summary": "Brief description of dataset",
+      "uri": "/peoplepopulationandcommunity/birthsdeathsandmarriages/deaths/datasets/deathsdatacollection"
     }
   ],
   "statsBulletins": [

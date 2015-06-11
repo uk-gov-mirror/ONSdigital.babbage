@@ -26,9 +26,9 @@
   ],
   "datasets": [
     {
-      "title": "Disposals abroad by UK companies",
+      "title": "Mergers and Acquisitions abroad by UK companies",
       "summary": "Brief description of dataset",
-      "uri": "/businessindustryandtrade/changestobusiness/mergersandacquisitions/datasets/disposalsabroadbyukcompanies"
+      "uri": "/businessindustryandtrade/changestobusiness/mergersandacquisitions/datasets/mergersandacquisitionsabroadbyukcompanies"
     },
     {
       "title": "Mergers and Acquisitions",
@@ -36,9 +36,9 @@
       "uri": "/businessindustryandtrade/changestobusiness/mergersandacquisitions/datasets/mergersandacquisitions"
     },
     {
-      "title": "Mergers and Acquisitions abroad by UK companies",
+      "title": "Disposals abroad by UK companies",
       "summary": "Brief description of dataset",
-      "uri": "/businessindustryandtrade/changestobusiness/mergersandacquisitions/datasets/mergersandacquisitionsabroadbyukcompanies"
+      "uri": "/businessindustryandtrade/changestobusiness/mergersandacquisitions/datasets/disposalsabroadbyukcompanies"
     }
   ],
   "statsBulletins": [
