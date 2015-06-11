@@ -11,8 +11,9 @@
 	</p>
 </div>
 <!-- /wrapper -->
-<div class="wrapper panel--mar ">
-	<div class="grid-wrap">
+<div class="wrapper panel--mar">
+	{{#if contentSearchResult.results}}
+	<div class="grid-wrap panel--bottom-mar">
 		<div class="grid-col mini desktop-grid-one-third desktop-grid-push-two-thirds">
 			<p class="flush">
 				Get updates to this list
@@ -108,6 +109,7 @@
 			<!-- /panel--seperated--top 'pagination' -->
 		</div>
 		<!-- /desktop-grid-two-thirds -->
+		{{/if}}
 	</div>
 	<!-- /grid-wrap -->
 </div>

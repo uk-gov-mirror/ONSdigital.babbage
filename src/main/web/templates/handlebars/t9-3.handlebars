@@ -12,17 +12,18 @@
 </div>
 <!-- /wrapper -->
 <div class="wrapper panel--mar">
-  <div class="grid-wrap panel--mar">
-      <div class="grid-col desktop-grid-one-quarter desktop-grid-push-three-quarters tablet-grid-full-width">
-        <label for="select">Sort by
-          <div class="field ">
-              <select class="input " id="select" name="">
-                <option value="1" selected>Relevance</option>
-                <option value="2">Release date</option>
-				<option value="3">Title</option>
-              </select>
-            </div>
-          </label>
+	{{#if contentSearchResult.results}}
+	<div class="grid-wrap panel--bottom-mar">
+    	<div class="grid-col desktop-grid-one-quarter desktop-grid-push-three-quarters tablet-grid-full-width">
+        	<label for="select">Sort by
+        		<div class="field">
+					<select class="input " id="select" name="">
+						<option value="1" selected>Relevance</option>
+						<option value="2">Release date</option>
+						<option value="3">Title</option>
+					</select>
+            	</div>
+        	</label>
         </div>
     </div>
     <div class="grid-wrap">
@@ -80,6 +81,7 @@
 			</ul>
 		</div>
 		<!-- /desktop-grid-two-thirds -->
+		{{/if}}
 	</div>
 	<!-- /grid-wrap -->
 </div>
