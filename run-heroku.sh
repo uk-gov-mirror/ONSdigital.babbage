@@ -4,4 +4,4 @@
 
 #java -Xmx2048m -cp "target/classes:target/dependency/*" com.github.onsdigital.generator.ContentGenerator
 
-$JAVA_HOME/bin/java $JAVA_OPTS -Drestolino.files="target/web" -Drestolino.classes="target/classes" -Drestolino.packageprefix=com.github.onsdigital -cp "target/dependency/*" com.github.davidcarboni.restolino.Main
+java $JAVA_OPTS -Drestolino.files="target/web" -Drestolino.classes="target/classes" -Drestolino.packageprefix=com.github.onsdigital -cp "target/dependency/*" com.github.davidcarboni.restolino.Main
