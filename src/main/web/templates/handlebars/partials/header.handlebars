@@ -66,14 +66,14 @@
 				<li class="nav--primary__hide-small-med">
 					<a href="/">Home</a>
 				</li>
-				{{#each navigation.nodes}}
+				{{#each themes}}
 					<li class="nav__expandable js-expandable">
-						<a href="{{uri}}">{{title}}</a>
+						<a href="{{uri}}">{{name}}</a>
 						{{#if children}}
 							<ul class="nav--primary__sub js-expandable__content js-nav-hidden">
 								{{#each}}
 									<li>
-										<a href="{{uri}}">{{title}}</a>
+										<a href="{{uri}}">{{name}}</a>
 									</li>
 								{{/each}} <!-- /each to find 2nd level nodes -->
 							</ul>

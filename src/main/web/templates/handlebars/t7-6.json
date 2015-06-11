@@ -260,7 +260,7 @@
     		"type": "home",
     		"name": "Methodology",
     		"fileName": "methodology",
-            "uri": "methodology/economy"
+            "uri": "methodology"
     	},
         {
             "type": "home",
