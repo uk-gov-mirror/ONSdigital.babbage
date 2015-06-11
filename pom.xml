@@ -150,7 +150,8 @@
         <dependency>
             <groupId>com.github.onsdigital</groupId>
             <artifactId>content-library</artifactId>
-            <version>content-library-1.0.14</version>
+            <version>content-library-1.0.15</version>
+            <!--<version>1.0.15-SNAPSHOT</version>-->
         </dependency>
 
         <!-- ANTLRv4  Added to please Heroku, maven could not resolve transitive dependency for handlebars java -->

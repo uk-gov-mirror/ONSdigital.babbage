@@ -69,15 +69,13 @@
 				{{#each navigation.nodes}}
 					<li class="nav__expandable js-expandable">
 						<a href="{{uri}}">{{title}}</a>
-						{{#if children}}
 							<ul class="nav--primary__sub js-expandable__content js-nav-hidden">
-								{{#each}}
+								{{#each children}}
 									<li>
 										<a href="{{uri}}">{{title}}</a>
 									</li>
 								{{/each}} <!-- /each to find 2nd level nodes -->
 							</ul>
-						{{/if}}
 					</li>
 				{{/each}} <!-- /each to find 1st level nodes -->
 				<li class="nav--primary__respondents">

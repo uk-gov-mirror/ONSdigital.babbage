@@ -55,6 +55,7 @@ public class NavigationUtil {
         Path taxonomyPath = getContentPath();
         addNodes(navigationNodes, getNodes(taxonomyPath));
         for (NavigationNode node : navigationNodes) {
+            node.children = new ArrayList<>();
             addNodes(node.children, getNodes(FileSystems.getDefault().getPath(taxonomyPath + "/" + node.fileName)));
         }
         return navigationNodes;

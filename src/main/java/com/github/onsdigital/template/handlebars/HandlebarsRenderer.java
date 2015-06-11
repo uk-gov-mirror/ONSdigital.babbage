@@ -5,7 +5,6 @@ import com.github.jknack.handlebars.context.FieldValueResolver;
 import com.github.jknack.handlebars.helper.StringHelpers;
 import com.github.jknack.handlebars.io.FileTemplateLoader;
 import com.github.onsdigital.configuration.Configuration;
-import com.github.onsdigital.content.base.Content;
 import com.github.onsdigital.content.page.base.Page;
 import com.github.onsdigital.template.TemplateRenderer;
 import com.github.onsdigital.template.handlebars.helpers.DateFormatHelper;
@@ -38,7 +37,7 @@ public class HandlebarsRenderer implements TemplateRenderer {
         //                return new Handlebars.SafeString(options.fn.text());
         //            }
         //        });
-        handlebars.registerHelper("json", Jackson2Helper.INSTANCE);
+//        handlebars.registerHelper("json", Jackson2Helper.INSTANCE);
         handlebars.registerHelper("md", new MarkdownHelper());
         handlebars.registerHelper("df", new DateFormatHelper());
         // String helpers
