@@ -11,20 +11,16 @@
 	"type": "compendium",
 	"name": "Blue book, 2014",
 	"breadcrumb": [
-		{
-		  "index": 0,
-		  "type": "home",
-		  "name": "Economy",
-		  "fileName": "economy",
-		  "uri": "economy"
-		},
-		{
-			"index": 1,
-			"type": "home",
-			"name": "Breadcrumb test",
-			"fileName": "breadcrumbtest",
-			"uri": "economy/breadcrumbtest"
-		}
+	    {
+	      "title": "Home",
+	      "summary": "The UK\u0027s largest independent producer of official statistics and the recognised national statistical institute of the UK.",
+	      "uri": "/"
+	    },
+	    {
+	      "title": "Economy",
+	      "summary": "An economy or economic system consists of the production, distribution, consumption and trade of limited goods and services by different agents in a given geographical location. The economic agents can be individuals, businesses, organisations, or governments. ",
+	      "uri": "/economy"
+	    }
 	],
 	"print": {
 		"uri": "economy/bluebook/print",
