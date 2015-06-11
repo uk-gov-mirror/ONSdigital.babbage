@@ -1,0 +1,63 @@
+{
+    "contentSearchResult": {
+		"numberOfResults": 1,
+		"results": [
+		{
+			"title": "Estimated import intensity of household consumption by classification of Individual Consumption According to Purpose (COICOP): 2010",
+			"summary": "For each COICOP (Classification of Individual Consumption According to Purpose) class, the estimated 'import intensity' of final household consumption is given. 'Import intensity' refers to the percentage of final household consumption which is directly due to imports. This does not include the effect of goods which are imported and then used as inputs for goods produced domestically. As imports data is provided on a Classification of Products by Activity (CPA) basis which is not directly comparable to the COICOP classifcation, these estimates should be regarded as indicative.",
+			"url": "/economy/nationalaccounts/estimatedimportintesity",
+			"releaseDate": "5 May 2015",
+			"reference": "004124"
+		},
+		{
+			"title": "Breakdown of individuals with first and second defined benefit pension, by age and value: 2010/12",
+			"summary": "Breakdown of individuals with first and second defined benefit pension, by age and value: 2010/12.",
+			"url": "/economy/nationalaccounts",
+			"releaseDate": "27 April 2015",
+			"reference": "004111"
+		},
+		{
+			"title": "Expenditure by gross income band, for households comprising 2 adults non-retired, UK, 2013",
+			"summary": "Expenditure by specified gross income band, for households comprising 2 adults non-retired, UK, 2013.",
+			"url": "/economy/nationalaccounts",
+			"releaseDate": "28 August 2014",
+			"reference": "004099"
+		},
+		{
+			"title": "Capital Services Estimates to 2013 - Supporting Information",
+			"summary": "GFCF volumes and deflators by Asset and Industry.",
+			"url": "/economy/nationalaccounts",
+			"releaseDate": "1 January 2015",
+			"reference": "004074"
+		},
+		{
+			"title": "Calculating a Retrospective Superlative Consumer Prices Index for the UK",
+			"summary": "A data series that underpins charts 3, 5 and 7 in the methodological article 'Calculating a retrospective superlative CPI for the UK' originally published in December 2014.",
+			"url": "/economy/nationalaccounts",
+			"releaseDate": "20 April 2015",
+			"reference": "004072"
+		},
+		{
+			"title": "Expenditure by gross income band, for households comprising 2 adults non-retired, UK, 2013",
+			"summary": "Expenditure by specified gross income band, for households comprising 2 adults non-retired, UK, 2013.",
+			"url": "/economy/nationalaccounts",
+			"releaseDate": "28 August 2014",
+			"reference": "004099"
+		},
+		{
+			"title": "Expenditure by gross income band, for households comprising 2 adults non-retired, UK, 2013",
+			"summary": "Expenditure by specified gross income band, for households comprising 2 adults non-retired, UK, 2013.",
+			"url": "/economy/nationalaccounts",
+			"releaseDate": "28 August 2014",
+			"reference": "004099"
+		},
+		{
+			"title": "Expenditure by gross income band, for households comprising 2 adults non-retired, UK, 2013",
+			"summary": "Expenditure by specified gross income band, for households comprising 2 adults non-retired, UK, 2013.",
+			"url": "/economy/nationalaccounts",
+			"releaseDate": "28 August 2014",
+			"reference": "004099"
+		}
+		]
+	}
+}
