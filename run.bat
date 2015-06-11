@@ -18,9 +18,9 @@ export MONGO_USER=ons
 export MONGO_PASSWORD=uJlVY2FDGI5SFawS/PN+jnZpymKWpU7C
 
 # Generate content
-mvn clean compile dependency:copy-dependencies && ^
-rm -rf src/main/content && ^
-java -cp "target/classes;target/dependency/*" com.github.onsdigital.generator.ContentGenerator
+rem #mvn clean compile dependency:copy-dependencies && ^
+rem #rm -rf src/main/content && ^
+rem #java -cp "target/classes;target/dependency/*" com.github.onsdigital.generator.ContentGenerator
 
 rem # Build and run:
 mvn -Dmaven.test.skip=true clean compile dependency:copy-dependencies && ^
