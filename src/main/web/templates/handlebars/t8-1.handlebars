@@ -1,15 +1,9 @@
-<head>
-		<link rel="stylesheet" href="../../node_modules/ONS-Pattern-Library/dist/css/main.min.css"/>
-  	<script src="../../node_modules/ONS-Pattern-Library/dist/js/header.js"></script>
-</head>
-
-<!-- Pattern Library Header -->
-<p>Add header partial</p>
+{{> templates/handlebars/partials/header}}
 
 <div class="page-header slate slate--light-green">
 
 	<div class="wrapper">
-		<p>Add breadcrumb partial</p>
+		{{> templates/handlebars/partials/breadcrumb}}
 		<p class="page-header__title">
 			<strong>Dataset</strong>
 		</p>
@@ -24,14 +18,14 @@
 
 			<p class="grid-col tablet-grid-one-quarter divider--border-left">
 
-					<span>Release date: </span>{{releaseDate}}
+					<span>Release date: </span><br/>{{df releaseDate "d MMMM yyyy"}}
 					</br>
 					<a href="#">previous versions</a>
 
 			</p>
 			<p class="grid-col tablet-grid-one-quarter divider--border-left">
 
-					<span>Next release: </span>{{nextRelease}}
+					<span>Next release: </span><br/>{{df nextRelease "d MMMM yyyy"}}
 
 			</p>
 			<p class="grid-col tablet-grid-one-quarter divider--border-left">
@@ -43,7 +37,7 @@
 		</div>
 		<!-- /grip-wrap -->
 
-		<p>Add social partial</p>
+		{{> templates/handlebars/partials/social-icons}}
 		<!-- / page-header__icons  -->
 	</div>
 	<!-- / wrapper -->
@@ -68,7 +62,7 @@
 				{{lede}}
 			</p>
 			<p>
-				<span class="stand-out-text">{{#each datasets}}{{#if @last}}{{@index}}{{/if}}{{/each}}</span> results
+				<span class="stand-out-text">{{resultsNumber}}</span> results
 			</p>
 		</div>
 		<!-- /grid-col -->
@@ -156,8 +150,5 @@
 	<!-- /grid-wrap -->
 </div>
 <!-- /wrapper -->
-<p>
-	Add footer partial
-</p>
 
-<script src="../../node_modules/ONS-Pattern-Library/dist/js/footer.js"></script>
+{{> templates/handlebars/partials/footer}}
