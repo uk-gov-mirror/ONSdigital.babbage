@@ -113,9 +113,9 @@
                     <!-- /box__header -->
                     <div class="box__content">
                         <p>
-						  {{contact.name}}
-                          <a href="mailto:{{contact.email}}">{{#if contact.name}}{{contact.name}}{{else}}{{contact.email}}{{/if}}</a></br>
-                          Telephone: {{contact.telephone}}
+						  {{#if contact.name}}{{contact.name}}{{/if}}
+                          <a href="mailto:{{contact.email}}">{{contact.email}}</a></br>
+                          {{#if contact.telephone}}Telephone: {{contact.telephone}}{{/if}}
                         </p>
                     </div>
                     <!-- /box__content -->
