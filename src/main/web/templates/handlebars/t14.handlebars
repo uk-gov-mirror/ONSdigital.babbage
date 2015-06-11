@@ -1,22 +1,19 @@
 {{> templates/handlebars/partials/header}}
 
-<div class="page-header slate slate--light-green">
+<div class="wrapper panel--top-mar">
 
-	<div class="wrapper">
-		{{> templates/handlebars/partials/breadcrumb}}
+	{{> templates/handlebars/partials/breadcrumb}}
 
-		<h1 class="page-header__title flush--half--bottom">Browse our statistics</h1>
+	<h1 class="page-header__title flush--half--bottom">{{title}}</h1>
 
-		<p>
-			<span class="stand-out-text">{{contentSearchResult.numberOfResults}}</span> results
-		</p>
+	<p>
+		<span class="stand-out-text">{{contentSearchResult.numberOfResults}}</span> results
+	</p>
 
-		{{> templates/handlebars/partials/social-icons}}
-		<!-- / page-header__icons  -->
-	</div>
-	<!-- / wrapper -->
+	{{> templates/handlebars/partials/social-icons}}
+	<!-- / page-header__icons  -->
 </div>
-<!-- / page-header -->
+<!-- / wrapper -->
 
 <div class="wrapper panel--mar ">
 	<!-- /grid-wrap -->
@@ -121,7 +118,7 @@
 					</header>
 					<div class="box__content">
 						<a href="#">
-							A handy guide to let you know where to ﬁnd local statistics.
+							A handy guide to let you know where to find local statistics.
 						</a>
 					</div>
 				</div>
@@ -132,7 +129,7 @@
 				<div class="box__inner border box--padded has-icon">
 					<div class="box__content">
 						<a href="#">
-							Oﬃcial statistics produced by other government departments.
+							Official statistics produced by other government departments.
 						</a>
 					</div>
 				</div>
@@ -142,96 +139,17 @@
 		<!-- /desktop-grid-one-third -->
 		<div class="grid-col desktop-grid-two-thirds">
 			<ul class="list--neutral">
+				{{#each contentSearchResult.results}}
 				<li>
-					<h3 class="flush"><a href="#">Link to child page</a></h3>
+					<h3 class="flush"><a href="{{uri}}" title="{{title}}">{{title}}</a></h3>
 						<p class="mini description flush">
-							Frequency: Annual
+							Frequency: {{frequency}}
 						</p>
-					<p>
-						Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec at eros eget felis consequat tincidunt.
-					</p>
-				</li>
-				<li>
-					<h3 class="flush"><a href="#">Link to child page</a></h3>
-						<p class="mini description flush">
-							Frequency: Annual
+						<p>
+							{{summary}}
 						</p>
-					<p>
-						Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec at eros eget felis consequat tincidunt.
-					</p>
 				</li>
-				<li>
-					<h3 class="flush"><a href="#">Link to child page</a></h3>
-						<p class="mini description flush">
-							Frequency: Annual
-						</p>
-					<p>
-						Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec at eros eget felis consequat tincidunt.
-					</p>
-				</li>
-				<li>
-					<h3 class="flush"><a href="#">Link to child page</a></h3>
-						<p class="mini description flush">
-							Frequency: Annual
-						</p>
-					<p>
-						Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec at eros eget felis consequat tincidunt.
-					</p>
-				</li>
-				<li>
-					<h3 class="flush"><a href="#">Link to child page</a></h3>
-						<p class="mini description flush">
-							Frequency: Annual
-						</p>
-					<p>
-						Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec at eros eget felis consequat tincidunt.
-					</p>
-				</li>
-				<li>
-					<h3 class="flush"><a href="#">Link to child page</a></h3>
-						<p class="mini description flush">
-							Frequency: Annual
-						</p>
-					<p>
-						Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec at eros eget felis consequat tincidunt.
-					</p>
-				</li>
-				<li>
-					<h3 class="flush"><a href="#">Link to child page</a></h3>
-						<p class="mini description flush">
-							Frequency: Annual
-						</p>
-					<p>
-						Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec at eros eget felis consequat tincidunt.
-					</p>
-				</li>
-				<li>
-					<h3 class="flush"><a href="#">Link to child page</a></h3>
-						<p class="mini description flush">
-							Frequency: Annual
-						</p>
-					<p>
-						Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec at eros eget felis consequat tincidunt.
-					</p>
-				</li>
-				<li>
-					<h3 class="flush"><a href="#">Link to child page</a></h3>
-						<p class="mini description flush">
-							Frequency: Annual
-						</p>
-					<p>
-						Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec at eros eget felis consequat tincidunt.
-					</p>
-				</li>
-				<li>
-					<h3 class="flush"><a href="#">Link to child page</a></h3>
-						<p class="mini description flush">
-							Frequency: Annual
-						</p>
-					<p>
-						Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec at eros eget felis consequat tincidunt.
-					</p>
-				</li>
+				{{/each}}
 			</ul>
 			<!-- /list -->
 		</div>
