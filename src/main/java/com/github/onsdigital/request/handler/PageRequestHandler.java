@@ -2,8 +2,10 @@ package com.github.onsdigital.request.handler;
 
 import com.github.onsdigital.content.page.base.Page;
 import com.github.onsdigital.content.util.ContentUtil;
+import com.github.onsdigital.data.DataService;
 import com.github.onsdigital.request.handler.base.RequestHandler;
 import com.github.onsdigital.template.TemplateService;
+import com.github.onsdigital.util.NavigationUtil;
 import org.apache.commons.lang3.CharEncoding;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,6 +27,8 @@ public class PageRequestHandler implements RequestHandler {
         DataRequestHandler dataRequestHandler = new DataRequestHandler();
         String data = dataRequestHandler.getDataAsString(requestedUri, request);
         Page page = ContentUtil.deserialisePage(data);
+        page.loadReferences(DataService.getInstance());
+        page.navigation = NavigationUtil.getNavigation();
         String html = TemplateService.getInstance().renderPage(page);
         response.setCharacterEncoding(CharEncoding.UTF_8);
         response.setContentType(CONTENT_TYPE);

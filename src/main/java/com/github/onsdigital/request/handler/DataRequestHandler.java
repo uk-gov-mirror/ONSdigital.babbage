@@ -1,5 +1,7 @@
 package com.github.onsdigital.request.handler;
 
+import com.github.onsdigital.content.page.base.Page;
+import com.github.onsdigital.content.util.ContentUtil;
 import com.github.onsdigital.data.DataNotFoundException;
 import com.github.onsdigital.data.DataService;
 import com.github.onsdigital.data.zebedee.ZebedeeClient;
@@ -13,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.StringWriter;
+import java.io.StringReader;
 
 /**
  * Created by bren on 28/05/15.
@@ -34,7 +36,15 @@ public class DataRequestHandler implements RequestHandler {
         }
 
         //Read from Babbage if not Zebedee request
-        IOUtils.copy(DataService.getInstance().getDataStream(requestedUri), response.getOutputStream());
+        //Initialize page references in content type if requested
+        InputStream data = DataService.getInstance().getDataStream(requestedUri);
+        if (request.getParameter("resolve") != null) {
+            Page page = ContentUtil.deserialisePage(data);
+            page.loadReferences(DataService.getInstance());
+            IOUtils.copy(new StringReader(page.toJson()), response.getOutputStream());
+        } else {
+            IOUtils.copy(data, response.getOutputStream());
+        }
         configureResponse(response);
         return null;
 
@@ -65,7 +75,7 @@ public class DataRequestHandler implements RequestHandler {
         }
 
         //Return from Babbage local fs if no a Zebedee request
-        return DataService.getInstance().getDataAsString(requestedUri,false);
+        return DataService.getInstance().getDataAsString(requestedUri, false);
     }
 
     private void configureResponse(HttpServletResponse response) {

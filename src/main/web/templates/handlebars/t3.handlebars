@@ -20,7 +20,7 @@
 					<h2>Latest data</h2>
 					<header class="box___section">
 							<h3 class="navpanel-list-heading lede box--padded-bottom-small">
-								<a href="">{{headline.title}}</a>
+								<a href="">{{headline.data.title}}</a>
 							</h3>
 					</header>
 					<div class="grid-wrap">
@@ -33,18 +33,18 @@
 									<div class="stat">
 											<div class="stat__figure ">
 													<div>
-															{{headline.figure}}<span class="stat__figure__unit"> {{headline.unit}}</span>
+															{{headline.data.number}}<span class="stat__figure__unit"> {{headline.data.unit}}</span>
 													</div>
 													<div class="stat__description">
-														{{headline.period}}
+														{{headline.data.period}}
 													</div>
 											</div>
 									</div>
 									<dl class="micro definition-list definition-list--inline flush--half--vertical">
 											<dt>Last updated:</dt>
-											<dd>{{headline.lastUpdate}}</dd>
+											<dd>{{headline.data.lastUpdate}}</dd>
 											<dt>Next update:</dt>
-											<dd>{{headline.nextUpdate}}</dd>
+											<dd>{{headline.data.nextUpdate}}</dd>
 									</dl>
 							</div>
 							<!-- /grid-col -->
@@ -68,11 +68,15 @@
 					</header>
 					<h3>What's in the bulletin?</h3>
 					<ul class="list--bullet mini flush--half--top navpanel-list headline--box-container-text">
-						{{#each statsBulletinHeadline.data}}
 						<li>
-							{{item}}
+							{{statsBulletinHeadline.headline1}}
 						</li>
-						{{/each}}
+						<li>
+							{{statsBulletinHeadline.headline2}}
+						</li>
+						<li>
+							{{statsBulletinHeadline.headline3}}
+						</li>
 					</ul>
 				</div>
 				<a href="#reports" class="btn btn--primary">view latest reports
@@ -100,11 +104,11 @@
 						<li class="list--table__item list--table__body">
 							<div class="list--table__item__body list--table__item__body--caption">
 								<h3 class="flush--half--bottom">
-									<a href="{{uri}}">{{title}}</a>
+									<a href="{{uri}}">{{data.title}}</a>
 								</h3>
 								{{#if description}}
 									<p class="list--table__item__description">
-										{{description}}
+										{{data.description}}
 									</p>
 								{{/if}}
 							</div>
@@ -113,16 +117,16 @@
 							</div>
 							<div class="list--table__item__body list--table__item__body--stat">
 								<div class="stat__figure">
-									{{figure}}<span class="stat__figure__unit"> {{unit}}</span>
-									<div class="stat__description">{{period}}</div>
+									{{data.number}}<span class="stat__figure__unit"> {{data.unit}}</span>
+									<div class="stat__description">{{data.period}}</div>
 								</div>
 							</div>
 							<div class="list--table__item__body list--table__item__body--update">
 								<dl class="micro flush--half--vertical">
 									<dt>Last updated:</dt>
-									<dd>{{lastUpdate}}</dd>
+									<dd>{{data.releaseDate}}</dd>
 									<dt>Next update:</dt>
-									<dd>{{nextUpdate}}</dd>
+									<dd>{{data.nextReleaseDate}}</dd>
 								</dl>
 							</div>
 						</li>

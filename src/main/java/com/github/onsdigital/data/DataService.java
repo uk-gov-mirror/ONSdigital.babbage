@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.github.davidcarboni.ResourceUtils;
+import com.github.onsdigital.content.service.ContentNotFoundException;
+import com.github.onsdigital.content.service.ContentService;
 import com.github.onsdigital.util.JsonPrettyprint;
 import com.github.onsdigital.util.Validator;
 import com.google.gson.stream.JsonReader;
@@ -23,7 +25,7 @@ import org.apache.commons.lang3.StringUtils;
  *
  * @author brn
  */
-public class DataService {
+public class DataService implements ContentService {
 
     private static DataService instance = new DataService();
 
@@ -34,6 +36,17 @@ public class DataService {
 
     public static DataService getInstance() {
         return instance;
+    }
+
+    @Override
+    public String getDataAsString(String uri) throws ContentNotFoundException {
+        try {
+            return getDataAsString(uri, true);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed reading data at " + uri);
+        } catch (DataNotFoundException e) {
+            throw new ContentNotFoundException(e);
+        }
     }
 
     /**

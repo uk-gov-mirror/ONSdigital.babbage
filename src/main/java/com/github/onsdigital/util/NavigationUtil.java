@@ -1,6 +1,7 @@
 package com.github.onsdigital.util;
 
 import com.github.onsdigital.configuration.Configuration;
+import com.github.onsdigital.content.page.base.Page;
 import com.github.onsdigital.content.page.taxonomy.base.TaxonomyPage;
 import com.github.onsdigital.content.partial.navigation.Navigation;
 import com.github.onsdigital.content.partial.navigation.NavigationNode;
@@ -38,43 +39,57 @@ public class NavigationUtil {
         if (navigation == null) {
             synchronized (NavigationUtil.class) {
                 if (navigation == null) {
-                    buildNavigation();
+                    List<NavigationNode> nodes = buildNavigationNodes();
+                    if (!jsonError) {
+                        NavigationUtil.navigation = new Navigation();
+                        navigation.nodes = nodes;
+                    }
                 }
             }
         }
         return navigation;
     }
 
-    private static void buildNavigation() throws IOException {
-        try {
-            List<NavigationNode> nodes = getNavigationNodes();
-            Navigation navigation = new Navigation();
-            navigation.nodes = nodes;
-            Collections.sort(nodes);
-            if (!jsonError) {
-                NavigationUtil.navigation = navigation;
-            }
+    private static List<NavigationNode> buildNavigationNodes() throws IOException {
+        List<NavigationNode> navigationNodes = new ArrayList<NavigationNode>();
+        Path taxonomyPath = getContentPath();
+        addNodes(navigationNodes, getNodes(taxonomyPath));
+        for (NavigationNode node : navigationNodes) {
+            addNodes(node.children, getNodes(FileSystems.getDefault().getPath(taxonomyPath + "/" + node.fileName)));
+        }
+        return navigationNodes;
+    }
 
-        } catch (DOMException | MalformedURLException e) {
-            throw new IOException("Error iterating taxonomy", e);
+    private static void addNodes(List<NavigationNode> nodeList, List<NavigationNode> toAdd) {
+        Collections.sort(toAdd);
+        int i = 0;
+        for (NavigationNode navigationNode : toAdd) {
+            nodeList.add(i, navigationNode);
+            i++;
         }
     }
 
-    private static List<NavigationNode> getNavigationNodes() throws IOException {
-        List<NavigationNode> nodes = new ArrayList<>();
-        DirectoryStream<Path> stream = Files.newDirectoryStream(getContentPath());
-        for (Path p : stream) {
-            // Iterate over the paths:
-            if (Files.isDirectory(p) && isTaxonomy(p)) {
-                try {
-                    nodes.add(getNavigationNode(p));
-                } catch (JsonSyntaxException e) {
-                    jsonError = true;
-                    System.out.println("Navigation: malformed Json, omitting: " + p);
+    private static List<NavigationNode> getNodes(Path path) throws IOException {
+        List<NavigationNode> nodes = new ArrayList<NavigationNode>();
+        try (DirectoryStream<Path> stream = Files.newDirectoryStream(path)) {
+            for (Path p : stream) {
+                // Iterate over the paths:
+                if (Files.isDirectory(p)) {
+                    try {
+                        NavigationNode node = getNavigationNode(p);
+                        if (node != null) {
+                            nodes.add(node);
+                        }
+                    } catch (JsonSyntaxException e) {
+                        jsonError = true;
+                        System.out.println("Navigation: malformed Json, omitting: " + p);
+                    }
                 }
             }
+            return nodes;
+        } catch (DOMException | MalformedURLException e) {
+            throw new IOException("Error iterating taxonomy", e);
         }
-        return nodes;
     }
 
     private static void sortNodes(List<NavigationNode> nodeList) {
@@ -87,8 +102,11 @@ public class NavigationUtil {
         Path dataJson = path.resolve("data.json");
         if (Files.exists(dataJson)) {
             try (InputStream input = Files.newInputStream(dataJson)) {
-                TaxonomyPage taxonomyPage = (TaxonomyPage) ContentUtil.deserialisePage(input);
-                result = new NavigationNode(taxonomyPage);
+                Page page = ContentUtil.deserialisePage(input);
+                if (page !=null && page instanceof TaxonomyPage) {
+                    result = new NavigationNode((TaxonomyPage) page);
+                    result.fileName = path.getFileName().toString();
+                }
             }
         }
         return result;
@@ -105,7 +123,7 @@ public class NavigationUtil {
 
     public static void main(String[] args) {
         try {
-            List<NavigationNode> nodes = NavigationUtil.getNavigationNodes();
+            List<NavigationNode> nodes = NavigationUtil.buildNavigationNodes();
             for (NavigationNode navigationNode : nodes) {
                 System.out.println(ReflectionToStringBuilder.toString(navigationNode));
             }

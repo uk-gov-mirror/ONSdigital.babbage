@@ -150,8 +150,8 @@
         <dependency>
             <groupId>com.github.onsdigital</groupId>
             <artifactId>content-library</artifactId>
-            <version>content-library-1.0.12</version>
-            <!--<version>1.0.12-SNAPSHOT</version>-->
+            <!--<version>content-library-1.0.12</version>-->
+            <version>1.0.13-SNAPSHOT</version>
         </dependency>
 
 	</dependencies>
