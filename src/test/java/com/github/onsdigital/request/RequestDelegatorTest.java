@@ -14,7 +14,7 @@ public class RequestDelegatorTest {
 
     @Test
     public void testResolveRequestHandler() {
-        RequestHandler handler = RequestDelegator.resolveRequestHandler("/economy/inflationpriceindices/data");
+        RequestHandler handler = RequestDelegator.resolveRequestHandler("data");
         Assert.assertNotNull(handler);
         Assert.assertTrue(handler instanceof DataRequestHandler);
 
