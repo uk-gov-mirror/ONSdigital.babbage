@@ -17,6 +17,15 @@
 	</properties>
 
     <repositories>
+        <!-- Adding maven central repo explicitly to perent jitpack.io resolve artifacts that are already on Github. Otherwise handlebars-java fails -->
+        <repository>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <id>central</id>
+            <name>Central Repository</name>
+            <url>http://repo.maven.apache.org/maven2</url>
+        </repository>
         <!--Jitpack io allows us include projects and libraries available on github but not built and published to maven central-->
         <!-- It is used for including internal project modules. See more on https://jitpack.io/-->
         <repository>
@@ -87,26 +96,16 @@
 			<artifactId>handlebars</artifactId>
 			<version>${handlebars-java-version}</version>
 		</dependency>
-
-		<dependency>
-			<groupId>com.github.jknack</groupId>
-			<artifactId>handlebars-jackson2</artifactId>
-			<version>${handlebars-java-version}</version>
-		</dependency>
-
 		<dependency>
 			<groupId>com.github.jknack</groupId>
 			<artifactId>handlebars-markdown</artifactId>
 			<version>${handlebars-java-version}</version>
 		</dependency>
-
 		<dependency>
 			<groupId>com.github.jknack</groupId>
 			<artifactId>handlebars-humanize</artifactId>
 			<version>${handlebars-java-version}</version>
 		</dependency>
-
-
 
 		<!-- Test -->
 		<dependency>
@@ -153,19 +152,6 @@
             <version>content-library-1.0.15</version>
             <!--<version>1.0.15-SNAPSHOT</version>-->
         </dependency>
-
-        <!-- ANTLRv4  Added to please Heroku, maven could not resolve transitive dependency for handlebars java -->
-        <!--<dependency>-->
-            <!--<groupId>org.antlr</groupId>-->
-            <!--<artifactId>antlr4-runtime</artifactId>-->
-            <!--<version>4.5</version>-->
-            <!--<exclusions>-->
-                <!--<exclusion>-->
-                    <!--<groupId>org.abego.treelayout</groupId>-->
-                    <!--<artifactId>org.abego.treelayout.core</artifactId>-->
-                <!--</exclusion>-->
-            <!--</exclusions>-->
-        <!--</dependency>-->
 	</dependencies>
 
 	<build>
@@ -183,11 +169,6 @@
 				<directory>src/main/web</directory>
 				<targetPath>${project.build.directory}/web</targetPath>
 			</resource>
-			<!-- Pre-rendered files - we're doing everything on Prerender.io for now -->
-			<!-- <resource> -->
-			<!-- <directory>src/main/static</directory> -->
-			<!-- <targetPath>${project.build.outputDirectory}/files/static</targetPath> -->
-			<!-- </resource> -->
 		</resources>
 		<plugins>
 
