@@ -195,7 +195,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.1</version>
+                <version>3.3</version>
 				<configuration>
 					<source>${java.version}</source>
 					<target>${java.version}</target>
@@ -203,35 +203,9 @@
 				</configuration>
 			</plugin>
 
-			<plugin>
-				<!-- This can compile the CX sass. Use the following command: -->
-				<!-- mvn clean org.jasig.maven:sass-maven-plugin:update-stylesheets -->
-				<!-- You may then want to merge the changes into the existing css files. -->
-				<groupId>org.jasig.maven</groupId>
-				<artifactId>sass-maven-plugin</artifactId>
-				<version>1.1.1</version>
-				<executions>
-					<execution>
-						<id>sass</id>
-						<!-- Phase should be generated sources, change back to it -->
-						<!-- <phase>generate-sources</phase> -->
-						<phase>site</phase>
-						<goals>
-							<goal>update-stylesheets</goal>
-						</goals>
-						<configuration>
-							<sassSourceDirectory>${basedir}/src/main/scss/ui/scss</sassSourceDirectory>
-							<destination>${basedir}/src/main/resources/files/ui/scss</destination>
-							<useCompass>true</useCompass>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-
 			<!-- An assembly that includes all dependencies for deployment: -->
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
-				<version>2.4.1</version>
 				<configuration>
 					<descriptorRefs>
 						<descriptorRef>jar-with-dependencies</descriptorRef>
@@ -272,44 +246,6 @@
 				</executions>
 			</plugin>
 		</plugins>
-		<pluginManagement>
-			<plugins>
-				<!--This plugin's configuration is used to store Eclipse m2e settings
-					only. It has no influence on the Maven build itself. -->
-				<plugin>
-					<groupId>org.eclipse.m2e</groupId>
-					<artifactId>lifecycle-mapping</artifactId>
-					<version>1.0.0</version>
-					<configuration>
-						<lifecycleMappingMetadata>
-							<pluginExecutions>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>
-											org.jasig.maven
-										</groupId>
-										<artifactId>
-											sass-maven-plugin
-										</artifactId>
-										<versionRange>
-											[1.1.1,)
-										</versionRange>
-										<goals>
-											<goal>
-												update-stylesheets
-											</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<ignore></ignore>
-									</action>
-								</pluginExecution>
-							</pluginExecutions>
-						</lifecycleMappingMetadata>
-					</configuration>
-				</plugin>
-			</plugins>
-		</pluginManagement>
 	</build>
 
 </project>
