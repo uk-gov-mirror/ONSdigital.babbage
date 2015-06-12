@@ -2,9 +2,7 @@
 
 ### 1 - BUILD WEB FRONT-END
 
-cd src/main/web && \
-./build.sh && \
-cd ../../..
+.buuld-web.sh
 
 ## 2 - BUILD API
 ./build.sh "$1" 
