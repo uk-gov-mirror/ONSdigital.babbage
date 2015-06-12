@@ -2,10 +2,10 @@
 
 ### 1 - BUILD WEB FRONT-END
 
-.buuld-web.sh
+./build-web.sh
 
 ## 2 - BUILD API
-./build.sh "$1" 
+./build-api.sh "$1" 
 
  if [ $? -eq 0 ]
     then
