@@ -26,7 +26,7 @@ Thumbs.db
 *~HEAD
 src/main/scss/dist
 sonar-project.properties
-#src/main/web/node_modules/
+src/main/web/node_modules/
 src/main/web/dist/
 #src/main/content
 npm-debug.log
