@@ -5,19 +5,12 @@ package com.github.onsdigital.data.zebedee;
  */
 public class ZebedeeRequest {
 
-    private String uri;
     private String collectionName;
     private String accessToken;
 
-    public ZebedeeRequest(String uri, String collectionName, String authenticationToken) {
-        this.uri = uri;
+    public ZebedeeRequest( String collectionName, String authenticationToken) {
         this.collectionName = collectionName;
         this.accessToken = authenticationToken;
-    }
-
-
-    public String getUri() {
-        return uri;
     }
 
     public String getAccessToken() {
@@ -29,4 +22,5 @@ public class ZebedeeRequest {
         return collectionName;
 
     }
+
 }

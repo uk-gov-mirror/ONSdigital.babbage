@@ -1,21 +1,21 @@
 package com.github.onsdigital.request.handler;
 
 import com.github.onsdigital.content.page.base.Page;
+import com.github.onsdigital.content.service.ContentNotFoundException;
+import com.github.onsdigital.content.service.ContentService;
 import com.github.onsdigital.content.util.ContentUtil;
 import com.github.onsdigital.data.DataNotFoundException;
 import com.github.onsdigital.data.DataService;
 import com.github.onsdigital.data.zebedee.ZebedeeClient;
 import com.github.onsdigital.data.zebedee.ZebedeeRequest;
 import com.github.onsdigital.request.handler.base.RequestHandler;
+import com.github.onsdigital.request.response.BabbageResponse;
 import org.apache.commons.io.IOUtils;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.StringReader;
+import java.io.*;
 
 /**
  * Created by bren on 28/05/15.
@@ -27,135 +27,60 @@ public class DataRequestHandler implements RequestHandler {
     private static final String REQUEST_TYPE = "data";
 
     @Override
-    public Object handle(String requestedUri, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public BabbageResponse get(String requestedUri, HttpServletRequest request) throws Exception {
+        boolean resolveReferences = request.getParameter("resolve") != null;
+        return new BabbageResponse(read(requestedUri, resolveReferences, null));
+    }
 
-        Cookie[] cookies = request.getCookies();
-        boolean handled = handleZebedeeRequest(requestedUri, cookies, response);
-        if (handled) {
-            return null;//done
+    @Override
+    public BabbageResponse get(String requestedUri, HttpServletRequest request, ZebedeeRequest zebedeeRequest) throws Exception {
+        boolean resolveReferences = request.getParameter("resolve") != null;
+        return new BabbageResponse(read(requestedUri, resolveReferences, zebedeeRequest));
+    }
+
+
+    private String read(String requestedUri, boolean resolveReferences, ZebedeeRequest zebedeeRequest) throws IOException, ContentNotFoundException {
+
+
+        if (zebedeeRequest != null) {
+            return readFromZebedee(requestedUri, zebedeeRequest, resolveReferences);
         }
 
-        //Read from Babbage if not Zebedee request
-        //Initialize page references in content type if requested
-        InputStream data = DataService.getInstance().getDataStream(requestedUri);
-        if (request.getParameter("resolve") != null) {
-            Page page = ContentUtil.deserialisePage(data);
-            page.loadReferences(DataService.getInstance());
-            IOUtils.copy(new StringReader(page.toJson()), response.getOutputStream());
+
+        if (resolveReferences) {
+            Page page = readAsPage(requestedUri, true, null);
+            return page.toJson();
         } else {
-            IOUtils.copy(data, response.getOutputStream());
+            return IOUtils.toString(readFromLocalData(requestedUri));
         }
-        configureResponse(response);
-        return null;
-
     }
 
-
-    /**
-     * @param requestedUri
-     * @param request
-     * @return Requested data as string, either from Zebedee if authenticated or from Babbage DataService
-     */
-    public String getDataAsString(String requestedUri, HttpServletRequest request) throws IOException {
-        ZebedeeRequest zebedeeRequest = getZebedeeRequest(requestedUri, request.getCookies());
+    public Page readAsPage(String requestedUri, boolean resolveReferences, ZebedeeRequest zebedeeRequest) throws IOException, ContentNotFoundException {
         if (zebedeeRequest != null) {
-            ZebedeeClient zebedeeClient = new ZebedeeClient();
-            try {
-                InputStream dataStream = getDataStream(zebedeeClient, zebedeeRequest);
-                if (dataStream != null) {
-                    try (InputStreamReader reader = new InputStreamReader(dataStream)) {
-                        return IOUtils.toString(reader);
-                    }
-                } else {
-                    throw new DataNotFoundException(requestedUri);
-                }
-            } finally {
-                zebedeeClient.closeConnection();
+            return ContentUtil.deserialisePage(readFromZebedee(requestedUri, zebedeeRequest, resolveReferences));
+        } else {
+            Page page = ContentUtil.deserialisePage(readFromLocalData(requestedUri));
+            if (resolveReferences) {
+                page.loadReferences(DataService.getInstance());
             }
+            return page;
         }
-
-        //Return from Babbage local fs if no a Zebedee request
-        return DataService.getInstance().getDataAsString(requestedUri, false);
     }
 
-    private void configureResponse(HttpServletResponse response) {
-        // Add a five-minute cache time to static files to reduce round-trips to
-        // the server and increase performance whilst still allowing the system
-        // to be updated quite promptly if necessary:
-//        if (!HostHelper.isLocalhost(request)) {
-//            response.addHeader("cache-control", "public, max-age=300");
-//        }
-        response.setCharacterEncoding("UTF8");
-        response.setContentType("application/json");
+    //Read from babbage's file system
+    private InputStream readFromLocalData(String requestedUri) throws IOException {
+        return DataService.getInstance().getDataStream(requestedUri);
     }
 
-    /**
-     * Delegates request to zebedee client if this is a zebedee request
-     *
-     * @param uri
-     * @param cookies
-     * @return returns true if request is handled, false otherwise
-     */
-    private boolean handleZebedeeRequest(String uri, Cookie[] cookies, HttpServletResponse response) throws IOException {
-
-        ZebedeeRequest zebedeeRequest = getZebedeeRequest(uri, cookies);
-        if (zebedeeRequest != null) {
-            return readFromZebedee(zebedeeRequest, response);
-        }
-
-        return false;
-    }
-
-
-    //Read stream from zebedee and copy to response
-    private boolean readFromZebedee(ZebedeeRequest request, HttpServletResponse response) throws IOException {
-
-        InputStream dataStream = null;
-        ZebedeeClient zebedeeClient = new ZebedeeClient();
+    //Read data from zebedee
+    private String readFromZebedee(String uri, ZebedeeRequest zebedeeRequest, boolean resolveReferences) throws ContentNotFoundException, IOException {
+        ZebedeeClient zebedeeClient = new ZebedeeClient(zebedeeRequest);
         try {
-            dataStream = getDataStream(zebedeeClient, request);
-            //If not read from Zebedee try babbage local file system
-            if (dataStream != null) {
-                IOUtils.copy(dataStream, response.getOutputStream());
-                configureResponse(response);
-                return true;
-            }
-            return false;
+            return IOUtils.toString(zebedeeClient.readData(uri, resolveReferences));
         } finally {
             zebedeeClient.closeConnection();
         }
 
-    }
-
-    //Read from Zebedee
-    private InputStream getDataStream(ZebedeeClient zebedeeClient, ZebedeeRequest zebedeeRequest) throws IOException {
-        return zebedeeClient.startDataStream(zebedeeRequest);
-    }
-
-    private ZebedeeRequest getZebedeeRequest(String uri, Cookie[] cookies) {
-
-        if (cookies == null) {
-            return null;
-        }
-
-        String collection = null;
-        String accessToken = null;
-        for (Cookie cookie : cookies) {
-            if (cookie.getName().equals("collection")) {
-                System.out.println("Found collection cookie: " + cookie.getValue());
-                collection = cookie.getValue();
-            }
-            if (cookie.getName().equals("access_token")) {
-                System.out.println("Found access_token cookie: " + cookie.getValue());
-                accessToken = cookie.getValue();
-            }
-        }
-
-        if (collection != null) {
-            return new ZebedeeRequest(uri, collection, accessToken);
-        }
-
-        return null; //No collection token found
     }
 
 

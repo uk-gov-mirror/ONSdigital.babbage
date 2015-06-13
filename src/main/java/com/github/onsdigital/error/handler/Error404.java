@@ -14,30 +14,30 @@ import java.io.IOException;
 @Api
 public class Error404 implements NotFound {
 
-	@GET
-	public void demo(HttpServletRequest req, HttpServletResponse res) throws IOException {
-		handle(req, res);
-	}
+    @GET
+    public void demo(HttpServletRequest req, HttpServletResponse res) throws IOException {
+        handle(req, res);
+    }
 
-	@Override
-	public Object handle(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    @Override
+    public Object handle(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-		// Ensure ResourceUtils "sees" the reloadable classloader in
-		// development:
-		ResourceUtils.classLoaderClass = Error404.class;
+        // Ensure ResourceUtils "sees" the reloadable classloader in
+        // development:
+        ResourceUtils.classLoaderClass = Error404.class;
 //		try (Reader input = ResourceUtils.getReader("/files/404.html")) {
 //			res.setContentType("text/html");
 //			res.setCharacterEncoding("UTF8");
 //			IOUtils.copy(input, res.getWriter());
 //		}
 
-		try {
-			return RequestDelegator.handle(request, response);
-		} catch (Exception e) {
-			ApiErrorHandler.handle(e, response);
-			return null;
-		}
+        try {
+            RequestDelegator.get(request, response);
+        } catch (Exception e) {
+            ApiErrorHandler.handle(e, response);
+        }
+        return null;
 
-	}
+    }
 
 }

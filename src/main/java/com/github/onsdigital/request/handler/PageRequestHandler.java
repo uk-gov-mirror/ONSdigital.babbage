@@ -3,7 +3,9 @@ package com.github.onsdigital.request.handler;
 import com.github.onsdigital.content.page.base.Page;
 import com.github.onsdigital.content.util.ContentUtil;
 import com.github.onsdigital.data.DataService;
+import com.github.onsdigital.data.zebedee.ZebedeeRequest;
 import com.github.onsdigital.request.handler.base.RequestHandler;
+import com.github.onsdigital.request.response.BabbageResponse;
 import com.github.onsdigital.template.TemplateService;
 import com.github.onsdigital.util.NavigationUtil;
 import org.apache.commons.lang3.CharEncoding;
@@ -23,19 +25,22 @@ public class PageRequestHandler implements RequestHandler {
     public static final String CONTENT_TYPE = "text/html";
 
     @Override
-    public Object handle(String requestedUri, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public BabbageResponse get(String requestedUri, HttpServletRequest request) throws Exception {
+        return get(requestedUri, request, null);
+
+    }
+
+    @Override
+    public BabbageResponse get(String requestedUri, HttpServletRequest request, ZebedeeRequest zebedeeRequest) throws Exception {
         DataRequestHandler dataRequestHandler = new DataRequestHandler();
-        String data = dataRequestHandler.getDataAsString(requestedUri, request);
-        Page page = ContentUtil.deserialisePage(data);
-        page.loadReferences(DataService.getInstance());
+        Page page = dataRequestHandler.readAsPage(requestedUri, true, zebedeeRequest);
+
+        //TODO: Read navigaton from zebedee if zebedee request ????
         page.navigation = NavigationUtil.getNavigation();
         String html = TemplateService.getInstance().renderPage(page);
-        response.setCharacterEncoding(CharEncoding.UTF_8);
-        response.setContentType(CONTENT_TYPE);
-        response.setStatus(HttpServletResponse.SC_OK);
-        response.getWriter().write(html);
-        return null;
+        return new BabbageResponse(html, CONTENT_TYPE);
     }
+
 
     @Override
     public String getRequestType() {

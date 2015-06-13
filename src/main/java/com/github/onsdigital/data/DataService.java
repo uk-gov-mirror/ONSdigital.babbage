@@ -39,9 +39,9 @@ public class DataService implements ContentService {
     }
 
     @Override
-    public String getDataAsString(String uri) throws ContentNotFoundException {
+    public InputStream readData(String uri) throws ContentNotFoundException {
         try {
-            return getDataAsString(uri, true);
+            return getDataStream(uri);
         } catch (IOException e) {
             throw new RuntimeException("Failed reading data at " + uri);
         } catch (DataNotFoundException e) {

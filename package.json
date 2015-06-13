@@ -4,9 +4,10 @@
   "description": "Web front-end of ONS Website Babbage",
   "main": " ",
   "scripts": {
-    "clean": "rimraf dist",
-    "copy": "mkdir dist && ncp templates dist/templates && cp *.html dist && cp *.md dist && cp *.txt dist",
-    "build": "npm run clean && npm run copy"
+    "clean": "node_modules/.bin/rimraf node_modules/ONS-Pattern-Library/.git && node_modules/.bin/rimraf src/main/web/node_modules && node_modules/.bin/rimraf src/main/web/dist ",
+    "copy": "mkdir src/main/web/dist",
+    "build": "npm run clean",
+    "postinstall": "npm run clean && mv node_modules src/main/web/"
   },
   "repository": {
     "type": "git",
