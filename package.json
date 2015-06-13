@@ -4,8 +4,7 @@
   "description": "Web front-end of ONS Website Babbage",
   "main": " ",
   "scripts": {
-    "clean": "node_modules/.bin/rimraf node_modules/ONS-Pattern-Library/.git && node_modules/.bin/rimraf src/main/web/node_modules && node_modules/.bin/rimraf src/main/web/dist ",
-    "copy": "mkdir src/main/web/dist",
+    "clean": "./node_modules/.bin/rimraf ./node_modules/ONS-Pattern-Library/.git && ./node_modules/.bin/rimraf ./src/main/web/node_modules",
     "build": "npm run clean",
     "postinstall": "npm run clean && mv node_modules src/main/web/"
   },
@@ -25,14 +24,11 @@
     "url": "https://github.com/ONSdigital/babbage/issues"
   },
   "dependencies": {
-    "ONS-Pattern-Library": "git://github.com/ONSdigital/pattern-library"
+    "ONS-Pattern-Library": "git://github.com/ONSdigital/pattern-library",
+    "rimraf": "latest"
   },
   "engines": {
     "node": "0.10.25",
     "npm" : "1.3.10"
-  },
-  "devDependencies": {
-    "rimraf": "latest",
-    "ncp": "~2.0.0"
   }
 }
