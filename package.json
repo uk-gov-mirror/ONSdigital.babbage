@@ -27,6 +27,10 @@
   "dependencies": {
     "ONS-Pattern-Library": "git://github.com/ONSdigital/pattern-library"
   },
+  "engines": {
+    "node": "0.10.25",
+    "npm" : "1.3.10"
+  },
   "devDependencies": {
     "rimraf": "latest",
     "ncp": "~2.0.0"
