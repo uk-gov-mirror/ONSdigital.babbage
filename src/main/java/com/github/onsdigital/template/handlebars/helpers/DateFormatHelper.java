@@ -2,6 +2,7 @@ package com.github.onsdigital.template.handlebars.helpers;
 
 import com.github.jknack.handlebars.Helper;
 import com.github.jknack.handlebars.Options;
+import com.github.onsdigital.configuration.Configuration;
 import com.github.onsdigital.content.util.ContentConstants;
 
 import java.io.IOException;
@@ -32,7 +33,7 @@ public class DateFormatHelper implements Helper<Date> {
 
     private String resolvePattern(Object[] params) {
         if (params == null || params.length == 0) {
-            return ContentConstants.DEFAULT_DATE_PATTERN;
+            return Configuration.getDefaultHandlebarsDatePattern();
         }
 
         return (String) params[0];

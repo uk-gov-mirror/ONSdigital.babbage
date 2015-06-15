@@ -12,6 +12,8 @@ public class Configuration {
 
     private static final String DEFAULT_ZEBEDEE_URL = "http://localhost:8082";
 
+    private static final String DEFAULT_HANDLEBARS_DATE_PATTERN = "d MMMM yyyy";
+
     /**
      * Mongo is currently only used to provide feedback on the search terms
      * users are typing in.
@@ -44,6 +46,10 @@ public class Configuration {
 
     public static String getPrerenderToken() {
         return StringUtils.defaultIfBlank(getValue("PRERENDER_TOKEN"), DEFAULT_PRERENDER_TOKEN);
+    }
+
+    public static String getDefaultHandlebarsDatePattern() {
+        return DEFAULT_HANDLEBARS_DATE_PATTERN;
     }
 
     public static String getTemplatesDirectory() {
@@ -119,6 +125,8 @@ public class Configuration {
     static String getValue(String key) {
         return StringUtils.defaultIfBlank(System.getProperty(key), System.getenv(key));
     }
+
+
 
     /**
      * Use this method to generate new credentials.
