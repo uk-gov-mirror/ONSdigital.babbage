@@ -1,13 +1,19 @@
 package com.github.onsdigital.request;
 
 import com.github.onsdigital.api.util.URIUtil;
+import com.github.onsdigital.data.zebedee.ZebedeeRequest;
+import com.github.onsdigital.data.zebedee.ZebedeeUtil;
 import com.github.onsdigital.request.handler.base.RequestHandler;
+import com.github.onsdigital.request.response.BabbageResponse;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.reflections.Reflections;
 import org.reflections.util.ConfigurationBuilder;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.StringReader;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -15,11 +21,11 @@ import java.util.Set;
 /**
  * Created by bren on 28/05/15.
  * <p>
- * Due to url design data, page, charts are all served through the same endpoint. The request type is denoted after resource uri
+ * Due to url design data, page, charts are all served through the same endpoint. The request type comes after resource uri
  * <p>
- * e.g. /economy/inflationpriceindices will server cpi page, in order to get data /economy/inflationpriceindices is to be used
+ * e.g. /economy/inflationpriceindices will render serve cpi page, in order to get data /economy/inflationpriceindices/data is to be used
  * <p>
- * RequestDelegator resolves what type of request is made and delegates flow to appropriate handlers
+ * RequestDelegator resolves what type of GET request is made and delegates flow to appropriate handlers
  */
 public class RequestDelegator {
 
@@ -30,19 +36,39 @@ public class RequestDelegator {
         registerRequestHandlers();
     }
 
-    public static Object handle(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public static void get(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         String fullUri = URIUtil.cleanUri(request.getRequestURI());
         String requestType = URIUtil.resolveRequestType(fullUri);
         RequestHandler handler = resolveRequestHandler(requestType);
+        BabbageResponse getResponse = null;
         if (handler == null) {
             handler = handlers.get("/"); //default handler
-            return handler.handle(fullUri, request, response);
+            getResponse = get(fullUri, request, handler);
         } else {
-            return handler.handle(URIUtil.resolveResouceUri(fullUri), request, response);
+            getResponse = get(URIUtil.resolveResouceUri(fullUri), request, handler);
         }
 
 
+        //        if (!HostHelper.isLocalhost(request)) {
+//            response.addHeader("cache-control", "public, max-age=300");
+//        }
+
+        response.setCharacterEncoding(getResponse.getCharEncoding());
+        response.setContentType(getResponse.getMimeType());
+        IOUtils.copy(new StringReader(getResponse.getData()), response.getOutputStream());
+        return;
+    }
+
+
+    private static BabbageResponse get( String requestedUri,  HttpServletRequest request,  RequestHandler handler) throws Exception {
+
+        ZebedeeRequest zebedeeRequest = ZebedeeUtil.getZebedeeRequest(requestedUri, request.getCookies());
+        if (zebedeeRequest == null) {
+            return handler.get(requestedUri, request);
+        } else {
+            return handler.get(requestedUri, request, zebedeeRequest);
+        }
     }
 
     //Resolves Request handler to be used for requested uri
@@ -68,6 +94,7 @@ public class RequestDelegator {
         } catch (Exception e) {
             System.err.println("Failed initializing request handlers");
             e.printStackTrace();
+            throw new RuntimeException(e);
         }
 
     }

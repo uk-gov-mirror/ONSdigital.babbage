@@ -26,9 +26,6 @@ public class HandlebarsRenderer implements TemplateRenderer {
     }
 
     private void initializeHelpers() {
-        /**
-         *
-         */
         //        handlebars.registerHelper(HelperRegistry.HELPER_MISSING, new Helper<Object>() {
         //            @Override
         //            public CharSequence apply(final Object context,
@@ -37,7 +34,6 @@ public class HandlebarsRenderer implements TemplateRenderer {
         //                return new Handlebars.SafeString(options.fn.text());
         //            }
         //        });
-//        handlebars.registerHelper("json", Jackson2Helper.INSTANCE);
         handlebars.registerHelper("md", new MarkdownHelper());
         handlebars.registerHelper("df", new DateFormatHelper());
         // String helpers

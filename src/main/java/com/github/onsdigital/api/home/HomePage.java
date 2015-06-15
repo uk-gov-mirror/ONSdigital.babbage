@@ -14,11 +14,11 @@ public class HomePage implements Home {
     @Override
     public Object get(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
-            return RequestDelegator.handle(request, response);
+            RequestDelegator.get(request, response);
         } catch (Exception e) {
             ApiErrorHandler.handle(e, response);
-            return null;
         }
+        return null;
     }
 
 }

@@ -60,7 +60,7 @@ public class URIUtil {
     }
 
     /**
-     * Extracts uri resoure from request type suffixed uris.
+     * Extracts resource uri from request type suffixed uris.
      * <p>
      * e.g.
      * for uri "/economy/inflationandpriceindices/data" resource uri "/economy/inflationandpriceindices"
