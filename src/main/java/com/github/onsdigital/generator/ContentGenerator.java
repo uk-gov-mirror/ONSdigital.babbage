@@ -211,16 +211,22 @@ public class ContentGenerator {
         return productPage;
     }
 
-    private void addTimeseriesReferences(ContentNode node, ProductPage productPage) {
-        TimeSeries headline = node.headline;
-        // Timeseries references:
-        if (headline == null || headline.uri == null) {
-            System.out.println("No headline URI set for " + node.name);
-            headline = node.timeserieses.get(0);
-            System.out.println("Using the first item from the timeseries list instead: " + headline);
-        }
 
-        productPage.headline = new PageReference(headline);
+
+    private void addTimeseriesReferences(ContentNode node, ProductPage productPage) {
+
+
+        //Now we are using first time series in the list as headline
+
+//        TimeSeries headline = node.headline;
+//        // Timeseries references:
+//        if (headline == null || headline.uri == null) {
+//            System.out.println("No headline URI set for " + node.name);
+//            headline = node.timeserieses.get(0);
+//            System.out.println("Using the first item from the timeseries list instead: " + headline);
+//        }
+//
+//        productPage.headline = new PageReference(headline);
 
         List<TimeSeries> timeserieses = node.timeserieses;
         productPage.items = new ArrayList<>();
