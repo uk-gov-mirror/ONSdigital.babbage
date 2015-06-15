@@ -188,7 +188,7 @@ public class ContentGenerator {
 
         addTimeseriesReferences(node, productPage);
 
-        createStatsBulletinHeadline(node, productPage);
+//        createStatsBulletinHeadline(node, productPage);
         createStatsBulletins(node, productPage);
         createDatasets(node, productPage);
 
@@ -299,13 +299,13 @@ public class ContentGenerator {
             if (bulletin.uri == null) {
                 bulletin.uri = toStatsBulletinUri(BulletinMarkdown.toFilename(bulletin), bulletin, productPage);
             }
-            productPage.statsBulletins.add(new Metadata(bulletin));
+            productPage.statsBulletins.add(new BulletinMetadata(bulletin));
         }
         if (folder.additonalBulletin != null) {
             if (folder.additonalBulletin.uri == null) {
                 throw new RuntimeException("No URI yet - this is a design issue.");
             }
-            productPage.statsBulletins.add(new Metadata(folder.additonalBulletin));
+            productPage.statsBulletins.add(new BulletinMetadata(folder.additonalBulletin));
         }
 
         // All bulletins at this node, plus the additional bulletin (if any) are
@@ -331,24 +331,27 @@ public class ContentGenerator {
         }
     }
 
-    private static void createStatsBulletinHeadline(ContentNode node, ProductPage productPage) throws IOException {
-        // Stats bulletin references:
 
-        if (node.headlineBulletin == null) {
-            if (node.bulletins.size() > 0) {
-                node.headlineBulletin = node.bulletins.get(0);
-            } else if (node.additonalBulletin != null) {
-                node.headlineBulletin = node.additonalBulletin;
-            }
-        }
+    /*Stats bulletin headline is the first related bulletin in the page*/
 
-        if (node.headlineBulletin != null) {
-            if (node.headlineBulletin.uri == null) {
-                node.headlineBulletin.uri = toStatsBulletinUri(BulletinMarkdown.toFilename(node.headlineBulletin), node.headlineBulletin, productPage);
-            }
-            productPage.statsBulletinHeadline = new BulletinMetadata(node.headlineBulletin);
-        }
-    }
+//    private static void createStatsBulletinHeadline(ContentNode node, ProductPage productPage) throws IOException {
+//        // Stats bulletin references:
+//
+//        if (node.headlineBulletin == null) {
+//            if (node.bulletins.size() > 0) {
+//                node.headlineBulletin = node.bulletins.get(0);
+//            } else if (node.additonalBulletin != null) {
+//                node.headlineBulletin = node.additonalBulletin;
+//            }
+//        }
+//
+//        if (node.headlineBulletin != null) {
+//            if (node.headlineBulletin.uri == null) {
+//                node.headlineBulletin.uri = toStatsBulletinUri(BulletinMarkdown.toFilename(node.headlineBulletin), node.headlineBulletin, productPage);
+//            }
+//            productPage.statsBulletinHeadline = new BulletinMetadata(node.headlineBulletin);
+//        }
+//    }
 
 
     private static URI createUri(String fileName, Page parent) {
