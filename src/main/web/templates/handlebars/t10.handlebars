@@ -1,11 +1,11 @@
 {{> templates/handlebars/partials/header}}
 <div class="wrapper panel--top-mar">
-	<h1 class="page-header__title flush--half--bottom">Search results</h1>
+	<h1 class="page-header__title flush--half--bottom">{{title}}</h1>
 	<p>
 		{{#if contentSearchResult.results}}
-		<span class="stand-out-text">{{contentSearchResult.numberOfResults}}</span> results for <strong>'Search term'</strong> showing <strong>statistical bulletins</strong><span class="icon-cancel"></span> and <strong>datasets</strong><span class="icon-cancel"></span>.
+		<span class="stand-out-text">{{contentSearchResult.numberOfResults}}</span> results for <strong>'cpi'</strong> showing <strong>statistical bulletins</strong><span class="icon-cancel"></span> and <strong>datasets</strong><span class="icon-cancel"></span>.
 		{{else}}
-		Sorry, there were no results for <span class="stand-out-text">'Search term'</span>.
+		Sorry, there were no results for <span class="stand-out-text">'cpi'</span>.
 		{{/if}}
 	</p>
 </div>
@@ -69,16 +69,18 @@
 							</li>
 						</ul>
 						<p class="panel--mar-small">You can also expand your search results to include the following:</p>
-						<div>
+						<div class="panel--mar-small">
 							<input type="checkbox" name="checkbox" value="1">
 							<label for="checkbox">
-								Include all induvidual time series data and data slices (currently max 5 shown by default)
+								Include all individual time series data and data slices </br>
+								<span class="micro">(currently max 5 shown by default)</span>
 							</label>
 						</div>
-						<div>
+						<div class="panel--mar-small">
 							<input type="checkbox" name="checkbox" value="1">
 							<label for="checkbox">
-								Include all induvidual time series data and data slices (currently max 5 shown by default)
+								Include all other website content </br>
+								<span class="micro">(User requested data, about us, media releases, freedom of information (FOI) requests etc.)</span>
 							</label>
 						</div>
 					</div>
@@ -131,6 +133,11 @@
 			<ul class="list--neutral">
 				<li>
 					<h3 class="flush"><a href="{{url}}">{{title}}</a></h3>
+					{{#if partOf}}
+					<p class="micro flush">
+						<a href="{{url}}">[{{title}}]</a><span class="icon-search-1"></span>
+					</p>
+					{{/if}}
 					<span class="lozenge">{{type}}</span>
 					<p class="mini description flush">
 						Released {{releaseDate}}
