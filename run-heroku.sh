@@ -2,6 +2,7 @@
 
 ######This script is run by Heroku to start the server
 
+
 #java -Xmx2048m -cp "target/classes:target/dependency/*" com.github.onsdigital.generator.ContentGenerator
 
 
