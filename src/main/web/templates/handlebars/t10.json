@@ -1,5 +1,5 @@
 {
-	"title": "National accounts",
+	"title": "Search results",
     "navigation":{
       "nodes": [
         {
@@ -269,7 +269,7 @@
 		"numberOfResults": 1,
 		"results": [
 			{
-				"lede": "Inflation measures the rate of increase in prices for goods and services using price indices. The rate of inflation used in the UK government’s inflation target is measured using the Consumer Prices Index (CPI). One way to understand the CPI is to think of a very large shopping basket containing a large selection of the goods and services bought by households, the CPI estimates changes to the total cost of this basket.",
+				"lede": "Inflation measures the rate of increase in prices for goods and services using price indices. The rate of inflation used in the UK government\u0027s inflation target is measured using the Consumer Prices Index (CPI). One way to understand the CPI is to think of a very large shopping basket containing a large selection of the goods and services bought by households, the CPI estimates changes to the total cost of this basket.",
 				"summary": "unknown",
 				"title": "Inflation and price indices",
 				"path": "[economy, inflationandpriceindices]",
@@ -280,7 +280,7 @@
 		]
 	},
 	"contentSearchResult": {
-		"numberOfResults": 14,
+		"numberOfResults": 15,
 		"results": [
 		{
 			"title": "Consumer Price Inflation dataset: March 2015",
@@ -295,6 +295,17 @@
 			"summary": "The Consumer Price Inflation is a monthly release that contains percentage changes and weights for the CPI, CPIH, RPI and RPIJ.",
 			"url": "/economy/inflationandpriceindices/cpi",
 			"releaseDate": "14 April 2015"
+		},
+		{
+			"title"	: "CPI: Consumer Price Index (% change)",
+			"type": "time series",
+			"summary": "CPI annual rate percentage change over 12 months.",
+			"url": "/economy/inflationandpriceindices/cpi",
+			"releaseDate": "12 February 2014",
+			"partOf" : {
+				"title": "Consumer Price Indices dataset",
+				"url": "economy/inflationandpriceindices/cpi"
+			}
 		},
 		{
 			"title": "House Price Index: February 2015",
