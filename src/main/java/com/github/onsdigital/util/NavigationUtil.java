@@ -62,12 +62,13 @@ public class NavigationUtil {
     }
 
     private static void addNodes(List<NavigationNode> nodeList, List<NavigationNode> toAdd) {
-        Collections.sort(toAdd);
+
         int i = 0;
         for (NavigationNode navigationNode : toAdd) {
             nodeList.add(i, navigationNode);
             i++;
         }
+        Collections.sort(nodeList);
     }
 
     private static List<NavigationNode> getNodes(Path path) throws IOException {
@@ -106,6 +107,7 @@ public class NavigationUtil {
                 Page page = ContentUtil.deserialisePage(input);
                 if (page !=null && page instanceof TaxonomyPage) {
                     result = new NavigationNode((TaxonomyPage) page);
+                    result.index = ((TaxonomyPage) page).index;
                     result.fileName = path.getFileName().toString();
                 }
             }
