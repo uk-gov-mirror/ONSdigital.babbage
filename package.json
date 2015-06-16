@@ -4,7 +4,7 @@
   "description": "Web front-end of ONS Website Babbage",
   "main": " ",
   "scripts": {
-    "clean": "./node_modules/.bin/rimraf ./node_modules/ONS-Pattern-Library/.git && ./node_modules/.bin/rimraf ./src/main/web/node_modules",
+    "clean": "node_modules/.bin/rimraf node_modules/ONS-Pattern-Library/.git && node_modules/.bin/rimraf src/main/web/node_modules",
     "build": "npm run clean",
     "postinstall": "npm run clean && mv node_modules src/main/web/"
   },
