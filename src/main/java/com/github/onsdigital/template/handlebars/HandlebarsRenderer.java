@@ -1,6 +1,9 @@
 package com.github.onsdigital.template.handlebars;
 
-import com.github.jknack.handlebars.*;
+import com.github.jknack.handlebars.Context;
+import com.github.jknack.handlebars.Handlebars;
+import com.github.jknack.handlebars.HumanizeHelper;
+import com.github.jknack.handlebars.Template;
 import com.github.jknack.handlebars.context.FieldValueResolver;
 import com.github.jknack.handlebars.helper.StringHelpers;
 import com.github.jknack.handlebars.io.FileTemplateLoader;
@@ -8,6 +11,7 @@ import com.github.onsdigital.configuration.Configuration;
 import com.github.onsdigital.content.page.base.Page;
 import com.github.onsdigital.template.TemplateRenderer;
 import com.github.onsdigital.template.handlebars.helpers.DateFormatHelper;
+import com.github.onsdigital.template.handlebars.helpers.MarkdownHelper;
 
 import java.io.IOException;
 import java.util.Map;

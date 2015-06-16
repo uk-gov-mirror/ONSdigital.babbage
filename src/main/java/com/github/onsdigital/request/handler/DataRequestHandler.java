@@ -2,20 +2,18 @@ package com.github.onsdigital.request.handler;
 
 import com.github.onsdigital.content.page.base.Page;
 import com.github.onsdigital.content.service.ContentNotFoundException;
-import com.github.onsdigital.content.service.ContentService;
 import com.github.onsdigital.content.util.ContentUtil;
-import com.github.onsdigital.data.DataNotFoundException;
 import com.github.onsdigital.data.DataService;
 import com.github.onsdigital.data.zebedee.ZebedeeClient;
 import com.github.onsdigital.data.zebedee.ZebedeeRequest;
 import com.github.onsdigital.request.handler.base.RequestHandler;
 import com.github.onsdigital.request.response.BabbageResponse;
+import com.github.onsdigital.request.response.BabbageStringResponse;
 import org.apache.commons.io.IOUtils;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * Created by bren on 28/05/15.
@@ -29,23 +27,21 @@ public class DataRequestHandler implements RequestHandler {
     @Override
     public BabbageResponse get(String requestedUri, HttpServletRequest request) throws Exception {
         boolean resolveReferences = request.getParameter("resolve") != null;
-        return new BabbageResponse(read(requestedUri, resolveReferences, null));
+        return new BabbageStringResponse(read(requestedUri, resolveReferences, null));
     }
 
     @Override
     public BabbageResponse get(String requestedUri, HttpServletRequest request, ZebedeeRequest zebedeeRequest) throws Exception {
         boolean resolveReferences = request.getParameter("resolve") != null;
-        return new BabbageResponse(read(requestedUri, resolveReferences, zebedeeRequest));
+        return new BabbageStringResponse(read(requestedUri, resolveReferences, zebedeeRequest));
     }
 
 
     private String read(String requestedUri, boolean resolveReferences, ZebedeeRequest zebedeeRequest) throws IOException, ContentNotFoundException {
 
-
         if (zebedeeRequest != null) {
             return readFromZebedee(requestedUri, zebedeeRequest, resolveReferences);
         }
-
 
         if (resolveReferences) {
             Page page = readAsPage(requestedUri, true, null);
@@ -80,9 +76,7 @@ public class DataRequestHandler implements RequestHandler {
         } finally {
             zebedeeClient.closeConnection();
         }
-
     }
-
 
     @Override
     public String getRequestType() {

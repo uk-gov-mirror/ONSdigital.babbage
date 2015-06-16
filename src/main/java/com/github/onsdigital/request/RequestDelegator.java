@@ -5,15 +5,11 @@ import com.github.onsdigital.data.zebedee.ZebedeeRequest;
 import com.github.onsdigital.data.zebedee.ZebedeeUtil;
 import com.github.onsdigital.request.handler.base.RequestHandler;
 import com.github.onsdigital.request.response.BabbageResponse;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.reflections.Reflections;
 import org.reflections.util.ConfigurationBuilder;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.StringReader;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -54,9 +50,7 @@ public class RequestDelegator {
 //            response.addHeader("cache-control", "public, max-age=300");
 //        }
 
-        response.setCharacterEncoding(getResponse.getCharEncoding());
-        response.setContentType(getResponse.getMimeType());
-        IOUtils.copy(new StringReader(getResponse.getData()), response.getOutputStream());
+        getResponse.apply(response);
         return;
     }
 

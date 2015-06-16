@@ -1,17 +1,14 @@
 package com.github.onsdigital.request.handler;
 
 import com.github.onsdigital.content.page.base.Page;
-import com.github.onsdigital.content.util.ContentUtil;
-import com.github.onsdigital.data.DataService;
 import com.github.onsdigital.data.zebedee.ZebedeeRequest;
 import com.github.onsdigital.request.handler.base.RequestHandler;
 import com.github.onsdigital.request.response.BabbageResponse;
+import com.github.onsdigital.request.response.BabbageStringResponse;
 import com.github.onsdigital.template.TemplateService;
 import com.github.onsdigital.util.NavigationUtil;
-import org.apache.commons.lang3.CharEncoding;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * Created by bren on 28/05/15.
@@ -38,7 +35,7 @@ public class PageRequestHandler implements RequestHandler {
         //TODO: Read navigaton from zebedee if zebedee request ????
         page.navigation = NavigationUtil.getNavigation();
         String html = TemplateService.getInstance().renderPage(page);
-        return new BabbageResponse(html, CONTENT_TYPE);
+        return new BabbageStringResponse(html, CONTENT_TYPE);
     }
 
 
