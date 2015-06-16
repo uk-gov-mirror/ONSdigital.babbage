@@ -1,6 +1,6 @@
 package com.github.onsdigital.generator.data;
 
-import com.github.onsdigital.content.page.statistics.data.TimeSeries;
+import com.github.onsdigital.content.page.statistics.data.timeseries.TimeSeries;
 import com.github.onsdigital.generator.ContentNode;
 import org.apache.commons.lang3.StringUtils;
 
@@ -72,8 +72,8 @@ public class DatasetMappingsCSV {
 			// different folder in the taxonomy, we don't want to change that
 			// URI.
 			for (TimeSeries timeseries : dataset) {
-				if (timeseries.uri == null) {
-					timeseries.uri = AlphaContentCSV.toUri(folder, timeseries);
+				if (timeseries.getUri() == null) {
+					timeseries.setUri(AlphaContentCSV.toUri(folder, timeseries));
 				}
 			}
 

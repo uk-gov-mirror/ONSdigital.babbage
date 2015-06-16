@@ -1,7 +1,7 @@
 package com.github.onsdigital.generator.data;
 
 import au.com.bytecode.opencsv.CSVReader;
-import com.github.onsdigital.content.page.statistics.data.TimeSeries;
+import com.github.onsdigital.content.page.statistics.data.timeseries.TimeSeries;
 import com.github.onsdigital.content.partial.TimeseriesValue;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -114,17 +114,12 @@ public class DataCSV {
 						timeseriesValue.value = StringUtils.trim(value);
 						timeseriesValue.sourceDataset = name;
 						timeseries.add(timeseriesValue);
-						// if ("404".equals(value)) {
-						// System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 404: "
-						// + cdid + ": " + timeseriesValue + " (" +
-						// timeseries.title + ")");
-						// }
 
 						// Scale values if necessary:
-						if (timeseries.cdid.equalsIgnoreCase("abmi")) {
-							// System.out.println("ABMI: " +
-							// timeseries.multiply());
-						}
+//						if (timeseries.getCdid().equalsIgnoreCase("abmi")) {
+//							// System.out.println("ABMI: " +
+//							// timeseries.multiply());
+//						}
 						scale(timeseriesValue, timeseries);
 					}
 				}

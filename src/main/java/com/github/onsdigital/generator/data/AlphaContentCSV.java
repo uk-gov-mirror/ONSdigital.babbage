@@ -1,6 +1,7 @@
 package com.github.onsdigital.generator.data;
 
-import com.github.onsdigital.content.page.statistics.data.TimeSeries;
+import com.github.onsdigital.content.page.statistics.data.timeseries.TimeSeries;
+import com.github.onsdigital.content.page.statistics.data.timeseries.TimeseriesDescription;
 import com.github.onsdigital.generator.ContentNode;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.BooleanUtils;
@@ -78,25 +79,30 @@ class AlphaContentCSV {
 
 			// Get the timeseries to work with:
 			TimeSeries timeseries = Data.timeseries(cdid);
+			TimeseriesDescription timeseriesDescription = new TimeseriesDescription();
+
 			if (timeseries == null) {
 				// We haven't seen this one before, so add it:
 				timeseries = Data.addTimeseries(cdid);
 			}
 
-			// Set the URI if necessary:
+            timeseries.setDescription(timeseriesDescription);
+
+
+            // Set the URI if necessary:
 			ContentNode folder = Data.getFolder(row.get(THEME), row.get(LEVEL2), row.get(LEVEL3));
-			if (timeseries.uri == null) {
-				timeseries.uri = toUri(folder, timeseries);
+			if (timeseries.getUri() == null) {
+				timeseries.setUri(toUri(folder, timeseries));
 			}
 
 			// Set the other properties:
-			timeseries.title = row.get(NAME);
+			timeseriesDescription.setTitle(row.get(NAME));;
 			if (BooleanUtils.toBoolean(row.get(KEY))) {
 				folder.headline = timeseries;
 			}
 			folder.timeserieses.add(timeseries);
-			timeseries.preUnit = row.get(PREUNIT);
-			timeseries.unit = row.get(UNITS);
+			timeseriesDescription.setPreUnit(row.get(PREUNIT));
+			timeseriesDescription.setUnit(row.get(UNITS));
 
 			// Clean up numbers - this is because of the way they come out of
 			// Excel.
@@ -107,7 +113,7 @@ class AlphaContentCSV {
 			// else {
 			// System.out.println(date);
 			// }
-			timeseries.date = date;
+			timeseriesDescription.setDate(date);
 
 			// Give the figure a sensible format.
 			// This is due to the way numbers come out of
@@ -123,7 +129,7 @@ class AlphaContentCSV {
 			if (figure.endsWith(".0")) {
 				figure = figure.substring(0, figure.length() - 2);
 			}
-			timeseries.number = figure;
+			timeseriesDescription.setNumber(figure);
 			String scaleFactor = row.get(SCALE_FACTOR);
 			if (StringUtils.isNotBlank(scaleFactor)) {
 				timeseries.setScaleFactor(Double.parseDouble(scaleFactor));
@@ -146,20 +152,20 @@ class AlphaContentCSV {
 
 			String source = row.get(SOURCE);
 			if (StringUtils.isNotBlank(source)) {
-				timeseries.source = source;
+				timeseriesDescription.setSource(source);;
 			}
 
 			String keyNote = row.get(KEY_NOTE);
 			if (StringUtils.isNotBlank(keyNote)) {
-				timeseries.keyNote = keyNote;
+				timeseriesDescription.setKeyNote(keyNote);
 			}
 
 			String nationalStatistic = StringUtils.defaultIfBlank(row.get(NATIONAL_STATISTIC), "yes");
-			timeseries.nationalStatistic = BooleanUtils.toBoolean(nationalStatistic);
+			timeseriesDescription.setNationalStatistic(BooleanUtils.toBoolean(nationalStatistic));
 
 			String additionalText = row.get(ADDITIONAL_TEXT);
 			if (StringUtils.isNotBlank(additionalText)) {
-				timeseries.additionalText = additionalText;
+				timeseriesDescription.setAdditionalText(additionalText);
 			}
 		}
 	}
@@ -168,7 +174,7 @@ class AlphaContentCSV {
 		URI result = null;
 
 		if (timeseries != null) {
-			if (timeseries.uri == null) {
+			if (timeseries.getUri() == null) {
 				String baseUri = "/" + folder.filename();
 				ContentNode parent = folder.parent;
 				while (parent != null) {
@@ -176,9 +182,9 @@ class AlphaContentCSV {
 					parent = parent.parent;
 				}
 				baseUri += "/timeseries";
-                timeseries.uri = URI.create(baseUri + "/" + StringUtils.trim(StringUtils.lowerCase(timeseries.cdid)));
+                timeseries.setUri(URI.create(baseUri + "/" + StringUtils.trim(StringUtils.lowerCase(timeseries.getCdid()))));
             }
-			result = timeseries.uri;
+			result = timeseries.getUri();
 		}
 
 		return result;

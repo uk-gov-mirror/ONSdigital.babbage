@@ -1,10 +1,10 @@
 package com.github.onsdigital.generator;
 
 import com.github.onsdigital.content.page.methodology.Methodology;
-import com.github.onsdigital.content.page.statistics.Dataset;
-import com.github.onsdigital.content.page.statistics.data.TimeSeries;
-import com.github.onsdigital.content.page.statistics.document.Article;
-import com.github.onsdigital.content.page.statistics.document.Bulletin;
+import com.github.onsdigital.content.page.statistics.dataset.Dataset;
+import com.github.onsdigital.content.page.statistics.data.timeseries.TimeSeries;
+import com.github.onsdigital.content.page.statistics.document.article.Article;
+import com.github.onsdigital.content.page.statistics.document.bulletin.Bulletin;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;

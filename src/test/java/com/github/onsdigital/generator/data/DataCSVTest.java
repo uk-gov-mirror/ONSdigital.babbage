@@ -2,7 +2,7 @@ package com.github.onsdigital.generator.data;
 
 import static org.junit.Assert.assertEquals;
 
-import com.github.onsdigital.content.page.statistics.data.TimeSeries;
+import com.github.onsdigital.content.page.statistics.data.timeseries.TimeSeries;
 import com.github.onsdigital.content.partial.TimeseriesValue;
 import org.junit.Test;
 

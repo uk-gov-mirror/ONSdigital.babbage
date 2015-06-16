@@ -42,7 +42,7 @@ public class NavigationUtil {
                     List<NavigationNode> nodes = buildNavigationNodes();
                     if (!jsonError) {
                         NavigationUtil.navigation = new Navigation();
-                        navigation.nodes = nodes;
+                        navigation.setNodes(nodes);
                     }
                 }
             }
@@ -106,8 +106,8 @@ public class NavigationUtil {
             try (InputStream input = Files.newInputStream(dataJson)) {
                 Page page = ContentUtil.deserialisePage(input);
                 if (page !=null && page instanceof TaxonomyPage) {
-                    result = new NavigationNode((TaxonomyPage) page);
-                    result.index = ((TaxonomyPage) page).index;
+                    TaxonomyPage taxonomyPage = (TaxonomyPage) page;
+                    result = new NavigationNode(taxonomyPage);
                     result.fileName = path.getFileName().toString();
                 }
             }

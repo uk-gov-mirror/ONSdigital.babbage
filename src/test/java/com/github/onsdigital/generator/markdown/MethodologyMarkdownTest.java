@@ -42,28 +42,28 @@ public class MethodologyMarkdownTest {
 		assertEquals(theme, methodology.theme);
 		assertEquals(level2, methodology.level2);
 		assertEquals(level3, methodology.level3);
-		assertEquals(lede, methodology.summary);
+		assertEquals(lede, methodology.getDescription().getSummary());
 
 		// Title
-		assertEquals("How do we work out the numbers?", methodology.title);
+		assertEquals("How do we work out the numbers?", methodology.getDescription().getTitle());
 
 		// Sections
-		assertEquals(3, methodology.sections.size());
-		assertEquals("Methodology summary", methodology.sections.get(0).title);
-		assertEquals("Summarise methodology.\n", methodology.sections.get(0).markdown);
-		assertEquals("Section one", methodology.sections.get(1).title);
+		assertEquals(3, methodology.getSections().size());
+		assertEquals("Methodology summary", methodology.getSections().get(0).getTitle());
+		assertEquals("Summarise methodology.\n", methodology.getSections().get(0).getMarkdown());
+		assertEquals("Section one", methodology.getSections().get(1).getTitle());
 		String markdown1 = "Jarogonium est jargonius et dameleie statisticum seculum mondi.\n";
-		assertEquals(markdown1, methodology.sections.get(1).markdown);
-		assertEquals("Section two", methodology.sections.get(2).title);
+		assertEquals(markdown1, methodology.getSections().get(1).getMarkdown());
+		assertEquals("Section two", methodology.getSections().get(2).getTitle());
 		String markdown2 = "Lorem ipsum methodology\n";
 		markdown2 += " * bullet1\n";
 		markdown2 += " * bullet2\n";
-		assertEquals(markdown2, methodology.sections.get(2).markdown);
+		assertEquals(markdown2, methodology.getSections().get(2).getMarkdown());
 
 		// Accordion
-		assertEquals(1, methodology.accordion.size());
-		assertEquals("Footnotes", methodology.accordion.get(0).title);
-		assertEquals("Methodology footer", methodology.accordion.get(0).markdown);
+		assertEquals(1, methodology.getAccordion().size());
+		assertEquals("Footnotes", methodology.getAccordion().get(0).getTitle());
+		assertEquals("Methodology footer", methodology.getAccordion().get(0).getMarkdown());
 	}
 
 }
