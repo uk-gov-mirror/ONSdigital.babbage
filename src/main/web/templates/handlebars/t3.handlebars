@@ -20,7 +20,7 @@
 					<h2>Latest data</h2>
 					<header class="box___section">
 							<h3 class="navpanel-list-heading lede box--padded-bottom-small">
-								<a href="">{{headline.data.title}}</a>
+								<a href="{{items.0.uri}}">{{items.0.data.title}}</a>
 							</h3>
 					</header>
 					<div class="grid-wrap">
@@ -33,18 +33,18 @@
 									<div class="stat">
 											<div class="stat__figure ">
 													<div>
-															{{headline.data.number}}<span class="stat__figure__unit"> {{headline.data.unit}}</span>
+															{{items.0.data.number}}<span class="stat__figure__unit"> {{items.0.data.unit}}</span>
 													</div>
 													<div class="stat__description">
-														{{headline.data.date}}
+														{{items.0.data.date}}
 													</div>
 											</div>
 									</div>
 									<dl class="micro definition-list definition-list--inline flush--half--vertical">
 											<dt>Last updated:</dt>
-											<dd>{{headline.data.lastUpdate}}</dd>
+											<dd>{{items.0.data.lastUpdate}}</dd>
 											<dt>Next update:</dt>
-											<dd>{{headline.data.nextUpdate}}</dd>
+											<dd>{{items.0.data.nextUpdate}}</dd>
 									</dl>
 							</div>
 							<!-- /grid-col -->
