@@ -381,7 +381,7 @@ public class ContentGenerator {
         URI uri = timeseries.getUri();
         File timeseriesFolder = new File(contentsDirectory, uri.toString());
         File timeseriesFile = new File(timeseriesFolder, DATA_FILE_NAME);
-        timeseries.setRelatedDocuments(new ArrayList<>());
+        timeseries.setRelatedDocuments(new ArrayList<PageReference>());
 
         if (uri.toString().contains(productPage.getUri().toString())) {
             // Only create the timeseries if it doesn't already exist:

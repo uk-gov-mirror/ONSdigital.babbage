@@ -72,7 +72,7 @@ public class DatasetContent {
             Dataset dataset = new Dataset();
             DatasetDescription description = new DatasetDescription();
             dataset.setDescription(description);
-            dataset.setDownloads(new ArrayList<>());
+            dataset.setDownloads(new ArrayList<DownloadSection>());
 
             description.setTitle(StringUtils.trim(row.get(NAME)));
             if (StringUtils.isNotBlank(row.get(SUMMARY))) {
@@ -83,7 +83,7 @@ public class DatasetContent {
 
                 DownloadSection downloadSection = new DownloadSection();
                 downloadSection.setTitle(description.getTitle());
-                downloadSection.setCdids(new ArrayList<>());
+                downloadSection.setCdids(new ArrayList<String>());
                 dataset.getDownloads().add(downloadSection);
 
                 // Extract CDIDs
