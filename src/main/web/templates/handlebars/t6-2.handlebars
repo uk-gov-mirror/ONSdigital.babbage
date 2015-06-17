@@ -12,13 +12,12 @@
 				<span>Contact: </span></br>
 				<a href="mailto:{{contact.email}}">{{contact.name}}</a>
 			<p class="grid-col tablet-grid-one-quarter divider--border-left">
-				<span>Release date: </span>{{releaseDate}}
+				<span>Release date: </span></br>{{df releaseDate}}
 				</br>
 				<a href="#">previous versions</a>
 			</p>
 			<p class="grid-col tablet-grid-one-quarter divider--border-left">
-				<span>Next release: </span>
-				{{nextRelease}}
+				<span>Next release: </span></br>{{df nextRelease}}
 			</p>
 			<p class="grid-col tablet-grid-one-quarter divider--border-left">
 				<a href="{{print.size}}" class ="icon-print">Print full report</a> ({{print.size}} pages)
@@ -68,8 +67,8 @@
 			{{#if accordions}}
 				{{#each accordions}}
 				<div class="accordion is-collapsed">
-					<h3 id="sc-1" class="accordion__title" aria-controls="content-1">{{title}}</h3>
-					<div id="content-1" class="accordion__content" aria-labelledby="sc-1">
+					<h3 id="sc-{{@index}}" class="accordion__title" aria-controls="content-{{@index}}">{{title}}</h3>
+					<div id="content-{{@index}}" class="accordion__content" aria-labelledby="sc-{{@index}}">
 						<p>
 							{{md markdown}}
 						</p>
@@ -82,10 +81,8 @@
 		<!-- /desktop-grid-two-thirds -->
 		<div class="grid-col desktop-grid-one-third">
 			<article class="box solid box--green--separated--left">
-				<div class="ox__inner border box--padded">
-					<header class="box__header">
-						<h3 class="gamma">Data in this chapter</h3>
-					</header>
+				<div class="box__inner border box--padded">
+					<h3 class="box__section__header">Data in this chapter</h3>
 					<div class="box__content">
 						<ul class="list--neutral">
 							{{#each data}}
@@ -100,17 +97,15 @@
 			</article>
 			<!-- /box -->
 			<div class="box box--padded sectioned">
-				<header class="box__header">
-					<h3 class="gamma">Contact details for this compendium</h3>
-				</header>
+				<h3 class="box__section__header">Contact details for this compendium</h3>
 				<div class="box__content">
-					<p>
+					<address>
 						{{contact.name}}
 						</br>
 						<a href="mailto:{{contact.email}}">{{contact.email}}</a>
 						</br>
 						{{contact.telephone}}
-					</p>
+					</address>
 				</div>
 			</div>
 			<!-- /box -->
@@ -120,60 +115,47 @@
 	<!-- /grid-wrap -->
 </div>
 <!-- /wrapper -->
-<div class="slate--mid-grey">
-	<div class="wrapper panel--top-pad">
-		<div class="grid-wrap">
-			<div class="grid-col desktop-grid-full-width">
-				<div class="grid-wrap">
-					<div class="grid-col desktop-grid-two-thirds">
-						<article class="box box--teal--separated--left">
-							<div class="box__inner border box--padded">
-								<header class="box__header">
-									<h3>Related articles and bulletins</h3>
-								</header>
-								<div class="box__content">
-									<ul class="list--neutral">
-										{{#each relatedBulletins}}
-										<li>
-											<h4 class="flush"><a href="{{uri}}">{{title}}</a></h4>
-											<p>
-												{{description}}
-											</p>
-										</li>
-										{{/each}}
-									</ul>
-								</div>
-							</div>
-							<!-- /box__inner -->
-						</article>
-						<!-- /box -->
+<div class="wrapper panel--top-pad slate--mid-grey">
+	<div class="grid-wrap">
+		<div class="grid-col desktop-grid-two-thirds">
+			<article class="box box--teal--separated--left">
+				<div class="box__inner border box--padded">
+					<h3>Related articles and bulletins</h3>
+					<div class="box__content">
+						<ul class="list--neutral">
+							{{#each relatedBulletins}}
+							<li>
+								<h4 class="flush"><a href="{{uri}}">{{title}}</a></h4>
+								<p>
+									{{description}}
+								</p>
+							</li>
+							{{/each}}
+						</ul>
 					</div>
-					<!-- /grid-desktop-two-thirds -->
-					<div class="grid-col desktop-grid-one-third">
-						<article class="box box--orange box--orange--separated-left">
-							<div class="box__inner border box--padded has-icon">
-								<header class="box__header">
-									<h3><a href="{{local.uri}}">{{local.title}}</a></h3>
-								</header>
-								<div class="box__content">
-									<p>
-										{{local.description}}
-									</p>
-								</div>
-							</div>
-							<!-- /box__inner -->
-						</article>
-						<!-- /box -->
-					</div>
-					<!-- /desktop-grid-one-third -->
 				</div>
-				<!-- /grid-wrap -->
-			</div>
-			<!-- /desktop-grid-full-width -->
+				<!-- /box__inner -->
+			</article>
+			<!-- /box -->
 		</div>
-		<!-- /grid-wrap -->
+		<!-- /grid-desktop-two-thirds -->
+		<div class="grid-col desktop-grid-one-third">
+			<article class="box box--orange box--orange--separated-left">
+				<div class="box__inner border box--padded has-icon">
+					<h3>{{local.title}}</h3>
+					<div class="box__content">
+						<p>
+							<a href="{{local.uri}}">{{local.description}}</a>
+						</p>
+					</div>
+				</div>
+				<!-- /box__inner -->
+			</article>
+			<!-- /box -->
+		</div>
+		<!-- /desktop-grid-one-third -->
 	</div>
-	<!-- /wrapper -->
+	<!-- /grid-wrap -->
 </div>
-<!-- /slate -->
+<!-- /wrapper -->
 {{> templates/handlebars/partials/footer}}

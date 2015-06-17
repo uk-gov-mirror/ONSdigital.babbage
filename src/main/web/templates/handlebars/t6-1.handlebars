@@ -13,12 +13,12 @@
 				<span>Contact: </span></br>
 				<a href="mailto:{{contact.email}}">{{contact.name}}</a>
 			<p class="grid-col tablet-grid-one-quarter divider--border-left">
-				<span>Release date: </span></br>{{releaseDate}}
+				<span>Release date: </span></br>{{df releaseDate}}
 				</br>
 				<a href="#">previous versions</a>
 			</p>
 			<p class="grid-col tablet-grid-one-quarter divider--border-left">
-				<span>Next release: </span></br>{{nextRelease}}
+				<span>Next release: </span></br>{{df nextRelease}}
 			</p>
 			<p class="grid-col tablet-grid-one-quarter divider--border-left">
 				<a href="{{print.size}}" class ="icon-print">Print full report</a> ({{print.size}} pages)
@@ -72,7 +72,7 @@
 			<div class="grid-wrap panel--top-pad-large">
 				<div class="grid-col desktop-grid-one-half">
 					<article class="box box--padded sectioned">
-						<h3>Methodology</h3>
+						<h3 class="box__section__header">Methodology</h3>
 						<div class="box__content">
 							<ul class="list--neutral">
 								{{#each methodology}}
@@ -87,7 +87,7 @@
 				<!-- /grid-desktop-one-half -->
 				<div class="grid-col desktop-grid-one-half">
 					<div class="box box--padded sectioned">
-						<h3>Contact details</h3>
+						<h3 class="box__section__header">Contact details</h3>
 						<div class="box__content">
 							<address>
 								{{contact.name}}</br>
