@@ -1,49 +1,35 @@
 {{> templates/handlebars/partials/header}}
-
 <div class="page-header slate slate--light-green">
-
 	<div class="wrapper">
 		{{> templates/handlebars/partials/breadcrumb}}
 		<p class="page-header__title">
-			<strong>Dataset</strong>
+			Dataset
 		</p>
-
 		<h1 class="page-header__title flush--half--bottom">{{title}}</h1>
-
 		<div class="grid-wrap">
 			<p class="grid-col tablet-grid-one-quarter page-header__meta-block-with-img">
-
-					<img src="../../node_modules/ONS-Pattern-Library/ui/img/national-statistics.png" alt="National Statistics">
-					<span>Contact: </span><a href="mailto:{{contact.email}}" title="Email {{contact.email}}">{{contact.name}}</a>
-
+				<img src="../../node_modules/ONS-Pattern-Library/ui/img/national-statistics.png" alt="National Statistics">
+				<span>Contact: </span><a href="mailto:{{contact.email}}" title="Email {{contact.email}}">{{contact.name}}</a>
 			<p class="grid-col tablet-grid-one-quarter divider--border-left">
-
-					<span>Release date: </span><br/>{{df releaseDate "d MMMM yyyy"}}
-					</br>
-					<a href="#">previous versions</a>
-
+				<span>Release date: </span><br/>{{df releaseDate}}
+				</br>
+				<a href="#">previous versions</a>
 			</p>
 			<p class="grid-col tablet-grid-one-quarter divider--border-left">
-
-					<span>Next release: </span><br/>{{df nextRelease "d MMMM yyyy"}}
-
+				<span>Next release: </span><br/>{{df nextRelease}}
 			</p>
 			<p class="grid-col tablet-grid-one-quarter divider--border-left">
-
 				<span>Dataset id: </span>{{dataSetID}}
 				<a href="#">what is this?</a>
-
 			</p>
 		</div>
 		<!-- /grip-wrap -->
-
 		{{> templates/handlebars/partials/social-icons}}
 		<!-- / page-header__icons  -->
 	</div>
 	<!-- / wrapper -->
 </div>
 <!-- / page-header -->
-
 <div class="wrapper panel--mar ">
 	<div class="grid-wrap">
 		<div class="grid-col desktop-grid-full-width">
@@ -51,7 +37,7 @@
 				<div class="box__inner box--padded">
 					<div class="box__content">
 						<p>
-							This content has been migrated directly from our previous site for this beta and is currently in a temporary format. We are working to update these to a new format during the course of the beta.
+							{{md notice}}
 						</p>
 					</div>
 				</div>
@@ -59,14 +45,13 @@
 			</article>
 			<!-- /box -->
 			<p class="lede">
-				{{lede}}
+				{{md lede}}
 			</p>
 			<p>
 				<span class="stand-out-text">{{resultsNumber}}</span> results
 			</p>
 		</div>
 		<!-- /grid-col -->
-
 		<div class="grid-col desktop-grid-two-thirds">
 			<ul class="list--neutral">
 				{{#each datasets}}
@@ -80,7 +65,6 @@
 			</ul>
 		</div>
 		<!-- /grid-col desktop-grid-two-thirds -->
-
 		<div class="grid-col desktop-grid-one-third">
 			<article class="box solid box--teal--separated--left">
 				<div class="ox__inner border box--padded">

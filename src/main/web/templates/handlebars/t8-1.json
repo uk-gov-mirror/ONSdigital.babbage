@@ -65,6 +65,7 @@
   "type": "dataset",
   "title": "Labour market statistics",
   "uri": "employmentandlabour market/peopleinwork/employmentandemployeetypes",
+  "notice": "This content has been migrated directly from our previous site for this beta and is currently in a temporary format. We are working to update these to a new format during the course of the beta.",
   "lede": "This dataset contains estimates of labour market statistics (including employment, unemployment and economic inactivity) for the United Kingdom.",
   "releaseDate": "22 Aug 2014",
   "nextRelease": "24 Sep 2015",
