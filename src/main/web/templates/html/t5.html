@@ -22,8 +22,42 @@
         <link rel="stylesheet" href="../../node_modules/ONS-Pattern-Library/dist/css/main.css" />
         <![endif]-->
         <script type="text/javascript" src="../../node_modules/ONS-Pattern-Library/dist/js/header.js"></script>
+        <style type="text/css">
+            #loading-overlay {
+                width: 100%;
+                height: 100%;
+                position: fixed;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                background: #fff;
+                z-index: 99999;
+            }
+        </style>
+
+        
     </head>
     <body class="">
+        <script type="text/javascript">
+            //progressive enhancement
+
+            addLoadingOverlay();
+
+            function addLoadingOverlay() {
+                var body = document.getElementsByTagName('body')[0];
+                var overlay = document.createElement('div');
+                overlay.id = 'loading-overlay';
+
+
+                // overlayhtml = '<div style="width:100%;height:100%;position:fixed;top:0;bottom:0;left:0;right:0;background:red;z-index:99999"></div>';
+
+                // overlay.innerHTML = overlayhtml;
+                body.appendChild(overlay);
+            }
+
+            
+        </script>
         <a class="skiplinks visuallyhidden focusable" href="#main" tabindex="0">
             <span>Skip to main content</span>
         </a>
@@ -302,7 +336,7 @@
                 </div>
             </div>
             <div class="chart-area slate">
-                <div class="chart-area__controls">
+                <div class="chart-area__controls nojs-hidden js-enhance--show">
                     <form data-chart-controls="" data-chart-controls-for="[&quot;chart1&quot;, &quot;table1&quot;]">
                         <div class="button-bar chart-area__controls__buttons">
                             <div class="button-group chart-area__controls__type">
@@ -493,30 +527,123 @@
                 <div class="box__inner">
                     <div class="grid-wrap">
                         <div class="grid-col desktop-grid-one-half ">
-                            <label for="select" class="definition-emphasis" >Related time series:</label>
-                            <div class="field field--spaced">
-                                <select class="input input--mini" id="select" name="">
-                                    <option value="1" selected>D7BT: CPI: Consumer Prices Index</option>
-                                    <option value="2">Some other time series</option>
-                                    <option value="3">Yet another time series</option>
-                                </select>
+                            <div class="js-enhance--ul-to-select">
+                                <p>Related time series:</p>
+                                <ul>
+                                    <li><a href="http://link1">D7BT: CPI: Consumer Prices Index</a></li>
+                                    <li><a href="http://link2">Some other time series</a></li>
+                                    <li><a href="http://link3">Yet another time series</a></li>
+                                </ul>
                             </div>
-                            <a href="#!/previous" class="split__multiline-break">view all time series</a>
+                            <a href="#!/previous">view all time series</a>
                         </div>
                         <div class="grid-col desktop-grid-one-half ">
-                            <label for="select" class="definition-emphasis" >Related datasets:</label>
-                            <div class="field field--spaced">
-                                <select class="input input--mini" id="select" name="">
-                                    <option value="1" selected>Inflation data collection </option>
-                                    <option value="2">Awesome dataset</option>
-                                    <option value="3">Boring dataset</option>
-                                </select>
+                            <div class="js-enhance--ul-to-select">
+                                <p>Related datasets:</p>
+                                <ul>
+                                    <li><a href="http://link1">Inflation data collection</a></li>
+                                    <li><a href="http://link2">Awesome dataset</a></li>
+                                    <li><a href="http://link3">Boring dataset</a></li>
+                                </ul>
                             </div>
-                            <a href="#!/previous" class="split__multiline-break">view all datasets</a>
+                            <a href="#!/previous">view all datasets</a>
                         </div>
                     </div>
                 </div>
 
+            </div>
+            <div class="panel--bottom-mar js-enhance--hide">
+                <table class="tablesaw">
+                    <thead>
+                        <tr>
+                            <th>Period</th>
+                            <th>Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>2015 Q1</td>
+                            <td>123</td>
+                        </tr>
+                        <tr>
+                            <td>2015 Q1</td>
+                            <td>123</td>
+                        </tr>
+                        <tr>
+                            <td>2015 Q1</td>
+                            <td>123</td>
+                        </tr>
+                        <tr>
+                            <td>2015 Q1</td>
+                            <td>123</td>
+                        </tr>
+                        <tr>
+                            <td>2015 Q1</td>
+                            <td>123</td>
+                        </tr>
+                        <tr>
+                            <td>2015 Q1</td>
+                            <td>123</td>
+                        </tr>
+                        <tr>
+                            <td>2015 Q1</td>
+                            <td>123</td>
+                        </tr>
+                        <tr>
+                            <td>2015 Q1</td>
+                            <td>123</td>
+                        </tr>
+                        <tr>
+                            <td>2015 Q1</td>
+                            <td>123</td>
+                        </tr>
+                        <tr>
+                            <td>2015 Q1</td>
+                            <td>123</td>
+                        </tr>
+                        <tr>
+                            <td>2015 Q1</td>
+                            <td>123</td>
+                        </tr>
+                        <tr>
+                            <td>2015 Q1</td>
+                            <td>123</td>
+                        </tr>
+                        <tr>
+                            <td>2015 Q1</td>
+                            <td>123</td>
+                        </tr>
+                        <tr>
+                            <td>2015 Q1</td>
+                            <td>123</td>
+                        </tr>
+                        <tr>
+                            <td>2015 Q1</td>
+                            <td>123</td>
+                        </tr>
+                        <tr>
+                            <td>2015 Q1</td>
+                            <td>123</td>
+                        </tr>
+                        <tr>
+                            <td>2015 Q1</td>
+                            <td>123</td>
+                        </tr>
+                        <tr>
+                            <td>2015 Q1</td>
+                            <td>123</td>
+                        </tr>
+                        <tr>
+                            <td>2015 Q1</td>
+                            <td>123</td>
+                        </tr>
+                        <tr>
+                            <td>2015 Q1</td>
+                            <td>123</td>
+                        </tr>
+
+                    </tbody>
+                </table>
             </div>
         </div>
         <div class="wrapper panel--bottom-mar">
@@ -720,5 +847,69 @@
             <script type="text/javascript" src="../../node_modules/ONS-Pattern-Library/dist/js/footer.js"></script>
             <script type="text/javascript" src="../../ui/js/lib/highcharts.js"></script>
             <script type="text/javascript" src="../../ui/js/lib/jquery.tooltipster.min.js"></script>
+
+            <script type="text/javascript">
+                //progressive enhancement
+                    jsEnhance();
+
+
+                    function jsEnhance() {
+                        $('.js-enhance--show').show();
+                        $('.js-enhance--hide').hide();
+
+                        jsEnhanceULNavToSelectNav();
+
+                        $('#loading-overlay').fadeOut(300);
+
+                    }
+
+                    function jsEnhanceULNavToSelectNav() {
+                        $('.js-enhance--ul-to-select').each(function() {
+                            var labeltext = $('p:first', this).text();
+                            var selectoptions = $('ul:first li a', this);
+
+                            var label = $('<label>', {
+                                class: 'definition-emphasis',
+                                text: labeltext
+                            }); 
+
+                            //$(document.createElement('select')) is faster
+                            var newselect = $('<select>', {
+                                class: 'field field--spaced'
+                            }); 
+
+                            newselect.append($('<option>', { 
+                                    value: '',
+                                    text : 'Select a relates time series'
+                                }));
+
+                            newselect.change(function() {
+                                var location = $(this).find('option:selected').val();
+                                if (location){
+                                    window.location = location;
+                                }
+                            });
+
+                            $.each(selectoptions, function (i, item) {
+                                newselect.append($('<option>', { 
+                                    value: $(this).attr('href'),
+                                    text : $(this).text()
+                                }));
+                            });
+
+                            label.append(newselect);
+
+                            $(this).html(label);
+
+                        });
+
+                        // alert(labeltext);
+                        // var test = $(document.createElement('span'));
+                    }
+                    
+
+            </script>
+
+
         </body>
     </html>
