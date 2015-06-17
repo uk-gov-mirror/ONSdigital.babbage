@@ -14,7 +14,7 @@
 						    {{#if description.nationalStatistic}}
 										<img src="http://alpha.ons.gov.uk/ui/img/national-statistics.png" alt="" />
 								{{/if}}
-								<span>Contact: </span><br/><a href="mailto:{{contact.email}}">{{#if description.contact.name}}{{description.contact.name}}{{else}}{{description.contact.email}}{{/if}}</a>
+								<span>Contact: </span><br/><a href="mailto:{{description.contact.email}}">{{#if description.contact.name}}{{description.contact.name}}{{else}}{{description.contact.email}}{{/if}}</a>
 						</p>
 			      <p class="grid-col tablet-grid-one-quarter divider--border-left">
 			          <span>Release date: </span><br/>{{df description.releaseDate "d MMMM yyyy"}}<br/><a href="#">previous versions</a>
@@ -49,7 +49,7 @@
 			<h2 id="top">Table of contents</h2>
 				<ol class="table-of-contents-ordered-list">
 					{{#each sections}}
-					<li><a href="#{{this.uri}}" title="{{this.title}}">{{this.title}}</a></li>
+					<li><a href="#{{slugify title}}" title="{{this.title}}">{{this.title}}</a></li>
 					{{/each}}
 				</ol>
 		</div>
@@ -70,6 +70,7 @@
 												{{md markdown}}
 												</p>
 										</div>
+                  <a href="#top" title="Back to table of contents">Back to table of contents</a>
 								</div>
 						</article>
 						{{/each}}
