@@ -3,13 +3,13 @@
 	<div class="page-header slate slate--red">
 		<div class="wrapper">
 			{{> templates/handlebars/partials/breadcrumb}}
-		  <p class="page-header__title">
+		  	<p class="page-header__title">
 				User requested data
 			</p>
 			<h1 class="page-header__title flush--half--bottom">{{name}}</h1>
 			<div class="grid-wrap">
 				<p class="grid-col tablet-grid-one-quarter">
-					<span>Release date: </span><br/>{{releaseDate}}
+					<span>Release date: </span><br/>{{df releaseDate}}
 				</p>
 				<p class="grid-col tablet-grid-one-quarter divider--border-left">
 					<span>Reference number: </span><br/>{{ref}}
@@ -51,5 +51,5 @@
 		<!-- /grid-wrap -->
 	</div>
 	<!-- /wrapper -->
-</div>
+</main>
 {{> templates/handlebars/partials/footer}}
