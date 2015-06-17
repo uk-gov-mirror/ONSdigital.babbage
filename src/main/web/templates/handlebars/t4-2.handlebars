@@ -48,16 +48,14 @@
 <!-- Table of contents -->
 <div class="wrapper">
 		<p class="lede">{{lede}}</p>
-		<article class="box panel--separated--bottom">
-				<h3 id="top">Table of contents</h3>
+		<div class="panel--separated--bottom panel--bottom-mar">
+			<h2 id="top">Table of contents</h2>
 				<ol class="table-of-contents-ordered-list">
-						{{#each sections}}
-						<li>
-							<a href="#">{{title}}</a>
-						</li>
-						{{/each}}
+					{{#each sections}}
+					<li><a href="#{{this.uri}}" title="{{this.title}}">{{this.title}}</a></li>
+					{{/each}}
 				</ol>
-		</article>
+		</div>
 </div>
 <!-- Body Sections -->
 <div class="wrapper panel--bottom-mar">
