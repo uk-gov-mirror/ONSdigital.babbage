@@ -37,6 +37,8 @@ public class MethodologyMarkdown {
 		// Set up the methodology
 		Methodology methodology = new Methodology();
         PageDescription description = new PageDescription();
+        methodology.setDescription(description);
+
         description.setTitle(markdown.title);
         setProperties(methodology, markdown);
 		methodology.setSections(markdown.sections);
