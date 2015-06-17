@@ -1,11 +1,12 @@
 package com.github.onsdigital.generator.data;
 
-import com.github.onsdigital.content.page.statistics.data.TimeSeries;
+import com.github.onsdigital.content.page.statistics.data.timeseries.TimeSeries;
 import com.github.onsdigital.content.partial.TimeseriesValue;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -45,6 +46,7 @@ class NonCdidCSV {
 
 				// Get the timeseries object for this CDID:
 				TimeSeries timeseries = Data.timeseries(cdid);
+				timeseries.setNotes(new ArrayList<>());
 				if (timeseries == null) {
 					// System.out.println("Sheet " + sheetIndex + ", column " +
 					// c + " - new timeseries " + cdid);
@@ -63,7 +65,7 @@ class NonCdidCSV {
 						if (StringUtils.equalsIgnoreCase("Note", date)) {
 
 							// End of data, there may be a note:
-							timeseries.notes.add(StringUtils.trim(row[1]));
+							timeseries.getNotes().add(StringUtils.trim(row[1]));
 							break data;
 
 						} else if (StringUtils.isNotEmpty(date) && StringUtils.isNotEmpty(figure)) {

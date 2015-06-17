@@ -1,7 +1,8 @@
 package com.github.onsdigital.search.util;
 
 import com.github.onsdigital.content.page.base.PageType;
-import com.github.onsdigital.content.page.statistics.data.TimeSeries;
+import com.github.onsdigital.content.page.statistics.data.timeseries.TimeSeries;
+import com.github.onsdigital.content.page.statistics.data.timeseries.TimeseriesDescription;
 import com.github.onsdigital.search.ElasticSearchServer;
 import com.github.onsdigital.search.SearchService;
 import com.github.onsdigital.search.bean.AggregatedSearchResult;
@@ -70,9 +71,10 @@ public class SearchHelper {
 
 		Map<String, Object> TimeSeriesProperties = result.getResults().iterator().next();
 		TimeSeries TimeSeries = new TimeSeries();
-		TimeSeries.setCdid((String) TimeSeriesProperties.get("cdid"));
-		TimeSeries.title = (String) TimeSeriesProperties.get("title");
-		TimeSeries.uri = URI.create((String) TimeSeriesProperties.get("url"));
+		TimeSeries.setUri(URI.create((String) TimeSeriesProperties.get("url")));
+		TimeseriesDescription description = new TimeseriesDescription();
+		description.setCdid((String) TimeSeriesProperties.get("cdid"));
+		description.setTitle((String) TimeSeriesProperties.get("title"));
 		return TimeSeries;
 
 	}

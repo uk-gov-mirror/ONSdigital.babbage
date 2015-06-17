@@ -4,19 +4,19 @@ import com.github.davidcarboni.restolino.json.Serialiser;
 import com.github.onsdigital.content.base.Content;
 import com.github.onsdigital.content.link.PageReference;
 import com.github.onsdigital.content.page.base.Page;
+import com.github.onsdigital.content.page.base.PageDescription;
 import com.github.onsdigital.content.page.home.HomePage;
 import com.github.onsdigital.content.page.methodology.Methodology;
 import com.github.onsdigital.content.page.release.Release;
-import com.github.onsdigital.content.page.statistics.Dataset;
-import com.github.onsdigital.content.page.statistics.data.TimeSeries;
-import com.github.onsdigital.content.page.statistics.document.Article;
-import com.github.onsdigital.content.page.statistics.document.Bulletin;
+import com.github.onsdigital.content.page.release.ReleaseDescription;
+import com.github.onsdigital.content.page.statistics.data.timeseries.TimeSeries;
+import com.github.onsdigital.content.page.statistics.dataset.Dataset;
+import com.github.onsdigital.content.page.statistics.document.article.Article;
+import com.github.onsdigital.content.page.statistics.document.bulletin.Bulletin;
 import com.github.onsdigital.content.page.taxonomy.ProductPage;
 import com.github.onsdigital.content.page.taxonomy.TaxonomyLandingPage;
 import com.github.onsdigital.content.page.taxonomy.base.TaxonomyPage;
 import com.github.onsdigital.content.partial.HomeSection;
-import com.github.onsdigital.content.partial.metadata.BulletinMetadata;
-import com.github.onsdigital.content.partial.metadata.Metadata;
 import com.github.onsdigital.generator.data.Data;
 import com.github.onsdigital.generator.data.DatasetMappingsCSV;
 import com.github.onsdigital.generator.markdown.ArticleMarkdown;
@@ -64,7 +64,7 @@ public class ContentGenerator {
         File releasesFolder = createSubDirectory(contentsDirectory, RELEASES_DIRECTORY);
         List<PageReference> releasesList = new ArrayList<>();
         for (Release release : releases.values()) {
-            File releaseFolder = createDirectory(CONTENTS_DIRECTORY + "/" + release.uri.toString());
+            File releaseFolder = createDirectory(CONTENTS_DIRECTORY + "/" + release.getUri().toString());
             persistData(releaseFolder, release);
             releasesList.add(new PageReference(release));
         }
@@ -117,7 +117,7 @@ public class ContentGenerator {
     private void buildHomeSections(HomePage homePage, List<TaxonomyPage> taxonomyPages) {
         for (TaxonomyPage taxonomyPage : taxonomyPages) {
             if (taxonomyPage instanceof TaxonomyLandingPage == false) {
-                throw new RuntimeException("Taxonomy page " + taxonomyPage.title + " is not a taxonomy landing page");
+                throw new RuntimeException("Taxonomy page " + taxonomyPage.getDescription().getTitle() + " is not a taxonomy landing page");
             }
         }
     }
@@ -135,7 +135,7 @@ public class ContentGenerator {
 
             TaxonomyLandingPage themepage = generateTaxonomyLandingPage(directory, node, homePage);
             generateSubLevels(directory, node, themepage);
-            themePages.put(themepage.uri, themepage);
+            themePages.put(themepage.getUri(), themepage);
             persistData(directory, themepage);
         }
     }
@@ -158,19 +158,22 @@ public class ContentGenerator {
             }
 
             //Each taxonomy page recursively added to its parent's sections
-            parent.sections.add(new Metadata(taxonomyPage, node.index));
+            parent.getSections().add(new PageReference(taxonomyPage, node.index));
             persistData(directory, taxonomyPage);
         }
-        Collections.sort(parent.sections);
+        Collections.sort(parent.getSections());
     }
 
     private TaxonomyLandingPage generateTaxonomyLandingPage(File directory, ContentNode node, TaxonomyPage parent) throws IOException {
         TaxonomyLandingPage landingPage = new TaxonomyLandingPage();
-        landingPage.title = node.name;
-        landingPage.uri = createUri(node.filename(), parent);
-        landingPage.summary = node.lede;
-        landingPage.index = node.index;
+        landingPage.setUri(createUri(node.filename(), parent));
+        landingPage.setIndex(node.index);
         landingPage.buildBreadcrumb(parent);
+
+        PageDescription description = new PageDescription();
+        description.setTitle(node.name);
+        description.setSummary(node.lede);
+        landingPage.setDescription(description);
         if (node.oldDataset.size() > 0) {
             throw new RuntimeException("A dataset has been mapped to " + node + " but this folder is a Taxonomy Landing page.");
         }
@@ -180,11 +183,15 @@ public class ContentGenerator {
 
     private ProductPage generateProductPage(File directory, ContentNode node, TaxonomyPage parent) throws IOException {
         ProductPage productPage = new ProductPage();
-        productPage.title = node.name;
-        productPage.uri = createUri(node.filename(), parent);
-        productPage.summary = node.lede;
-        productPage.index = node.index;
+        productPage.setUri(createUri(node.filename(), parent));
+        productPage.setIndex(node.index);
         productPage.buildBreadcrumb(parent);
+
+        PageDescription description = new PageDescription();
+        description.setTitle(node.name);
+        description.setSummary(node.lede);
+        productPage.setDescription(description);
+
 
         addTimeseriesReferences(node, productPage);
 
@@ -203,115 +210,62 @@ public class ContentGenerator {
         createTimeseries(node, directory, productPage);
 
         Release release = new Release();
-        release.title = productPage.title;
-        release.summary = productPage.summary;
-        release.uri = URI.create(RELEASES_DIRECTORY + "/" + node.filename());
+        release.setUri(URI.create(RELEASES_DIRECTORY + "/" + node.filename()));
+
+        ReleaseDescription releaseDescription = new ReleaseDescription();
+        releaseDescription.setTitle(productPage.getDescription().getTitle());
+        releaseDescription.setSummary(productPage.getDescription().getSummary());
+
         releases.put(productPage, release);
 
         return productPage;
     }
 
 
-
     private void addTimeseriesReferences(ContentNode node, ProductPage productPage) {
 
-
-        //Now we are using first time series in the list as headline
-
-//        TimeSeries headline = node.headline;
-//        // Timeseries references:
-//        if (headline == null || headline.uri == null) {
-//            System.out.println("No headline URI set for " + node.name);
-//            headline = node.timeserieses.get(0);
-//            System.out.println("Using the first item from the timeseries list instead: " + headline);
-//        }
-//
-//        productPage.headline = new PageReference(headline);
-
         List<TimeSeries> timeserieses = node.timeserieses;
-        productPage.items = new ArrayList<>();
-
+        ArrayList items =  new ArrayList<>();
         for (TimeSeries timeseries : timeserieses) {
-            if (timeseries.uri != null) {
-                productPage.items.add(new PageReference(timeseries));
+            if (timeseries.getUri() != null) {
+                items.add(new PageReference(timeseries));
             } else {
                 System.out.println("No URI set for " + timeseries);
             }
         }
+
+        productPage.setItems(items);
     }
 
-//    private static List<ContentNode> getT3Folders(ContentNode folder) {
-//        List<ContentNode> result = new ArrayList<ContentNode>();
-//
-//        // If the folder is t3, add it directly:
-//        if (folder.getChildren().size() == 0) {
-//            result.add(folder);
-//        }
-//
-//        // If it's a t2, recurse:
-//        for (ContentNode child : folder.getChildren()) {
-//            result.addAll(getT3Folders(child));
-//        }
-//        return result;
-//    }
-
-//    private static Set<URI> getTimeseries(List<ContentNode> t3Folders) throws IOException {
-//        // Keep keys in the order they are added, but allow for de-duplication:
-//        Set<URI> result = new LinkedHashSet<>();
-//
-//        // Add the headlines first so that they will appear first
-//        for (ContentNode t3Folder : t3Folders) {
-//            if (t3Folder.headline != null) {
-//                result.add(t3Folder.headline.uri);
-//            }
-//        }
-//
-//        // Add the other items in case there aren't enough headline items:
-//        for (ContentNode t3Folder : t3Folders) {
-//            // Limit the number in case we have thousands
-//            // (this is quite likely at some point)
-//            int max = 4;
-//            for (Timeseries timeseries : t3Folder.timeserieses) {
-//                if (max-- < 0) {
-//                    if (timeseries.uri != null) {
-//                        result.add(timeseries.uri);
-//                    } else {
-//                        System.out.println("No URI defined for " + timeseries + " when scanning to " + t3Folder);
-//                    }
-//                }
-//            }
-//        }
-//
-//        return result;
-//    }
-
     private void createDatasets(ContentNode folder, ProductPage productPage) throws IOException {
-        productPage.datasets = new ArrayList<>();
+        ArrayList datasets = new ArrayList<>();
 
         for (Dataset dataset : folder.datasets) {
-            if (dataset.summary != null) {
-                if (dataset.uri == null) {
-                    dataset.uri = toDatasetUri(folder, dataset);
+            if (dataset != null) {
+                if (dataset.getUri() == null) {
+                    dataset.setUri(toDatasetUri(folder, dataset));
                 }
-                productPage.datasets.add(new Metadata(dataset));
+                datasets.add(new PageReference(dataset));
             }
         }
+
+        productPage.setDatasets(datasets);
     }
 
     private static void createStatsBulletins(ContentNode folder, ProductPage productPage) throws IOException {
-        productPage.statsBulletins = new ArrayList<>();
+        ArrayList statsBulletins = new ArrayList<>();
 
         for (Bulletin bulletin : folder.bulletins) {
-            if (bulletin.uri == null) {
-                bulletin.uri = toStatsBulletinUri(BulletinMarkdown.toFilename(bulletin), bulletin, productPage);
+            if (bulletin.getUri() == null) {
+                bulletin.setUri(toStatsBulletinUri(BulletinMarkdown.toFilename(bulletin), bulletin, productPage));
             }
-            productPage.statsBulletins.add(new BulletinMetadata(bulletin));
+            statsBulletins.add(new PageReference(bulletin));
         }
         if (folder.additonalBulletin != null) {
-            if (folder.additonalBulletin.uri == null) {
+            if (folder.additonalBulletin.getUri() == null) {
                 throw new RuntimeException("No URI yet - this is a design issue.");
             }
-            productPage.statsBulletins.add(new BulletinMetadata(folder.additonalBulletin));
+            statsBulletins.add(new PageReference(folder.additonalBulletin));
         }
 
         // All bulletins at this node, plus the additional bulletin (if any) are
@@ -319,59 +273,41 @@ public class ContentGenerator {
         // This is "good enough" for now:
         for (Bulletin bulletin : folder.bulletins) {
 
+            ArrayList relatedBulletins = new ArrayList();
+
             // Initially add everything - we'll remove "self-reference"
             // afterwards:
-            bulletin.relatedBulletins.addAll(productPage.statsBulletins);
+            relatedBulletins.addAll(statsBulletins);
 
             // Now remove self-references:
-            Iterator<Metadata> iterator = bulletin.relatedBulletins.iterator();
+            Iterator<PageReference> iterator = relatedBulletins.iterator();
             while (iterator.hasNext()) {
-                Metadata next = iterator.next();
-                if (next == null || next.uri == null || bulletin == null || bulletin.uri == null) {
+                PageReference next = iterator.next();
+                if (next == null || next.getUri() == null || bulletin == null || bulletin.getUri() == null) {
                     System.out.println("wat?");
                 }
-                if (next.uri.equals(bulletin.uri)) {
+                if (next.getUri().equals(bulletin.getUri())) {
                     iterator.remove();
                 }
             }
         }
+
+        productPage.setStatsBulletins(statsBulletins);
+
     }
-
-
-    /*Stats bulletin headline is the first related bulletin in the page*/
-
-//    private static void createStatsBulletinHeadline(ContentNode node, ProductPage productPage) throws IOException {
-//        // Stats bulletin references:
-//
-//        if (node.headlineBulletin == null) {
-//            if (node.bulletins.size() > 0) {
-//                node.headlineBulletin = node.bulletins.get(0);
-//            } else if (node.additonalBulletin != null) {
-//                node.headlineBulletin = node.additonalBulletin;
-//            }
-//        }
-//
-//        if (node.headlineBulletin != null) {
-//            if (node.headlineBulletin.uri == null) {
-//                node.headlineBulletin.uri = toStatsBulletinUri(BulletinMarkdown.toFilename(node.headlineBulletin), node.headlineBulletin, productPage);
-//            }
-//            productPage.statsBulletinHeadline = new BulletinMetadata(node.headlineBulletin);
-//        }
-//    }
-
 
     private static URI createUri(String fileName, Page parent) {
         String sanitizedFilename = fileName.replaceAll("\\W", "");
-        String parentUri = (parent != null && !"/".equals(parent.uri.toString())) ? parent.uri.toString() : "";
+        String parentUri = (parent != null && !"/".equals(parent.getUri().toString())) ? parent.getUri().toString() : "";
         return URI.create(parentUri + "/" + StringUtils.deleteWhitespace(sanitizedFilename));
     }
 
     private static URI toStatsBulletinUri(String fileName, Bulletin bulletin, ProductPage productPage) {
 
-        String baseUri = productPage.uri + "/bulletins";
+        String baseUri = productPage.getUri() + "/bulletins";
         String bulletinFileName = fileName;
         if (bulletinFileName == null) {
-            System.out.println("No filename for : " + bulletin.title);
+            System.out.println("No filename for : " + bulletin.getDescription().getTitle());
         }
         String sanitizedBulletinFileName = bulletinFileName.replaceAll("\\W", "");
         return URI.create(baseUri + "/" + StringUtils.deleteWhitespace(sanitizedBulletinFileName));
@@ -386,7 +322,7 @@ public class ContentGenerator {
             parent = parent.parent;
         }
         baseUri += "/datasets";
-        String datasetFileName = dataset.title;
+        String datasetFileName = dataset.getDescription().getTitle();
         String sanitizedDatasetFileName = datasetFileName.replaceAll("\\W", "");
         return URI.create(baseUri + "/" + StringUtils.deleteWhitespace(sanitizedDatasetFileName).toLowerCase());
     }
@@ -442,11 +378,12 @@ public class ContentGenerator {
     private boolean createTimeseries(TimeSeries timeseries, ContentNode folder, ProductPage productPage) throws IOException {
         boolean result = false;
 
-        URI uri = timeseries.uri;
+        URI uri = timeseries.getUri();
         File timeseriesFolder = new File(contentsDirectory, uri.toString());
         File timeseriesFile = new File(timeseriesFolder, DATA_FILE_NAME);
+        timeseries.setRelatedDocuments(new ArrayList<>());
 
-        if (uri.toString().contains(productPage.uri.toString())) {
+        if (uri.toString().contains(productPage.getUri().toString())) {
             // Only create the timeseries if it doesn't already exist:
             if (!timeseriesFile.exists()) {
                 timeseriesFolder.mkdirs();
@@ -457,20 +394,20 @@ public class ContentGenerator {
                 }
 
                 for (Bulletin bulletin : folder.bulletins) {
-                    timeseries.relatedDocuments.add(new Metadata(bulletin));
+                    timeseries.getRelatedDocuments().add(new PageReference(bulletin));
                 }
 
                 List<TimeSeries> relatedCdids = Data.relatedTimeseries(timeseries);
                 if (relatedCdids != null && !relatedCdids.isEmpty()) {
                     for (TimeSeries relatedCdid : relatedCdids) {
-                        TimeSeries relatedTimeseries = Data.timeseries(relatedCdid.cdid);
+                        TimeSeries relatedTimeseries = Data.timeseries(relatedCdid.getCdid());
                         //TODO:Related timeseries
 //                        timeseries.relatedTimeseries.add(new Metadata(relatedTimeseries));
                     }
                 }
 
                 persistData(timeseriesFolder, timeseries);
-                generatedTimeSeries.put(timeseries.uri, timeseries);
+                generatedTimeSeries.put(timeseries.getUri(), timeseries);
                 result = true;
             }
         }
@@ -516,7 +453,7 @@ public class ContentGenerator {
             File datasetsFolder = createSubDirectory(file, DATASETS_DIRECTORY);
             for (Dataset dataset : folder.datasets) {
                 dataset.buildBreadcrumb(productPage);
-                String datasetFileName = dataset.title.replaceAll("\\W", "");
+                String datasetFileName = dataset.getDescription().getTitle().replaceAll("\\W", "");
                 File bulletinDir = createSubDirectory(datasetsFolder, datasetFileName.toLowerCase());
                 persistData(bulletinDir, dataset);
             }
@@ -561,13 +498,15 @@ public class ContentGenerator {
 
 
     private void setHomepageDefaults() {
-        homePage.sections = new ArrayList<>();
+        ArrayList sections = new ArrayList<>();
 
-        homePage.sections.add(createHomeSection("/economy", "/economy/inflationandpriceindices/timeseries/d7g7"));
-        homePage.sections.add(createHomeSection("/economy", "/economy/grossdomesticproductgdp/timeseries/ihyq"));
-        homePage.sections.add(createHomeSection("/businessindustryandtrade", "/businessindustryandtrade/internationaltrade/timeseries/ikbj"));
-        homePage.sections.add(createHomeSection("/employmentandlabourmarket", "/employmentandlabourmarket/peopleinwork/employmentandemployeetypes/timeseries/lf24"));
-        homePage.sections.add(createHomeSection("/peoplepopulationandcommunity", "/peoplepopulationandcommunity/populationandmigration/populationestimates/timeseries/raid121"));
+        sections.add(createHomeSection("/economy", "/economy/inflationandpriceindices/timeseries/d7g7"));
+        sections.add(createHomeSection("/economy", "/economy/grossdomesticproductgdp/timeseries/ihyq"));
+        sections.add(createHomeSection("/businessindustryandtrade", "/businessindustryandtrade/internationaltrade/timeseries/ikbj"));
+        sections.add(createHomeSection("/employmentandlabourmarket", "/employmentandlabourmarket/peopleinwork/employmentandemployeetypes/timeseries/lf24"));
+        sections.add(createHomeSection("/peoplepopulationandcommunity", "/peoplepopulationandcommunity/populationandmigration/populationestimates/timeseries/raid121"));
+
+        homePage.setSections(sections);
 
     }
 
@@ -583,7 +522,7 @@ public class ContentGenerator {
         }
 
         PageReference timeseriesReference = new PageReference(timeseries);
-        Metadata landingPageMetadata = new Metadata(taxonomyLandingPage);
+        PageReference landingPageMetadata = new PageReference(taxonomyLandingPage);
 
         return new HomeSection(landingPageMetadata, timeseriesReference);
     }
@@ -635,10 +574,10 @@ public class ContentGenerator {
         int no = 0;
         int missing = 0;
         for (TimeSeries timeseries : new Data()) {
-            if (timeseries.uri == null) {
+            if (timeseries.getUri() == null) {
                 missing++;
             } else {
-                File path = new File(generator.contentsDirectory, timeseries.uri.toString());
+                File path = new File(generator.contentsDirectory, timeseries.getUri().toString());
                 path = new File(path, DATA_FILE_NAME);
                 if (path.exists()) {
                     yes++;
@@ -646,7 +585,7 @@ public class ContentGenerator {
                     no++;
                 }
             }
-            if (!timeseries.cdid.matches("[A-Z0-9]{3,8}")) {
+            if (!timeseries.getCdid().matches("[A-Z0-9]{3,8}")) {
                 throw new RuntimeException("CDID " + timeseries + " is not in the expected format.");
             }
         }

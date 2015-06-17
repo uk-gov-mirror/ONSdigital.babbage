@@ -4,7 +4,7 @@ import com.github.davidcarboni.restolino.framework.Api;
 import com.github.davidcarboni.restolino.json.Serialiser;
 import com.github.onsdigital.configuration.Configuration;
 import com.github.onsdigital.content.page.base.PageType;
-import com.github.onsdigital.content.page.statistics.data.TimeSeries;
+import com.github.onsdigital.content.page.statistics.data.timeseries.TimeSeries;
 import com.github.onsdigital.search.bean.AggregatedSearchResult;
 import com.mongodb.*;
 import org.apache.commons.lang3.StringUtils;
@@ -227,10 +227,10 @@ public class SearchConsole {
 
 		// Single hit:
 		Result result = new Result();
-		result.title = timeseries.cdid;
-		result.description = timeseries.title;
+		result.title = timeseries.getDescription().getTitle();
+		result.description = timeseries.getDescription().getTitle();
 		result.type = PageType.timeseries;
-		result.uri = timeseries.uri;
+		result.uri = timeseries.getUri();
 		search.hits.add(result);
 
 		save(search);

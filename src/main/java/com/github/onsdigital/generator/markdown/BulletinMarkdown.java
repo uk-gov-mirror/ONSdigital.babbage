@@ -1,6 +1,7 @@
 package com.github.onsdigital.generator.markdown;
 
-import com.github.onsdigital.content.page.statistics.document.Bulletin;
+import com.github.onsdigital.content.page.statistics.document.bulletin.Bulletin;
+import com.github.onsdigital.content.page.statistics.document.bulletin.BulletinDescription;
 import com.github.onsdigital.content.partial.Contact;
 import com.github.onsdigital.generator.ContentNode;
 import com.github.onsdigital.generator.data.Data;
@@ -12,10 +13,7 @@ import java.net.URI;
 import java.nio.file.Path;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class BulletinMarkdown {
 
@@ -31,15 +29,15 @@ public class BulletinMarkdown {
             Bulletin bulletin = readBulletin(file);
 
             // Set the URI if necessary:
-            ContentNode folder = Data.getFolder(bulletin.theme, bulletin.level2, bulletin.level3);
-            if (bulletin.uri == null) {
-                bulletin.uri = toUri(folder, bulletin);
+            ContentNode folder = Data.getFolder(bulletin.getDescription().theme, bulletin.getDescription().level2, bulletin.getDescription().level3);
+            if (bulletin.getUri() == null) {
+                bulletin.setUri(toUri(folder, bulletin));
             }
 
             // Add it to the taxonomy:
             folder.bulletins.add(bulletin);
-            bulletins.put(bulletin.title, bulletin);
-            if (StringUtils.isNotBlank(bulletin.headline1)) {
+            bulletins.put(bulletin.getDescription().getTitle(), bulletin);
+            if (StringUtils.isNotBlank(bulletin.getDescription().getHeadline1())) {
                 folder.headlineBulletin = bulletin;
             }
         }
@@ -53,13 +51,14 @@ public class BulletinMarkdown {
 
         // Set up the bulletin
         Bulletin bulletin = new Bulletin();
-        bulletin.title = markdown.title;
-        bulletin.title = markdown.title;
-        setProperties(bulletin, markdown);
-        bulletin.sections.clear();
-        bulletin.sections.addAll(markdown.sections);
-        bulletin.accordion.addAll(markdown.accordion);
-//        bulletin.fileName = markdown.toFilename();
+        BulletinDescription description = new BulletinDescription();
+
+        description.setTitle(markdown.title);
+        setDescription(description, markdown);
+        bulletin.setSections(markdown.sections);
+        bulletin.getSections().addAll(markdown.accordion);
+
+        bulletin.setDescription(description);
 
         return bulletin;
     }
@@ -85,43 +84,49 @@ public class BulletinMarkdown {
      * <li>Release Date</li>
      * </ul>
      *
-     * @param bulletin The {@link Bulletin} containing the data.
+     * @param bulletinDescription The {@link BulletinDescription} description to be filled.
      * @param markdown The parsed {@link Markdown}.
      */
-    private static void setProperties(Bulletin bulletin, Markdown markdown) {
+    private static void setDescription(BulletinDescription bulletinDescription, Markdown markdown) {
 
         Map<String, String> properties = markdown.properties;
 
         // Location
-        bulletin.theme = StringUtils.defaultIfBlank(properties.remove("theme"), bulletin.theme);
-        bulletin.level2 = StringUtils.defaultIfBlank(properties.remove("level 2"), bulletin.level2);
-        bulletin.level3 = StringUtils.defaultIfBlank(properties.remove("level 3"), bulletin.level3);
+        bulletinDescription.theme = StringUtils.defaultIfBlank(properties.remove("theme"), null);
+        bulletinDescription.level2 = StringUtils.defaultIfBlank(properties.remove("level 2"), null);
+        bulletinDescription.level3 = StringUtils.defaultIfBlank(properties.remove("level 3"), null);
 
         // Additional details
-        bulletin.summary = StringUtils.defaultIfBlank(properties.remove("summary"), bulletin.summary);
-        bulletin.headline1 = StringUtils.defaultIfBlank(properties.remove("headline 1"), bulletin.headline1);
-        bulletin.headline2 = StringUtils.defaultIfBlank(properties.remove("headline 2"), bulletin.headline2);
-        bulletin.headline3 = StringUtils.defaultIfBlank(properties.remove("headline 3"), bulletin.headline3);
-        bulletin.contact = new Contact();
-        bulletin.contact.name = StringUtils.defaultIfBlank(properties.remove("contact title"), bulletin.contact.name);
-        bulletin.contact.email = StringUtils.defaultIfBlank(properties.remove("contact email"), bulletin.contact.email);
+        bulletinDescription.setSummary(StringUtils.defaultIfBlank(properties.remove("summary"), null));
+        bulletinDescription.setHeadline1(StringUtils.defaultIfBlank(properties.remove("headline 1"), null));
+        bulletinDescription.setHeadline2(StringUtils.defaultIfBlank(properties.remove("headline 2"), null));
+        bulletinDescription.setHeadline3(StringUtils.defaultIfBlank(properties.remove("headline 3"), null));
+
+        //Contact info
+        Contact contact = new Contact();
+        contact.setName(StringUtils.defaultIfBlank(properties.remove("contact title"), null));
+        contact.setEmail(StringUtils.defaultIfBlank(properties.remove("contact email"), null));
+        contact.setTelephone(StringUtils.defaultIfBlank(properties.remove("phone"), null));
+        bulletinDescription.setContact(contact);
 
         //TODO: Where is next release?
         Date releaseDate = toDate(properties.remove("release date"));
-        bulletin.releaseDate = releaseDate == null ? bulletin.releaseDate : releaseDate;
+        bulletinDescription.setReleaseDate(releaseDate == null ? null : releaseDate);
 
         // Additional fields for migration:
-        bulletin.phone = StringUtils.defaultIfBlank(properties.remove("phone"), bulletin.phone);
-        bulletin.nationalStatistic = BooleanUtils.toBoolean(StringUtils.defaultIfBlank(properties.remove("national statistics"), BooleanUtils.toString(bulletin.nationalStatistic, "yes", "no")));
-        bulletin.language = StringUtils.defaultIfBlank(properties.remove("language"), bulletin.language);
+
+        bulletinDescription.setNationalStatistic(BooleanUtils.toBoolean(StringUtils.defaultIfBlank(properties.remove("national statistics"), "yes")));
+        bulletinDescription.setLanguage(StringUtils.defaultIfBlank(properties.remove("language"), null));
         // Split keywords by commas:
-        String searchKeywordsString = StringUtils.defaultIfBlank(properties.remove("search keywords"), StringUtils.join(bulletin.searchKeywords, ','));
-        bulletin.searchKeywords = StringUtils.split(searchKeywordsString, ',');
-        if (bulletin.searchKeywords != null) {
-            for (int i = 0; i < bulletin.searchKeywords.length; i++) {
-                bulletin.searchKeywords[i] = StringUtils.trim(bulletin.searchKeywords[i]);
+        String searchKeywordsString = StringUtils.defaultIfBlank(properties.remove("search keywords"), "");
+        String[] keywords = StringUtils.split(searchKeywordsString, ',');
+        List<String> searchKeywords = new ArrayList<String>();
+        if (keywords != null) {
+            for (int i = 0; i < keywords.length; i++) {
+                searchKeywords.add(StringUtils.trim(keywords[i]));
             }
         }
+        bulletinDescription.setKeywords(searchKeywords);
 
         // Note any unexpected information
         for (String property : properties.keySet()) {
@@ -134,7 +139,7 @@ public class BulletinMarkdown {
         URI result = null;
 
         if (bulletin != null) {
-            if (bulletin.uri == null) {
+            if (bulletin.getUri() == null) {
                 String baseUri = "/" + folder.filename();
                 ContentNode parent = folder.parent;
                 while (parent != null) {
@@ -142,9 +147,9 @@ public class BulletinMarkdown {
                     parent = parent.parent;
                 }
                 baseUri += "/bulletins";
-                bulletin.uri = URI.create(baseUri + "/" + StringUtils.trim(toFilename(bulletin)));
+                bulletin.setUri(URI.create(baseUri + "/" + StringUtils.trim(toFilename(bulletin))));
             }
-            result = bulletin.uri;
+            result = bulletin.getUri();
         }
 
         return result;
@@ -157,8 +162,8 @@ public class BulletinMarkdown {
      */
     public static String toFilename(Bulletin bulletin) {
         StringBuilder result = new StringBuilder();
-        for (int i = 0; i < bulletin.title.length(); i++) {
-            String character = bulletin.title.substring(i, i + 1);
+        for (int i = 0; i < bulletin.getDescription().getTitle().length(); i++) {
+            String character = bulletin.getDescription().getTitle().substring(i, i + 1);
             if (character.matches("[a-zA-Z0-9]")) {
                 result.append(character);
             }
@@ -166,7 +171,7 @@ public class BulletinMarkdown {
         return result.toString().toLowerCase();
     }
 
-    static Date toDate(String date)  {
+    static Date toDate(String date) {
         if (StringUtils.isBlank(date)) {
             return null;
         }

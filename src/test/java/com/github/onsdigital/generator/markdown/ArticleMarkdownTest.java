@@ -1,13 +1,15 @@
 package com.github.onsdigital.generator.markdown;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import com.github.onsdigital.content.page.statistics.document.Article;
+import com.github.onsdigital.content.page.statistics.document.article.Article;
+import com.github.onsdigital.content.partial.Contact;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -43,34 +45,36 @@ public class ArticleMarkdownTest {
 		// Then
 
 		// Header block
-		assertEquals(theme, article.theme);
-		assertEquals(level2, article.level2);
-		assertEquals(level3, article.level3);
-		assertEquals(contactName, article.contact.name);
-		assertEquals(contactEmail, article.contact.email);
-		assertEquals(nextRelease, article.nextReleaseDate);
-		assertEquals(releaseDate, article.releaseDate);
+		assertEquals(theme, article.getDescription().theme);
+		assertEquals(level2, article.getDescription().level2);
+		assertEquals(level3, article.getDescription().level3);
+
+		Contact contact = article.getDescription().getContact();
+		assertEquals(contactName, contact.getName());
+		assertEquals(contactEmail, contact.getEmail());
+		assertEquals(nextRelease, article.getDescription().getNextRelease());
+		assertEquals(releaseDate, article.getDescription().getReleaseDate());
 
 		// Title
-		assertEquals("What happened to all the money?", article.title);
+		assertEquals("What happened to all the money?", article.getDescription().getTitle());
 
 		// Sections
-		assertEquals(3, article.sections.size());
-		assertEquals("Article summary", article.sections.get(0).title);
-		assertEquals("Summarise article.\n", article.sections.get(0).markdown);
-		assertEquals("Section one", article.sections.get(1).title);
+		assertEquals(3, article.getSections().size());
+		assertEquals("Article summary", article.getSections().get(0).getTitle());
+		assertEquals("Summarise article.\n", article.getSections().get(0).getMarkdown());
+		assertEquals("Section one", article.getSections().get(1).getTitle());
 		String markdown1 = "Jarogonium est jargonius et dameleie statisticum seculum mondi.\n";
-		assertEquals(markdown1, article.sections.get(1).markdown);
-		assertEquals("Section two", article.sections.get(2).title);
+		assertEquals(markdown1, article.getSections().get(1).getMarkdown());
+		assertEquals("Section two", article.getSections().get(2).getTitle());
 		String markdown2 = "Lorem ipsum article\n";
 		markdown2 += " * bullet1\n";
 		markdown2 += " * bullet2\n";
-		assertEquals(markdown2, article.sections.get(2).markdown);
+		assertEquals(markdown2, article.getSections().get(2).getMarkdown());
 
 		// Accordion
-		assertEquals(1, article.accordion.size());
-		assertEquals("Footnotes", article.accordion.get(0).title);
-		assertEquals("Article footer", article.accordion.get(0).markdown);
+		assertEquals(1, article.getAccordion().size());
+		assertEquals("Footnotes", article.getAccordion().get(0).getTitle());
+		assertEquals("Article footer", article.getAccordion().get(0).getMarkdown());
 	}
 
 }

@@ -1,8 +1,7 @@
 package com.github.onsdigital.generator.markdown;
 
-import com.github.onsdigital.content.page.statistics.document.Bulletin;
+import com.github.onsdigital.content.page.statistics.document.bulletin.Bulletin;
 import org.junit.Before;
-import org.junit.Test;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -44,37 +43,37 @@ public class BulletinMarkdownTest {
 		// Then
 
 		// Header block
-		assertEquals(theme, bulletin.theme);
-		assertEquals(level2, bulletin.level2);
-		assertEquals(level3, bulletin.level3);
-		assertEquals(summary, bulletin.summary);
-		assertEquals(headline1, bulletin.headline1);
-		assertEquals(headline2, bulletin.headline2);
-		assertEquals(headline3, bulletin.headline3);
-		assertEquals(contactName, bulletin.contact.name);
-		assertEquals(contactEmail, bulletin.contact.email);
-		assertEquals(releaseDate, bulletin.releaseDate);
+		assertEquals(theme, bulletin.getDescription().theme);
+		assertEquals(level2, bulletin.getDescription().level2);
+		assertEquals(level3, bulletin.getDescription().level3);
+		assertEquals(summary, bulletin.getDescription().getSummary());
+		assertEquals(headline1, bulletin.getDescription().getHeadline1());
+		assertEquals(headline2, bulletin.getDescription().getHeadline2());
+		assertEquals(headline3, bulletin.getDescription().getHeadline3());
+		assertEquals(contactName, bulletin.getDescription().getContact().getName());
+		assertEquals(contactEmail, bulletin.getDescription().getContact().getEmail());
+		assertEquals(releaseDate, bulletin.getDescription().getReleaseDate());
 
 		// Title
-		assertEquals("Analysis of consumer price inflation", bulletin.title);
+		assertEquals("Analysis of consumer price inflation", bulletin.getDescription().getTitle());
 
 		// Sections
-		assertEquals(3, bulletin.sections.size());
-		assertEquals("Bulletin summary", bulletin.sections.get(0).title);
-		assertEquals("Summarise bulletin.\n", bulletin.sections.get(0).markdown);
-		assertEquals("Section one", bulletin.sections.get(1).title);
+		assertEquals(3, bulletin.getSections().size());
+		assertEquals("Bulletin summary", bulletin.getSections().get(0).getTitle());
+		assertEquals("Summarise bulletin.\n", bulletin.getSections().get(0).getMarkdown());
+		assertEquals("Section one", bulletin.getSections().get(1).getTitle());
 		String markdown1 = "Jarogonium est jargonius et dameleie statisticum seculum mondi.\n";
-		assertEquals(markdown1, bulletin.sections.get(1).markdown);
-		assertEquals("Section two", bulletin.sections.get(2).title);
+		assertEquals(markdown1, bulletin.getSections().get(1).getMarkdown());
+		assertEquals("Section two", bulletin.getSections().get(2).getTitle());
 		String markdown2 = "Lorem ipsum bulletin\n";
 		markdown2 += " * bullet1\n";
 		markdown2 += " * bullet2\n";
-		assertEquals(markdown2, bulletin.sections.get(2).markdown);
+		assertEquals(markdown2, bulletin.getSections().get(2).getMarkdown());
 
 		// Accordion
-		assertEquals(1, bulletin.accordion.size());
-		assertEquals("Footnotes", bulletin.accordion.get(0).title);
-		assertEquals("Bulletin footer", bulletin.accordion.get(0).markdown);
+		assertEquals(1, bulletin.getAccordion().size());
+//		assertEquals("Footnotes", bulletin.getAccordion().get(0).getTitle());
+		assertEquals("Bulletin footer", bulletin.getAccordion().get(0).getMarkdown());
 	}
 
 }

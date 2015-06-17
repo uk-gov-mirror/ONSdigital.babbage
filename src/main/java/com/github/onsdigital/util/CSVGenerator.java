@@ -1,7 +1,7 @@
 package com.github.onsdigital.util;
 
 import au.com.bytecode.opencsv.CSVWriter;
-import com.github.onsdigital.content.page.statistics.data.TimeSeries;
+import com.github.onsdigital.content.page.statistics.data.timeseries.TimeSeries;
 import com.github.onsdigital.content.partial.TimeseriesValue;
 
 import java.io.IOException;
@@ -88,17 +88,17 @@ public class CSVGenerator {
 
 		// Data
 		for (TimeSeries TimeSeries : this.TimeSeries) {
-			name[column] = TimeSeries.title;
-			cdid[column] = TimeSeries.cdid;
-			preUnit[column] = TimeSeries.preUnit;
-			unit[column] = TimeSeries.unit;
-			source[column] = TimeSeries.source;
-			keyNote[column] = TimeSeries.keyNote;
-			additionalText[column] = TimeSeries.additionalText;
-			note1[column] = TimeSeries.notes.get(0);
-			note2[column] = TimeSeries.notes.get(1);
+			name[column] = TimeSeries.getDescription().getTitle();
+			cdid[column] = TimeSeries.getCdid();
+			preUnit[column] = TimeSeries.getDescription().getPreUnit();
+			unit[column] = TimeSeries.getDescription().getUnit();
+			source[column] = TimeSeries.getDescription().getSource();
+			keyNote[column] = TimeSeries.getDescription().getKeyNote();
+			additionalText[column] = TimeSeries.getDescription().getAdditionalText();
+			note1[column] = TimeSeries.getNotes().get(0);
+			note2[column] = TimeSeries.getNotes().get(1);
 			column++;
-			System.out.println("Geneararing CSV for: " + TimeSeries.title + " at: " + TimeSeries.uri);
+			System.out.println("Geneararing CSV for: " + TimeSeries.getDescription().getTitle() + " at: " + TimeSeries.getUri());
 		}
 		writer.writeNext(name);
 		writer.writeNext(cdid);

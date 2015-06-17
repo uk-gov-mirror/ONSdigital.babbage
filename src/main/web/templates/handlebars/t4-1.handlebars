@@ -8,14 +8,14 @@
 				<p class="page-header__title page-header--stat-bulletin-desc">
 						<strong>Statistical bulletin</strong>
 				</p>
-				<h1 class="page-header__title flush--half--bottom">{{title}}</h1>
+				<h1 class="page-header__title flush--half--bottom">{{description.title}}</h1>
 				<div class="grid-wrap">
 						<p class="grid-col tablet-grid-one-quarter page-header__meta-block-with-img">
 						    <img src="http://alpha.ons.gov.uk/ui/img/national-statistics.png" alt="" />
-								<span>Contact: </span><br/><a href="mailto:{{contact.email}}">{{#if contact.name}}{{contact.name}}{{else}}{{contact.email}}{{/if}}</a>
+								<span>Contact: </span><br/><a href="mailto:{{contact.email}}">{{#if description.contact.name}}{{description.contact.name}}{{else}}{{description.contact.email}}{{/if}}</a>
 						</p>
 			      <p class="grid-col tablet-grid-one-quarter divider--border-left">
-			          <span>Release date: </span><br/>{{df releaseDate "d MMMM yyyy"}}<br/><a href="#">previous versions</a>
+			          <span>Release date: </span><br/>{{df description.releaseDate "d MMMM yyyy"}}<br/><a href="#">previous versions</a>
 			      </p>
 			      <p class="grid-col tablet-grid-one-quarter divider--border-left">
 			          <span>Next release: </span><br/>{{nextRelease}}
@@ -42,7 +42,7 @@
 
 <!-- Table of contents -->
 <div class="wrapper">
-		<p class="lede">{{summary}}</p>
+		<p class="lede">{{description.summary}}</p>
 		<article class="box panel--separated--bottom">
 				<h3 id="top">Table of contents</h3>
 				<ol class="table-of-contents-ordered-list">
@@ -113,9 +113,9 @@
                     <!-- /box__header -->
                     <div class="box__content">
                         <p>
-						  {{#if contact.name}}{{contact.name}}{{/if}}
-                          <a href="mailto:{{contact.email}}">{{contact.email}}</a></br>
-                          {{#if contact.telephone}}Telephone: {{contact.telephone}}{{/if}}
+						  {{#if description.contact.name}}{{description.contact.name}}{{/if}}
+                          <a href="mailto:{{description.contact.email}}">{{description.contact.email}}</a></br>
+                          {{#if description.contact.telephone}}Telephone: {{description.contact.telephone}}{{/if}}
                         </p>
                     </div>
                     <!-- /box__content -->
@@ -139,10 +139,10 @@
 														{{#each relatedBulletins}}
 														<li>
 																<h3 class="flush--bottom">
-																<a href="{{uri}}">{{title}}</a>
+																<a href="{{uri}}">{{description.title}}</a>
 																</h3>
 
-																<p>{{summary}}</p>
+																<p>{{description.summary}}</p>
 														</li>
 														{{/each}}
 												</ul>

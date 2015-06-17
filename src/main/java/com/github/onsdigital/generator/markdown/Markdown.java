@@ -133,10 +133,10 @@ class Markdown {
 			if (!matched) {
 				MarkdownSection newSection = matchHeading(line);
 				if (newSection != null) {
-					if (newSection.title.matches("\\[accordion\\].*")) {
+					if (newSection.getTitle().matches("\\[accordion\\].*")) {
 						// Remove the marker, case insensitively with "(?i)"
 						// and add the section to the accordion list:
-						newSection.title = newSection.title.replaceFirst("(?i)\\[accordion\\]\\s*", "");
+						newSection.setTitle(newSection.getTitle().replaceFirst("(?i)\\[accordion\\]\\s*", ""));
 						accordion.add(newSection);
 					} else {
 						sections.add(newSection);
@@ -148,10 +148,12 @@ class Markdown {
 
 			// Section content
 			if (!matched && currentSection != null) {
-				if (StringUtils.isNotBlank(currentSection.markdown)) {
-					currentSection.markdown += "\n";
+				String markdown = currentSection.getMarkdown();
+				if (StringUtils.isNotBlank(markdown)) {
+					markdown += "\n";
 				}
-				currentSection.markdown += line;
+				markdown += line;
+				currentSection.setMarkdown(markdown);
 			}
 
 		}
@@ -240,9 +242,9 @@ class Markdown {
 		String h2Regex = "##\\s+";
 		if (line.matches(h2Regex + ".*")) {
 			result = new MarkdownSection();
-			result.title = line.replaceFirst(h2Regex, "").trim();
-			result.markdown = StringUtils.EMPTY;
-		}
+            result.setTitle(line.replaceFirst(h2Regex, "").trim());
+            result.setMarkdown(StringUtils.EMPTY);
+        }
 
 		return result;
 	}

@@ -1,7 +1,7 @@
 package com.github.onsdigital.search.bean;
 
 import com.github.davidcarboni.restolino.json.Serialiser;
-import com.github.onsdigital.content.partial.metadata.StatisticsMetadata;
+import com.github.onsdigital.content.page.statistics.base.StatisticsDescription;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -69,10 +69,10 @@ public class CollectionSearchResult {
 
 	private void init(List<File> files) {
 		for (File file : files) {
-			Map<String, String> item = new HashMap<String, String>();
-			StatisticsMetadata collectionItemJson = getCollectionItem(file);
-			item.put(TITLE, collectionItemJson.title);
-            item.put(RELEASE_DATE, new SimpleDateFormat(datePattern).format(collectionItemJson.releaseDate));
+			Map<String, String> item = new HashMap<>();
+			StatisticsDescription collectionItemJson = getCollectionItem(file);
+			item.put(TITLE, collectionItemJson.getTitle());
+            item.put(RELEASE_DATE, new SimpleDateFormat(datePattern).format(collectionItemJson.getReleaseDate()));
 
 			String[] urlWithoutJson = getUrl(file);
 			item.put(URL, urlWithoutJson[0]);
@@ -91,9 +91,9 @@ public class CollectionSearchResult {
 		return urlWithoutJson;
 	}
 
-	private StatisticsMetadata getCollectionItem(File file) {
+	private StatisticsDescription getCollectionItem(File file) {
 		try {
-			return Serialiser.deserialise(new FileInputStream(file), StatisticsMetadata.class);
+			return Serialiser.deserialise(new FileInputStream(file), StatisticsDescription.class);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}

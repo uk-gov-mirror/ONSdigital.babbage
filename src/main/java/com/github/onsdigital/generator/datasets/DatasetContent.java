@@ -1,7 +1,9 @@
 package com.github.onsdigital.generator.datasets;
 
-import com.github.onsdigital.content.page.statistics.Dataset;
+import com.github.onsdigital.content.page.statistics.dataset.Dataset;
+import com.github.onsdigital.content.page.statistics.dataset.DatasetDescription;
 import com.github.onsdigital.content.partial.DownloadSection;
+import com.github.onsdigital.content.partial.markdown.MarkdownSection;
 import com.github.onsdigital.generator.ContentNode;
 import com.github.onsdigital.generator.data.Csv;
 import com.github.onsdigital.generator.data.Data;
@@ -68,19 +70,21 @@ public class DatasetContent {
             ContentNode folder = Data.getFolder(row.get(THEME), row.get(LEVEL2), row.get(LEVEL3));
 
             Dataset dataset = new Dataset();
-            dataset.title = StringUtils.trim(row.get(NAME));
-//			dataset.title = dataset.title; //Title no more there
-//			dataset.fileName = sanitise(dataset.title.toLowerCase());
+            DatasetDescription description = new DatasetDescription();
+            dataset.setDescription(description);
+            dataset.setDownloads(new ArrayList<>());
+
+            description.setTitle(StringUtils.trim(row.get(NAME)));
             if (StringUtils.isNotBlank(row.get(SUMMARY))) {
-                dataset.summary = row.get(SUMMARY);
+                description.setSummary(row.get(SUMMARY));
             }
 
             if (StringUtils.isNotBlank(row.get(SERIES))) {
 
                 DownloadSection downloadSection = new DownloadSection();
-                downloadSection.title = dataset.title;
-                downloadSection.cdids = new ArrayList<String>();
-                dataset.downloads.add(downloadSection);
+                downloadSection.setTitle(description.getTitle());
+                downloadSection.setCdids(new ArrayList<>());
+                dataset.getDownloads().add(downloadSection);
 
                 // Extract CDIDs
                 // (four-character sequences of letters and numbers):
@@ -88,38 +92,40 @@ public class DatasetContent {
                 Pattern pattern = Pattern.compile("[A-Za-z0-9]{4}");
                 Matcher matcher = pattern.matcher(cdidList);
                 while (matcher.find()) {
-                    downloadSection.cdids.add(matcher.group());
+                    downloadSection.getCdids().add(matcher.group());
                 }
             } else if (StringUtils.isNotBlank(row.get(DOWNLOAD[0]))) {
 
                 for (int s = 0; s < 3; s++) {
                     if (StringUtils.isNotBlank(row.get(DOWNLOAD[s]))) {
                         DownloadSection downloadSection = new DownloadSection();
-                        downloadSection.title = row.get(DOWNLOAD[s]);
+                        downloadSection.setTitle(row.get(DOWNLOAD[s]));
                         String xls = row.get(DOWNLOAD_XLS[s]);
                         String csv = row.get(DOWNLOAD_CSV[s]);
                         if (StringUtils.isNotBlank(xls)) {
-                            downloadSection.xls = xls;
+                            downloadSection.setXls(xls);;
                         }
                         if (StringUtils.isNotBlank(csv)) {
-                            downloadSection.csv = csv;
+                            downloadSection.setCsv(csv);
                         }
-                        dataset.downloads.add(downloadSection);
+                        dataset.getDownloads().add(downloadSection);
                     }
                 }
 
             } else if (StringUtils.isNotBlank(row.get("Link (latest)"))) {
                 DownloadSection downloadSection = new DownloadSection();
-                downloadSection.title = dataset.title;
-                downloadSection.xls = row.get("Link (latest)");
-                dataset.downloads.add(downloadSection);
+                downloadSection.setTitle(dataset.getDescription().getTitle());
+                downloadSection.setXls(row.get("Link (latest)"));;
+                dataset.getDownloads().add(downloadSection);
             }
 
             String nationalStatistic = StringUtils.defaultIfBlank(row.get(NATIONAL_STATISTIC), "yes");
-            dataset.nationalStatistic = BooleanUtils.toBoolean(nationalStatistic);
+            description.setNationalStatistic(BooleanUtils.toBoolean(nationalStatistic));
 
             if (StringUtils.isNotBlank(row.get(DESCRIPTION))) {
-                dataset.description = row.get(DESCRIPTION);
+                MarkdownSection section = new MarkdownSection();
+                section.setMarkdown(row.get(DESCRIPTION));
+                dataset.setSection(section);
             }
 
             folder.datasets.add(dataset);

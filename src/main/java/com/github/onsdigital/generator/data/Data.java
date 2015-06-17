@@ -1,7 +1,7 @@
 package com.github.onsdigital.generator.data;
 
-import com.github.onsdigital.content.page.statistics.Dataset;
-import com.github.onsdigital.content.page.statistics.data.TimeSeries;
+import com.github.onsdigital.content.page.statistics.data.timeseries.TimeSeries;
+import com.github.onsdigital.content.page.statistics.dataset.Dataset;
 import com.github.onsdigital.content.partial.TimeseriesValue;
 import com.github.onsdigital.generator.ContentNode;
 import com.github.onsdigital.generator.datasets.DatasetContent;
@@ -193,10 +193,10 @@ public class Data implements Iterable<TimeSeries> {
      * @param timeseries The timeseries.
      */
     public static void addTimeseries(TimeSeries timeseries) {
-        if (timeserieses.containsKey(toKey(timeseries.cdid))) {
+        if (timeserieses.containsKey(toKey(timeseries.getCdid()))) {
             throw new IllegalArgumentException("Duplicate timeseries: " + timeseries);
         }
-        timeserieses.put(toKey(timeseries.cdid), timeseries);
+        timeserieses.put(toKey(timeseries.getCdid()), timeseries);
     }
 
     /**

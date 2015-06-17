@@ -1,19 +1,19 @@
 package com.github.onsdigital.generator.markdown;
 
-import com.github.onsdigital.content.page.statistics.document.Article;
+import com.github.onsdigital.content.page.statistics.document.article.Article;
+import com.github.onsdigital.content.page.statistics.document.article.ArticleDescription;
+import com.github.onsdigital.content.page.statistics.document.bulletin.BulletinDescription;
 import com.github.onsdigital.content.partial.Contact;
 import com.github.onsdigital.generator.ContentNode;
 import com.github.onsdigital.generator.data.Data;
+import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.nio.file.Path;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Collection;
-import java.util.Date;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 public class ArticleMarkdown {
 
@@ -28,7 +28,7 @@ public class ArticleMarkdown {
 			Article article = readArticle(file);
 
 			// Add it to the taxonomy:
-			ContentNode folder = Data.getFolder(article.theme, article.level2, article.level3);
+			ContentNode folder = Data.getFolder(article.getDescription().theme, article.getDescription().level2, article.getDescription().level3);
 			folder.articles.add(article);
 		}
 	}
@@ -41,12 +41,14 @@ public class ArticleMarkdown {
 
 		// Set up the article
 		Article article = new Article();
-		article.title = markdown.title;
-		article.title = markdown.title;
-		setProperties(article, markdown);
-		article.sections.addAll(markdown.sections);
-		article.accordion.addAll(markdown.accordion);
-//		article.fileName = markdown.toFilename();
+		ArticleDescription description = new ArticleDescription();
+
+		description.setTitle(markdown.title);
+		setDescription(description, markdown);
+		article.setSections(markdown.sections);
+		article.getSections().addAll(markdown.accordion);
+
+        article.setDescription(description);
 
 		return article;
 	}
@@ -65,35 +67,51 @@ public class ArticleMarkdown {
      * <li>Release date</li>
 	 * </ul>
 	 * 
-	 * @param article
+	 * @param articleDescription
 	 * @param markdown
 	 *            The {@link Scanner} to read lines from.
 	 */
-	private static void setProperties(Article article, Markdown markdown) {
+	private static void setDescription(ArticleDescription articleDescription, Markdown markdown) {
 
 		Map<String, String> properties = markdown.properties;
 
 		// Location
-		article.theme = StringUtils.defaultIfBlank(properties.remove("theme"), article.theme);
-		article.level2 = StringUtils.defaultIfBlank(properties.remove("level 2"), article.level2);
-		article.level3 = StringUtils.defaultIfBlank(properties.remove("level 3"), article.level3);
+		articleDescription.theme = org.apache.commons.lang.StringUtils.defaultIfBlank(properties.remove("theme"), null);
+		articleDescription.level2 = org.apache.commons.lang.StringUtils.defaultIfBlank(properties.remove("level 2"), null);
+		articleDescription.level3 = org.apache.commons.lang.StringUtils.defaultIfBlank(properties.remove("level 3"), null);
 
 		// Additional details
-		article.contact = new Contact();
-		article.contact.name = StringUtils.defaultIfBlank(properties.remove("contact title"), article.theme);
-		article.contact.email = StringUtils.defaultIfBlank(properties.remove("contact email"), article.theme);
+		articleDescription.setSummary(org.apache.commons.lang.StringUtils.defaultIfBlank(properties.remove("summary"), null));
 
+		//Contact info
+		Contact contact = new Contact();
+		contact.setName(org.apache.commons.lang.StringUtils.defaultIfBlank(properties.remove("contact title"), null));
+		contact.setEmail(org.apache.commons.lang.StringUtils.defaultIfBlank(properties.remove("contact email"), null));
+		contact.setTelephone(org.apache.commons.lang.StringUtils.defaultIfBlank(properties.remove("phone"), null));
+		articleDescription.setContact(contact);
 
 		//TODO: Where is next release?
 		Date releaseDate = toDate(properties.remove("release date"));
-		Date nextReleaseDate = toDate(properties.remove("next release"));
+		articleDescription.setReleaseDate(releaseDate == null ? null : releaseDate);
 
-		article.releaseDate = releaseDate == null ? article.releaseDate : releaseDate;
-		article.nextReleaseDate = nextReleaseDate == null ? article.nextReleaseDate: releaseDate;
+		// Additional fields for migration:
+
+		articleDescription.setNationalStatistic(BooleanUtils.toBoolean(org.apache.commons.lang.StringUtils.defaultIfBlank(properties.remove("national statistics"), "yes")));
+		articleDescription.setLanguage(org.apache.commons.lang.StringUtils.defaultIfBlank(properties.remove("language"), null));
+		// Split keywords by commas:
+		String searchKeywordsString = org.apache.commons.lang.StringUtils.defaultIfBlank(properties.remove("search keywords"), "");
+		String[] keywords = org.apache.commons.lang.StringUtils.split(searchKeywordsString, ',');
+		List<String> searchKeywords = new ArrayList<String>();
+		if (keywords != null) {
+			for (int i = 0; i < keywords.length; i++) {
+				searchKeywords.add(org.apache.commons.lang.StringUtils.trim(keywords[i]));
+			}
+		}
+		articleDescription.setKeywords(searchKeywords);
 
 		// Note any unexpected information
 		for (String property : properties.keySet()) {
-			System.out.println("Article key not recognised: " + property + " (for value '" + properties.get(property) + "')");
+			System.out.println("Bulletin key not recognised: '" + property + "' (length " + property.length() + " for value '" + properties.get(property) + "')");
 		}
 
 	}
@@ -120,8 +138,8 @@ public class ArticleMarkdown {
      */
     public static String toFilename(Article article) {
         StringBuilder result = new StringBuilder();
-        for (int i = 0; i < article.title.length(); i++) {
-            String character = article.title.substring(i, i + 1);
+        for (int i = 0; i < article.getDescription().getTitle().length(); i++) {
+            String character = article.getDescription().getTitle().substring(i, i + 1);
             if (character.matches("[a-zA-Z0-9]")) {
                 result.append(character);
             }

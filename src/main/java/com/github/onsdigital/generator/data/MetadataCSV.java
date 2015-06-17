@@ -1,7 +1,9 @@
 package com.github.onsdigital.generator.data;
 
 import au.com.bytecode.opencsv.CSVReader;
-import com.github.onsdigital.content.page.statistics.data.TimeSeries;
+import com.github.onsdigital.content.page.statistics.data.timeseries.TimeSeries;
+import com.github.onsdigital.content.page.statistics.data.timeseries.TimeseriesDescription;
+import com.github.onsdigital.content.partial.markdown.MarkdownSection;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -58,18 +60,26 @@ public class MetadataCSV {
 		csv.read();
 		csv.getHeadings();
 		for (Map<String, String> row : csv) {
+			TimeseriesDescription description = new TimeseriesDescription();
+
 			String cdid = row.get("CDID");
 			TimeSeries timeseries = Data.timeseries(cdid);
 			if (timeseries == null) {
 				timeseries = Data.addTimeseries(cdid);
 			}
-			timeseries.title = row.get("Name");
-			timeseries.seasonalAdjustment = row.get("Seasonal adjustment");
-			timeseries.mainMeasure = row.get("Main measure");
-			timeseries.description = row.get("Description");
-			timeseries.notes = new ArrayList<String>();
-			timeseries.notes.add(StringUtils.defaultIfBlank(row.get("Note 1"), null));
-			timeseries.notes.add(StringUtils.defaultIfBlank(row.get("Note 2"), null));
+
+			description.setCdid(cdid);
+			description.setTitle(row.get("Name"));
+			description.setSeasonalAdjustment(row.get("Seasonal adjustment"));
+			description.setMainMeasure(row.get("Main measure"));
+			ArrayList notes = new ArrayList<String>();
+			notes.add(StringUtils.defaultIfBlank(row.get("Note 1"), null));
+			notes.add(StringUtils.defaultIfBlank(row.get("Note 2"), null));
+			timeseries.setNotes(notes);
+			MarkdownSection section = new MarkdownSection();
+			section.setMarkdown(row.get("Description"));
+			timeseries.setSection(section);
+
 		}
 	}
 
@@ -98,7 +108,7 @@ public class MetadataCSV {
 				}
 				dataset.add(timeseries);
 				// System.out.println(file.getFileName() + ": " + title);
-				timeseries.title = name;
+				timeseries.getDescription().setTitle(name);
 			}
 			System.out.println("Updated " + ok + " timeseries.");
 		}

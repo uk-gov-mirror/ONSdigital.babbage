@@ -5,6 +5,7 @@ import java.nio.file.Path;
 import java.util.Collection;
 import java.util.Map;
 
+import com.github.onsdigital.content.page.base.PageDescription;
 import com.github.onsdigital.content.page.methodology.Methodology;
 import com.github.onsdigital.generator.ContentNode;
 import com.github.onsdigital.generator.data.Data;
@@ -35,11 +36,11 @@ public class MethodologyMarkdown {
 
 		// Set up the methodology
 		Methodology methodology = new Methodology();
-		methodology.title = markdown.title;
-		methodology.title = markdown.title;
-		setProperties(methodology, markdown);
-		methodology.sections.addAll(markdown.sections);
-		methodology.accordion.addAll(markdown.accordion);
+        PageDescription description = new PageDescription();
+        description.setTitle(markdown.title);
+        setProperties(methodology, markdown);
+		methodology.setSections(markdown.sections);
+		methodology.setAccordion(markdown.accordion);
 //		methodology.fileName = markdown.toFilename();
 
 		return methodology;
@@ -67,7 +68,7 @@ public class MethodologyMarkdown {
 		methodology.level3 = properties.remove("level 3");
 
 		// Additional details
-		methodology.summary = properties.remove("lede");
+        methodology.getDescription().setSummary(properties.remove("lede"));
 //		methodology.more = properties.remove("more");
 
 		// Note any unexpected information
@@ -85,8 +86,8 @@ public class MethodologyMarkdown {
 	 */
 	public static String toFilename(Methodology methodology) {
 		StringBuilder result = new StringBuilder();
-		for (int i = 0; i < methodology.title.length(); i++) {
-			String character = methodology.title.substring(i, i + 1);
+		for (int i = 0; i < methodology.getDescription().getTitle().length(); i++) {
+			String character = methodology.getDescription().getTitle().substring(i, i + 1);
 			if (character.matches("[a-zA-Z0-9]")) {
 				result.append(character);
 			}

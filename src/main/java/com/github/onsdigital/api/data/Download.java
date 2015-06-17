@@ -4,7 +4,7 @@ import com.github.davidcarboni.restolino.framework.Api;
 import com.github.davidcarboni.restolino.json.Serialiser;
 import com.github.onsdigital.bean.DateVal;
 import com.github.onsdigital.bean.DownloadRequest;
-import com.github.onsdigital.content.page.statistics.data.TimeSeries;
+import com.github.onsdigital.content.page.statistics.data.timeseries.TimeSeries;
 import com.github.onsdigital.content.partial.TimeseriesValue;
 import com.github.onsdigital.data.DataService;
 import com.github.onsdigital.util.CSVGenerator;

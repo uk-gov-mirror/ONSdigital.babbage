@@ -33,7 +33,7 @@ public class PageRequestHandler implements RequestHandler {
         Page page = dataRequestHandler.readAsPage(requestedUri, true, zebedeeRequest);
 
         //TODO: Read navigaton from zebedee if zebedee request ????
-        page.navigation = NavigationUtil.getNavigation();
+        page.setNavigation(NavigationUtil.getNavigation());
         String html = TemplateService.getInstance().renderPage(page);
         return new BabbageStringResponse(html, CONTENT_TYPE);
     }

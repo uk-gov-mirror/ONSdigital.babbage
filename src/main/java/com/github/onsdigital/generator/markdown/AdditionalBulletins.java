@@ -4,8 +4,8 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.Map;
 
-import com.github.onsdigital.content.page.statistics.data.TimeSeries;
-import com.github.onsdigital.content.page.statistics.document.Bulletin;
+import com.github.onsdigital.content.page.statistics.data.timeseries.TimeSeries;
+import com.github.onsdigital.content.page.statistics.document.bulletin.Bulletin;
 import com.github.onsdigital.generator.ContentNode;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -66,7 +66,7 @@ public class AdditionalBulletins {
         URI result = null;
 
         if (timeseries != null) {
-            if (timeseries.uri == null) {
+            if (timeseries.getUri() == null) {
                 String baseUri = "/" + folder.filename();
                 ContentNode parent = folder.parent;
                 while (parent != null) {
@@ -74,9 +74,9 @@ public class AdditionalBulletins {
                     parent = parent.parent;
                 }
                 baseUri += "/timeseries";
-                timeseries.uri = URI.create(baseUri + "/" + StringUtils.trim(StringUtils.lowerCase(timeseries.cdid)));
+                timeseries.setUri( URI.create(baseUri + "/" + StringUtils.trim(StringUtils.lowerCase(timeseries.getCdid()))));;
             }
-            result = timeseries.uri;
+            result = timeseries.getUri();
         }
 
         return result;

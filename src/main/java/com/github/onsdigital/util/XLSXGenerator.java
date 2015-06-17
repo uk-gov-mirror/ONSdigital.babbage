@@ -1,6 +1,6 @@
 package com.github.onsdigital.util;
 
-import com.github.onsdigital.content.page.statistics.data.TimeSeries;
+import com.github.onsdigital.content.page.statistics.data.timeseries.TimeSeries;
 import com.github.onsdigital.content.partial.TimeseriesValue;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -75,17 +75,17 @@ public class XLSXGenerator {
 
 		// Data
 		for (TimeSeries TimeSeries : this.TimeSeries) {
-			name.createCell(column).setCellValue(TimeSeries.title);
-			cdid.createCell(column).setCellValue(TimeSeries.cdid);
-			preUnit.createCell(column).setCellValue(TimeSeries.preUnit);
-			unit.createCell(column).setCellValue(TimeSeries.unit);
-			source.createCell(column).setCellValue(TimeSeries.source);
-			keyNote.createCell(column).setCellValue(TimeSeries.keyNote);
-			additionalText.createCell(column).setCellValue(TimeSeries.additionalText);
-			note1.createCell(column).setCellValue(TimeSeries.notes.get(0));
-			note2.createCell(column).setCellValue(TimeSeries.notes.get(1));
+			name.createCell(column).setCellValue(TimeSeries.getDescription().getTitle());
+			cdid.createCell(column).setCellValue(TimeSeries.getCdid());
+			preUnit.createCell(column).setCellValue(TimeSeries.getDescription().getPreUnit());
+			unit.createCell(column).setCellValue(TimeSeries.getDescription().getUnit());
+			source.createCell(column).setCellValue(TimeSeries.getDescription().getSource());
+			keyNote.createCell(column).setCellValue(TimeSeries.getDescription().getKeyNote());
+			additionalText.createCell(column).setCellValue(TimeSeries.getDescription().getAdditionalText());
+			note1.createCell(column).setCellValue(TimeSeries.getNotes().get(0));
+			note2.createCell(column).setCellValue(TimeSeries.getNotes().get(1));
 			column++;
-			System.out.println("Geneararing XLSX for: " + TimeSeries.title + " at: " + TimeSeries.uri);
+			System.out.println("Geneararing XLSX for: " + TimeSeries.getDescription().getTitle() + " at: " + TimeSeries.getUri());
 		}
 
 		return row;

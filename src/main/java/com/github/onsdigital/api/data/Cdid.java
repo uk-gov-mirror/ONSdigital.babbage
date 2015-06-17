@@ -4,7 +4,7 @@ import com.github.davidcarboni.restolino.framework.Api;
 import com.github.davidcarboni.restolino.json.Serialiser;
 import com.github.onsdigital.bean.CdidRequest;
 import com.github.onsdigital.configuration.Configuration;
-import com.github.onsdigital.content.page.statistics.data.TimeSeries;
+import com.github.onsdigital.content.page.statistics.data.timeseries.TimeSeries;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -56,7 +56,7 @@ static Map<String, TimeSeries> cache = new ConcurrentHashMap<String, TimeSeries>
 			TimeSeries TimeSeries = cache.get(cdid.toUpperCase());
 			if (TimeSeries != null) {
 				System.out.println("Cache hit for : " + cdid);
-				result.put(TimeSeries.cdid, TimeSeries);
+				result.put(TimeSeries.getCdid(), TimeSeries);
 			} else {
 				System.out.println("Cache miss for : " + cdid);
 				missing.add(cdid);
@@ -70,8 +70,8 @@ static Map<String, TimeSeries> cache = new ConcurrentHashMap<String, TimeSeries>
 				try (InputStream input = Files.newInputStream(path)) {
 					System.out.println(path);
 					TimeSeries TimeSeries = Serialiser.deserialise(input, TimeSeries.class);
-					result.put(TimeSeries.cdid, TimeSeries);
-					cache.put(TimeSeries.cdid, TimeSeries);
+					result.put(TimeSeries.getCdid(), TimeSeries);
+					cache.put(TimeSeries.getCdid(), TimeSeries);
 				}
 			}
 		}

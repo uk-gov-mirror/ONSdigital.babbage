@@ -4,10 +4,10 @@
 <div class="page-header slate">
 	<div class="wrapper" >
 		{{> partials/breadcrumb}}
-	  	<h1 class="page-header__title flush--half--bottom">{{title}}</h1>
+	  	<h1 class="page-header__title flush--half--bottom">{{description.title}}</h1>
 	  	<div class="lede content-reveal">
 			<p>
-				{{summary}}
+				{{description.summary}}
 			</p>
 		</div>
 		<!-- /lede -->
@@ -20,7 +20,7 @@
 					<h2>Latest data</h2>
 					<header class="box___section">
 							<h3 class="navpanel-list-heading lede box--padded-bottom-small">
-								<a href="{{items.0.uri}}">{{items.0.data.title}}</a>
+								<a href="{{items.0.data.uri}}">{{items.0.data.description.title}}</a>
 							</h3>
 					</header>
 					<div class="grid-wrap">
@@ -33,18 +33,18 @@
 									<div class="stat">
 											<div class="stat__figure ">
 													<div>
-															{{items.0.data.number}}<span class="stat__figure__unit"> {{items.0.data.unit}}</span>
+															{{items.0.data.description.number}}<span class="stat__figure__unit"> {{items.0.data.description.unit}}</span>
 													</div>
 													<div class="stat__description">
-														{{items.0.data.date}}
+														{{items.0.data.description.date}}
 													</div>
 											</div>
 									</div>
 									<dl class="micro definition-list definition-list--inline flush--half--vertical">
 											<dt>Last updated:</dt>
-											<dd>{{items.0.data.lastUpdate}}</dd>
+											<dd>{{df items.0.data.description.releaseDate}}</dd>
 											<dt>Next update:</dt>
-											<dd>{{items.0.data.nextUpdate}}</dd>
+											<dd>{{items.0.data.description.nextRelease}}</dd>
 									</dl>
 							</div>
 							<!-- /grid-col -->
@@ -63,19 +63,19 @@
 					<h2>Latest statistical bulletin</h2>
 					<header class="box___section">
 							<h3 class="navpanel-list-heading lede box--padded-bottom-small">
-							<a href="{{statsBulletins.0.uri}}">{{statsBulletins.0.title}}</a>
+							<a href="{{statsBulletins.0.uri}}">{{statsBulletins.0.description.title}}</a>
 							</h3>
 					</header>
 					<h3>What's in the bulletin?</h3>
 					<ul class="list--bullet mini flush--half--top navpanel-list headline--box-container-text">
 						<li>
-							{{statsBulletins.0.headline1}}
+							{{statsBulletins.0.description.headline1}}
 						</li>
 						<li>
-							{{statsBulletins.0.headline2}}
+							{{statsBulletins.0.description.headline2}}
 						</li>
 						<li>
-							{{statsBulletins.0.headline3}}
+							{{statsBulletins.0.description.headline3}}
 						</li>
 					</ul>
 				</div>
@@ -104,11 +104,11 @@
 						<li class="list--table__item list--table__body">
 							<div class="list--table__item__body list--table__item__body--caption">
 								<h3 class="flush--half--bottom">
-									<a href="{{uri}}">{{data.title}}</a>
+									<a href="{{uri}}">{{data.description.title}}</a>
 								</h3>
 								{{#if description}}
 									<p class="list--table__item__description">
-										{{data.description}}
+										{{data.description.summary}}
 									</p>
 								{{/if}}
 							</div>
@@ -117,16 +117,16 @@
 							</div>
 							<div class="list--table__item__body list--table__item__body--stat">
 								<div class="stat__figure">
-									{{data.number}}<span class="stat__figure__unit"> {{data.unit}}</span>
-									<div class="stat__description">{{data.period}}</div>
+									{{data.description.number}}<span class="stat__figure__unit"> {{data.description.unit}}</span>
+									<div class="stat__description">{{data.description.date}}</div>
 								</div>
 							</div>
 							<div class="list--table__item__body list--table__item__body--update">
 								<dl class="micro flush--half--vertical">
 									<dt>Last updated:</dt>
-									<dd>{{data.releaseDate}}</dd>
+									<dd>{{data.description.releaseDate}}</dd>
 									<dt>Next update:</dt>
-									<dd>{{data.nextReleaseDate}}</dd>
+									<dd>{{data.description.nextRelease}}</dd>
 								</dl>
 							</div>
 						</li>
@@ -151,12 +151,12 @@
 								{{#each datasets}}
 								<li class="grid-col desktop-grid-one-half panel--bottom-mar-small">
 									<h3 class="flush">
-										<a href="{{uri}}" title="{{title}}">
-											{{title}}
+										<a href="{{uri}}" title="{{description.title}}">
+											{{description.title}}
 										</a>
 									</h3>
 									<p>
-										{{summary}}
+										{{description.summary}}
 									</p>
 								</li>
 								{{/each}}
@@ -217,12 +217,12 @@
 								{{#each statsBulletins}}
 								<li class="grid-col desktop-grid-one-third box--padded-vertical nav--block-landing">
 									<h3>
-										<a href="{{uri}}" title="{{title}}">
-											{{title}}
+										<a href="{{uri}}" title="{{description.title}}">
+											{{description.title}}
 										</a>
 									</h3>
 									<p>
-										{{summary}}
+										{{description.summary}}
 									</p>
 								</li>
 								{{/each}}
@@ -245,12 +245,12 @@
 								{{#each articles}}
 								<li class="grid-col desktop-grid-one-third panel--bottom-mar-small">
 									<h3 class="flush">
-										<a href="{{uri}}" title="{{title}}">
-											{{title}}
+										<a href="{{uri}}" title="{{description.title}}">
+											{{description.title}}
 										</a>
 									</h3>
 									<p>
-										{{summary}}
+										{{description.summary}}
 									</p>
 								</li>
 								{{/each}}
