@@ -12,13 +12,12 @@
 				<span>Contact: </span></br>
 				<a href="mailto:{{contact.email}}">{{contact.name}}</a>
 			<p class="grid-col tablet-grid-one-quarter divider--border-left">
-				<span>Release date: </span>{{releaseDate}}
+				<span>Release date: </span></br>{{df releaseDate}}
 				</br>
 				<a href="#">previous versions</a>
 			</p>
 			<p class="grid-col tablet-grid-one-quarter divider--border-left">
-				<span>Next release: </span>
-				{{nextRelease}}
+				<span>Next release: </span></br>{{df nextRelease}}
 			</p>
 			<p class="grid-col tablet-grid-one-quarter divider--border-left">
 				<a href="{{print.size}}" class ="icon-print">Print full report</a> ({{print.size}} pages)
