@@ -4,7 +4,7 @@
 	<div class="wrapper">
 		{{> templates/handlebars/partials/breadcrumb}}
 		<p class="page-header__title">
-			<strong>Compendium</strong>
+			Compendium
 		</p>
 		<h1 class="page-header__title flush--half--bottom">{{name}}</h1>
 		<div class="grid-wrap">
@@ -13,13 +13,12 @@
 				<span>Contact: </span></br>
 				<a href="mailto:{{contact.email}}">{{contact.name}}</a>
 			<p class="grid-col tablet-grid-one-quarter divider--border-left">
-				<span>Release date: </span>{{releaseDate}}
+				<span>Release date: </span></br>{{releaseDate}}
 				</br>
 				<a href="#">previous versions</a>
 			</p>
 			<p class="grid-col tablet-grid-one-quarter divider--border-left">
-				<span>Next release: </span>
-				{{nextRelease}}
+				<span>Next release: </span></br>{{nextRelease}}
 			</p>
 			<p class="grid-col tablet-grid-one-quarter divider--border-left">
 				<a href="{{print.size}}" class ="icon-print">Print full report</a> ({{print.size}} pages)
@@ -39,13 +38,14 @@
 			<p class="lede">
 				{{lede}}
 			</p>
-			<div class="accordion is-collapsed">
-				<h2 id="sc-1" class="accordion__title" aria-controls="content-1">Chapters</h2>
-				<div id="content-1" class="accordion__content" aria-labelledby="sc-1">
+			<h2>What's in this compendium?</h2>
+			<div class="accordion is-expanded">
+				<h3 id="sc-{{@index}}" class="accordion__title" aria-controls="content-{{#index}}">Chapters</h3>
+				<div id="content-{{@index}}" class="accordion__content" aria-labelledby="sc-{{@index}}">
 					<ul class="list--neutral">
 						{{#each chapters}}
 						<li>
-							<h3 class="flush" ><a href="{{uri}}">{{title}}</a></h3>
+							<h4 class="flush" ><a href="{{uri}}">{{title}}</a></h4>
 							<p>
 								{{description}}
 							</p>
@@ -56,12 +56,12 @@
 			</div>
 			<!-- /accordion -->
 			<div class="accordion is-collapsed">
-				<h2 id="sc-1" class="accordion__title" aria-controls="content-1">Data</h2>
-				<div id="content-1" class="accordion__content" aria-labelledby="sc-1">
+				<h3 id="sc-{{@index}}" class="accordion__title" aria-controls="content-{{@index}}">Data</h4>
+				<div id="content-{{@index}}" class="accordion__content" aria-labelledby="sc-{{@index}}">
 					<ul class="list--neutral">
 						{{#each data}}
 						<li>
-							<h3 class="flush"><a href="{{uri}}">{{title}}</a></h3>
+							<h4 class="flush"><a href="{{uri}}">{{title}}</a></h4>
 							<p>{{description}}</p>
 						</li>
 						{{/each}}
@@ -72,14 +72,12 @@
 			<div class="grid-wrap panel--top-pad-large">
 				<div class="grid-col desktop-grid-one-half">
 					<article class="box box--padded sectioned">
-						<header class="box__header">
-							<h3>Methodology</h3>
-						</header>
+						<h3>Methodology</h3>
 						<div class="box__content">
 							<ul class="list--neutral">
 								{{#each methodology}}
-								<li>
-									<a href="uri">{{title}}</a>
+								<li class="flush--third--bottom">
+									<a href="{{uri}}">{{title}}</a>
 								</li>
 								{{/each}}
 							</ul>
@@ -88,24 +86,17 @@
 				</div>
 				<!-- /grid-desktop-one-half -->
 				<div class="grid-col desktop-grid-one-half">
-					<article class="box box--padded sectioned">
-						<header class="box__header">
-							<h3>Contact details</h3>
-						</header>
+					<div class="box box--padded sectioned">
+						<h3>Contact details</h3>
 						<div class="box__content">
-							<ul class="list--neutral">
-								<li>
-									{{contact.name}}
-								</li>
-								<li>
-									<a href="{{contact.uri}}">{{contact.email}}</a>
-								</li>
-								<li>
-									{{contact.telephone}}
-								</li>
-							</ul>
+							<address>
+								{{contact.name}}</br>
+								<a href="{{contact.uri}}">{{contact.email}}</a></br>
+								{{contact.telephone}}</br>
+							</address>
 						</div>
-					</article>
+					</div>
+					<!-- /box -->
 				</div>
 				<!-- /grid-desktop-one-half -->
 			</div>
