@@ -11,7 +11,7 @@ public class MarkdownHelper extends com.github.jknack.handlebars.MarkdownHelper 
     public CharSequence apply(Object context, Options options) throws IOException {
         String result = super.apply(context, options).toString();
 
-        String path = ((Page) options.context.parent().model()).uri.toString();
+        String path = ((Page) options.context.parent().model()).getUri().toString();
 
         result = result.replaceAll("<ons-chart\\spath=\"([-A-Za-z0-9+&@#/%?=~_|!:,.;()*$]+)\"?\\s?/>", "chart:" + path + ".../$1");
         result = result.replaceAll("<ons-table\\spath=\"([-A-Za-z0-9+&@#/%?=~_|!:,.;()*$]+)\"?\\s?/>", "table:" + path + ".../$1");
