@@ -1,5 +1,6 @@
 #!/bin/bash
 
-#export WEB_DIRECTORY="./src/main/web"
+export WEB_DIRECTORY="./src/main/web"
 
-npm install
+npm --prefix $WEB_DIRECTORY install
+
