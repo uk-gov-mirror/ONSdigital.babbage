@@ -2,10 +2,10 @@
 <div class="page-header slate">
 	<div class="wrapper">
 		{{> partials/breadcrumb}}
-		<h1 class="page-header__title flush--half--bottom">{{title}}</h1>
+		<h1 class="page-header__title flush--half--bottom">{{description.title}}</h1>
 		<div class="content-reveal lede">
 			<p>
-				{{summary}}
+				{{description.summary}}
 			</p>
 		</div>
 		{{> partials/social-icons}}
@@ -20,9 +20,9 @@
 		{{#each sections}}
             <li class="grid-col tablet-grid-one-third box--padded-vertical nav--block-landing">
              	<h3>
-					<a href="{{uri}}">{{title}}</a>
+					<a href="{{uri}}">{{description.title}}</a>
 				</h3>
-				<p>{{summary}}</p>
+				<p>{{description.summary}}</p>
 			</li>
 		{{/each}}
 		</ul>

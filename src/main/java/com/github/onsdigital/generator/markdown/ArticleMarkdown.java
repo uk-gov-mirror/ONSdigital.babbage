@@ -28,7 +28,7 @@ public class ArticleMarkdown {
 			Article article = readArticle(file);
 
 			// Add it to the taxonomy:
-			ContentNode folder = Data.getFolder(article.theme, article.level2, article.level3);
+			ContentNode folder = Data.getFolder(article.getDescription().theme, article.getDescription().level2, article.getDescription().level3);
 			folder.articles.add(article);
 		}
 	}
@@ -44,7 +44,7 @@ public class ArticleMarkdown {
 		ArticleDescription description = new ArticleDescription();
 
 		description.setTitle(markdown.title);
-		setDescription(article, markdown);
+		setDescription(description, markdown);
 		article.setSections(markdown.sections);
 		article.getSections().addAll(markdown.accordion);
 
@@ -67,20 +67,18 @@ public class ArticleMarkdown {
      * <li>Release date</li>
 	 * </ul>
 	 * 
-	 * @param article
+	 * @param articleDescription
 	 * @param markdown
 	 *            The {@link Scanner} to read lines from.
 	 */
-	private static void setDescription(Article article, Markdown markdown) {
+	private static void setDescription(ArticleDescription articleDescription, Markdown markdown) {
 
 		Map<String, String> properties = markdown.properties;
 
 		// Location
-		article.theme = org.apache.commons.lang.StringUtils.defaultIfBlank(properties.remove("theme"), null);
-		article.level2 = org.apache.commons.lang.StringUtils.defaultIfBlank(properties.remove("level 2"), null);
-		article.level3 = org.apache.commons.lang.StringUtils.defaultIfBlank(properties.remove("level 3"), null);
-
-		ArticleDescription articleDescription = new ArticleDescription();
+		articleDescription.theme = org.apache.commons.lang.StringUtils.defaultIfBlank(properties.remove("theme"), null);
+		articleDescription.level2 = org.apache.commons.lang.StringUtils.defaultIfBlank(properties.remove("level 2"), null);
+		articleDescription.level3 = org.apache.commons.lang.StringUtils.defaultIfBlank(properties.remove("level 3"), null);
 
 		// Additional details
 		articleDescription.setSummary(org.apache.commons.lang.StringUtils.defaultIfBlank(properties.remove("summary"), null));
@@ -115,8 +113,6 @@ public class ArticleMarkdown {
 		for (String property : properties.keySet()) {
 			System.out.println("Bulletin key not recognised: '" + property + "' (length " + property.length() + " for value '" + properties.get(property) + "')");
 		}
-
-		article.setDescription(articleDescription);
 
 	}
 

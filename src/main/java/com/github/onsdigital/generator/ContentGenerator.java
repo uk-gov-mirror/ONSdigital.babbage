@@ -173,6 +173,7 @@ public class ContentGenerator {
         PageDescription description = new PageDescription();
         description.setTitle(node.name);
         description.setSummary(node.lede);
+        landingPage.setDescription(description);
         if (node.oldDataset.size() > 0) {
             throw new RuntimeException("A dataset has been mapped to " + node + " but this folder is a Taxonomy Landing page.");
         }
@@ -279,7 +280,7 @@ public class ContentGenerator {
             relatedBulletins.addAll(statsBulletins);
 
             // Now remove self-references:
-            Iterator<PageReference> iterator = statsBulletins.iterator();
+            Iterator<PageReference> iterator = relatedBulletins.iterator();
             while (iterator.hasNext()) {
                 PageReference next = iterator.next();
                 if (next == null || next.getUri() == null || bulletin == null || bulletin.getUri() == null) {

@@ -43,9 +43,9 @@ public class BulletinMarkdownTest {
 		// Then
 
 		// Header block
-		assertEquals(theme, bulletin.theme);
-		assertEquals(level2, bulletin.level2);
-		assertEquals(level3, bulletin.level3);
+		assertEquals(theme, bulletin.getDescription().theme);
+		assertEquals(level2, bulletin.getDescription().level2);
+		assertEquals(level3, bulletin.getDescription().level3);
 		assertEquals(summary, bulletin.getDescription().getSummary());
 		assertEquals(headline1, bulletin.getDescription().getHeadline1());
 		assertEquals(headline2, bulletin.getDescription().getHeadline2());

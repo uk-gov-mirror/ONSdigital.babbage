@@ -45,9 +45,9 @@ public class ArticleMarkdownTest {
 		// Then
 
 		// Header block
-		assertEquals(theme, article.theme);
-		assertEquals(level2, article.level2);
-		assertEquals(level3, article.level3);
+		assertEquals(theme, article.getDescription().theme);
+		assertEquals(level2, article.getDescription().level2);
+		assertEquals(level3, article.getDescription().level3);
 
 		Contact contact = article.getDescription().getContact();
 		assertEquals(contactName, contact.getName());

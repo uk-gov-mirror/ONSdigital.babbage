@@ -29,7 +29,7 @@ public class BulletinMarkdown {
             Bulletin bulletin = readBulletin(file);
 
             // Set the URI if necessary:
-            ContentNode folder = Data.getFolder(bulletin.theme, bulletin.level2, bulletin.level3);
+            ContentNode folder = Data.getFolder(bulletin.getDescription().theme, bulletin.getDescription().level2, bulletin.getDescription().level3);
             if (bulletin.getUri() == null) {
                 bulletin.setUri(toUri(folder, bulletin));
             }
@@ -54,7 +54,7 @@ public class BulletinMarkdown {
         BulletinDescription description = new BulletinDescription();
 
         description.setTitle(markdown.title);
-        setDescription(bulletin, markdown);
+        setDescription(description, markdown);
         bulletin.setSections(markdown.sections);
         bulletin.getSections().addAll(markdown.accordion);
 
@@ -84,19 +84,17 @@ public class BulletinMarkdown {
      * <li>Release Date</li>
      * </ul>
      *
-     * @param bulletin The {@link Bulletin} containing the data.
+     * @param bulletinDescription The {@link BulletinDescription} description to be filled.
      * @param markdown The parsed {@link Markdown}.
      */
-    private static void setDescription(Bulletin bulletin, Markdown markdown) {
+    private static void setDescription(BulletinDescription bulletinDescription, Markdown markdown) {
 
         Map<String, String> properties = markdown.properties;
 
         // Location
-        bulletin.theme = StringUtils.defaultIfBlank(properties.remove("theme"), bulletin.theme);
-        bulletin.level2 = StringUtils.defaultIfBlank(properties.remove("level 2"), bulletin.level2);
-        bulletin.level3 = StringUtils.defaultIfBlank(properties.remove("level 3"), bulletin.level3);
-
-        BulletinDescription bulletinDescription = new BulletinDescription();
+        bulletinDescription.theme = StringUtils.defaultIfBlank(properties.remove("theme"), null);
+        bulletinDescription.level2 = StringUtils.defaultIfBlank(properties.remove("level 2"), null);
+        bulletinDescription.level3 = StringUtils.defaultIfBlank(properties.remove("level 3"), null);
 
         // Additional details
         bulletinDescription.setSummary(StringUtils.defaultIfBlank(properties.remove("summary"), null));
@@ -134,8 +132,6 @@ public class BulletinMarkdown {
         for (String property : properties.keySet()) {
             System.out.println("Bulletin key not recognised: '" + property + "' (length " + property.length() + " for value '" + properties.get(property) + "')");
         }
-
-        bulletin.setDescription(bulletinDescription);
 
     }
 

@@ -86,8 +86,8 @@ class AlphaContentCSV {
 				timeseries = Data.addTimeseries(cdid);
 			}
 
-            timeseries.setDescription(timeseriesDescription);
-
+			timeseries.setDescription(timeseriesDescription);
+            timeseriesDescription.setCdid(cdid);
 
             // Set the URI if necessary:
 			ContentNode folder = Data.getFolder(row.get(THEME), row.get(LEVEL2), row.get(LEVEL3));

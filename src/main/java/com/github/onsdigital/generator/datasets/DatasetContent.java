@@ -3,6 +3,7 @@ package com.github.onsdigital.generator.datasets;
 import com.github.onsdigital.content.page.statistics.dataset.Dataset;
 import com.github.onsdigital.content.page.statistics.dataset.DatasetDescription;
 import com.github.onsdigital.content.partial.DownloadSection;
+import com.github.onsdigital.content.partial.markdown.MarkdownSection;
 import com.github.onsdigital.generator.ContentNode;
 import com.github.onsdigital.generator.data.Csv;
 import com.github.onsdigital.generator.data.Data;
@@ -122,7 +123,9 @@ public class DatasetContent {
             description.setNationalStatistic(BooleanUtils.toBoolean(nationalStatistic));
 
             if (StringUtils.isNotBlank(row.get(DESCRIPTION))) {
-                description.setSummary(row.get(DESCRIPTION));;
+                MarkdownSection section = new MarkdownSection();
+                section.setMarkdown(row.get(DESCRIPTION));
+                dataset.setSection(section);
             }
 
             folder.datasets.add(dataset);

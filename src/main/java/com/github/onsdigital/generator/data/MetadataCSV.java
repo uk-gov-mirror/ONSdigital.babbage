@@ -3,6 +3,7 @@ package com.github.onsdigital.generator.data;
 import au.com.bytecode.opencsv.CSVReader;
 import com.github.onsdigital.content.page.statistics.data.timeseries.TimeSeries;
 import com.github.onsdigital.content.page.statistics.data.timeseries.TimeseriesDescription;
+import com.github.onsdigital.content.partial.markdown.MarkdownSection;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -71,11 +72,14 @@ public class MetadataCSV {
 			description.setTitle(row.get("Name"));
 			description.setSeasonalAdjustment(row.get("Seasonal adjustment"));
 			description.setMainMeasure(row.get("Main measure"));
-			description.setSummary(row.get("Description"));
 			ArrayList notes = new ArrayList<String>();
 			notes.add(StringUtils.defaultIfBlank(row.get("Note 1"), null));
 			notes.add(StringUtils.defaultIfBlank(row.get("Note 2"), null));
 			timeseries.setNotes(notes);
+			MarkdownSection section = new MarkdownSection();
+			section.setMarkdown(row.get("Description"));
+			timeseries.setSection(section);
+
 		}
 	}
 
