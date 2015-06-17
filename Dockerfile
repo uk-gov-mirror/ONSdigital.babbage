@@ -2,12 +2,12 @@ from java:7
 
 
 # Install node, git and maven
-RUN apt-get update --fix-missing
+RUN apt-get update
 RUN apt-get install curl
 RUN curl -sL https://deb.nodesource.com/setup_0.12 | bash -
 RUN \
-  apt-get update --fix-missing && \
-  apt-get install -y git maven nodejs
+  apt-get update && \
+  apt-get install --fix-missing -y git maven nodejs
 
 
 # Consul agent - /usr/local/bin
