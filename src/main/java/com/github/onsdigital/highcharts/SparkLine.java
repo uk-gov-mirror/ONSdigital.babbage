@@ -72,6 +72,7 @@ public class SparkLine {
         yLabels.setEnabled(false);
         yAxis.setLabels(yLabels);
         yAxis.setGridLineWidth(0);
+        yAxis.setTitle(new Title().setText(null));
         options.setyAxis(yAxis);
 
 
