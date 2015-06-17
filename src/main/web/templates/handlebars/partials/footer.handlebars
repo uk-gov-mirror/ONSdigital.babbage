@@ -4,17 +4,17 @@
 		<div class="wrapper">
 			<nav class="grid-wrap">
 				{{#each footer}}
-					<div class="grid-col tablet-grid-one-third">
-						<h3 class="delta headline-separated">{{title}}</h3>
-						<ul class="list--neutral list--grid list--spaced">
-							{{#each items}}
-								<li>
-									<a href="{{uri}}">{{title}}</a>
-								</li>
-							{{/each}}
-						</ul>
-					</div>
-					<!-- /grid-col -->
+				<div class="grid-col tablet-grid-one-third">
+					<h3 class="delta headline-separated">{{title}}</h3>
+					<ul class="list--neutral list--grid list--spaced">
+						{{#each items}}
+							<li>
+								<a href="{{uri}}">{{title}}</a>
+							</li>
+						{{/each}}
+					</ul>
+				</div>
+				<!-- /grid-col -->
 				{{/each}}
 			</nav>
 			<!-- /grid-wrap -->
@@ -24,6 +24,8 @@
 	<!-- /slate -->
 </footer>
 
-<script src="../../node_modules/ONS-Pattern-Library/dist/js/footer.js"></script>
+<script type="text/javascript" src="../../ui/js/lib/highcharts.js"></script>
+<script type="text/javascript" src="../../ui/js/lib/jquery.tooltipster.min.js"></script>
+<script type="text/javascript" src="../../node_modules/ONS-Pattern-Library/dist/js/footer.js"></script>
 </body>
 </html>
