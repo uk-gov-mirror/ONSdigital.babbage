@@ -46,7 +46,7 @@ class NonCdidCSV {
 
 				// Get the timeseries object for this CDID:
 				TimeSeries timeseries = Data.timeseries(cdid);
-				timeseries.setNotes(new ArrayList<>());
+				timeseries.setNotes(new ArrayList<String>());
 				if (timeseries == null) {
 					// System.out.println("Sheet " + sheetIndex + ", column " +
 					// c + " - new timeseries " + cdid);
