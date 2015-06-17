@@ -149,9 +149,17 @@
         <dependency>
             <groupId>com.github.onsdigital</groupId>
             <artifactId>content-library</artifactId>
-            <version>content-library-1.0.22</version>
-            <!--<version>1.0.22-SNAPSHOT</version>-->
+            <version>content-library-1.0.23</version>
+            <!--<version>1.0.24-SNAPSHOT</version>-->
         </dependency>
+
+		<!--A Java abstraction of the Highcharts javascript library-->
+		<dependency>
+			<groupId>com.googlecode.wicked-charts</groupId>
+			<artifactId>wicked-charts-highcharts</artifactId>
+			<version>1.5.0</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
