@@ -1,10 +1,17 @@
 from java:7
 
 
-# Install node, git and maven
-RUN apt-get update
+# Clean image repository metadata
+# http://serverfault.com/questions/690639/api-get-error-reading-from-server-under-docker
+RUN apt-get clean && apt-get update
+
+
+# We need to use a later version of Node than is currently available in the Ubuntu package manager (2015-06-17)
 RUN apt-get install curl
 RUN curl -sL https://deb.nodesource.com/setup_0.12 | bash -
+
+
+# Install node, git and maven
 RUN \
   apt-get update && \
   apt-get install --fix-missing -y git maven nodejs
