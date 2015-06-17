@@ -33,7 +33,7 @@ RUN git checkout develop
 
 
 # Build web content
-RUN npm install
+RUN npm install --prefix=src/main/web
 
 
 # Build Jar and copy dependencyes
