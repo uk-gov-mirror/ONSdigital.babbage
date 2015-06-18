@@ -13,10 +13,10 @@
 				<span>Contact: </span><br/><a href="mailto:{{description.contact.email}}">{{#if description.contact.name}}{{description.contact.name}}{{else}}{{description.contact.email}}{{/if}}</a>
 			</p>
 			<p class="grid-col tablet-grid-one-quarter divider--border-left">
-				<span>Release date: </span><br/>{{releaseDate}}<br/><a href="#">previous versions</a>
+				<span>Release date: </span><br/>{{df releaseDate}}<br/><a href="#">previous versions</a>
 			</p>
 			<p class="grid-col tablet-grid-one-quarter divider--border-left">
-				<span>Next release: </span><br/>{{nextRelease}}
+				<span>Next release: </span><br/>{{df nextRelease}}
 			</p>
 			<div class="grid-col tablet-grid-one-quarter divider--border-left page-header__meta-block-with-ul">
 				<ul class="list--neutral">
