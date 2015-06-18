@@ -8,7 +8,8 @@
 			</p>
 			<h1 class="page-header__title flush--half--bottom">{{description.title}}</h1>
 			<div class="grid-wrap">
-				<p class="grid-col tablet-grid-one-quarter page-header__meta-block-with-img">
+				<p ass="grid-wrap">
+				<p class="grid-col tablet-grid-one-quarter {{#if description.nationalStatistic}}page-header__meta-block-with-img{{/if}}">
 					{{#if description.nationalStatistic}}
 				    <img src="../../node_modules/ONS-Pattern-Library/ui/img/national-statistics.png" alt="National Statistics logo" />
 				    {{/if}}
@@ -53,9 +54,7 @@
 					<!-- /box__header -->
 					<div class="box__content">
 						<div>
-							<p>
-							{{md markdown}}
-							</p>
+						{{md markdown}}
 						</div>
 						<a href="#top" title="Back to table of contents">Back to table of contents</a>
 					</div>
@@ -129,7 +128,7 @@
 									<h3 class="flush--bottom">
 									<a href="{{uri}}">{{@index}} {{title}}</a>
 									</h3>
-									<p>{{md summary}}</p>
+									{{md summary}}
 								</li>
 								{{/each}}
 							</ul>
