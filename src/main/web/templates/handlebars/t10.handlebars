@@ -117,9 +117,7 @@
 							</div>
 							<div class="grid-col desktop-grid-one-half nav--block-landing box--padded-vertical">
 								<h3><a href="{{url}}">{{title}}</a></h3>
-								<p>
-									{{lede}}
-								</p>
+								{{md lede}}
 							</div>
 							<!-- /desktop-grid -->
 						</div>
@@ -142,9 +140,7 @@
 					<p class="mini description flush">
 						Released {{df releaseDate}}
 					</p>
-					<p>
-						{{summary}}
-					</p>
+					{{md summary}}
 				</li>
 			</ul>
 			{{/each}}

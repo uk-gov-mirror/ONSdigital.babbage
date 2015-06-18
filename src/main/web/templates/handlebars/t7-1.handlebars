@@ -5,31 +5,35 @@
 		<p class="page-header__title">
 			Quality and methodology information
 		</p>
-		<h1 class="page-header__title flush--half--bottom">{{name}}</h1>
+		<h1 class="page-header__title flush--half--bottom">{{description.title}}</h1>
 		<div class="grid-wrap">
 			<p class="grid-col tablet-grid-one-quarter">
-				<span>Contact: </span><br/>{{contact.email}}
+				<span>Contact: </span></br>
+				<a href="mailto:{{description.contact.email}}">{{#if description.contact.name}}{{description.contact.name}}{{else}}{{description.contact.email}}{{/if}}</a>
 			</p>
 			<p class="grid-col tablet-grid-one-quarter divider--border-left">
-				<span>Last revised: </span><br/>{{lastRevised}}
+				<span>Last revised: </span><br/>{{df description.lastRevised}}
 			</p>
 			<p class="grid-col tablet-grid-one-half divider--border-left">
-				<a href="{{download.uri}}"><span class="icon icon-download"></span>{{download.title}}</a> ({{download.size}})
+				<a href="{{download.uri}}"><span class="icon icon-download"></span>{{download.title}}</a> (3.8MB)
 			</p>
 		</div>
 		<h2 class="gamma">Methodology background</h2>
 		<div class="grid-wrap">
 			<p class="grid-col tablet-grid-one-quarter page-header__meta-block-with-img">
-				<img src="../../node_modules/ONS-Pattern-Library/ui/img/national-statistics.png" alt="National Statistics logo" /><span>Survey name: </span><br/>{{details.survey}}
+				{{#if description.nationalStatistic}}
+				<img src="../../node_modules/ONS-Pattern-Library/ui/img/national-statistics.png" alt="National Statistics logo" />
+				{{/if}}
+				<span>Survey name: </span><br/>{{description.survey}}
 			</p>
 			<p class="grid-col tablet-grid-one-quarter divider--border-left">
-				<span>Frequency: </span><br/>{{details.frequency}}
+				<span>Frequency: </span><br/>{{description.frequency}}
 			</p>
 			<p class="grid-col tablet-grid-one-quarter divider--border-left">
-				<span>How compiled: </span><br/>{{details.dataSource}}
+				<span>How compiled: </span><br/>{{description.dataSource}}
 			</p>
 			<p class="grid-col tablet-grid-one-quarter divider--border-left">
-				<span>Graphical coverage: </span><br/>{{details.coverage}}
+				<span>Graphical coverage: </span><br/>{{description.coverage}}
 			</p>
 		</div>
 		{{> templates/handlebars/partials/social-icons}}
@@ -40,22 +44,20 @@
 	<div class="grid-wrap">
 		<div class="grid-col desktop-grid-two-thirds">
 			<h2>Executive summary</h2>
-			<p>
-				{{summary}}
-			</p>
+			{{md summary}}
 		</div>
 		<!-- /grid-two-thirds -->
 		<div class="grid-col desktop-grid-one-third">
 			<div class="box solid box--teal--separated--left">
 				<div class="box__inner border box--padded">
 					<h3 class="box__section__header">
-						This methodolgy is used for
+						This methodology is used for
 					</h3>
 					<!-- /box__header -->
 					<div class="box__content">
 						<ul class="list--neutral">
 							{{#each usedIn}}
-							<li><a href="{{uri}}">{{title}}</a></li>
+							<li class="flush--third--bottom"><a href="{{uri}}">{{title}}</a></li>
 							{{/each}}
 						</ul>
 					</div>
@@ -71,9 +73,9 @@
 				<!-- /box__header -->
 				<div class="box__content">
 					<address>
-						{{contact.name}}<br/>
-						<a href="mailto:{{contact.email}}">{{contact.email}}</a><br/>
-						{{contact.telephone}}
+						{{#if description.contact.name}}{{description.contact.name}}{{/if}}
+	                    <a href="mailto:{{description.contact.email}}">{{description.contact.email}}</a></br>
+	                    {{#if description.contact.telephone}}Telephone: {{description.contact.telephone}}{{/if}}
 					</address>
 				</div>
 				<!-- /box__content -->
@@ -88,11 +90,11 @@
 			<div class="box solid box--purple--separated--left">
 				<div class="box__inner border box--padded">
 					<h3 class="box__section__header">
-							Download this methodology
+						Download this methodology
 					</h3>
 					<!-- /box__header -->
 					<div class="box__content">
-						<a href="{{download.uri}}" title="{{download.title}}">{{download.title}}</a> ({{download.size}})
+						<a href="{{download.uri}}" title="{{download.title}}">{{download.title}}</a> (??MB)
 					</div>
 					<!-- /box__content -->
 				</div>

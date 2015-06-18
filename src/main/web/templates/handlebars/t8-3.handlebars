@@ -1,179 +1,160 @@
 {{> templates/handlebars/partials/header}}
-
-<div class="page-header slate slate--light-green">
-
-	<div class="wrapper">
-		{{> templates/handlebars/partials/breadcrumb}}
-		<p class="page-header__title">
-			<strong>Dataset</strong>
-		</p>
-
-		<h1 class="page-header__title flush--half--bottom">{{title}}</h1>
-
-		<div class="grid-wrap">
-			<p class="grid-col tablet-grid-one-quarter page-header__meta-block-with-img">
-
+<main id="main" role="main" tabindex="-1">
+	<div class="page-header slate slate--light-green">
+		<div class="wrapper">
+			{{> templates/handlebars/partials/breadcrumb}}
+			<p class="page-header__title">
+				Dataset
+			</p>
+			<h1 class="page-header__title flush--half--bottom">{{description.title}}</h1>
+			<div class="grid-wrap">
+				<p class="grid-col tablet-grid-one-quarter page-header__meta-block-with-img">
+					{{#if description.nationalStatistic}}
 					<img src="../../node_modules/ONS-Pattern-Library/ui/img/national-statistics.png" alt="National Statistics logo">
-					<span>Contact: </span><a href="mailto:{{contact.email}}" title="Email {{contact.email}}">{{contact.name}}</a>
-
-			<p class="grid-col tablet-grid-one-quarter divider--border-left">
-
-					<span>Release date: </span><br/>{{df releaseDate "d MMMM yyyy"}}
+					{{/if}}
+					<span>Contact: </span><br/><a href="mailto:{{description.contact.email}}">{{#if description.contact.name}}{{description.contact.name}}{{else}}{{description.contact.email}}{{/if}}</a>
+				<p class="grid-col tablet-grid-one-quarter divider--border-left">
+					<span>Release date: </span><br/>{{df description.releaseDate}}
 					</br>
 					<a href="#">previous versions</a>
-
-			</p>
-			<p class="grid-col tablet-grid-one-quarter divider--border-left">
-
-					<span>Next release: </span><br/>{{df nextRelease "d MMMM yyyy"}}
-
-			</p>
-			<p class="grid-col tablet-grid-one-quarter divider--border-left">
-
-				<span>Dataset id: </span>{{dataSetID}}
-				<a href="#">what is this?</a>
-
-			</p>
+				</p>
+				<p class="grid-col tablet-grid-one-quarter divider--border-left">
+					<span>Next release: </span><br/>{{df description.nextRelease}}
+				</p>
+				<p class="grid-col tablet-grid-one-quarter divider--border-left">
+					<span>Dataset id: </span>{{description.dataSetID}}
+					<a href="#">what is this?</a>
+				</p>
+			</div>
+			<!-- /grip-wrap -->
+			{{> templates/handlebars/partials/social-icons}}
+			<!-- / page-header__icons  -->
 		</div>
-		<!-- /grip-wrap -->
-
-		{{> templates/handlebars/partials/social-icons}}
-		<!-- / page-header__icons  -->
+		<!-- / wrapper -->
 	</div>
-	<!-- / wrapper -->
-</div>
-<!-- / page-header -->
-
-<div class="wrapper panel--mar ">
-	<div class="grid-wrap">
-		<div class="grid-col desktop-grid-full-width">
-			<!-- /box -->
-			<p class="lede">
-				{{lede}}
-			</p>
-		</div>
-		<!-- /grid-col -->
-
-		<div class="grid-col desktop-grid-two-thirds">
-			<div class="wrapper panel--pad-small muted--dark">
-			<h3>Your download options</h3>
-				<ul class="list--neutral">
-					{{#each datasets}}
-					<li>
-						<article class="box box--padded--med solid">
-							<div class="box--content">
-								<div class="grid-wrap">
-									<div class="grid-col tablet-grid-one-quarter">
-										<p>
+	<!-- / page-header -->
+	<div class="wrapper panel--mar ">
+		<div class="grid-wrap">
+			<div class="grid-col desktop-grid-full-width">
+				<!-- /box -->
+				<div class="lede">
+					{{md lede}}
+				</div>
+			</div>
+			<!-- /grid-col -->
+			<div class="grid-col desktop-grid-two-thirds">
+				<div class="wrapper panel--pad-small muted--dark">
+				<h3>Your download options</h3>
+					<ul class="list--neutral">
+						{{#each datasets}}
+						<li>
+							<article class="box box--padded--med solid">
+								<div class="box--content">
+									<div class="grid-wrap">
+										<div class="grid-col tablet-grid-one-quarter">
 											{{title}}
-										</p>
+										</div>
+										<div class="grid-col tablet-grid-three-quarters">
+											<a href="{{uri}}" title="{{title}}" class="btn btn--primary btn--block btn--thin">
+												{{fileType}} ({{fileSize}})
+												<span class="icon icon-download" role="presentation"></span>
+											</a>
+										</div>
 									</div>
-									<div class="grid-col tablet-grid-three-quarters">
-										<a href="{{uri}}" title="{{title}}" class="btn btn--primary btn--block btn--thin">
-											{{fileType}} ({{fileSize}})
-											<span class="icon icon-download" role="presentation"></span>
-										</a>
-									</div>
+									<!-- /grid-wrap -->
 								</div>
-								<!-- /grid-wrap -->
-							</div>
-							<!-- /box--content -->
-						</article>
-						<!-- /box -->
-					</li>
-					{{/each}}
+								<!-- /box--content -->
+							</article>
+							<!-- /box -->
+						</li>
+						{{/each}}
+				</div>
+				<div class="panel--top-pad">
+					<h3>Important notes and usage information</h3>
+					{{md notes.markdown}}
+				</div>
 			</div>
-			<div class="panel--top-pad">
-				<h3>Important notes and usage information</h3>
-				{{md notes.markdown}}
-			</div>
-		</div>
-		<!-- /grid-col desktop-grid-two-thirds -->
+			<!-- /grid-col desktop-grid-two-thirds -->
 
-		<div class="grid-col desktop-grid-one-third">
-			<!-- RELATED DATASETS -->
-			<article class="box solid box--green--separated--left">
-				<div class="ox__inner border box--padded">
-					<header class="box__header">
-						<h3>Related datasets</h3>
-					</header>
-					<div class="box__content">
-						<ul class="list--neutral">
-							{{#each relatedData}}
-							<li><a href="{{uri}}" title="{{title}}">{{title}}</a></li>
-							{{/each}}
-						</ul>
-					</div>
-				</div>
-				<!-- /box__inner -->
-			</article>
-			<!-- RELATED BULLETINS & ARTICLES -->
-			<article class="box solid box--teal--separated--left">
-				<div class="ox__inner border box--padded">
-					<header class="box__header">
-						<h3>Statistical bulletins and articles that use this time series</h3>
-					</header>
-					<div class="box__content">
-						<ul class="list--neutral">
-							{{#each relatedContent}}
-							<li>
-								<a href="{{uri}}" title="{{title}}">{{title}}</a>
-							</li>
-							{{/each}}
-						</ul>
-					</div>
-				</div>
-				<!-- /box__inner -->
-			</article>
-			<!-- /box -->
-		</div>
-		<!-- /grid-col -->
-		<div class="grid-col desktop-grid-full-width">
-			<div class="grid-wrap">
-				<div class="grid-col desktop-grid-one-half">
-					<article class="box box--padded sectioned">
+			<div class="grid-col desktop-grid-one-third">
+				<!-- RELATED DATASETS -->
+				<article class="box solid box--green--separated--left">
+					<div class="ox__inner border box--padded">
 						<header class="box__header">
-							<h3>Methodology</h3>
+							<h3>Related datasets</h3>
 						</header>
 						<div class="box__content">
 							<ul class="list--neutral">
-								{{#each methodology}}
-								<li>
+								{{#each relatedData}}
+								<li class="flush--third--bottom"><a href="{{uri}}" title="{{title}}">{{title}}</a></li>
+								{{/each}}
+							</ul>
+						</div>
+					</div>
+					<!-- /box__inner -->
+				</article>
+				<!-- RELATED BULLETINS & ARTICLES -->
+				<article class="box solid box--teal--separated--left">
+					<div class="ox__inner border box--padded">
+						<header class="box__header">
+							<h3>Statistical bulletins and articles that use this time series</h3>
+						</header>
+						<div class="box__content">
+							<ul class="list--neutral">
+								{{#each relatedContent}}
+								<li class="flush--third--bottom">
 									<a href="{{uri}}" title="{{title}}">{{title}}</a>
 								</li>
 								{{/each}}
 							</ul>
 						</div>
-					</article>
-				</div>
-				<!-- /grid-desktop-one-half -->
-				<div class="grid-col desktop-grid-one-half">
-					<article class="box box--padded sectioned">
-						<header class="box__header">
-							<h3>Contact details</h3>
-						</header>
-						<div class="box__content">
-							<ul class="list--neutral">
-								<li>
-									{{contact.name}}
-								</li>
-								<li>
-									<a href="mailto:{{contact.email}}" title="Email {{contact.email}}">{{contact.email}}</a>
-								</li>
-								<li>
-									{{contact.telephone}}
-								</li>
-							</ul>
-						</div>
-					</article>
-				</div>
-				<!-- /grid-desktop-one-half -->
+					</div>
+					<!-- /box__inner -->
+				</article>
+				<!-- /box -->
 			</div>
-			<!-- /grid-wrap -->
+			<!-- /grid-col -->
+			<div class="grid-col desktop-grid-full-width">
+				<div class="grid-wrap">
+					<div class="grid-col desktop-grid-one-half">
+						<article class="box box--padded sectioned">
+							<header class="box__header">
+								<h3>Methodology</h3>
+							</header>
+							<div class="box__content">
+								<ul class="list--neutral">
+									{{#each methodology}}
+									<li class="flush--third--bottom">
+										<a href="{{uri}}" title="{{title}}">{{title}}</a>
+									</li>
+									{{/each}}
+								</ul>
+							</div>
+						</article>
+					</div>
+					<!-- /grid-desktop-one-half -->
+					<div class="grid-col desktop-grid-one-half">
+						<article class="box box--padded sectioned">
+							<header class="box__header">
+								<h3>Contact details</h3>
+							</header>
+							<div class="box__content">
+								<address>
+									{{#if description.contact.name}}{{description.contact.name}}{{/if}}
+		                      		<a href="mailto:{{description.contact.email}}">{{description.contact.email}}</a></br>
+		                      		{{#if description.contact.telephone}}Telephone: {{description.contact.telephone}}{{/if}}
+								</address>
+							</div>
+						</article>
+					</div>
+					<!-- /grid-desktop-one-half -->
+				</div>
+				<!-- /grid-wrap -->
+			</div>
+			<!--/grid-col desktop-grid-full-width -->
 		</div>
-		<!--/grid-col desktop-grid-full-width -->
+		<!-- /grid-wrap -->
 	</div>
-	<!-- /grid-wrap -->
-</div>
-<!-- /wrapper -->
+	<!-- /wrapper -->
+</main>
 {{> templates/handlebars/partials/footer}}

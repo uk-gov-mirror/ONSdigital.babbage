@@ -5,26 +5,19 @@
 		<p class="page-header__title">
 			<strong>Release</strong>
 		</p>
-		<h1 class="page-header__title flush--half--bottom">{{name}}</h1>
+		<h1 class="page-header__title flush--half--bottom">{{description.title}}</h1>
 		<div class="grid-wrap">
 			<p class="grid-col tablet-grid-one-quarter page-header__meta-block-with-img">
-				<img src="../../node_modules/ONS-Pattern-Library/ui/img/national-statistics.png" alt="ONS logo">
-				<span>Contact:</span>
-				</br>
-				{{contact.name}}
-				</br>
-				{{contact.email}}
-				</br>
-				{{contact.telephone}}
+				{{#if description.nationalStatistic}}
+			    <img src="../../node_modules/ONS-Pattern-Library/ui/img/national-statistics.png" alt="National Statistics logo" />
+			    {{/if}}
+				<span>Contact: </span><br/><a href="mailto:{{description.contact.email}}">{{#if description.contact.name}}{{description.contact.name}}{{else}}{{description.contact.email}}{{/if}}</a>
 			</p>
 			<p class="grid-col tablet-grid-one-quarter divider--border-left">
-				<span>Release date:</span>
-				</br>
-				{{df releaseDate}}
+				<span>Release date:</span></br>{{df description.releaseDate}}
 			</p>
 			<p class="grid-col tablet-grid-one-quarter divider--border-left">
-				<span>Next release:</span>
-				{{nextRelease}}
+				<span>Next release:</span></br>{{df description.nextRelease}}
 				</br>
 				<a href="#">pre-release access list</a>
 			</p>
@@ -37,9 +30,7 @@
 <div class="wrapper panel--mar ">
 	<div class="grid-wrap">
 		<div class="grid-col desktop-grid-full-width">
-			<p>
-
-			</p>
+			{{md summary}}
 			<div class="grid-wrap panel--pad">
 				<div class="grid-col desktop-grid-one-third">
 					<h2>Statistical bulletin and articles</h2>
@@ -48,9 +39,7 @@
 				{{#each bulletins}}
 				<div class="grid-col desktop-grid-one-third">
 					<h3 class="flush"><a href="{{uri}}">{{title}}</a></h3>
-					<p>
-						{{description}}
-					</p>
+					{{md description}}
 				</div>
 				<!-- /desktop-grid-one-third -->
 				{{/each}}
@@ -65,9 +54,7 @@
 				{{#each datasets}}
 				<div class="grid-col desktop-grid-one-third">
 					<h3 class="flush"><a href="{{uri}}">{{title}}</a></h3>
-					<p>
-						{{description}}
-					</p>
+					{{md description}}
 				</div>
 				<!-- /desktop-grid-one-third -->
 				{{/each}}
@@ -75,16 +62,14 @@
 			<!-- /grid-wrap -->
 			{{#each sections}}
 			<h2 class="delta">{{title}}</h2>
-			<p>
-				{{markdown}}
-			</p>
+			{{md markdown}}
 			{{/each}}
 			{{#if accordions}}
 				{{#each}}
 				<div class="accordion is-collapsed">
-					<h2 id="sc-1" class="accordion__title delta" aria-controls="content-1">{{title}}</h2>
-					<div id="content-1" class="accordion__content" aria-labelledby="sc-1">
-						{{markdown}}
+					<h2 id="sc-{{@index}}" class="accordion__title delta" aria-controls="content-{{@index}}">{{title}}</h2>
+					<div id="content-{{@index}}" class="accordion__content" aria-labelledby="sc-{{@index}}">
+						{{md markdown}}
 					</div>
 					<!-- /accordion__content -->
 				</div>

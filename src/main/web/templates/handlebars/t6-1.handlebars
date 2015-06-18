@@ -1,111 +1,111 @@
 {{> templates/handlebars/partials/header}}
-
-<div class="page-header slate slate--blue">
-	<div class="wrapper">
-		{{> templates/handlebars/partials/breadcrumb}}
-		<p class="page-header__title">
-			Compendium
-		</p>
-		<h1 class="page-header__title flush--half--bottom">{{name}}</h1>
-		<div class="grid-wrap">
-			<p class="grid-col tablet-grid-one-quarter page-header__meta-block-with-img">
-				<img src="../../node_modules/ONS-Pattern-Library/ui/img/national-statistics.png" alt="National Statistics logo" width="50rem">
-				<span>Contact: </span></br>
-				<a href="mailto:{{contact.email}}">{{contact.name}}</a>
-			<p class="grid-col tablet-grid-one-quarter divider--border-left">
-				<span>Release date: </span></br>{{df releaseDate}}
-				</br>
-				<a href="#">previous versions</a>
+<main id="main" role="main" tabindex="-1">
+	<div class="page-header slate slate--blue">
+		<div class="wrapper">
+			{{> templates/handlebars/partials/breadcrumb}}
+			<p class="page-header__title">
+				Compendium
 			</p>
-			<p class="grid-col tablet-grid-one-quarter divider--border-left">
-				<span>Next release: </span></br>{{df nextRelease}}
-			</p>
-			<p class="grid-col tablet-grid-one-quarter divider--border-left">
-				<a href="{{print.size}}" class ="icon-print">Print full report</a> ({{print.size}} pages)
-				</br>
-				<a href="{{download.uri}}" class="icon-download">Download PDF</a> ({{download.size}})
-			</p>
+			<h1 class="page-header__title flush--half--bottom">{{description.title}}</h1>
+			<div class="grid-wrap">
+				<p class="grid-col tablet-grid-one-quarter page-header__meta-block-with-img">
+					{{#if description.nationalStatistic}}
+					<img src="../../node_modules/ONS-Pattern-Library/ui/img/national-statistics.png" alt="National Statistics logo">
+					{{/if}}
+					<span>Contact: </span></br>
+					<a href="mailto:{{description.contact.email}}">{{#if description.contact.name}}{{description.contact.name}}{{else}}{{description.contact.email}}{{/if}}</a>
+				<p class="grid-col tablet-grid-one-quarter divider--border-left">
+					<span>Release date: </span></br>{{df description.releaseDate}}
+					</br>
+					<a href="#">previous versions</a>
+				</p>
+				<p class="grid-col tablet-grid-one-quarter divider--border-left">
+					<span>Next release: </span></br>{{df description.nextRelease}}
+				</p>
+				<p class="grid-col tablet-grid-one-quarter divider--border-left">
+					<a href="#" class ="icon-print">&nbsp;Print full report</a>
+					</br>
+					<a href="#" class="icon-download">&nbsp;Download PDF</a> (??KB)
+				</p>
+			</div>
+			<!-- /grip-wrap -->
+			{{> templates/handlebars/partials/social-icons}}
 		</div>
-		<!-- /grip-wrap -->
-		{{> templates/handlebars/partials/social-icons}}
+		<!-- /wrapper -->
+	</div>
+	<!-- /page-header -->
+	<div class="wrapper panel--mar ">
+		<div class="grid-wrap">
+			<div class="grid-col desktop-grid-full-width">
+				<div class="lede">
+					{{md lede}}
+				</div>
+				<h2>What's in this compendium?</h2>
+				<div class="accordion is-collapsed">
+					<h3 id="sc-{{@index}}" class="accordion__title" aria-controls="content-{{@index}}">Chapters</h3>
+					<div id="content-{{@index}}" class="accordion__content" aria-labelledby="sc-{{@index}}">
+						<ul class="list--neutral">
+							{{#each chapters}}
+							<li>
+								<h4 class="flush" ><a href="{{uri}}">{{title}}</a></h4>
+								{{md description}}
+							</li>
+							{{/each}}
+						</ul>
+					</div>
+				</div>
+				<!-- /accordion -->
+				<div class="accordion is-collapsed">
+					<h3 id="sc-{{@index}}" class="accordion__title" aria-controls="content-{{@index}}">Data</h4>
+					<div id="content-{{@index}}" class="accordion__content" aria-labelledby="sc-{{@index}}">
+						<ul class="list--neutral">
+							{{#each data}}
+							<li>
+								<h4 class="flush"><a href="{{uri}}">{{title}}</a></h4>
+								{{md description}}
+							</li>
+							{{/each}}
+						</ul>
+					</div>
+				</div>
+				<!-- /accordion -->
+				<div class="grid-wrap panel--top-pad-large">
+					<div class="grid-col desktop-grid-one-half">
+						<article class="box box--padded sectioned">
+							<h3 class="box__section__header">Methodology</h3>
+							<div class="box__content">
+								<ul class="list--neutral">
+									{{#each methodology}}
+									<li class="flush--third--bottom">
+										<a href="{{uri}}">{{title}}</a>
+									</li>
+									{{/each}}
+								</ul>
+							</div>
+						</article>
+					</div>
+					<!-- /grid-desktop-one-half -->
+					<div class="grid-col desktop-grid-one-half">
+						<div class="box box--padded sectioned">
+							<h3 class="box__section__header">Contact details</h3>
+							<div class="box__content">
+								<address>
+									{{#if description.contact.name}}{{description.contact.name}}{{/if}}
+		                      		<a href="mailto:{{description.contact.email}}">{{description.contact.email}}</a></br>
+		                      		{{#if description.contact.telephone}}Telephone: {{description.contact.telephone}}{{/if}}
+								</address>
+							</div>
+						</div>
+						<!-- /box -->
+					</div>
+					<!-- /grid-desktop-one-half -->
+				</div>
+				<!-- /grid-wrap panel--top -->
+			</div>
+			<!-- /desktop-grid-full-width -->
+		</div>
+		<!-- /grid-wrap -->
 	</div>
 	<!-- /wrapper -->
-</div>
-<!-- /page-header -->
-<div class="wrapper panel--mar ">
-	<div class="grid-wrap">
-		<div class="grid-col desktop-grid-full-width">
-			<p class="lede">
-				{{lede}}
-			</p>
-			<h2>What's in this compendium?</h2>
-			<div class="accordion is-collapsed">
-				<h3 id="sc-{{@index}}" class="accordion__title" aria-controls="content-{{@index}}">Chapters</h3>
-				<div id="content-{{@index}}" class="accordion__content" aria-labelledby="sc-{{@index}}">
-					<ul class="list--neutral">
-						{{#each chapters}}
-						<li>
-							<h4 class="flush" ><a href="{{uri}}">{{title}}</a></h4>
-							<p>
-								{{description}}
-							</p>
-						</li>
-						{{/each}}
-					</ul>
-				</div>
-			</div>
-			<!-- /accordion -->
-			<div class="accordion is-collapsed">
-				<h3 id="sc-{{@index}}" class="accordion__title" aria-controls="content-{{@index}}">Data</h4>
-				<div id="content-{{@index}}" class="accordion__content" aria-labelledby="sc-{{@index}}">
-					<ul class="list--neutral">
-						{{#each data}}
-						<li>
-							<h4 class="flush"><a href="{{uri}}">{{title}}</a></h4>
-							<p>{{description}}</p>
-						</li>
-						{{/each}}
-					</ul>
-				</div>
-			</div>
-			<!-- /accordion -->
-			<div class="grid-wrap panel--top-pad-large">
-				<div class="grid-col desktop-grid-one-half">
-					<article class="box box--padded sectioned">
-						<h3 class="box__section__header">Methodology</h3>
-						<div class="box__content">
-							<ul class="list--neutral">
-								{{#each methodology}}
-								<li class="flush--third--bottom">
-									<a href="{{uri}}">{{title}}</a>
-								</li>
-								{{/each}}
-							</ul>
-						</div>
-					</article>
-				</div>
-				<!-- /grid-desktop-one-half -->
-				<div class="grid-col desktop-grid-one-half">
-					<div class="box box--padded sectioned">
-						<h3 class="box__section__header">Contact details</h3>
-						<div class="box__content">
-							<address>
-								{{contact.name}}</br>
-								<a href="{{contact.uri}}">{{contact.email}}</a></br>
-								{{contact.telephone}}</br>
-							</address>
-						</div>
-					</div>
-					<!-- /box -->
-				</div>
-				<!-- /grid-desktop-one-half -->
-			</div>
-			<!-- /grid-wrap panel--top -->
-		</div>
-		<!-- /desktop-grid-full-width -->
-	</div>
-	<!-- /grid-wrap -->
-</div>
-<!-- /wrapper -->
-
+</main>
 {{> templates/handlebars/partials/footer}}

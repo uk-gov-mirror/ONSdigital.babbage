@@ -1,160 +1,152 @@
 {{> partials/header}}
-<!-- title and social icons -->
-<div class="page-header page-header--article page-header--stat-bulletin slate--blue">
-	<div class="wrapper" >
-		{{> partials/breadcrumb}}
-		<p class="page-header__title page-header--stat-bulletin-desc">
-			Statistical bulletin
-		</p>
-		<h1 class="page-header__title flush--half--bottom">{{description.title}}</h1>
-		<div class="grid-wrap">
-			<p class="grid-col tablet-grid-one-quarter page-header__meta-block-with-img">
-			    {{#if description.nationalStatistic}}
-				<img src="../../node_modules/ONS-Pattern-Library/ui/img/national-statistics.png" alt="National Statistics logo" />
-				{{/if}}
-				<span>Contact: </span><br/><a href="mailto:{{description.contact.email}}">{{#if description.contact.name}}{{description.contact.name}}{{else}}{{description.contact.email}}{{/if}}</a>
+<main id="main" role="main" tabindex="-1">
+	<div class="page-header page-header--article page-header--stat-bulletin slate--blue">
+		<div class="wrapper" >
+			{{> partials/breadcrumb}}
+			<p class="page-header__title page-header--stat-bulletin-desc">
+				Statistical bulletin
 			</p>
-			<p class="grid-col tablet-grid-one-quarter divider--border-left">
-				<span>Release date: </span><br/>{{df description.releaseDate}}<br/><a href="#">previous versions</a>
-			</p>
-			<p class="grid-col tablet-grid-one-quarter divider--border-left">
-			  <span>Next release: </span><br/>{{df description.nextRelease}}
-			</p>
-			<div class="grid-col tablet-grid-one-quarter divider--border-left page-header__meta-block-with-ul">
-				<ul class="list--neutral">
-					<li>
-						<span class="icon icon-print icon--blue-alt">
-							<span class="visuallyhidden">Print full report</span>&nbsp;Print full report
-						</span>
-					</li>
-					<li>
-						<span class="icon icon-download icon--blue-alt">
-							<span class="visuallyhidden">Download PDF</span>&nbsp;Download PDF (95KB)
-						</span>
-					</li>
-				</ul>
+			<h1 class="page-header__title flush--half--bottom">{{description.title}}</h1>
+			<div class="grid-wrap">
+				<p class="grid-col tablet-grid-one-quarter page-header__meta-block-with-img">
+				    {{#if description.nationalStatistic}}
+					<img src="../../node_modules/ONS-Pattern-Library/ui/img/national-statistics.png" alt="National Statistics logo" />
+					{{/if}}
+					<span>Contact: </span><br/><a href="mailto:{{description.contact.email}}">{{#if description.contact.name}}{{description.contact.name}}{{else}}{{description.contact.email}}{{/if}}</a>
+				</p>
+				<p class="grid-col tablet-grid-one-quarter divider--border-left">
+					<span>Release date: </span><br/>{{df description.releaseDate}}<br/><a href="#">previous versions</a>
+				</p>
+				<p class="grid-col tablet-grid-one-quarter divider--border-left">
+				  <span>Next release: </span><br/>{{df description.nextRelease}}
+				</p>
+				<p class="grid-col tablet-grid-one-quarter divider--border-left">
+					<a href="#" class ="icon-print">&nbsp;Print full report</a>
+					</br>
+					<a href="#" class="icon-download">&nbsp;Download PDF</a> (38KB)
+				</p>
 			</div>
+			{{> partials/social-icons}}
 		</div>
-		{{> partials/social-icons}}
 	</div>
-</div>
-<!-- Table of contents -->
-<div class="wrapper">
-	<p class="lede">{{description.summary}}</p>
-	<div class="panel--separated--bottom panel--bottom-mar">
-		<h2 id="top">Table of contents</h2>
-		<ol class="table-of-contents-ordered-list">
-			{{#each sections}}
-			<li><a href="#{{slugify title}}" title="{{this.title}}">{{this.title}}</a></li>
-			{{/each}}
-		</ol>
-	</div>
-</div>
-<!-- Body Sections -->
-<div class="wrapper panel--bottom-mar">
-	<div class="grid-wrap">
-		<div class="grid-col desktop-grid-two-thirds tablet-grid-full-width">
-			{{#each sections}}
-			<article class="box border-horizontal-single content-section">
-				<header class="box__header">
-					<h2 id="{{slugify title}}">{{title}}</h2>
-				</header>
-				<!-- /box__header -->
-				<div class="box__content">
-					<div>
-						<p>
-						{{md markdown}}
-						</p>
-					</div>
-      				<a href="#top" title="Back to table of contents">Back to table of contents</a>
-				</div>
-			</article>
-			{{/each}}
-			<!-- Accordian -->
-			{{#if accordion}}
-			<div class"panel--mar">
-				{{#each accordion}}
-				<div class="accordion is-collapsed">
-					<h2 class="accordion__title" aria-controls="content-{{@index}}">{{title}}</h2>
-					<div class="accordion__content" aria-labelledby="sc-{{@index}}">
-						{{md markdown}}
-					</div>
-				</div>
+	<!-- Table of contents -->
+	<div class="wrapper">
+		<p class="lede">{{description.summary}}</p>
+		<div class="panel--separated--bottom panel--bottom-mar">
+			<h2 id="top">Table of contents</h2>
+			<ol class="table-of-contents-ordered-list">
+				{{#each sections}}
+				<li><a href="#{{slugify title}}" title="{{this.title}}">{{this.title}}</a></li>
 				{{/each}}
-			</div>
-			{{/if}}
-		</div>
-		<!-- Sidebar -->
-		<div class="grid-col desktop-grid-one-third tablet-grid-full-width">
-			<!-- article__content -->
-			<article class="box box--green box--green--separated--left">
-				<div class="box__inner border box--padded [border--large-left]">
-					<header class="box__header">
-						<h3>Data in this bulletin</h3>
-					</header>
-					<div class="box__content">
-						<ul class="list--neutral">
-							{{#each relatedBulletins}}
-							<li><a href="{{uri}}">{{title}}</a></li>
-							{{/each}}
-						</ul>
-					</div>
-				</div>
-			</article>
-			<!-- /article__content -->
-	        <article class="box">
-	            <div class="box__inner border box--padded">
-	                <header class="box__header">
-	                    <h3>Contact details for this statistical bulletin</h3>
-	                </header>
-	                <!-- /box__header -->
-	                <div class="box__content">
-	                    <p>
-						  {{#if description.contact.name}}{{description.contact.name}}{{/if}}
-	                      <a href="mailto:{{description.contact.email}}">{{description.contact.email}}</a></br>
-	                      {{#if description.contact.telephone}}Telephone: {{description.contact.telephone}}{{/if}}
-	                    </p>
-	                </div>
-	                <!-- /box__content -->
-	            </div>
-	        </article>
-	        <!-- /article__content -->
+			</ol>
 		</div>
 	</div>
-</div>
-<!-- panel -->
-<div class="slate--mid-grey">
-	<!-- wrapper -->
-	<div class="wrapper panel--top-pad">
-		<!-- grid-wrap -->
+	<!-- Body Sections -->
+	<div class="wrapper panel--bottom-mar">
 		<div class="grid-wrap">
 			<div class="grid-col desktop-grid-two-thirds tablet-grid-full-width">
-				<article class="box box--teal--separated--left">
-					<div class="box__inner border box--padded">
-						<h3>Related bulletins</h3>
-						<ul class="list--neutral">
-							{{#each relatedBulletins}}
-							<li>
-								<h3 class="flush--bottom">
-								<a href="{{uri}}">{{@index}} {{description.title}}</a>
-								</h3>
-								<p>{{description.summary}}</p>
-							</li>
-							{{/each}}
-						</ul>
+				{{#each sections}}
+				<article class="box border-horizontal-single content-section">
+					<header class="box__header">
+						<h2 id="{{slugify title}}">{{title}}</h2>
+					</header>
+					<!-- /box__header -->
+					<div class="box__content">
+						<div>
+							<p>
+							{{md markdown}}
+							</p>
+						</div>
+	      				<a href="#top" title="Back to table of contents">Back to table of contents</a>
 					</div>
 				</article>
+				{{/each}}
+				<!-- Accordian -->
+				{{#if accordion}}
+				<div class"panel--mar">
+					{{#each accordion}}
+					<div class="accordion is-collapsed">
+						<h2 class="accordion__title" aria-controls="content-{{@index}}">{{title}}</h2>
+						<div class="accordion__content" aria-labelledby="sc-{{@index}}">
+							{{md markdown}}
+						</div>
+					</div>
+					{{/each}}
+				</div>
+				{{/if}}
 			</div>
-        	<div class="grid-col desktop-grid-one-third tablet-grid-full-width">
-            <!-- article__content -->
-            	<article class="box box--orange box--orange--separated-left">
-                	<div class="box__inner border box--padded ">
-		                <h3 class="flush--bottom"><a href="">Looking for local statistics?</a></h3>
-		                <p>A handy guide to let you know where to find local statistics.</p>
-                	</div>
-           		</article>
-        	</div>
+			<!-- Sidebar -->
+			<div class="grid-col desktop-grid-one-third tablet-grid-full-width">
+				<!-- article__content -->
+				<article class="box box--green box--green--separated--left">
+					<div class="box__inner border box--padded [border--large-left]">
+						<header class="box__header">
+							<h3>Data in this bulletin</h3>
+						</header>
+						<div class="box__content">
+							<ul class="list--neutral">
+								{{#each data}}
+								<li class="flush--third--bottom"><a href="{{uri}}">{{title}}</a></li>
+								{{/each}}
+							</ul>
+						</div>
+					</div>
+				</article>
+				<!-- /article__content -->
+		        <article class="box">
+		            <div class="box__inner border box--padded">
+		                <header class="box__header">
+		                    <h3>Contact details for this statistical bulletin</h3>
+		                </header>
+		                <!-- /box__header -->
+		                <div class="box__content">
+		                    <p>
+							  {{#if description.contact.name}}{{description.contact.name}}{{/if}}
+		                      <a href="mailto:{{description.contact.email}}">{{description.contact.email}}</a></br>
+		                      {{#if description.contact.telephone}}Telephone: {{description.contact.telephone}}{{/if}}
+		                    </p>
+		                </div>
+		                <!-- /box__content -->
+		            </div>
+		        </article>
+		        <!-- /article__content -->
+			</div>
 		</div>
 	</div>
-</div>
+	<!-- panel -->
+	<div class="slate--mid-grey">
+		<!-- wrapper -->
+		<div class="wrapper panel--top-pad">
+			<!-- grid-wrap -->
+			<div class="grid-wrap">
+				<div class="grid-col desktop-grid-two-thirds tablet-grid-full-width">
+					<article class="box box--teal--separated--left">
+						<div class="box__inner border box--padded">
+							<h3>Related bulletins</h3>
+							<ul class="list--neutral">
+								{{#each relatedBulletins}}
+								<li>
+									<h3 class="flush--bottom">
+									<a href="{{uri}}">{{@index}} {{description.title}}</a>
+									</h3>
+									<p>{{description.summary}}</p>
+								</li>
+								{{/each}}
+							</ul>
+						</div>
+					</article>
+				</div>
+	        	<div class="grid-col desktop-grid-one-third tablet-grid-full-width">
+	            	<!-- article__content -->
+	            	<article class="box box--orange box--orange--separated-left">
+	                	<div class="box__inner border box--padded ">
+			                <h3>Looking for local statistics?</h3>
+			                <p><a href="/local">A handy guide to let you know where to find local statistics.</a></p>
+	                	</div>
+	           		</article>
+	        	</div>
+			</div>
+		</div>
+	</div>
+</main>
 {{> partials/footer}}

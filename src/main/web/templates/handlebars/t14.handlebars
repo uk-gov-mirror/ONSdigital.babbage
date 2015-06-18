@@ -1,20 +1,14 @@
 {{> templates/handlebars/partials/header}}
-
 <div class="wrapper panel--top-mar">
-
 	{{> templates/handlebars/partials/breadcrumb}}
-
-	<h1 class="page-header__title flush--half--bottom">{{title}}</h1>
-
+	<h1 class="page-header__title flush--half--bottom">{{description.title}}</h1>
 	<p>
 		<span class="stand-out-text">{{contentSearchResult.numberOfResults}}</span> results
 	</p>
-
 	{{> templates/handlebars/partials/social-icons}}
 	<!-- / page-header__icons  -->
 </div>
 <!-- / wrapper -->
-
 <div class="wrapper panel--mar ">
 	<!-- /grid-wrap -->
 	<div class="grid-wrap">
@@ -145,9 +139,7 @@
 						<p class="mini description flush">
 							Frequency: {{frequency}}
 						</p>
-						<p>
-							{{summary}}
-						</p>
+						{{summary}}
 				</li>
 				{{/each}}
 			</ul>
