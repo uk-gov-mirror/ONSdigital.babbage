@@ -1,5 +1,6 @@
 package com.github.onsdigital.highcharts;
 
+import com.github.onsdigital.configuration.Configuration;
 import com.github.onsdigital.content.util.ContentUtil;
 import com.googlecode.wickedcharts.highcharts.options.Options;
 import org.apache.commons.io.IOUtils;
@@ -22,8 +23,6 @@ import java.util.List;
  */
 public class HighChartsExportClient {
 
-    private final static String exportServerUrl = "http://export.highcharts.com/";
-
     CloseableHttpClient client;
     CloseableHttpResponse response;
 
@@ -37,7 +36,7 @@ public class HighChartsExportClient {
         }
     }
 
-   public InputStream getImage(SparkLine sparkLine) throws IOException {
+   public InputStream getImage(BaseChart chart) throws IOException {
         if (client == null) {
             openConnection();
         }
@@ -45,10 +44,10 @@ public class HighChartsExportClient {
         InputStream data = null;
         System.out.println("Calling Highcharts export server");
 
-       HttpPost post = new HttpPost(exportServerUrl);
+       HttpPost post = new HttpPost(Configuration.getHighchartsExportSeverUrl());
 
        List<NameValuePair> postParameters = new ArrayList<NameValuePair>();
-       postParameters.add(new BasicNameValuePair("options", sparkLine.toJson()));
+       postParameters.add(new BasicNameValuePair("options", chart.toJson()));
        postParameters.add(new BasicNameValuePair("type", "png"));
        postParameters.add(new BasicNameValuePair("async", "false"));
        post.setEntity(new UrlEncodedFormEntity(postParameters));

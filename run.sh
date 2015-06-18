@@ -4,21 +4,40 @@
 
 ./build-web.sh
 
-## 2 - BUILD API
+### 2 - BUILD API
 ./build-api.sh "$1" 
 
+### 3- Start Highcharts export server
+
+export EXPORT_SERVER_DIR="highcharts/exporting-server/java/highcharts-export/highcharts-export-web"
+export EXPORT_SERVER_POM="highcharts/exporting-server/java/highcharts-export/highcharts-export-web/pom.xml"
+export CWD=`pwd`
+
+if [ ! -d highcharts ]
+   then
+    echo "Downloading highchart export server"
+    git clone --depth 1 -b v4.1.6 git@github.com:highslide-software/highcharts.com.git highcharts
+   else
+       echo "Highcharts already available. will not download"
+fi
+
+export JAVA_OPTS="-Xrunjdwp:transport=dt_socket,address=9000,server=y,suspend=n"
+
+cd $EXPORT_SERVER_DIR
+
+mvn  clean install && \
+nohup mvn -Djetty.port=9999 -Dlog4j.logger.exporter=DEBUG jetty:run > export-server.log 2>&1&
+
+cd $CWD
+
+### 4 - START BABBAGE
  if [ $? -eq 0 ]
     then
-      echo "Everything alright, starting server"
+      echo "Everything alright, starting the server"
     else
        echo "Something went wrong, server will not be started"
        exit 1
  fi
-
-
-### 3 - START SERVER
-
-#Back to project root
 
 export JAVA_OPTS="-Xdebug -Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=n"
 
@@ -55,6 +74,7 @@ $JAVA_HOME/bin/java $JAVA_OPTS \
  -Dmongo.password=$MONGO_PASSWORD \
  -cp "target/dependency/*" \
  com.github.davidcarboni.restolino.Main
+
 
 # Production: non-reloadable
 #$JAVA_HOME/bin/java $JAVA_OPTS -jar target/*-jar-with-dependencies.jar

@@ -1,10 +1,8 @@
-package com.github.onsdigital.request.handler;
+package com.github.onsdigital.request.handler.highcharts;
 
-import com.github.onsdigital.configuration.Configuration;
 import com.github.onsdigital.content.page.base.Page;
 import com.github.onsdigital.content.page.statistics.data.timeseries.TimeSeries;
 import com.github.onsdigital.content.util.ContentUtil;
-import com.github.onsdigital.data.DataNotFoundException;
 import com.github.onsdigital.data.DataService;
 import com.github.onsdigital.data.zebedee.ZebedeeRequest;
 import com.github.onsdigital.highcharts.HighChartsExportClient;
@@ -16,14 +14,11 @@ import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.InputStream;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.Path;
 
 /**
  * Created by bren on 17/06/15.
  */
-public class SparklineRequestHandler implements RequestHandler {
+public class SparklineImageRequestHandler implements RequestHandler {
 
     private static final String REQUEST_TYPE = "sparkline";
 
@@ -37,8 +32,7 @@ public class SparklineRequestHandler implements RequestHandler {
 
     @Override
     public BabbageResponse get(String requestedUri, HttpServletRequest request, ZebedeeRequest zebedeeRequest) throws Exception {
-        String uriPath = StringUtils.removeStart(requestedUri, "/");
-        System.out.println("Generating sparkline for " + uriPath);
+        System.out.println("Generating sparkline image for " + requestedUri);
         Page page = ContentUtil.deserialisePage(DataService.getInstance().getDataStream(requestedUri));
         if (!(page instanceof TimeSeries)) {
             throw new IllegalArgumentException("Requested data is not a timseries");
