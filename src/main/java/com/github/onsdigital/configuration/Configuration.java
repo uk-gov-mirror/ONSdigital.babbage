@@ -17,7 +17,8 @@ public class Configuration {
 
     private static final String DEFAULT_ZEBEDEE_URL = "http://localhost:8082";
 
-    private final static String HIGHCHARTS_EXPORT_SEVER_URL = "http://localhost:9999/export";
+    //Trailing slash seems to be important. Export server redirects to trailing slash url if not there
+    private final static String HIGHCHARTS_EXPORT_SEVER_URL = "http://localhost:9999/export/";
 
     private static final String DEFAULT_HANDLEBARS_DATE_PATTERN = "d MMMM yyyy";
 
