@@ -8,7 +8,7 @@
 			</p>
 			<h1 class="page-header__title flush--half--bottom">{{description.title}}</h1>
 			<div class="grid-wrap">
-				<p class="grid-col tablet-grid-one-quarter page-header__meta-block-with-img">
+				<p class="grid-col tablet-grid-one-quarter {{#if description.nationalStatistic}}page-header__meta-block-with-img{{/if}}">
 					{{#if description.nationalStatistic}}
 					<img src="../../node_modules/ONS-Pattern-Library/ui/img/national-statistics.png" alt="National Statistics logo">
 					{{/if}}
@@ -111,17 +111,11 @@
 								<h3>Contact details</h3>
 							</header>
 							<div class="box__content">
-								<ul class="list--neutral">
-									<li>
-										{{contact.name}}
-									</li>
-									<li>
-										<a href="mailto:{{contact.email}}" title="Email {{contact.email}}">{{contact.email}}</a>
-									</li>
-									<li>
-										{{contact.telephone}}
-									</li>
-								</ul>
+								<address>
+									{{#if description.contact.name}}{{description.contact.name}}{{/if}}
+		                      		<a href="mailto:{{description.contact.email}}">{{description.contact.email}}</a></br>
+		                      		{{#if description.contact.telephone}}Telephone: {{description.contact.telephone}}{{/if}}
+								</address>
 							</div>
 						</article>
 					</div>
