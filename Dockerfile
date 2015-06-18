@@ -13,8 +13,9 @@ RUN curl -sL https://deb.nodesource.com/setup_0.12 | bash -
 
 # Install node, git and maven
 RUN \
+  apt-get clean && \
   apt-get update && \
-  apt-get install --fix-missing -y git maven nodejs
+  apt-get install -y git maven nodejs
 
 
 # Consul agent - /usr/local/bin
