@@ -12,10 +12,10 @@
   ],
   "datasets": [
     {
-      "uri": "/peoplepopulationandcommunity/crimeandjustice/datasets/crimesurveyforenglandandwalesdatacollection"
+      "uri": "/peoplepopulationandcommunity/crimeandjustice/datasets/policerecordedcrimedatacollection"
     },
     {
-      "uri": "/peoplepopulationandcommunity/crimeandjustice/datasets/policerecordedcrimedatacollection"
+      "uri": "/peoplepopulationandcommunity/crimeandjustice/datasets/crimesurveyforenglandandwalesdatacollection"
     }
   ],
   "statsBulletins": [

@@ -15,10 +15,10 @@
   ],
   "datasets": [
     {
-      "uri": "/businessindustryandtrade/manufacturingandproductionindustry/datasets/outputoftheproductionindustries"
+      "uri": "/businessindustryandtrade/manufacturingandproductionindustry/datasets/outputbymanufacturingsubsectors"
     },
     {
-      "uri": "/businessindustryandtrade/manufacturingandproductionindustry/datasets/outputbymanufacturingsubsectors"
+      "uri": "/businessindustryandtrade/manufacturingandproductionindustry/datasets/outputoftheproductionindustries"
     }
   ],
   "statsBulletins": [
