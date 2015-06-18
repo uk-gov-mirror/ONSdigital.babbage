@@ -13,8 +13,9 @@ RUN curl -sL https://deb.nodesource.com/setup_0.12 | bash -
 
 # Install node, git and maven
 RUN \
+  apt-get clean && \
   apt-get update && \
-  apt-get install --fix-missing -y git maven nodejs
+  apt-get install -y git maven nodejs
 
 
 # Consul agent - /usr/local/bin
@@ -53,7 +54,7 @@ EXPOSE 8080
 
 
 # Restolino configuration
-ENV RESTOLINO_STATIC="src/main/resources/files"
+ENV RESTOLINO_STATIC="src/main/web"
 ENV RESTOLINO_CLASSES="target/classes"
 ENV PACKAGE_PREFIX=com.github.onsdigital
 

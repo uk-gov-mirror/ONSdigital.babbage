@@ -3,27 +3,27 @@
 	<div class="wrapper">
 		{{> templates/handlebars/partials/breadcrumb}}
 		<p class="page-header__title">
-			<strong>Time series previous versions</strong>
+			Time series previous versions
 		</p>
-		<h1 class="page-header__title flush--half--bottom">{{title}}</h1>
+		<h1 class="page-header__title flush--half--bottom">{{description.title}}</h1>
 		<div class="grid-wrap">
-			<p class="grid-col tablet-grid-one-quarter page-header__meta-block-with-img">
-				<img src="../../node_modules/ONS-Pattern-Library/ui/img/national-statistics.png" alt="ONS logo" width="50rem">
-				<span>Contact: </span></br>
-				<a href="mailto:{{contact.email}}">{{contact.name}}</a>
+			<p class="grid-col tablet-grid-one-quarter {{#if description.nationalStatistic}}page-header__meta-block-with-img{{/if}}">
+				{{#if description.nationalStatistic}}
+				<img src="../../node_modules/ONS-Pattern-Library/ui/img/national-statistics.png" alt="National Statistics logo">
+				{{/if}}
+				<span>Contact: </span><br/><a href="mailto:{{description.contact.email}}">{{#if description.contact.name}}{{description.contact.name}}{{else}}{{description.contact.email}}{{/if}}</a>
 			<p class="grid-col tablet-grid-one-quarter divider--border-left">
-				<span>Data period covered: </span>{{period}}
+				<span>Data period covered: </span>{{description.period}}
 			</p>
 			<p class="grid-col tablet-grid-one-quarter divider--border-left">
-				<span>Next release: </span>
-				{{nextRelease}}
+				<span>Next release: </span></br>{{df description.nextRelease}}
 			</p>
 			<p class="grid-col tablet-grid-one-quarter divider--border-left">
-				<span>Series ID: </span>{{seriesID}}
+				<span>Series ID: </span>{{description.seriesID}}
 				</br>
-				<span>Units :</span>{{units}}
+				<span>Units :</span>{{description.units}}
 				</br>
-				{{adjustment}}
+				{{description.adjustment}}
 			</p>
 		</div>
 		<!-- /grip-wrap -->
@@ -35,9 +35,7 @@
 <div class="wrapper panel--mar">
 	<div class="grid-wrap">
 		<div class="grid-col desktop-grid-full-width">
-			<p>
-				{{md introduction}}
-			</p>
+			{{md introduction}}
 			<div class="grid-wrap">
 				<div class="grid-col desktop-grid-two-thirds">
 					<div class="grid-wrap">
@@ -121,9 +119,7 @@
 			</div>
 			{{#each sections}}
 			<h2>{{title}}</h2>
-			<p>
-				{{md markdown}}
-			</p>
+			{{md markdown}}
 			{{/each}}
 		</div><!-- /grid-full-width -->
 		<div class="grid-col desktop-grid-one-half">
@@ -134,7 +130,7 @@
 				<div class="box__content">
 					<ul class="list--neutral">
 						{{#each methodology}}
-						<li>
+						<li class="flush--third--bottom">
 							<a href="{{uri}}">{{title}}</a>
 						</li>
 						{{/each}}
@@ -148,17 +144,11 @@
 					<h3>Contact details for this time series</h3>
 				</header>
 				<div class="box__content">
-					<ul class="list--neutral">
-						<li>
-							John Smith
-						</li>
-						<li>
-							<a href="mailto:{{contact.email}}">{{contact.email}}</a>
-						</li>
-						<li>
-							{{contact.telephone}}
-						</li>
-					</ul>
+					<address>
+						{{#if description.contact.name}}{{description.contact.name}}{{/if}}
+	              		<a href="mailto:{{description.contact.email}}">{{description.contact.email}}</a></br>
+	              		{{#if description.contact.telephone}}Telephone: {{description.contact.telephone}}{{/if}}
+	                </address>
 				</div>
 			</article>
 		</div>

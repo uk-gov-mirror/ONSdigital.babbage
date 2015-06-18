@@ -17,37 +17,22 @@
         {{#each sections}}
         <div class="grid-col grid-col--home-hero tablet-wide-grid-one-fifth">
             <article class="nav-panel nav-panel--stats nav-panel--home-hero sectioned">
-                <a href="{{statistics.data.uri}}">Stat link, apply to whole panel<span class="[navpanel_wrapper_home__link]"></span></a>
+                
                 <header class="nav-panel__header nav-panel__roomy">
                     <h2 class="delta flush">{{statistics.data.description.title}}</h2>
                 </header>
                 <div class="nav-panel__roomy">
-                    <ul class="list--neutral">
-                        <li class="nav-panel__item">
-                            <dl>
-                                <dd class="nav-panel__value">
-                                    <div class="stat stat--small">
-                                        <div class="stat__figure">
-                                            <span class="stat__figure__unit">{{statistics.data.description.preUnit}}</span>
-                                            {{statistics.data.description.number}}
-                                            <span class="stat__figure__unit">{{statistics.data.description.unit}}</span>
-                                        </div>
-                                        <div class="stat__description">
-                                            {{statistics.data.description.date}}
-                                        </div>
-                                    </div>
-                                </dd>
-                            </dl>
-                        </li>
-                        <li class="nav-panel__item [homeicon_sparkline]">
-                            <div style="height:30px"></div>
-                            <div class="box">
-                                <div>
-                                    <img src="{{statistics.data.uri}}/sparkline" ALT="some text">
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
+                    <div class="stat__figure">
+                        <span class="stat__figure__unit">{{statistics.data.description.preUnit}}</span>
+                        {{statistics.data.description.number}}
+                        <span class="stat__figure__unit">{{statistics.data.description.unit}}</span>
+                    </div>
+                    <div class="stat__description">
+                        {{statistics.data.description.date}}
+                    </div>
+                    <img src="{{statistics.data.uri}}/sparkline" alt="some text">
+                    
+                    <a class="js-hidden" href="{{statistics.data.uri}}">More info</a>
                 </div>
                 <footer class="nav-panel__footer">
                     <div class="nav-panel__action">

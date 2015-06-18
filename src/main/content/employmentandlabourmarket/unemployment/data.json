@@ -30,10 +30,10 @@
   ],
   "datasets": [
     {
-      "uri": "/employmentandlabourmarket/unemployment/datasets/claimantcountdatacollection"
+      "uri": "/employmentandlabourmarket/unemployment/datasets/unemploymentdatacollection"
     },
     {
-      "uri": "/employmentandlabourmarket/unemployment/datasets/unemploymentdatacollection"
+      "uri": "/employmentandlabourmarket/unemployment/datasets/claimantcountdatacollection"
     }
   ],
   "statsBulletins": [

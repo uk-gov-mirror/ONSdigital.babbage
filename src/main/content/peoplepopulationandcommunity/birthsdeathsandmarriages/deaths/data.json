@@ -21,10 +21,10 @@
   ],
   "datasets": [
     {
-      "uri": "/peoplepopulationandcommunity/birthsdeathsandmarriages/deaths/datasets/deathsdatacollection"
+      "uri": "/peoplepopulationandcommunity/birthsdeathsandmarriages/deaths/datasets/causesofdeath"
     },
     {
-      "uri": "/peoplepopulationandcommunity/birthsdeathsandmarriages/deaths/datasets/causesofdeath"
+      "uri": "/peoplepopulationandcommunity/birthsdeathsandmarriages/deaths/datasets/deathsdatacollection"
     }
   ],
   "statsBulletins": [

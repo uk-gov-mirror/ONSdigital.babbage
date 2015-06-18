@@ -21,10 +21,10 @@
   ],
   "datasets": [
     {
-      "uri": "/businessindustryandtrade/retailindustry/datasets/valueofretailsalesbycommodity"
+      "uri": "/businessindustryandtrade/retailindustry/datasets/retailsales"
     },
     {
-      "uri": "/businessindustryandtrade/retailindustry/datasets/retailsales"
+      "uri": "/businessindustryandtrade/retailindustry/datasets/valueofretailsalesbycommodity"
     }
   ],
   "statsBulletins": [

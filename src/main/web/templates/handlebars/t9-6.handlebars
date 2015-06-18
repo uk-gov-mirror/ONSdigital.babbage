@@ -1,72 +1,74 @@
 {{> templates/handlebars/partials/header}}
-<div class="wrapper panel--top-mar">
-	{{> templates/handlebars/partials/breadcrumb}}
-	<p class="page-header__title">
-		<strong>Previous releases</strong>
-	</p>
-	<h1 class="page-header__title flush--half--bottom">Consumer price inflation statistical bulletins</h1>
-	<div class="grid-wrap">
-		<p class="grid-col desktop-grid-two-thirds">
-			<strong>Frequency: </strong>{{frequency}}
+<main id="main" role="main" tabindex="-1">
+	<div class="wrapper panel--top-mar">
+		{{> templates/handlebars/partials/breadcrumb}}
+		<p class="page-header__title">
+			Previous releases
 		</p>
-	</div>
-	<div class="grid-wrap">
-	<p class="grid-col desktop-grid-two-thirds">
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam bibendum, odio sit amet accumsan dignissim, mi est tristique enim, sed venenatis ligula risus a dolor. Proin nisl massa, condimentum sed lobortis vel, faucibus vitae tellus.
-	</p>
-	</div>
-	<div class="grid-wrap">
-		<div class="grid-col desktop-grid-two-thirds">
-			<div class="panel panel--separated--top">
-				<ul class="list--neutral">
-					{{#each contentSearchResult.results}}
-						{{#if @first}}
-						<li>
-							<h3 class="flush">Latest release</h3>
-							<h3 class="flush stand-out-text"><a href="{{url}}">{{title}}</a></h4>
-							<p class="stand-out-text">
-								Released: {{releaseDate}}
-							</p>
-						</li>
-						{{else}}
-						<li>
-							<h3 class="flush"><a href="{{url}}">{{title}}</a></h4>
-							<p>
-								Released: {{releaseDate}}
-							</p>
-						</li>
-						{{/if}}
-					{{/each}}
-				</ul>
-			</div>
-			<!-- /panel -->
+		<h1 class="page-header__title flush--half--bottom">Consumer price inflation statistical bulletins</h1>
+		<div class="grid-wrap">
+			<p class="grid-col desktop-grid-two-thirds">
+				<strong>Frequency: </strong>{{frequency}}
+			</p>
 		</div>
-		<!-- /desktop-grid-two-thirds -->
-	</div>
-	<!-- /grid-wrap -->
-	<div class="grid-wrap panel--mar">
-		<div class="grid-col desktop-grid-two-thirds">
-			<article class="box box--purple box--purple--separated--left">
-				<div class="box__inner border box--padded">
-					<header class="box__header">
-						<h3 class="gamma">Need an earlier release?</h3>
-					</header>
-					<div class="box__content">
-						<p>
-							We moved them to <a href="#">The National Archives</a> website, to keep this website as responsive as possible.
-						</p>
-						<p>
-							<strong>Please note: </strong>all historical data is still on this website.
-						</p>
-					</div>
+		<div class="grid-wrap">
+		<p class="grid-col desktop-grid-two-thirds">
+			Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam bibendum, odio sit amet accumsan dignissim, mi est tristique enim, sed venenatis ligula risus a dolor. Proin nisl massa, condimentum sed lobortis vel, faucibus vitae tellus.
+		</p>
+		</div>
+		<div class="grid-wrap">
+			<div class="grid-col desktop-grid-two-thirds">
+				<div class="panel panel--separated--top">
+					<ul class="list--neutral">
+						{{#each contentSearchResult.results}}
+							{{#if @first}}
+							<li>
+								<h3 class="flush">Latest release</h3>
+								<h3 class="flush stand-out-text"><a href="{{url}}">{{title}}</a></h4>
+								<p class="stand-out-text">
+									Released: {{df releaseDate}}
+								</p>
+							</li>
+							{{else}}
+							<li>
+								<h3 class="flush"><a href="{{url}}">{{title}}</a></h4>
+								<p>
+									Released: {{df releaseDate}}
+								</p>
+							</li>
+							{{/if}}
+						{{/each}}
+					</ul>
 				</div>
-				<!-- /box__inner -->
-			</article>
-			<!-- /box -->
+				<!-- /panel -->
+			</div>
+			<!-- /desktop-grid-two-thirds -->
 		</div>
-		<!-- /desktop-grid-two-thirds -->
+		<!-- /grid-wrap -->
+		<div class="grid-wrap panel--mar">
+			<div class="grid-col desktop-grid-two-thirds">
+				<article class="box box--purple box--purple--separated--left">
+					<div class="box__inner border box--padded">
+						<header class="box__header">
+							<h3 class="gamma">Need an earlier release?</h3>
+						</header>
+						<div class="box__content">
+							<p>
+								We moved them to <a href="#">The National Archives</a> website, to keep this website as responsive as possible.
+							</p>
+							<p>
+								<strong>Please note: </strong>all historical data is still on this website.
+							</p>
+						</div>
+					</div>
+					<!-- /box__inner -->
+				</article>
+				<!-- /box -->
+			</div>
+			<!-- /desktop-grid-two-thirds -->
+		</div>
+		<!-- /grid-wrap -->
 	</div>
-	<!-- /grid-wrap -->
-</div>
-<!-- /wrapper -->
+	<!-- /wrapper -->
+</main>
 {{> templates/handlebars/partials/footer}}

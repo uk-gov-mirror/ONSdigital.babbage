@@ -1,13 +1,11 @@
 {{> templates/handlebars/partials/header}}
 <main id="main" role="main" tabindex="-1">
-
 	<div class="wrapper panel--top-mar">
 		{{> templates/handlebars/partials/breadcrumb}}
 			<!-- / breadcrumb -->
 		<h1>Release calendar</h1>
 	</div>
 	<!-- / wrapper -->
-
 	<div class="wrapper panel--mar ">
 		<div class="tab-interface">
 			<div class="tab-pane tab-pane--dual">
@@ -19,11 +17,7 @@
 						<a href="#upcoming" class="tab-pane__tab">Upcoming releases</a>
 					</li>
 				</ul>
-				
 				<!-- /grid-wrap -->
-				
-
-
 					{{!-- <div class="grid-col desktop-grid-two-thirds"> --}}
 						<section class="desktop-grid-full-width tab-pane__content" id="published">
 
@@ -37,9 +31,6 @@
 								</div>
 								<!-- /desktop-grid -->
 							</div>
-
-
-
 								<div class="grid-col desktop-grid-one-third">
 									<article class="box box--padded lifted sectioned">
 										<form id="filters">
@@ -97,7 +88,7 @@
 											</a>
 										</h3>
 										<p class="mini description">
-											{{releaseDate}}
+											{{df releaseDate}}
 										</p>
 									</li>
 									{{/each}}

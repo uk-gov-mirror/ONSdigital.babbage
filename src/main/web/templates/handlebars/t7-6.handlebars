@@ -3,13 +3,13 @@
 	<div class="page-header slate slate--red">
 		<div class="wrapper">
 			{{> templates/handlebars/partials/breadcrumb}}
-			<h1 class="page-header__title flush--half--bottom">{{name}}</h1>
+			<h1 class="page-header__title flush--half--bottom">{{description.title}}</h1>
 			<div class="grid-wrap">
 				<p class="grid-col tablet-grid-one-quarter">
-					<span>Contact: </span><br/><a href="#">{{contact.name}}</a>
+					<span>Contact: </span><br/><a href="mailto:{{description.contact.email}}">{{#if description.contact.name}}{{description.contact.name}}{{else}}{{description.contact.email}}{{/if}}</a>
 				</p>
 				<p class="grid-col tablet-grid-one-quarter divider--border-left">
-					<span>Last revised: </span>{{lastRevised}}<br/>
+					<span>Last revised: </span><br/>{{df lastRevised}}<br/>
 					<a href="#">previous versions</a>
 				</p>
 			</div>
@@ -20,24 +20,24 @@
 	<div class="wrapper panel--mar">
 		<div class="grid-wrap">
 			<div class="grid-col desktop-grid-full-width">
-					{{md lede}}
+				{{md lede}}
 			</div>
 		</div>
 		<!-- table of contents -->
 		<div class="panel--separated--bottom panel--bottom-mar">
 			<h2>In this section</h2>
-				<ol class="table-of-contents-ordered-list">
-					{{#each sections}}
-					<li><a href="#{{this.uri}}" title="{{this.title}}">{{this.title}}</a></li>
-					{{/each}}
-				</ol>
+			<ol class="table-of-contents-ordered-list">
+				{{#each sections}}
+				<li><a href="#{{slugify title}}" title="{{this.title}}">{{this.title}}</a></li>
+				{{/each}}
+			</ol>
 		</div>
 		<!-- /table of contents -->
 		<div class="grid-wrap">
 			<div class="grid-col desktop-grid-two-thirds">
 				{{#each sections}}
-				<h2 id="{{this.uri}}">{{this.title}}</h2>
-				<p>{{this.markdown}}</p>
+				<h2 id="{{slugify title}}">{{this.title}}</h2>
+				{{md this.markdown}}
 				{{/each}}
 			</div><!-- /grid-two-thirds -->
 			<div class="grid-col desktop-grid-one-third">
@@ -97,9 +97,9 @@
 					<!-- /box__header -->
 					<div class="box__content">
 						<address>
-							{{contact.name}}<br/>
-							<a href="mailto:{{contact.email}}">{{contact.email}}</a><br/>
-							{{contact.telephone}}
+							{{#if description.contact.name}}{{description.contact.name}}{{/if}}
+		                    <a href="mailto:{{description.contact.email}}">{{description.contact.email}}</a></br>
+		                    {{#if description.contact.telephone}}Telephone: {{description.contact.telephone}}{{/if}}
 						</address>
 					</div>
 					<!-- /box__content -->
