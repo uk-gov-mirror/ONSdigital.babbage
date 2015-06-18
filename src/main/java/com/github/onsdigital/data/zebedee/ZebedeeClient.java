@@ -76,14 +76,12 @@ public class ZebedeeClient {
 
         response = client.execute(httpGet);
 
-        handleResponse(response.getStatusLine(), url);
+//        handleResponse(response.getStatusLine(), url);
 
         HttpEntity responseEntity = response.getEntity();
 
         if (responseEntity != null && responseEntity.getContent() != null) {
             data = responseEntity.getContent();
-        } else {
-            throwNotFound(uriPath);
         }
 
         System.out.println("Response: " + response.getStatusLine());
@@ -94,22 +92,6 @@ public class ZebedeeClient {
     public void closeConnection() {
         IOUtils.closeQuietly(response);
         IOUtils.closeQuietly(client);
-    }
-
-    private void handleResponse(StatusLine line, String requestedUri)  {
-        switch (line.getStatusCode()) {
-            case HttpServletResponse.SC_OK:
-                return;
-            case HttpServletResponse.SC_NOT_FOUND:
-                throwNotFound(requestedUri);
-            case HttpServletResponse.SC_INTERNAL_SERVER_ERROR:
-            default:
-                throwInternalError("Failed reading data from Zebedee with uri " + requestedUri + " response: " + line.getReasonPhrase());
-        }
-    }
-
-    private void throwNotFound(String uri) {
-        throw new DataNotFoundException(uri);
     }
 
     private void throwInternalError(String message) {
