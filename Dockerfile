@@ -4,6 +4,7 @@ from onsdigital/java-component
 # Node.js
 
 # We need to use a later version of Node than is currently available in the Ubuntu package manager (2015-06-17)
+# The tar and bzip2 packages are required for Phantom.js installation in npm: https://github.com/Medium/phantomjs/issues/326
 RUN apt-get install -y curl
 RUN curl -sL https://deb.nodesource.com/setup_0.12 | bash -
 RUN apt-get install -y nodejs tar bzip2
@@ -21,7 +22,7 @@ RUN git checkout develop
 
 # Build web content
 
-RUN npm install --prefix=src/main/web --production
+RUN npm install --prefix=src/main/web
 
 # Build
 
@@ -46,6 +47,7 @@ ENV PACKAGE_PREFIX=com.github.onsdigital
 ENV MONGO_USER=ons
 ENV MONGO_PASSWORD=uJlVY2FDGI5SFawS/PN+jnZpymKWpU7C
 
+
 # Update the entry point script
 
 RUN echo "java $JAVA_OPTS \
@@ -56,3 +58,5 @@ RUN echo "java $JAVA_OPTS \
           -Dmongo.password=$MONGO_PASSWORD \
           -cp \"target/dependency/*\" \
           com.github.davidcarboni.restolino.Main" >> container.sh
+RUN pwd
+RUN ls -lah container.sh
