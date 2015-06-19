@@ -49,7 +49,7 @@ ENV MONGO_PASSWORD=uJlVY2FDGI5SFawS/PN+jnZpymKWpU7C
 
 #Download build and start highchart server
 
-RUN echo "./highcharts-export-server.sh"
+RUN echo -e "./highcharts-export-server.sh\n\n" >> container.sh
 
 # Update the entry point script
 
