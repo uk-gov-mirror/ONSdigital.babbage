@@ -37,7 +37,7 @@ if [ $? -eq 0 ]
  fi
 
 cd $CWD
-mvn -f "$EXPORT_SERVER_DIR/$EXPORT_SERVER_WEB" -Djetty.port=9999 -Dlog4j.logger.exporter=DEBUG jetty:run > export-server.log 2>&1&
+mvn -f "$EXPORT_SERVER_DIR/$EXPORT_SERVER_WEB/pom.xml" -Djetty.port=9999 -Dlog4j.logger.exporter=DEBUG jetty:run > export-server.log 2>&1&
 exportserverpid=$!
 echo "export server pid: $exportserverpid"
 
