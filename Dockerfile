@@ -62,3 +62,4 @@ RUN echo "java $JAVA_OPTS \
           -Dmongo.password=$MONGO_PASSWORD \
           -cp \"target/dependency/*\" \
           com.github.davidcarboni.restolino.Main" >> container.sh
+RUN cat container.sh
