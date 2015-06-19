@@ -21,7 +21,7 @@ RUN git checkout develop
 
 # Build web content
 
-RUN npm install --prefix=src/main/web
+RUN npm install --prefix=src/main/web --production
 
 # Build
 
