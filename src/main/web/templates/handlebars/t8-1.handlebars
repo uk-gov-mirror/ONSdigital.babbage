@@ -23,7 +23,7 @@
 					<span>Next release: </span><br/>{{df description.nextRelease}}
 				</p>
 				<p class="grid-col tablet-grid-one-quarter divider--border-left">
-					<span>Dataset id: </span>{{description.dataSetID}}
+					<span>Dataset id: </span>{{description.datasetID}}
 					<a href="#">what is this?</a>
 				</p>
 			</div>
@@ -112,7 +112,7 @@
 							</header>
 							<div class="box__content">
 								<address>
-									{{#if description.contact.name}}{{description.contact.name}}{{/if}}
+									{{#if description.contact.name}}{{description.contact.name}}</br>{{/if}}
 		                      		<a href="mailto:{{description.contact.email}}">{{description.contact.email}}</a></br>
 		                      		{{#if description.contact.telephone}}Telephone: {{description.contact.telephone}}{{/if}}
 								</address>

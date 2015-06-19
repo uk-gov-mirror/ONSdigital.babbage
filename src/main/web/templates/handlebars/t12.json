@@ -1,5 +1,4 @@
 {
-	"title": "CPI: Consumer Prices Index (% change)",
     "navigation":{
 	      "nodes": [
 	        {
@@ -255,16 +254,29 @@
 	  },
       "breadcrumb": [
   	    {
+  	    	"description": {
   	      "title": "Home",
-  	      "summary": "The UK\u0027s largest independent producer of official statistics and the recognised national statistical institute of the UK.",
+  	      "summary": "The UK\u0027s largest independent producer of official statistics and the recognised national statistical institute of the UK."
+  	      },
   	      "uri": "/"
   	    },
   	    {
+  	    	"description": {
   	      "title": "Economy",
-  	      "summary": "An economy or economic system consists of the production, distribution, consumption and trade of limited goods and services by different agents in a given geographical location. The economic agents can be individuals, businesses, organisations, or governments. ",
+  	      "summary": "An economy or economic system consists of the production, distribution, consumption and trade of limited goods and services by different agents in a given geographical location. The economic agents can be individuals, businesses, organisations, or governments. "
+  	      },
   	      "uri": "/economy"
+  	    },
+  	    {
+  	    	"description": {
+  	      "title": "Inflation and price indices",
+  	      "summary": "An economy or economic system consists of the production, distribution, consumption and trade of limited goods and services by different agents in a given geographical location. The economic agents can be individuals, businesses, organisations, or governments. "
+  	      },
+  	      "uri": "/economy/inflationandpriceindices"
   	    }
   	],
+  	"description": {
+  	"title": "CPI: Consumer Prices Index (% change)",
     "contact": {
 		"name": "Philip Gooding",
 		"email": "cpi@ons.gsi.gov.uk",
@@ -274,7 +286,8 @@
 	"nextRelease": "22 August 2015",
 	"seriesID": "MC6A",
     "units": "Index 2010=100",
-	"adjustment": "Non-seasionally adjusted",
+	"adjustment": "Non-seasionally adjusted"
+	},
 	"introduction": "Select or enter vintage dates to download data for this series that actually existed on those past dates in history. In general, economic data for past observation periods are revised as more accurate estimates become available. Entering vintage dates allows you to retrieve past revisions of economic data that were actually available as of specific dates.\n\nRead download data help for more information about the options on this form. Note that files may take a while to download depending on the number of observations and vintage dates.",
 	"versions": [
 		{

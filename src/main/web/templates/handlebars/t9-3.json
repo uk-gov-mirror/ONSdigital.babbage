@@ -1,5 +1,4 @@
 {
-	"title": "Inflation and price indices",
     "navigation":{
       "nodes": [
         {
@@ -253,23 +252,23 @@
         }
       ]
 	},
+"description": {
+  "title": "Inflation and price indices"
+  },
 	"breadcrumb": [
-        {
-          "title": "Home",
-          "summary": "The UK\u0027s largest independent producer of official statistics and the recognised national statistical institute of the UK.",
-          "uri": "/"
-        },
-        {
-          "title": "About us",
-          "summary": "About us summary",
-          "uri": "/aboutus"
-		},
-		{
-			"title": "Corporate information",
-			"summary": "Summary",
-			"uri": "/aboutus/corporateinformation/"
-		}
-	],
+    {
+      "description": {
+      "title": "Home"
+      },
+      "uri": "/"
+    },
+    {
+      "description": {
+      "title": "Economy"
+      },
+      "uri": "/economy"
+    }
+  ],
 	"contentSearchResult": {
 		"numberOfResults": 2,
 		"results": [
@@ -286,62 +285,5 @@
 			"releaseDate": "14 April 2015"
 		}
 	]
-	},
-	"footer": [
-		{
-			"title": "Legal",
-			"items": [
-				{
-					"title": "Accessibility",
-					"uri": "accessibility"
-				},
-				{
-					"title": "Cookies and privacy",
-					"uri": "cookiesandprivacy"
-				}
-			]
-		},
-		{
-			"title": "About ONS",
-			"items": [
-				{
-					"title": "Who we are",
-					"uri": "whoweare"
-				},
-				{
-					"title": "Careers",
-					"uri": "careers"
-				},
-				{
-					"title": "Products and services",
-					"uri": "productsandservices"
-				},
-				{
-					"title": "Contact us",
-					"uri": "contactus"
-				},
-				{
-					"item": "Our offices",
-					"uri": "ouroffices"
-				}
-			]
-		},
-		{
-			"title": "Connect with us",
-			"items": [
-				{
-					"title": "Twitter",
-					"uri": "https://twitter.com/ONS"
-				},
-				{
-					"title": "Facebook",
-					"uri": "https://www.facebook.com/ONS"
-				},
-				{
-					"title": "LinkedIn",
-					"uri": "https://www.linkedin.com/company/office-for-national-statistics"
-				}
-			]
-		}
-	]
+	}
 }

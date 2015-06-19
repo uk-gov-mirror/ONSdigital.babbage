@@ -1,6 +1,5 @@
 
 {
-	"title": "Economy",
 	"navigation":{
 	      "nodes": [
 	        {
@@ -254,54 +253,58 @@
 	        }
 	      ]
 	  },
+	  "description": {
+      "title": "Methodology"
+      },
 	"lede": "Methodology papers, notes, reports and other useful information relating to each statistical theme.",
 	"type": "home",
 	"name": "Economy",
 	"fileName": "economy",
 	"breadcrumb": [
 		{
-			"name": "Methodology",
-			"fileName": "methodology",
-			"uri": "methodology"
+			"uri": "/",
+			"description": {
+				"title": "Home"
+			}
 		}
 	],
 
 	"sections": [
 	{
-		"name": "Business, industry and trade",
+		"title": "Business, industry and trade",
 		"link": "methodology/businessindustryandtrade",
 		"index": 0,
-		"description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam tempor eu nibh at pharetra. Morbi."
+		"summary": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam tempor eu nibh at pharetra. Morbi."
 	},
 	{
-		"name": "Economy",
+		"title": "Economy",
 		"link": "methodology/economy",
 		"index": 1,
-		"description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam tempor eu nibh at pharetra. Morbi."
+		"summary": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam tempor eu nibh at pharetra. Morbi."
 	},
 	{
-		"name": "Employment and labour market",
+		"title": "Employment and labour market",
 		"link": "methodology/emplyomentandlabourmarket",
 		"index": 3,
-		"description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam tempor eu nibh at pharetra. Morbi."
+		"summary": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam tempor eu nibh at pharetra. Morbi."
 	},
 	{
-		"name": "People, population and community",
+		"title": "People, population and community",
 		"link": "methodology/peoplepopulationandcommunity",
 		"index": 4,
-		"description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam tempor eu nibh at pharetra. Morbi."
+		"summary": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam tempor eu nibh at pharetra. Morbi."
 	},
 	{
-		"name": "Classifications",
+		"title": "Classifications",
 		"link": "methodology/classifications",
 		"index": 5,
-		"description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam tempor eu nibh at pharetra. Morbi."
+		"summary": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam tempor eu nibh at pharetra. Morbi."
 	},
 	{
-		"name": "Geography",
+		"title": "Geography",
 		"link": "methodology/geography",
 		"index": 6,
-		"description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam tempor eu nibh at pharetra. Morbi."
+		"summary": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam tempor eu nibh at pharetra. Morbi."
 	}
 	],
 	"more": {

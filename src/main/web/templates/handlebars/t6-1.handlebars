@@ -1,3 +1,4 @@
+
 {{> templates/handlebars/partials/header}}
 <main id="main" role="main" tabindex="-1">
 	<div class="page-header slate slate--blue">
@@ -90,7 +91,7 @@
 							<h3 class="box__section__header">Contact details</h3>
 							<div class="box__content">
 								<address>
-									{{#if description.contact.name}}{{description.contact.name}}{{/if}}
+									{{#if description.contact.name}}{{description.contact.name}}</br>{{/if}}
 		                      		<a href="mailto:{{description.contact.email}}">{{description.contact.email}}</a></br>
 		                      		{{#if description.contact.telephone}}Telephone: {{description.contact.telephone}}{{/if}}
 								</address>

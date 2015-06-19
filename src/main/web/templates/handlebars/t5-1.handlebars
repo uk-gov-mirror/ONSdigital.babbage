@@ -1,9 +1,9 @@
-{{> partials/header}}
+{{> templates/handlebars/partials/header}}
 <main id="main" role="main" tabindex="-1">
     <!-- title and social icons -->
     <div class="page-header slate slate--light-green">
         <div class="wrapper" >
-            {{> partials/breadcrumb}}
+            {{> templates/handlebars/partials/breadcrumb}}
             <!-- /Wrapper panel -->
         </div>
 
@@ -28,7 +28,7 @@
                     Series ID: {{description.cdid}}  <a>what is this? </a><br/>Units: {{description.preUnit}} {{description.unit}}<br/>{{seasonalAdjustment}}
                 </p>
             </div>
-            {{> partials/social-icons}}
+            {{> templates/handlebars/partials/social-icons}}
         </div>
     </div>
 
@@ -449,4 +449,4 @@
         </div>
     </div>
 </main>
-{{> partials/footer}}
+{{> templates/handlebars/partials/footer}}
