@@ -47,13 +47,13 @@ ENV PACKAGE_PREFIX=com.github.onsdigital
 ENV MONGO_USER=ons
 ENV MONGO_PASSWORD=uJlVY2FDGI5SFawS/PN+jnZpymKWpU7C
 
-#Download build and start highchart server
 
-RUN echo -e "./highcharts-export-server.sh\n\n" >> container.sh
 
 # Update the entry point script
 
 RUN mv /usr/entrypoint/container.sh /usr/src/
+# Download build and start highcharts server
+RUN echo "./highcharts-export-server.sh" >> container.sh
 RUN echo "java $JAVA_OPTS \
           -Drestolino.files=$RESTOLINO_STATIC \
           -Drestolino.classes=$RESTOLINO_CLASSES \
