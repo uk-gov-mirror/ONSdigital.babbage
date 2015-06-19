@@ -22,9 +22,8 @@ public class SparkLine extends BaseChart {
     public void configureChart(Options options) {
 
         ChartOptions chart = options.getChart();
-        chart.setBackgroundColor(new NullColor());
         chart.setBorderWidth(0);
-        chart.setMargin(Arrays.asList(new Integer[]{0, 0, 0, 0}));
+//        chart.setMargin(Arrays.asList(new Integer[]{0, 0, 0, 0}));
         chart.setStyle(new CssStyle().setProperty("overflow", "visible"));
 
         /*Title*/
@@ -35,10 +34,10 @@ public class SparkLine extends BaseChart {
         Axis xAxis = new Axis();
         options.setxAxis(xAxis);
         xAxis.setCategories(new ArrayList<String>());
-        xAxis.setTickInterval(Float.valueOf(resolveTickInterval(getData())));//labels
+        xAxis.setTickInterval(Float.valueOf(resolveTickInterval(getData())));
         Labels labels = new Labels();
         labels.setFormatter(new Function().setFunction(
-                "if (this.isFirst) " + "{ " + "return this.date " + "} " + " if (this.isLast) { " + " return this.date " + "}"));
+                "if (this.isFirst) " + "{ " + "return this.value " + "} " + " if (this.isLast) { " + " return this.value " + "}"));
         labels.setStep(1);
         xAxis.setLabels(labels);
         xAxis.setTickLength(0);
@@ -96,23 +95,6 @@ public class SparkLine extends BaseChart {
                         .setSymbol(new Symbol(Symbol.PredefinedSymbol.CIRCLE)));
 
 
-    }
-
-    private Integer resolveTickInterval(Set<TimeseriesValue> data) {
-        int length = data.size();
-        if (length <= 20) {
-            return 1;
-        } else if (length <= 80) {
-            return 4;
-        } else if (length <= 240) {
-            return 12;
-        } else if (length <= 480) {
-            return 48;
-        } else if (length <= 960) {
-            return 96;
-        } else {
-            return 192;
-        }
     }
 
 }

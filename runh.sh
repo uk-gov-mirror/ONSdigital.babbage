@@ -1,6 +1,5 @@
-export EXPORT_SERVER_DIR="highcharts/exporting-server/java/highcharts-export/highcharts-export-web"
-export EXPORT_SERVER_POM="highcharts/exporting-server/java/highcharts-export/highcharts-export-web/pom.xml"
-export CWD=`pwd`
+#!/usr/bin/env bash
+
 
 if [ ! -d highcharts ]
    then
@@ -10,10 +9,12 @@ if [ ! -d highcharts ]
        echo "Highcharts already available. will not download"
 fi
 
+export EXPORT_SERVER_DIR="highcharts/exporting-server/java/highcharts-export"
+export EXPORT_SERVER_WEB="highcharts-export-web"
+export CWD=`pwd`
 export JAVA_OPTS="-Xrunjdwp:transport=dt_socket,address=9000,server=y,suspend=n"
 
-cd $EXPORT_SERVER_DIR
-
+cd $EXPORT_SERVER_DIR && \
 mvn  clean install && \
-nohup mvn -Djetty.port=9999 -Dlog4j.logger.exporter=DEBUG jetty:run > export-server.log 2>&1&
-
+cd $EXPORT_SERVER_WEB && \
+mvn -Djetty.port=9999 -Dlog4j.logger.exporter=DEBUG jetty:run &

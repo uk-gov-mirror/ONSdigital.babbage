@@ -1,46 +1,50 @@
 package com.github.onsdigital.request.handler.highcharts;
 
+import com.fasterxml.jackson.databind.deser.Deserializers;
 import com.github.onsdigital.content.page.base.Page;
 import com.github.onsdigital.content.page.statistics.data.timeseries.TimeSeries;
 import com.github.onsdigital.content.util.ContentUtil;
 import com.github.onsdigital.data.DataService;
 import com.github.onsdigital.data.zebedee.ZebedeeRequest;
 import com.github.onsdigital.highcharts.BaseChart;
-import com.github.onsdigital.highcharts.HighChartsExportClient;
 import com.github.onsdigital.highcharts.SparkLine;
 import com.github.onsdigital.request.handler.base.RequestHandler;
-import com.github.onsdigital.request.response.BabbageBinaryResponse;
 import com.github.onsdigital.request.response.BabbageResponse;
-import org.apache.commons.lang3.StringUtils;
+import com.github.onsdigital.request.response.BabbageStringResponse;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.InputStream;
+import java.io.IOException;
 
 /**
- * Created by bren on 17/06/15.
+ * Created by bren on 18/06/15.
  */
-public class SparklineImageRequestHandler implements RequestHandler {
-
-    private static final String REQUEST_TYPE = "sparkline";
-
-    public static final String CONTENT_TYPE = "image/png";
-
+public class SparklineConfigRequestHandler implements RequestHandler {
+    public static final String REQUEST_TYPE = "sparklineconfig";
 
     @Override
     public BabbageResponse get(String requestedUri, HttpServletRequest request) throws Exception {
         return get(requestedUri, request, null);
     }
 
+
     @Override
     public BabbageResponse get(String requestedUri, HttpServletRequest request, ZebedeeRequest zebedeeRequest) throws Exception {
         System.out.println("Generating sparkline image for " + requestedUri);
-        BaseChart chartConfig = new SparklineConfigRequestHandler().getChartConfig(requestedUri);
-        InputStream stream = new HighChartsExportClient().getImage(chartConfig);
-        return new BabbageBinaryResponse(stream, CONTENT_TYPE);
+        return new BabbageStringResponse(getChartConfig(requestedUri).toJson());
     }
+
+    BaseChart getChartConfig(String requestedUri) throws IOException {
+        Page page = ContentUtil.deserialisePage(DataService.getInstance().getDataStream(requestedUri));
+        if (!(page instanceof TimeSeries)) {
+            throw new IllegalArgumentException("Requested data is not a timseries");
+        }
+        return new SparkLine((TimeSeries) page);
+    }
+
 
     @Override
     public String getRequestType() {
         return REQUEST_TYPE;
     }
+
 }

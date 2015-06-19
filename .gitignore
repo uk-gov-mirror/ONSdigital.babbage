@@ -29,7 +29,7 @@ sonar-project.properties
 src/main/web/node_modules/
 node_modules/
 src/main/web/dist/
-highcharts/
+/highcharts/
 export-server.log
 #src/main/content
 npm-debug.log

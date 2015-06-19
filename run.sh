@@ -9,9 +9,6 @@
 
 ### 3- Start Highcharts export server
 
-export EXPORT_SERVER_DIR="highcharts/exporting-server/java/highcharts-export/highcharts-export-web"
-export EXPORT_SERVER_POM="highcharts/exporting-server/java/highcharts-export/highcharts-export-web/pom.xml"
-export CWD=`pwd`
 
 if [ ! -d highcharts ]
    then
@@ -21,23 +18,30 @@ if [ ! -d highcharts ]
        echo "Highcharts already available. will not download"
 fi
 
+export EXPORT_SERVER_DIR="highcharts/exporting-server/java/highcharts-export"
+export EXPORT_SERVER_WEB="highcharts-export-web"
+export CWD=`pwd`
 export JAVA_OPTS="-Xrunjdwp:transport=dt_socket,address=9000,server=y,suspend=n"
 
-cd $EXPORT_SERVER_DIR
-
+cd $EXPORT_SERVER_DIR && \
 mvn  clean install && \
-nohup mvn -Djetty.port=9999 -Dlog4j.logger.exporter=DEBUG jetty:run > export-server.log 2>&1&
+cd $EXPORT_SERVER_WEB && \
+echo -e "\nexec = `which phantomjs`"  >> src/main/webapp/WEB-INF/spring/app-convert.properties
 
-cd $CWD
-
-### 4 - START BABBAGE
- if [ $? -eq 0 ]
+if [ $? -eq 0 ]
     then
       echo "Everything alright, starting the server"
     else
        echo "Something went wrong, server will not be started"
        exit 1
  fi
+
+cd $CWD
+mvn -f "$EXPORT_SERVER_DIR/$EXPORT_SERVER_WEB" -Djetty.port=9999 -Dlog4j.logger.exporter=DEBUG jetty:run > export-server.log 2>&1&
+exportserverpid=$!
+echo "export server pid: $exportserverpid"
+
+### 4 - START BABBAGE
 
 export JAVA_OPTS="-Xdebug -Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=n"
 
@@ -75,6 +79,6 @@ $JAVA_HOME/bin/java $JAVA_OPTS \
  -cp "target/dependency/*" \
  com.github.davidcarboni.restolino.Main
 
-
+kill $exportserverpid
 # Production: non-reloadable
 #$JAVA_HOME/bin/java $JAVA_OPTS -jar target/*-jar-with-dependencies.jar
