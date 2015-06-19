@@ -22,7 +22,7 @@ RUN git checkout develop
 
 # Build web content
 
-RUN npm install --prefix=src/main/web --production
+RUN npm install --prefix=src/main/web
 
 # Build
 
@@ -46,6 +46,7 @@ ENV PACKAGE_PREFIX=com.github.onsdigital
 
 ENV MONGO_USER=ons
 ENV MONGO_PASSWORD=uJlVY2FDGI5SFawS/PN+jnZpymKWpU7C
+
 
 # Update the entry point script
 
