@@ -13,7 +13,7 @@
 if [ ! -d highcharts ]
    then
     echo "Downloading highchart export server"
-    git clone --depth 1 -b v4.1.6 git@github.com:highslide-software/highcharts.com.git highcharts
+    git clone --depth 1 -b v4.1.6 https://github.com/highslide-software/highcharts.com.git highcharts
    else
        echo "Highcharts already available. will not download"
 fi
