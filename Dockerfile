@@ -4,11 +4,9 @@ from onsdigital/java-component
 # Node.js
 
 # We need to use a later version of Node than is currently available in the Ubuntu package manager (2015-06-17)
-RUN apt-get install curl
+RUN apt-get install -y curl
 RUN curl -sL https://deb.nodesource.com/setup_0.12 | bash -
-#RUN \
-#  apt-get update && \
-#  apt-get install -y nodejs
+RUN apt-get install -y nodejs tar bzip2
 
 # Consul
 
@@ -23,7 +21,7 @@ RUN git checkout develop
 
 # Build web content
 
-RUN npm install --prefix=src/main/web
+RUN npm install --prefix=src/main/web --production
 
 # Build
 
