@@ -15,10 +15,10 @@ public class MarkdownHelper extends com.github.jknack.handlebars.MarkdownHelper 
             return result;
         }
 
-        String path = ((Page) options.context.parent().model()).getUri().toString();
-
-        result = result.replaceAll("<ons-chart\\spath=\"([-A-Za-z0-9+&@#/%?=~_|!:,.;()*$]+)\"?\\s?/>", "chart:" + path + ".../$1");
-        result = result.replaceAll("<ons-table\\spath=\"([-A-Za-z0-9+&@#/%?=~_|!:,.;()*$]+)\"?\\s?/>", "table:" + path + ".../$1");
+//        String path = ((Page) options.context.parent().model()).getUri().toString();
+//
+//        result = result.replaceAll("<ons-chart\\spath=\"([-A-Za-z0-9+&@#/%?=~_|!:,.;()*$]+)\"?\\s?/>", "chart:" + path + ".../$1");
+//        result = result.replaceAll("<ons-table\\spath=\"([-A-Za-z0-9+&@#/%?=~_|!:,.;()*$]+)\"?\\s?/>", "table:" + path + ".../$1");
 
 
         return new Handlebars.SafeString(result);
