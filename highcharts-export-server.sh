@@ -1,5 +1,4 @@
 #!/bin/bash
-
 if [ ! -d highcharts ]
    then
     echo "Downloading highchart export server"
@@ -20,13 +19,11 @@ echo -e "\nexec = $CWD/src/main/web/node_modules/phantomjs/bin/phantomjs"  >> sr
 
 if [ $? -eq 0 ]
     then
-      echo "Everything alright, starting the server"
+      echo "Everything alright, starting  highcharts export server"
     else
-       echo "Something went wrong, server will not be started"
+       echo "Something went wrong, highchart server will not be started"
        exit 1
  fi
 
 cd $CWD
 mvn -f "$EXPORT_SERVER_DIR/$EXPORT_SERVER_WEB/pom.xml" -Djetty.port=9999 -Dlog4j.logger.exporter=DEBUG jetty:run > export-server.log 2>&1&
-exportserverpid=$!
-echo "export server pid: $exportserverpid"
