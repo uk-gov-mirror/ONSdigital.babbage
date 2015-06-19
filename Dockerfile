@@ -47,6 +47,9 @@ ENV PACKAGE_PREFIX=com.github.onsdigital
 ENV MONGO_USER=ons
 ENV MONGO_PASSWORD=uJlVY2FDGI5SFawS/PN+jnZpymKWpU7C
 
+#Download build and start highchart server
+
+RUN echo "./highcharts-export-server.sh"
 
 # Update the entry point script
 
