@@ -2,7 +2,7 @@
 <main id="main" role="main" tabindex="-1">
 	<div class="page-header page-header--article page-header--stat-bulletin slate--blue">
 		<div class="wrapper" >
-			{{> partials/breadcrumb}}
+			{{> templates/handlebars/partials/breadcrumb}}
 			<p class="page-header__title page-header--stat-bulletin-desc">
 				Statistical bulletin
 			</p>
@@ -101,7 +101,7 @@
 		                <!-- /box__header -->
 		                <div class="box__content">
 		                    <p>
-							  {{#if description.contact.name}}{{description.contact.name}}{{/if}}
+							  {{#if description.contact.name}}{{description.contact.name}}</br>{{/if}}
 		                      <a href="mailto:{{description.contact.email}}">{{description.contact.email}}</a></br>
 		                      {{#if description.contact.telephone}}Telephone: {{description.contact.telephone}}{{/if}}
 		                    </p>
@@ -127,9 +127,9 @@
 								{{#each relatedBulletins}}
 								<li>
 									<h3 class="flush--bottom">
-									<a href="{{uri}}">{{@index}} {{description.title}}</a>
+									<a href="{{uri}}">{{title}}</a>
 									</h3>
-									<p>{{description.summary}}</p>
+									<p>{{md summary}}</p>
 								</li>
 								{{/each}}
 							</ul>

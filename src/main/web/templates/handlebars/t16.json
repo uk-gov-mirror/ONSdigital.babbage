@@ -1,5 +1,4 @@
 {
-	"title": "Consumer Price Inflation, January 2015",
 	"navigation":{
 	      "nodes": [
 	        {
@@ -253,29 +252,32 @@
 	        }
 	      ]
 	  },
-	"releaseDate": "19 August 2014",
-	"nextRelease": "22 August 2015",
-	"contact": {
-		"name": "Philip Gooding",
-		"email": "cpi@ons.gsi.gov.uk",
-		"telephone": "+44 (0)1633 456468"
-	},
-	"type": "release",
-	"name": "Consumer Price Inflation, January 2015",
-	"breadcrumb": [
-		{
-			"type": "home",
-			"name": "Economy",
-			"uri": "economy/"
-		},
-		{
-			"type": "home",
-			"name": "Inflation and price indices",
-			"uri": "economy/inflationandpriceindices"
+	"description": {
+		"title": "Consumer Price Inflation, January 2015",
+		"releaseDate": "19 August 2014",
+		"nextRelease": "22 August 2015",
+		"contact": {
+			"name": "Philip Gooding",
+			"email": "cpi@ons.gsi.gov.uk",
+			"telephone": "+44 (0)1633 456468"
 		}
-	],
+	},
+	"breadcrumb": [
+	    {
+	      "description": {
+	      "title": "Home"
+	      },
+	      "uri": "/"
+	    },
+	    {
+	      "description": {
+	      "title": "Economy"
+	      },
+	      "uri": "/economy"
+	    }
+    ],
 	"preRelease": "economy/inflationandpriceindices/cpi/prerelease",
-	"lede": "Inflation measures the rate of increase in prices for goods and services using price indices. The rate of inflation used in the UK government’s inflation target is measured using the Consumer Prices Index (CPI). One way to understand the CPI is to think of a very large shopping basket containing a large selection of the goods and services bought by households, the CPI estimateschanges to the total cost of this basket.",
+	"summary": "Inflation measures the rate of increase in prices for goods and services using price indices. The rate of inflation used in the UK government’s inflation target is measured using the Consumer Prices Index (CPI). One way to understand the CPI is to think of a very large shopping basket containing a large selection of the goods and services bought by households, the CPI estimateschanges to the total cost of this basket.",
 	"bulletins": [
 		{
 			"title": "Consumer Price Inflation: January 2015",

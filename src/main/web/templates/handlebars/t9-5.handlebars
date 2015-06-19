@@ -5,12 +5,12 @@
 		<p class="page-header__title">
 			Datasets
 		</p>
-		<h1 class="page-header__title flush--half--bottom">{{title}} datasets</h1>
+		<h1 class="page-header__title flush--half--bottom">{{description.title}} datasets</h1>
 		<p>
 			{{#if contentSearchResult.results}}
-			<span class="stand-out-text">{{contentSearchResult.numberOfResults}}</span> results for <strong>datasets</strong> related to <strong>{{title}}</strong>.
+			<span class="stand-out-text">{{contentSearchResult.numberOfResults}}</span> results for <strong>datasets</strong> related to <strong>{{description.title}}</strong>.
 			{{else}}
-			Sorry, there are no <strong>statistical bulletins</strong> for <strong>{{title}}</strong> articles.
+			Sorry, there are no <strong>statistical bulletins</strong> for <strong>{{description.title}}</strong> articles.
 			{{/if}}
 		</p>
 	</div>

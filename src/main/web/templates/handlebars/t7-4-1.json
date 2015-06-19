@@ -1,5 +1,4 @@
-{
-    "title": "Economy",
+{    
 	"navigation":{
           "nodes": [
             {
@@ -253,73 +252,84 @@
             }
           ]
       },
+      "description": {
+      "title": "Economy"
+      },
     "lede": "An economy or economic system consists of the production, distribution, consumption and trade of limited goods and services by different agents in a given geographical location. The economic agents can be individuals, businesses, organisations, or governments. ",
     "type": "home",
     "name": "Economy",
     "fileName": "methodology/economy",
     "breadcrumb": [
         {
-            "type": "home",
-            "name": "Methodology",
-            "fileName": "methodology",
-            "uri": "methodology"
+        "description": {
+        "title": "Home",
+        "summary": "The UK\u0027s largest independent producer of official statistics and the recognised national statistical institute of the UK.",
+        "uri": "/"
         }
+      },
+      {
+        "description": {
+        "title": "Methodology",
+        "summary": "An economy or economic system consists of the production, distribution, consumption and trade of limited goods and services by different agents in a given geographical location. The economic agents can be individuals, businesses, organisations, or governments. ",
+        "uri": "/methodology"
+    }
+      }
     ],
 
     "sections": [
     {
-      "name": "Inflation and price indices",
+      "title": "Inflation and price indices",
       "link": "inflationandpriceindices",
       "index": 0,
-    		"description": "The Consumer Prices Index, the Retail Price Index and other statistics measure changes and trends in the UK economy."
+    		"summary": "The Consumer Prices Index, the Retail Price Index and other statistics measure changes and trends in the UK economy."
     },
     {
-      "name": "Gross Domestic Product (GDP)",
+      "title": "Gross Domestic Product (GDP)",
       "link": "grossdomesticproductgdp",
       "index": 1,
-    		"description": "The value of all finished goods and services produced in the UK in a specific time period."
+    		"summary": "The value of all finished goods and services produced in the UK in a specific time period."
     },
     {
-      "name": "Government, public sector and taxes",
+      "title": "Government, public sector and taxes",
       "link": "governmentpublicsectorandtaxes",
       "index": 2,
-    	"description": "Revenue and spending in the public sector and research and development."
+    	"summary": "Revenue and spending in the public sector and research and development."
     },
     {
-      "name": "Economic output and productivity",
+      "title": "Economic output and productivity",
       "link": "economicoutputandproductivity",
       "index": 3,
-    		"description": "Statistics on the output of sectors including production, manufacturing, agriculture, forestry and fishing and others."
+    		"summary": "Statistics on the output of sectors including production, manufacturing, agriculture, forestry and fishing and others."
     },
     {
-      "name": "Regional accounts",
+      "title": "Regional accounts",
       "link": "regionalaccounts",
       "index": 4,
-    		"description": "Breakdown of Gross Disposable Household Income by regions of the UK."
+    		"summary": "Breakdown of Gross Disposable Household Income by regions of the UK."
     },
     {
-      "name": "Gross Value Added (GVA)",
+      "title": "Gross Value Added (GVA)",
       "link": "grossvalueaddedgva",
       "index": 5,
-    		"description": "Measures the contribution to the economy of each individual producer, industry or sector. Breakdown by region."
+    		"summary": "Measures the contribution to the economy of each individual producer, industry or sector. Breakdown by region."
     },
     {
-      "name": "National Accounts",
+      "title": "National Accounts",
       "link": "nationalaccounts",
       "index": 6,
-    		"description": "The UK's Balance of Payments, calculated from imports, exports and other transactions."
+    		"summary": "The UK's Balance of Payments, calculated from imports, exports and other transactions."
     },
     {
-      "name": "Environmental accounts",
+      "title": "Environmental accounts",
       "link": "environmentalaccounts",
       "index": 7,
-    		"description": "Assessments of the UK's impact on the environment, including total energy consumption and greenhouse gas emissions."
+    		"summary": "Assessments of the UK's impact on the environment, including total energy consumption and greenhouse gas emissions."
     },
     {
-      "name": "Investments, pensions and trusts",
+      "title": "Investments, pensions and trusts",
       "link": "investmentspensionsandtrusts",
       "index": 8,
-    		"description": "Net investment flows into the UK and investment abroad by UK companies."
+    		"summary": "Net investment flows into the UK and investment abroad by UK companies."
     }
     ],
 

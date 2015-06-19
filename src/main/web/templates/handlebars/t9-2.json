@@ -1,5 +1,4 @@
 {
-	"title": "Freedom of Information (FOI) disclosure log",
     "navigation":{
       "nodes": [
         {
@@ -253,25 +252,36 @@
         }
       ]
 	},
+  "description": {
+    "title": "Freedom of Information (FOI) disclosure log"
+  },
 	"breadcrumb": [
         {
+          "description": {
           "title": "Home",
-          "summary": "The UK\u0027s largest independent producer of official statistics and the recognised national statistical institute of the UK.",
+          "summary": "The UK\u0027s largest independent producer of official statistics and the recognised national statistical institute of the UK."
+          },
           "uri": "/"
         },
         {
+          "description": {
           "title": "About us",
-          "summary": "About us summary",
+          "summary": "About us summary"
+          },
           "uri": "/aboutus"
 		},
 		{
+      "description": {
 			"title": "Corporate information",
-			"summary": "Summary",
+			"summary": "Summary"
+      },
 			"uri": "/aboutus/corporateinformation/"
 		},
 		{
+      "description": {
 			"title": "Freedom of information",
-			"summary": "Summary",
+			"summary": "Summary"
+      },
 			"uri": "/aboutus/corporateinformation/freedomofinformation"
 		}
 	],

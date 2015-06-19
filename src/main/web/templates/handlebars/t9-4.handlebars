@@ -5,12 +5,12 @@
 		<p class="page-header__title">
 			Statistical bulletins
 		</p>
-		<h1 class="page-header__title flush--half--bottom">{{title}} statistical bulletins</h1>
+		<h1 class="page-header__title flush--half--bottom">{{description.title}} statistical bulletins</h1>
 		<p>
 			{{#if contentSearchResult.results}}
-			<span class="stand-out-text">{{contentSearchResult.numberOfResults}}</span> results for <strong>statistical bulletins</strong> released to <strong>{{title}}</strong>. You have chosen to expand these results to <strong>include all releases over time</strong><span class="icon icon-cancel" role="presentation"></span>
+			<span class="stand-out-text">{{contentSearchResult.numberOfResults}}</span> results for <strong>statistical bulletins</strong> released to <strong>{{description.title}}</strong>. You have chosen to expand these results to <strong>include all releases over time</strong><span class="icon icon-cancel" role="presentation"></span>
 			{{else}}
-			Sorry, there are no <strong>statistical bulletins</strong> for <strong>{{title}}</strong> articles.
+			Sorry, there are no <strong>statistical bulletins</strong> for <strong>{{description.title}}</strong> articles.
 			{{/if}}
 		</p>
 	</div>

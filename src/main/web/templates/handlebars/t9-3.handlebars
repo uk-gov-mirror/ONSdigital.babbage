@@ -2,12 +2,12 @@
 <main id="main" role="main" tabindex="-1">
 	<div class="wrapper panel--top-mar">
 		{{> templates/handlebars/partials/breadcrumb}}
-		<h1 class="page-header__title flush--half--bottom">{{title}}</h1>
+		<h1 class="page-header__title flush--half--bottom">{{description.title}}</h1>
 		<p>
 			{{#if contentSearchResult.results}}
-			<span class="stand-out-text">{{contentSearchResult.numberOfResults}}</span> results for <strong>user requested data</strong> related to <strong>{{title}}</strong> articles.
+			<span class="stand-out-text">{{contentSearchResult.numberOfResults}}</span> results for <strong>user requested data</strong> related to <strong>{{description.title}}</strong> articles.
 			{{else}}
-			Sorry, there is no <strong>user request data</strong> for <strong>{{title}}</strong> articles.
+			Sorry, there is no <strong>user request data</strong> for <strong>{{description.title}}</strong>.
 			{{/if}}
 		</p>
 	</div>

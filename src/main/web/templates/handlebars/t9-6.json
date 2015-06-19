@@ -1,5 +1,4 @@
 {
-	"title": "Consumer Price Inflation",
     "navigation":{
       "nodes": [
         {
@@ -254,23 +253,23 @@
       ]
 	},
 	"breadcrumb": [
-        {
-          "title": "Home",
-          "summary": "The UK\u0027s largest independent producer of official statistics and the recognised national statistical institute of the UK.",
-          "uri": "/"
-        },
-        {
-          "title": "Economy",
-          "summary": "Economy summary",
-          "uri": "/economy"
-		},
-		{
-			"title": "Inflation and price indices",
-        	"summary": "Summary",
-        	"uri": "/economy/inflationandpriceindices"
-		}
-	],
-	"frequency": "Monthly",
+    {
+      "description": {
+      "title": "Home"
+      },
+      "uri": "/"
+    },
+    {
+      "description": {
+      "title": "Economy"
+      },
+      "uri": "/economy"
+    }
+  ],
+  "description": {
+  "title": "Consumer Price Inflation",
+	"frequency": "Monthly"
+  },
 	"contentSearchResult": {
 		"numberOfResults": 3,
 		"results": [

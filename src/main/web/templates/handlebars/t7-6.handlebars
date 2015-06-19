@@ -36,8 +36,20 @@
 		<div class="grid-wrap">
 			<div class="grid-col desktop-grid-two-thirds">
 				{{#each sections}}
-				<h2 id="{{slugify title}}">{{this.title}}</h2>
-				{{md this.markdown}}
+				<article class="box border-horizontal-single content-section">
+					<header class="box__header">
+						<h2 id="{{slugify title}}">{{title}}</h2>
+					</header>
+					<!-- /box__header -->
+					<div class="box__content">
+						<div>
+							<p>
+							{{md markdown}}
+							</p>
+						</div>
+	      				<a href="#top" title="Back to table of contents">Back to table of contents</a>
+					</div>
+				</article>
 				{{/each}}
 			</div><!-- /grid-two-thirds -->
 			<div class="grid-col desktop-grid-one-third">
