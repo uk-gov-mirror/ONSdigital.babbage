@@ -26,7 +26,7 @@ export JAVA_OPTS="-Xrunjdwp:transport=dt_socket,address=9000,server=y,suspend=n"
 cd $EXPORT_SERVER_DIR && \
 mvn  clean install && \
 cd $EXPORT_SERVER_WEB && \
-echo -e "\nexec = `which phantomjs`"  >> src/main/webapp/WEB-INF/spring/app-convert.properties
+echo -e "\nexec = $CWD/src/main/web/node_modules/phantomjs/bin/phantomjs"  >> src/main/webapp/WEB-INF/spring/app-convert.properties
 
 if [ $? -eq 0 ]
     then
