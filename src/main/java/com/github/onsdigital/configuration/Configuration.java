@@ -1,9 +1,14 @@
 package com.github.onsdigital.configuration;
 
 import com.github.davidcarboni.cryptolite.*;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.crypto.SecretKey;
+import java.io.IOException;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.security.InvalidKeyException;
 
 public class Configuration {
@@ -12,7 +17,13 @@ public class Configuration {
 
     private static final String DEFAULT_ZEBEDEE_URL = "http://localhost:8082";
 
+    //Trailing slash seems to be important. Export server redirects to trailing slash url if not there
+    private final static String HIGHCHARTS_EXPORT_SEVER_URL = "http://localhost:9999/export/";
+
     private static final String DEFAULT_HANDLEBARS_DATE_PATTERN = "d MMMM yyyy";
+
+    private static final String HIGHCHARTS_CONFIG_DIR = "src/main/web/templates/highcharts";
+    private static final String SPARKLINE_FILE = "sparkline.json";
 
     /**
      * Mongo is currently only used to provide feedback on the search terms
@@ -126,6 +137,28 @@ public class Configuration {
         return StringUtils.defaultIfBlank(System.getProperty(key), System.getenv(key));
     }
 
+
+    public static String getSparklineConfig() {
+        //TODO:Cache configuration
+        try {
+            Path highchartsconfigDir = FileSystems.getDefault().getPath(HIGHCHARTS_CONFIG_DIR);
+            Path sparklinePath = highchartsconfigDir.resolve(SPARKLINE_FILE);
+
+            if (Files.exists(sparklinePath)) {
+                return  IOUtils.toString( Files.newInputStream(sparklinePath));
+            } else {
+                throw new IllegalStateException("******** SPARKLINE CONFIGURATION FILE NOT FOUND!!!!!! ***********");
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Failed reading sparkline config file");
+        }
+    }
+
+    public static String getHighchartsExportSeverUrl() {
+        return HIGHCHARTS_EXPORT_SEVER_URL;
+    }
 
 
     /**
