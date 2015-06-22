@@ -72,7 +72,7 @@ public class DataRequestHandler implements RequestHandler {
     private String readFromZebedee(String uri, ZebedeeRequest zebedeeRequest, boolean resolveReferences) throws ContentNotFoundException, IOException {
         ZebedeeClient zebedeeClient = new ZebedeeClient(zebedeeRequest);
         try {
-            return IOUtils.toString(zebedeeClient.readData(uri, resolveReferences));
+            return IOUtils.toString(zebedeeClient.readData(uri + "/data.json", resolveReferences));
         } finally {
             zebedeeClient.closeConnection();
         }
