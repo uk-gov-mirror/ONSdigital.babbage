@@ -82,8 +82,8 @@ public class XLSXGenerator {
 			source.createCell(column).setCellValue(TimeSeries.getDescription().getSource());
 			keyNote.createCell(column).setCellValue(TimeSeries.getDescription().getKeyNote());
 			additionalText.createCell(column).setCellValue(TimeSeries.getDescription().getAdditionalText());
-			note1.createCell(column).setCellValue(TimeSeries.getNotes().get(0));
-			note2.createCell(column).setCellValue(TimeSeries.getNotes().get(1));
+			note1.createCell(column).setCellValue(TimeSeries.getNotes() != null ? TimeSeries.getNotes().get(0) : null);
+			note2.createCell(column).setCellValue(TimeSeries.getNotes() != null ? TimeSeries.getNotes().get(1) : null);
 			column++;
 			System.out.println("Geneararing XLSX for: " + TimeSeries.getDescription().getTitle() + " at: " + TimeSeries.getUri());
 		}
