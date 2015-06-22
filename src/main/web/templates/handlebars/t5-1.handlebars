@@ -2,7 +2,7 @@
 <main id="main" role="main" tabindex="-1">
     <!-- title and social icons -->
     <div class="page-header slate slate--light-green">
-        <div class="wrapper" >
+        <div class="wrapper">
             {{> partials/breadcrumb}}
             <!-- /Wrapper panel -->
         </div>
@@ -11,21 +11,26 @@
             <p class="page-header__title page-header--stat-bulletin-desc">
                 <strong>Time series</strong>
             </p>
+
             <h1 class="page-header__title">{{description.title}}</h1>
+
             <div class="grid-wrap">
                 <p class="grid-col tablet-grid-one-quarter page-header__meta-block-with-img">
                     {{#if description.nationalStatistic}}
-                    <img src="/node_modules/ONS-Pattern-Library/dist/img/national-statistics.png" alt="National Statistics logo" />
+                    <img src="/node_modules/ONS-Pattern-Library/dist/img/national-statistics.png" alt="National Statistics logo"/>
                     {{/if}}
                 </p>
+
                 <p class="grid-col tablet-grid-one-quarter divider--border-left">
                     <span>Release date: </span><br/>{{df description.releaseDate}}<br/><a href="#">previous versions</a>
                 </p>
+
                 <p class="grid-col tablet-grid-one-quarter divider--border-left">
                     <span>Next release: </span><br/>{{df description.nextRelease}}
                 </p>
+
                 <p class="grid-col tablet-grid-one-quarter divider--border-left">
-                    Series ID: {{description.cdid}}  <a>what is this? </a><br/>Units: {{description.preUnit}} {{description.unit}}<br/>{{seasonalAdjustment}}
+                    Series ID: {{description.cdid}} <a>what is this? </a><br/>Units: {{description.preUnit}} {{description.unit}}<br/>{{seasonalAdjustment}}
                 </p>
             </div>
             {{> partials/social-icons}}
@@ -37,19 +42,23 @@
         <div class="actionable-header--tight panel--mar-small">
             <!-- This title will need to be dynamically generated on the server -->
             <h2 class="actionable-header--tight__title gamma flush--bottom body-type--heavy">Download this entire time series</h2>
+
             <div class="actionable-header--tight__action actionable-header--tight__action--left">
-                <a class="btn btn--primary btn--small" href="#">
-                    image (54kb)
-                    <span class="icon-download icon--button-inline" role="presentation"></span>
-                </a>
-                <a class="btn btn--primary btn--small" href="#">
-                    .csv (3kb)
-                    <span class="icon-download icon--button-inline" role="presentation"></span>
-                </a>
-                <a class="btn btn--primary btn--small" href="#">
-                    .xls (12kb)
-                    <span class="icon-download icon--button-inline" role="presentation"></span>
-                </a>
+                <form method="post" action="/download">
+                    <a class="btn btn--primary btn--small" target="_blank" href="{{uri}}/linechart">
+                        image (54kb)
+                        <span class="icon-download icon--button-inline" role="presentation"></span>
+                    </a>
+                    <button type="submit" name="type" value="csv" class="btn btn--primary btn--small">
+                        .csv ()
+                        <span class="icon-download icon--button-inline" role="presentation"></span>
+                    </button>
+                    <button type="submit" name="type" value="xlsx" class="btn btn--primary btn--small" href="#">
+                        .xlsx ()
+                        <span class="icon-download icon--button-inline" role="presentation"></span>
+                    </button>
+                    <input type="hidden" name="uri" value="{{uri}}" />
+                </form>
             </div>
         </div>
         <div class="chart-area">
@@ -219,9 +228,12 @@
             <!-- The actual chart goes here.  In this example, it is represented as an image that -->
             <!-- on a production site would be the no-js fallback, that is generated dynamically  -->
             <!-- by the server.                                                                   -->
-            <img src="{{uri}}/linechart" alt="{{description.title}}" width="875" height="400">
-            <div class="chart-area__footer">
+            <img class="js-enhance--hide" src="{{uri}}/linechart" alt="{{description.title}}" width="875" height="400">
+            <div class="js-enhance--show" id="chart-container" style="width:875px; height:400px"></div>
+
+            <div class="chart-area__footer nojs-hidden js-enhance--show ">
                 <span class="chart-area__footer__label">Download custom data</span>
+
                 <div class="chart-area__footer__actions">
                     <a class="btn btn--primary btn--small" href="#">
                         .csv
@@ -241,6 +253,7 @@
         <!-- /chart-area -->
         <div class="slate--mid-grey box box--padded">
             <span>Explore other {{description.title}} <strong>time series</strong> and <strong>datasets</strong></span>
+
             <div class="box__inner">
                 <div class="grid-wrap">
                     <div class="grid-col desktop-grid-one-half ">
@@ -278,87 +291,24 @@
                 </tr>
                 </thead>
                 <tbody>
+                {{#each years}}
                 <tr>
-                    <td>2015 Q1</td>
-                    <td>123</td>
+                    <td>{{year}}</td>
+                    <td>{{value}}</td>
                 </tr>
+                {{/each}}
+                {{#each quarters}}
                 <tr>
-                    <td>2015 Q1</td>
-                    <td>123</td>
+                    <td>{{quarter}}</td>
+                    <td>{{value}}</td>
                 </tr>
+                {{/each}}
+                {{#each months}}
                 <tr>
-                    <td>2015 Q1</td>
-                    <td>123</td>
+                    <td>{{month}}</td>
+                    <td>{{value}}</td>
                 </tr>
-                <tr>
-                    <td>2015 Q1</td>
-                    <td>123</td>
-                </tr>
-                <tr>
-                    <td>2015 Q1</td>
-                    <td>123</td>
-                </tr>
-                <tr>
-                    <td>2015 Q1</td>
-                    <td>123</td>
-                </tr>
-                <tr>
-                    <td>2015 Q1</td>
-                    <td>123</td>
-                </tr>
-                <tr>
-                    <td>2015 Q1</td>
-                    <td>123</td>
-                </tr>
-                <tr>
-                    <td>2015 Q1</td>
-                    <td>123</td>
-                </tr>
-                <tr>
-                    <td>2015 Q1</td>
-                    <td>123</td>
-                </tr>
-                <tr>
-                    <td>2015 Q1</td>
-                    <td>123</td>
-                </tr>
-                <tr>
-                    <td>2015 Q1</td>
-                    <td>123</td>
-                </tr>
-                <tr>
-                    <td>2015 Q1</td>
-                    <td>123</td>
-                </tr>
-                <tr>
-                    <td>2015 Q1</td>
-                    <td>123</td>
-                </tr>
-                <tr>
-                    <td>2015 Q1</td>
-                    <td>123</td>
-                </tr>
-                <tr>
-                    <td>2015 Q1</td>
-                    <td>123</td>
-                </tr>
-                <tr>
-                    <td>2015 Q1</td>
-                    <td>123</td>
-                </tr>
-                <tr>
-                    <td>2015 Q1</td>
-                    <td>123</td>
-                </tr>
-                <tr>
-                    <td>2015 Q1</td>
-                    <td>123</td>
-                </tr>
-                <tr>
-                    <td>2015 Q1</td>
-                    <td>123</td>
-                </tr>
-
+                {{/each}}
                 </tbody>
             </table>
         </div>
@@ -387,7 +337,7 @@
                             <p class="page-header__title">Important notes and usage information</p>
                             {{#each notes}}
                             <p>
-                               {{this}}
+                                {{this}}
                             </p>
                             {{/each}}
                         </div>
@@ -406,6 +356,7 @@
                                     <h3>Statistical bulletins and
                                         articles that use this time
                                         series
+                                    </h3>
                                 </div>
                             </div>
                         </header>
