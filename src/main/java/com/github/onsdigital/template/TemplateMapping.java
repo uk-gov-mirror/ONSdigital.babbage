@@ -22,6 +22,7 @@ public class TemplateMapping {
         put(PageType.data_slice, "t5-2");
         put(PageType.compendium_landing_page, "t6-1");
         put(PageType.compendium, "t6-2");
+        put(PageType.dataset, "t8-3");
     }
 
 
