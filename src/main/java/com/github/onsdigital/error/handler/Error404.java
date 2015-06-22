@@ -30,13 +30,12 @@ public class Error404 implements NotFound {
 //			res.setCharacterEncoding("UTF8");
 //			IOUtils.copy(input, res.getWriter());
 //		}
-
         try {
             RequestDelegator.get(request, response);
         } catch (Exception e) {
             ApiErrorHandler.handle(e, response);
         }
-        return null;
+        return "";
 
     }
 
