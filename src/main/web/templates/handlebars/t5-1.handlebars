@@ -273,12 +273,12 @@
                         <div class="js-enhance--ul-to-select">
                             <p>Related datasets:</p>
                             <ul>
-                                <!--{{#each relatedDatasets}}-->
-                                  <!--<li><a {{uri}}>{{description.title}}</a></li>-->
-                                <!--{{/each}}-->
-                                <li><a href="http://link1">Inflation data collection</a></li>
-                                <li><a href="http://link2">Awesome dataset</a></li>
-                                <li><a href="http://link3">Boring dataset</a></li>
+                                {{#each relatedDatasets}}
+                                  <li><a {{uri}}>{{description.title}}</a></li>
+                                {{/each}}
+                                <!--<li><a href="http://link1">Inflation data collection</a></li>-->
+                                <!--<li><a href="http://link2">Awesome dataset</a></li>-->
+                                <!--<li><a href="http://link3">Boring dataset</a></li>-->
                             </ul>
                         </div>
                         <a href="#!/previous">view all datasets</a>
