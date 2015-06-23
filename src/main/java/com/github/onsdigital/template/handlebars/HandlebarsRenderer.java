@@ -11,7 +11,7 @@ import com.github.onsdigital.configuration.Configuration;
 import com.github.onsdigital.content.page.base.Page;
 import com.github.onsdigital.template.TemplateRenderer;
 import com.github.onsdigital.template.handlebars.helpers.DateFormatHelper;
-import com.github.onsdigital.template.handlebars.helpers.MarkdownHelper;
+import com.github.onsdigital.template.handlebars.helpers.CustomMarkdownTagHelper;
 
 import java.io.IOException;
 import java.util.Map;
@@ -38,7 +38,7 @@ public class HandlebarsRenderer implements TemplateRenderer {
         //                return new Handlebars.SafeString(options.fn.text());
         //            }
         //        });
-        handlebars.registerHelper("md", new MarkdownHelper());
+        handlebars.registerHelper("md", new CustomMarkdownTagHelper());
         handlebars.registerHelper("df", new DateFormatHelper());
         // String helpers
         StringHelpers.register(handlebars);

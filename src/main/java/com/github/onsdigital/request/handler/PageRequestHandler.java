@@ -38,7 +38,6 @@ public class PageRequestHandler implements RequestHandler {
         return new BabbageStringResponse(html, CONTENT_TYPE);
     }
 
-
     @Override
     public String getRequestType() {
         return REQUEST_TYPE;
