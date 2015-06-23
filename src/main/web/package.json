@@ -2,6 +2,7 @@
   "name": "babbage-web",
   "version": "0.0.1",
   "description": "Web front-end of ONS Website Babbage",
+  "license" : "MIT",
   "main": " ",
   "scripts": {
     "clean": "",
