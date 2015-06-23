@@ -1,17 +1,21 @@
 package com.github.onsdigital.request.handler;
 
-import com.github.onsdigital.configuration.Configuration;
-import com.github.onsdigital.data.DataNotFoundException;
+import com.github.onsdigital.content.page.base.Page;
+import com.github.onsdigital.content.page.statistics.document.figure.table.Table;
+import com.github.onsdigital.content.service.ContentNotFoundException;
+import com.github.onsdigital.content.util.ContentUtil;
+import com.github.onsdigital.data.DataService;
+import com.github.onsdigital.data.zebedee.ZebedeeClient;
 import com.github.onsdigital.data.zebedee.ZebedeeRequest;
 import com.github.onsdigital.request.handler.base.RequestHandler;
-import com.github.onsdigital.request.response.BabbageBinaryResponse;
 import com.github.onsdigital.request.response.BabbageResponse;
-import org.apache.commons.lang3.StringUtils;
+import com.github.onsdigital.request.response.BabbageStringResponse;
+import com.github.onsdigital.template.TemplateService;
+import org.apache.commons.io.IOUtils;
 
 import javax.servlet.http.HttpServletRequest;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * Renders table html from a predefined xls file.
@@ -29,40 +33,42 @@ public class TableRequestHandler implements RequestHandler {
     @Override
     public BabbageResponse get(String requestedUri, HttpServletRequest request, ZebedeeRequest zebedeeRequest) throws Exception {
 
-        String uriPath = StringUtils.removeStart(requestedUri, "/");
-        System.out.println("Reading data under uri:" + uriPath);
-        Path taxonomy = FileSystems.getDefault().getPath(
-                Configuration.getContentPath());
+        Page page;
+        String tableHtml;
 
-//        File xlsFile = new File(uri);
-//        Document document = XlsToHtmlConverter.convert(path.toFile());
-//
-//        // When the toString method is called.
-//        String output = XlsToHtmlConverter.docToString(document);
-//
-//
-//        // Write the file to the response
-//        try (InputStream input = Files.newInputStream(path)) {
-//            org.apache.commons.io.IOUtils.copy(new StringReader(output),
-//                    response.getOutputStream());
-//        }
-//
-//
-
-
-
-        Path filePath = taxonomy.resolve(uriPath + ".png");
-
-        if (Files.exists(filePath)) {
-            return new BabbageBinaryResponse(Files.newInputStream(filePath), CONTENT_TYPE);
+        if (zebedeeRequest != null) {
+            page = ContentUtil.deserialisePage(readFromZebedee(requestedUri + ".json", zebedeeRequest));
+            tableHtml = readFromZebedee(requestedUri + ".html", zebedeeRequest);
+        } else {
+            page = ContentUtil.deserialisePage(readFromLocalData(requestedUri));
+            tableHtml = IOUtils.toString(readFromLocalData(requestedUri + ".html"));
         }
 
-        throw new DataNotFoundException(requestedUri);
-    }
+        if (page instanceof Table) {
+            ((Table) page).setHtml(tableHtml);
+        }
 
+        String html = TemplateService.getInstance().renderPage(page);
+        return new BabbageStringResponse(html, CONTENT_TYPE);
+    }
 
     @Override
     public String getRequestType() {
         return REQUEST_TYPE;
+    }
+
+    //Read from babbage's file system
+    private InputStream readFromLocalData(String requestedUri) throws IOException {
+        return DataService.getInstance().getDataStream(requestedUri);
+    }
+
+    //Read data from zebedee
+    private String readFromZebedee(String uri, ZebedeeRequest zebedeeRequest) throws ContentNotFoundException, IOException {
+        ZebedeeClient zebedeeClient = new ZebedeeClient(zebedeeRequest);
+        try {
+            return IOUtils.toString(zebedeeClient.readData(uri, false));
+        } finally {
+            zebedeeClient.closeConnection();
+        }
     }
 }

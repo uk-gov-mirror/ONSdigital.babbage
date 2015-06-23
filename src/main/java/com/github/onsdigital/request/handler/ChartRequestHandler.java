@@ -35,7 +35,7 @@ public class ChartRequestHandler implements RequestHandler {
     @Override
     public BabbageResponse get(String requestedUri, HttpServletRequest request, ZebedeeRequest zebedeeRequest) throws Exception {
 
-        Page page = null;
+        Page page;
 
         if (zebedeeRequest != null) {
             page = ContentUtil.deserialisePage(readFromZebedee(requestedUri, zebedeeRequest));
