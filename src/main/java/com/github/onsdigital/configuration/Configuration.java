@@ -23,7 +23,8 @@ public class Configuration {
     private static final String DEFAULT_HANDLEBARS_DATE_PATTERN = "d MMMM yyyy";
 
     private static final String HIGHCHARTS_CONFIG_DIR = "src/main/web/templates/highcharts";
-    private static final String SPARKLINE_FILE = "sparkline.json";
+    private static final String SPARKLINE_FILE = "sparklineconfig.js";
+    private static final String LINECHART_FILE = "linechartconfig.js";
 
     /**
      * Mongo is currently only used to provide feedback on the search terms
@@ -153,6 +154,24 @@ public class Configuration {
         } catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException("Failed reading sparkline config file");
+        }
+    }
+
+    public static String getLinechartConfig() {
+        //TODO:Cache configuration
+        try {
+            Path highchartsconfigDir = FileSystems.getDefault().getPath(HIGHCHARTS_CONFIG_DIR);
+            Path sparklinePath = highchartsconfigDir.resolve(LINECHART_FILE);
+
+            if (Files.exists(sparklinePath)) {
+                return  IOUtils.toString( Files.newInputStream(sparklinePath));
+            } else {
+                throw new IllegalStateException("******** LINECHART CONFIGURATION FILE NOT FOUND!!!!!! ***********");
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Failed reading linechart config file");
         }
     }
 
