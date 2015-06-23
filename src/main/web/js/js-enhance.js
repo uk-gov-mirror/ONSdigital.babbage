@@ -15,7 +15,6 @@ jQuery(window).load(function() {
         setTimeout(function() { 
             $('#loading-overlay').fadeOut(300);
         }, 500);
-
     }
 
     function jsEnhanceULNavToSelectNav() {
@@ -35,7 +34,7 @@ jQuery(window).load(function() {
 
             newselect.append($('<option>', { 
                     value: '',
-                    text : 'Select a relates time series'
+                    text : 'Select a related time series'
                 }));
 
             newselect.change(function() {
