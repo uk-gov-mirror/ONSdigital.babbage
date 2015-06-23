@@ -49,6 +49,7 @@ public class HighChartsExportClient {
        List<NameValuePair> postParameters = new ArrayList<NameValuePair>();
        postParameters.add(new BasicNameValuePair("options", chart.toJson()));
        postParameters.add(new BasicNameValuePair("type", "png"));
+       postParameters.add(new BasicNameValuePair("width", "1500"));
        postParameters.add(new BasicNameValuePair("async", "false"));
        post.setEntity(new UrlEncodedFormEntity(postParameters));
 

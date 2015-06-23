@@ -50,6 +50,7 @@ public class RequestDelegator {
 //            response.addHeader("cache-control", "public, max-age=300");
 //        }
 
+        response.setStatus(HttpServletResponse.SC_OK);
         getResponse.apply(response);
         return;
     }
