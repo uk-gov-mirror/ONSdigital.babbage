@@ -1,5 +1,12 @@
 package com.github.onsdigital.template.handlebars.helpers;
 
+import com.github.onsdigital.content.page.base.Page;
+import com.github.onsdigital.content.service.ContentNotFoundException;
+import com.github.onsdigital.data.DataNotFoundException;
+import com.github.onsdigital.request.handler.DataRequestHandler;
+import com.github.onsdigital.template.TemplateService;
+
+import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -25,16 +32,19 @@ public class ChartTagReplacer implements TagReplacementStrategy {
      * @return
      */
     @Override
-    public String replace(Matcher matcher) {
+    public String replace(Matcher matcher) throws IOException {
 
-        // load the chart template
+        String uri = matcher.group(1) + ".json";
 
-        // load the chart json based on the path in match.group(1)
-
-        // apply the data to the template
-
-        return matcher.group(1);
+        // load the chart json data
+        DataRequestHandler dataRequestHandler = new DataRequestHandler();
+        try {
+            Page page = dataRequestHandler.readAsPage(uri, false, null);
+            // load the chart template and inject the data.
+            String html = TemplateService.getInstance().renderPage(page);
+            return html;
+        } catch (ContentNotFoundException | DataNotFoundException e) {
+            return uri;
+        }
     }
-
-
 }

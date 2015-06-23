@@ -2,12 +2,14 @@ package com.github.onsdigital.template.handlebars.helpers;
 
 import org.junit.Test;
 
+import java.io.IOException;
+
 import static org.junit.Assert.assertEquals;
 
 public class MarkdownCustomTagHelperTest {
 
     @Test
-    public void applyShouldReplaceMatchesWithReplacement() {
+    public void applyShouldReplaceMatchesWithReplacement() throws IOException {
 
         String expected = "some content before chart businessindustryandtrade/businessactivitysizeandlocation/articles/chartandtabletest/20150609/ some content after the chart";
 

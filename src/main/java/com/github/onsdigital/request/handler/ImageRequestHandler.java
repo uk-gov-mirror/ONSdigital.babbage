@@ -1,7 +1,8 @@
 package com.github.onsdigital.request.handler;
 
+import com.github.onsdigital.configuration.Configuration;
 import com.github.onsdigital.content.service.ContentNotFoundException;
-import com.github.onsdigital.data.DataService;
+import com.github.onsdigital.data.DataNotFoundException;
 import com.github.onsdigital.data.zebedee.ZebedeeClient;
 import com.github.onsdigital.data.zebedee.ZebedeeRequest;
 import com.github.onsdigital.request.handler.base.RequestHandler;
@@ -14,6 +15,9 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 /**
  * Created by bren on 28/05/15.
@@ -37,7 +41,6 @@ public class ImageRequestHandler implements RequestHandler {
         String uriPath = StringUtils.removeStart(requestedUri, "/");
         System.out.println("Reading image under uri:" + uriPath);
 
-
         String imagePath = uriPath + ".png";
 
         if (zebedeeRequest != null) {
@@ -49,7 +52,16 @@ public class ImageRequestHandler implements RequestHandler {
 
     //Read from babbage's file system
     private InputStream readFromLocalData(String requestedUri) throws IOException {
-        return DataService.getInstance().getDataStream(requestedUri);
+        Path taxonomy = FileSystems.getDefault().getPath(
+                Configuration.getContentPath());
+
+        Path data = taxonomy.resolve(requestedUri);
+
+        if (Files.exists(data)) {
+            return Files.newInputStream(data);
+        }
+
+        throw new DataNotFoundException(requestedUri);
     }
 
     //Read data from zebedee

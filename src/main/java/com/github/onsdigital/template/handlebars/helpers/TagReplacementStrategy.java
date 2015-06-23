@@ -1,5 +1,6 @@
 package com.github.onsdigital.template.handlebars.helpers;
 
+import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -19,6 +20,6 @@ public interface TagReplacementStrategy {
      * @param matcher
      * @return
      */
-    String replace(Matcher matcher);
+    String replace(Matcher matcher) throws IOException;
 
 }

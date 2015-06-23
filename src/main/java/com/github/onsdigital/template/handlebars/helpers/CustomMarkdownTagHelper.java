@@ -32,13 +32,13 @@ public class CustomMarkdownTagHelper extends com.github.jknack.handlebars.Markdo
      * @param replacementStrategy
      * @return
      */
-    public static String replaceCustomTags(String input, TagReplacementStrategy replacementStrategy) {
+    public static String replaceCustomTags(String input, TagReplacementStrategy replacementStrategy) throws IOException {
 
         Matcher matcher = replacementStrategy.getPattern().matcher(input);
 
         StringBuffer result = new StringBuffer(input.length());
         while (matcher.find()) {
-            matcher.appendReplacement(result, replacementStrategy.replace(matcher));
+                matcher.appendReplacement(result, replacementStrategy.replace(matcher));
         }
 
         matcher.appendTail(result);
