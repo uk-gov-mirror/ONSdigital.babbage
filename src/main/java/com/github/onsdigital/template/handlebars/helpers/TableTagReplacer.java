@@ -1,5 +1,8 @@
 package com.github.onsdigital.template.handlebars.helpers;
 
+import com.github.onsdigital.request.handler.TableRequestHandler;
+
+import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -25,14 +28,30 @@ public class TableTagReplacer implements TagReplacementStrategy {
      * @return
      */
     @Override
-    public String replace(Matcher matcher) {
+    public String replace(Matcher matcher) throws IOException {
 
-        // load the table template
+        String uri = matcher.group(1);
 
-        // load the table json based on the path in match.group(1)
-
-        // apply the data to the template
-
-        return matcher.group(1);
+        // load the chart json data
+        TableRequestHandler requestHandler = new TableRequestHandler();
+        try {
+            String html = requestHandler.getHtml(uri, null);
+            return html;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return uri;
+        }
+//        String uri = matcher.group(1);
+//
+//        // load the chart json data
+//        DataRequestHandler dataRequestHandler = new DataRequestHandler();
+//        try {
+//            Page page = dataRequestHandler.readAsPage(uri, false, null);
+//
+//            String html = TemplateService.getInstance().renderPage(page);
+//            return html;
+//        } catch (ContentNotFoundException | DataNotFoundException e) {
+//            return uri;
+//        }
     }
 }

@@ -35,6 +35,11 @@ public class ChartRequestHandler implements RequestHandler {
     @Override
     public BabbageResponse get(String requestedUri, HttpServletRequest request, ZebedeeRequest zebedeeRequest) throws Exception {
 
+
+        return new BabbageStringResponse(getHtml(requestedUri, zebedeeRequest), CONTENT_TYPE);
+    }
+    
+    public String getHtml(String requestedUri, ZebedeeRequest zebedeeRequest) throws IOException, ContentNotFoundException {
         Page page;
 
         if (zebedeeRequest != null) {
@@ -44,7 +49,7 @@ public class ChartRequestHandler implements RequestHandler {
         }
 
         String html = TemplateService.getInstance().renderPage(page);
-        return new BabbageStringResponse(html, CONTENT_TYPE);
+        return html;
     }
 
     @Override
