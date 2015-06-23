@@ -1,10 +1,6 @@
 package com.github.onsdigital.template.handlebars.helpers;
 
-import com.github.onsdigital.content.page.base.Page;
-import com.github.onsdigital.content.service.ContentNotFoundException;
-import com.github.onsdigital.data.DataNotFoundException;
-import com.github.onsdigital.request.handler.DataRequestHandler;
-import com.github.onsdigital.template.TemplateService;
+import com.github.onsdigital.request.handler.ChartRequestHandler;
 
 import java.io.IOException;
 import java.util.regex.Matcher;
@@ -34,17 +30,29 @@ public class ChartTagReplacer implements TagReplacementStrategy {
     @Override
     public String replace(Matcher matcher) throws IOException {
 
-        String uri = matcher.group(1) + ".json";
+        String uri = matcher.group(1);
 
         // load the chart json data
-        DataRequestHandler dataRequestHandler = new DataRequestHandler();
+        ChartRequestHandler requestHandler = new ChartRequestHandler();
         try {
-            Page page = dataRequestHandler.readAsPage(uri, false, null);
-            // load the chart template and inject the data.
-            String html = TemplateService.getInstance().renderPage(page);
+            String html = requestHandler.getHtml(uri, null);
             return html;
-        } catch (ContentNotFoundException | DataNotFoundException e) {
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
             return uri;
         }
+
+//        String uri = matcher.group(1);
+//
+//        // load the chart json data
+//        DataRequestHandler dataRequestHandler = new DataRequestHandler();
+//        try {
+//            Page page = dataRequestHandler.readAsPage(uri, false, null);
+//            // load the chart template and inject the data.
+//            String html = TemplateService.getInstance().renderPage(page);
+//            return html;
+//        } catch (ContentNotFoundException | DataNotFoundException e) {
+//            return uri;
+//        }
     }
 }
