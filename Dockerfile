@@ -17,7 +17,7 @@ RUN echo '{"service": {"name": "babbage", "tags": ["blue"], "port": 8080, "check
 # Check out from Github
 
 WORKDIR /usr/src
-RUN git clone https://github.com/ONSdigital/babbage.git .
+RUN git clone --depth 1 https://github.com/ONSdigital/babbage.git .
 RUN git checkout staging
 
 # Build web content
