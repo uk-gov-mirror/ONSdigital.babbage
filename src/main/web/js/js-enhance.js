@@ -1,5 +1,6 @@
 //progressive enhancement (jQuery)
 
+// $(function() {
 jQuery(window).load(function() {
     jsEnhance();
 
@@ -9,11 +10,11 @@ jQuery(window).load(function() {
         $('.nojs-hidden').removeClass('nojs-hidden');
 
         jsEnhanceULNavToSelectNav();
+        jsEnhanceHome();
 
         setTimeout(function() { 
             $('#loading-overlay').fadeOut(300);
         }, 500);
-
     }
 
     function jsEnhanceULNavToSelectNav() {
@@ -33,7 +34,7 @@ jQuery(window).load(function() {
 
             newselect.append($('<option>', { 
                     value: '',
-                    text : 'Select a relates time series'
+                    text : 'Select a related time series'
                 }));
 
             newselect.change(function() {
@@ -57,5 +58,41 @@ jQuery(window).load(function() {
         });
     }
 
-    function jsEnhanceHome() {}
+    function jsEnhanceHome() {
+
+        var herostatarea = $('.stat__wrap--home');
+        
+
+        $(herostatarea).click(function() {
+            var herostatarealink = $('a:last', this).attr('href');
+            
+            window.location = herostatarealink;
+        });
+
+        $(herostatarea).css({
+            'cursor' : 'pointer'
+        });
+        
+        $(herostatarea).hover(function() {
+            $(this).css({
+                'background-color' : '#f8fadc'
+            })
+        }, function () {
+            $(this).css({
+                'background-color' : 'transparent'
+            });
+        });
+
+
+        
+
+        
+    }
 });
+
+
+
+
+
+
+
