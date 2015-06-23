@@ -2,7 +2,7 @@
 
 <div class="page-header slate">
     <div class="wrapper">
-        <h1 class="page-header__title flush--half--bottom">{{description.title}}</h1>
+        <h1 class="page-header__title flush--half--bottom">Welcome to the Office for National Statistics</h1>
 
         <p>{{description.summary}}
   </div>
@@ -11,33 +11,29 @@
 <!-- panel -->
 <div class="wrapper panel--mar">
     <!-- grid-wrap -->
+    <h2>Statistical highlights</h2>
 
     <div class="grid-wrap grid-wrap--home-hero panel--separated--bottom">
       <!-- grid-col -->
         {{#each sections}}
         <div class="grid-col grid-col--home-hero tablet-wide-grid-one-fifth">
             <article class="nav-panel nav-panel--stats nav-panel--home-hero sectioned">
-                
-                <header class="nav-panel__header nav-panel__roomy">
-                    <h2 class="delta flush">{{statistics.data.description.title}}</h2>
-                </header>
-                <div class="nav-panel__roomy">
-                    <div class="stat__figure">
-                        <span class="stat__figure__unit">{{statistics.data.description.preUnit}}</span>
-                        {{statistics.data.description.number}}
-                        <span class="stat__figure__unit">{{statistics.data.description.unit}}</span>
+                <div class="js-home-hero-clickable-section">
+                    <header class="nav-panel__header">
+                        <h2 class="delta flush">{{statistics.data.description.title}}</h2>
+                    </header>
+                    <div class="stat__figure--home">
+                        {{statistics.data.description.preUnit}} {{statistics.data.description.number}} {{statistics.data.description.unit}}
                     </div>
                     <div class="stat__description">
                         {{statistics.data.description.date}}
                     </div>
-                    <img src="{{statistics.data.uri}}/sparkline" alt="{{statistics.data.description.title}}">
+                    <img class="stat__image--home" src="{{statistics.data.uri}}/sparkline" alt="{{statistics.data.description.title}}">
                     
                     <a class="js-hidden" href="{{statistics.data.uri}}">More info</a>
                 </div>
-                <footer class="nav-panel__footer">
-                    <div class="nav-panel__action">
-                        <a class="nav-panel__roomy" href="{{theme.uri}}">Explore {{theme.description.title}}</a>
-                    </div>
+                <footer class="nav-panel__footer-home-hero">
+                    <a href="{{theme.uri}}">Explore {{theme.description.title}}</a>
                 </footer>
             </article>
             <!-- grid-col -->
