@@ -245,12 +245,15 @@
                 <div class="grid-wrap">
                     <div class="grid-col desktop-grid-one-half ">
                         <div class="js-enhance--ul-to-select">
-                            <p>Related time series:</p>
-                            <ul>
-                                <li><a href="http://link1">D7BT: CPI: Consumer Prices Index</a></li>
-                                <li><a href="http://link2">Some other time series</a></li>
-                                <li><a href="http://link3">Yet another time series</a></li>
-                            </ul>
+                          <ul>
+                              {{#each relatedData}}
+                                <li><a {{uri}}>{{description.cdid}}: {{description.title}}</a></li>
+                              {{/each}}
+                            <!--<li><a href="http://link1">D7BT: CPI: Consumer Prices Index</a></li>-->
+                            <!--<li><a href="http://link2">Some other time series</a></li>-->
+                            <!--<li><a href="http://link3">Yet another time series</a></li>-->
+                          </ul>
+                          <p>Related time series:</p>
                         </div>
                         <a href="#!/previous">view all time series</a>
                     </div>
@@ -258,6 +261,9 @@
                         <div class="js-enhance--ul-to-select">
                             <p>Related datasets:</p>
                             <ul>
+                                <!--{{#each relatedDatasets}}-->
+                                  <!--<li><a {{uri}}>{{description.title}}</a></li>-->
+                                <!--{{/each}}-->
                                 <li><a href="http://link1">Inflation data collection</a></li>
                                 <li><a href="http://link2">Awesome dataset</a></li>
                                 <li><a href="http://link3">Boring dataset</a></li>
