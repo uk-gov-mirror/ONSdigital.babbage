@@ -18,9 +18,9 @@
         {{#each sections}}
         <div class="grid-col grid-col--home-hero tablet-wide-grid-one-fifth">
             <article class="nav-panel nav-panel--stats nav-panel--home-hero sectioned">
-                <div class="js-home-hero-clickable-section">
+                <div class="stat__wrap--home">
                     <header class="nav-panel__header">
-                        <h2 class="delta flush">{{statistics.data.description.title}}</h2>
+                        <h2 class="gamma flush">{{statistics.data.description.title}}</h2>
                     </header>
                     <div class="stat__figure--home">
                         {{statistics.data.description.preUnit}} {{statistics.data.description.number}} {{statistics.data.description.unit}}
@@ -30,7 +30,7 @@
                     </div>
                     <img class="stat__image--home" src="{{statistics.data.uri}}/sparkline" alt="{{statistics.data.description.title}}">
                     
-                    <a class="js-hidden" href="{{statistics.data.uri}}">More info</a>
+                    <a class="js-enhance--hide" href="{{statistics.data.uri}}">More info</a>
                 </div>
                 <footer class="nav-panel__footer-home-hero">
                     <a href="{{theme.uri}}">Explore {{theme.description.title}}</a>
