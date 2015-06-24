@@ -7,13 +7,11 @@ import org.junit.Test;
  */
 public class ConfigurationTest {
 
-    @Test
     public void testGetSparklineConfig() {
         String sparkline = Configuration.getSparklineConfig();
 //        System.out.println(sparkline);
     }
 
-    @Test
     public void testGetLinechartConfig() {
         String lineChart = Configuration.getLinechartConfig();
         System.out.println(lineChart);
