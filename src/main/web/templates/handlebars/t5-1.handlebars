@@ -263,11 +263,8 @@
                         <div class="js-enhance--ul-to-select">
                           <ul>
                               {{#each relatedData}}
-                                <li><a {{uri}}>{{description.cdid}}: {{description.title}}</a></li>
+                                <li><a href="{{uri}}">{{description.cdid}}: {{description.title}}</a></li>
                               {{/each}}
-                            <!--<li><a href="http://link1">D7BT: CPI: Consumer Prices Index</a></li>-->
-                            <!--<li><a href="http://link2">Some other time series</a></li>-->
-                            <!--<li><a href="http://link3">Yet another time series</a></li>-->
                           </ul>
                           <p>Related time series:</p>
                         </div>
@@ -278,11 +275,8 @@
                             <p>Related datasets:</p>
                             <ul>
                                 {{#each relatedDatasets}}
-                                  <li><a {{uri}}>{{description.title}}</a></li>
+                                  <li><a href="{{uri}}">{{description.title}}</a></li>
                                 {{/each}}
-                                <!--<li><a href="http://link1">Inflation data collection</a></li>-->
-                                <!--<li><a href="http://link2">Awesome dataset</a></li>-->
-                                <!--<li><a href="http://link3">Boring dataset</a></li>-->
                             </ul>
                         </div>
                         <a href="#!/previous">view all datasets</a>
