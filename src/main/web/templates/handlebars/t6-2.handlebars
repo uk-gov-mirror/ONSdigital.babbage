@@ -54,6 +54,13 @@
 				<a href="#{{slugify title}}">{{title}}</a>
 			</li>
 			{{/each}}
+			{{#if accordions}}
+				{{#each accordions}}
+				<li>
+					<a href="#{{slugify title}}">{{title}}</a>
+				</li>
+				{{/each}}
+			{{/if}}
 		</ol>
 		<!-- /table-of-contents -->
 	</div>
@@ -73,18 +80,19 @@
 							{{md markdown}}
 							</p>
 						</div>
-	      				<a href="#toc" title="Back to table of contents">Back to table of contents</a>
+	      		<a href="#toc" title="Back to table of contents">Back to table of contents</a>
 					</div>
 				</article>
 				{{/each}}
 				{{#if accordions}}
 					{{#each accordions}}
-					<div class="accordion is-collapsed">
+					<div id="{{slugify title}}" class="accordion is-collapsed">
 						<h3 id="sc-{{@index}}" class="accordion__title" aria-controls="content-{{@index}}">{{title}}</h3>
 						<div id="content-{{@index}}" class="accordion__content" aria-labelledby="sc-{{@index}}">
 							<p>
 								{{md markdown}}
 							</p>
+							<a href="#toc" title="Back to table of contents">Back to table of contents</a>
 						</div>
 					</div>
 					<!-- /accordion -->
@@ -114,8 +122,8 @@
 					<div class="box__content">
 						<address>
 							{{#if description.contact.name}}{{description.contact.name}}{{/if}}
-		                    <a href="mailto:{{description.contact.email}}">{{description.contact.email}}</a></br>
-		                    {{#if description.contact.telephone}}Telephone: {{description.contact.telephone}}{{/if}}
+                <a href="mailto:{{description.contact.email}}">{{description.contact.email}}</a></br>
+              {{#if description.contact.telephone}}Telephone: {{description.contact.telephone}}{{/if}}
 						</address>
 					</div>
 				</div>

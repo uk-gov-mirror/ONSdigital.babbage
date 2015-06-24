@@ -12,6 +12,7 @@ jQuery(window).load(function() {
         jsEnhanceULNavToSelectNav();
         jsEnhanceHome();
         jsEnhanceLinechart();
+        jsEnhancePrint();
 
         setTimeout(function() {
             $('#loading-overlay').fadeOut(300);
@@ -104,6 +105,13 @@ jQuery(window).load(function() {
             console.error("Failed reading timseries, status: " + textStatus + ", error: " + error)
         });
 
+    }
+
+    function jsEnhancePrint() {
+    $('#jsEnhancePrint').click(function()
+        {
+            window.print();
+        });
     }
 
 });

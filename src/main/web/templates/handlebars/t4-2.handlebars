@@ -6,7 +6,7 @@
 			<p class="page-header__title page-header--stat-bulletin-desc">
 				Article
 			</p>
-			<h1 class="page-header__title flush--half--bottom">{{description.title}}</h1>
+			<h1 class="page-header__title flush--half--bottom">{{description.title}}: {{description.edition}}</h1>
 			<div class="grid-wrap">
 				<p ass="grid-wrap">
 				<p class="grid-col tablet-grid-one-quarter {{#if description.nationalStatistic}}page-header__meta-block-with-img{{/if}}">
@@ -22,8 +22,8 @@
 					<span>Next release: </span><br/>{{df description.nextRelease}}
 				</p>
 				<p class="grid-col tablet-grid-one-quarter divider--border-left print-hidden">
-					<a href="#" class ="icon-print">&nbsp;Print full report</a>
-					</br>
+					<a href="" id="jsEnhancePrint" class ="icon-print nojs-hidden js-enhance--show">&nbsp;Print full report</a>
+					<br class="nojs-hidden js-enhance--show"/>
 					<a href="#" class="icon-download">&nbsp;Download PDF</a> (38KB)
 				</p>
 			</div>
@@ -34,8 +34,8 @@
 	<div class="wrapper">
 		<p class="lede">{{description.summary}}</p>
 		<div class="panel--separated--bottom panel--bottom-mar">
-			<h2 id="top">Table of contents</h2>
-			<ol class="table-of-contents-ordered-list">
+			<h2>Table of contents</h2>
+			<ol id="toc" class="table-of-contents-ordered-list">
 				{{#each sections}}
 				<li><a href="#{{slugify title}}" title="{{this.title}}">{{this.title}}</a></li>
 				{{/each}}
@@ -62,7 +62,7 @@
 				{{/each}}
 				<!-- Accordian -->
 				{{#if accordion}}
-				<div class"panel--mar">
+				<div class="panel--mar">
 					{{#each accordion}}
 					<div class="accordion is-collapsed">
 						<h2 class="accordion__title" aria-controls="content-{{@index}}">{{title}}</h2>
@@ -80,7 +80,7 @@
 				<article class="box box--green box--green--separated--left">
 					<div class="box__inner border box--padded [border--large-left]">
 						<header class="box__header">
-							<h3>Data in this bulletin</h3>
+							<h3>Data in this article</h3>
 						</header>
 						<div class="box__content">
 							<ul class="list--neutral">
@@ -95,7 +95,7 @@
 		        <article class="box">
 		            <div class="box__inner border box--padded">
 		                <header class="box__header">
-		                    <h3>Contact details for this statistical bulletin</h3>
+		                    <h3>Contact details for this article</h3>
 		                </header>
 		                <!-- /box__header -->
 		                <div class="box__content">
