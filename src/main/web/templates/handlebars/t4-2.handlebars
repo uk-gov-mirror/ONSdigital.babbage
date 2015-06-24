@@ -16,12 +16,12 @@
 					<span>Contact: </span><br/><a href="mailto:{{description.contact.email}}">{{#if description.contact.name}}{{description.contact.name}}{{else}}{{description.contact.email}}{{/if}}</a>
 				</p>
 				<p class="grid-col tablet-grid-one-quarter divider--border-left">
-					<span>Release date: </span><br/>{{df description.releaseDate}}<br/><a href="#">previous versions</a>
+					<span>Release date: </span><br/>{{df description.releaseDate}}<br/><a class="print-hidden" href="#">previous versions</a>
 				</p>
 				<p class="grid-col tablet-grid-one-quarter divider--border-left">
 					<span>Next release: </span><br/>{{df description.nextRelease}}
 				</p>
-				<p class="grid-col tablet-grid-one-quarter divider--border-left">
+				<p class="grid-col tablet-grid-one-quarter divider--border-left print-hidden">
 					<a href="#" class ="icon-print">&nbsp;Print full report</a>
 					</br>
 					<a href="#" class="icon-download">&nbsp;Download PDF</a> (38KB)
@@ -43,7 +43,7 @@
 		</div>
 	</div>
 	<!-- Body Sections -->
-	<div class="wrapper panel--bottom-mar">
+	<div class="wrapper panel--bottom-mar print-links">
 		<div class="grid-wrap">
 			<div class="grid-col desktop-grid-two-thirds tablet-grid-full-width">
 				{{#each sections}}
@@ -56,7 +56,7 @@
 						<div>
 						{{md markdown}}
 						</div>
-						<a href="#top" title="Back to table of contents">Back to table of contents</a>
+						<a class="print-hidden" href="#top" title="Back to table of contents">Back to table of contents</a>
 					</div>
 				</article>
 				{{/each}}
@@ -100,7 +100,7 @@
 		                <!-- /box__header -->
 		                <div class="box__content">
 		                    <address>
-								{{#if description.contact.name}}{{description.contact.name}}{{/if}}
+								{{#if description.contact.name}}{{description.contact.name}}{{/if}}</br>
 	                      		<a href="mailto:{{description.contact.email}}">{{description.contact.email}}</a></br>
 	                      		{{#if description.contact.telephone}}Telephone: {{description.contact.telephone}}{{/if}}
 		                    </address>
@@ -115,7 +115,7 @@
 	<!-- panel -->
 	<div class="slate--mid-grey">
 		<!-- wrapper -->
-		<div class="wrapper panel--top-pad">
+		<div class="wrapper panel--top-pad print-links">
 			<!-- grid-wrap -->
 			<div class="grid-wrap">
 				<div class="grid-col desktop-grid-two-thirds tablet-grid-full-width">

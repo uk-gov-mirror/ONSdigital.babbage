@@ -1,6 +1,5 @@
 package com.github.onsdigital.request.handler.highcharts;
 
-import com.fasterxml.jackson.databind.deser.Deserializers;
 import com.github.onsdigital.content.page.base.Page;
 import com.github.onsdigital.content.page.statistics.data.timeseries.TimeSeries;
 import com.github.onsdigital.content.util.ContentUtil;
@@ -30,7 +29,7 @@ public class SparklineConfigRequestHandler implements RequestHandler {
     @Override
     public BabbageResponse get(String requestedUri, HttpServletRequest request, ZebedeeRequest zebedeeRequest) throws Exception {
         System.out.println("Generating sparkline image for " + requestedUri);
-        return new BabbageStringResponse(getChartConfig(requestedUri).toJson());
+        return new BabbageStringResponse(getChartConfig(requestedUri).toString());
     }
 
     BaseChart getChartConfig(String requestedUri) throws IOException {
