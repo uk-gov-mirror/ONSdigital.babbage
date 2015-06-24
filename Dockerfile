@@ -1,13 +1,4 @@
-from onsdigital/java-component
-
-
-# Node.js
-
-# We need to use a later version of Node than is currently available in the Ubuntu package manager (2015-06-17)
-# The tar and bzip2 packages are required for Phantom.js installation in npm: https://github.com/Medium/phantomjs/issues/326
-RUN apt-get install -y curl
-RUN curl -sL https://deb.nodesource.com/setup_0.12 | bash -
-RUN apt-get install -y nodejs tar bzip2
+from onsdigital/java-node-component
 
 # Consul
 
