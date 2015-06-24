@@ -6,7 +6,7 @@
 			<p class="page-header__title page-header--stat-bulletin-desc">
 				Statistical bulletin
 			</p>
-			<h1 class="page-header__title flush--half--bottom">{{description.title}}: {{description.edition}}</h1>
+			<h1 class="page-header__title flush--half--bottom">{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}</h1>
 			<div class="grid-wrap">
 				<p class="grid-col tablet-grid-one-quarter {{#if description.nationalStatistic}}page-header__meta-block-with-img{{/if}}">
 				    {{#if description.nationalStatistic}}
