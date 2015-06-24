@@ -29,11 +29,11 @@ RUN mvn clean compile dependency:copy-dependencies
 
 # Generate content
 
-RUN java -Xmx2048m -cp "target/classes:target/dependency/*" com.github.onsdigital.generator.ContentGenerator
+# RUN java -Xmx2048m -cp "target/classes:target/dependency/*" com.github.onsdigital.generator.ContentGenerator
 
 # Now copy files to the target
 
-RUN mvn process-resources
+# RUN mvn process-resources
 
 # Restolino
 
