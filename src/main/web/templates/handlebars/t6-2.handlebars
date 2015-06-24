@@ -126,40 +126,42 @@
 		<!-- /grid-wrap -->
 	</div>
 	<!-- /wrapper -->
-	<div class="wrapper panel--top-pad slate--mid-grey">
-		<div class="grid-wrap">
-			<div class="grid-col desktop-grid-two-thirds">
-				<article class="box box--teal--separated--left">
-					<div class="box__inner border box--padded">
-						<h3>Related articles and bulletins</h3>
-						<div class="box__content">
-							<ul class="list--neutral">
-								{{#each relatedBulletins}}
-								<li>
-									<h4 class="flush"><a href="{{uri}}">{{title}}</a></h4>
-									{{md description}}
-								</li>
-								{{/each}}
-							</ul>
+	<div class="panel--top-pad slate--mid-grey">
+		<div class="wrapper">
+			<div class="grid-wrap">
+				<div class="grid-col desktop-grid-two-thirds">
+					<article class="box box--teal--separated--left">
+						<div class="box__inner border box--padded">
+							<h3>Related articles and bulletins</h3>
+							<div class="box__content">
+								<ul class="list--neutral">
+									{{#each relatedBulletins}}
+									<li>
+										<h4 class="flush"><a href="{{uri}}">{{title}}</a></h4>
+										{{md description}}
+									</li>
+									{{/each}}
+								</ul>
+							</div>
 						</div>
-					</div>
-					<!-- /box__inner -->
-				</article>
-				<!-- /box -->
+						<!-- /box__inner -->
+					</article>
+					<!-- /box -->
+				</div>
+				<!-- /grid-desktop-two-thirds -->
+				<div class="grid-col desktop-grid-one-third">
+					<article class="box box--orange box--orange--separated-left">
+          	<div class="box__inner border box--padded ">
+              <h3>Looking for local statistics?</h3>
+            	<p><a href="/local">A handy guide to let you know where to find local statistics.</a></p>
+          	</div>
+	  			</article>
+				</div>
+				<!-- /desktop-grid-one-third -->
 			</div>
-			<!-- /grid-desktop-two-thirds -->
-			<div class="grid-col desktop-grid-one-third">
-				<article class="box box--orange box--orange--separated-left">
-                	<div class="box__inner border box--padded ">
-		                <h3>Looking for local statistics?</h3>
-		                <p><a href="/local">A handy guide to let you know where to find local statistics.</a></p>
-                	</div>
-           		</article>
-			</div>
-			<!-- /desktop-grid-one-third -->
+			<!-- /grid-wrap -->
 		</div>
-		<!-- /grid-wrap -->
+		<!-- /wrapper -->
 	</div>
-	<!-- /wrapper -->
 </main>
 {{> templates/handlebars/partials/footer}}
