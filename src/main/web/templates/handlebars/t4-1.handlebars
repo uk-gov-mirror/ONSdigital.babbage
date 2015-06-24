@@ -29,7 +29,7 @@
 		</div>
 	</div>
 	<!-- Table of contents -->
-	<div class="wrapper print-links">
+	<div class="wrapper">
 		<p class="lede">{{description.summary}}</p>
 		<div class="panel--separated--bottom panel--bottom-mar">
 			<h2>Table of contents</h2>
@@ -76,7 +76,7 @@
 						<div class="accordion__content" aria-labelledby="sc-{{@index}}">
 							{{md markdown}}
 						</div>
-						<a href="#toc" title="Back to table of contents">Back to table of contents</a>
+						<a class="print-hidden" href="#toc" title="Back to table of contents">Back to table of contents</a>
 					</div>
 					{{/each}}
 				</div>
