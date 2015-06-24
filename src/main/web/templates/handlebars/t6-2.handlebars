@@ -29,7 +29,7 @@
 				</p>
 			</div>
 			<!-- /grip-wrap -->
-			
+
 		</div>
 		<!-- /wrapper -->
 	</div>
@@ -48,7 +48,7 @@
 	</div>
 	<!-- /wrapper -->
 	<div class="wrapper panel--mar panel--bottom-pad panel--separated--bottom">
-		<ol class="table-of-contents-ordered-list">
+		<ol id="toc" class="table-of-contents-ordered-list">
 			{{#each sections}}
 			<li>
 				<a href="#{{slugify title}}">{{title}}</a>
@@ -73,7 +73,7 @@
 							{{md markdown}}
 							</p>
 						</div>
-	      				<a href="#top" title="Back to table of contents">Back to table of contents</a>
+	      				<a href="#toc" title="Back to table of contents">Back to table of contents</a>
 					</div>
 				</article>
 				{{/each}}
