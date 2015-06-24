@@ -6,7 +6,7 @@
 			<p class="page-header__title page-header--stat-bulletin-desc">
 				Statistical bulletin
 			</p>
-			<h1 class="page-header__title flush--half--bottom">{{description.title}}</h1>
+			<h1 class="page-header__title flush--half--bottom">{{description.title}}: {{description.edition}}</h1>
 			<div class="grid-wrap">
 				<p class="grid-col tablet-grid-one-quarter {{#if description.nationalStatistic}}page-header__meta-block-with-img{{/if}}">
 				    {{#if description.nationalStatistic}}
@@ -20,16 +20,16 @@
 				<p class="grid-col tablet-grid-one-quarter divider--border-left">
 				  <span>Next release: </span><br/>{{description.nextRelease}}
 				</p>
-				<p class="grid-col tablet-grid-one-quarter divider--border-left">
-					<a href="#" class ="icon-print">&nbsp;Print full report</a>
-					</br>
+				<p class="grid-col tablet-grid-one-quarter divider--border-left print-hidden">
+					<a href="" id="jsEnhancePrint" class ="icon-print nojs-hidden js-enhance--show">&nbsp;Print full report</a>
+					<br class="nojs-hidden js-enhance--show"/>
 					<a href="#" class="icon-download">&nbsp;Download PDF</a> (38KB)
 				</p>
 			</div>
 		</div>
 	</div>
 	<!-- Table of contents -->
-	<div class="wrapper">
+	<div class="wrapper print-links">
 		<p class="lede">{{description.summary}}</p>
 		<div class="panel--separated--bottom panel--bottom-mar">
 			<h2>Table of contents</h2>
@@ -41,7 +41,7 @@
 		</div>
 	</div>
 	<!-- Body Sections -->
-	<div class="wrapper panel--bottom-mar">
+	<div class="wrapper panel--bottom-mar print-links">
 		<div class="grid-wrap">
 			<div class="grid-col desktop-grid-two-thirds tablet-grid-full-width">
 				{{#each sections}}
@@ -115,7 +115,7 @@
 	<!-- panel -->
 	<div class="slate--mid-grey">
 		<!-- wrapper -->
-		<div class="wrapper panel--top-pad">
+		<div class="wrapper panel--top-pad print-links">
 			<!-- grid-wrap -->
 			<div class="grid-wrap">
 				<div class="grid-col desktop-grid-two-thirds tablet-grid-full-width">
