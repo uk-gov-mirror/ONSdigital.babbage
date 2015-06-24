@@ -1,14 +1,16 @@
 {{> partials/header}}
 
-<div class="page-header slate">
+<div class="page-header">
     <div class="wrapper">
         <h1 class="page-header__title flush--half--bottom">Welcome to the Office for National Statistics</h1>
 
         <p>{{description.summary}}
-  </div>
+    </div>
     <!-- / wrapper -->
 </div>
 <!-- panel -->
+
+
 <div class="wrapper panel--mar">
     <!-- grid-wrap -->
     <h2>Statistical highlights</h2>
@@ -45,51 +47,68 @@
     </div>
 </div>
 
-<div class="panel wrapper panel--separated--bottom">
-    <h2 class="delta flush">New this week</h2>
-    <div class="grid-wrap">
-        <ul class="list--neutral">
-            {{#each releases}}
-				<li class="grid-col desktop-grid-one-third">
-					<h3><a href="{{link}}" title="{{name}}">{{name}}</a></h3>
-					<p>
-                        {{description}}
-					</p>
-				</li>
-            {{/each}}
-        </ul>
-        <!-- /grid-wrap -->
+
+<div class="panel wrapper">
+    <div class="panel--top-mar panel--separated--bottom">
+        <h2 class="delta flush">New this week</h2>
+        <div class="grid-wrap">
+            <ul class="list--neutral">
+    			<li class="grid-col desktop-grid-one-third">
+    				<h3 class="flush"><a href="#" title="Item 1">Item 1</a></h3>
+    				<p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam convallis laoreet diam ac iaculis. Ut non diam suscipit, aliquet ligula a, tincidunt mauris.
+    				</p>
+    			</li>
+                <li class="grid-col desktop-grid-one-third">
+                    <h3 class="flush"><a href="#" title="Item 2">Item 2</a></h3>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam convallis laoreet diam ac iaculis. Ut non diam suscipit, aliquet ligula a, tincidunt mauris.
+                    </p>
+                </li>
+                <li class="grid-col desktop-grid-one-third">
+                    <h3 class="flush"><a href="#" title="Item 3">Item 3</a></h3>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam convallis laoreet diam ac iaculis. Ut non diam suscipit, aliquet ligula a, tincidunt mauris.
+                    </p>
+                </li>
+            </ul>
+            <!-- /grid-wrap -->
+        </div>
+        <p><a href="#">View new and upcoming releases</a></p>
+        <!-- /section -->
     </div>
-    <a href="#">View new and upcoming releases</a>
-    <!-- /section -->
 </div>
 <!-- wrapper -->
-<div class="wrapper panel--mar">
-    <div class="grid-wrap">
-		{{#each highlightedContent}}
-        <div class="grid-col box--padded-vertical nav--block-home-highlighted-content">
-			<h2 class="delta flush--half">{{name}}</h3>
-            <article class="box flush--half--bottom">
-                <div class="box__inner border box--padded">
-                    <div class="box__section">
-                        <h3 class="box__section__header">
-                            Image here
-                        </h3>
-                    </header>
-                    <!-- /box__header -->
-                    <div class="box__content">
-                            <a href="#">Link</a>
-                    </div>
-                    <!-- /box__content -->
-                </div>
-                <!-- /box__inner -->
-            </article>
 
-            <p class="flush--half">{{description}}</p>
+<div class="panel wrapper">
+    <div class="panel--top-mar">
+        <div class="grid-wrap">
+            <article class="grid-col desktop-grid-one-third nav--block-home-highlighted-content">
+                <h2 class="delta flush"><a href="">What’s coming and when? <span class="img-block"><img src="../../img/t1-cal.png" alt=""></span></a></h2>
+                <p>Find out when our statistics are released and sign-up to receive notifications.</p>
+            </article>
+            <article class="grid-col desktop-grid-one-third nav--block-home-highlighted-content">
+                <h2 class="delta flush"><a href="">Other official statistics <span class="img-block"><img src="../../img/t1-gov-uk.png" alt=""></span></a></h2>
+                <p>Find official statistics produced by other government departments.</p>
+            </article>
+            <article class="grid-col desktop-grid-one-third nav--block-home-highlighted-content">
+                <h2 class="delta flush"><a href="">Looking for local statistics? <span class="img-block"><img src="../../img/t1-local.png" alt=""></span></a></h2>
+                <p>A handy guide to let you know where to find local statistics.</p>
+            </article>
+            <article class="grid-col desktop-grid-one-half nav--block-home-highlighted-content">
+                <h2 class="delta flush"><a href="">Census <span class="img-block"><img src="../../img/t1-census.png" alt=""></span></a></h2>
+                <p>Discover how our census statistics help paint a picture of the nation and how we live.</p>
+            </article>
+            <article class="grid-col desktop-grid-one-half nav--block-home-highlighted-content">
+                <h2 class="delta flush"><a href="">Visual.ONS <span class="img-block"><img src="../../img/t1-visual-ons.png" alt=""></span></a></h2>
+                <p>Visual.ONS is a website exploring new approaches to making ONS statistics accessible and relevant to a wide public audience.</p>
+            </article>
+            
+            <!-- /grid-wrap -->
         </div>
-		{{/each}}
-	</div>
-    <!-- /grid-wrap -->
+        <!-- /section -->
+    </div>
 </div>
+<!-- wrapper -->
 
 {{> partials/footer}}
