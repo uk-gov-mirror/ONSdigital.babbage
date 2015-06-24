@@ -30,7 +30,7 @@ public class LineChartConfigHandler implements RequestHandler {
     @Override
     public BabbageResponse get(String requestedUri, HttpServletRequest request, ZebedeeRequest zebedeeRequest) throws Exception {
         System.out.println("Generating linechart config for " + requestedUri);
-        return new BabbageStringResponse(getChartConfig(requestedUri).toJson());
+        return new BabbageStringResponse(getChartConfig(requestedUri).toString());
     }
 
     BaseChart getChartConfig(String requestedUri) throws IOException {

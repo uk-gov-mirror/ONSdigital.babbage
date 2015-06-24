@@ -11,8 +11,9 @@ jQuery(window).load(function() {
 
         jsEnhanceULNavToSelectNav();
         jsEnhanceHome();
+        jsEnhanceLinechart();
 
-        setTimeout(function() { 
+        setTimeout(function() {
             $('#loading-overlay').fadeOut(300);
         }, 500);
     }
@@ -25,29 +26,29 @@ jQuery(window).load(function() {
             var label = $('<label>', {
                 class: 'definition-emphasis',
                 text: labeltext
-            }); 
+            });
 
             //$(document.createElement('select')) is faster
             var newselect = $('<select>', {
                 class: 'field field--spaced'
-            }); 
+            });
 
-            newselect.append($('<option>', { 
-                    value: '',
-                    text : 'Select a related time series'
-                }));
+            newselect.append($('<option>', {
+                value: '',
+                text: 'Select a related time series'
+            }));
 
             newselect.change(function() {
                 var location = $(this).find('option:selected').val();
-                if (location){
+                if (location) {
                     window.location = location;
                 }
             });
 
-            $.each(selectoptions, function (i, item) {
-                newselect.append($('<option>', { 
+            $.each(selectoptions, function(i, item) {
+                newselect.append($('<option>', {
                     value: $(this).attr('href'),
-                    text : $(this).text()
+                    text: $(this).text()
                 }));
             });
 
@@ -61,38 +62,48 @@ jQuery(window).load(function() {
     function jsEnhanceHome() {
 
         var herostatarea = $('.stat__wrap--home');
-        
+
 
         $(herostatarea).click(function() {
             var herostatarealink = $('a:last', this).attr('href');
-            
+
             window.location = herostatarealink;
         });
 
         $(herostatarea).css({
-            'cursor' : 'pointer'
+            'cursor': 'pointer'
         });
-        
+
         $(herostatarea).hover(function() {
             $(this).css({
-                'background-color' : '#f8fadc'
+                'background-color': '#f8fadc'
             })
-        }, function () {
+        }, function() {
             $(this).css({
-                'background-color' : 'transparent'
+                'background-color': 'transparent'
             });
         });
 
-
-        
-
-        
     }
+
+
+    function jsEnhanceLinechart() {
+
+        var chartContainer = $("#chart-container");
+        if (!chartContainer.length) {
+            return;
+        }
+
+        var location = window.location.href + "/data";
+        console.debug("Downloading timseries data from " + location)
+        $.getJSON(location, function(timeseries) {
+            console.log("Successfuly read timseries data");
+            linechart = linechart(timeseries, 'chart-container'); //Global variable
+
+        }).fail(function(d) {
+            console.error("Failed reading timseries, status: " + textStatus + ", error: " + error)
+        });
+
+    }
+
 });
-
-
-
-
-
-
-
