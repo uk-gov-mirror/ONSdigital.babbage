@@ -3,12 +3,7 @@ package com.github.onsdigital.highcharts;
 import com.github.onsdigital.configuration.Configuration;
 import com.github.onsdigital.content.page.statistics.data.timeseries.TimeSeries;
 import com.github.onsdigital.content.partial.TimeseriesValue;
-import com.googlecode.wickedcharts.highcharts.jackson.JsonRenderer;
-import com.googlecode.wickedcharts.highcharts.options.*;
-import com.googlecode.wickedcharts.highcharts.options.color.NullColor;
-import com.googlecode.wickedcharts.highcharts.options.series.Point;
-import com.googlecode.wickedcharts.highcharts.options.series.PointSeries;
-import com.googlecode.wickedcharts.highcharts.options.series.Series;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -21,33 +16,40 @@ import java.util.Set;
 public abstract class BaseChart {
     private Set<TimeseriesValue> data;
     private TimeSeries timeSeries;
-    private Options options;
+    private String config;
+    private Double min;
 
-    public BaseChart(SeriesType seriesType, TimeSeries timeSeries) {
-
+    public BaseChart(TimeSeries timeSeries) {
         this.timeSeries = timeSeries;
+        this.config = getChartConfig();
         data = resolveData(timeSeries);
-        options = new Options();
-        ChartOptions chartOptions = new ChartOptions(seriesType);
-        chartOptions.setBackgroundColor(new NullColor());
-        options.setChart(chartOptions);
-        options.setExporting(new ExportingOptions().setUrl(Configuration.getHighchartsExportSeverUrl()));
-
-        options.setCredits(new CreditOptions().setEnabled(false));
-        options.setSeries(prepareData(data));
-
-        configureChart(options);
+        List<Value> values = prepareData(data);
+        config = config.replace("':data:'", new Gson().toJson(values));
+        config = config.replace("':tickInterval:'", String.valueOf(resolveTickInterval(data)));
+        config = config.replace("':yMin:'", String.valueOf(min));
     }
 
-    private List<Series<?>> prepareData(Set<TimeseriesValue> data) {
-        List<Series<?>> seriesList = new ArrayList<>();
-        PointSeries series = new PointSeries();
-
+    private List<Value> prepareData(Set<TimeseriesValue> data) {
+        List<Value> seriesList = new ArrayList<>();
         for (Iterator<TimeseriesValue> iterator = data.iterator(); iterator.hasNext(); ) {
             TimeseriesValue timeseries = iterator.next();
-            series.addPoint(new Point().setName(timeseries.date).setY(Double.valueOf(timeseries.value)));
+            double value = Double.valueOf(timeseries.value);
+            seriesList.add(new Value().setName(timeseries.date).setY(value));
+            if (min == null) {
+                min = value;
+            } else {
+                if (value < min) {
+                    min = value;
+                }
+            }
         }
-        seriesList.add(series);
+
+        if (min < 0) {
+            min = min - 1;
+        } else {
+            min = 0d;
+        }
+
         return seriesList;
     }
 
@@ -80,21 +82,22 @@ public abstract class BaseChart {
         }
     }
 
-    public String toJson() {
-        return new JsonRenderer().toJson(this.options);
+    @Override
+    public String toString() {
+        return config;
     }
 
     protected Set<TimeseriesValue> getData() {
         return data;
     }
 
-    protected abstract void configureChart(Options chartOptions);
+    protected abstract String getChartConfig();
 
-    public TimeSeries getTimeSeries() {
+    protected TimeSeries getTimeSeries() {
         return timeSeries;
     }
 
-    public void setTimeSeries(TimeSeries timeSeries) {
-        this.timeSeries = timeSeries;
+    protected String quote(String string) {
+        return "'" + string + "'";
     }
 }

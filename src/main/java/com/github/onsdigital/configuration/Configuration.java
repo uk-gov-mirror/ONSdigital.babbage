@@ -146,7 +146,10 @@ public class Configuration {
             Path sparklinePath = highchartsconfigDir.resolve(SPARKLINE_FILE);
 
             if (Files.exists(sparklinePath)) {
-                return  IOUtils.toString( Files.newInputStream(sparklinePath));
+                String config =  IOUtils.toString( Files.newInputStream(sparklinePath));
+                int startIndex = config.indexOf("/*chart:start*/");
+                int endIndex = config.indexOf("/*chart:end*/");
+                return "{\n" + config.substring(startIndex, endIndex) + "}";
             } else {
                 throw new IllegalStateException("******** SPARKLINE CONFIGURATION FILE NOT FOUND!!!!!! ***********");
             }
@@ -164,7 +167,10 @@ public class Configuration {
             Path sparklinePath = highchartsconfigDir.resolve(LINECHART_FILE);
 
             if (Files.exists(sparklinePath)) {
-                return  IOUtils.toString( Files.newInputStream(sparklinePath));
+                String config =  IOUtils.toString( Files.newInputStream(sparklinePath));
+                int startIndex = config.indexOf("/*chart:start*/");
+                int endIndex = config.indexOf("/*chart:end*/");
+                return "{\n" + config.substring(startIndex, endIndex) + "}";
             } else {
                 throw new IllegalStateException("******** LINECHART CONFIGURATION FILE NOT FOUND!!!!!! ***********");
             }

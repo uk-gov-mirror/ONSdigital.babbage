@@ -1,5 +1,7 @@
- var linecharconfig = 
- {
+function getLinechartConfig(timeseries) {
+ return  {
+   /*Do not delete or change chart:start chart:end comment blocks as it is used as markers for chart config for server side image rendering*/
+   /*chart:start*/
    chart: {
      type: 'line'
    },
@@ -23,7 +25,7 @@
    },
    xAxis: {
      categories: [],
-     tickInterval: ':tickInterval',
+     tickInterval: ':tickInterval:',
      labels: {
        formatter: function() {
          var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
@@ -53,7 +55,7 @@
        x: 10,
        y: -10
      },
-     min: ':yMin'
+     min: ':yMin:'
 
    },
 
@@ -159,7 +161,7 @@
      id: timeseries.description.cdid,
      unit: timeseries.description.unit,
      preUnit: timeseries.description.preUnit,
-     data: 'resolveData',
+     data: ':data:',
      marker: {
        symbol: "circle",
        states: {
@@ -172,4 +174,6 @@
      },
      dashStyle: 'Solid',
    }]
+   /*chart:end*/
+ }
  }

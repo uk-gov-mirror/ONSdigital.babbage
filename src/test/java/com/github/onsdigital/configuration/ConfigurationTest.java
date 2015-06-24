@@ -1,7 +1,5 @@
 package com.github.onsdigital.configuration;
 
-import com.googlecode.wickedcharts.highcharts.jackson.JsonRenderer;
-import com.googlecode.wickedcharts.highcharts.options.Options;
 import org.junit.Test;
 
 /**
@@ -12,7 +10,13 @@ public class ConfigurationTest {
     @Test
     public void testGetSparklineConfig() {
         String sparkline = Configuration.getSparklineConfig();
-        //TODO:
+//        System.out.println(sparkline);
+    }
+
+    @Test
+    public void testGetLinechartConfig() {
+        String lineChart = Configuration.getLinechartConfig();
+        System.out.println(lineChart);
     }
 
 

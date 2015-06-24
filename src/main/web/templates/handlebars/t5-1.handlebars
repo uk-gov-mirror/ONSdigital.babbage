@@ -61,8 +61,8 @@
                 </form>
             </div>
         </div>
-        <div class="chart-area">
-            <div class="chart-area__controls nojs-hidden js-enhance--show">
+        <div class="chart-area slate nojs-hidden js-enhance--show" >
+            <div class="chart-area__controls ">
                 <form data-chart-controls="" data-chart-controls-for="[&quot;chart1&quot;, &quot;table1&quot;]">
                     <div class="button-bar chart-area__controls__buttons">
                         <div class="button-group chart-area__controls__type">
@@ -228,8 +228,12 @@
             <!-- The actual chart goes here.  In this example, it is represented as an image that -->
             <!-- on a production site would be the no-js fallback, that is generated dynamically  -->
             <!-- by the server.                                                                   -->
+            <div class="js-enhance--show nojs-hidden chart" id="chart-container"></div>
+
+            </div>
+
             <img class="js-enhance--hide" src="{{uri}}/linechart" alt="{{description.title}}" width="875" height="400">
-            <div class="js-enhance--show" id="chart-container"></div>
+
 
             <div class="chart-area__footer nojs-hidden js-enhance--show ">
                 <span class="chart-area__footer__label">Download custom data</span>
@@ -248,7 +252,6 @@
                         <span class="icon-download icon--button-inline" role="presentation"></span>
                     </a>
                 </div>
-            </div>
         </div>
         <!-- /chart-area -->
         <div class="slate--mid-grey box box--padded">
