@@ -7,17 +7,17 @@
 		</p>
 		<h1 class="page-header__title flush--half--bottom">{{description.title}} datasets</h1>
 		<p>
-			{{#if contentSearchResult.results}}
-			<span class="stand-out-text">{{contentSearchResult.numberOfResults}}</span> results for <strong>datasets</strong> related to <strong>{{description.title}}</strong>.
-			{{else}}
-			Sorry, there are no <strong>statistical bulletins</strong> for <strong>{{description.title}}</strong> articles.
-			{{/if}}
+		{{#if contentSearchResult.results}}
+		<span class="stand-out-text">{{contentSearchResult.numberOfResults}}</span> results for <strong>datasets</strong> related to <strong>{{description.title}}</strong>.
+		{{else}}
+		Sorry, there are no <strong>statistical bulletins</strong> for <strong>{{description.title}}</strong> articles.
+		{{/if}}
 		</p>
 	</div>
 	<!-- /wrapper -->
-	<div class="wrapper panel--mar">
+	<div class="wrapper panel--mar print-links">
 		{{#if contentSearchResult.results}}
-		<div class="grid-wrap panel--bottom-mar">
+		<div class="grid-wrap panel--bottom-mar print-hidden">
 	    	<div class="grid-col desktop-grid-one-quarter desktop-grid-push-three-quarters tablet-grid-full-width">
 	        	<label for="select">Sort by
 	        		<div class="field">
