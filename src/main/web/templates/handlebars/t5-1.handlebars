@@ -63,7 +63,7 @@
         </div>
         <div class="chart-area slate nojs-hidden js-enhance--show" >
             <div class="chart-area__controls ">
-                <form data-chart-controls="" data-chart-controls-for="[&quot;chart1&quot;, &quot;table1&quot;]">
+                <div data-chart-controls="" data-chart-controls-for="">
                     <div class="button-bar chart-area__controls__buttons">
                         <div class="button-group chart-area__controls__type">
                             <label class="btn btn--secondary btn--small btn--narrow btn--thin btn--secondary--active">
@@ -80,15 +80,15 @@
                         <div class="button-group chart-area__controls__timespan">
                             <label class="btn btn--secondary btn--small btn--narrow btn--thin">
                                 Monthly
-                                <input type="radio" name="scale" data-chart-controls-scale="" value="month" checked>
+                                <input type="radio" name="scale" data-chart-controls-scale="" value="months" checked>
                             </label>
                             <label class="btn btn--secondary btn--small btn--narrow btn--thin">
                                 Quarterly
-                                <input type="radio" name="scale" data-chart-controls-scale="" value="quarter">
+                                <input type="radio" name="scale" data-chart-controls-scale="" value="quarters">
                             </label>
                             <label class="btn btn--secondary btn--small btn--narrow btn--thin">
                                 Yearly
-                                <input type="radio" name="scale" data-chart-controls-scale="" value="year">
+                                <input type="radio" name="scale" data-chart-controls-scale="" value="years">
                             </label>
                         </div>
                     </div>
@@ -222,13 +222,13 @@
                             </div>
                         </div>
                     </div>
-                </form>
+                </div>
             </div>
             <!-- /chart-area__controls -->
             <!-- The actual chart goes here.  In this example, it is represented as an image that -->
             <!-- on a production site would be the no-js fallback, that is generated dynamically  -->
             <!-- by the server.                                                                   -->
-            <div class="js-enhance--show nojs-hidden chart" id="chart-container"></div>
+            <div class="js-enhance--show nojs-hidden chart" id="chart-container" data-chart="" ></div>
 
             </div>
 

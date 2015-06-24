@@ -163,6 +163,7 @@ function getLinechartConfig(timeseries) {
      preUnit: timeseries.description.preUnit,
      data: ':data:',
      marker: {
+       enabled:false,
        symbol: "circle",
        states: {
          hover: {

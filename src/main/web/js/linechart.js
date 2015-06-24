@@ -1,41 +1,45 @@
-var linechart = function(timeseries, containerId) {
-
-	var chartContainer = $('#' + containerId);
+var linechart = function(timeseries) {
 	var chart = {};
 	var years = false;
 	var months = false;
 	var querters = false;
+	var showYears = false;
+	var showMonths = false;
+	var showQuarters = false;
+	var chartContainer = $('[data-chart]');
 
 	initialize();
 
 	function initialize() {
 		chart = getLinechartConfig(timeseries);
-		years = isNotEmpty(timeseries.years);
-		months = isNotEmpty(timeseries.months);
-		quarters = isNotEmpty(timeseries.quarters);
+		showYears = isNotEmpty(timeseries.years);
+		showMonths = isNotEmpty(timeseries.months);
+		showQuarters = isNotEmpty(timeseries.quarters);
 		var frequency = '';
 
-		if (!(years || months || quarters)) {
+		if (!(showYears || showMonths || showQuarters)) {
 			console.debug('No data found');
-			return; // No data to render chart with
+			// return; // No data to render chart with
 		}
 
-		if (months) {
+		if (showMonths) {
 			timeseries.months = formatData(timeseries.months);
 			frequency = 'months';
 		}
 
-		if (quarters) {
+		if (showQuarters) {
 			timeseries.quarters = formatData(timeseries.quarters)
 			frequency = 'quarters';
 		}
 
-		if (years) {
+		if (showYears) {
 			timeseries.years = formatData(timeseries.years)
 			frequency = 'years';
 		}
 		changeFrequency(frequency);
-		renderChart(chart);
+
+		chartControls = new ChartControls();
+		chartControls.initialize();
 	}
 
 
@@ -47,11 +51,11 @@ var linechart = function(timeseries, containerId) {
 
 	function changeFrequency(frequency) {
 		console.log(frequency);
-		console.log(timeseries);
 		var data = timeseries[frequency];
 		chart.series[0].data = data.values;
 		chart.xAxis.tickInterval = tickInterval(data.values.length);
 		chart.yAxis.min = data.min;
+		renderChart(chart);
 	}
 
 	function tickInterval(length) {
@@ -86,7 +90,7 @@ var linechart = function(timeseries, containerId) {
 			if (current.value < min) {
 				min = current.value;
 			}
-			data.min=min;
+			data.min = min;
 			data.values.push(enrichData(current, i));
 			data.years.push(current.year);
 		}
@@ -175,8 +179,191 @@ var linechart = function(timeseries, containerId) {
 	}
 
 
-	$.extend(chart, {})
+	function ChartControls() {
 
+		var element = $('[data-chart-controls]');
+
+		function initialize() {
+
+			bindFrequencyChangeButtons();
+			bindTypeChangeButtons();
+			bindLinkEvents();
+			setCollapsible();
+		}
+
+		function bindFrequencyChangeButtons() {
+
+			/*
+			 * Add click handlers to the controls
+			 */
+			$('[data-chart-controls-scale]', element).on('click', function(e, data) {
+				var frequency = e.toElement.value
+				toggleSelectedButton();
+				changeFrequency(frequency);
+			});
+		}
+
+		function bindTypeChangeButtons() {
+
+			$('[data-chart-controls-type]', element).on('click', function(e, data) {
+				toggleSelectedButton();
+
+				$('[data-chart]').addClass('js-hidden');
+				$('[data-chart-data-id="' + $(this).val() + '"]').removeClass('js-hidden');
+
+			});
+		}
+
+		function bindShowButton() {
+			/*
+			 * Add event to submit button that applies the filter
+			 */
+			$('[data-chart-controls-submit]', element).on('click', function(e, data) {
+
+				data = data || {};
+
+				e.preventDefault();
+
+				_.defaults(data, {
+					custom: true
+				});
+
+				if (data.custom !== false) {
+					toggleSelectedLink($('.link-complex', self.element));
+				}
+
+				//updateFilter();
+			});
+
+		}
+
+
+		function bindLinkEvents() {
+
+			$('[data-chart-controls-range]').on('click', function(e) {
+
+				var elem = $(this);
+				var filterDate;
+				var fromYear;
+				var fromMonth;
+
+				console.log(e);
+				e.preventDefault();
+
+				toggleSelectedLink(elem);
+
+				/*
+				 * Work out what the dates are
+				 */
+
+				switch (elem.data('chart-controls-range')) {
+					case '10yr':
+						filterDate = moment().subtract(10, 'years');
+
+						fromMonth = filterDate.month() + 1;
+						fromYear = filterDate.year();
+
+						break;
+
+					case '5yr':
+						filterDate = moment().subtract(5, 'years');
+
+						fromMonth = filterDate.month() + 1;
+						fromYear = filterDate.year();
+
+						break;
+
+					case 'all':
+
+						fromMonth = $('[data-chart-controls-from-month] option:first-child', element).val();
+						fromYear = $('[data-chart-controls-from-year] option:first-child', element).val();
+
+						break;
+				}
+
+				/*
+				 * Set the select options
+				 */
+				$('[data-chart-controls-from-month]', element).find('option[value="' + fromMonth + '"]').attr('selected', true);
+				$('[data-chart-controls-from-year]', element).find('option[value="' + fromYear + '"]').attr('selected', true);
+				$('[data-chart-controls-to-month]', element).find('option[value="' + (moment().month() + 1) + '"]').attr('selected', true);
+				$('[data-chart-controls-to-year]', element).find('option[value="' + moment().year() + '"]').attr('selected', true);
+
+				/*
+				 * Trigger a click
+				 */
+				$('[data-chart-controls-submit]').trigger('click', {
+					custom: false
+				});
+			});
+		};
+
+		/**
+		 * Add the collape / expand behaviour to the custom date filter
+		 */
+		function setCollapsible() {
+
+			var customControl = $('[data-chart-control-custom-range]', element);
+			var elem;
+			var target;
+
+			$('[data-chart-control-custom-trigger-for]', customControl).on('click', function(e) {
+				e.preventDefault();
+				elem = $(this);
+				target = $('.' + elem.data('chart-control-custom-trigger-for'));
+
+				if (customControl.data('chart-control-custom-expanded') == true) {
+					target.slideUp('fast', function() {
+						customControl.data('chart-control-custom-expanded', false);
+						customControl.removeClass('chart-area__controls__custom--active');
+						$('.icon-up-open-big', customControl)
+							.removeClass('icon-up-open-big')
+							.addClass('icon-down-open-big');
+					});
+
+				} else {
+					customControl.addClass('chart-area__controls__custom--active');
+
+					// remove our nice no-js friendly hiding now we know js is active
+					target.hide().removeClass('js-hidden');
+
+					target.slideDown('fast', function() {
+						customControl.data('chart-control-custom-expanded', true);
+						$('.icon-down-open-big', customControl)
+							.removeClass('icon-down-open-big')
+							.addClass('icon-up-open-big');
+
+					});
+				}
+
+			});
+		};
+
+		function toggleSelectedLink(clickedElem) {
+			$('a', element).removeClass('chart-area__controls__active');
+			clickedElem.addClass('chart-area__controls__active');
+		};
+
+		function toggleSelectedButton() {
+
+			var selectedElement = $('input:checked', element);
+			$('label', element).removeClass('btn--secondary--active');
+
+			selectedElement.each(function() {
+				$(this).parent('label').addClass('btn--secondary--active');
+			});
+
+		};
+
+		$.extend(this, {
+			initialize: initialize
+		});
+
+	}
+
+
+
+	$.extend(this, {})
 	return this;
 
 };
