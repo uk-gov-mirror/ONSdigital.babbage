@@ -37,6 +37,13 @@
 				{{#each sections}}
 				<li><a href="#{{slugify title}}" title="{{this.title}}">{{this.title}}</a></li>
 				{{/each}}
+				{{#if accordions}}
+					{{#each accordions}}
+					<li>
+						<a href="#{{slugify title}}">{{title}}</a>
+					</li>
+					{{/each}}
+				{{/if}}
 			</ol>
 		</div>
 	</div>
@@ -55,8 +62,8 @@
 							<p>
 							{{md markdown}}
 							</p>
+							<a href="#toc" title="Back to table of contents">Back to table of contents</a>
 						</div>
-	      				<a href="#toc" title="Back to table of contents">Back to table of contents</a>
 					</div>
 				</article>
 				{{/each}}
@@ -69,6 +76,7 @@
 						<div class="accordion__content" aria-labelledby="sc-{{@index}}">
 							{{md markdown}}
 						</div>
+						<a href="#toc" title="Back to table of contents">Back to table of contents</a>
 					</div>
 					{{/each}}
 				</div>
