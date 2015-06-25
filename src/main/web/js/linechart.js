@@ -1,65 +1,65 @@
 var linechart = function(timeseries) {
 	var chart = {};
-	var years = false;
-	var months = false;
-	var querters = false;
-	var showYears = false;
-	var showMonths = false;
-	var showQuarters = false;
+	chart.years = false;
+	chart.months = false;
+	chart.quarters = false;
 	var chartContainer = $('[data-chart]');
+	var currentData;
+	var currentFrequency;
 
 	initialize();
 
 	function initialize() {
 		chart = getLinechartConfig(timeseries);
-		showYears = isNotEmpty(timeseries.years);
-		showMonths = isNotEmpty(timeseries.months);
-		showQuarters = isNotEmpty(timeseries.quarters);
+		chart.years = isNotEmpty(timeseries.years);
+		chart.months = isNotEmpty(timeseries.months);
+		chart.quarters = isNotEmpty(timeseries.quarters);
+		chartControls = new ChartControls();
+
 		var frequency = '';
 
-		if (!(showYears || showMonths || showQuarters)) {
+		if (!(chart.years || chart.months || chart.quarters)) {
 			console.debug('No data found');
 			// return; // No data to render chart with
 		}
 
-		if (showMonths) {
+		if (chart.months) {
 			timeseries.months = formatData(timeseries.months);
-			frequency = 'months';
+			currentFrequency = 'months';
 		}
 
-		if (showQuarters) {
+		if (chart.quarters) {
 			timeseries.quarters = formatData(timeseries.quarters)
-			frequency = 'quarters';
+			currentFrequency = 'quarters';
 		}
 
-		if (showYears) {
+		if (chart.years) {
 			timeseries.years = formatData(timeseries.years)
-			frequency = 'years';
+			currentFrequency = 'years';
 		}
-		changeFrequency(frequency);
-
-		chartControls = new ChartControls();
+		changeFrequency(currentFrequency);
 		chartControls.initialize();
 	}
 
-
 	function renderChart() {
-		console.debug('Rendering chart');
-		console.debug(chart);
 		chartContainer.highcharts(chart);
 	}
 
 	function changeFrequency(frequency) {
-		console.log(frequency);
-		var data = timeseries[frequency];
-		chart.series[0].data = data.values;
-		chart.xAxis.tickInterval = tickInterval(data.values.length);
-		chart.yAxis.min = data.min;
+		currentData = timeseries[frequency];
+		currentFrequency = frequency;
+		chart.series[0].data = currentData.values;
+		chart.xAxis.tickInterval = tickInterval(currentData.values.length);
+		chart.yAxis.min = currentData.min;
+		chartControls.resetFilter();
 		renderChart(chart);
 	}
 
+	function filter(){
+
+	}
+
 	function tickInterval(length) {
-		console.log(length);
 		if (length <= 20) {
 			return 1;
 		} else if (length <= 80) {
@@ -178,17 +178,97 @@ var linechart = function(timeseries) {
 		}
 	}
 
-
+	/*Chart Controls*/
 	function ChartControls() {
 
 		var element = $('[data-chart-controls]');
 
 		function initialize() {
-
 			bindFrequencyChangeButtons();
 			bindTypeChangeButtons();
 			bindLinkEvents();
 			setCollapsible();
+		}
+
+		function resetFilter() {
+			resetYears();
+			resetQuarters();
+			resetMonths();
+		}
+
+		function resetYears() {
+			var years = currentData.years;
+			var $fromYear = $('[data-chart-controls-from-year]');
+			var $toYear = $('[data-chart-controls-to-year]');
+			$fromYear.empty();
+			$toYear.empty();
+			$.each(years, function(value, key) {
+				$fromYear.append($("<option></option>")
+					.attr("value", key).text(key));
+				$toYear.append($("<option></option>")
+					.attr("value", key).text(key));
+			});
+
+			$fromYear.val(years[0]);
+			$toYear.val(years[years.length - 1]);
+		}
+
+		function resetQuarters() {
+			fromQuarters = $('[data-chart-controls-from-quarter]');
+			toQuarters = $('[data-chart-controls-to-quarter]');
+			if (currentFrequency === 'quarters') {
+				fromQuarters.val(1);
+				toQuarters.val(4);
+				show(fromQuarters);
+				show(toQuarters);
+			} else {
+				hide(fromQuarters);
+				hide(toQuarters);
+			}
+
+		}
+
+		function resetMonths() {
+			fromMonths = $('[data-chart-controls-from-month]');
+			toMonths = $('[data-chart-controls-to-month]');
+			if (currentFrequency === 'months') {
+				fromMonths.val(1);
+				toMonths.val(12);
+				show(fromMonths);
+				show(toMonths);
+			} else {
+				hide(fromMonths);
+				hide(toMonths);
+			}
+		}
+
+
+		/**
+		 * Collect the values from the various controls
+		 */
+		function getFilterValues() {
+			return {
+				period: {
+					start: {
+						year: $('[data-chart-controls-from-year]').val(),
+						quarter: $('[data-chart-controls-from-quarter]').val(),
+						month: $('[data-chart-controls-from-month]').val()
+					},
+					end: {
+						year: $('[data-chart-controls-to-year]').val(),
+						quarter: $('[data-chart-controls-to-quarter]').val(),
+						month: $('[data-chart-controls-to-month]').val()
+					}
+				}
+			};
+		};
+
+		function hide(element) {
+			element.addClass('visuallyhidden');
+		}
+
+		function show(element) {
+			element.removeClass('visuallyhidden');
 		}
 
 		function bindFrequencyChangeButtons() {
@@ -196,11 +276,19 @@ var linechart = function(timeseries) {
 			/*
 			 * Add click handlers to the controls
 			 */
-			$('[data-chart-controls-scale]', element).on('click', function(e, data) {
-				var frequency = e.toElement.value
-				toggleSelectedButton();
-				changeFrequency(frequency);
-			});
+
+			$('[data-chart-controls-scale]').each(function() {
+				var frequency = this.value;
+				if (!chart[frequency]) {
+					// $(this).addClass('btn--secondary--inactive');
+				} else {
+					$(this).on('click', function(e, data) {
+						var frequency = this.value;
+						toggleSelectedButton();
+						changeFrequency(frequency);
+					});
+				}
+			})
 		}
 
 		function bindTypeChangeButtons() {
@@ -229,10 +317,10 @@ var linechart = function(timeseries) {
 				});
 
 				if (data.custom !== false) {
-					toggleSelectedLink($('.link-complex', self.element));
+					toggleSelectedLink($('.link-complex', element));
 				}
 
-				//updateFilter();
+				filter();
 			});
 
 		}
@@ -246,8 +334,10 @@ var linechart = function(timeseries) {
 				var filterDate;
 				var fromYear;
 				var fromMonth;
-
-				console.log(e);
+				var fromQuarter;
+				var toYear;
+				var toMonth;
+				var toQuarter;
 				e.preventDefault();
 
 				toggleSelectedLink(elem);
@@ -259,22 +349,17 @@ var linechart = function(timeseries) {
 				switch (elem.data('chart-controls-range')) {
 					case '10yr':
 						filterDate = moment().subtract(10, 'years');
-
 						fromMonth = filterDate.month() + 1;
+						fromQuarter = filterDate.quarter() + 1;
 						fromYear = filterDate.year();
-
 						break;
-
 					case '5yr':
 						filterDate = moment().subtract(5, 'years');
-
 						fromMonth = filterDate.month() + 1;
 						fromYear = filterDate.year();
-
 						break;
 
 					case 'all':
-
 						fromMonth = $('[data-chart-controls-from-month] option:first-child', element).val();
 						fromYear = $('[data-chart-controls-from-year] option:first-child', element).val();
 
@@ -356,12 +441,11 @@ var linechart = function(timeseries) {
 		};
 
 		$.extend(this, {
-			initialize: initialize
+			initialize: initialize,
+			resetFilter: resetFilter
 		});
 
 	}
-
-
 
 	$.extend(this, {})
 	return this;

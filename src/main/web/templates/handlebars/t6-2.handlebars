@@ -53,8 +53,8 @@
 				<a href="#{{slugify title}}">{{title}}</a>
 			</li>
 			{{/each}}
-			{{#if accordions}}
-				{{#each accordions}}
+			{{#if accordion}}
+				{{#each accordion}}
 				<li>
 					<a href="#{{slugify title}}">{{title}}</a>
 				</li>
@@ -83,15 +83,15 @@
 					</div>
 				</article>
 				{{/each}}
-				{{#if accordions}}
-					{{#each accordions}}
+				{{#if accordion}}
+					{{#each accordion}}
 					<div id="{{slugify title}}" class="accordion is-collapsed">
 						<h3 id="sc-{{@index}}" class="accordion__title" aria-controls="content-{{@index}}">{{title}}</h3>
 						<div id="content-{{@index}}" class="accordion__content" aria-labelledby="sc-{{@index}}">
 							<p>
 								{{md markdown}}
-							</p>
-							<a href="#toc" title="Back to table of contents">Back to table of contents</a>
+								<a href="#toc" title="Back to table of contents">Back to table of contents</a>
+							</p>			
 						</div>
 					</div>
 					<!-- /accordion -->
