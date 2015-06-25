@@ -2,6 +2,7 @@ package com.github.onsdigital.template.handlebars.helpers;
 
 import com.github.jknack.handlebars.Handlebars;
 import com.github.jknack.handlebars.Options;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.util.regex.Matcher;
@@ -18,6 +19,12 @@ public class CustomMarkdownTagHelper extends com.github.jknack.handlebars.Markdo
         if (context == null) {
             return result;
         }
+
+        if (StringUtils.isEmpty(result)) {
+            return result;
+        }
+
+        System.out.println("replacing tags for content: " + result);
 
         result = replaceCustomTags(result, chartTagReplacer);
         result = replaceCustomTags(result, tableTagReplacer);

@@ -13,6 +13,8 @@ jQuery(window).load(function() {
         jsEnhanceHome();
         jsEnhanceLinechart();
         jsEnhancePrint();
+        jsEnhanceMarkdownCharts();
+        jsEnhanceMarkdownTables();
 
         setTimeout(function() {
             $('#loading-overlay').fadeOut(300);
@@ -97,6 +99,7 @@ jQuery(window).load(function() {
 
         var location = window.location.pathname + "/data";
         console.debug("Downloading timseries data from " + location)
+
         $.getJSON(location, function(timeseries) {
             console.log("Successfuly read timseries data");
             linechart = linechart(timeseries); //Global variable
@@ -104,7 +107,21 @@ jQuery(window).load(function() {
         }).fail(function(d, textStatus, error) {
             console.error("Failed reading timseries, status: " + textStatus + ", error: " + error)
         });
+    }
 
+    function jsEnhanceMarkdownCharts() {
+
+        var chartContainer = $(".markdown-chart-container");
+        if (!chartContainer.length) {
+            return;
+        }
+
+        chartContainer.each(function() {
+            var $this = $(this);
+            var uri = $this.attr('id');
+            $this.empty();
+            new pym.Parent(uri, "/" + uri + "/chart", {});
+        });
     }
 
     function jsEnhancePrint() {
@@ -114,4 +131,18 @@ jQuery(window).load(function() {
         });
     }
 
+    function jsEnhanceMarkdownTables() {
+
+        var chartContainer = $(".markdown-table-container");
+        if (!chartContainer.length) {
+            return;
+        }
+
+        chartContainer.each(function() {
+            var $this = $(this);
+            var uri = $this.attr('id');
+            $this.empty();
+            new pym.Parent(uri, "/" + uri + "/table", {});
+        });
+    }
 });

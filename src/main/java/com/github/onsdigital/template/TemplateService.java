@@ -27,4 +27,7 @@ public class TemplateService {
         return templateRenderer.renderTemplate(TemplateMapping.getTemplateName(page.getType()), page);
     }
 
+    public String renderPage(Page page, String templateName) throws IOException {
+        return templateRenderer.renderTemplate(templateName, page);
+    }
 }

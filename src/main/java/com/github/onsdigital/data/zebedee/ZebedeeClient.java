@@ -5,6 +5,7 @@ import com.github.onsdigital.content.service.ContentNotFoundException;
 import com.github.onsdigital.data.DataNotFoundException;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -73,6 +74,10 @@ public class ZebedeeClient {
 
 
         response = client.execute(httpGet);
+
+        if (response.getStatusLine().getStatusCode() == HttpStatus.SC_NOT_FOUND) {
+            throw new ContentNotFoundException(url);
+        }
 
 //        handleResponse(response.getStatusLine(), url);
 
