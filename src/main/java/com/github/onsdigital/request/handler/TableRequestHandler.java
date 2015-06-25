@@ -24,7 +24,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 /**
- * Renders table html from a predefined xls file.
+ * Handles requests at the endpoint /table.
+ * Renders a chart and associated content in an isolated page.
  */
 public class TableRequestHandler implements RequestHandler {
 
