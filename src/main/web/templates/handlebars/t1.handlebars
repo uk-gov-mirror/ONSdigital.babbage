@@ -10,8 +10,132 @@
 </div>
 <!-- panel -->
 
-
+{{!-- Hardcoded stastical highlights --}}
 <div class="wrapper panel--mar">
+    <!-- grid-wrap -->
+    <h2>Statistical highlights</h2>
+
+    <div class="grid-wrap grid-wrap--home-hero panel--separated--bottom">
+      <!-- grid-col -->
+        
+        <div class="grid-col grid-col--home-hero tablet-wide-grid-one-fifth">
+            <article class="nav-panel nav-panel--stats nav-panel--home-hero sectioned">
+                <div class="stat__wrap--home">
+                    <header class="nav-panel__header">
+                        <h2 class="gamma flush">CPI: Consumer Prices Index (% change)</h2>
+                    </header>
+                    <div class="stat__figure--home">
+                        0.1%
+                    </div>
+                    <div class="stat__description">
+                        May 2015
+                    </div>
+                    <img class="stat__image--home" src="../../img/t1-sparkline-1-cpi.png" alt="{{statistics.data.description.title}}">
+                    
+                    <a class="js-enhance--hide" href="{{statistics.data.uri}}">More info</a>
+                </div>
+                <footer class="nav-panel__footer-home-hero">
+                    <a href="{{theme.uri}}">Explore {{theme.description.title}}</a>
+                </footer>
+            </article>
+        </div>
+
+
+        <div class="grid-col grid-col--home-hero tablet-wide-grid-one-fifth">
+            <article class="nav-panel nav-panel--stats nav-panel--home-hero sectioned">
+                <div class="stat__wrap--home">
+                    <header class="nav-panel__header">
+                        <h2 class="gamma flush">GDP quarter on quarter growth - CVM</h2>
+                    </header>
+                    <div class="stat__figure--home">
+                        0.3%
+                    </div>
+                    <div class="stat__description">
+                        Q1 2015
+                    </div>
+                    <img class="stat__image--home" src="../../img/t1-sparkline-2-gdp.png" alt="{{statistics.data.description.title}}">
+                    
+                    <a class="js-enhance--hide" href="{{statistics.data.uri}}">More info</a>
+                </div>
+                <footer class="nav-panel__footer-home-hero">
+                    <a href="{{theme.uri}}">Explore {{theme.description.title}}</a>
+                </footer>
+            </article>
+        </div>
+
+        <div class="grid-col grid-col--home-hero tablet-wide-grid-one-fifth">
+            <article class="nav-panel nav-panel--stats nav-panel--home-hero sectioned">
+                <div class="stat__wrap--home">
+                    <header class="nav-panel__header">
+                        <h2 class="gamma flush">Trade in goods and services deficit (or surplus)</h2>
+                    </header>
+                    <div class="stat__figure--home">
+                        -6.0bn 
+                    </div>
+                    <div class="stat__description">
+                        Q4 2014
+                    </div>
+                    <img class="stat__image--home" src="../../img/t1-sparkline-3-trade.png" alt="{{statistics.data.description.title}}">
+                    
+                    <a class="js-enhance--hide" href="{{statistics.data.uri}}">More info</a>
+                </div>
+                <footer class="nav-panel__footer-home-hero">
+                    <a href="{{theme.uri}}">Explore {{theme.description.title}}</a>
+                </footer>
+            </article>
+        </div>
+
+        <div class="grid-col grid-col--home-hero tablet-wide-grid-one-fifth">
+            <article class="nav-panel nav-panel--stats nav-panel--home-hero sectioned">
+                <div class="stat__wrap--home">
+                    <header class="nav-panel__header">
+                        <h2 class="gamma flush">Employment rate (aged 16 to 64)</h2>
+                    </header>
+                    <div class="stat__figure--home">
+                        73.4% 
+                    </div>
+                    <div class="stat__description">
+                        Feb-Apr 2015
+                    </div>
+                    <img class="stat__image--home" src="../../img/t1-sparkline-4-employment.png" alt="{{statistics.data.description.title}}">
+                    
+                    <a class="js-enhance--hide" href="{{statistics.data.uri}}">More info</a>
+                </div>
+                <footer class="nav-panel__footer-home-hero">
+                    <a href="{{theme.uri}}">Explore {{theme.description.title}}</a>
+                </footer>
+            </article>
+        </div>
+
+        <div class="grid-col grid-col--home-hero tablet-wide-grid-one-fifth">
+            <article class="nav-panel nav-panel--stats nav-panel--home-hero sectioned">
+                <div class="stat__wrap--home">
+                    <header class="nav-panel__header">
+                        <h2 class="gamma flush">UK population</h2>
+                    </header>
+                    <div class="stat__figure--home">
+                        64.6m 
+                    </div>
+                    <div class="stat__description">
+                        Mid-2014
+                    </div>
+                    <img class="stat__image--home" src="../../img/t1-sparkline-5-population.png" alt="{{statistics.data.description.title}}">
+                    
+                    <a class="js-enhance--hide" href="{{statistics.data.uri}}">More info</a>
+                </div>
+                <footer class="nav-panel__footer-home-hero">
+                    <a href="{{theme.uri}}">Explore {{theme.description.title}}</a>
+                </footer>
+            </article>
+        </div>
+
+
+    </div>
+</div>
+
+
+{{!-- Dynamic stastical highlights --}}
+{{!-- <div class="wrapper panel--mar">
     <!-- grid-wrap -->
     <h2>Statistical highlights</h2>
 
@@ -21,18 +145,23 @@
         <div class="grid-col grid-col--home-hero tablet-wide-grid-one-fifth">
             <article class="nav-panel nav-panel--stats nav-panel--home-hero sectioned">
                 <div class="stat__wrap--home">
+                    <!-- add to dl -->
+                    <!-- change to dt -->
                     <header class="nav-panel__header">
                         <h2 class="gamma flush">{{statistics.data.description.title}}</h2>
                     </header>
-                    <div class="stat__figure--home">
-                        {{statistics.data.description.preUnit}} {{statistics.data.description.number}} {{statistics.data.description.unit}}
-                    </div>
-                    <div class="stat__description">
-                        {{statistics.data.description.date}}
-                    </div>
-                    <img class="stat__image--home" src="{{statistics.data.uri}}/sparkline" alt="{{statistics.data.description.title}}">
-                    
-                    <a class="js-enhance--hide" href="{{statistics.data.uri}}">More info</a>
+                    <!-- change to dd's -->
+                    <p>
+                        <span class="stat__figure--home block">
+                            {{statistics.data.description.preUnit}} {{statistics.data.description.number}} {{statistics.data.description.unit}}
+                        </span>
+                        <span class="stat__description block">
+                            {{statistics.data.description.date}}
+                        </span>
+                        <img class="stat__image--home" src="{{statistics.data.uri}}/sparkline" alt="{{statistics.data.description.title}}">
+                        
+                        <a class="js-enhance--hide" href="{{statistics.data.uri}}">More info</a>
+                    </p>
                 </div>
                 <footer class="nav-panel__footer-home-hero">
                     <a href="{{theme.uri}}">Explore {{theme.description.title}}</a>
@@ -42,13 +171,13 @@
         </div>
         {{/each}}
         <!-- /grid-wrap -->
-        </div>
+        <!--</div>  remove this closing div... -->
         <!-- /panel-->
     </div>
-</div>
+</div> --}}
 
 
-<!--<div class="panel wrapper">
+{{!-- <div class="panel wrapper">
     <div class="panel--top-mar panel--separated--bottom">
         <h2 class="delta flush">New this week</h2>
         <div class="grid-wrap">
@@ -77,7 +206,7 @@
         <p><a href="#">View new and upcoming releases</a></p>
 
     </div>
-</div>-->
+</div> --}}
 
 
 <div class="panel wrapper">
