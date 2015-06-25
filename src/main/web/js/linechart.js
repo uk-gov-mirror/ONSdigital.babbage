@@ -1,3 +1,5 @@
+//  Ugliest code ever, copy paste stuff from pattern-library and alpha site, hence a bit messy
+
 var linechart = function(timeseries) {
 	var chart = {};
 	chart.years = false;
@@ -8,6 +10,7 @@ var linechart = function(timeseries) {
 	var currentDisplay = 'chart'; //chart or table
 	var currentData;
 	var currentFilter = 'all'; //10yr, 5yr, all, custom
+	var table = chartContainer.find('[data-table]').detach();
 
 	initialize();
 
@@ -60,8 +63,6 @@ var linechart = function(timeseries) {
 			console.log("Showing all");
 			currentData = data;
 		} else {
-			console.log("Filtering");
-
 			var filter = chartControls.getFilterValues();
 			var from = filter.start.year + (isQuarters() ? filter.start.quarter : '') + (isMonths() ? filter.start.month : '');
 			var to = filter.end.year + (isQuarters() ? filter.end.quarter : '') + (isMonths() ? filter.end.month : '');
@@ -72,7 +73,6 @@ var linechart = function(timeseries) {
 				$('.chart-area__controls__custom__errors').empty();
 				validateFilter(from, to);
 			} catch (err) {
-				console.log(err);
 				$('<p>' + err.message + '</p>').appendTo('.chart-area__controls__custom__errors');
 				return;
 			}
@@ -92,19 +92,9 @@ var linechart = function(timeseries) {
 					}
 				}
 			}
-			if (min < 0) {
-				filteredData.min = min - 1;
-			} else {
-				filteredData.min = 0;
-			}
-
-
 			currentData = filteredData;
 		}
 		render();
-
-
-		console.log("Filter end");
 	}
 
 	function render() {
@@ -117,13 +107,28 @@ var linechart = function(timeseries) {
 	}
 
 	function renderTable() {
+		var tbody = table.find('tbody');
+		tbody.empty();
+		for (i = 0; i < data.values.length; i++) {
+			current = data.values[i];
+			tbody.append('<tr></tr>').append()
+		}
 
 	}
 
+
 	function renderChart() {
+		console.log(currentData);
 		chart.series[0].data = currentData.values;
 		chart.xAxis.tickInterval = tickInterval(currentData.values.length);
-		chart.yAxis.min = currentData.min;
+		var min = currentData.min;
+		if (min < 0) {
+			min = min - 1;
+		} else {
+			min = 0;
+		}
+
+		chart.yAxis.min =  min;
 		chartContainer.highcharts(chart);
 	}
 
@@ -164,8 +169,8 @@ var linechart = function(timeseries) {
 
 		for (i = 0; i < timeseriesValues.length; i++) {
 			current = timeseriesValues[i]
-			if (!min || current.value < min) {
-				min = current.value;
+			if (!min || +current.value < +min) {
+				min = +current.value;
 			}
 			data.min = min;
 			data.values.push(enrichData(current, i));
@@ -279,23 +284,19 @@ var linechart = function(timeseries) {
 			bindLinkEvents();
 			setCollapsible();
 			bindCustomDateFilters();
+			setYears();
 			resetFilters();
 		}
 
 		function changeDates() {
-			changeYears();
 			resolveQuarters();
 			resolveMonths();
 		}
 
-		function changeYears() {
+		function setYears() {
 			var years = currentData.years;
 			var $fromYear = $('[data-chart-controls-from-year]');
-			var from = $fromYear.val();
-			console.log('From year:' + from);
 			var $toYear = $('[data-chart-controls-to-year]');
-			var to = $toYear.val();
-			console.log('To year:' + to);
 			$fromYear.empty();
 			$toYear.empty();
 			$.each(years, function(value, key) {
@@ -304,9 +305,6 @@ var linechart = function(timeseries) {
 				$toYear.append($("<option></option>")
 					.attr("value", +key).text(key));
 			});
-
-			$fromYear.val(from);
-			$toYear.val(to);
 		}
 
 		function resolveQuarters() {
