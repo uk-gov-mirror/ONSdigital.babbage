@@ -23,8 +23,8 @@ public class TemplateMapping {
         put(PageType.compendium_landing_page, "t6-1");
         put(PageType.compendium, "t6-2");
         put(PageType.dataset, "t8-3");
-        put(PageType.chart, "partials/chart");
-        put(PageType.table, "partials/table");
+        put(PageType.chart, "chart");
+        put(PageType.table, "table");
     }
 
 
