@@ -1,366 +1,359 @@
 {{> partials/header}}
 <main id="main" role="main" tabindex="-1">
-    <!-- title and social icons -->
-    <div class="page-header slate slate--light-green">
-        <div class="wrapper">
-            {{> partials/breadcrumb}}
-            <!-- /Wrapper panel -->
-        </div>
-
-        <div class="wrapper">
-            <p class="page-header__title page-header--stat-bulletin-desc">
-                <strong>Time series</strong>
+<!-- title and social icons -->
+<div class="page-header slate slate--light-green">
+    <div class="wrapper">
+        {{> partials/breadcrumb}}
+        <!-- /Wrapper panel -->
+    </div>
+    <div class="wrapper">
+        <p class="page-header__title page-header--stat-bulletin-desc">
+            <strong>Time series</strong>
+        </p>
+        <h1 class="page-header__title">{{description.title}}</h1>
+        <div class="grid-wrap">
+            <p class="grid-col tablet-grid-one-quarter page-header__meta-block-with-img">
+                {{#if description.nationalStatistic}}
+                <img src="/node_modules/ONS-Pattern-Library/dist/img/national-statistics.png" alt="National Statistics logo"/>
+                {{/if}}
+                <span>Contact: </span><br/><a href="mailto:{{description.contact.email}}">{{#if description.contact.name}}{{description.contact.name}}{{else}}{{description.contact.email}}{{/if}}</a>
             </p>
-
-            <h1 class="page-header__title">{{description.title}}</h1>
-
-            <div class="grid-wrap">
-                <p class="grid-col tablet-grid-one-quarter page-header__meta-block-with-img">
-                    {{#if description.nationalStatistic}}
-                    <img src="/node_modules/ONS-Pattern-Library/dist/img/national-statistics.png" alt="National Statistics logo"/>
-                    {{/if}}
-                    <span>Contact: </span><br/><a href="mailto:{{description.contact.email}}">{{#if description.contact.name}}{{description.contact.name}}{{else}}{{description.contact.email}}{{/if}}</a>
-                </p>
-
-                <p class="grid-col tablet-grid-one-quarter divider--border-left">
-                    <span>Release date: </span><br/>{{df description.releaseDate}}<br/><a href="#">previous versions</a>
-                </p>
-
-                <p class="grid-col tablet-grid-one-quarter divider--border-left">
-                    <span>Next release: </span><br/>{{df description.nextRelease}}
-                </p>
-
-                <p class="grid-col tablet-grid-one-quarter divider--border-left">
-                    Series ID: {{description.cdid}} <a>what is this? </a><br/>Units: {{description.preUnit}} {{description.unit}}<br/>{{seasonalAdjustment}}
-                </p>
-            </div>
+            <p class="grid-col tablet-grid-one-quarter divider--border-left">
+                <span>Release date: </span><br/>{{df description.releaseDate}}<br/><a href="#">previous versions</a>
+            </p>
+            <p class="grid-col tablet-grid-one-quarter divider--border-left">
+                <span>Next release: </span><br/>{{df description.nextRelease}}
+            </p>
+            <p class="grid-col tablet-grid-one-quarter divider--border-left">
+                Series ID: {{description.cdid}} <a>what is this? </a><br/>Units: {{description.preUnit}} {{description.unit}}<br/>{{seasonalAdjustment}}
+            </p>
         </div>
     </div>
-
-
-    <div class="wrapper">
-        <div class="actionable-header--tight panel--mar-small">
-            <!-- This title will need to be dynamically generated on the server -->
-            <h2 class="actionable-header--tight__title gamma flush--bottom body-type--heavy">Download this entire time series</h2>
-
-            <div class="actionable-header--tight__action actionable-header--tight__action--left">
-                <form method="post" action="/download">
-                    <a class="btn btn--primary btn--small" target="_blank" href="{{uri}}/linechart">
-                        image (54kb)
-                        <span class="icon-download icon--button-inline" role="presentation"></span>
-                    </a>
-                    <button type="submit" name="type" value="csv" class="btn btn--primary btn--small">
-                        .csv ()
-                        <span class="icon-download icon--button-inline" role="presentation"></span>
-                    </button>
-                    <button type="submit" name="type" value="xlsx" class="btn btn--primary btn--small" href="#">
-                        .xlsx ()
-                        <span class="icon-download icon--button-inline" role="presentation"></span>
-                    </button>
-                    <input type="hidden" name="uri" value="{{uri}}" />
-                </form>
+</div>
+<div class="wrapper">
+    <div class="actionable-header--tight panel--mar-small">
+        <!-- This title will need to be dynamically generated on the server -->
+        <h2 class="actionable-header--tight__title gamma flush--bottom body-type--heavy">Download this entire time series</h2>
+        <div class="actionable-header--tight__action actionable-header--tight__action--left">
+            <form method="post" action="/download">
+                <a class="btn btn--primary btn--small" target="_blank" href="{{uri}}/linechart">
+                    image (54kb)
+                    <span class="icon-download icon--button-inline" role="presentation"></span>
+                </a>
+                <button type="submit" name="type" value="csv" class="btn btn--primary btn--small">
+                .csv ()
+                <span class="icon-download icon--button-inline" role="presentation"></span>
+                </button>
+                <button type="submit" name="type" value="xlsx" class="btn btn--primary btn--small" href="#">
+                .xlsx ()
+                <span class="icon-download icon--button-inline" role="presentation"></span>
+                </button>
+                <input type="hidden" name="uri" value="{{uri}}" />
+            </form>
+        </div>
+    </div>
+    <div class="chart-area slate nojs-hidden js-enhance--show" >
+        <div class="chart-area__controls ">
+            <div data-chart-controls="" data-chart-controls-for="">
+                <div class="button-bar chart-area__controls__buttons">
+                    <div class="button-group chart-area__controls__type">
+                        <label class="btn btn--secondary btn--small btn--narrow btn--thin">
+                            <span class="icon--button-inline--rev-small icon-chart" role="presentation"></span>
+                            Chart
+                            <input type="radio" name="type" data-chart-controls-type="chart" checked>
+                        </label>
+                        <label class="btn btn--secondary btn--small btn--narrow btn--thin">
+                            <span class="icon--button-inline--rev-small icon-table" role="presentation"></span>
+                            Table
+                            <input type="radio" name="type" data-chart-controls-type="table">
+                        </label>
+                    </div>
+                    <div class="button-group chart-area__controls__timespan">
+                        <label class="btn btn--secondary btn--small btn--narrow btn--thin">
+                            Monthly
+                            <input type="radio" name="scale" data-chart-controls-scale="months" value="months">
+                        </label>
+                        <label class="btn btn--secondary btn--small btn--narrow btn--thin">
+                            Quarterly
+                            <input type="radio" name="scale" data-chart-controls-scale="quarters" value="quarters">
+                        </label>
+                        <label class="btn btn--secondary btn--small btn--narrow btn--thin">
+                            Yearly
+                            <input type="radio" name="scale" data-chart-controls-scale="years" value="years">
+                        </label>
+                    </div>
+                </div>
+                <!-- /chart-area__controls__buttons -->
+                <div class="chart-area__controls__time">
+                    <span class="chart-area__controls__time__label">Time period:</span>
+                    <ul class="nav flush--top chart-area__controls__time__ranges">
+                        <li>
+                            <a href="#" data-chart-controls-range="all">All</a>
+                        </li>
+                        <li>
+                            <a href="#" data-chart-controls-range="10yr">Last 10 yrs</a>
+                        </li>
+                        <li>
+                            <a href="#" data-chart-controls-range="5yr">Last 5 yrs</a>
+                        </li>
+                        <li data-chart-control-custom-range="">
+                            <a href="#" class="link-complex" data-chart-control-custom-trigger-for="chart-area__controls__custom">
+                                <span class="link-complex__target">Custom</span>
+                                <span class="icon-down-open-big icon--inline" role="presentation"></span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- /chart-area__controls__time -->
+                <div class="chart-area__controls__custom js-hidden" id="customControls">
+                    <div class="chart-area__controls__custom__errors"></div>
+                    <div class="chart-area__controls__custom__container">
+                        <div class="chart-area__controls__dropdowns">
+                            <fieldset class="chart-area__controls__date">
+                                <legend class="chart-area__controls__date__label">From</legend>
+                                <label class="visuallyhidden" for="from-month-1">Month</label>
+                                <select class="chart-area__controls__month" id="from-month-1" name="from-month" data-chart-controls-from-month="">
+                                    <option value="01">Jan</option>
+                                    <option value="02">Feb</option>
+                                    <option value="03">Mar</option>
+                                    <option value="04">Apr</option>
+                                    <option value="05">May</option>
+                                    <option value="06">Jun</option>
+                                    <option value="07">Jul</option>
+                                    <option value="08">Aug</option>
+                                    <option value="09" selected>Sep</option>
+                                    <option value="10">Oct</option>
+                                    <option value="11">Nov</option>
+                                    <option value="12">Dec</option>
+                                </select>
+                                <label class="visuallyhidden" for="from-quarter-1">Quarter</label>
+                                <select class="chart-area__controls__month" id="from-quarter-1" name="from-quarter" data-chart-controls-from-quarter="">
+                                    <option value="1" selected>Q1</option>
+                                    <option value="2">Q2</option>
+                                    <option value="3">Q3</option>
+                                    <option value="4">Q4</option>
+                                </select>
+                                <label class="visuallyhidden" for="from-year-1">Year</label>
+                                <select class="chart-area__controls__year" id="from-year-1" name="from-year" data-chart-controls-from-year="">
+                                </select>
+                            </fieldset>
+                            <fieldset class="chart-area__controls__date">
+                                <legend class="chart-area__controls__date__label">To</legend>
+                                <label class="visuallyhidden" for="to-month-2">Month</label>
+                                <select class="chart-area__controls__month" id="to-month-2" name="to-month" data-chart-controls-to-month="">
+                                    <option value="01">Jan</option>
+                                    <option value="02">Feb</option>
+                                    <option value="03">Mar</option>
+                                    <option value="04">Apr</option>
+                                    <option value="05">May</option>
+                                    <option value="06">Jun</option>
+                                    <option value="07">Jul</option>
+                                    <option value="08">Aug</option>
+                                    <option value="09" selected>Sep</option>
+                                    <option value="10">Oct</option>
+                                    <option value="11">Nov</option>
+                                    <option value="12">Dec</option>
+                                </select>
+                                <label class="visuallyhidden" for="to-quarter-1">Quarter</label>
+                                <select class="chart-area__controls__month" id="to-quarter-1" name="to-quarter" data-chart-controls-to-quarter="">
+                                    <option value="1" selected>Q1</option>
+                                    <option value="2">Q2</option>
+                                    <option value="3">Q3</option>
+                                    <option value="4">Q4</option>
+                                </select>
+                                <label class="visuallyhidden" for="to-year-2">Month</label>
+                                <select class="chart-area__controls__year" id="to-year-2" name="to-year" data-chart-controls-to-year="">
+                                </select>
+                            </fieldset>
+                        </div>
+                        <!-- <div class="chart-area__controls__submit">
+                            <input class="btn btn--small btn--thin btn--narrow btn--primary" type="submit" name="submit" data-chart-controls-submit="" value="Show">
+                        </div> -->
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="chart-area slate nojs-hidden js-enhance--show" >
-            <div class="chart-area__controls ">
-                <div data-chart-controls="" data-chart-controls-for="">
-                    <div class="button-bar chart-area__controls__buttons">
-                        <div class="button-group chart-area__controls__type">
-                            <label class="btn btn--secondary btn--small btn--narrow btn--thin">
-                                <span class="icon--button-inline--rev-small icon-chart" role="presentation"></span>
-                                Chart
-                                <input type="radio" name="type" data-chart-controls-type="chart" value="chart1" checked>
-                            </label>
-                            <label class="btn btn--secondary btn--small btn--narrow btn--thin">
-                                <span class="icon--button-inline--rev-small icon-table" role="presentation"></span>
-                                Table
-                                <input type="radio" name="type" data-chart-controls-type="table" value="table1">
-                            </label>
-                        </div>
-                        <div class="button-group chart-area__controls__timespan">
-                            <label class="btn btn--secondary btn--small btn--narrow btn--thin">
-                                Monthly
-                                <input type="radio" name="scale" data-chart-controls-scale="months" value="months" checked>
-                            </label>
-                            <label class="btn btn--secondary btn--small btn--narrow btn--thin">
-                                Quarterly
-                                <input type="radio" name="scale" data-chart-controls-scale="quarters" value="quarters">
-                            </label>
-                            <label class="btn btn--secondary btn--small btn--narrow btn--thin">
-                                Yearly
-                                <input type="radio" name="scale" data-chart-controls-scale="years" value="years">
-                            </label>
-                        </div>
+        <!-- /chart-area__controls -->
+        <!-- The actual chart goes here.  In this example, it is represented as an image that -->
+        <!-- on a production site would be the no-js fallback, that is generated dynamically  -->
+        <!-- by the server.                                                                   -->
+        <div class="js-enhance--show nojs-hidden chart" data-chart="" ></div>
+        <div class="js-enhance--show nojs-hidden"></div>
+        <table class="tablesaw" data-table="">
+            <thead>
+                <tr>
+                    <th>Period</th>
+                    <th>Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+            </tbody>
+        </table>
+    </div>
+    
+    <img class="js-enhance--hide" src="{{uri}}/linechart" alt="{{description.title}}" width="875" height="400">
+    
+    <div class="chart-area__footer nojs-hidden js-enhance--show" data-chart-custom="">
+        <span class="chart-area__footer__label">Download custom data</span>
+        <div class="chart-area__footer__actions">
+            <a class="btn btn--primary btn--small" href="#">
+                .csv
+                <span class="icon-download icon--button-inline" role="presentation"></span>
+            </a>
+            <a class="btn btn--primary btn--small" href="#">
+                .xsl
+                <span class="icon-download icon--button-inline" role="presentation"></span>
+            </a>
+            <a class="btn btn--primary btn--small" href="#">
+                Image
+                <span class="icon-download icon--button-inline" role="presentation"></span>
+            </a>
+        </div>
+    </div>
+    <!-- /chart-area -->
+    <div class="slate--mid-grey box box--padded">
+        <span>Explore other {{description.title}} <strong>time series</strong> and <strong>datasets</strong></span>
+        <div class="box__inner">
+            <div class="grid-wrap">
+                <div class="grid-col desktop-grid-one-half ">
+                    <div class="js-enhance--ul-to-select">
+                        <ul>
+                            {{#each relatedData}}
+                            <li><a href="{{uri}}">{{description.cdid}}: {{description.title}}</a></li>
+                            {{/each}}
+                        </ul>
+                        <p>Related time series:</p>
                     </div>
-                    <!-- /chart-area__controls__buttons -->
-                    <div class="chart-area__controls__time">
-                        <span class="chart-area__controls__time__label">Time period:</span>
-                        <ul class="nav flush--top chart-area__controls__time__ranges">
-                            <li>
-                                <a href="#" data-chart-controls-range="all">All</a>
-                            </li>
-                            <li>
-                                <a href="#" data-chart-controls-range="10yr">Last 10 yrs</a>
-                            </li>
-                            <li>
-                                <a href="#" data-chart-controls-range="5yr">Last 5 yrs</a>
-                            </li>
-                            <li data-chart-control-custom-range="">
-                                <a href="#" class="link-complex" data-chart-control-custom-trigger-for="chart-area__controls__custom">
-                                    <span class="link-complex__target">Custom</span>
-                                    <span class="icon-down-open-big icon--inline" role="presentation"></span>
-                                </a>
-                            </li>
+                    <a href="#!/previous">view all time series</a>
+                </div>
+                <div class="grid-col desktop-grid-one-half ">
+                    <div class="js-enhance--ul-to-select">
+                        <p>Related datasets:</p>
+                        <ul>
+                            {{#each relatedDatasets}}
+                            <li><a href="{{uri}}">{{description.title}}</a></li>
+                            {{/each}}
                         </ul>
                     </div>
-                    <!-- /chart-area__controls__time -->
-                    <div class="chart-area__controls__custom js-hidden" id="customControls">
-                        <div class="chart-area__controls__custom__errors"></div>
-                        <div class="chart-area__controls__custom__container">
-                            <div class="chart-area__controls__dropdowns">
-                                <fieldset class="chart-area__controls__date">
-                                    <legend class="chart-area__controls__date__label">From</legend>
-                                    <label class="visuallyhidden" for="from-month-1">Month</label>
-                                    <select class="chart-area__controls__month" id="from-month-1" name="from-month" data-chart-controls-from-month="">
-                                        <option value="1">Jan</option>
-                                        <option value="2">Feb</option>
-                                        <option value="3">Mar</option>
-                                        <option value="4">Apr</option>
-                                        <option value="5">May</option>
-                                        <option value="6">Jun</option>
-                                        <option value="7">Jul</option>
-                                        <option value="8">Aug</option>
-                                        <option value="9" selected>Sep</option>
-                                        <option value="10">Oct</option>
-                                        <option value="11">Nov</option>
-                                        <option value="12">Dec</option>
-                                    </select>
-                                    <label class="visuallyhidden" for="from-quarter-1">Quarter</label>
-                                    <select class="chart-area__controls__month" id="from-quarter-1" name="from-quarter" data-chart-controls-from-quarter="">
-                                        <option value="1" selected>Q1</option>
-                                        <option value="2">Q2</option>
-                                        <option value="3">Q3</option>
-                                        <option value="4">Q4</option>
-                                    </select>
-                                    <label class="visuallyhidden" for="from-year-1">Year</label>
-                                    <select class="chart-area__controls__year" id="from-year-1" name="from-year" data-chart-controls-from-year="">
-                                    </select>
-                                </fieldset>
-                                <fieldset class="chart-area__controls__date">
-                                    <legend class="chart-area__controls__date__label">To</legend>
-                                    <label class="visuallyhidden" for="to-month-2">Month</label>
-                                    <select class="chart-area__controls__month" id="to-month-2" name="to-month" data-chart-controls-to-month="">
-                                        <option value="1">Jan</option>
-                                        <option value="2">Feb</option>
-                                        <option value="3">Mar</option>
-                                        <option value="4">Apr</option>
-                                        <option value="5">May</option>
-                                        <option value="6">Jun</option>
-                                        <option value="7">Jul</option>
-                                        <option value="8">Aug</option>
-                                        <option value="9" selected>Sep</option>
-                                        <option value="10">Oct</option>
-                                        <option value="11">Nov</option>
-                                        <option value="12">Dec</option>
-                                    </select>
-                                    <label class="visuallyhidden" for="to-quarter-1">Quarter</label>
-                                    <select class="chart-area__controls__month" id="to-quarter-1" name="to-quarter" data-chart-controls-to-quarter="">
-                                        <option value="1" selected>Q1</option>
-                                        <option value="2">Q2</option>
-                                        <option value="3">Q3</option>
-                                        <option value="4">Q4</option>
-                                    </select>
-                                    <label class="visuallyhidden" for="to-year-2">Month</label>
-                                    <select class="chart-area__controls__year" id="to-year-2" name="to-year" data-chart-controls-to-year="">
-                                    </select>
-                                </fieldset>
-                            </div>
-                            <!-- <div class="chart-area__controls__submit">
-                                <input class="btn btn--small btn--thin btn--narrow btn--primary" type="submit" name="submit" data-chart-controls-submit="" value="Show">
-                            </div> -->
-                        </div>
-                    </div>
+                    <a href="#!/previous">view all datasets</a>
                 </div>
             </div>
-            <!-- /chart-area__controls -->
-            <!-- The actual chart goes here.  In this example, it is represented as an image that -->
-            <!-- on a production site would be the no-js fallback, that is generated dynamically  -->
-            <!-- by the server.                                                                   -->
-            <div class="js-enhance--show nojs-hidden chart" data-chart="" ></div>
-                
-            </div>
-
-            <img class="js-enhance--hide" src="{{uri}}/linechart" alt="{{description.title}}" width="875" height="400">
-
-            <div class="panel--bottom-mar js-enhance--hide">
-                <table class="tablesaw">
-                    <thead>
-                    <tr>
-                        <th>Period</th>
-                        <th>Value</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {{#each years}}
-                    <tr>
-                        <td>{{year}}</td>
-                        <td>{{value}}</td>
-                    </tr>
-                    {{/each}}
-                    {{#each quarters}}
-                    <tr>
-                        <td>{{quarter}}</td>
-                        <td>{{value}}</td>
-                    </tr>
-                    {{/each}}
-                    {{#each months}}
-                    <tr>
-                        <td>{{month}}</td>
-                        <td>{{value}}</td>
-                    </tr>
-                    {{/each}}
-                    </tbody>
-                </table>
-            </div>
-
-
-            <div class="chart-area__footer nojs-hidden js-enhance--show ">
-                <span class="chart-area__footer__label">Download custom data</span>
-
-                <div class="chart-area__footer__actions">
-                    <a class="btn btn--primary btn--small" href="#">
-                        .csv
-                        <span class="icon-download icon--button-inline" role="presentation"></span>
-                    </a>
-                    <a class="btn btn--primary btn--small" href="#">
-                        .xsl
-                        <span class="icon-download icon--button-inline" role="presentation"></span>
-                    </a>
-                    <a class="btn btn--primary btn--small" href="#">
-                        Image
-                        <span class="icon-download icon--button-inline" role="presentation"></span>
-                    </a>
-                </div>
-        </div>
-        <!-- /chart-area -->
-        <div class="slate--mid-grey box box--padded">
-            <span>Explore other {{description.title}} <strong>time series</strong> and <strong>datasets</strong></span>
-
-            <div class="box__inner">
-                <div class="grid-wrap">
-                    <div class="grid-col desktop-grid-one-half ">
-                        <div class="js-enhance--ul-to-select">
-                          <ul>
-                              {{#each relatedData}}
-                                <li><a href="{{uri}}">{{description.cdid}}: {{description.title}}</a></li>
-                              {{/each}}
-                          </ul>
-                          <p>Related time series:</p>
-                        </div>
-                        <a href="#!/previous">view all time series</a>
-                    </div>
-                    <div class="grid-col desktop-grid-one-half ">
-                        <div class="js-enhance--ul-to-select">
-                            <p>Related datasets:</p>
-                            <ul>
-                                {{#each relatedDatasets}}
-                                  <li><a href="{{uri}}">{{description.title}}</a></li>
-                                {{/each}}
-                            </ul>
-                        </div>
-                        <a href="#!/previous">view all datasets</a>
-                    </div>
-                </div>
-            </div>
-
         </div>
     </div>
-    <div class="wrapper panel--bottom-mar">
-        <div class="grid-wrap">
-            <div class="grid-col desktop-grid-two-thirds tablet-grid-full-width">
-                <article class="box border-horizontal-single content-section">
-                    <!-- <header class="box__header">
-                        <h2 id="Summary">Summary</h2>
-                    </header> -->
-                    <!-- /box__header -->
-                    <div class="box__content">
-                        <div>
-                            <p>
-                                {{section.markdown}}
-                            </p>
-                        </div>
+    <div class="panel--bottom-mar js-enhance--hide">
+        <table class="tablesaw">
+            <thead>
+                <tr>
+                    <th>Period</th>
+                    <th>Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each years}}
+                <tr>
+                    <td>{{date}}</td>
+                    <td>{{value}}</td>
+                </tr>
+                {{/each}}
+                {{#each quarters}}
+                <tr>
+                    <td>{{date}}</td>
+                    <td>{{value}}</td>
+                </tr>
+                {{/each}}
+                {{#each months}}
+                <tr>
+                    <td>{{date}}</td>
+                    <td>{{value}}</td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="wrapper panel--bottom-mar">
+    <div class="grid-wrap">
+        <div class="grid-col desktop-grid-two-thirds tablet-grid-full-width">
+            <article class="box border-horizontal-single content-section">
+                <!-- <header class="box__header">
+                    <h2 id="Summary">Summary</h2>
+                </header> -->
+                <!-- /box__header -->
+                <div class="box__content">
+                    <div>
+                        <p>
+                            {{section.markdown}}
+                        </p>
                     </div>
-
-                </article>
-                <article class="box border-horizontal-single content-section">
-                    <!-- /box__header -->
+                </div>
+            </article>
+            <article class="box border-horizontal-single content-section">
+                <!-- /box__header -->
+                <div class="box__content">
+                    <div>
+                        <p class="page-header__title">Important notes and usage information</p>
+                        {{#each notes}}
+                        <p>
+                            {{this}}
+                        </p>
+                        {{/each}}
+                    </div>
+                </div>
+            </article>
+        </div>
+        <!-- Sidebar -->
+        <div class="grid-col desktop-grid-one-third">
+            <!-- article__content -->
+            <article class="box box--teal--separated--left">
+                <div class="box__inner border box--padded">
+                    <header class="">
+                        <div class="grid-wrap">
+                            <div class="grid-col desktop-grid-five-sixths">
+                                <h3>Statistical bulletins and
+                                articles that use this time
+                                series
+                                </h3>
+                            </div>
+                        </div>
+                    </header>
                     <div class="box__content">
                         <div>
-                            <p class="page-header__title">Important notes and usage information</p>
-                            {{#each notes}}
-                            <p>
-                                {{this}}
-                            </p>
+                            {{#each relatedDocuments}}
+                            <p><a href="{{uri}}">{{description.title}}</a></p>
                             {{/each}}
                         </div>
                     </div>
-
-                </article>
-            </div>
-            <!-- Sidebar -->
-            <div class="grid-col desktop-grid-one-third">
-                <!-- article__content -->
-                <article class="box box--teal--separated--left">
-                    <div class="box__inner border box--padded">
-                        <header class="">
-                            <div class="grid-wrap">
-                                <div class="grid-col desktop-grid-five-sixths">
-                                    <h3>Statistical bulletins and
-                                        articles that use this time
-                                        series
-                                    </h3>
-                                </div>
-                            </div>
-                        </header>
-                        <div class="box__content">
-                            <div>
-                                {{#each relatedDocuments}}
-                                <p><a href="{{uri}}">{{description.title}}</a></p>
-                                {{/each}}
+                </div>
+            </article>
+            <!-- /article__content -->
+            <article class="box box--orange--separated--left">
+                <div class="box__inner border box--padded">
+                    <header>
+                        <div class="grid-wrap">
+                            <div class="grid-col desktop-grid-five-sixths">
+                                <h3>Contact details for this statistical bulletin</h3>
                             </div>
                         </div>
-                    </div>
-                </article>
-                <!-- /article__content -->
-
-                <article class="box box--orange--separated--left">
-                    <div class="box__inner border box--padded">
-                        <header>
-                            <div class="grid-wrap">
-                                <div class="grid-col desktop-grid-five-sixths">
-                                    <h3>Contact details for this statistical bulletin</h3>
-                                </div>
-                            </div>
-                        </header>
-                        <!-- /box__header -->
-                        <div class="box__content">
-                            <div>
-                                <p>
-                                    {{#if description.contact.name}}{{description.contact.name}}{{/if}}
-                                    <a href="mailto:{{description.contact.email}}">{{description.contact.email}}</a></br>
-                                    {{#if description.contact.telephone}}Telephone: {{description.contact.telephone}}{{/if}}
-                                </p>
-                            </div>
+                    </header>
+                    <!-- /box__header -->
+                    <div class="box__content">
+                        <div>
+                            <p>
+                                {{#if description.contact.name}}{{description.contact.name}}{{/if}}
+                                <a href="mailto:{{description.contact.email}}">{{description.contact.email}}</a></br>
+                                {{#if description.contact.telephone}}Telephone: {{description.contact.telephone}}{{/if}}
+                            </p>
                         </div>
-                        <!-- /box__content -->
-                        <footer class="box__footer box__actions">
-                        </footer>
                     </div>
-                </article>
-                <!-- /article__content -->
-            </div>
+                    <!-- /box__content -->
+                    <footer class="box__footer box__actions">
+                    </footer>
+                </div>
+            </article>
+            <!-- /article__content -->
         </div>
     </div>
+</div>
 </main>
 {{> partials/footer}}
-
