@@ -34,8 +34,9 @@ function renderChartObject(bindTag, chart, chartHeight, chartWidth) {
     .attr("preserveAspectRatio", "xMinYMin meet");
 
   // If we are talking time series skip
-  if (chart.isTimeSeries && (chart.type == 'line')) {
-    renderTimeseriesChartObject(bindTag, chart, chartWidth, chartHeight)
+  if (chart.isTimeSeries && (chart.chartType == 'line')) {
+    renderTimeseriesChartObject(bindTag, chart, chartWidth, chartHeight);
+    setFontStyle();
     return;
   }
 
@@ -97,14 +98,15 @@ function renderChartObject(bindTag, chart, chartHeight, chartWidth) {
   };
 
   c3.generate(c3Config);
-
-
-  var chartText = d3.select(bindTag + ' svg');
-  chartText.style('font-size', '12px')
-    .style('font-family', '"Open Sans", sans-serif')
-    .style('fill', '#000000');
-
+  setFontStyle();
   renderChartUnit();
+
+  function setFontStyle() {
+    var chartText = d3.select(bindTag + ' svg');
+    chartText.style('font-size', '12px')
+      .style('font-family', '"Open Sans", sans-serif')
+      .style('fill', '#000000');
+  }
 
   function renderChartUnit() {
 
