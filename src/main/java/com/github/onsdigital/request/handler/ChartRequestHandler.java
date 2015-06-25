@@ -17,9 +17,8 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * Created by bren on 28/05/15.
- * <p>
- * Serves rendered html output
+ * Handles requests at the endpoint /chart.
+ * Renders a chart and associated content in an isolated page.
  */
 public class ChartRequestHandler implements RequestHandler {
 
@@ -34,8 +33,6 @@ public class ChartRequestHandler implements RequestHandler {
 
     @Override
     public BabbageResponse get(String requestedUri, HttpServletRequest request, ZebedeeRequest zebedeeRequest) throws Exception {
-
-
         return new BabbageStringResponse(getHtml(requestedUri, zebedeeRequest), CONTENT_TYPE);
     }
     
