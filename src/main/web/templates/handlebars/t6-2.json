@@ -325,7 +325,7 @@
 			"markdown": "An account records and displays all flows and stocks for a given aspect of economic life. The sum of resources is equal to the sum of uses with a balancing item to ensure this equality. The system of economic accounts allows the build up of accounts for different areas of the economy, highlighting, for example, production, income and financial transactions."
 		}
 	],
-	"accordions": [
+	"accordion": [
 		{
 			"title": "Methodology",
 			"markdown": "Quality and Methodology Information (QMI). Impact of rebasing the Consumer Price Index to 2010=100. Consumer Price Index and Retail Price Index methodology"

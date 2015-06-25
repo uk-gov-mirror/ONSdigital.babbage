@@ -90,18 +90,18 @@ jQuery(window).load(function() {
 
     function jsEnhanceLinechart() {
 
-        var chartContainer = $("#chart-container");
+        var chartContainer = $("[data-chart]");
         if (!chartContainer.length) {
             return;
         }
 
-        var location = window.location.href + "/data";
+        var location = window.location.pathname + "/data";
         console.debug("Downloading timseries data from " + location)
         $.getJSON(location, function(timeseries) {
             console.log("Successfuly read timseries data");
-            linechart = linechart(timeseries, 'chart-container'); //Global variable
+            linechart = linechart(timeseries); //Global variable
 
-        }).fail(function(d) {
+        }).fail(function(d, textStatus, error) {
             console.error("Failed reading timseries, status: " + textStatus + ", error: " + error)
         });
 

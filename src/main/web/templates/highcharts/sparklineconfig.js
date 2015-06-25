@@ -9,6 +9,8 @@ function getSparklineConfig(timeseries) {
 			style: {
 				overflow: 'visible'
 			},
+			marginRight: 100,
+			marginLeft: 100,
 			skipClone: true
 		},
 		title: {
@@ -24,8 +26,9 @@ function getSparklineConfig(timeseries) {
 		xAxis: {
 			categories: [],
 			labels: {
+				crop: false,
 				style: {
-					'font-size': '30px'
+					'font-size': '40px'
 				},
 				formatter: function() {
 					if (this.isFirst) {
