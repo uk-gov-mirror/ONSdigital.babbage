@@ -66,29 +66,29 @@
                 <div data-chart-controls="" data-chart-controls-for="">
                     <div class="button-bar chart-area__controls__buttons">
                         <div class="button-group chart-area__controls__type">
-                            <label class="btn btn--secondary btn--small btn--narrow btn--thin btn--secondary--active">
+                            <label class="btn btn--secondary btn--small btn--narrow btn--thin">
                                 <span class="icon--button-inline--rev-small icon-chart" role="presentation"></span>
                                 Chart
-                                <input type="radio" name="type" data-chart-controls-type="" value="chart1" checked>
+                                <input type="radio" name="type" data-chart-controls-type="chart" value="chart1" checked>
                             </label>
                             <label class="btn btn--secondary btn--small btn--narrow btn--thin">
                                 <span class="icon--button-inline--rev-small icon-table" role="presentation"></span>
                                 Table
-                                <input type="radio" name="type" data-chart-controls-type="" value="table1">
+                                <input type="radio" name="type" data-chart-controls-type="table" value="table1">
                             </label>
                         </div>
                         <div class="button-group chart-area__controls__timespan">
                             <label class="btn btn--secondary btn--small btn--narrow btn--thin">
                                 Monthly
-                                <input type="radio" name="scale" data-chart-controls-scale="" value="months" checked>
+                                <input type="radio" name="scale" data-chart-controls-scale="months" value="months" checked>
                             </label>
                             <label class="btn btn--secondary btn--small btn--narrow btn--thin">
                                 Quarterly
-                                <input type="radio" name="scale" data-chart-controls-scale="" value="quarters">
+                                <input type="radio" name="scale" data-chart-controls-scale="quarters" value="quarters">
                             </label>
                             <label class="btn btn--secondary btn--small btn--narrow btn--thin">
                                 Yearly
-                                <input type="radio" name="scale" data-chart-controls-scale="" value="years">
+                                <input type="radio" name="scale" data-chart-controls-scale="years" value="years">
                             </label>
                         </div>
                     </div>
@@ -103,7 +103,7 @@
                                 <a href="#" data-chart-controls-range="10yr">Last 10 yrs</a>
                             </li>
                             <li>
-                                <a href="#" data-chart-controls-range="5yr" class="chart-area__controls__active">Last 5 yrs</a>
+                                <a href="#" data-chart-controls-range="5yr">Last 5 yrs</a>
                             </li>
                             <li data-chart-control-custom-range="">
                                 <a href="#" class="link-complex" data-chart-control-custom-trigger-for="chart-area__controls__custom">
@@ -175,9 +175,9 @@
                                     </select>
                                 </fieldset>
                             </div>
-                            <div class="chart-area__controls__submit">
+                            <!-- <div class="chart-area__controls__submit">
                                 <input class="btn btn--small btn--thin btn--narrow btn--primary" type="submit" name="submit" data-chart-controls-submit="" value="Show">
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 </div>
