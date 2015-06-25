@@ -10,11 +10,13 @@ var linechart = function(timeseries) {
 	var currentDisplay = 'chart'; //chart or table
 	var currentData;
 	var currentFilter = 'all'; //10yr, 5yr, all, custom
-	var table = chartContainer.find('[data-table]').detach();
+	var table = $('[data-table]');
+	var customDownloads = $('[data-chart-custom]');
 
 	initialize();
 
 	function initialize() {
+		console.log(table);
 		chart = getLinechartConfig(timeseries);
 		chart.years = isNotEmpty(timeseries.years);
 		chart.months = isNotEmpty(timeseries.months);
@@ -60,8 +62,8 @@ var linechart = function(timeseries) {
 		//Filter
 		var data = getAllData();
 		if (currentFilter === 'all') {
-			console.log("Showing all");
 			currentData = data;
+			hide(customDownloads);
 		} else {
 			var filter = chartControls.getFilterValues();
 			var from = filter.start.year + (isQuarters() ? filter.start.quarter : '') + (isMonths() ? filter.start.month : '');
@@ -93,15 +95,18 @@ var linechart = function(timeseries) {
 				}
 			}
 			currentData = filteredData;
+			show(customDownloads);
+
 		}
 		render();
 	}
 
 	function render() {
-		chartContainer.empty(); //Clear container
 		if (currentDisplay === 'chart') {
+			hide(table);
 			renderChart();
 		} else {
+			hide(chartContainer);
 			renderTable();
 		}
 	}
@@ -109,11 +114,14 @@ var linechart = function(timeseries) {
 	function renderTable() {
 		var tbody = table.find('tbody');
 		tbody.empty();
-		for (i = 0; i < data.values.length; i++) {
-			current = data.values[i];
-			tbody.append('<tr></tr>').append()
+		for (i = 0; i < currentData.values.length; i++) {
+			current = currentData.values[i];
+			tr = $(document.createElement('tr'));
+			tbody.append(tr);
+			tr.append('<td>' + current.name + '</td>');
+			tr.append('<td>' + current.y + '</td>');
 		}
-
+		show(table);
 	}
 
 
@@ -128,12 +136,17 @@ var linechart = function(timeseries) {
 			min = 0;
 		}
 
-		chart.yAxis.min =  min;
+		chart.yAxis.min = min;
+		show(chartContainer);
 		chartContainer.highcharts(chart);
 	}
 
 
 	function validateFilter(from, to) {
+
+		console.debug("From: " + from);
+		console.debug("To: " + to);
+
 		if (from === to) {
 			throw new Error('Sorry, the start date and end date cannot be the same');
 		} else if (to < from) {
@@ -195,6 +208,15 @@ var linechart = function(timeseries) {
 		delete timeseriesValue.date;
 
 		return timeseriesValue;
+	}
+
+
+	function hide(element) {
+		element.hide();
+	}
+
+	function show(element) {
+		element.show();
 	}
 
 
@@ -336,7 +358,7 @@ var linechart = function(timeseries) {
 			/*
 			 * Set the select options
 			 */
-			$('[data-chart-controls-from-month]', element).val(1);
+			$('[data-chart-controls-from-month]', element).val('01');
 			$('[data-chart-controls-from-quarter]', element).val(1);
 			$('[data-chart-controls-from-year]', element).find('option:first-child').attr('selected', true);
 			$('[data-chart-controls-to-month]', element).val(12);
@@ -367,14 +389,6 @@ var linechart = function(timeseries) {
 			$('[data-chart-controls-from-year]').val()
 		}
 
-		function hide(element) {
-			element.addClass('js-hidden');
-		}
-
-		function show(element) {
-			element.removeClass('js-hidden');
-		}
-
 		function bindFrequencyChangeButtons() {
 
 			/*
@@ -384,10 +398,11 @@ var linechart = function(timeseries) {
 			$('[data-chart-controls-scale]').each(function() {
 				var frequency = this.value;
 				if (!chart[frequency]) {
-					$(this).parent().addClass('btn--secondary--inactive');
+					$(this).attr("disabled",true);
+					$(this).parent().addClass('btn--secondary--disabled');
 				} else {
 					if ($(this).data('chart-controls-scale') == currentFrequency) {
-						$(this).parent().addClass('btn--secondary--active');
+						$(this).attr('checked', true);
 					}
 					$(this).on('click', function(e, data) {
 						var frequency = this.value;
@@ -396,6 +411,8 @@ var linechart = function(timeseries) {
 					});
 				}
 			})
+
+			toggleSelectedButton();
 		}
 
 		function bindDisplayChangeButtons() {
@@ -459,13 +476,24 @@ var linechart = function(timeseries) {
 				/*
 				 * Set the select options
 				 */
-				$('[data-chart-controls-from-month]', element).find('option[value="' + fromMonth + '"]').attr('selected', true);
+				$('[data-chart-controls-from-month]', element).find('option[value="' + pad(fromMonth,2) + '"]').attr('selected', true);
 				$('[data-chart-controls-from-quarter]', element).find('option[value="' + fromQuarter + '"]').attr('selected', true);
 				$('[data-chart-controls-from-year]', element).find('option[value="' + fromYear + '"]').attr('selected', true);
 
 				filter();
 			});
 		};
+
+		function pad(number, length) {
+		    var str = '' + number;
+		    while (str.length < length) {
+		        str = '0' + str;
+		    }
+		    console.log(str);
+		    return str;
+
+		}
+
 
 		/**
 		 * Add the collape / expand behaviour to the custom date filter

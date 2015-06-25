@@ -66,13 +66,13 @@
 			{{/each}}
 			{{#if accordions}}
 				{{#each}}
-				<div class="accordion is-collapsed">
+				<section class="accordion is-collapsed">
 					<h2 id="sc-{{@index}}" class="accordion__title delta" aria-controls="content-{{@index}}">{{title}}</h2>
 					<div id="content-{{@index}}" class="accordion__content" aria-labelledby="sc-{{@index}}">
 						{{md markdown}}
 					</div>
 					<!-- /accordion__content -->
-				</div>
+				</section>
 				<!-- /accordion -->
 				{{/each}}
 			{{/if}}
