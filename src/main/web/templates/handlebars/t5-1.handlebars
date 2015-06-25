@@ -186,11 +186,42 @@
             <!-- The actual chart goes here.  In this example, it is represented as an image that -->
             <!-- on a production site would be the no-js fallback, that is generated dynamically  -->
             <!-- by the server.                                                                   -->
-            <div class="js-enhance--show nojs-hidden chart" id="chart-container" data-chart="" ></div>
-
+            <div class="js-enhance--show nojs-hidden chart" data-chart="" ></div>
+                
             </div>
 
             <img class="js-enhance--hide" src="{{uri}}/linechart" alt="{{description.title}}" width="875" height="400">
+
+            <div class="panel--bottom-mar js-enhance--hide">
+                <table class="tablesaw">
+                    <thead>
+                    <tr>
+                        <th>Period</th>
+                        <th>Value</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {{#each years}}
+                    <tr>
+                        <td>{{year}}</td>
+                        <td>{{value}}</td>
+                    </tr>
+                    {{/each}}
+                    {{#each quarters}}
+                    <tr>
+                        <td>{{quarter}}</td>
+                        <td>{{value}}</td>
+                    </tr>
+                    {{/each}}
+                    {{#each months}}
+                    <tr>
+                        <td>{{month}}</td>
+                        <td>{{value}}</td>
+                    </tr>
+                    {{/each}}
+                    </tbody>
+                </table>
+            </div>
 
 
             <div class="chart-area__footer nojs-hidden js-enhance--show ">
@@ -242,36 +273,6 @@
                 </div>
             </div>
 
-        </div>
-        <div class="panel--bottom-mar js-enhance--hide">
-            <table class="tablesaw">
-                <thead>
-                <tr>
-                    <th>Period</th>
-                    <th>Value</th>
-                </tr>
-                </thead>
-                <tbody>
-                {{#each years}}
-                <tr>
-                    <td>{{year}}</td>
-                    <td>{{value}}</td>
-                </tr>
-                {{/each}}
-                {{#each quarters}}
-                <tr>
-                    <td>{{quarter}}</td>
-                    <td>{{value}}</td>
-                </tr>
-                {{/each}}
-                {{#each months}}
-                <tr>
-                    <td>{{month}}</td>
-                    <td>{{value}}</td>
-                </tr>
-                {{/each}}
-                </tbody>
-            </table>
         </div>
     </div>
     <div class="wrapper panel--bottom-mar">
