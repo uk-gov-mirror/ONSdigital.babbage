@@ -35,7 +35,9 @@
 			<h2>Table of contents</h2>
 			<ol id="toc" class="table-of-contents-ordered-list">
 				{{#each sections}}
-				<li><a href="#{{slugify title}}" title="{{this.title}}">{{this.title}}</a></li>
+				<li>
+					<a href="#{{slugify title}}">{{title}}</a>
+				</li>
 				{{/each}}
 				{{#if accordion}}
 					{{#each accordion}}
@@ -52,9 +54,14 @@
 		<div class="grid-wrap">
 			<article class="grid-col desktop-grid-two-thirds tablet-grid-full-width">
 				{{#each sections}}
-					<section class="panel--separated--bottom panel--pad">
+					{{!-- Prevent bottom border on last section before accordian --}}
+					{{#if @last}}
+					<section id="{{slugify title}}" class="panel--pad">
+					{{else}}
+					<section id="{{slugify title}}" class="panel--separated--bottom panel--pad">
+					{{/if}}
 						<header>
-							<h2 id="{{slugify title}}">{{title}}</h2>
+							<h2>{{title}}</h2>
 						</header>
 						{{md markdown}}
 						<a class="print-hidden" href="#toc" title="Back to table of contents">Back to table of contents</a>
@@ -64,13 +71,13 @@
 				{{#if accordion}}
 				<div class="panel--mar">
 					{{#each accordion}}
-					<div id="{{slugify title}}" class="accordion is-collapsed">
+					<section id="{{slugify title}}" class="accordion is-collapsed">
 						<h2 class="accordion__title" aria-controls="content-{{@index}}">{{title}}</h2>
 						<div class="accordion__content" aria-labelledby="sc-{{@index}}">
 							{{md markdown}}
 							<a class="print-hidden" href="#toc" title="Back to table of contents">Back to table of contents</a>
 						</div>
-					</div>
+					</section>
 					{{/each}}
 				</div>
 				{{/if}}
@@ -117,7 +124,7 @@
 			<!-- grid-wrap -->
 			<div class="grid-wrap">
 				<div class="grid-col desktop-grid-two-thirds tablet-grid-full-width">
-					<div class="box box--teal--separated--left">
+					<article class="box box--teal--separated--left">
 						<div class="box__inner border box--padded">
 							<h3>Related bulletins</h3>
 							<ul class="list--neutral">
@@ -131,16 +138,15 @@
 								{{/each}}
 							</ul>
 						</div>
-					</div>
+					</article>
 				</div>
       	<div class="grid-col desktop-grid-one-third tablet-grid-full-width">
-          	<!-- article__content -->
-          	<article class="box box--orange box--orange--separated-left">
-              	<div class="box__inner border box--padded ">
-	                <h3>Looking for local statistics?</h3>
-	                <p><a href="/local">A handy guide to let you know where to find local statistics.</a></p>
-              	</div>
-        		</article>
+	      	<article class="box box--orange box--orange--separated-left">
+	          	<div class="box__inner border box--padded ">
+	              <h3>Looking for local statistics?</h3>
+	              <p><a href="/local">A handy guide to let you know where to find local statistics.</a></p>
+	          	</div>
+	    		</article>
       	</div>
 			</div>
 		</div>

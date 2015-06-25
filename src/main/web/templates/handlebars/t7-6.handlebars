@@ -5,7 +5,10 @@
 			{{> templates/handlebars/partials/breadcrumb}}
 			<h1 class="page-header__title flush--half--bottom">{{description.title}}</h1>
 			<div class="grid-wrap">
-				<p class="grid-col tablet-grid-one-quarter">
+				<p class="grid-col tablet-grid-one-quarter {{#if description.nationalStatistic}}page-header__meta-block-with-img{{/if}}">
+			    {{#if description.nationalStatistic}}
+					<img src="/node_modules/ONS-Pattern-Library/dist/img/national-statistics.png" alt="National Statistics logo" />
+					{{/if}}
 					<span>Contact: </span><br/><a href="mailto:{{description.contact.email}}">{{#if description.contact.name}}{{description.contact.name}}{{else}}{{description.contact.email}}{{/if}}</a>
 				</p>
 				<p class="grid-col tablet-grid-one-quarter divider--border-left">
@@ -23,35 +26,56 @@
 			</div>
 		</div>
 		<!-- table of contents -->
-		<div class="panel--separated--bottom panel--bottom-mar">
+		<div class="panel--separated--bottom">
 			<h2>In this section</h2>
 			<ol id="toc" class="table-of-contents-ordered-list">
 				{{#each sections}}
-				<li><a href="#{{slugify title}}" title="{{this.title}}">{{this.title}}</a></li>
+				<li>
+					<a href="#{{slugify title}}">{{title}}</a>
+				</li>
 				{{/each}}
+				{{#if accordion}}
+					{{#each accordion}}
+					<li>
+						<a href="#{{slugify title}}">{{title}}</a>
+					</li>
+					{{/each}}
+				{{/if}}
 			</ol>
 		</div>
 		<!-- /table of contents -->
 		<div class="grid-wrap print-links s">
-			<div class="grid-col desktop-grid-two-thirds">
+			<article class="grid-col desktop-grid-two-thirds tablet-grid-full-width">
 				{{#each sections}}
-				<article class="box border-horizontal-single content-section">
-					<header class="box__header">
-						<h2 id="{{slugify title}}">{{title}}</h2>
-					</header>
-					<!-- /box__header -->
-					<div class="box__content">
-						<div>
-							<p>
-							{{md markdown}}
-							</p>
-						</div>
-	      				<a class="print-hidden" href="#toc" title="Back to table of contents">Back to table of contents</a>
-					</div>
-				</article>
+					{{!-- Prevent bottom border on last section before accordian --}}
+					{{#if @last}}
+					<section id="{{slugify title}}" class="panel--pad">
+					{{else}}
+					<section id="{{slugify title}}" class="panel--separated--bottom panel--pad">
+					{{/if}}
+						<header>
+							<h2>{{title}}</h2>
+						</header>
+						{{md markdown}}
+						<a class="print-hidden" href="#toc" title="Back to table of contents">Back to table of contents</a>
+					</section>
 				{{/each}}
-			</div><!-- /grid-two-thirds -->
-			<div class="grid-col desktop-grid-one-third">
+				<!-- Accordion -->
+				{{#if accordion}}
+				<div class="panel--mar">
+					{{#each accordion}}
+					<section id="{{slugify title}}" class="accordion is-collapsed">
+						<h2 class="accordion__title" aria-controls="content-{{@index}}">{{title}}</h2>
+						<div class="accordion__content" aria-labelledby="sc-{{@index}}">
+							{{md markdown}}
+							<a class="print-hidden" href="#toc" title="Back to table of contents">Back to table of contents</a>
+						</div>
+					</section>
+					{{/each}}
+				</div>
+				{{/if}}
+			</article><!-- /grid-two-thirds -->
+			<div class="grid-col desktop-grid-one-third panel--top-mar">
 				<div class="box solid box--green--separated--left">
 					<div class="box__inner border box--padded">
 						<h3 class="box__section__header">
@@ -105,15 +129,11 @@
 					<h3 class="box__section__header">
 						Contact details for this methodology
 					</h3>
-					<!-- /box__header -->
-					<div class="box__content">
-						<address>
-							{{#if description.contact.name}}{{description.contact.name}}<br/>{{/if}}
-		                    <a href="mailto:{{description.contact.email}}">{{description.contact.email}}</a></br>
-		                    {{#if description.contact.telephone}}Telephone: {{description.contact.telephone}}{{/if}}
-						</address>
-					</div>
-					<!-- /box__content -->
+					<address>
+						{{#if description.contact.name}}{{description.contact.name}}<br/>{{/if}}
+            <a href="mailto:{{description.contact.email}}">{{description.contact.email}}</a></br>
+            {{#if description.contact.telephone}}Telephone: {{description.contact.telephone}}{{/if}}
+					</address>
 				</div>
 				<!-- /box--lifted -->
 			</div><!-- /grid-one-third -->
