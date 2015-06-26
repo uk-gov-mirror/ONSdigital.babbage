@@ -42,7 +42,7 @@
 				{{#if accordion}}
 					{{#each accordion}}
 					<li>
-						<a href="#{{slugify title}}">{{title}}</a>
+						<a href="#{{slugify title}}" aria-controls="content-{{@index}}">{{title}}</a>
 					</li>
 					{{/each}}
 				{{/if}}
@@ -73,7 +73,7 @@
 					{{#each accordion}}
 					<section id="{{slugify title}}" class="accordion is-collapsed">
 						<h2 class="accordion__title" aria-controls="content-{{@index}}">{{title}}</h2>
-						<div class="accordion__content" aria-labelledby="sc-{{@index}}">
+						<div class="accordion__content panel--bottom-mar-small" aria-labelledby="sc-{{@index}}">
 							{{md markdown}}
 							<a class="print-hidden" href="#toc" title="Back to table of contents">Back to table of contents</a>
 						</div>
@@ -86,7 +86,7 @@
 			<div class="grid-col desktop-grid-one-third tablet-grid-full-width panel--top-mar">
 				<!-- article__content -->
 				<div class="box box--green box--green--separated--left">
-					<div class="box__inner border box--padded [border--large-left]">
+					<div class="box__inner border box--padded">
 						<header class="box__header">
 							<h3>Data in this article</h3>
 						</header>
@@ -100,20 +100,21 @@
 					</div>
 				</div>
 				<!-- /article__content -->
-        <div class="box__inner border box--padded">
-            <header class="box__header">
-                <h3>Contact details for this article</h3>
-            </header>
-            <!-- /box__header -->
-            <div class="box__content">
-                <address>
-										{{#if description.contact.name}}{{description.contact.name}}</br>{{/if}}
-                		<a href="mailto:{{description.contact.email}}">{{description.contact.email}}</a></br>
-                		{{#if description.contact.telephone}}Telephone: {{description.contact.telephone}}{{/if}}
-                </address>
-            </div>
-            <!-- /box__content -->
-        </div>
+		        <div class="box__inner border box--padded">
+		            <header class="box__header">
+		                <h3>Contact details for this article</h3>
+		            </header>
+		            <!-- /box__header -->
+		            <div class="box__content">
+		                <address>
+							{{#if description.contact.name}}{{description.contact.name}}</br>{{/if}}
+	                		<a href="mailto:{{description.contact.email}}">{{description.contact.email}}</a></br>
+	                		{{#if description.contact.telephone}}Telephone: {{description.contact.telephone}}{{/if}}
+		                </address>
+		            </div>
+		            <!-- /box__content -->
+		        </div>
+		        <!-- /box -->
 			</div>
 		</div>
 	</div>
