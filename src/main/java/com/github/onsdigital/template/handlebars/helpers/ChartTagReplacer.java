@@ -40,6 +40,10 @@ public class ChartTagReplacer implements TagReplacementStrategy {
 
         String uri = matcher.group(1);
 
+        if (!uri.startsWith("/")) {
+            uri = "/" + uri;
+        }
+
         Page page = null;
         try {
             page = new DataRequestHandler().readAsPage(uri, false, null);

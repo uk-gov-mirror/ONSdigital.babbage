@@ -38,7 +38,11 @@ public class TableTagReplacer implements TagReplacementStrategy {
 
         String uri = matcher.group(1);
 
-        Page page = null;
+        if (!uri.startsWith("/")) {
+            uri = "/" + uri;
+        }
+
+        Page page;
         try {
             page = new DataRequestHandler().readAsPage(uri, false, null);
         } catch (ContentNotFoundException | DataNotFoundException e) {
