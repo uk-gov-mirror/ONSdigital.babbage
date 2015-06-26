@@ -94,6 +94,7 @@ var linechart = function(timeseries) {
 					}
 				}
 			}
+			filteredData.min = min;
 			currentData = filteredData;
 			show(customDownloads);
 
