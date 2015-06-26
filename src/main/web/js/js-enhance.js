@@ -136,6 +136,19 @@ jQuery(window).load(function() {
         });
     }
 
+    function jsEnhanceNumberSeparator() {
+      // Adapted from http://stackoverflow.com/questions/14075014/jquery-function-to-to-format-number-with-commas-and-decimal
+      $( ".stat__figure-enhance" ).each(function( index ) {
+        //console.log( index + ": " + $( this ).text() );
+        var number = $( this ).text();
+        var n= number.toString().split(".");
+        //Comma-fies the first part
+        n[0] = n[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        // //Combines the two sections
+        $( this ).text(n.join("."));
+      });
+    }
+
     function jsEnhanceMarkdownTables() {
 
         var chartContainer = $(".markdown-table-container");
