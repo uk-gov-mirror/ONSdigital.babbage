@@ -120,7 +120,12 @@ jQuery(window).load(function() {
             var $this = $(this);
             var uri = $this.attr('id');
             $this.empty();
-            new pym.Parent(uri, "/" + uri + "/chart", {});
+
+            if (uri.indexOf('/') !== 0) {
+                uri = '/' + uri;
+            }
+
+            new pym.Parent(uri, uri + "/chart", {});
         });
     }
 
@@ -142,7 +147,12 @@ jQuery(window).load(function() {
             var $this = $(this);
             var uri = $this.attr('id');
             $this.empty();
-            new pym.Parent(uri, "/" + uri + "/table", {});
+
+            if (uri.indexOf('/') !== 0) {
+                uri = '/' + uri;
+            }
+
+            new pym.Parent(uri, uri + "/table", {});
         });
     }
 });

@@ -12,7 +12,7 @@ RUN git clone -b live --single-branch --depth 1 https://github.com/ONSdigital/ba
 
 # Build web content
 
-RUN npm install --prefix=src/main/web
+RUN npm install --prefix=src/main/web --unsafe-perm
 
 # Build
 
