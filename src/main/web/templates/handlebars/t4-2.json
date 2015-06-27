@@ -61,6 +61,14 @@
     {
       "title": "References",
       "markdown": "The CPI, CPIH, RPIJ and RPI are compiled using the same underlying price data, based on a large and representative selection of around 700 individual goods and services for which price movements are measured in around 140 randomly selected areas throughout the UK. Around 180,000 separate price quotations are used every month to compile the indices. The outlets in which the prices are collected are selected randomly. Expenditure weights are held constant for 1 year at a time."
+    },
+    {
+      "title": "Methodology",
+      "markdown": "Quality and Methodology Information (QMI). Impact of rebasing the Consumer Price Index to 2010=100. Consumer Price Index and Retail Price Index methodology"
+    },
+    {
+      "title": "Background notes",
+      "markdown": "The United Kingdom National Accounts Blue Book was first published in August 1952 and presents a full set of economic accounts (National Accounts) for the United Kingdom."
     }
   ],
   "data": [
