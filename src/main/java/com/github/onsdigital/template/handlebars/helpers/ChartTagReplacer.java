@@ -53,7 +53,7 @@ public class ChartTagReplacer implements TagReplacementStrategy {
             page.setUri(URI.create(uri));
         }
 
-        String html = TemplateService.getInstance().renderPage(page, "partials/chart");
+        String html = TemplateService.getInstance().render(page, "partials/chart");
         return html;
     }
 }

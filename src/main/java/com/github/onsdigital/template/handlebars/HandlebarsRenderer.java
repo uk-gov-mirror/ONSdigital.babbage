@@ -40,7 +40,7 @@ public class HandlebarsRenderer implements TemplateRenderer {
     private static Map<String, Template> templatesCache = new ConcurrentHashMap<>();
 
     @Override
-    public String renderTemplate(String templateName, Page data) throws IOException {
+    public String renderTemplate(String templateName, Object data) throws IOException {
         Template template = getTemplate(templateName);
 
         Context context = Context

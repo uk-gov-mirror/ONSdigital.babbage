@@ -1,6 +1,7 @@
 package com.github.onsdigital.search;
 
 import com.github.onsdigital.configuration.Configuration;
+import com.github.onsdigital.content.page.base.Page;
 import com.github.onsdigital.content.page.base.PageType;
 import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.action.ListenableActionFuture;
@@ -41,16 +42,13 @@ public class Indexer {
 	private static void createIndex(Client client, List<String> absoluteFilePaths) throws IOException {
 
 		System.out.println("Creating index ons");
-		// Disable indexing for lede field
-
 		// Set up the synonyms
 		CreateIndexRequestBuilder indexBuilder = client.admin().indices().prepareCreate("ons").setSettings(buildSettings());
 		System.out.println("Adding document mappings");
 
 		indexBuilder.addMapping(PageType.dataset.toString(), getMappingProperties(PageType.dataset.toString()));
-
-		//TODO:Change home type to taxonomy
-		indexBuilder.addMapping("home", getMappingProperties("home"));
+		indexBuilder.addMapping(PageType.taxonomy_landing_page.toString(), getMappingProperties(PageType.taxonomy_landing_page.toString()));
+		indexBuilder.addMapping(PageType.product_page.toString(), getMappingProperties(PageType.product_page.toString()));
 		indexBuilder.addMapping(PageType.bulletin.toString(), getMappingProperties(PageType.bulletin.toString()));
 		indexBuilder.addMapping(PageType.article.toString(), getMappingProperties(PageType.article.toString()));
 		indexBuilder.addMapping(PageType.methodology.toString(), getMappingProperties(PageType.methodology.toString()));
@@ -66,11 +64,11 @@ public class Indexer {
 
 		XContentBuilder builder = jsonBuilder().startObject().startObject(type).startObject("properties");
 		try {
-			builder.startObject("lede").field("type", "string").field("index", "no").endObject();
+//			builder.startObject("lede").field("type", "string").field("index", "no").endObject();
 			builder.startObject("summary").field("type", "string").field("index", "no").endObject();
 			builder.startObject("title").field("type", "string").field("index", "analyzed").endObject();
-			builder.startObject("url").field("type", "string").field("index", "analyzed").endObject();
 			builder.startObject("path").field("type", "string").field("index", "analyzed").endObject();
+			builder.startObject("uri").field("type", "string").field("index", "analyzed").endObject();
 			builder.endObject().endObject().endObject();
 			return builder;
 		} finally {
@@ -87,7 +85,7 @@ public class Indexer {
 			// cdid not analyzed for exact match
 			builder.startObject("cdid").field("type", "string").field("index", "not_analyzed").endObject();
 			builder.startObject("title").field("type", "string").field("index", "analyzed").endObject();
-			builder.startObject("url").field("type", "string").field("index", "analyzed").endObject();
+			builder.startObject("uri").field("type", "string").field("index", "analyzed").endObject();
 			builder.startObject("path").field("type", "string").field("index", "analyzed").endObject();
 			builder.endObject().endObject().endObject();
 			System.out.println(builder.string() + "\n\n");
@@ -115,7 +113,7 @@ public class Indexer {
 	}
 
 	private static void buildTimeseries(Client client, Map<String, String> documentMap, int idCounter) throws IOException {
-		XContentBuilder source = jsonBuilder().startObject().field("title", documentMap.get("title")).field("url", documentMap.get("url")).field("path", documentMap.get("tags"))
+		XContentBuilder source = jsonBuilder().startObject().field("title", documentMap.get("title")).field("uri", documentMap.get("uri")).field("path", documentMap.get("tags"))
 				.field("cdid", documentMap.get("cdid")).endObject();
 		try {
 			build(client, documentMap, idCounter, source);
@@ -128,7 +126,7 @@ public class Indexer {
 
 	private static void buildDocument(Client client, Map<String, String> documentMap, int idCounter) throws IOException {
 
-		XContentBuilder source = jsonBuilder().startObject().field("title", documentMap.get("title")).field("url", documentMap.get("url")).field("path", documentMap.get("tags"))
+		XContentBuilder source = jsonBuilder().startObject().field("title", documentMap.get("title")).field("uri", documentMap.get("uri")).field("path", documentMap.get("tags"))
 				.field("lede", documentMap.get("lede")).field("summary", documentMap.get("summary")).endObject();
 		try {
 			build(client, documentMap, idCounter, source);
