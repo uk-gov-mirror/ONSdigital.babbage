@@ -56,7 +56,7 @@
 			{{#if accordion}}
 				{{#each accordion}}
 				<li>
-					<a href="#{{slugify title}}">{{title}}</a>
+					<a href="#{{slugify title}}" class="footnote-body">{{title}}</a>
 				</li>
 				{{/each}}
 			{{/if}}
@@ -64,7 +64,7 @@
 		<!-- /table-of-contents -->
 	</div>
 	<!-- /wrapper panel--separated--bottom -->
-	<div class="wrapper panel--bottom-mar print-links">
+	<div class="wrapper panel--bottom-mar">
 		<div class="grid-wrap">
 			<article class="grid-col desktop-grid-two-thirds tablet-grid-full-width">
 				{{#each sections}}
@@ -132,7 +132,7 @@
 	</div>
 	<!-- /wrapper -->
 	<div class="panel--top-pad slate--mid-grey">
-		<div class="wrapper print-links">
+		<div class="wrapper">
 			<div class="grid-wrap">
 				<div class="grid-col desktop-grid-two-thirds">
 					<article class="box box--teal--separated--left">
