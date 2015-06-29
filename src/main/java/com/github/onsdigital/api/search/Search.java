@@ -2,9 +2,17 @@ package com.github.onsdigital.api.search;
 
 import com.github.davidcarboni.restolino.framework.Api;
 import com.github.onsdigital.api.util.ApiErrorHandler;
+import com.github.onsdigital.api.util.URIUtil;
+import com.github.onsdigital.configuration.Configuration;
 import com.github.onsdigital.content.page.statistics.data.timeseries.TimeSeries;
+import com.github.onsdigital.content.util.ContentUtil;
+import com.github.onsdigital.error.ResourceNotFoundException;
+import com.github.onsdigital.request.response.BabbageResponse;
+import com.github.onsdigital.request.response.BabbageStringResponse;
 import com.github.onsdigital.search.bean.AggregatedSearchResult;
 import com.github.onsdigital.search.util.SearchHelper;
+import com.github.onsdigital.template.TemplateRenderer;
+import com.github.onsdigital.template.TemplateService;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -21,14 +29,16 @@ import java.io.IOException;
  */
 @Api
 public class Search {
-    final static String jsonMime = "application/json";
+    private final static String HTML_MIME = "text/html";
+    private final static String DATA_REQUEST = "data";
+    private final static String SEARCH_REQUEST = "search";
 
     @GET
     public Object get(@Context HttpServletRequest request, @Context HttpServletResponse response) throws IOException {
 
+        String type = URIUtil.resolveRequestType(request.getRequestURI());
+
         try {
-
-
             String query = extractQuery(request);
             Object searchResult = null;
             if (StringUtils.isNotBlank(request.getParameter("q"))) {
@@ -40,16 +50,12 @@ public class Search {
                     TimeSeries timeSeries = searchTimseries(query, types);
                     if (timeSeries == null) {
                         System.out.println("No results found from timeseries so using suggestions for: " + query);
-                        return searchAutocorrect(query, page, types);
+                        searchResult =  searchAutocorrect(query, page, types);
                     } else {
                         response.sendRedirect(timeSeries.getUri().toString());
                         return null;
                     }
                 }
-
-                // This is a search result page.
-                // Autocomplete requests pass a parameter of "term".
-//			SearchConsole.save(query, page, searchResult);
             } else if (StringUtils.isNotBlank(request.getParameter("term"))) {
                 searchResult = autoComplete(query);
             } else if (StringUtils.isNotBlank(request.getParameter("cdid"))) {
@@ -57,11 +63,34 @@ public class Search {
                 return timeseries == null ? "" : timeseries.getUri();
             }
 
-            return searchResult;
+            handleResponse(type, searchResult, response);
+            return null;
         } catch (Exception e) {
             ApiErrorHandler.handle(e, response);
             return null;
         }
+    }
+
+
+    //Decide if json should be returned ( in case search/data requested) or page should be rendered
+    private void handleResponse(String requestType, Object searchResult, HttpServletResponse response) throws IOException {
+        BabbageResponse babbageResponse;
+
+        switch (requestType) {
+            case DATA_REQUEST:
+                babbageResponse = new BabbageStringResponse(ContentUtil.serialise(searchResult));
+                break;
+            case SEARCH_REQUEST:
+                babbageResponse = new BabbageStringResponse(renderSearchPage(searchResult), HTML_MIME);
+                break;
+            default:
+                throw new ResourceNotFoundException();
+        }
+        babbageResponse.apply(response);
+    }
+
+    public String renderSearchPage(Object results ) throws IOException {
+        return TemplateService.getInstance().render(results, Configuration.getSearchTemplateName());
     }
 
     private Object search(String query, int page, String[] types) throws Exception {
