@@ -8,7 +8,7 @@ RUN echo '{"service": {"name": "babbage", "tags": ["blue"], "port": 8080, "check
 # Check out from Github
 
 WORKDIR /usr/src
-RUN git clone -b develop --single-branch --depth 1 https://github.com/ONSdigital/babbage.git .
+RUN git clone -b staging --single-branch --depth 1 https://github.com/ONSdigital/babbage.git .
 
 # Build web content
 
