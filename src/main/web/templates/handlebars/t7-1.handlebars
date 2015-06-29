@@ -16,7 +16,10 @@
 					<span>Last revised: </span><br/>{{df description.lastRevised}}
 				</p>
 				<p class="grid-col tablet-grid-one-half divider--border-left">
-					<a href="{{download.uri}}"><span class="icon icon-download"></span>{{download.title}}</a> (??MB)
+					<a class="link-complex" href="{{download.uri}}">
+						<span class="icon icon-download"></span>
+						<span class="link-complex__target">{{download.title}}</span>
+					</a> (??MB)
 				</p>
 			</div>
 			<h2 class="gamma">Methodology background</h2>
