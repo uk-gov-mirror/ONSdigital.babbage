@@ -70,7 +70,8 @@ function renderChartObject(bindTag, chart, chartHeight, chartWidth) {
       },
       type: type,
       types: types,
-      groups: groups
+      groups: groups,
+      colors: getColours(chart.series)
     },
     legend: {
       hide: chart.hideLegend,
@@ -136,8 +137,16 @@ function renderChartObject(bindTag, chart, chartHeight, chartWidth) {
     }
   }
 
-  function getColors() {
-    var availableColors = ['#274796','#F5942F','#E73F40','#7BCAE2' ];
+  function getColours(series) {
+
+    var availableColours = ['#274796','#F5942F','#E73F40','#7BCAE2', '#979796', '#E9E117', '#74B630', '#674796', '#BD5B9E'];
+    var colours = {};
+
+    $.each(series, function(index, series) {
+      colours[series] = availableColours[index];
+    });
+
+    return colours;
   }
 
   function checkType(chart) {
@@ -231,7 +240,8 @@ function renderChartObject(bindTag, chart, chartHeight, chartWidth) {
         json: chart.timeSeries,
         keys: keys,
         type: chart.chartType,
-        xFormat: '%Y-%m-%d %H:%M:%S'
+        xFormat: '%Y-%m-%d %H:%M:%S',
+        colors: getColours(chart.series)
       },
 
       point: {

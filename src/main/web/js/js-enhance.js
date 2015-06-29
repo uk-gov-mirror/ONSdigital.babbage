@@ -13,6 +13,7 @@ jQuery(window).load(function() {
         jsEnhanceHome();
         jsEnhanceLinechart();
         jsEnhancePrint();
+        jsEnhanceNumberSeparator();
         jsEnhanceMarkdownCharts();
         jsEnhanceMarkdownTables();
 
