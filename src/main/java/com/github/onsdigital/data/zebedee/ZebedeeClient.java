@@ -5,13 +5,12 @@ import com.github.onsdigital.content.service.ContentNotFoundException;
 import com.github.onsdigital.data.DataNotFoundException;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
-import org.apache.http.StatusLine;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -59,7 +58,7 @@ public class ZebedeeClient {
         if ("/".equals(uri)) {
             uriPath = uri + "data.json";
         } else {
-            uriPath = uri + "/data.json";
+            uriPath = uri;
         }
 
         InputStream data = null;
@@ -76,6 +75,10 @@ public class ZebedeeClient {
 
         response = client.execute(httpGet);
 
+        if (response.getStatusLine().getStatusCode() == HttpStatus.SC_NOT_FOUND) {
+            throw new ContentNotFoundException(url);
+        }
+
 //        handleResponse(response.getStatusLine(), url);
 
         HttpEntity responseEntity = response.getEntity();
@@ -90,7 +93,6 @@ public class ZebedeeClient {
     }
 
     public void closeConnection() {
-        IOUtils.closeQuietly(response);
         IOUtils.closeQuietly(client);
     }
 

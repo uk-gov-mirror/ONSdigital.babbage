@@ -1,8 +1,6 @@
 package com.github.onsdigital.highcharts;
 
 import com.github.onsdigital.configuration.Configuration;
-import com.github.onsdigital.content.util.ContentUtil;
-import com.googlecode.wickedcharts.highcharts.options.Options;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
@@ -47,8 +45,9 @@ public class HighChartsExportClient {
        HttpPost post = new HttpPost(Configuration.getHighchartsExportSeverUrl());
 
        List<NameValuePair> postParameters = new ArrayList<NameValuePair>();
-       postParameters.add(new BasicNameValuePair("options", chart.toJson()));
+       postParameters.add(new BasicNameValuePair("options", chart.toString()));
        postParameters.add(new BasicNameValuePair("type", "png"));
+       postParameters.add(new BasicNameValuePair("width", "1500"));
        postParameters.add(new BasicNameValuePair("async", "false"));
        post.setEntity(new UrlEncodedFormEntity(postParameters));
 

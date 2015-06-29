@@ -1,99 +1,243 @@
 {{> partials/header}}
 
-<div class="page-header slate">
+<div class="page-header">
     <div class="wrapper">
-        <h1 class="page-header__title flush--half--bottom">{{description.title}}</h1>
+        <h1 class="page-header__title flush--half--bottom">Welcome to the Office for National Statistics</h1>
 
         <p>{{description.summary}}
-  </div>
+    </div>
     <!-- / wrapper -->
 </div>
 <!-- panel -->
+
+{{!-- Hardcoded stastical highlights --}}
 <div class="wrapper panel--mar">
     <!-- grid-wrap -->
+    <h2>Statistical highlights</h2>
+
+    <div class="grid-wrap grid-wrap--home-hero panel--separated--bottom">
+      <!-- grid-col -->
+        
+        <div class="grid-col grid-col--home-hero tablet-wide-grid-one-fifth">
+            <article class="nav-panel nav-panel--stats nav-panel--home-hero sectioned">
+                <div class="stat__wrap--home">
+                    <header class="nav-panel__header">
+                        <h2 class="gamma flush">CPI: Consumer Prices Index (% change)</h2>
+                    </header>
+                    <div class="stat__figure--home">
+                        0.1%
+                    </div>
+                    <div class="stat__description">
+                        May 2015
+                    </div>
+                    <img class="stat__image--home" src="../../img/t1-sparkline-1-cpi.png" alt="{{statistics.data.description.title}}">
+                    
+                    <a class="js-enhance--hide" href="{{statistics.data.uri}}">More info</a>
+                </div>
+                <footer class="nav-panel__footer-home-hero">
+                    <a href="{{theme.uri}}">Explore {{theme.description.title}}</a>
+                </footer>
+            </article>
+        </div>
+
+
+        <div class="grid-col grid-col--home-hero tablet-wide-grid-one-fifth">
+            <article class="nav-panel nav-panel--stats nav-panel--home-hero sectioned">
+                <div class="stat__wrap--home">
+                    <header class="nav-panel__header">
+                        <h2 class="gamma flush">GDP quarter on quarter growth - CVM</h2>
+                    </header>
+                    <div class="stat__figure--home">
+                        0.3%
+                    </div>
+                    <div class="stat__description">
+                        Q1 2015
+                    </div>
+                    <img class="stat__image--home" src="../../img/t1-sparkline-2-gdp.png" alt="{{statistics.data.description.title}}">
+                    
+                    <a class="js-enhance--hide" href="{{statistics.data.uri}}">More info</a>
+                </div>
+                <footer class="nav-panel__footer-home-hero">
+                    <a href="{{theme.uri}}">Explore {{theme.description.title}}</a>
+                </footer>
+            </article>
+        </div>
+
+        <div class="grid-col grid-col--home-hero tablet-wide-grid-one-fifth">
+            <article class="nav-panel nav-panel--stats nav-panel--home-hero sectioned">
+                <div class="stat__wrap--home">
+                    <header class="nav-panel__header">
+                        <h2 class="gamma flush">Trade in goods and services deficit (or surplus)</h2>
+                    </header>
+                    <div class="stat__figure--home">
+                        -6.0bn 
+                    </div>
+                    <div class="stat__description">
+                        Q4 2014
+                    </div>
+                    <img class="stat__image--home" src="../../img/t1-sparkline-3-trade.png" alt="{{statistics.data.description.title}}">
+                    
+                    <a class="js-enhance--hide" href="{{statistics.data.uri}}">More info</a>
+                </div>
+                <footer class="nav-panel__footer-home-hero">
+                    <a href="{{theme.uri}}">Explore {{theme.description.title}}</a>
+                </footer>
+            </article>
+        </div>
+
+        <div class="grid-col grid-col--home-hero tablet-wide-grid-one-fifth">
+            <article class="nav-panel nav-panel--stats nav-panel--home-hero sectioned">
+                <div class="stat__wrap--home">
+                    <header class="nav-panel__header">
+                        <h2 class="gamma flush">Employment rate (aged 16 to 64)</h2>
+                    </header>
+                    <div class="stat__figure--home">
+                        73.4% 
+                    </div>
+                    <div class="stat__description">
+                        Feb-Apr 2015
+                    </div>
+                    <img class="stat__image--home" src="../../img/t1-sparkline-4-employment.png" alt="{{statistics.data.description.title}}">
+                    
+                    <a class="js-enhance--hide" href="{{statistics.data.uri}}">More info</a>
+                </div>
+                <footer class="nav-panel__footer-home-hero">
+                    <a href="{{theme.uri}}">Explore {{theme.description.title}}</a>
+                </footer>
+            </article>
+        </div>
+
+        <div class="grid-col grid-col--home-hero tablet-wide-grid-one-fifth">
+            <article class="nav-panel nav-panel--stats nav-panel--home-hero sectioned">
+                <div class="stat__wrap--home">
+                    <header class="nav-panel__header">
+                        <h2 class="gamma flush">UK population</h2>
+                    </header>
+                    <div class="stat__figure--home">
+                        64.6m 
+                    </div>
+                    <div class="stat__description">
+                        Mid-2014
+                    </div>
+                    <img class="stat__image--home" src="../../img/t1-sparkline-5-population.png" alt="{{statistics.data.description.title}}">
+                    
+                    <a class="js-enhance--hide" href="{{statistics.data.uri}}">More info</a>
+                </div>
+                <footer class="nav-panel__footer-home-hero">
+                    <a href="{{theme.uri}}">Explore {{theme.description.title}}</a>
+                </footer>
+            </article>
+        </div>
+
+
+    </div>
+</div>
+
+
+{{!-- Dynamic stastical highlights --}}
+{{!-- <div class="wrapper panel--mar">
+    <!-- grid-wrap -->
+    <h2>Statistical highlights</h2>
 
     <div class="grid-wrap grid-wrap--home-hero panel--separated--bottom">
       <!-- grid-col -->
         {{#each sections}}
         <div class="grid-col grid-col--home-hero tablet-wide-grid-one-fifth">
             <article class="nav-panel nav-panel--stats nav-panel--home-hero sectioned">
-                
-                <header class="nav-panel__header nav-panel__roomy">
-                    <h2 class="delta flush">{{statistics.data.description.title}}</h2>
-                </header>
-                <div class="nav-panel__roomy">
-                    <div class="stat__figure">
-                        <span class="stat__figure__unit">{{statistics.data.description.preUnit}}</span>
-                        {{statistics.data.description.number}}
-                        <span class="stat__figure__unit">{{statistics.data.description.unit}}</span>
-                    </div>
-                    <div class="stat__description">
-                        {{statistics.data.description.date}}
-                    </div>
-                    <img src="{{statistics.data.uri}}/sparkline" alt="{{statistics.data.description.title}}">
-                    
-                    <a class="js-hidden" href="{{statistics.data.uri}}">More info</a>
+                <div class="stat__wrap--home">
+                    <!-- add to dl -->
+                    <!-- change to dt -->
+                    <header class="nav-panel__header">
+                        <h2 class="gamma flush">{{statistics.data.description.title}}</h2>
+                    </header>
+                    <!-- change to dd's -->
+                    <p>
+                        <span class="stat__figure--home block">
+                            {{statistics.data.description.preUnit}} {{statistics.data.description.number}} {{statistics.data.description.unit}}
+                        </span>
+                        <span class="stat__description block">
+                            {{statistics.data.description.date}}
+                        </span>
+                        <img class="stat__image--home" src="{{statistics.data.uri}}/sparkline" alt="{{statistics.data.description.title}}">
+                        
+                        <a class="js-enhance--hide" href="{{statistics.data.uri}}">More info</a>
+                    </p>
                 </div>
-                <footer class="nav-panel__footer">
-                    <div class="nav-panel__action">
-                        <a class="nav-panel__roomy" href="{{theme.uri}}">Explore {{theme.description.title}}</a>
-                    </div>
+                <footer class="nav-panel__footer-home-hero">
+                    <a href="{{theme.uri}}">Explore {{theme.description.title}}</a>
                 </footer>
             </article>
             <!-- grid-col -->
         </div>
         {{/each}}
         <!-- /grid-wrap -->
-        </div>
+        <!--</div>  remove this closing div... -->
         <!-- /panel-->
     </div>
-</div>
+</div> --}}
 
-<div class="panel wrapper panel--separated--bottom">
-    <h2 class="delta flush">New this week</h2>
-    <div class="grid-wrap">
-        <ul class="list--neutral">
-            {{#each releases}}
-				<li class="grid-col desktop-grid-one-third">
-					<h3><a href="{{link}}" title="{{name}}">{{name}}</a></h3>
-					<p>
-                        {{description}}
-					</p>
-				</li>
-            {{/each}}
-        </ul>
-        <!-- /grid-wrap -->
+
+{{!-- <div class="panel wrapper">
+    <div class="panel--top-mar panel--separated--bottom">
+        <h2 class="delta flush">New this week</h2>
+        <div class="grid-wrap">
+            <ul class="list--neutral">
+    			<li class="grid-col desktop-grid-one-third">
+    				<h3 class="flush"><a href="#" title="Item 1">Item 1</a></h3>
+    				<p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam convallis laoreet diam ac iaculis. Ut non diam suscipit, aliquet ligula a, tincidunt mauris.
+    				</p>
+    			</li>
+                <li class="grid-col desktop-grid-one-third">
+                    <h3 class="flush"><a href="#" title="Item 2">Item 2</a></h3>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam convallis laoreet diam ac iaculis. Ut non diam suscipit, aliquet ligula a, tincidunt mauris.
+                    </p>
+                </li>
+                <li class="grid-col desktop-grid-one-third">
+                    <h3 class="flush"><a href="#" title="Item 3">Item 3</a></h3>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam convallis laoreet diam ac iaculis. Ut non diam suscipit, aliquet ligula a, tincidunt mauris.
+                    </p>
+                </li>
+            </ul>
+
+        </div>
+        <p><a href="#">View new and upcoming releases</a></p>
+
     </div>
-    <a href="#">View new and upcoming releases</a>
-    <!-- /section -->
+</div> --}}
+
+
+<div class="panel wrapper">
+    <div class="panel--top-mar">
+        <div class="grid-wrap">
+            <article class="grid-col desktop-grid-one-third nav--block-home-highlighted-content">
+                <h2 class="delta flush"><a href="">What’s coming and when? <span class="img-block"><img src="../../img/t1-cal.png" alt=""></span></a></h2>
+                <p>Find out when our statistics are released and sign-up to receive notifications.</p>
+            </article>
+            <article class="grid-col desktop-grid-one-third nav--block-home-highlighted-content">
+                <h2 class="delta flush"><a href="">Other official statistics <span class="img-block"><img src="../../img/t1-gov-uk.png" alt=""></span></a></h2>
+                <p>Find official statistics produced by other government departments.</p>
+            </article>
+            <article class="grid-col desktop-grid-one-third nav--block-home-highlighted-content">
+                <h2 class="delta flush"><a href="">Looking for local statistics? <span class="img-block"><img src="../../img/t1-local.png" alt=""></span></a></h2>
+                <p>A handy guide to let you know where to find local statistics.</p>
+            </article>
+            <article class="grid-col desktop-grid-one-half nav--block-home-highlighted-content">
+                <h2 class="delta flush"><a href="">Census <span class="img-block"><img src="../../img/t1-census.png" alt=""></span></a></h2>
+                <p>Discover how our census statistics help paint a picture of the nation and how we live.</p>
+            </article>
+            <article class="grid-col desktop-grid-one-half nav--block-home-highlighted-content">
+                <h2 class="delta flush"><a href="">Visual.ONS <span class="img-block"><img src="../../img/t1-visual-ons.png" alt=""></span></a></h2>
+                <p>Visual.ONS is a website exploring new approaches to making ONS statistics accessible and relevant to a wide public audience.</p>
+            </article>
+            
+            <!-- /grid-wrap -->
+        </div>
+        <!-- /section -->
+    </div>
 </div>
 <!-- wrapper -->
-<div class="wrapper panel--mar">
-    <div class="grid-wrap">
-		{{#each highlightedContent}}
-        <div class="grid-col box--padded-vertical nav--block-home-highlighted-content">
-			<h2 class="delta flush--half">{{name}}</h3>
-            <article class="box flush--half--bottom">
-                <div class="box__inner border box--padded">
-                    <div class="box__section">
-                        <h3 class="box__section__header">
-                            Image here
-                        </h3>
-                    </header>
-                    <!-- /box__header -->
-                    <div class="box__content">
-                            <a href="#">Link</a>
-                    </div>
-                    <!-- /box__content -->
-                </div>
-                <!-- /box__inner -->
-            </article>
-
-            <p class="flush--half">{{description}}</p>
-        </div>
-		{{/each}}
-	</div>
-    <!-- /grid-wrap -->
-</div>
 
 {{> partials/footer}}

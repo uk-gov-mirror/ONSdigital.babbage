@@ -14,7 +14,6 @@ public class SparklineRequestHandlerTest {
     @Mock
     HttpServletRequest httpServletRequest;
 
-    @Test
     public void testGet() throws Exception {
         SparklineImageRequestHandler handler = new SparklineImageRequestHandler();
         handler.get("/economy/grossdomesticproductgdp/timeseries/ihyq", httpServletRequest);

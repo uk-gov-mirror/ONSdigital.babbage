@@ -1,17 +1,15 @@
 package com.github.onsdigital.template.handlebars;
 
-import com.github.jknack.handlebars.Context;
-import com.github.jknack.handlebars.Handlebars;
-import com.github.jknack.handlebars.HumanizeHelper;
-import com.github.jknack.handlebars.Template;
+import com.github.jknack.handlebars.*;
 import com.github.jknack.handlebars.context.FieldValueResolver;
+import com.github.jknack.handlebars.context.MapValueResolver;
 import com.github.jknack.handlebars.helper.StringHelpers;
 import com.github.jknack.handlebars.io.FileTemplateLoader;
 import com.github.onsdigital.configuration.Configuration;
 import com.github.onsdigital.content.page.base.Page;
 import com.github.onsdigital.template.TemplateRenderer;
 import com.github.onsdigital.template.handlebars.helpers.DateFormatHelper;
-import com.github.onsdigital.template.handlebars.helpers.MarkdownHelper;
+import com.github.onsdigital.template.handlebars.helpers.CustomMarkdownTagHelper;
 
 import java.io.IOException;
 import java.util.Map;
@@ -30,15 +28,7 @@ public class HandlebarsRenderer implements TemplateRenderer {
     }
 
     private void initializeHelpers() {
-        //        handlebars.registerHelper(HelperRegistry.HELPER_MISSING, new Helper<Object>() {
-        //            @Override
-        //            public CharSequence apply(final Object context,
-        //                                      final com.github.jknack.handlebars.Options options)
-        //                    throws IOException {
-        //                return new Handlebars.SafeString(options.fn.text());
-        //            }
-        //        });
-        handlebars.registerHelper("md", new MarkdownHelper());
+        handlebars.registerHelper("md", new CustomMarkdownTagHelper());
         handlebars.registerHelper("df", new DateFormatHelper());
         // String helpers
         StringHelpers.register(handlebars);
@@ -55,7 +45,7 @@ public class HandlebarsRenderer implements TemplateRenderer {
 
         Context context = Context
                 .newBuilder(data)
-                .resolver(FieldValueResolver.INSTANCE)
+                .resolver(FieldValueResolver.INSTANCE, MapValueResolver.INSTANCE)
                 .build();
         return template.apply(context);
     }

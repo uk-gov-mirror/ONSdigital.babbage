@@ -1,0 +1,71 @@
+package com.github.onsdigital.request.handler;
+
+import com.github.onsdigital.content.page.base.Page;
+import com.github.onsdigital.content.service.ContentNotFoundException;
+import com.github.onsdigital.content.util.ContentUtil;
+import com.github.onsdigital.data.DataService;
+import com.github.onsdigital.data.zebedee.ZebedeeClient;
+import com.github.onsdigital.data.zebedee.ZebedeeRequest;
+import com.github.onsdigital.request.handler.base.RequestHandler;
+import com.github.onsdigital.request.response.BabbageResponse;
+import com.github.onsdigital.request.response.BabbageStringResponse;
+import com.github.onsdigital.template.TemplateService;
+import org.apache.commons.io.IOUtils;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.io.InputStream;
+
+/**
+ * Handles requests at the endpoint /chart.
+ * Renders a chart and associated content in an isolated page.
+ */
+public class ChartRequestHandler implements RequestHandler {
+
+    private static final String REQUEST_TYPE = "chart";
+
+    public static final String CONTENT_TYPE = "text/html";
+
+    @Override
+    public BabbageResponse get(String requestedUri, HttpServletRequest request) throws Exception {
+        return get(requestedUri, request, null);
+    }
+
+    @Override
+    public BabbageResponse get(String requestedUri, HttpServletRequest request, ZebedeeRequest zebedeeRequest) throws Exception {
+        return new BabbageStringResponse(getHtml(requestedUri, zebedeeRequest), CONTENT_TYPE);
+    }
+    
+    public String getHtml(String requestedUri, ZebedeeRequest zebedeeRequest) throws IOException, ContentNotFoundException {
+        Page page;
+
+        if (zebedeeRequest != null) {
+            page = ContentUtil.deserialisePage(readFromZebedee(requestedUri, zebedeeRequest));
+        } else {
+            page = ContentUtil.deserialisePage(readFromLocalData(requestedUri));
+        }
+
+        String html = TemplateService.getInstance().renderPage(page);
+        return html;
+    }
+
+    @Override
+    public String getRequestType() {
+        return REQUEST_TYPE;
+    }
+
+    //Read from babbage's file system
+    private InputStream readFromLocalData(String requestedUri) throws IOException {
+        return DataService.getInstance().getDataStream(requestedUri);
+    }
+
+    //Read data from zebedee
+    private String readFromZebedee(String uri, ZebedeeRequest zebedeeRequest) throws ContentNotFoundException, IOException {
+        ZebedeeClient zebedeeClient = new ZebedeeClient(zebedeeRequest);
+        try {
+            return IOUtils.toString(zebedeeClient.readData(uri + ".json", false));
+        } finally {
+            zebedeeClient.closeConnection();
+        }
+    }
+}

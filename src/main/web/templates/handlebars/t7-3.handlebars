@@ -12,18 +12,21 @@
 					<span>Release date: </span><br/>{{df releaseDate}}
 				</p>
 			</div>
-			
 		</div>
 	</div>
 	<!-- /page-header 'slate' -->
-	<div class="wrapper panel--mar">
+	<div class="wrapper panel--mar print-links">
 		<div class="grid-wrap">
-			<div class="grid-col desktop-grid-two-thirds">
-				<h2>Summary of request</h2>
-				{{md requestSummary}}
-				<h2>Summary of response</h2>
-				{{md responseSummary}}
-			</div>
+			<article class="grid-col desktop-grid-two-thirds">
+				<section>
+					<header><h2>Summary of request</h2></header>
+					{{md requestSummary}}
+				</section>
+				<section>
+					<header><h2>Summary of response</h2></header>
+					{{md responseSummary}}
+				</section>
+			</article>
 			<!-- /desktop-grid-two-thirds -->
 			<div class="grid-col desktop-grid-one-third">
 				<div class="box solid box--purple--separated--left">
