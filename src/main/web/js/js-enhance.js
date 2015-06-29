@@ -134,6 +134,7 @@ jQuery(window).load(function() {
     $('#jsEnhancePrint').click(function()
         {
             window.print();
+            return false;
         });
     }
 
