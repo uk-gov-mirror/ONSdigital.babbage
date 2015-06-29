@@ -43,13 +43,11 @@
 	<div class="wrapper panel--mar">
 		<div class="grid-wrap">
 			<article class="grid-col desktop-grid-two-thirds">
-				<header>
-					<h2>Executive summary</h2>
-				</header>
 				{{md summary}}
 			</article>
 			<!-- /grid-two-thirds -->
 			<div class="grid-col desktop-grid-one-third">
+				{{#if usedIn}}
 				<article class="box solid box--teal--separated--left">
 					<div class="box__inner border box--padded">
 						<h3 class="box__section__header">
@@ -67,6 +65,7 @@
 					</div>
 					<!-- /box__inner -->
 				</article>
+				{{/if}}
 				<!-- /box -->
 				<div class="box box--padded sectioned">
 					<h3 class="box__section__header">
