@@ -10,6 +10,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.github.onsdigital.configuration.Configuration;
 import org.junit.Test;
 
 import com.github.onsdigital.search.ScanFileSystem;
@@ -18,7 +19,7 @@ import com.github.onsdigital.search.ScanFileSystem;
  * Exercises scanning the file system
  */
 public class ScanFileSystemTest {
-	private String rootSearch = "target/content";
+	private String rootSearch = Configuration.getContentPath();
 
 	@Test
 	public void testGetFileNames() throws IOException {
@@ -35,10 +36,8 @@ public class ScanFileSystemTest {
 							|| fileName.endsWith(".xlsx")
 							|| fileName.endsWith(".csv") || fileName
 							.endsWith(".json")));
-			assertTrue("File path must contain target",
-					(fileName.contains("target")));
-			assertTrue("File path must be under taxonomy folder",
-					(fileName.contains("target/content/")));
+			assertTrue("File path must be under content folder",
+					(fileName.contains(rootSearch)));
 
 		}
 	}

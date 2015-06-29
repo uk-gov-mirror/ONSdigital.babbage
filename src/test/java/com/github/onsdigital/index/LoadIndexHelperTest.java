@@ -9,6 +9,7 @@ import java.nio.file.NoSuchFileException;
 import java.util.List;
 import java.util.Map;
 
+import com.github.onsdigital.configuration.Configuration;
 import org.junit.Test;
 
 import com.github.onsdigital.search.LoadIndexHelper;
@@ -16,15 +17,15 @@ import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;
 
 public class LoadIndexHelperTest {
-	private final static String RESOURCE_FILE_PATH = "target/content";
+	private final static String RESOURCE_FILE_PATH = Configuration.getContentPath();
 
-//	TODO: @Test
+	@Test
 	public void testGetFileNames() throws IOException {
 		List<String> fileNames = LoadIndexHelper.getAbsoluteFilePaths(RESOURCE_FILE_PATH);
 		assertFalse("Lookup should return some files", fileNames.isEmpty());
 	}
 
-//	TODO: @Test(expected = NoSuchFileException.class)
+	@Test(expected = NoSuchFileException.class)
 	public void testWrongPath() throws IOException {
 		List<String> fileNames = LoadIndexHelper.getAbsoluteFilePaths("thepath/thesubpath");
 		System.out.println("Tut siise is: " + fileNames.size());
@@ -33,18 +34,18 @@ public class LoadIndexHelperTest {
 
 //	TODO: @Test
 	public void testGetDocumentMapForContentType() throws JsonIOException, JsonSyntaxException, IOException {
-		Map<String, String> documentMap = LoadIndexHelper.getDocumentMap("target/content/economy/inflationandpriceindices/bulletins/consumerpriceinflationjune2014/data.json");
-		assertEquals("url should math file structure", "/economy/inflationandpriceindices/bulletins/consumerpriceinflationjune2014/", documentMap.get("url"));
+		Map<String, String> documentMap = LoadIndexHelper.getDocumentMap(RESOURCE_FILE_PATH + "/economy/inflationandpriceindices/bulletins/consumerpriceinflationjune2014/data.json");
+		assertEquals("url should math file structure", "/economy/inflationandpriceindices/bulletins/consumerpriceinflationjune2014/", documentMap.get("uri"));
 		assertEquals("type should be bulletins", "bulletin", documentMap.get("type"));
-		assertEquals("title should be data.json", "Consumer Price Inflation, June 2014", documentMap.get("title"));
+		assertEquals("title should be in data.json", "Consumer Price Inflation, June 2014", documentMap.get("title"));
 		assertTrue("tags should contain subdirs", documentMap.get("tags").contains("inflation"));
 	}
 
-//	TODO:@Test
+//	TODO: @Test
 	public void testGetDocumentMapForHomePage() throws JsonIOException, JsonSyntaxException, IOException {
-		Map<String, String> documentMap = LoadIndexHelper.getDocumentMap("target/content/economy/data.json");
-		assertEquals("url should match file structure", "/economy/", documentMap.get("url"));
-		assertEquals("type should be bulletins", "home", documentMap.get("type"));
+		Map<String, String> documentMap = LoadIndexHelper.getDocumentMap(RESOURCE_FILE_PATH  + "/economy/data.json");
+		assertEquals("url should match file structure", "/economy/", documentMap.get("uri"));
+		assertEquals("type should be taxonomy_landing_page", "taxonomy_landing_page", documentMap.get("type"));
 		assertEquals("title should be uksectoraccounts", "Economy", documentMap.get("title"));
 		assertFalse("tags should not contain content type subdir", documentMap.get("tags").contains("CONTENT_TYPE"));
 	}

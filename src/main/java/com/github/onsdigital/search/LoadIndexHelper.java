@@ -17,13 +17,12 @@ import java.util.*;
  * Helper methods for loading index into search engine
  */
 public class LoadIndexHelper {
-    private static final String NAME = "title";
+    private static final String DESCRIPTION = "description";
     private static final String CDID = "cdid";
     private static final String TAGS = "tags";
     private static final String TITLE = "title";
     private static final String TYPE = "type";
-    private static final String LEDE = "lede";
-    private static final String URL = "url";
+    private static final String URI = "uri";
     private static final String DELIMITTER = "/";
     private static final String SUMMARY = "summary";
 
@@ -65,38 +64,39 @@ public class LoadIndexHelper {
         Map<String, String> documentMap = null;
         PageType pageType = PageType.valueOf(type);
         String splitUrl = url.substring(0, url.indexOf("data.json"));
-        String title = getField(jsonObject, TITLE);
-        String summary = getField(jsonObject, SUMMARY);
-        String name = getField(jsonObject, NAME);
-        String lede = getField(jsonObject, LEDE);
+        JsonObject description = jsonObject.getAsJsonObject(DESCRIPTION);
+        String title = getField(description, TITLE);
+        String summary = getField(description, SUMMARY);
+//        String name = getField(jsonObject, NAME);
+//        String lede = getField(jsonObject, LEDE);
         switch (pageType) {
             case taxonomy_landing_page:
             case product_page:
-                documentMap = buildDocumentMap(splitUrl, splitPathAsList, type, name, lede, summary);
+                documentMap = buildDocumentMap(splitUrl, splitPathAsList, type, title, summary);
                 break;
             case timeseries:
-                String cdid = getField(jsonObject, CDID);
-                documentMap = buildTimeseriesMap(splitUrl, splitPathAsList, type, name, cdid);
+                String cdid = getField(description, CDID);
+                documentMap = buildTimeseriesMap(splitUrl, splitPathAsList, type, title, cdid);
                 break;
             case unknown:
                 System.out.println("json file: " + absoluteFilePath + "has unknown content type: " + pageType);
                 break;
             default:
-                documentMap = buildDocumentMap(splitUrl, splitPathAsList, type, title, lede, summary);
+                documentMap = buildDocumentMap(splitUrl, splitPathAsList, type, title, summary);
                 break;
         }
 
         return documentMap;
     }
 
-    private static Map<String, String> buildDocumentMap(String url, List<String> pathTokens, String type, String title, String lede, String summary) {
+    private static Map<String, String> buildDocumentMap(String url, List<String> pathTokens, String type, String title, String summary) {
 
         Map<String, String> documentMap = new HashMap<String, String>();
-        documentMap.put(URL, url);
+        documentMap.put(URI, url);
         documentMap.put(TYPE, type);
         documentMap.put(TITLE, title);
         documentMap.put(TAGS, pathTokens.toString());
-        documentMap.put(LEDE, lede);
+//        documentMap.put(LEDE, lede);
         documentMap.put(SUMMARY, summary);
         return documentMap;
     }
@@ -104,7 +104,7 @@ public class LoadIndexHelper {
     private static Map<String, String> buildTimeseriesMap(String url, List<String> pathTokens, String type, String title, String cdid) {
 
         Map<String, String> documentMap = new HashMap<String, String>();
-        documentMap.put(URL, url);
+        documentMap.put(URI, url);
         documentMap.put(TYPE, type);
         documentMap.put(TITLE, title);
         documentMap.put(TAGS, pathTokens.toString());

@@ -1,9 +1,16 @@
 package com.github.onsdigital.search.util;
 
+import com.github.onsdigital.search.ElasticSearchServer;
 import com.github.onsdigital.search.EmbeddedElasticSearchServer;
+import com.github.onsdigital.search.bean.AggregatedSearchResult;
+import com.github.onsdigital.search.bean.SearchResult;
 import org.elasticsearch.ElasticsearchException;
+import org.elasticsearch.bootstrap.Elasticsearch;
 import org.elasticsearch.common.settings.ImmutableSettings;
 import org.elasticsearch.common.settings.Settings;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.io.IOException;
 
@@ -11,19 +18,15 @@ import static org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder;
 
 public class SearchHelperTest {
 
-	private EmbeddedElasticSearchServer embeddedServer;
-
+	@Before
 	public void startEmbeddedServer() throws ElasticsearchException,
 			IOException {
-		Settings settings = ImmutableSettings.builder()
-				.put("http.enabled", false)
-				.put("path.data", "target/elasticsearch-data").build();
-		embeddedServer = new EmbeddedElasticSearchServer(settings, "testNode");
+		ElasticSearchServer.startEmbeddedServer();
 		prepareMockData();
 	}
 
 	private void prepareMockData() throws ElasticsearchException, IOException {
-		embeddedServer
+		ElasticSearchServer
 				.getClient()
 				.prepareIndex("testindex", "testtype", String.valueOf(1))
 				.setSource(
@@ -32,15 +35,12 @@ public class SearchHelperTest {
 								.field("theme", "testTheme").endObject()).get();
 	}
 
-	public void shutdownEmbeddedServer() {
-		embeddedServer.shutdown();
-	}
-
+	@Test
 	public void testSearchQuery() throws Exception {
-//		SearchHelper util = new SearchHelper(embeddedServer.getClient());
-//		SearchResult result = util.search(new ONSQueryBuilder("testindex")
-//				.setSearchTerm("do").setFields("tags"));
-//		Assert.assertEquals(1, result.getNumberOfResults());
+		SearchHelper util = new SearchHelper();
+		AggregatedSearchResult result = util.search(new ONSQueryBuilder("testindex")
+				.setSearchTerm("do").setFields("tags").getSearchTerm(),1 , "testtype");
+		Assert.assertEquals(1, result.getNumberOfResults());
 	}
 
 }

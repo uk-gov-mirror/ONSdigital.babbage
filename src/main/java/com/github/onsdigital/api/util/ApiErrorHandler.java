@@ -26,6 +26,11 @@ public class ApiErrorHandler {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             errorResponse.put("message", "Data you are looking for is not available");
             errorResponse.put("status", String.valueOf(HttpServletResponse.SC_NOT_FOUND));
+        } else if ( e instanceof IllegalArgumentException ) {
+            //TODO: Tidy up exception management
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            errorResponse.put("message", e.getMessage() );
+            errorResponse.put("status", String.valueOf(HttpServletResponse.SC_BAD_REQUEST));
         } else {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             errorResponse.put("message", "Internal Server Error Occurred!");
