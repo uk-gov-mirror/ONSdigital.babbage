@@ -26,11 +26,12 @@ import java.util.Map;
 public class SearchHelper {
 
 	private final static String TITLE = "title";
+	private final static String URI_FIELD = "uri";
 	private final static String CDID = "cdid";
 
 	/**
 	 * Performs search, if first page with no type filtering returns a single
-	 * most relevant home type result at the top
+	 * most relevant taxonomy page type result at the top
 	 * 
 	 * @param searchTerm
 	 * @param page
@@ -69,18 +70,18 @@ public class SearchHelper {
 			return null;
 		}
 
-		Map<String, Object> TimeSeriesProperties = result.getResults().iterator().next();
-		TimeSeries TimeSeries = new TimeSeries();
-		TimeSeries.setUri(URI.create((String) TimeSeriesProperties.get("url")));
+		Map<String, Object> timeSeriesProperties = result.getResults().iterator().next();
+		TimeSeries timeseries = new TimeSeries();
+		timeseries.setUri(URI.create((String) timeSeriesProperties.get(URI_FIELD)));
 		TimeseriesDescription description = new TimeseriesDescription();
-		description.setCdid((String) TimeSeriesProperties.get("cdid"));
-		description.setTitle((String) TimeSeriesProperties.get("title"));
-		return TimeSeries;
+		description.setCdid((String) timeSeriesProperties.get(CDID));
+		description.setTitle((String) timeSeriesProperties.get(TITLE));
+		return timeseries;
 
 	}
 
 	public static AggregatedSearchResult searchSuggestions(String query, int page, String[] types) throws IOException, Exception {
-		TermSuggestionBuilder termSuggestionBuilder = new TermSuggestionBuilder("autocorrect").field("title").text(query).size(2);
+		TermSuggestionBuilder termSuggestionBuilder = new TermSuggestionBuilder("autocorrect").field(TITLE).text(query).size(2);
 		SuggestResponse suggestResponse = ElasticSearchServer.getClient().prepareSuggest("ons").addSuggestion(termSuggestionBuilder).execute().actionGet();
 		AggregatedSearchResult result = null;
 
@@ -142,17 +143,17 @@ public class SearchHelper {
 	}
 
 	private static ONSQueryBuilder buildHomeQuery(String searchTerm, int page) {
-		ONSQueryBuilder homeQuery = new ONSQueryBuilder("ons").setType("home").setPage(page).setSearchTerm(searchTerm).setSize(1).setFields(TITLE, "url");
+		ONSQueryBuilder homeQuery = new ONSQueryBuilder("ons").setTypes("taxonomy_landing_page", "product_page").setPage(page).setSearchTerm(searchTerm).setSize(1).setFields(TITLE, URI_FIELD);
 		return homeQuery;
 	}
 	
 	private static ONSQueryBuilder buildTimeSeriesCountQuery(String searchTerm) {
-		ONSQueryBuilder TimeSeriesCountQuery = new ONSQueryBuilder("ons").setType(PageType.timeseries.toString()).setSearchTerm(searchTerm).setFields(TITLE, "url");
+		ONSQueryBuilder TimeSeriesCountQuery = new ONSQueryBuilder("ons").setType(PageType.timeseries.toString()).setSearchTerm(searchTerm).setFields(TITLE, URI_FIELD);
 		return TimeSeriesCountQuery;
 	}
 
 	private static ONSQueryBuilder buildContentQuery(String searchTerm, int page, String... types) {
-		ONSQueryBuilder contentQuery = new ONSQueryBuilder("ons").setSearchTerm(searchTerm).setFields(TITLE, "url");
+		ONSQueryBuilder contentQuery = new ONSQueryBuilder("ons").setSearchTerm(searchTerm).setFields(TITLE, URI_FIELD);
 		if (ArrayUtils.isEmpty(types)) {
 			contentQuery.setTypes(PageType.bulletin.toString(), PageType.dataset.toString(), PageType.methodology.toString(), PageType.article.toString()).setPage(page);
 
@@ -164,7 +165,7 @@ public class SearchHelper {
 	}
 
 	private static ONSQueryBuilder buildAutocompleteQuery(String searchTerm) {
-		ONSQueryBuilder autocompleteQuery = new ONSQueryBuilder("ons").setSearchTerm(searchTerm).setFields(TITLE, "url");
+		ONSQueryBuilder autocompleteQuery = new ONSQueryBuilder("ons").setSearchTerm(searchTerm).setFields(TITLE, URI_FIELD);
 		autocompleteQuery.setTypes(PageType.timeseries.toString(), PageType.bulletin.toString(), PageType.dataset.toString(), PageType.methodology.toString(),
 				PageType.article.toString());
 		return autocompleteQuery;

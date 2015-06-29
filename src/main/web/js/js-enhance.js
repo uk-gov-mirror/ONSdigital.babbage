@@ -98,7 +98,7 @@ jQuery(window).load(function() {
             return;
         }
 
-        var location = window.location.pathname + "/data";
+        var location = stripTrailingSlash(window.location.pathname) + "/data";
         console.debug("Downloading timseries data from " + location)
 
         $.getJSON(location, function(timeseries) {
@@ -108,6 +108,13 @@ jQuery(window).load(function() {
         }).fail(function(d, textStatus, error) {
             console.error("Failed reading timseries, status: " + textStatus + ", error: " + error)
         });
+    }
+
+    function stripTrailingSlash(str) {
+        if(str.substr(-1) === '/') {
+            return str.substr(0, str.length - 1);
+        }
+        return str;
     }
 
     function jsEnhanceMarkdownCharts() {
@@ -134,6 +141,7 @@ jQuery(window).load(function() {
     $('#jsEnhancePrint').click(function()
         {
             window.print();
+            return false;
         });
     }
 

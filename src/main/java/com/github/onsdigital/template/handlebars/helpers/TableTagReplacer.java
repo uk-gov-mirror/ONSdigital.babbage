@@ -50,7 +50,7 @@ public class TableTagReplacer implements TagReplacementStrategy {
             page.setUri(URI.create(uri));
         }
 
-        String html = TemplateService.getInstance().renderPage(page, "partials/table");
+        String html = TemplateService.getInstance().render(page, "partials/table");
         return html;
     }
 }

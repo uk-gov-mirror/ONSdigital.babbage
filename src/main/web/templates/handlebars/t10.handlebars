@@ -1,9 +1,9 @@
-{{> templates/handlebars/partials/header}}
+{{> partials/header}}
 <div class="wrapper panel--top-mar">
 	<h1 class="page-header__title flush--half--bottom">{{title}}</h1>
 	<p>
 		{{#if contentSearchResult.results}}
-		<span class="stand-out-text">{{contentSearchResult.numberOfResults}}</span> results for <strong>'cpi'</strong> showing <strong>statistical bulletins</strong><span class="icon-cancel"></span> and <strong>datasets</strong><span class="icon-cancel"></span>.
+		<span class="stand-out-text">{{contentSearchResult.numberOfResults}}</span> results for <strong>'??'</strong> showing <strong>??</strong><span class="icon-cancel"></span> and <strong>??</strong><span class="icon-cancel"></span>.
 		{{else}}
 		Sorry, there were no results for <span class="stand-out-text">'cpi'</span>.
 		{{/if}}
@@ -105,8 +105,7 @@
 		</div>
 		<!-- /grid-desktop-one-third -->
 		<div class="grid-col desktop-grid-two-thirds">
-			{{#if homeSearchResult.results}}
-				{{#each}}
+			{{#each homeSearchResult.results}}
 				<article class="box box--padded sectioned">
 					<div class="box__content">
 						<div class="grid-wrap">
@@ -116,8 +115,8 @@
 								</p>
 							</div>
 							<div class="grid-col desktop-grid-one-half nav--block-landing box--padded-vertical">
-								<h3><a href="{{url}}">{{title}}</a></h3>
-								{{md lede}}
+								<h3><a href="{{uri}}">{{title}}</a></h3>
+								{{summary}}
 							</div>
 							<!-- /desktop-grid -->
 						</div>
@@ -126,15 +125,14 @@
 					<!-- /box__content -->
 				</article>
 				{{/each}}
-			{{/if}}
 			{{#each contentSearchResult.results}}
 			<ul class="list--neutral">
 				<li>
-					<h3 class="flush inline"><a href="{{url}}">{{title}}</a></h3>
+					<h3 class="flush inline"><a href="{{uri}}">{{title}}</a></h3>
 					<span class="lozenge">{{type}}</span>
 					{{#if partOf}}
 					<p class="micro flush">
-						<a href="{{url}}">[{{title}}]</a><span class="icon-search-1"></span>
+						<a href="{{uri}}">[{{title}}]</a><span class="icon-search-1"></span>
 					</p>
 					{{/if}}
 					<p class="mini description flush">
@@ -151,4 +149,4 @@
 </div>
 <!-- /wrapper -->
 {{/if}}
-{{> templates/handlebars/partials/footer}}
+{{> partials/footer}}

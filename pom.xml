@@ -63,11 +63,11 @@
 		</dependency>
 
 		<!-- MongoDB -->
-		<dependency>
-			<groupId>org.mongodb</groupId>
-			<artifactId>mongo-java-driver</artifactId>
-			<version>2.12.4</version>
-		</dependency>
+		<!--<dependency>-->
+			<!--<groupId>org.mongodb</groupId>-->
+			<!--<artifactId>mongo-java-driver</artifactId>-->
+			<!--<version>2.12.4</version>-->
+		<!--</dependency>-->
 
  		<!-- Encryption -->
 		<dependency>
@@ -155,7 +155,7 @@
         <dependency>
             <groupId>com.github.ONSdigital</groupId>
             <artifactId>content-library</artifactId>
-            <version>content-library-1.0.33</version>
+            <version>content-library-1.0.34</version>
         </dependency>
 
 	</dependencies>

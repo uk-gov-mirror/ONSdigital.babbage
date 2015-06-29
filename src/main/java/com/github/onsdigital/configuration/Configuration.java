@@ -47,6 +47,9 @@ public class Configuration {
 
     private static String templatesSuffix;
 
+    //search template file name
+    private static final String searchTemplateName = "t10";
+
 
     public static String getZebedeeUrl() {
         return StringUtils.defaultIfBlank(getValue("ZEBEDEE_URL"), DEFAULT_ZEBEDEE_URL);
@@ -87,6 +90,11 @@ public class Configuration {
             }
         }
         return templatesSuffix;
+    }
+
+
+    public static String getSearchTemplateName() {
+        return searchTemplateName;
     }
 
     /**

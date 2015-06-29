@@ -85,15 +85,15 @@ public class ScanFileSystem {
 	}
 
 	private static boolean isRequiredForIndex(String fileName) {
-		return isJsonFile(fileName) && isNotRelease(fileName) && isNotPreviousVersion(fileName);
+		return isDataFile(fileName) && isNotRelease(fileName) && isNotPreviousVersion(fileName);
 	}
 
 	private static boolean isCollectionItem(String fileName, String type) {
-		return isJsonFile(fileName) && isCollectionItemType(fileName, type) && isNotPreviousVersion(fileName);
+		return isDataFile(fileName) && isCollectionItemType(fileName, type) && isNotPreviousVersion(fileName);
 	}
 
-	private static boolean isJsonFile(String fileName) {
-		return fileName.endsWith(".json");
+	private static boolean isDataFile(String fileName) {
+		return fileName.endsWith("data.json");
 	}
 
 	private static boolean isNotRelease(String fileName) {
