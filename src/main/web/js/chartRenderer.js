@@ -13,8 +13,13 @@ function renderChartForUri(uri) {
     pymChild.sendHeight();
   }
 
+  var dataUri = uri + "/data";
+  if (dataUri.indexOf('/') !== 0) {
+    dataUri = '/' + dataUri;
+  }
+
   $.ajax({
-    url: '/' + uri + "/data",
+    url: dataUri,
     type: "GET",
     success: function (data) {
       chart = data;
@@ -129,6 +134,10 @@ function renderChartObject(bindTag, chart, chartHeight, chartWidth) {
         .style('fill', '#000000')
         .text(chart.unit);
     }
+  }
+
+  function getColors() {
+    var availableColors = ['#274796','#F5942F','#E73F40','#7BCAE2' ];
   }
 
   function checkType(chart) {
