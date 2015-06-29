@@ -3,7 +3,7 @@
 	<div class="wrapper">
 		{{> templates/handlebars/partials/breadcrumb}}
 		<p class="page-header__title">
-			<strong>Release</strong>
+			Release
 		</p>
 		<h1 class="page-header__title flush--half--bottom">{{description.title}}</h1>
 		<div class="grid-wrap">
@@ -33,7 +33,7 @@
 			{{md summary}}
 			<div class="grid-wrap panel--pad">
 				<div class="grid-col desktop-grid-one-third">
-					<h2>Statistical bulletin and articles</h2>
+					<h2>Statistical bulletins and articles</h2>
 				</div>
 				<!-- /desktop-grid-one-third -->
 				{{#each bulletins}}
@@ -66,7 +66,7 @@
 			{{/each}}
 			{{#if accordions}}
 				{{#each}}
-				<section class="accordion is-collapsed">
+				<section id="{{slugify title}}" class="accordion is-collapsed">
 					<h2 id="sc-{{@index}}" class="accordion__title delta" aria-controls="content-{{@index}}">{{title}}</h2>
 					<div id="content-{{@index}}" class="accordion__content" aria-labelledby="sc-{{@index}}">
 						{{md markdown}}
