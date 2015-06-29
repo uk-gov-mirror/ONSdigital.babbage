@@ -31,7 +31,7 @@
 									<div class="stat">
 											<div class="stat__figure ">
 													<div>
-															{{items.0.data.description.number}}<span class="stat__figure__unit"> {{items.0.data.description.unit}}</span>
+															<span class="stat__figure-enhance">{{items.0.data.description.number}}</span><span class="stat__figure__unit"> {{items.0.data.description.unit}}</span>
 													</div>
 													<div class="stat__description">
 														{{items.0.data.description.date}}
@@ -61,7 +61,7 @@
 					<h2>Latest statistical bulletin</h2>
 					<header class="box___section">
 							<h3 class="navpanel-list-heading lede box--padded-bottom-small">
-							<a href="{{statsBulletins.0.uri}}">{{statsBulletins.0.description.title}}</a>
+							<a href="{{statsBulletins.0.uri}}">{{statsBulletins.0.description.title}}{{#if statsBulletins.0.description.edition}}: {{statsBulletins.0.description.edition}}{{/if}}</a>
 							</h3>
 					</header>
 					<h3>What's in the bulletin?</h3>
@@ -115,7 +115,7 @@
 							</div>
 							<div class="list--table__item__body list--table__item__body--stat">
 								<div class="stat__figure">
-									{{data.description.number}}<span class="stat__figure__unit"> {{data.description.unit}}</span>
+									<span class="stat__figure-enhance">{{data.description.number}}</span><span class="stat__figure__unit"> {{data.description.unit}}</span>
 									<div class="stat__description">{{data.description.date}}</div>
 								</div>
 							</div>
@@ -189,7 +189,7 @@
 					</div>
 					<!-- /grid-wrap -->
 				</div>
-				<a  href="#">View more datasets</a>
+				<a href="#">View more datasets</a>
 				<!-- /grid-wrap -->
 				<!-- /grid-col -->
 			</div>
