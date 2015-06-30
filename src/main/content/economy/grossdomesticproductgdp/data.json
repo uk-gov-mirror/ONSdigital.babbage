@@ -66,10 +66,10 @@
   ],
   "datasets": [
     {
-      "uri": "/economy/grossdomesticproductgdp/datasets/grossdomesticproductdatacollection"
+      "uri": "/economy/grossdomesticproductgdp/datasets/gdpbycategoryofexpenditure"
     },
     {
-      "uri": "/economy/grossdomesticproductgdp/datasets/gdpbycategoryofexpenditure"
+      "uri": "/economy/grossdomesticproductgdp/datasets/grossdomesticproductdatacollection"
     }
   ],
   "statsBulletins": [

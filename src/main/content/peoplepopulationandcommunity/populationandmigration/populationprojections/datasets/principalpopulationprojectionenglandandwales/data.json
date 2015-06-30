@@ -2,12 +2,11 @@
   "downloads": [
     {
       "title": "2012 based",
-      "xls": "http://www.ons.gov.uk/ons/rel/npp/national-population-projections/2012-based-projections/rft-table-a1-3-principal-projection---ew-summary.xls"
+      "file": "http://www.ons.gov.uk/ons/rel/npp/national-population-projections/2012-based-projections/rft-table-a1-3-principal-projection---ew-summary.xls"
     },
     {
       "title": "2010 based",
-      "xls": "http://www.ons.gov.uk/ons/rel/npp/national-population-projections/2010-based-projections/rft-table-a1-3-principal-projection---ew-summary.xls",
-      "csv": "#"
+      "file": "#"
     }
   ],
   "section": {

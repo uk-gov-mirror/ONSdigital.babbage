@@ -15,13 +15,13 @@
   ],
   "datasets": [
     {
-      "uri": "/businessindustryandtrade/changestobusiness/mergersandacquisitions/datasets/disposalsabroadbyukcompanies"
-    },
-    {
       "uri": "/businessindustryandtrade/changestobusiness/mergersandacquisitions/datasets/mergersandacquisitions"
     },
     {
       "uri": "/businessindustryandtrade/changestobusiness/mergersandacquisitions/datasets/mergersandacquisitionsabroadbyukcompanies"
+    },
+    {
+      "uri": "/businessindustryandtrade/changestobusiness/mergersandacquisitions/datasets/disposalsabroadbyukcompanies"
     }
   ],
   "statsBulletins": [
