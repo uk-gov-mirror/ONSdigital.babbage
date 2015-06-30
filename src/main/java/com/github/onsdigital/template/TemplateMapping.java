@@ -29,6 +29,7 @@ public class TemplateMapping {
         put(PageType.static_qmi, "t7-1");
         put(PageType.static_adhoc, "t7-2");
         put(PageType.static_foi, "t7-3");
+        put(PageType.list_page, "t9-6");
         put(PageType.chart, "chart");
         put(PageType.table, "table");
     }
