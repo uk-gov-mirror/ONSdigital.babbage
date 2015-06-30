@@ -1,13 +1,12 @@
 package com.github.onsdigital.api.home;
 
-import java.io.IOException;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import com.github.davidcarboni.restolino.framework.Home;
 import com.github.onsdigital.api.util.ApiErrorHandler;
 import com.github.onsdigital.request.RequestDelegator;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 public class HomePage implements Home {
 
@@ -20,5 +19,4 @@ public class HomePage implements Home {
         }
         return null;
     }
-
 }
