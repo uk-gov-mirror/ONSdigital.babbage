@@ -1,0 +1,40 @@
+{
+  "downloads": [
+    {
+      "title": "2013",
+      "file": "#"
+    },
+    {
+      "title": "2012",
+      "file": "#"
+    },
+    {
+      "title": "2011",
+      "file": "#"
+    }
+  ],
+  "section": {
+    "markdown": "Population estimates by sex and single year of age for countries, regions and smaller geographic breakdowns."
+  },
+  "type": "dataset",
+  "uri": "/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/populationbyageandsex",
+  "breadcrumb": [
+    {
+      "uri": "/"
+    },
+    {
+      "uri": "/peoplepopulationandcommunity"
+    },
+    {
+      "uri": "/peoplepopulationandcommunity/populationandmigration"
+    },
+    {
+      "uri": "/peoplepopulationandcommunity/populationandmigration/populationestimates"
+    }
+  ],
+  "description": {
+    "nationalStatistic": true,
+    "title": "Population by age and sex",
+    "summary": "Population estimates data by sex and single year of age for countries, regions and smaller geographic breakdowns"
+  }
+}

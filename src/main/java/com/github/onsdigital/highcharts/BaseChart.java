@@ -4,6 +4,8 @@ import com.github.onsdigital.configuration.Configuration;
 import com.github.onsdigital.content.page.statistics.data.timeseries.TimeSeries;
 import com.github.onsdigital.content.partial.TimeseriesValue;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -24,7 +26,7 @@ public abstract class BaseChart {
         this.config = getChartConfig();
         data = resolveData(timeSeries);
         List<Value> values = prepareData(data);
-        config = config.replace("':data:'", new Gson().toJson(values));
+        config = config.replace("':data:'", new GsonBuilder().serializeNulls().create().toJson(values));
         config = config.replace("':tickInterval:'", String.valueOf(resolveTickInterval(data)));
         config = config.replace("':yMin:'", String.valueOf(min));
     }
@@ -33,8 +35,13 @@ public abstract class BaseChart {
         List<Value> seriesList = new ArrayList<>();
         for (Iterator<TimeseriesValue> iterator = data.iterator(); iterator.hasNext(); ) {
             TimeseriesValue timeseries = iterator.next();
-            double value = Double.valueOf(timeseries.value);
+            Double value = StringUtils.isNotEmpty(timeseries.value) ?  Double.valueOf(timeseries.value) : null;
             seriesList.add(new Value().setName(timeseries.date).setY(value));
+
+            if (value == null) {
+                continue;
+            }
+
             if (min == null) {
                 min = value;
             } else {

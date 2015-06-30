@@ -1,7 +1,6 @@
 package com.github.onsdigital.search;
 
 import com.github.onsdigital.configuration.Configuration;
-import com.github.onsdigital.content.page.base.Page;
 import com.github.onsdigital.content.page.base.PageType;
 import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.action.ListenableActionFuture;
@@ -51,7 +50,7 @@ public class Indexer {
 		indexBuilder.addMapping(PageType.product_page.toString(), getMappingProperties(PageType.product_page.toString()));
 		indexBuilder.addMapping(PageType.bulletin.toString(), getMappingProperties(PageType.bulletin.toString()));
 		indexBuilder.addMapping(PageType.article.toString(), getMappingProperties(PageType.article.toString()));
-		indexBuilder.addMapping(PageType.methodology.toString(), getMappingProperties(PageType.methodology.toString()));
+//		indexBuilder.addMapping(PageType.methodology.toString(), getMappingProperties(PageType.methodology.toString()));
 
 		System.out.println("Adding timeseries mappings");
 		indexBuilder.addMapping(PageType.timeseries.toString(), getTimeseriesMappingProperties(PageType.timeseries.toString()));

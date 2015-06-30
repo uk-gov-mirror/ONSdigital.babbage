@@ -16,7 +16,7 @@ import java.io.InputStream;
 
 /**
  * Created by bren on 01/06/15.
- *
+ * <p>
  * Zebedeeclient is not thread-safe
  */
 public class ZebedeeClient {
@@ -45,7 +45,7 @@ public class ZebedeeClient {
         }
     }
 
-    private InputStream startDataStream(String uri, boolean resolveReferences) throws IOException, ContentNotFoundException {
+    private InputStream startDataStream(String uri, boolean resolveReferences, String endpoint) throws IOException, ContentNotFoundException {
 
         if (client == null) {
             openConnection();
@@ -62,7 +62,7 @@ public class ZebedeeClient {
         }
 
         InputStream data = null;
-        String url = Configuration.getZebedeeUrl() + "/content/" + collection;
+        String url = Configuration.getZebedeeUrl() + "/" + endpoint + "/" + collection;
         System.out.println("Calling zebedee: " + url + " for path " + uriPath + " with token: " + authToken);
         url += "?uri=" + uriPath;
         if (resolveReferences) {
@@ -101,10 +101,14 @@ public class ZebedeeClient {
     }
 
     public InputStream readData(String uri, boolean resolveReferences) throws ContentNotFoundException {
+        return get("content", uri, resolveReferences);
+    }
 
-        InputStream dataStream = null;
+    public InputStream get(String endpoint, String uri, boolean resolveReferences) throws ContentNotFoundException {
+
+        InputStream dataStream;
         try {
-            dataStream = startDataStream(uri, resolveReferences);
+            dataStream = startDataStream(uri, resolveReferences, endpoint);
             if (dataStream != null) {
                 return dataStream;
             } else {
@@ -114,9 +118,8 @@ public class ZebedeeClient {
         } catch (IOException e) {
             //TODO: Update client library for possible content read error exception typess
             closeConnection();
-            throw new RuntimeException("Failed reading data from zebedee",e);
+            throw new RuntimeException("Failed reading data from zebedee", e);
         }
-
     }
 
 }

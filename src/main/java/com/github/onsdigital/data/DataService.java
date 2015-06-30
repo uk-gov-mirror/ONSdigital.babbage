@@ -1,24 +1,26 @@
 package com.github.onsdigital.data;
 
-import java.io.*;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
-
 import com.github.davidcarboni.ResourceUtils;
+import com.github.onsdigital.api.data.Data;
+import com.github.onsdigital.configuration.Configuration;
 import com.github.onsdigital.content.service.ContentNotFoundException;
 import com.github.onsdigital.content.service.ContentService;
 import com.github.onsdigital.util.JsonPrettyprint;
 import com.github.onsdigital.util.Validator;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-
-import com.github.onsdigital.api.data.Data;
-import com.github.onsdigital.configuration.Configuration;
 import org.apache.commons.lang3.CharEncoding;
 import org.apache.commons.lang3.StringUtils;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.StringWriter;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Centralized service to serve data. Coded as a singleton rather than a collection of static methods for testing and mocking purposes.

@@ -15,7 +15,8 @@
 					<span>Contact: </span><br/><a href="mailto:{{description.contact.email}}">{{#if description.contact.name}}{{description.contact.name}}{{else}}{{description.contact.email}}{{/if}}</a>
 				</p>
 				<p class="grid-col tablet-grid-one-quarter divider--border-left">
-					<span>Release date: </span><br/>{{df description.releaseDate}}<br/><a href="#">previous versions</a>
+					<span>Release date: </span><br/>{{df description.releaseDate}}<br/>
+				    <a href="previousreleases">previous versions</a>
 				</p>
 				<p class="grid-col tablet-grid-one-quarter divider--border-left">
 				  <span>Next release: </span><br/>{{description.nextRelease}}

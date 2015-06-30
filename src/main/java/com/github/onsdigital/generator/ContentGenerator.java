@@ -6,7 +6,6 @@ import com.github.onsdigital.content.link.PageReference;
 import com.github.onsdigital.content.page.base.Page;
 import com.github.onsdigital.content.page.base.PageDescription;
 import com.github.onsdigital.content.page.home.HomePage;
-import com.github.onsdigital.content.page.methodology.Methodology;
 import com.github.onsdigital.content.page.release.Release;
 import com.github.onsdigital.content.page.release.ReleaseDescription;
 import com.github.onsdigital.content.page.statistics.data.timeseries.TimeSeries;
@@ -21,7 +20,7 @@ import com.github.onsdigital.generator.data.Data;
 import com.github.onsdigital.generator.data.DatasetMappingsCSV;
 import com.github.onsdigital.generator.markdown.ArticleMarkdown;
 import com.github.onsdigital.generator.markdown.BulletinMarkdown;
-import com.github.onsdigital.generator.markdown.MethodologyMarkdown;
+//import com.github.onsdigital.generator.markdown.MethodologyMarkdown;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -41,7 +40,7 @@ public class ContentGenerator {
     private static final String RELEASES_DIRECTORY = "releases";
     private static final String BULLETINS_DIRECTORY = "bulletins";
     private static final String ARTICLES_DIRECTORY = "articles";
-    private static final String METHODOLOGIES_DIRECTORY = "methodology";
+//    private static final String METHODOLOGIES_DIRECTORY = "methodology";
     private static final String DATASETS_DIRECTORY = "datasets";
     private static final String TIMESERIES_DIRECTORY = "timeseries";
 
@@ -203,7 +202,7 @@ public class ContentGenerator {
 
         persistBulletins(node, directory, productPage);
         persistArticles(node, directory, productPage);
-        persistMethodologies(node, directory, productPage);
+//        persistMethodologies(node, directory, productPage);
         persistDatasets(node, directory, productPage);
 
 
@@ -436,16 +435,16 @@ public class ContentGenerator {
         }
     }
 
-    private void persistMethodologies(ContentNode folder, File file, ProductPage productPage) throws IOException {
-        if (folder.methodology.size() > 0) {
-            File methodologiesDir = createSubDirectory(file, METHODOLOGIES_DIRECTORY);
-            for (Methodology methodology : folder.methodology) {
-                methodology.buildBreadcrumb(productPage);
-                File methodologyDir = createSubDirectory(methodologiesDir, StringUtils.deleteWhitespace(MethodologyMarkdown.toFilename(methodology)));
-                persistData(methodologyDir, methodology);
-            }
-        }
-    }
+//    private void persistMethodologies(ContentNode folder, File file, ProductPage productPage) throws IOException {
+//        if (folder.methodology.size() > 0) {
+//            File methodologiesDir = createSubDirectory(file, METHODOLOGIES_DIRECTORY);
+//            for (Methodology methodology : folder.methodology) {
+//                methodology.buildBreadcrumb(productPage);
+//                File methodologyDir = createSubDirectory(methodologiesDir, StringUtils.deleteWhitespace(MethodologyMarkdown.toFilename(methodology)));
+//                persistData(methodologyDir, methodology);
+//            }
+//        }
+//    }
 
     private void persistDatasets(ContentNode folder, File file, ProductPage productPage) throws IOException {
 
