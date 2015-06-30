@@ -18,14 +18,6 @@ RUN npm install --prefix=src/main/web --unsafe-perm
 
 RUN mvn clean compile dependency:copy-dependencies
 
-# Generate content
-
-# RUN java -Xmx2048m -cp "target/classes:target/dependency/*" com.github.onsdigital.generator.ContentGenerator
-
-# Now copy files to the target
-
-# RUN mvn process-resources
-
 # Restolino
 
 ENV RESTOLINO_STATIC="src/main/web"
@@ -44,7 +36,7 @@ ENV MONGO_PASSWORD=uJlVY2FDGI5SFawS/PN+jnZpymKWpU7C
 RUN mv /usr/entrypoint/container.sh /usr/src/
 # Download build and start highcharts server
 RUN echo "./highcharts-export-server.sh" >> container.sh
-RUN echo "java $JAVA_OPTS \
+RUN echo "java -Xmx2048m \
           -Drestolino.files=$RESTOLINO_STATIC \
           -Drestolino.classes=$RESTOLINO_CLASSES \
           -Drestolino.packageprefix=$PACKAGE_PREFIX \
