@@ -1,11 +1,11 @@
 package com.github.onsdigital.api.data;
 
 import com.github.davidcarboni.restolino.framework.Api;
-import com.github.davidcarboni.restolino.json.Serialiser;
 import com.github.onsdigital.bean.DateVal;
 import com.github.onsdigital.bean.DownloadRequest;
 import com.github.onsdigital.content.page.statistics.data.timeseries.TimeSeries;
 import com.github.onsdigital.content.partial.TimeseriesValue;
+import com.github.onsdigital.content.util.ContentUtil;
 import com.github.onsdigital.data.DataService;
 import com.github.onsdigital.util.CSVGenerator;
 import com.github.onsdigital.util.XLSXGenerator;
@@ -86,7 +86,7 @@ public class Download {
         if (downloadRequest.uriList != null) {
             for (String uri : downloadRequest.uriList) {
                 try (InputStream input = DataService.getInstance().getDataStream(uri)) {
-                    TimeSeries.add(Serialiser.deserialise(input, TimeSeries.class));
+                    TimeSeries.add(ContentUtil.deserialise(input, TimeSeries.class));
                 }
             }
         }
