@@ -33,6 +33,7 @@ public class LineChartConfigHandler implements RequestHandler {
         return new BabbageStringResponse(getChartConfig(requestedUri).toString());
     }
 
+    //TODO: Read chart data from zebedee ?
     BaseChart getChartConfig(String requestedUri) throws IOException {
         Page page = ContentUtil.deserialisePage(DataService.getInstance().getDataStream(requestedUri));
         if (!(page instanceof TimeSeries)) {
