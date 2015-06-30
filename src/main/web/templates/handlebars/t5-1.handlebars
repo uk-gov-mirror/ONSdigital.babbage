@@ -35,11 +35,14 @@
         <!-- This title will need to be dynamically generated on the server -->
         <h2 class="actionable-header--tight__title gamma flush--bottom body-type--heavy">Download this entire time series</h2>
         <div class="actionable-header--tight__action actionable-header--tight__action--left">
+            <form method="post" action="/chartimage">
+                <button type="submit" class="btn btn--primary btn--small" target="_blank" name="uri" value="{{uri}}">
+                image (54kb)
+                <span class="icon-download icon--button-inline" role="presentation"></span>
+                </button>
+                <input type="hidden" name="fileName" value="{{description.title}}" />
+            </form>
             <form method="post" action="/download">
-                <a class="btn btn--primary btn--small" target="_blank" href="{{uri}}/linechart">
-                    image (54kb)
-                    <span class="icon-download icon--button-inline" role="presentation"></span>
-                </a>
                 <button type="submit" name="type" value="csv" class="btn btn--primary btn--small">
                 .csv ()
                 <span class="icon-download icon--button-inline" role="presentation"></span>
