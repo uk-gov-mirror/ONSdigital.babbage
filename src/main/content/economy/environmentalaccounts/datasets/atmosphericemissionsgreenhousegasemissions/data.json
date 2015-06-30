@@ -1,0 +1,29 @@
+{
+  "downloads": [
+    {
+      "title": "Latest",
+      "file": "#"
+    }
+  ],
+  "section": {
+    "markdown": "Emissions of carbon dioxide, methane, nitrous oxide, hydro-fluorocarbons, perfluorocarbons, sulphur hexaflouride, and total greenhouse gas emissions."
+  },
+  "type": "dataset",
+  "uri": "/economy/environmentalaccounts/datasets/atmosphericemissionsgreenhousegasemissions",
+  "breadcrumb": [
+    {
+      "uri": "/"
+    },
+    {
+      "uri": "/economy"
+    },
+    {
+      "uri": "/economy/environmentalaccounts"
+    }
+  ],
+  "description": {
+    "nationalStatistic": true,
+    "title": "Atmospheric Emissions: Greenhouse Gas Emissions",
+    "summary": "By Economic Sector and Gas, United Kingdom"
+  }
+}
