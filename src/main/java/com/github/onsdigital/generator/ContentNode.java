@@ -1,6 +1,6 @@
 package com.github.onsdigital.generator;
 
-import com.github.onsdigital.content.page.methodology.Methodology;
+//import com.github.onsdigital.content.page.methodology.Methodology;
 import com.github.onsdigital.content.page.statistics.dataset.Dataset;
 import com.github.onsdigital.content.page.statistics.data.timeseries.TimeSeries;
 import com.github.onsdigital.content.page.statistics.document.article.Article;
@@ -26,7 +26,7 @@ public class ContentNode implements Comparable<ContentNode> {
 	// Having these as lists preserves the ordering from the spreadsheet.
 	public List<Bulletin> bulletins = new ArrayList<>();
 	public List<Article> articles = new ArrayList<>();
-	public List<Methodology> methodology = new ArrayList<>();
+//	public List<Methodology> methodology = new ArrayList<>();
 
 	public Set<Dataset> datasets = new HashSet<>();
 

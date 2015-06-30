@@ -103,10 +103,10 @@ public class DatasetContent {
                         String xls = row.get(DOWNLOAD_XLS[s]);
                         String csv = row.get(DOWNLOAD_CSV[s]);
                         if (StringUtils.isNotBlank(xls)) {
-                            downloadSection.setXls(xls);;
+                            downloadSection.setFile(xls);
                         }
                         if (StringUtils.isNotBlank(csv)) {
-                            downloadSection.setCsv(csv);
+                            downloadSection.setFile(csv);
                         }
                         dataset.getDownloads().add(downloadSection);
                     }
@@ -115,7 +115,7 @@ public class DatasetContent {
             } else if (StringUtils.isNotBlank(row.get("Link (latest)"))) {
                 DownloadSection downloadSection = new DownloadSection();
                 downloadSection.setTitle(dataset.getDescription().getTitle());
-                downloadSection.setXls(row.get("Link (latest)"));;
+                downloadSection.setFile(row.get("Link (latest)"));;
                 dataset.getDownloads().add(downloadSection);
             }
 

@@ -23,6 +23,12 @@ public class TemplateMapping {
         put(PageType.compendium_landing_page, "t6-1");
         put(PageType.compendium, "t6-2");
         put(PageType.dataset, "t8-3");
+        put(PageType.static_landing_page, "t7-4-1");
+        put(PageType.static_page, "t7-5");
+        put(PageType.static_article, "t7-6");
+        put(PageType.static_qmi, "t7-1");
+        put(PageType.static_adhoc, "t7-2");
+        put(PageType.static_foi, "t7-3");
         put(PageType.chart, "chart");
         put(PageType.table, "table");
     }
