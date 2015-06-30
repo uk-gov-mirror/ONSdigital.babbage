@@ -45,7 +45,7 @@ public class Download {
         try {
             DownloadRequest downloadRequest = initializeDownloadRequest(request);
             System.out.println("Download request recieved" + downloadRequest);
-            response.setHeader("Content-Disposition", "attachment; filename=\"data." + downloadRequest.type + "\"");
+            response.setHeader("Content-Disposition", "attachment; filename=\"" + (downloadRequest.fileName != null ? downloadRequest.fileName : "data") + "." + downloadRequest.type + "\"");
             response.setCharacterEncoding("UTF8");
             response.setContentType("application/" + downloadRequest.type);
             processRequest(response.getOutputStream(), downloadRequest);
@@ -65,6 +65,7 @@ public class Download {
         }
         downloadRequest.cdidList = getParameterList(request, "cdid");
         downloadRequest.uriList = getParameterList(request, "uri");
+        downloadRequest.fileName = request.getParameter("fileName");
         return downloadRequest;
     }
 
