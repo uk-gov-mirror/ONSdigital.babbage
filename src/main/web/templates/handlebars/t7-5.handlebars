@@ -1,8 +1,8 @@
-{{> templates/handlebars/partials/header}}
+{{> partials/header}}
 <main id="main" role="main" tabindex="-1">
 	<div class="page-header slate slate--red">
 		<div class="wrapper">
-			{{> templates/handlebars/partials/breadcrumb}}
+			{{> partials/breadcrumb}}
 			<h1 class="page-header__title flush--half--bottom">{{description.title}}</h1>
 		</div>
 	</div>
@@ -10,8 +10,11 @@
 	<div class="wrapper panel--mar print-links">
 		<div class="grid-wrap">
 			<article class="grid-col desktop-grid-two-thirds">
-				{{md summary}}
+				{{#each markdown}}
+						{{md this}}
+				{{/each}}
 			</article>
+			
 			<!-- /desktop-grid-two-thirds -->
 			<div class="grid-col desktop-grid-one-third">
 				<div class="box solid box--purple--separated--left">
@@ -39,4 +42,4 @@
 	</div>
 	<!-- /wrapper -->
 </main>
-{{> templates/handlebars/partials/footer}}
+{{> partials/footer}}

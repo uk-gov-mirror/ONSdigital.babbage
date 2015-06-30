@@ -10,6 +10,7 @@ import com.github.onsdigital.request.handler.base.RequestHandler;
 import com.github.onsdigital.request.response.BabbageResponse;
 import com.github.onsdigital.request.response.BabbageStringResponse;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -73,7 +74,7 @@ public class DataRequestHandler implements RequestHandler {
         ZebedeeClient zebedeeClient = new ZebedeeClient(zebedeeRequest);
         try {
             try {
-                return IOUtils.toString(zebedeeClient.readData(uri + "/data.json", resolveReferences));
+                return IOUtils.toString(zebedeeClient.readData(StringUtils.removeEnd(uri, "/" ) + "/data.json", resolveReferences));
             } catch (ContentNotFoundException e) {
                 return IOUtils.toString(zebedeeClient.readData(uri + ".json", resolveReferences));
             }
