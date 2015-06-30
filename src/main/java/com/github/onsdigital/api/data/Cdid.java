@@ -1,10 +1,10 @@
 package com.github.onsdigital.api.data;
 
 import com.github.davidcarboni.restolino.framework.Api;
-import com.github.davidcarboni.restolino.json.Serialiser;
 import com.github.onsdigital.bean.CdidRequest;
 import com.github.onsdigital.configuration.Configuration;
 import com.github.onsdigital.content.page.statistics.data.timeseries.TimeSeries;
+import com.github.onsdigital.content.util.ContentUtil;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -69,7 +69,7 @@ static Map<String, TimeSeries> cache = new ConcurrentHashMap<String, TimeSeries>
 			for (Path path : TimeSeriesPaths) {
 				try (InputStream input = Files.newInputStream(path)) {
 					System.out.println(path);
-					TimeSeries TimeSeries = Serialiser.deserialise(input, TimeSeries.class);
+					TimeSeries TimeSeries = ContentUtil.deserialise(input, TimeSeries.class);
 					result.put(TimeSeries.getCdid(), TimeSeries);
 					cache.put(TimeSeries.getCdid(), TimeSeries);
 				}
