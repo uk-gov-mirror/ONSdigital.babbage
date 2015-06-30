@@ -1,8 +1,8 @@
-{{> templates/handlebars/partials/header}}
+{{> partials/header}}
 <main id="main" role="main" tabindex="-1">
 	<div class="page-header slate slate--red">
 		<div class="wrapper">
-		{{> templates/handlebars/partials/breadcrumb}}
+		{{> partials/breadcrumb}}
 			<p class="page-header__title">
 				Quality and methodology information
 			</p>
@@ -28,7 +28,7 @@
 					{{#if description.nationalStatistic}}
 					<img src="../../node_modules/ONS-Pattern-Library/ui/img/national-statistics.png" alt="National Statistics logo" />
 					{{/if}}
-					<span>Survey name: </span><br/>{{description.survey}}
+					<span>Survey name: </span><br/>{{description.surveyName}}
 				</p>
 				<p class="grid-col tablet-grid-one-quarter divider--border-left">
 					<span>Frequency: </span><br/>{{description.frequency}}
@@ -46,7 +46,9 @@
 	<div class="wrapper panel--mar">
 		<div class="grid-wrap">
 			<article class="grid-col desktop-grid-two-thirds">
-				{{md summary}}
+				{{#each markdown}}
+					{{md this}}
+				{{/each}}
 			</article>
 			<!-- /grid-two-thirds -->
 			<div class="grid-col desktop-grid-one-third">
@@ -111,4 +113,4 @@
 		<!-- /grid-wrap -->
 	</div>
 </main>
-{{> templates/handlebars/partials/footer}}
+{{> partials/footer}}

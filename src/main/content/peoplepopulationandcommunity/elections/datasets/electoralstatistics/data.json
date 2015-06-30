@@ -1,0 +1,29 @@
+{
+  "downloads": [
+    {
+      "title": "Latest",
+      "file": "http://www.ons.gov.uk/ons/rel/pop-estimate/electoral-statistics-for-uk/2013/rft---2013-uk-electoral-statistics-unformatted.xls"
+    }
+  ],
+  "section": {
+    "markdown": "Comprehensive description of data contained within this dataset."
+  },
+  "type": "dataset",
+  "uri": "/peoplepopulationandcommunity/elections/datasets/electoralstatistics",
+  "breadcrumb": [
+    {
+      "uri": "/"
+    },
+    {
+      "uri": "/peoplepopulationandcommunity"
+    },
+    {
+      "uri": "/peoplepopulationandcommunity/elections"
+    }
+  ],
+  "description": {
+    "nationalStatistic": true,
+    "title": "Electoral Statistics",
+    "summary": "Brief description of dataset"
+  }
+}

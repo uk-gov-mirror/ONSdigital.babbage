@@ -178,17 +178,23 @@ var linechart = function(timeseries) {
 			years: []
 		};
 		var current;
+		var value;
 		var i;
 		var min;
 
 		for (i = 0; i < timeseriesValues.length; i++) {
 			current = timeseriesValues[i]
-			if (!min || +current.value < +min) {
-				min = +current.value;
-			}
-			data.min = min;
+			value = isNotEmpty(current.value) ? current.value : null;
+			if (value) {
+				if (!min || +current.value < +min) {
+					min = +current.value;
+				}
+				data.min = min;
+			} 
+
 			data.values.push(enrichData(current, i));
 			data.years.push(current.year);
+
 		}
 		toUnique(data.years);
 		return data
@@ -203,7 +209,7 @@ var linechart = function(timeseries) {
 		var year = timeseriesValue.year;
 		var month = timeseriesValue.month;
 
-		timeseriesValue.y = +timeseriesValue.value; //Cast to number
+		timeseriesValue.y = isNotEmpty(timeseriesValue.value) ? (+timeseriesValue.value) : null; //Cast to number
 		timeseriesValue.value = +(year + (quarter ? quarterVal(quarter) : '') + (month ? monthVal(month) : ''));
 		timeseriesValue.name = timeseriesValue.date; //Appears on x axis
 		delete timeseriesValue.date;
@@ -219,8 +225,6 @@ var linechart = function(timeseries) {
 	function show(element) {
 		element.show();
 	}
-
-
 
 	function monthVal(mon) {
 		switch (mon.slice(0, 3).toUpperCase()) {
@@ -279,7 +283,7 @@ var linechart = function(timeseries) {
 	}
 
 
-	//Check if arrray is not empty
+	//Check if arrray  or string is not empty
 	function isNotEmpty(array) {
 		return (array && array.length > 0)
 	}
@@ -399,7 +403,7 @@ var linechart = function(timeseries) {
 			$('[data-chart-controls-scale]').each(function() {
 				var frequency = this.value;
 				if (!chart[frequency]) {
-					$(this).attr("disabled",true);
+					$(this).attr("disabled", true);
 					$(this).parent().addClass('btn--secondary--disabled');
 				} else {
 					if ($(this).data('chart-controls-scale') == currentFrequency) {
@@ -477,7 +481,7 @@ var linechart = function(timeseries) {
 				/*
 				 * Set the select options
 				 */
-				$('[data-chart-controls-from-month]', element).find('option[value="' + pad(fromMonth,2) + '"]').attr('selected', true);
+				$('[data-chart-controls-from-month]', element).find('option[value="' + pad(fromMonth, 2) + '"]').attr('selected', true);
 				$('[data-chart-controls-from-quarter]', element).find('option[value="' + fromQuarter + '"]').attr('selected', true);
 				$('[data-chart-controls-from-year]', element).find('option[value="' + fromYear + '"]').attr('selected', true);
 
@@ -486,12 +490,12 @@ var linechart = function(timeseries) {
 		};
 
 		function pad(number, length) {
-		    var str = '' + number;
-		    while (str.length < length) {
-		        str = '0' + str;
-		    }
-		    console.log(str);
-		    return str;
+			var str = '' + number;
+			while (str.length < length) {
+				str = '0' + str;
+			}
+			console.log(str);
+			return str;
 
 		}
 

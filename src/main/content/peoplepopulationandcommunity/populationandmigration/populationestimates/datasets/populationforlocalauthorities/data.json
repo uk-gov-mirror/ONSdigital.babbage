@@ -1,0 +1,40 @@
+{
+  "downloads": [
+    {
+      "title": "2013",
+      "file": "#"
+    },
+    {
+      "title": "2012",
+      "file": "#"
+    },
+    {
+      "title": "2011",
+      "file": "#"
+    }
+  ],
+  "section": {
+    "markdown": "Components of population change for countries; regions, counties and smaller geographic breakdowns."
+  },
+  "type": "dataset",
+  "uri": "/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/populationforlocalauthorities",
+  "breadcrumb": [
+    {
+      "uri": "/"
+    },
+    {
+      "uri": "/peoplepopulationandcommunity"
+    },
+    {
+      "uri": "/peoplepopulationandcommunity/populationandmigration"
+    },
+    {
+      "uri": "/peoplepopulationandcommunity/populationandmigration/populationestimates"
+    }
+  ],
+  "description": {
+    "nationalStatistic": true,
+    "title": "Population for Local Authorities",
+    "summary": "Components of population change for countries; regions, counties and smaller geographic breakdowns"
+  }
+}

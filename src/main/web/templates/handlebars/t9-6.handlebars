@@ -1,7 +1,7 @@
-{{> templates/handlebars/partials/header}}
+{{> partials/header}}
 <main id="main" role="main" tabindex="-1">
 	<div class="wrapper panel--top-mar">
-		{{> templates/handlebars/partials/breadcrumb}}
+		{{> partials/breadcrumb}}
 		<p class="page-header__title">
 			Previous releases
 		</p>
@@ -24,16 +24,16 @@
 							{{#if @first}}
 							<li>
 								<h3 class="flush">Latest release</h3>
-								<h3 class="flush stand-out-text"><a href="{{url}}">{{title}}</a></h4>
+								<h3 class="flush stand-out-text"><a href="{{uri}}">{{description.title}}</a></h3>
 								<p class="stand-out-text">
-									Released: {{df releaseDate}}
+									Released: {{df description.releaseDate}}
 								</p>
 							</li>
 							{{else}}
 							<li>
-								<h3 class="flush"><a href="{{url}}">{{title}}</a></h4>
+								<h3 class="flush"><a href="{{uri}}">{{description.title}}</a></h3>
 								<p>
-									Released: {{df releaseDate}}
+									Released: {{df description.releaseDate}}
 								</p>
 							</li>
 							{{/if}}
@@ -71,4 +71,4 @@
 	</div>
 	<!-- /wrapper -->
 </main>
-{{> templates/handlebars/partials/footer}}
+{{> partials/footer}}

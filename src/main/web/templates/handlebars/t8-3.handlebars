@@ -70,15 +70,15 @@
                                                     csv ({{fileSize}})
                                                     <span class="icon icon-download" role="presentation"></span>
                                                 </button>
-                                                <input type="hidden" name="type" value="xlsx"/>
+                                                <input type="hidden" name="fileName" value="{{description.title}}"/>
                                                 {{#each cdids}}
                                                 <input type="hidden" name="cdid" value="{{this}}"/>
                                                 {{/each}}
                                             </form>
                                             {{else}}
                                             <!-- link to given uris of given files-->
-                                            <a href="{{#if xls}}{{xls}}{{else}}{{csv}}{{/if}}" title="Lastest version" class="btn btn--primary btn--block btn--thin">
-                                                {{#if xls}} xlsx {{else}} csv {{/if}} ()
+                                            <a href="{{file}}" title="Lastest version" class="btn btn--primary btn--block btn--thin">
+                                                xls()
                                                 <span class="icon icon-download" role="presentation"></span>
                                             </a>
                                             {{/if}}

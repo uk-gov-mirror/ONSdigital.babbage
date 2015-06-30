@@ -155,7 +155,7 @@ public class SearchHelper {
 	private static ONSQueryBuilder buildContentQuery(String searchTerm, int page, String... types) {
 		ONSQueryBuilder contentQuery = new ONSQueryBuilder("ons").setSearchTerm(searchTerm).setFields(TITLE, URI_FIELD);
 		if (ArrayUtils.isEmpty(types)) {
-			contentQuery.setTypes(PageType.bulletin.toString(), PageType.dataset.toString(), PageType.methodology.toString(), PageType.article.toString()).setPage(page);
+			contentQuery.setTypes(PageType.bulletin.toString(), PageType.dataset.toString(), /*PageType.methodology.toString(),*/ PageType.article.toString()).setPage(page);
 
 		} else {
 			contentQuery.setTypes(types).setPage(page);
@@ -166,7 +166,7 @@ public class SearchHelper {
 
 	private static ONSQueryBuilder buildAutocompleteQuery(String searchTerm) {
 		ONSQueryBuilder autocompleteQuery = new ONSQueryBuilder("ons").setSearchTerm(searchTerm).setFields(TITLE, URI_FIELD);
-		autocompleteQuery.setTypes(PageType.timeseries.toString(), PageType.bulletin.toString(), PageType.dataset.toString(), PageType.methodology.toString(),
+		autocompleteQuery.setTypes(PageType.timeseries.toString(), PageType.bulletin.toString(), PageType.dataset.toString(), /*PageType.methodology.toString(),*/
 				PageType.article.toString());
 		return autocompleteQuery;
 	}

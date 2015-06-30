@@ -1,11 +1,11 @@
 package com.github.onsdigital.api.data;
 
 import com.github.davidcarboni.restolino.framework.Api;
-import com.github.davidcarboni.restolino.json.Serialiser;
 import com.github.onsdigital.bean.DateVal;
 import com.github.onsdigital.bean.DownloadRequest;
 import com.github.onsdigital.content.page.statistics.data.timeseries.TimeSeries;
 import com.github.onsdigital.content.partial.TimeseriesValue;
+import com.github.onsdigital.content.util.ContentUtil;
 import com.github.onsdigital.data.DataService;
 import com.github.onsdigital.util.CSVGenerator;
 import com.github.onsdigital.util.XLSXGenerator;
@@ -45,7 +45,7 @@ public class Download {
         try {
             DownloadRequest downloadRequest = initializeDownloadRequest(request);
             System.out.println("Download request recieved" + downloadRequest);
-            response.setHeader("Content-Disposition", "attachment; filename=\"data." + downloadRequest.type + "\"");
+            response.setHeader("Content-Disposition", "attachment; filename=\"" + (downloadRequest.fileName != null ? downloadRequest.fileName : "data") + "." + downloadRequest.type + "\"");
             response.setCharacterEncoding("UTF8");
             response.setContentType("application/" + downloadRequest.type);
             processRequest(response.getOutputStream(), downloadRequest);
@@ -65,6 +65,7 @@ public class Download {
         }
         downloadRequest.cdidList = getParameterList(request, "cdid");
         downloadRequest.uriList = getParameterList(request, "uri");
+        downloadRequest.fileName = request.getParameter("fileName");
         return downloadRequest;
     }
 
@@ -86,7 +87,7 @@ public class Download {
         if (downloadRequest.uriList != null) {
             for (String uri : downloadRequest.uriList) {
                 try (InputStream input = DataService.getInstance().getDataStream(uri)) {
-                    TimeSeries.add(Serialiser.deserialise(input, TimeSeries.class));
+                    TimeSeries.add(ContentUtil.deserialise(input, TimeSeries.class));
                 }
             }
         }
