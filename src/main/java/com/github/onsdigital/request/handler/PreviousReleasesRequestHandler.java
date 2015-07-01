@@ -106,7 +106,7 @@ public class PreviousReleasesRequestHandler implements RequestHandler {
         try (DirectoryStream<Path> stream = Files.newDirectoryStream(path)) {
             for (Path p : stream) {
                 if (Files.isDirectory(p)) {
-                    pages.add(new PageReference(path.toUri()));
+                    pages.add(new PageReference(URI.create(requestedUri + "/" + p.getFileName())));
                 }
             }
             return pages;
