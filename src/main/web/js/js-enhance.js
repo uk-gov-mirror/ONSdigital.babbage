@@ -16,6 +16,7 @@ jQuery(window).load(function() {
         jsEnhanceNumberSeparator();
         jsEnhanceMarkdownCharts();
         jsEnhanceMarkdownTables();
+        jsEnhancePrintCompendium();
 
         setTimeout(function() {
             $('#loading-overlay').fadeOut(300);
@@ -175,6 +176,35 @@ jQuery(window).load(function() {
             }
 
             new pym.Parent(uri, uri + "/table", {});
+        });
+    }
+
+    function jsEnhancePrintCompendium() {      
+        $('#jsEnhancePrintCompendium').click(function(e) {
+            addLoadingOverlay();
+
+            // TODO Will get function to add in div, so no empty divs on page at load
+            //$("<div class='print-content'></div>").insertAfter('.desktop-grid-full-width');
+
+            // TODO Remove existing page content from print
+            // $(".wrapper").remove();
+
+            $('.chapter').each(function() {
+                var url = $(this).attr('href');
+                
+                var getContent = ('main');
+                
+                $('<section>').load(url, function() {
+                    $('.print-content').append("<div class='print__break-after'>" + $(this).find(getContent).html() + "</div>");
+                });
+                
+                e.preventDefault();
+            });
+
+            $(document).ajaxStop(function() {
+                window.print();
+                location.reload();
+            });
         });
     }
 });
