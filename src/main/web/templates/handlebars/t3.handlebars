@@ -26,7 +26,7 @@
 										<img src="{{items.0.data.uri}}/sparkline" alt="{{items.0.data.description.title}}">
 									</div>
 							</div>
-							<div class="grid-col grid-one-third">
+							<div class="grid-col grid-one-third no-padding">
 									<div class="stat">
 											<div class="stat__figure ">
 													<div>
@@ -37,11 +37,11 @@
 													</div>
 											</div>
 									</div>
-									<dl class="micro definition-list definition-list--inline flush--half--vertical">
+									<dl class="micro definition-list definition-list--inline">
 											<dt>Last updated:</dt>
-											<dd>{{df items.0.data.description.releaseDate}}</dd>
+											<dd class="flush flush--third--bottom">{{df items.0.data.description.releaseDate}}</dd>
 											<dt>Next update:</dt>
-											<dd>{{items.0.data.description.nextRelease}}</dd>
+											<dd class="flush flush--third--bottom">{{items.0.data.description.nextRelease}}</dd>
 									</dl>
 							</div>
 							<!-- /grid-col -->
@@ -114,6 +114,9 @@
 							</div>
 							<div class="list--table__item__body list--table__item__body--stat">
 								<div class="stat__figure">
+									{{#if data.description.preUnit}}
+									<span class="stat__figure__preunit">{{data.description.preUnit}}</span>
+									{{/if}}
 									<span class="stat__figure-enhance">{{data.description.number}}</span><span class="stat__figure__unit"> {{data.description.unit}}</span>
 									<div class="stat__description">{{data.description.date}}</div>
 								</div>
@@ -121,9 +124,9 @@
 							<div class="list--table__item__body list--table__item__body--update">
 								<dl class="micro flush--half--vertical">
 									<dt>Last updated:</dt>
-									<dd>{{df data.description.releaseDate}}</dd>
+									<dd class="flush flush--third--bottom">{{df data.description.releaseDate}}</dd>
 									<dt>Next update:</dt>
-									<dd>{{data.description.nextRelease}}</dd>
+									<dd class="flush flush--third--bottom">{{data.description.nextRelease}}</dd>
 								</dl>
 							</div>
 						</li>

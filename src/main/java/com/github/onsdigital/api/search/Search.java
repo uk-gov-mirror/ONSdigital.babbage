@@ -114,6 +114,7 @@ public class Search {
         page.setTaxonomySearchResult(results.taxonomySearchResult);
         page.setCurrentPage(currentPage);
         page.setNumberOfResults(results.getNumberOfResults());
+        page.setNumberOfPages((long) Math.ceil(results.getNumberOfResults() / 10));
         page.setSearchTerm(searchTerm);
         page.setSuggestionBased(results.isSuggestionBasedResult());
         if (results.isSuggestionBasedResult()) {
@@ -139,11 +140,14 @@ public class Search {
                 ProductPage productPage = (ProductPage) pageReference.getData();;
                 List<PageReference> items = productPage.getItems();
                 if (items != null) {
-                    PageReference headlineData = items.iterator().next();
-                    if (headlineData != null) {
-                        ContentUtil.loadReferencedPage(DataService.getInstance(), headlineData);
-                        iterator.remove();
-                        page.setHeadlinePage(productPage);
+                    if(items.size() > 0) {
+                        PageReference headlineData = items.iterator().next();
+                        if (headlineData != null) {
+                            ContentUtil.loadReferencedPage(DataService.getInstance(), headlineData);
+                            iterator.remove();
+                            page.setHeadlinePage(productPage);
+                            break;
+                        }
                     }
                 }
             }

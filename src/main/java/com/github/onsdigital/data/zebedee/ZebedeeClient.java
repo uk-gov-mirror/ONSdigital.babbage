@@ -19,6 +19,8 @@ import java.io.InputStream;
  * <p>
  * Zebedeeclient is not thread-safe
  */
+
+//TODO: change zebedee client to pass whatever http response it gets from zebedee to client on babbage. 
 public class ZebedeeClient {
 
 
