@@ -1,13 +1,8 @@
 package com.github.onsdigital.search.util;
 
 import com.github.onsdigital.search.ElasticSearchServer;
-import com.github.onsdigital.search.EmbeddedElasticSearchServer;
 import com.github.onsdigital.search.bean.AggregatedSearchResult;
-import com.github.onsdigital.search.bean.SearchResult;
 import org.elasticsearch.ElasticsearchException;
-import org.elasticsearch.bootstrap.Elasticsearch;
-import org.elasticsearch.common.settings.ImmutableSettings;
-import org.elasticsearch.common.settings.Settings;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,7 +30,7 @@ public class SearchHelperTest {
 								.field("theme", "testTheme").endObject()).get();
 	}
 
-//	TODO: @Test
+	@Test
 	public void testSearchQuery() throws Exception {
 		SearchHelper util = new SearchHelper();
 		AggregatedSearchResult result = util.search(new ONSQueryBuilder("testindex")

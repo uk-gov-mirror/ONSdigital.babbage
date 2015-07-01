@@ -2,29 +2,34 @@
 <div class="wrapper panel--top-mar">
 	<h1 class="page-header__title flush--half--bottom">{{title}}</h1>
 	<p>
-		{{#if contentSearchResult.results}}
-		<span class="stand-out-text">{{contentSearchResult.numberOfResults}}</span> results for <strong>'??'</strong> showing <strong>??</strong><span class="icon-cancel"></span> and <strong>??</strong><span class="icon-cancel"></span>.
+		{{#if statisticsSearchResult.results}}
+		{{#if suggestionBased}}
+		Sorry, there were no results for <strong>'{{searchTerm}}'</strong>.</br>
+		Shwowing <span class="stand-out-text">{{statisticsSearchResult.numberOfResults}}</span> results for <strong>'{{suggestion}}'</strong> showing <strong>??</strong><span class="icon-cancel"></span> and <strong>??</strong><span class="icon-cancel"></span>.
 		{{else}}
-		Sorry, there were no results for <span class="stand-out-text">'??'</span>.
+		<span class="stand-out-text">{{statisticsSearchResult.numberOfResults}}</span> results for <span class="stand-out-text">'{{searchTerm}}'</span> showing <strong>??</strong><span class="icon-cancel"></span> and <strong>??</strong><span class="icon-cancel"></span>.
+		{{/if}}
+		{{else}}
+		Sorry, there were no results for <span class="stand-out-text">'{{searchTerm}}'</span>.
 		{{/if}}
 	</p>
 </div>
 <!-- /wrapper -->
-{{#if contentSearchResult.results}}
+{{#if statisticsSearchResult.results}}
 <div class="wrapper panel--mar print-links">
 	<div class="grid-wrap panel--bottom-mar print-hidden">
-    	<div class="grid-col desktop-grid-one-quarter desktop-grid-push-three-quarters tablet-grid-full-width">
-        	<label for="select">Sort by
-        		<div class="field">
+		<div class="grid-col desktop-grid-one-quarter desktop-grid-push-three-quarters tablet-grid-full-width">
+			<label for="select">Sort by
+				<div class="field">
 					<select class="input " id="select" name="">
 						<option value="1" selected>Relevance</option>
 						<option value="2">Release date</option>
 						<option value="3">Title</option>
 					</select>
-            	</div>
-        	</label>
-        </div>
-    </div>
+				</div>
+			</label>
+		</div>
+	</div>
 	<!-- /grid-wrap -->
 	<div class="grid-wrap">
 		<div class="grid-col desktop-grid-one-third">
@@ -39,33 +44,33 @@
 						<ul class="list--neutral">
 							<li>
 								<input type="checkbox" name="checkbox-statsbulletin" value="1" checked>
-									<label for="checkbox-statsbulletin">
-										Statistical bulletin
-									</label>
+								<label for="checkbox-statsbulletin">
+									Statistical bulletin
+								</label>
 							</li>
 							<li>
 								<input type="checkbox" name="checkbox-article" value="1">
-									<label for="checkbox-article">
-										Article
-									</label>
+								<label for="checkbox-article">
+									Article
+								</label>
 							</li>
 							<li>
 								<input type="checkbox" name="checkbox-dataset" value="1" checked>
-									<label for="checkbox-dataset">
-										Dataset
-									</label>
+								<label for="checkbox-dataset">
+									Dataset
+								</label>
 							</li>
 							<li>
 								<input type="checkbox" name="checkbox-methodology" value="1">
-									<label for="checkbox-methodology">
-										Methodology
-									</label>
+								<label for="checkbox-methodology">
+									Methodology
+								</label>
 							</li>
 							<li>
 								<input type="checkbox" name="checkbox-timeseries" value="1">
-									<label for="checkbox-timeseries">
-										Time series and data slices
-									</label>
+								<label for="checkbox-timeseries">
+									Time series and data slices
+								</label>
 							</li>
 						</ul>
 						<p class="panel--mar-small">You can also expand your search results to include the following:</p>
@@ -84,7 +89,7 @@
 							</label>
 						</div>
 					</div>
-				<!-- /box__content -->
+					<!-- /box__content -->
 				</form>
 			</article>
 			<!-- /box 'refine results' -->
@@ -105,40 +110,57 @@
 		</div>
 		<!-- /grid-desktop-one-third -->
 		<div class="grid-col desktop-grid-two-thirds">
-			{{#each homeSearchResult.results}}
-				<article class="box box--padded sectioned">
-					<div class="box__content">
-						<div class="grid-wrap">
-							<div class="grid-col desktop-grid-one-half">
-								<p class="alpha">
-									Chart
-								</p>
-							</div>
-							<div class="grid-col desktop-grid-one-half nav--block-landing box--padded-vertical">
-								<h3><a href="{{uri}}">{{title}}</a></h3>
-								{{summary}}
-							</div>
-							<!-- /desktop-grid -->
+			{{#if headlinePage}}
+			<article class="box box--padded sectioned">
+				<div class="box__content">
+					<div class="grid-wrap">
+						<div class="grid-col desktop-grid-one-half">
+							<p class="alpha">
+								<img src="{{headlinePage.items.0.data.uri}}/linechart" alt="{{headlinePage.items.0.data.description.title}}">
+							</p>
 						</div>
-						<!-- /grid-wrap -->
+						<div class="grid-col desktop-grid-one-half nav--block-landing box--padded-vertical">
+							<h3><a href="{{headlinePage.uri}}">{{headlinePage.description.title}}</a></h3>
+							{{headlinePage.description.summary}}
+						</div>
+						<!-- /desktop-grid -->
 					</div>
-					<!-- /box__content -->
-				</article>
-				{{/each}}
-			{{#each contentSearchResult.results}}
+					<!-- /grid-wrap -->
+				</div>
+				<!-- /box__content -->
+			</article>
+			{{/if}}
+			{{#each taxonomySearchResult.results}}
 			<ul class="list--neutral">
 				<li>
-					<h3 class="flush inline"><a href="{{uri}}">{{title}}</a></h3>
+					<h3 class="flush inline"><a href="{{uri}}">{{description.title}}</a></h3>
 					<span class="lozenge">{{type}}</span>
 					{{#if partOf}}
 					<p class="micro flush">
-						<a href="{{uri}}">[{{title}}]</a><span class="icon-search-1"></span>
+						<a href="{{uri}}">[{{description.title}}]</a><span class="icon-search-1"></span>
 					</p>
 					{{/if}}
 					<p class="mini description flush">
-						Released {{df releaseDate}}
+						Released {{df description.releaseDate}}
 					</p>
-					{{md summary}}
+					{{md description.summary}}
+				</li>
+			</ul>
+			{{/each}}
+			{{#each statisticsSearchResult.results}}
+			<ul class="list--neutral">
+				<li>
+					<h3 class="flush inline"><a href="{{uri}}">{{description.title}}</a></h3>
+					<span class="lozenge">{{type}}</span>
+					{{#if partOf}}
+					<p class="micro flush">
+						<a href="{{uri}}">[{{description.title}}]</a><span class="icon-search-1"></span>
+					</p>
+					{{/if}}
+					<p class="mini description flush">
+						Released {{df description.releaseDate}}
+					</p>
+					{{md description.summary}}
 				</li>
 			</ul>
 			{{/each}}

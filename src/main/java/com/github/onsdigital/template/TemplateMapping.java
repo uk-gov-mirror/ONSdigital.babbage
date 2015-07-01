@@ -22,6 +22,7 @@ public class TemplateMapping {
         put(PageType.data_slice, "t5-2");
         put(PageType.compendium_landing_page, "t6-1");
         put(PageType.compendium, "t6-2");
+        put(PageType.reference_tables, "t8-1");
         put(PageType.dataset, "t8-3");
         put(PageType.static_landing_page, "t7-4-1");
         put(PageType.static_page, "t7-5");
@@ -32,6 +33,7 @@ public class TemplateMapping {
         put(PageType.list_page, "t9-6");
         put(PageType.chart, "chart");
         put(PageType.table, "table");
+        put(PageType.search_results_page, "t10");
     }
 
 

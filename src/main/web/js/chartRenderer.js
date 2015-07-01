@@ -42,6 +42,7 @@ function renderChartObject(bindTag, chart, chartHeight, chartWidth) {
   if (chart.isTimeSeries && (chart.chartType == 'line')) {
     renderTimeseriesChartObject(bindTag, chart, chartWidth, chartHeight);
     setFontStyle();
+    renderChartUnit();
     return;
   }
 
@@ -163,7 +164,7 @@ function renderChartObject(bindTag, chart, chartHeight, chartWidth) {
 
   function renderTimeseriesChartObject(bindTag, timechart, chartWidth, chartHeight) {
     var padding = 25;
-    var chart = timechart //timeSubchart(timechart, period);
+    var chart = timechart; //timeSubchart(timechart, period);
 
     // Create a dictionary so we can reverse lookup a tooltip label
     var dates_to_label = {};
@@ -235,7 +236,10 @@ function renderChartObject(bindTag, chart, chartHeight, chartWidth) {
 
     c3.generate({
       bindto: bindTag,
-
+      size: {
+        height: chartHeight,
+        width: chartWidth
+      },
       data: {
         json: chart.timeSeries,
         keys: keys,
@@ -272,9 +276,6 @@ function renderChartObject(bindTag, chart, chartHeight, chartWidth) {
         y: {
           show: true
         }
-      },
-      padding: {
-        top: padding
       }
     });
   }

@@ -16,6 +16,7 @@
 			</article>
 			
 			<!-- /desktop-grid-two-thirds -->
+			{{#if links}}
 			<div class="grid-col desktop-grid-one-third">
 				<div class="box solid box--purple--separated--left">
 					<div class="box__inner border box--padded">
@@ -25,8 +26,8 @@
 						<!-- /box__header -->
 						<div class="box__content">
 							<ul class="list--neutral">
-								{{#each relatedLinks}}
-								<li class="flush--third--bottom"><a href="{{uri}}">{{title}}</a></li>
+								{{#each links}}
+								<li class="flush--third--bottom"><a href="{{uri}}">{{md title}}</a></li>
 								{{/each}}
 							</ul>
 						</div>
@@ -38,6 +39,7 @@
 			</div>
 			<!-- /desktop-grid-one-third -->
 		</div>
+		{{/if}}
 		<!-- /grid-wrap -->
 	</div>
 	<!-- /wrapper -->

@@ -32,7 +32,6 @@ public class LineChartImageHandler implements RequestHandler {
         return new BabbageBinaryResponse(stream, CONTENT_TYPE);
     }
 
-
     @Override
     public String getRequestType() {
         return REQUEST_TYPE;

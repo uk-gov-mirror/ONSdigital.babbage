@@ -16,7 +16,7 @@ var linechart = function(timeseries) {
 	initialize();
 
 	function initialize() {
-		console.log(table);
+		//console.log(table);
 		chart = getLinechartConfig(timeseries);
 		chart.years = isNotEmpty(timeseries.years);
 		chart.months = isNotEmpty(timeseries.months);
@@ -26,7 +26,7 @@ var linechart = function(timeseries) {
 		var frequency = '';
 
 		if (!(chart.years || chart.months || chart.quarters)) {
-			console.debug('No data found');
+			//console.debug('No data found');
 			// return; // No data to render chart with
 		}
 
@@ -127,7 +127,7 @@ var linechart = function(timeseries) {
 
 
 	function renderChart() {
-		console.log(currentData);
+		//console.log(currentData);
 		chart.series[0].data = currentData.values;
 		chart.xAxis.tickInterval = tickInterval(currentData.values.length);
 		var min = currentData.min;
@@ -145,8 +145,8 @@ var linechart = function(timeseries) {
 
 	function validateFilter(from, to) {
 
-		console.debug("From: " + from);
-		console.debug("To: " + to);
+		//console.debug("From: " + from);
+		//console.debug("To: " + to);
 
 		if (from === to) {
 			throw new Error('Sorry, the start date and end date cannot be the same');
@@ -494,7 +494,7 @@ var linechart = function(timeseries) {
 			while (str.length < length) {
 				str = '0' + str;
 			}
-			console.log(str);
+			//console.log(str);
 			return str;
 
 		}

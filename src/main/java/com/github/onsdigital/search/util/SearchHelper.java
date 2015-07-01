@@ -1,12 +1,15 @@
 package com.github.onsdigital.search.util;
 
+import com.github.onsdigital.content.link.PageReference;
 import com.github.onsdigital.content.page.base.PageType;
 import com.github.onsdigital.content.page.statistics.data.timeseries.TimeSeries;
 import com.github.onsdigital.content.page.statistics.data.timeseries.TimeseriesDescription;
+import com.github.onsdigital.content.partial.SearchResult;
+import com.github.onsdigital.content.util.ContentUtil;
+import com.github.onsdigital.data.DataService;
 import com.github.onsdigital.search.ElasticSearchServer;
 import com.github.onsdigital.search.SearchService;
 import com.github.onsdigital.search.bean.AggregatedSearchResult;
-import com.github.onsdigital.search.bean.SearchResult;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.action.search.SearchRequestBuilder;
@@ -21,7 +24,6 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 public class SearchHelper {
 
@@ -56,7 +58,7 @@ public class SearchHelper {
 	 * found
 	 * 
 	 */
-	public static TimeSeries searchCdid(String cdid) {
+	public static URI searchCdid(String cdid) {
 
 		cdid = cdid.toUpperCase();
 
@@ -64,20 +66,14 @@ public class SearchHelper {
 
 		SearchRequestBuilder searchRequestBuilder = (ElasticSearchServer.getClient().prepareSearch("ons")).setQuery(termFilterBuilder.buildAsBytes());
 
-		SearchResult result = new SearchResult(searchRequestBuilder.get());
+		SearchResult result = SearchService.buildSearchResult(searchRequestBuilder.get());
 
 		if (result.getNumberOfResults() == 0) {
 			return null;
 		}
 
-		Map<String, Object> timeSeriesProperties = result.getResults().iterator().next();
-		TimeSeries timeseries = new TimeSeries();
-		timeseries.setUri(URI.create((String) timeSeriesProperties.get(URI_FIELD)));
-		TimeseriesDescription description = new TimeseriesDescription();
-		description.setCdid((String) timeSeriesProperties.get(CDID));
-		description.setTitle((String) timeSeriesProperties.get(TITLE));
-		return timeseries;
-
+		PageReference timseriesReference = result.getResults().iterator().next();
+		return timseriesReference.getUri();
 	}
 
 	public static AggregatedSearchResult searchSuggestions(String query, int page, String[] types) throws IOException, Exception {
@@ -125,7 +121,7 @@ public class SearchHelper {
 		}
 
 		AggregatedSearchResult result = new AggregatedSearchResult();
-		result.contentSearchResult = searchResult;
+		result.statisticsSearchResult = searchResult;
 		return result;
 	}
 
@@ -136,14 +132,14 @@ public class SearchHelper {
 		long timeSeriesCount = SearchService.count(buildTimeSeriesCountQuery(searchTerm));
 		Iterator<SearchResult> resultsIterator = responses.iterator();
 		AggregatedSearchResult result = new AggregatedSearchResult();
-		result.homeSearchResult = resultsIterator.next();
-		result.contentSearchResult =  resultsIterator.next();
+		result.taxonomySearchResult = resultsIterator.next();
+		result.statisticsSearchResult =  resultsIterator.next();
 		result.timeseriesCount = timeSeriesCount;
 		return result;
 	}
 
 	private static ONSQueryBuilder buildHomeQuery(String searchTerm, int page) {
-		ONSQueryBuilder homeQuery = new ONSQueryBuilder("ons").setTypes("taxonomy_landing_page", "product_page").setPage(page).setSearchTerm(searchTerm).setSize(1).setFields(TITLE, URI_FIELD);
+		ONSQueryBuilder homeQuery = new ONSQueryBuilder("ons").setTypes(/*"taxonomy_landing_page",*/ "product_page").setPage(page).setSearchTerm(searchTerm).setSize(1).setFields(TITLE, URI_FIELD);
 		return homeQuery;
 	}
 	

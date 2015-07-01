@@ -1,5 +1,8 @@
 package com.github.onsdigital.search.bean;
 
+import com.github.onsdigital.content.link.PageReference;
+import com.github.onsdigital.content.partial.SearchResult;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -14,8 +17,8 @@ import java.util.Map;
 public class AggregatedSearchResult {
 
 	// Search result of home type pages
-	public SearchResult homeSearchResult;
-	public SearchResult contentSearchResult;
+	public SearchResult taxonomySearchResult;
+	public SearchResult statisticsSearchResult;
 	public long timeseriesCount;
 	private boolean suggestionBasedResult;
 	private String suggestion;
@@ -37,20 +40,20 @@ public class AggregatedSearchResult {
 	}
 
 	public long getNumberOfResults() {
-		long numberOfResults = contentSearchResult.getNumberOfResults();
-		if(homeSearchResult != null) {
-			return numberOfResults += homeSearchResult.getNumberOfResults();
+		long numberOfResults = statisticsSearchResult.getNumberOfResults();
+		if(taxonomySearchResult != null) {
+			return numberOfResults += taxonomySearchResult.getNumberOfResults();
 		}
 		return numberOfResults;
 		 
 	}
 
-	public List<Map<String, Object>> getAllResults() {
-		List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
-		if(homeSearchResult != null) {			
-			results.addAll(homeSearchResult.getResults());
+	public List<PageReference> getAllResults() {
+		List<PageReference> results = new ArrayList<>();
+		if(taxonomySearchResult != null) {
+			results.addAll(taxonomySearchResult.getResults());
 		}
-		results.addAll(contentSearchResult.getResults());
+		results.addAll(statisticsSearchResult.getResults());
 		return results;
 	}
 

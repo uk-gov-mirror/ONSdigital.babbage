@@ -2,7 +2,23 @@
 
 // $(function() {
 jQuery(window).load(function() {
-    jsEnhance();
+
+    var browserNotSupported = (function () {
+        var div = document.createElement('DIV');
+        // http://msdn.microsoft.com/en-us/library/ms537512(v=vs.85).aspx
+        div.innerHTML = '<!--[if lte IE 8]><I></I><![endif]-->';
+        return div.getElementsByTagName('I').length > 0;
+    }());
+    if (browserNotSupported) {
+        setTimeout(function() {
+            $('#loading-overlay').fadeOut(300);
+        }, 500);
+    } else {
+        $('body').append('<script type="text/javascript" src="/js/third-party/pym.min.js"></script>');
+        jsEnhance();
+    }
+
+    
 
     function jsEnhance() {
         $('.js-enhance--show').show();
@@ -16,6 +32,7 @@ jQuery(window).load(function() {
         jsEnhanceNumberSeparator();
         jsEnhanceMarkdownCharts();
         jsEnhanceMarkdownTables();
+        jsEnhancePrintCompendium();
 
         setTimeout(function() {
             $('#loading-overlay').fadeOut(300);
@@ -27,15 +44,25 @@ jQuery(window).load(function() {
             var labeltext = $('p:first', this).text();
             var selectoptions = $('ul:first li a', this);
 
-            var label = $('<label>', {
-                class: 'definition-emphasis',
-                text: labeltext
-            });
+
+            //IE9 dosent like this...
+            // var label = $('<label>', {
+            //     class: 'definition-emphasis',
+            //     text: labeltext
+            // });
+            var label = $(document.createElement('label'));
+            label.attr('class', 'definition-emphasis');
+            label.attr('text', labeltext);
+
+
 
             //$(document.createElement('select')) is faster
-            var newselect = $('<select>', {
-                class: 'field field--spaced'
-            });
+            // var newselect = $('<select>', {
+            //     class: 'field field--spaced'
+            // });
+            var newselect = $(document.createElement('select'));
+            newselect.attr('class', 'field field--spaced');
+
 
             newselect.append($('<option>', {
                 value: '',
@@ -99,14 +126,14 @@ jQuery(window).load(function() {
         }
 
         var location = stripTrailingSlash(window.location.pathname) + "/data";
-        console.debug("Downloading timseries data from " + location)
+        // console.debug("Downloading timseries data from " + location)
 
         $.getJSON(location, function(timeseries) {
-            console.log("Successfuly read timseries data");
+            // console.log("Successfuly read timseries data");
             linechart = linechart(timeseries); //Global variable
 
         }).fail(function(d, textStatus, error) {
-            console.error("Failed reading timseries, status: " + textStatus + ", error: " + error)
+            // console.error("Failed reading timseries, status: " + textStatus + ", error: " + error)
         });
     }
 
@@ -175,6 +202,35 @@ jQuery(window).load(function() {
             }
 
             new pym.Parent(uri, uri + "/table", {});
+        });
+    }
+
+    function jsEnhancePrintCompendium() {      
+        $('#jsEnhancePrintCompendium').click(function(e) {
+            addLoadingOverlay();
+
+            // TODO Will get function to add in div, so no empty divs on page at load
+            //$("<div class='print-content'></div>").insertAfter('.desktop-grid-full-width');
+
+            // TODO Remove existing page content from print
+            // $(".wrapper").remove();
+
+            $('.chapter').each(function() {
+                var url = $(this).attr('href');
+                
+                var getContent = ('main');
+                
+                $('<section>').load(url, function() {
+                    $('.print-content').append("<div class='print__break-after'>" + $(this).find(getContent).html() + "</div>");
+                });
+                
+                e.preventDefault();
+            });
+
+            $(document).ajaxStop(function() {
+                window.print();
+                location.reload();
+            });
         });
     }
 });

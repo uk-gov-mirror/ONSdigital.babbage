@@ -103,19 +103,7 @@
 				<!-- /box__content -->
 			</article>
 			<!-- /box 'refine results' -->
-			<article class="box box--orange box--orange--separated-left">
-				<div class="box__inner border box--padded has-icon">
-					<header class="box__header">
-						<h3>Looking for local statistics?</h3>
-					</header>
-					<div class="box__content">
-						<a href="#">
-							A handy guide to let you know where to find local statistics.
-						</a>
-					</div>
-				</div>
-				<!-- /box__inner -->
-			</article>
+			{{> templates/handlebars/partials/local-box}}
 			<!-- /box -->
 			<article class="box-purple box--purple--separated--left">
 				<div class="box__inner border box--padded has-icon">
@@ -134,10 +122,10 @@
 				{{#each contentSearchResult.results}}
 				<li>
 					<h3 class="flush"><a href="{{uri}}" title="{{title}}">{{title}}</a></h3>
-						<p class="mini description flush">
-							Frequency: {{frequency}}
-						</p>
-						{{md summary}}
+					<p class="mini description flush">
+						Frequency: {{frequency}}
+					</p>
+					{{md summary}}
 				</li>
 				{{/each}}
 			</ul>

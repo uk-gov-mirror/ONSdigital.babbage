@@ -42,7 +42,7 @@ function getLinechartConfig(timeseries) {
            response = this.value;
          }
          return response;
-       },
+       }
      },
      tickmarkPlacement: 'on'
    },
@@ -173,8 +173,8 @@ function getLinechartConfig(timeseries) {
          }
        }
      },
-     dashStyle: 'Solid',
+     dashStyle: 'Solid'
    }]
    /*chart:end*/
- }
+ };
  }
