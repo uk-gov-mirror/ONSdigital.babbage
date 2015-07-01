@@ -5,17 +5,14 @@ from carboni.io/java-node-component
 WORKDIR /etc/consul.d
 RUN echo '{"service": {"name": "babbage", "tags": ["blue"], "port": 8080, "check": {"script": "curl http://localhost:8080 >/dev/null 2>&1", "interval": "10s"}}}' > babbage.json
 
-# Check out from Github
-
+# Add the repo source
 WORKDIR /usr/src
-RUN git clone -b develop --single-branch --depth 1 https://github.com/ONSdigital/babbage.git .
+ADD . /usr/src
 
 # Build web content
-
 RUN npm install --prefix=src/main/web --unsafe-perm
 
-# Build
-
+# Build JAR
 RUN mvn clean compile dependency:copy-dependencies
 
 # Restolino
