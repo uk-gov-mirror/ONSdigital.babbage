@@ -2,7 +2,23 @@
 
 // $(function() {
 jQuery(window).load(function() {
-    jsEnhance();
+
+    var browserNotSupported = (function () {
+        var div = document.createElement('DIV');
+        // http://msdn.microsoft.com/en-us/library/ms537512(v=vs.85).aspx
+        div.innerHTML = '<!--[if lte IE 8]><I></I><![endif]-->';
+        return div.getElementsByTagName('I').length > 0;
+    }());
+    if (browserNotSupported) {
+        setTimeout(function() {
+            $('#loading-overlay').fadeOut(300);
+        }, 500);
+    } else {
+        $('body').append('<script type="text/javascript" src="/js/third-party/pym.min.js"></script>');
+        jsEnhance();
+    }
+
+    
 
     function jsEnhance() {
         $('.js-enhance--show').show();
