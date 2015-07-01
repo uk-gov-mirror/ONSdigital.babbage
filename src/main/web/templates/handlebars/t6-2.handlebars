@@ -73,37 +73,40 @@
 	<!-- /wrapper panel--separated--bottom -->
 	<div class="wrapper panel--bottom-mar">
 		<div class="grid-wrap">
-			<article class="grid-col desktop-grid-two-thirds tablet-grid-full-width">
-				{{#each sections}}
-					{{!-- Prevent bottom border on last section before accordian --}}
-					{{#if @last}}
-					<section id="{{slugify title}}" class="panel--pad">
-					{{else}}
-					<section id="{{slugify title}}" class="panel--separated--bottom panel--pad">
-					{{/if}}
-						<header>
-							<h2>{{title}}</h2>
-						</header>
-						{{md markdown}}
-						<a class="print-hidden" href="#toc" title="Back to table of contents">Back to table of contents</a>
-					</section>
-				{{/each}}
-				<!-- Accordion -->
-				{{#if accordion}}
-				<div class="panel--mar">
-					{{#each accordion}}
-					<section id="{{slugify title}}" class="accordion is-collapsed">
-						<h2 class="accordion__title" aria-controls="content-{{@index}}">{{title}}</h2>
-						<div class="accordion__content panel--bottom-mar-small" aria-labelledby="sc-{{@index}}">
+			<div class="page-content">
+				<article class="grid-col desktop-grid-two-thirds tablet-grid-full-width">
+					{{#each sections}}
+						{{!-- Prevent bottom border on last section before accordian --}}
+						{{#if @last}}
+						<section id="{{slugify title}}" class="panel--pad">
+						{{else}}
+						<section id="{{slugify title}}" class="panel--separated--bottom panel--pad">
+						{{/if}}
+							<header>
+								<h2>{{title}}</h2>
+							</header>
 							{{md markdown}}
 							<a class="print-hidden" href="#toc" title="Back to table of contents">Back to table of contents</a>
-						</div>
-					</section>
+						</section>
 					{{/each}}
-				</div>
-				{{/if}}
-			</article>
-			<!-- /desktop-grid-two-thirds -->
+					<!-- Accordion -->
+					{{#if accordion}}
+					<div class="panel--mar">
+						{{#each accordion}}
+						<section id="{{slugify title}}" class="accordion is-collapsed">
+							<h2 class="accordion__title" aria-controls="content-{{@index}}">{{title}}</h2>
+							<div class="accordion__content panel--bottom-mar-small" aria-labelledby="sc-{{@index}}">
+								{{md markdown}}
+								<a class="print-hidden" href="#toc" title="Back to table of contents">Back to table of contents</a>
+							</div>
+						</section>
+						{{/each}}
+					</div>
+					{{/if}}
+				</article>
+				<!-- /desktop-grid-two-thirds -->
+			</div>
+			<!-- /page-content -->
 			<div class="grid-col desktop-grid-one-third panel--top-mar">
 				<article class="box solid box--green--separated--left">
 					<div class="box__inner border box--padded">
