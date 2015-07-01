@@ -12,7 +12,7 @@ ADD . /usr/src
 RUN npm install --prefix=src/main/web --unsafe-perm
 
 # Build jar-with-dependencies
-RUN mvn clean install dependency:copy-dependencies -DskipTests
+RUN mvn install dependency:copy-dependencies -DskipTests
 
 # Restolino
 ENV RESTOLINO_STATIC="src/main/web"
