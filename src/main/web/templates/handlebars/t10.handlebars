@@ -164,6 +164,17 @@
 				</li>
 			</ul>
 			{{/each}}
+
+			{{!-- Paginator --}}
+			<{{!-- div class="pagination simple-pagination pagination-centred" >
+			  <ul>
+			    <li>
+			      <span ng-show="paginator.isCurrent(i)" class="current">{{i}}</span>
+			      <a ng-href="{{paginator.getLinkTarget(i)}}" ng-click="paginator.selectPage(i)" ng-hide="paginator.isCurrent(i)" class="page-link" >{{i}}</a>
+			    </li>
+			  </ul>
+			</div> --}}
+
 		</div>
 		<!-- /desktop-grid-two-thirds -->
 	</div>

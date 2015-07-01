@@ -35,14 +35,18 @@
 	<div class="wrapper panel--mar print-links">
 		<div class="grid-wrap">
 			<div class="grid-col desktop-grid-full-width">
+				{{#if migrated}}
 				<article class="box box--warning">
 					<div class="box__inner box--padded">
 						<div class="box__content">
-							{{md notice}}
+              This content has been migrated directly from our previous site for this beta and is currently in a temporary format. We are working to update these to a new format during the course of the beta.
 						</div>
 					</div>
 					<!-- /box__inner -->
 				</article>
+				{{else}}
+          <h3><a href="{{uri of compendium}}">Back to {{name of compendium}}</a></h3>
+				{{/if}}
 				<!-- /box -->
 				<div class="lede">
 					{{md description.summary}}
@@ -54,10 +58,10 @@
 			<!-- /grid-col -->
 			<div class="grid-col desktop-grid-two-thirds">
 				<ul class="list--neutral">
-					{{#each datasets}}
+					{{#each downloads}}
 					<li>
-						<h3 class="flush"><a href="{{uri}}" title="{{title}}">{{title}}</a></h3>
-						{{md summary}}
+						<h3 class="flush"><a href="{{file}}" title="{{title}}">{{title}}</a></h3>
+						{{md fileDescription}}
 					</li>
 					{{/each}}
 				</ul>
