@@ -35,14 +35,14 @@
         <!-- This title will need to be dynamically generated on the server -->
         <h2 class="actionable-header--tight__title gamma flush--bottom body-type--heavy">Download this entire time series</h2>
         <div class="actionable-header--tight__action actionable-header--tight__action--left">
-            <form method="post" action="/chartimage">
+            <form method="post" action="/chartimage" class="inline">
                 <button type="submit" class="btn btn--primary btn--small" target="_blank" name="uri" value="{{uri}}">
                 image (54kb)
                 <span class="icon-download icon--button-inline" role="presentation"></span>
                 </button>
                 <input type="hidden" name="fileName" value="{{description.title}}" />
             </form>
-            <form method="post" action="/download">
+            <form method="post" action="/download" class="inline">
                 <button type="submit" name="type" value="csv" class="btn btn--primary btn--small">
                 .csv ()
                 <span class="icon-download icon--button-inline" role="presentation"></span>
@@ -191,13 +191,13 @@
                 </tr>
             </thead>
             <tbody>
-                
+
             </tbody>
         </table>
     </div>
-    
+
     <img class="js-enhance--hide" src="{{uri}}/linechart" alt="{{description.title}}" width="875" height="400">
-    
+
     <div class="chart-area__footer nojs-hidden js-enhance--show" data-chart-custom="">
         <span class="chart-area__footer__label">Download custom data</span>
         <div class="chart-area__footer__actions">
