@@ -4,6 +4,7 @@ import com.github.onsdigital.configuration.Configuration;
 import com.github.onsdigital.content.link.PageReference;
 import com.github.onsdigital.content.page.base.Page;
 import com.github.onsdigital.content.page.list.ListPage;
+import com.github.onsdigital.content.page.statistics.base.StatisticsDescription;
 import com.github.onsdigital.content.partial.SearchResult;
 import com.github.onsdigital.content.service.ContentNotFoundException;
 import com.github.onsdigital.content.util.ContentUtil;
@@ -25,10 +26,7 @@ import java.nio.file.DirectoryStream;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Render a list page for the given URI.
@@ -51,6 +49,14 @@ public class PreviousReleasesRequestHandler implements RequestHandler {
         ListPage page = new ListPage();
         List<PageReference> pageReferences;
 
+        PopulatePageDetails(requestedUri, zebedeeRequest, page);
+
+        String html = TemplateService.getInstance().renderPage(page);
+        return new BabbageStringResponse(html, CONTENT_TYPE);
+    }
+
+    private void PopulatePageDetails(String requestedUri, ZebedeeRequest zebedeeRequest, ListPage page) throws ContentNotFoundException, IOException {
+        List<PageReference> pageReferences;
         if (zebedeeRequest != null) {
             pageReferences = readFromZebedee(requestedUri, zebedeeRequest);
         } else {
@@ -65,16 +71,32 @@ public class PreviousReleasesRequestHandler implements RequestHandler {
 
         //TODO: Read navigaton from zebedee if zebedee request ????
         page.setNavigation(NavigationUtil.getNavigation());
+        populatePageDescriptions(zebedeeRequest, pageReferences);
+        sortPageReferences(pageReferences);
+    }
 
+    private void populatePageDescriptions(ZebedeeRequest zebedeeRequest, List<PageReference> pageReferences) throws IOException, ContentNotFoundException {
         // populate the page reference descriptions.
         DataRequestHandler dataRequestHandler = new DataRequestHandler();
         for (PageReference pageReference : pageReferences) {
             Page referencedPage = dataRequestHandler.readAsPage(pageReference.getUri().toString(), false, zebedeeRequest);
             pageReference.setDescription(referencedPage.getDescription());
         }
+    }
 
-        String html = TemplateService.getInstance().renderPage(page);
-        return new BabbageStringResponse(html, CONTENT_TYPE);
+    private void sortPageReferences(List<PageReference> pageReferences) {
+        Collections.sort(pageReferences, new Comparator<PageReference>() {
+            @Override
+            public int compare(PageReference o1, PageReference o2) {
+
+                if (o1.getDescription() instanceof StatisticsDescription) {
+                    return ((StatisticsDescription) o2.getDescription()).getReleaseDate()
+                            .compareTo(((StatisticsDescription) o1.getDescription()).getReleaseDate());
+                }
+
+                return 0;
+            }
+        });
     }
 
     private List<PageReference> readFromZebedee(String uri, ZebedeeRequest zebedeeRequest) throws ContentNotFoundException, IOException {
