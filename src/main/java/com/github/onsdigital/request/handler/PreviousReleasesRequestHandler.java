@@ -120,9 +120,7 @@ public class PreviousReleasesRequestHandler implements RequestHandler {
 
     private List<PageReference> readFromLocal(String requestedUri) throws IOException {
         Path taxonomyPath = FileSystems.getDefault().getPath(Configuration.getContentPath());
-
-        requestedUri = StringUtils.removeStart(requestedUri, "/");
-        Path path = taxonomyPath.resolve(requestedUri);
+        Path path = taxonomyPath.resolve(StringUtils.removeStart(requestedUri, "/"));
 
         List<PageReference> pages = new ArrayList<>();
         try (DirectoryStream<Path> stream = Files.newDirectoryStream(path)) {
