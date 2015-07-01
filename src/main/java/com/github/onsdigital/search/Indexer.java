@@ -63,7 +63,7 @@ public class Indexer {
 
 		XContentBuilder builder = jsonBuilder().startObject().startObject(type).startObject("properties");
 		try {
-//			builder.startObject("lede").field("type", "string").field("index", "no").endObject();
+			builder.startObject("releaseDate").field("type", "string").field("index", "no").endObject();
 			builder.startObject("summary").field("type", "string").field("index", "no").endObject();
 			builder.startObject("title").field("type", "string").field("index", "analyzed").endObject();
 			builder.startObject("path").field("type", "string").field("index", "analyzed").endObject();
@@ -126,7 +126,7 @@ public class Indexer {
 	private static void buildDocument(Client client, Map<String, String> documentMap, int idCounter) throws IOException {
 
 		XContentBuilder source = jsonBuilder().startObject().field("title", documentMap.get("title")).field("uri", documentMap.get("uri")).field("path", documentMap.get("tags"))
-				.field("lede", documentMap.get("lede")).field("summary", documentMap.get("summary")).endObject();
+				.field("releaseDate", documentMap.get("releaseDate")).field("summary", documentMap.get("summary")).endObject();
 		try {
 			build(client, documentMap, idCounter, source);
 		} finally {

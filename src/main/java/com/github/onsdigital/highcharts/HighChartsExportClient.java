@@ -3,6 +3,7 @@ package com.github.onsdigital.highcharts;
 import com.github.onsdigital.configuration.Configuration;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
+import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -11,6 +12,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 
+import javax.servlet.ServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -57,11 +59,13 @@ public class HighChartsExportClient {
         if (responseEntity != null && responseEntity.getContent() != null) {
             data = responseEntity.getContent();
         }
-
        System.out.println("Highcharts export response: " + response.getStatusLine());
 
+       if(HttpStatus.SC_OK != response.getStatusLine().getStatusCode()) {
+           System.err.println(IOUtils.toString(data));
+           throw new RuntimeException("Failed fetching image");
+       }
         return data;
-
     }
 
     public void closeConnection() {

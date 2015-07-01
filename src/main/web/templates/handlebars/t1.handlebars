@@ -11,7 +11,7 @@
 <!-- panel -->
 
 {{!-- Hardcoded stastical highlights --}}
-<div class="wrapper panel--mar">
+{{!-- <div class="wrapper panel--mar">
     <!-- grid-wrap -->
     <h2>Statistical highlights</h2>
 
@@ -131,11 +131,11 @@
 
 
     </div>
-</div>
+</div> --}}
 
 
 {{!-- Dynamic stastical highlights --}}
-{{!-- <div class="wrapper panel--mar">
+<div class="wrapper panel--mar">
     <!-- grid-wrap -->
     <h2>Statistical highlights</h2>
 
@@ -147,21 +147,23 @@
                 <div class="stat__wrap--home">
                     <!-- add to dl -->
                     <!-- change to dt -->
-                    <header class="nav-panel__header">
-                        <h2 class="gamma flush">{{statistics.data.description.title}}</h2>
-                    </header>
-                    <!-- change to dd's -->
-                    <p>
-                        <span class="stat__figure--home block">
-                            {{statistics.data.description.preUnit}} {{statistics.data.description.number}} {{statistics.data.description.unit}}
-                        </span>
-                        <span class="stat__description block">
-                            {{statistics.data.description.date}}
-                        </span>
-                        <img class="stat__image--home" src="{{statistics.data.uri}}/sparkline" alt="{{statistics.data.description.title}}">
+                    <dl>
+                        <dt class="nav-panel__header gamma flush">
+                            {{statistics.data.description.title}}
+                        </dt>
+                        <!-- change to dd's -->
+                        <dd>
+                            <span class="stat__figure--home block">
+                                {{statistics.data.description.preUnit}} {{statistics.data.description.number}} {{statistics.data.description.unit}}
+                            </span>
+                            <span class="stat__description block">
+                                {{statistics.data.description.date}}
+                            </span>
+                            <img class="stat__image--home" src="{{statistics.data.uri}}/sparkline" alt="{{statistics.data.description.title}}">
 
-                        <a class="js-enhance--hide" href="{{statistics.data.uri}}">More info</a>
-                    </p>
+                            <a class="js-enhance--hide" href="{{statistics.data.uri}}">More info</a>
+                        </dd>
+                    </dl>
                 </div>
                 <footer class="nav-panel__footer-home-hero">
                     <a href="{{theme.uri}}">Explore {{theme.description.title}}</a>
@@ -171,10 +173,9 @@
         </div>
         {{/each}}
         <!-- /grid-wrap -->
-        <!--</div>  remove this closing div... -->
         <!-- /panel-->
     </div>
-</div> --}}
+</div>
 
 
 {{!-- <div class="panel wrapper">

@@ -18,7 +18,7 @@ function addLoadingOverlay() {
 
     var loader = document.createElement('div');
     loader.innerHTML = "<p>Loading...</p>",
-    loader.className = 'loader'
+    loader.className = 'loader print-hidden'
 
 
     // overlayhtml = '<div style="width:100%;height:100%;position:fixed;top:0;bottom:0;left:0;right:0;background:red;z-index:99999"></div>';
