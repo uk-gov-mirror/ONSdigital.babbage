@@ -1,7 +1,6 @@
 from carboni.io/java-node-component
 
 # Consul
-
 WORKDIR /etc/consul.d
 RUN echo '{"service": {"name": "babbage", "tags": ["blue"], "port": 8080, "check": {"script": "curl http://localhost:8080 >/dev/null 2>&1", "interval": "10s"}}}' > babbage.json
 
@@ -12,17 +11,15 @@ ADD . /usr/src
 # Build web content
 RUN npm install --prefix=src/main/web --unsafe-perm
 
-# Build JAR
-RUN mvn clean compile dependency:copy-dependencies
+# Build jar-with-dependencies
+RUN mvn clean install dependency:copy-dependencies -DskipTests
 
 # Restolino
-
 ENV RESTOLINO_STATIC="src/main/web"
 ENV RESTOLINO_CLASSES="target/classes"
 ENV PACKAGE_PREFIX=com.github.onsdigital
 
 # Update the entry point script
-
 RUN mv /usr/entrypoint/container.sh /usr/src/
 # Download build and start highcharts server
 RUN echo "./highcharts-export-server.sh" >> container.sh
