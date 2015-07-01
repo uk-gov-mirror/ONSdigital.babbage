@@ -28,15 +28,23 @@ jQuery(window).load(function() {
             var labeltext = $('p:first', this).text();
             var selectoptions = $('ul:first li a', this);
 
-            var label = $('<label>', {
-                class: 'definition-emphasis',
-                text: labeltext
-            });
+            // var label = $('<label>', {
+            //     class: 'definition-emphasis',
+            //     text: labeltext
+            // });
+            var label = $(document.createElement('label'));
+            label.attr('class', 'definition-emphasis');
+            label.attr('text', labeltext);
+
+
 
             //$(document.createElement('select')) is faster
-            var newselect = $('<select>', {
-                class: 'field field--spaced'
-            });
+            // var newselect = $('<select>', {
+            //     class: 'field field--spaced'
+            // });
+            var newselect = $(document.createElement('select'));
+            newselect.attr('class', 'field field--spaced');
+
 
             newselect.append($('<option>', {
                 value: '',
