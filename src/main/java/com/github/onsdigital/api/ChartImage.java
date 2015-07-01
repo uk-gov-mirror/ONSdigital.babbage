@@ -31,12 +31,12 @@ public class ChartImage {
             fileName = fileName == null ? "image" : fileName;
             fileName += PNG;
             String uri = request.getParameter("uri");
-            response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
-
             System.out.println("Download image request recieved" + fileName);
             //TODO:Read chart data from zebedee ? Think about ability to proxy every request to zebedee.
             //TODO: Lots of common flow in Babbage and Zebedee
+
             BabbageResponse babbageResponse = new LineChartImageHandler().get(uri, request);
+            response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
             babbageResponse.apply(response);
         } catch (Exception e) {
             ApiErrorHandler.handle(e,response);

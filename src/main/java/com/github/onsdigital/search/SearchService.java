@@ -1,8 +1,15 @@
 package com.github.onsdigital.search;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.net.URI;
+import java.util.*;
 
+import com.github.onsdigital.content.link.PageReference;
+import com.github.onsdigital.content.page.base.Page;
+import com.github.onsdigital.content.page.base.PageDescription;
+import com.github.onsdigital.content.page.base.PageType;
+import com.github.onsdigital.content.page.statistics.base.StatisticsDescription;
+import com.github.onsdigital.content.partial.SearchResult;
+import com.github.onsdigital.content.util.ContentUtil;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.elasticsearch.action.count.CountRequestBuilder;
 import org.elasticsearch.action.count.CountResponse;
@@ -13,8 +20,10 @@ import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.Client;
 
-import com.github.onsdigital.search.bean.SearchResult;
 import com.github.onsdigital.search.util.ONSQueryBuilder;
+import org.elasticsearch.common.text.Text;
+import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.highlight.HighlightField;
 
 /**
  * 
@@ -39,7 +48,8 @@ public class SearchService {
 	 */
 	public static SearchResult search(ONSQueryBuilder queryBuilder) {
 		System.out.println("Searcing For:" + ReflectionToStringBuilder.toString(queryBuilder));
-		return new SearchResult(execute(queryBuilder));
+		return buildSearchResult(execute(queryBuilder));
+
 	}
 	
 	public static long count(ONSQueryBuilder queryBuilder) {
@@ -61,7 +71,7 @@ public class SearchService {
 		for (int i = 0; i < responses.length; i++) {
 			Item item = responses[i];
 			if (!item.isFailure()) {
-				results.add(new SearchResult(item.getResponse()));
+				results.add(buildSearchResult(item.getResponse()));
 			} else {
 				System.out.println("Warning: Search failed for " + ReflectionToStringBuilder.toString(queryBuilders));
 			}
@@ -115,6 +125,61 @@ public class SearchService {
 		}
 		return multiSearchRequestBuilder;
 	}
+
+
+	public static SearchResult buildSearchResult(SearchResponse response) {
+		SearchResult searchResult = new SearchResult();
+		searchResult.setNumberOfResults(response.getHits().getTotalHits());
+        searchResult.setResults(resolveReferences(response));
+        return searchResult;
+	}
+
+	private static List<Map<String, Object>> resolveHits(SearchResponse response) {
+        List<Map<String, Object>> results = new ArrayList<>();
+        SearchHit hit;
+        Iterator<SearchHit> iterator = response.getHits().iterator();
+        while (iterator.hasNext()) {
+            hit = iterator.next();
+            Map<String, Object> item = new HashMap<String, Object>(
+                    hit.getSource());
+            item.put("type", hit.getType());
+            item.put("highlights",
+                    extractHihglightedFields(hit));
+            results.add(item);
+        }
+        return results;
+    }
+
+	private static List<PageReference> resolveReferences(SearchResponse response) {
+        List<Map<String, Object>> results = resolveHits(response);
+		List<PageReference> references = new ArrayList<>();
+        for (Iterator<Map<String, Object>> iterator = results.iterator(); iterator.hasNext(); ) {
+            Map<String, Object> next = iterator.next();
+            PageReference reference = new PageReference(URI.create((String) next.get("uri")));
+            reference.setType(PageType.valueOf((String) next.get("type")));
+            PageDescription pageDescription = ContentUtil.deserialise(ContentUtil.serialise(next), StatisticsDescription.class);
+            reference.setDescription(pageDescription);
+            references.add(reference);
+        }
+        return references;
+    }
+
+	private static Map<? extends String, ? extends Object> extractHihglightedFields(
+			SearchHit hit) {
+
+		HashMap<String, Object> highlightedFields = new HashMap<>();
+		for (Map.Entry<String, HighlightField> entry : hit.getHighlightFields()
+				.entrySet()) {
+			Text[] fragments = entry.getValue().getFragments();
+			if (fragments != null) {
+				for (Text text : fragments) {
+					highlightedFields.put(entry.getKey(), text.toString());
+				}
+			}
+		}
+		return highlightedFields;
+	}
+
 
 	private static Client getClient() {
 		return ElasticSearchServer.getClient();

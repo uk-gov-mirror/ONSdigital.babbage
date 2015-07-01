@@ -4,15 +4,22 @@ import com.github.davidcarboni.restolino.framework.Api;
 import com.github.onsdigital.api.util.ApiErrorHandler;
 import com.github.onsdigital.api.util.URIUtil;
 import com.github.onsdigital.configuration.Configuration;
+import com.github.onsdigital.content.link.PageReference;
+import com.github.onsdigital.content.page.base.Page;
+import com.github.onsdigital.content.page.base.PageType;
+import com.github.onsdigital.content.page.search.SearchResultsPage;
+import com.github.onsdigital.content.page.statistics.data.base.StatisticalData;
 import com.github.onsdigital.content.page.statistics.data.timeseries.TimeSeries;
+import com.github.onsdigital.content.page.taxonomy.ProductPage;
 import com.github.onsdigital.content.util.ContentUtil;
+import com.github.onsdigital.data.DataService;
 import com.github.onsdigital.error.ResourceNotFoundException;
 import com.github.onsdigital.request.response.BabbageResponse;
 import com.github.onsdigital.request.response.BabbageStringResponse;
 import com.github.onsdigital.search.bean.AggregatedSearchResult;
 import com.github.onsdigital.search.util.SearchHelper;
-import com.github.onsdigital.template.TemplateRenderer;
 import com.github.onsdigital.template.TemplateService;
+import com.github.onsdigital.util.NavigationUtil;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -21,9 +28,13 @@ import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.GET;
 import javax.ws.rs.core.Context;
 import java.io.IOException;
+import java.net.URI;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Search endpoint that invokes appropriate search engine
+ * //TODO: Tidy up, re-structure search and elastic search indexing keeping content library in mind.
  *
  * @author Bren
  */
@@ -41,29 +52,29 @@ public class Search {
         try {
             String query = extractQuery(request);
             Object searchResult = null;
+            int page = extractPage(request);
             if (StringUtils.isNotBlank(request.getParameter("q"))) {
-                int page = extractPage(request);
                 String[] types = extractTypes(request);
                 searchResult = search(query, page, types);
                 if (searchResult == null) {
                     System.out.println("Attempting search against timeseries as no results found for: " + query);
-                    TimeSeries timeSeries = searchTimseries(query, types);
-                    if (timeSeries == null) {
+                    URI timeseriesUri = searchTimseries(query, types);
+                    if (timeseriesUri == null) {
                         System.out.println("No results found from timeseries so using suggestions for: " + query);
-                        searchResult =  searchAutocorrect(query, page, types);
+                        searchResult = searchAutocorrect(query, page, types);
                     } else {
-                        response.sendRedirect(timeSeries.getUri().toString());
+                        response.sendRedirect(timeseriesUri.toString());
                         return null;
                     }
                 }
-            } else if (StringUtils.isNotBlank(request.getParameter("term"))) {
+            } /*else if (StringUtils.isNotBlank(request.getParameter("term"))) {
                 searchResult = autoComplete(query);
-            } else if (StringUtils.isNotBlank(request.getParameter("cdid"))) {
-                TimeSeries timeseries = SearchHelper.searchCdid(query);
-                return timeseries == null ? "" : timeseries.getUri();
+            }*/ else if (StringUtils.isNotBlank(request.getParameter("cdid"))) {
+                URI timeseriesUri = SearchHelper.searchCdid(query);
+                return timeseriesUri == null ? "" : timeseriesUri;
             }
 
-            handleResponse(type, searchResult, response);
+            handleResponse(type, searchResult, response, page, query);
             return null;
         } catch (Exception e) {
             ApiErrorHandler.handle(e, response);
@@ -73,15 +84,15 @@ public class Search {
 
 
     //Decide if json should be returned ( in case search/data requested) or page should be rendered
-    private void handleResponse(String requestType, Object searchResult, HttpServletResponse response) throws IOException {
+    private void handleResponse(String requestType, Object searchResult, HttpServletResponse response, int page, String query) throws IOException {
         BabbageResponse babbageResponse;
 
         switch (requestType) {
             case DATA_REQUEST:
-                babbageResponse = new BabbageStringResponse(ContentUtil.serialise(searchResult));
+                babbageResponse = new BabbageStringResponse(ContentUtil.serialise(buildResultsPage((AggregatedSearchResult) searchResult, page, query)));
                 break;
             case SEARCH_REQUEST:
-                babbageResponse = new BabbageStringResponse(renderSearchPage(searchResult), HTML_MIME);
+                babbageResponse = new BabbageStringResponse(renderSearchPage((AggregatedSearchResult) searchResult, page, query), HTML_MIME);
                 break;
             default:
                 throw new ResourceNotFoundException();
@@ -89,8 +100,54 @@ public class Search {
         babbageResponse.apply(response);
     }
 
-    public String renderSearchPage(Object results ) throws IOException {
-        return TemplateService.getInstance().render(results, Configuration.getSearchTemplateName());
+
+    public String renderSearchPage(AggregatedSearchResult results, int currentPage, String searchTerm) throws IOException {
+        SearchResultsPage searchPage = buildResultsPage(results, currentPage, searchTerm);
+        searchPage.setNavigation(NavigationUtil.getNavigation());
+        return TemplateService.getInstance().renderPage(searchPage);
+    }
+
+    //Resolve search headlines and build search page
+    private SearchResultsPage buildResultsPage(AggregatedSearchResult results, int currentPage, String searchTerm) {
+        SearchResultsPage page = new SearchResultsPage();
+        page.setStatisticsSearchResult(results.statisticsSearchResult);
+        page.setTaxonomySearchResult(results.taxonomySearchResult);
+        page.setCurrentPage(currentPage);
+        page.setNumberOfResults(results.getNumberOfResults());
+        page.setSearchTerm(searchTerm);
+        page.setSuggestionBased(results.isSuggestionBasedResult());
+        if (results.isSuggestionBasedResult()) {
+            page.setSuggestion(results.getSuggestion());
+        }
+
+        if (page.getTaxonomySearchResult() != null) {
+            resolveSearchHeadline(page);
+        }
+        return page;
+    }
+
+    private void resolveSearchHeadline(SearchResultsPage page) {
+        for (Iterator<PageReference> iterator = page.getTaxonomySearchResult().getResults().iterator(); iterator.hasNext(); ) {
+            PageReference pageReference = iterator.next();
+            //Beware! Very messy code,
+            // Elastic search does not contain whole data, so we have to load referenced data to get headline data reference (the first data item in the product page) and then data for that page
+            //Afterwards reference needs updating back to data in elastic search to reduce data
+            //Search in general needs tidying up. After going live hopefuly
+
+            if (PageType.product_page == pageReference.getType()) {
+                ContentUtil.loadReferencedPage(DataService.getInstance(), pageReference);
+                ProductPage productPage = (ProductPage) pageReference.getData();;
+                List<PageReference> items = productPage.getItems();
+                if (items != null) {
+                    PageReference headlineData = items.iterator().next();
+                    if (headlineData != null) {
+                        ContentUtil.loadReferencedPage(DataService.getInstance(), headlineData);
+                        iterator.remove();
+                        page.setHeadlinePage(productPage);
+                    }
+                }
+            }
+        }
     }
 
     private Object search(String query, int page, String[] types) throws Exception {
@@ -102,7 +159,7 @@ public class Search {
         return searchResult;
     }
 
-    private TimeSeries searchTimseries(String query, String[] types) {
+    private URI searchTimseries(String query, String[] types) {
         return SearchHelper.searchCdid(query);
     }
 

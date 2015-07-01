@@ -120,10 +120,6 @@ public class NavigationUtil {
         return FileSystems.getDefault().getPath(Configuration.getContentPath());
     }
 
-    private static boolean isTaxonomy(Path p) {
-        return !p.getFileName().toString().contains("releases");
-    }
-
     public static void main(String[] args) {
         try {
             List<NavigationNode> nodes = NavigationUtil.buildNavigationNodes();

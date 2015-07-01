@@ -296,7 +296,7 @@
 //	private static void updateNoResults(String query, AggregatedSearchResult searchResult) {
 //		try {
 //			if (searchResult.getNumberOfResults() == 0 && StringUtils.equals(StringUtils.trim(StringUtils.lowerCase(query)), "newport explorers")) {
-//				searchResult.contentSearchResult.setNumberOfResults(1);;
+//				searchResult.statisticsSearchResult.setNumberOfResults(1);;
 //				searchResult.setSuggestion("The guys at Fields House");
 //				searchResult.setSuggestionBasedResult(true);
 //
@@ -306,7 +306,7 @@
 //						+ "to make this happen - and it's been great. Here's a bit more about the guys..");
 //				result.put("type", PageType.unknown);
 //				result.put("url", "http://davidcarboni.github.io/newport-explorers/");
-//				searchResult.contentSearchResult.getResults().add(result);
+//				searchResult.statisticsSearchResult.getResults().add(result);
 //			}
 //		} catch (Throwable t) {
 //			// We don't want any exceptions propagated.

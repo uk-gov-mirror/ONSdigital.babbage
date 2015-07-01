@@ -19,6 +19,7 @@ import java.util.*;
 public class LoadIndexHelper {
     private static final String DESCRIPTION = "description";
     private static final String CDID = "cdid";
+    private static final String RELEASE_DATE = "releaseDate";
     private static final String TAGS = "tags";
     private static final String TITLE = "title";
     private static final String TYPE = "type";
@@ -67,12 +68,11 @@ public class LoadIndexHelper {
         JsonObject description = jsonObject.getAsJsonObject(DESCRIPTION);
         String title = getField(description, TITLE);
         String summary = getField(description, SUMMARY);
-//        String name = getField(jsonObject, NAME);
-//        String lede = getField(jsonObject, LEDE);
+        String releaseDate = getField(description, RELEASE_DATE);
         switch (pageType) {
             case taxonomy_landing_page:
             case product_page:
-                documentMap = buildDocumentMap(splitUrl, splitPathAsList, type, title, summary);
+                documentMap = buildDocumentMap(splitUrl, splitPathAsList, type, title, summary, releaseDate);
                 break;
             case timeseries:
                 String cdid = getField(description, CDID);
@@ -82,21 +82,21 @@ public class LoadIndexHelper {
                 System.out.println("json file: " + absoluteFilePath + "has unknown content type: " + pageType);
                 break;
             default:
-                documentMap = buildDocumentMap(splitUrl, splitPathAsList, type, title, summary);
+                documentMap = buildDocumentMap(splitUrl, splitPathAsList, type, title, summary, releaseDate);
                 break;
         }
 
         return documentMap;
     }
 
-    private static Map<String, String> buildDocumentMap(String url, List<String> pathTokens, String type, String title, String summary) {
+    private static Map<String, String> buildDocumentMap(String url, List<String> pathTokens, String type, String title, String summary, String releaseDate) {
 
         Map<String, String> documentMap = new HashMap<String, String>();
         documentMap.put(URI, url);
         documentMap.put(TYPE, type);
         documentMap.put(TITLE, title);
         documentMap.put(TAGS, pathTokens.toString());
-//        documentMap.put(LEDE, lede);
+        documentMap.put(RELEASE_DATE, releaseDate);
         documentMap.put(SUMMARY, summary);
         return documentMap;
     }
@@ -129,7 +129,7 @@ public class LoadIndexHelper {
 
         JsonElement jsonElement = jsonObject.get(field);
         if (jsonElement == null) {
-            return PageType.unknown.name();
+            return null;
         }
 
         return jsonElement.getAsString();
