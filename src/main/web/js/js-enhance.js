@@ -28,6 +28,8 @@ jQuery(window).load(function() {
             var labeltext = $('p:first', this).text();
             var selectoptions = $('ul:first li a', this);
 
+
+            //IE9 dosent like this...
             // var label = $('<label>', {
             //     class: 'definition-emphasis',
             //     text: labeltext
@@ -108,14 +110,14 @@ jQuery(window).load(function() {
         }
 
         var location = stripTrailingSlash(window.location.pathname) + "/data";
-        console.debug("Downloading timseries data from " + location)
+        // console.debug("Downloading timseries data from " + location)
 
         $.getJSON(location, function(timeseries) {
-            console.log("Successfuly read timseries data");
+            // console.log("Successfuly read timseries data");
             linechart = linechart(timeseries); //Global variable
 
         }).fail(function(d, textStatus, error) {
-            console.error("Failed reading timseries, status: " + textStatus + ", error: " + error)
+            // console.error("Failed reading timseries, status: " + textStatus + ", error: " + error)
         });
     }
 
