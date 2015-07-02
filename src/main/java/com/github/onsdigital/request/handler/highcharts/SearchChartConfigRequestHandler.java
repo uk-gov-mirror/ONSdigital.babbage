@@ -17,8 +17,8 @@ import java.io.IOException;
 /**
  * Created by bren on 18/06/15.
  */
-public class SparklineConfigRequestHandler implements RequestHandler {
-    public static final String REQUEST_TYPE = "sparklineconfig";
+public class SearchChartConfigRequestHandler implements RequestHandler {
+    public static final String REQUEST_TYPE = "searchchartconfig";
 
     @Override
     public BabbageResponse get(String requestedUri, HttpServletRequest request) throws Exception {
@@ -36,9 +36,8 @@ public class SparklineConfigRequestHandler implements RequestHandler {
         if (!(page instanceof TimeSeries)) {
             throw new IllegalArgumentException("Requested data is not a timseries");
         }
-        return new HighchartsChart((TimeSeries) page, Configuration.getSparklineConfig());
+        return new HighchartsChart((TimeSeries) page, Configuration.getSearchchartFile());
     }
-
 
     @Override
     public String getRequestType() {

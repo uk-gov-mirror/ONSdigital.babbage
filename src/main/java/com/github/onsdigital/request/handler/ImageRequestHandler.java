@@ -19,11 +19,6 @@ import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-/**
- * Created by bren on 28/05/15.
- * <p>
- * Serves rendered html output
- */
 public class ImageRequestHandler implements RequestHandler {
 
     private static final String REQUEST_TYPE = "image";
