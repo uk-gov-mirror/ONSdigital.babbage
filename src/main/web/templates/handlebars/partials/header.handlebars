@@ -30,6 +30,11 @@
 		<span>Skip to main content</span>
 	</a>
 
+	<!-- Prototype banner -->
+	<div class="box--padded color-red display-block">
+		<p class="delta flush">Experimental prototype</p>
+	</div>
+
 	<!-- Pattern library page header -->
 	<header class="global-header">
 		<div class="global-header__wrapper">
@@ -38,13 +43,13 @@
 			</a>
 			<ul class="nav globaltop-nav">
 				<li>
-					<a href="#">Release Calendar</a>
+					<a href="/calendar">Release Calendar</a>
 				</li>
 				<li>
-					<a href="#">Methodology</a>
+					<a href="/methodology">Methodology</a>
 				</li>
 				<li>
-					<a href="#">About</a>
+					<a href="/about">About</a>
 				</li>
 			</ul>
 		</div>
@@ -69,12 +74,13 @@
 				<a href="/">Home</a>
 			</li>
 			{{#each navigation.nodes}}
-				<li class="nav__expandable js-expandable">
+			{{!-- Using two eq condition since eq is very simple and can't handle or operaand. --}}
+				<li class="nav__expandable js-expandable {{#eq uri ../breadcrumb.1/uri}}nav--primary__active{{/eq}} {{#eq uri ../uri}}nav--primary__active{{/eq}}">
 					<a href="{{uri}}">{{title}}</a>
 						<ul class="nav--primary__sub js-expandable__content js-nav-hidden">
 							{{#each children}}
-								<li>
-									<a href="{{uri}}">{{title}}</a>
+								<li class="{{#eq uri ../../uri}}nav--primary__active{{/eq}}" >
+									<a href="{{uri}}" >{{title}}</a>
 								</li>
 							{{/each}} <!-- /each to find 2nd level nodes -->
 						</ul>
@@ -87,13 +93,13 @@
 				</a>
 			</li>
 			<li class="nav--primary__secondary-content">
-				<a href="#">Release calendar</a>
+				<a href="/calendar">Release calendar</a>
 			</li>
 			<li class="nav--primary__secondary-content">
-				<a href="#">Methodology</a>
+				<a href="/methodology">Methodology</a>
 			</li>
 			<li class="nav--primary__secondary-content">
-				<a href="#">About</a>
+				<a href="/about">About</a>
 			</li>
 		</ul> <!-- /nav-primary -->
 

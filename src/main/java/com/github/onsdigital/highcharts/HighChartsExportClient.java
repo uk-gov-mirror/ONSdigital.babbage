@@ -12,7 +12,6 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 
-import javax.servlet.ServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -36,7 +35,7 @@ public class HighChartsExportClient {
         }
     }
 
-   public InputStream getImage(BaseChart chart) throws IOException {
+   public InputStream getImage(HighchartsChart chart) throws IOException {
         if (client == null) {
             openConnection();
         }

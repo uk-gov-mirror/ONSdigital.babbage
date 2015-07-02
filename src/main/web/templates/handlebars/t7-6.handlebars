@@ -47,14 +47,14 @@
 		<div class="grid-wrap print-links s">
 			<article class="grid-col desktop-grid-two-thirds tablet-grid-full-width">
 				{{#each sections}}
-					{{!-- Prevent bottom border on last section before accordian --}}
+					{{!-- Prevent bottom border on last section before accordion --}}
 					{{#if @last}}
 					<section id="{{slugify title}}" class="panel--pad">
 					{{else}}
 					<section id="{{slugify title}}" class="panel--separated--bottom panel--pad">
 					{{/if}}
 						<header>
-							<h2>{{title}}</h2>
+							<h2>{{@index_1}}. {{title}}</h2>
 						</header>
 						{{md markdown}}
 						<a class="print-hidden" href="#toc" title="Back to table of contents">Back to table of contents</a>

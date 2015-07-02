@@ -6,6 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import javax.crypto.SecretKey;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -25,6 +26,7 @@ public class Configuration {
     private static final String HIGHCHARTS_CONFIG_DIR = "src/main/web/templates/highcharts";
     private static final String SPARKLINE_FILE = "sparklineconfig.js";
     private static final String LINECHART_FILE = "linechartconfig.js";
+    private static final String SEARCHCHART_FILE = "searchchartconfig.js";
 
     /**
      * Mongo is currently only used to provide feedback on the search terms
@@ -138,20 +140,25 @@ public class Configuration {
     }
 
 
+    public static String getSearchchartFile() {
+        //TODO:Cache configuration
+        try {
+            Path highchartsconfigDir = FileSystems.getDefault().getPath(HIGHCHARTS_CONFIG_DIR);
+            Path searchChartPath = highchartsconfigDir.resolve(SEARCHCHART_FILE);
+            return getChartConfig(searchChartPath, Files.newInputStream(searchChartPath));
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Failed reading search chart config file");
+        }
+    }
+
+
     public static String getSparklineConfig() {
         //TODO:Cache configuration
         try {
             Path highchartsconfigDir = FileSystems.getDefault().getPath(HIGHCHARTS_CONFIG_DIR);
             Path sparklinePath = highchartsconfigDir.resolve(SPARKLINE_FILE);
-
-            if (Files.exists(sparklinePath)) {
-                String config =  IOUtils.toString( Files.newInputStream(sparklinePath));
-                int startIndex = config.indexOf("/*chart:start*/");
-                int endIndex = config.indexOf("/*chart:end*/");
-                return "{\n" + config.substring(startIndex, endIndex) + "}";
-            } else {
-                throw new IllegalStateException("******** SPARKLINE CONFIGURATION FILE NOT FOUND!!!!!! ***********");
-            }
+            return getChartConfig(sparklinePath, Files.newInputStream(sparklinePath));
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -163,20 +170,22 @@ public class Configuration {
         //TODO:Cache configuration
         try {
             Path highchartsconfigDir = FileSystems.getDefault().getPath(HIGHCHARTS_CONFIG_DIR);
-            Path sparklinePath = highchartsconfigDir.resolve(LINECHART_FILE);
-
-            if (Files.exists(sparklinePath)) {
-                String config =  IOUtils.toString( Files.newInputStream(sparklinePath));
-                int startIndex = config.indexOf("/*chart:start*/");
-                int endIndex = config.indexOf("/*chart:end*/");
-                return "{\n" + config.substring(startIndex, endIndex) + "}";
-            } else {
-                throw new IllegalStateException("******** LINECHART CONFIGURATION FILE NOT FOUND!!!!!! ***********");
-            }
-
+            Path linechartPath = highchartsconfigDir.resolve(LINECHART_FILE);
+            return getChartConfig(linechartPath, Files.newInputStream(linechartPath));
         } catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException("Failed reading linechart config file");
+        }
+    }
+
+    private static String getChartConfig(Path filePath, InputStream input) throws IOException {
+        if (Files.exists(filePath)) {
+            String config = IOUtils.toString(input);
+            int startIndex = config.indexOf("/*chart:start*/");
+            int endIndex = config.indexOf("/*chart:end*/");
+            return "{\n" + config.substring(startIndex, endIndex) + "}";
+        } else {
+            throw new IllegalStateException( "******** CHART CONFIGURATION FILE NOT FOUND!!!!!! ***********");
         }
     }
 
