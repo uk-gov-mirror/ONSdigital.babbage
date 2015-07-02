@@ -1,9 +1,7 @@
 package com.github.onsdigital.highcharts;
 
-import com.github.onsdigital.configuration.Configuration;
 import com.github.onsdigital.content.page.statistics.data.timeseries.TimeSeries;
 import com.github.onsdigital.content.partial.TimeseriesValue;
-import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.apache.commons.lang3.StringUtils;
 
@@ -15,20 +13,30 @@ import java.util.Set;
 /**
  * Created by bren on 18/06/15.
  */
-public abstract class BaseChart {
+public class HighchartsChart {
     private Set<TimeseriesValue> data;
     private TimeSeries timeSeries;
     private String config;
     private Double min;
 
-    public BaseChart(TimeSeries timeSeries) {
+    public HighchartsChart(TimeSeries timeSeries, String chartConfig) {
         this.timeSeries = timeSeries;
-        this.config = getChartConfig();
+        this.config = chartConfig;
+        setTimseriesFields();
         data = resolveData(timeSeries);
         List<Value> values = prepareData(data);
         config = config.replace("':data:'", new GsonBuilder().serializeNulls().create().toJson(values));
         config = config.replace("':tickInterval:'", String.valueOf(resolveTickInterval(data)));
         config = config.replace("':yMin:'", String.valueOf(min));
+    }
+
+
+    private void setTimseriesFields() {
+        config = config.replace("timeseries.description.title", quote(getTimeSeries().getDescription().getTitle()));
+        config = config.replace("timeseries.description.source", quote(getTimeSeries().getDescription().getSource()));
+        config = config.replace("timeseries.description.cdid", quote(getTimeSeries().getDescription().getCdid()));
+        config = config.replace("timeseries.description.unit", quote(getTimeSeries().getDescription().getUnit()));
+        config = config.replace("timeseries.description.preUnit", quote(getTimeSeries().getDescription().getPreUnit()));
     }
 
     private List<Value> prepareData(Set<TimeseriesValue> data) {
@@ -97,8 +105,6 @@ public abstract class BaseChart {
     protected Set<TimeseriesValue> getData() {
         return data;
     }
-
-    protected abstract String getChartConfig();
 
     protected TimeSeries getTimeSeries() {
         return timeSeries;

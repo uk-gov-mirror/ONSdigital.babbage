@@ -1,12 +1,12 @@
 package com.github.onsdigital.request.handler.highcharts;
 
+import com.github.onsdigital.configuration.Configuration;
 import com.github.onsdigital.content.page.base.Page;
 import com.github.onsdigital.content.page.statistics.data.timeseries.TimeSeries;
 import com.github.onsdigital.content.util.ContentUtil;
 import com.github.onsdigital.data.DataService;
 import com.github.onsdigital.data.zebedee.ZebedeeRequest;
-import com.github.onsdigital.highcharts.BaseChart;
-import com.github.onsdigital.highcharts.LineChart;
+import com.github.onsdigital.highcharts.HighchartsChart;
 import com.github.onsdigital.request.handler.base.RequestHandler;
 import com.github.onsdigital.request.response.BabbageResponse;
 import com.github.onsdigital.request.response.BabbageStringResponse;
@@ -29,17 +29,16 @@ public class LineChartConfigHandler implements RequestHandler {
 
     @Override
     public BabbageResponse get(String requestedUri, HttpServletRequest request, ZebedeeRequest zebedeeRequest) throws Exception {
-        System.out.println("Generating linechart config for " + requestedUri);
         return new BabbageStringResponse(getChartConfig(requestedUri).toString());
     }
 
     //TODO: Read chart data from zebedee ?
-    BaseChart getChartConfig(String requestedUri) throws IOException {
+    HighchartsChart getChartConfig(String requestedUri) throws IOException {
         Page page = ContentUtil.deserialisePage(DataService.getInstance().getDataStream(requestedUri));
         if (!(page instanceof TimeSeries)) {
             throw new IllegalArgumentException("Requested data is not a timseries");
         }
-        return new LineChart((TimeSeries) page);
+        return new HighchartsChart((TimeSeries) page, Configuration.getLinechartConfig());
 
     }
 
