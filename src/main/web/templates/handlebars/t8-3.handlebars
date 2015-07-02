@@ -108,8 +108,8 @@
                     </header>
                     <div class="box__content">
                         <ul class="list--neutral">
-                            {{#each relatedData}}
-                            <li class="flush--third--bottom"><a href="{{uri}}" title="{{title}}">{{title}}</a></li>
+                            {{#each relatedDatasets}}
+                            <li class="flush--third--bottom"><a href="{{uri}}" title="{{description.title}}">{{description.title}}</a></li>
                             {{/each}}
                         </ul>
                     </div>
@@ -124,9 +124,9 @@
                     </header>
                     <div class="box__content">
                         <ul class="list--neutral">
-                            {{#each relatedContent}}
+                            {{#each relatedDocuments}}
                             <li class="flush--third--bottom">
-                                <a href="{{uri}}" title="{{title}}">{{title}}</a>
+                                <a href="{{uri}}" title="{{description.title}}">{{description.title}}</a>
                             </li>
                             {{/each}}
                         </ul>
@@ -146,9 +146,9 @@
                         </header>
                         <div class="box__content">
                             <ul class="list--neutral">
-                                {{#each methodology}}
+                                {{#each relatedMethodology}}
                                 <li class="flush--third--bottom">
-                                    <a href="{{uri}}" title="{{title}}">{{title}}</a>
+                                    <a href="{{uri}}" title="{{description.title}}">{{description.title}}</a>
                                 </li>
                                 {{/each}}
                             </ul>
