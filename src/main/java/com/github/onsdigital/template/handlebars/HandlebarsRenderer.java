@@ -8,9 +8,7 @@ import com.github.jknack.handlebars.io.FileTemplateLoader;
 import com.github.onsdigital.configuration.Configuration;
 import com.github.onsdigital.content.page.base.Page;
 import com.github.onsdigital.template.TemplateRenderer;
-import com.github.onsdigital.template.handlebars.helpers.ConditionHelper;
-import com.github.onsdigital.template.handlebars.helpers.DateFormatHelper;
-import com.github.onsdigital.template.handlebars.helpers.CustomMarkdownTagHelper;
+import com.github.onsdigital.template.handlebars.helpers.*;
 
 import java.io.IOException;
 import java.util.Map;
@@ -32,6 +30,10 @@ public class HandlebarsRenderer implements TemplateRenderer {
         handlebars.registerHelper("md", new CustomMarkdownTagHelper());
         handlebars.registerHelper("df", new DateFormatHelper());
         handlebars.registerHelper(ConditionHelper.eq.name(), ConditionHelper.eq);
+        handlebars.registerHelper(ConditionHelper.ne.name(), ConditionHelper.ne);
+        handlebars.registerHelper(MathHelper.increment.name(), MathHelper.increment);
+        handlebars.registerHelper(MathHelper.decrement.name(), MathHelper.decrement);
+        handlebars.registerHelper(LoopHelper.NAME, new LoopHelper());
         // String helpers
         StringHelpers.register(handlebars);
         // Humanize helpers

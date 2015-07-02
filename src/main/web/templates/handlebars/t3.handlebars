@@ -1,67 +1,66 @@
 {{> partials/header}}
-
 <div class="page-header slate">
 	<div class="wrapper" >
 		{{> partials/breadcrumb}}
-	  	<h1 class="page-header__title flush--half--bottom">{{description.title}}</h1>
-	  	<div class="lede content-reveal">
+		<h1 class="page-header__title flush--half--bottom">{{description.title}}</h1>
+		<div class="lede content-reveal">
 			<p>
 				{{description.summary}}
 			</p>
 		</div>
 		<!-- /lede -->
-
 		<div class="grid-wrap">
+			{{#if items.0.data}}
 			<div class="grid-col tablet-grid-one-half headline--box-container">
 				<div class="box--padded solid panel--bottom-mar">
 					<h2>Latest data</h2>
 					<header class="box___section">
-							<h3 class="navpanel-list-heading lede box--padded-bottom-small">
-								<a href="{{items.0.data.uri}}">{{items.0.data.description.title}}</a>
-							</h3>
+						<h3 class="navpanel-list-heading lede box--padded-bottom-small">
+						<a href="{{items.0.data.uri}}">{{items.0.data.description.title}}</a>
+						</h3>
 					</header>
 					<div class="grid-wrap">
-							<div class="grid-col grid-two-thirds">
-									<div class="box box--padded--small headline--stat-centred">
-										<img src="{{items.0.data.uri}}/sparkline" alt="{{items.0.data.description.title}}">
-									</div>
+						<div class="grid-col grid-two-thirds">
+							<div class="box box--padded--small headline--stat-centred">
+								<a href="{{items.0.data.uri}}"><img src="{{items.0.data.uri}}/sparkline" alt="{{items.0.data.description.title}}"></a>
 							</div>
-							<div class="grid-col grid-one-third no-padding">
-									<div class="stat">
-											<div class="stat__figure ">
-													<div>
-															<span class="stat__figure-enhance">{{items.0.data.description.number}}</span><span class="stat__figure__unit"> {{items.0.data.description.unit}}</span>
-													</div>
-													<div class="stat__description">
-														{{items.0.data.description.date}}
-													</div>
-											</div>
+						</div>
+						<div class="grid-col grid-one-third no-padding">
+							<div class="stat">
+								<div class="stat__figure ">
+									<div>
+										<span class="stat__figure-enhance">{{items.0.data.description.number}}</span><span class="stat__figure__unit"> {{items.0.data.description.unit}}</span>
 									</div>
-									<dl class="micro definition-list definition-list--inline">
-											<dt>Last updated:</dt>
-											<dd class="flush flush--third--bottom">{{df items.0.data.description.releaseDate}}</dd>
-											<dt>Next update:</dt>
-											<dd class="flush flush--third--bottom">{{items.0.data.description.nextRelease}}</dd>
-									</dl>
+									<div class="stat__description">
+										{{items.0.data.description.date}}
+									</div>
+								</div>
 							</div>
-							<!-- /grid-col -->
+							<dl class="micro definition-list definition-list--inline">
+								<dt>Last updated:</dt>
+								<dd class="flush flush--third--bottom">{{df items.0.data.description.releaseDate}}</dd>
+								<dt>Next update:</dt>
+								<dd class="flush flush--third--bottom">{{items.0.data.description.nextRelease}}</dd>
+							</dl>
+						</div>
+						<!-- /grid-col -->
 					</div>
 					<!-- /grid-wrap -->
 				</div>
 				<!-- /box--padded -->
-        <a href="#data" class="btn btn--primary">view latest data
-            <span class="icon icon-down-open-big icon--button-inline"></span>
-        </a>
+				<a href="#data" class="btn btn--primary">view latest data
+					<span class="icon icon-down-open-big icon--button-inline"></span>
+				</a>
 			</div>
+			{{/if}}
 			<!-- /grid-col -->
-
-			<div class="grid-col tablet-grid-one-half headline--box-container">
+			<div class="grid-col  {{#if items.0.data}}tablet-grid-one-half{{/if}} headline--box-container">
 				<div class="panel--bottom-mar box--padded solid">
 					<h2>Latest statistical bulletin</h2>
 					<header class="box___section">
-							<h3 class="navpanel-list-heading lede box--padded-bottom-small">
-							<a href="{{statsBulletins.0.uri}}">{{statsBulletins.0.description.title}}{{#if statsBulletins.0.description.edition}}: {{statsBulletins.0.description.edition}}{{/if}}</a>
-							</h3>
+						<h3 class="navpanel-list-heading lede box--padded-bottom-small">
+						<a href="{{statsBulletins.0.uri}}">{{statsBulletins.0.description.title}}{{#if statsBulletins.0.description.edition}}: {{statsBulletins.0.description.edition}}{{/if}}</a>
+						</h3>
 					</header>
 					<h3>What's in the bulletin?</h3>
 					<ul class="list--bullet mini flush--half--top navpanel-list headline--box-container-text">
@@ -76,6 +75,11 @@
 						</li>
 					</ul>
 				</div>
+				{{#unless items.0.data}}
+				<a href="#data" class="btn btn--primary">view latest data
+					<span class="icon icon-down-open-big icon--button-inline"></span>
+				</a>
+				{{/unless}}
 				<a href="#reports" class="btn btn--primary">view latest reports
 					<span class="icon icon-down-open-big icon--button-inline"></span>
 				</a>
@@ -87,61 +91,62 @@
 	<!-- /wrapper -->
 </div>
 <!-- /page-header -->
-
 <!-- Body sections -->
 <section class="panel wrapper panel--bottom-mar">
 	<div class="box box--green box--green--separated--left" >
 		<div class="box__inner border box--padded">
+			{{#if items}}
 			<div class="box__section">
 				<header>
-					<h2 class="list--table-header panel--pad">Time series related to {{title}}</h2>
+					<h2 class="list--table-header panel--pad">Time series related to {{description.title}}</h2>
 				</header>
 				<ol class="list--table list--table--complex table--striped-light table-light--sectioned">
 					{{#each items}}
-						<li class="list--table__item list--table__body">
-							<div class="list--table__item__body list--table__item__body--caption">
-								<h3 class="flush--half--bottom">
-									<a href="{{data.uri}}">{{data.description.title}}</a>
-								</h3>
-								{{#if description}}
-									<p class="list--table__item__description">
-										{{data.description.summary}}
-									</p>
+					<li class="list--table__item list--table__body">
+						<div class="list--table__item__body list--table__item__body--caption">
+							<h3 class="flush--half--bottom">
+							<a href="{{data.uri}}">{{data.description.title}}</a>
+							</h3>
+							{{#if description}}
+							<p class="list--table__item__description">
+								{{data.description.summary}}
+							</p>
+							{{/if}}
+						</div>
+						<div class="list--table__item__body list--table__item__body--update">
+							<img class="full-width" src="{{data.uri}}/sparkline" alt="{{data.description.title}}">
+						</div>
+						<div class="list--table__item__body list--table__item__body--stat">
+							<div class="stat__figure">
+								{{#if data.description.preUnit}}
+								<span class="stat__figure__preunit">{{data.description.preUnit}}</span>
 								{{/if}}
+								<span class="stat__figure-enhance">{{data.description.number}}</span><span class="stat__figure__unit"> {{data.description.unit}}</span>
+								<div class="stat__description">{{data.description.date}}</div>
 							</div>
-							<div class="list--table__item__body list--table__item__body--update">
-								<img class="full-width" src="{{data.uri}}/sparkline" alt="{{data.description.title}}">
-							</div>
-							<div class="list--table__item__body list--table__item__body--stat">
-								<div class="stat__figure">
-									{{#if data.description.preUnit}}
-									<span class="stat__figure__preunit">{{data.description.preUnit}}</span>
-									{{/if}}
-									<span class="stat__figure-enhance">{{data.description.number}}</span><span class="stat__figure__unit"> {{data.description.unit}}</span>
-									<div class="stat__description">{{data.description.date}}</div>
-								</div>
-							</div>
-							<div class="list--table__item__body list--table__item__body--update">
-								<dl class="micro flush--half--vertical">
-									<dt>Last updated:</dt>
-									<dd class="flush flush--third--bottom">{{df data.description.releaseDate}}</dd>
-									<dt>Next update:</dt>
-									<dd class="flush flush--third--bottom">{{data.description.nextRelease}}</dd>
-								</dl>
-							</div>
-						</li>
-						<!-- /list-table__item -->
+						</div>
+						<div class="list--table__item__body list--table__item__body--update">
+							<dl class="micro flush--half--vertical">
+								<dt>Last updated:</dt>
+								<dd class="flush flush--third--bottom">{{df data.description.releaseDate}}</dd>
+								<dt>Next update:</dt>
+								<dd class="flush flush--third--bottom">{{data.description.nextRelease}}</dd>
+							</dl>
+						</div>
+					</li>
+					<!-- /list-table__item -->
 					{{/each}}
-          <li class="list--table__item list--table__footer">
-            <div class="table__actions box--inline box__footer--right ">
-              <a href="">View all 12,000 time series for inflation and price indices <span class="icon-right-open-big"></span> </a>
-            </div>
-          </li>
+					<li class="list--table__item list--table__footer">
+						<div class="table__actions box--inline box__footer--right ">
+							<a href="">View all 12,000 time series for inflation and price indices <span class="icon-right-open-big"></span> </a>
+						</div>
+					</li>
 				</ol>
 				<!-- /list--table -->
 			</div>
 			<!-- /box-section -->
-
+			{{/if}}
+			{{#if datasets}}
 			<div class="panel flush">
 				<div class="grid-wrap">
 					<div class="grid-col desktop-grid-two-thirds">
@@ -151,9 +156,9 @@
 								{{#each datasets}}
 								<li class="grid-col desktop-grid-one-half box--padded-vertical nav--block-landing">
 									<h3>
-										<a href="{{uri}}" title="{{description.title}}">
-											{{description.title}}
-										</a>
+									<a href="{{uri}}" title="{{description.title}}">
+										{{description.title}}
+									</a>
 									</h3>
 									<p>
 										{{description.summary}}
@@ -167,20 +172,20 @@
 					<div class="grid-col desktop-grid-one-third">
 						<div class="box box--padded slate">
 							<h2 class="delta panel--bottom-mar">
-								User requested data
+							User requested data
 							</h2>
 							<h3>
-								<a href="#">Looking for our adhoc data?</a>
+							<a href="#">Looking for our adhoc data?</a>
 							</h3>
-								<!-- /box__header -->
-								<div class="box__content">
-									<ul class="list--neutral">
-										<li class="">We also produce data not included in our standard publications</li>
-									</ul>
-									<!-- /list- -bullet -->
-									<!-- /box__content -->
-								</div>
-								<!-- /box -->
+							<!-- /box__header -->
+							<div class="box__content">
+								<ul class="list--neutral">
+									<li class="">We also produce data not included in our standard publications</li>
+								</ul>
+								<!-- /list- -bullet -->
+								<!-- /box__content -->
+							</div>
+							<!-- /box -->
 						</div>
 						<!-- /grid-col -->
 					</div>
@@ -191,18 +196,19 @@
 				<!-- /grid-col -->
 			</div>
 			<!-- /box__section -->
+			{{/if}}
 		</div>
 		<!-- /box__inner -->
 	</div>
 	<!-- /box -->
 </section>
 <!-- /panel wrapper -->
-
 <!-- Latest statistical bulletins and Related articles-->
 <section class="panel wrapper panel--bottom-mar">
-  	<div class="box box--teal box--teal--separated--left" >
-    	<div class="box__inner border box--padded">
-		<!-- Latest statistical bulletins -->
+	<div class="box box--teal box--teal--separated--left" >
+		<div class="box__inner border box--padded">
+			<!-- Latest statistical bulletins -->
+			{{#if statsBulletins}}
 			<div class="panel flush">
 				<div class="grid-wrap">
 					<div class="grid-col desktop-grid-full-width">
@@ -212,9 +218,9 @@
 								{{#each statsBulletins}}
 								<li class="grid-col desktop-grid-one-third box--padded-vertical nav--block-landing">
 									<h3>
-										<a href="{{uri}}" title="{{description.title}}">
-											{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}
-										</a>
+									<a href="{{uri}}" title="{{description.title}}">
+										{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}
+									</a>
 									</h3>
 									<p>
 										{{description.summary}}
@@ -230,7 +236,9 @@
 				<a  href="#">View all statistical bulletins</a>
 				<!-- /grid-wrap -->
 			</div>
+			{{/if}}
 			<!-- Related articles-->
+			{{#if relatedArticles}}
 			<div class="panel flush">
 				<div class="grid-wrap">
 					<div class="grid-col desktop-grid-full-width">
@@ -240,9 +248,9 @@
 								{{#each relatedArticles}}
 								<li class="grid-col desktop-grid-one-third box--padded-vertical nav--block-landing">
 									<h3>
-										<a href="{{uri}}" title="{{description.title}}">
-											{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}
-										</a>
+									<a href="{{uri}}" title="{{description.title}}">
+										{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}
+									</a>
 									</h3>
 									<p>
 										{{description.summary}}
@@ -258,6 +266,7 @@
 				<a  href="#">View all related articles</a>
 				<!-- /grid-wrap -->
 			</div>
+			{{/if}}
 		</div>
 	</div>
 </section>

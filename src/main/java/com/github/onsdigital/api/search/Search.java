@@ -114,7 +114,7 @@ public class Search {
         page.setTaxonomySearchResult(results.taxonomySearchResult);
         page.setCurrentPage(currentPage);
         page.setNumberOfResults(results.getNumberOfResults());
-        page.setNumberOfPages((long) Math.ceil(results.getNumberOfResults() / 10));
+        page.setNumberOfPages((long) Math.ceil((double) results.statisticsSearchResult.getNumberOfResults() / 10));
         page.setSearchTerm(searchTerm);
         page.setSuggestionBased(results.isSuggestionBasedResult());
         if (results.isSuggestionBasedResult()) {
@@ -137,7 +137,8 @@ public class Search {
 
             if (PageType.product_page == pageReference.getType()) {
                 ContentUtil.loadReferencedPage(DataService.getInstance(), pageReference);
-                ProductPage productPage = (ProductPage) pageReference.getData();;
+                ProductPage productPage = (ProductPage) pageReference.getData();
+                page.setHeadlinePage(productPage);
                 List<PageReference> items = productPage.getItems();
                 if (items != null) {
                     if(items.size() > 0) {
@@ -145,11 +146,11 @@ public class Search {
                         if (headlineData != null) {
                             ContentUtil.loadReferencedPage(DataService.getInstance(), headlineData);
                             iterator.remove();
-                            page.setHeadlinePage(productPage);
                             break;
                         }
                     }
                 }
+                break;
             }
         }
     }
