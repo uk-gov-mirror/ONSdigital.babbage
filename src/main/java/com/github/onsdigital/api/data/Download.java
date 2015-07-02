@@ -66,6 +66,25 @@ public class Download {
         downloadRequest.cdidList = getParameterList(request, "cdid");
         downloadRequest.uriList = getParameterList(request, "uri");
         downloadRequest.fileName = request.getParameter("fileName");
+
+        /*From*/
+        String fromYear = request.getParameter("fromYear");
+        if(fromYear != null) {
+            downloadRequest.from = new DateVal();
+            downloadRequest.from.month = request.getParameter("fromMonth");
+            downloadRequest.from.quarter = request.getParameter("fromQuarter");
+            downloadRequest.from.year = Integer.parseInt(fromYear);
+        }
+
+        /*To*/
+        String toYear = request.getParameter("toYear");
+        if (toYear != null) {
+            downloadRequest.to = new DateVal();
+            downloadRequest.to.month = request.getParameter("toMonth");
+            downloadRequest.to.quarter = request.getParameter("toQuarter");
+            downloadRequest.to.year = Integer.parseInt(toYear);
+        }
+
         return downloadRequest;
     }
 

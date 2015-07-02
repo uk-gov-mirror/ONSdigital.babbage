@@ -137,7 +137,8 @@ public class Search {
 
             if (PageType.product_page == pageReference.getType()) {
                 ContentUtil.loadReferencedPage(DataService.getInstance(), pageReference);
-                ProductPage productPage = (ProductPage) pageReference.getData();;
+                ProductPage productPage = (ProductPage) pageReference.getData();
+                page.setHeadlinePage(productPage);
                 List<PageReference> items = productPage.getItems();
                 if (items != null) {
                     if(items.size() > 0) {
@@ -145,11 +146,11 @@ public class Search {
                         if (headlineData != null) {
                             ContentUtil.loadReferencedPage(DataService.getInstance(), headlineData);
                             iterator.remove();
-                            page.setHeadlinePage(productPage);
                             break;
                         }
                     }
                 }
+                break;
             }
         }
     }
