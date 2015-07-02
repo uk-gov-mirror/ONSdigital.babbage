@@ -111,6 +111,6 @@ public class HighchartsChart {
     }
 
     protected String quote(String string) {
-        return "'" + string + "'";
+        return "\"" + string + "\"";
     }
 }
