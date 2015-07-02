@@ -8,6 +8,7 @@ import com.github.jknack.handlebars.io.FileTemplateLoader;
 import com.github.onsdigital.configuration.Configuration;
 import com.github.onsdigital.content.page.base.Page;
 import com.github.onsdigital.template.TemplateRenderer;
+import com.github.onsdigital.template.handlebars.helpers.ConditionHelper;
 import com.github.onsdigital.template.handlebars.helpers.DateFormatHelper;
 import com.github.onsdigital.template.handlebars.helpers.CustomMarkdownTagHelper;
 
@@ -30,6 +31,7 @@ public class HandlebarsRenderer implements TemplateRenderer {
     private void initializeHelpers() {
         handlebars.registerHelper("md", new CustomMarkdownTagHelper());
         handlebars.registerHelper("df", new DateFormatHelper());
+        handlebars.registerHelper(ConditionHelper.eq.name(), ConditionHelper.eq);
         // String helpers
         StringHelpers.register(handlebars);
         // Humanize helpers

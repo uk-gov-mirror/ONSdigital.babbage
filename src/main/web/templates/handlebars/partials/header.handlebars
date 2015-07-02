@@ -69,12 +69,13 @@
 				<a href="/">Home</a>
 			</li>
 			{{#each navigation.nodes}}
-				<li class="nav__expandable js-expandable">
+			{{!-- Using two eq condition since eq is very simple and can't handle or operaand. --}}
+				<li class="nav__expandable js-expandable {{#eq uri ../breadcrumb.1/uri}}nav--primary__active{{/eq}} {{#eq uri ../uri}}nav--primary__active{{/eq}}">
 					<a href="{{uri}}">{{title}}</a>
 						<ul class="nav--primary__sub js-expandable__content js-nav-hidden">
 							{{#each children}}
-								<li>
-									<a href="{{uri}}">{{title}}</a>
+								<li class="{{#eq uri ../../uri}}nav--primary__active{{/eq}}" >
+									<a href="{{uri}}" >{{title}}</a>
 								</li>
 							{{/each}} <!-- /each to find 2nd level nodes -->
 						</ul>
