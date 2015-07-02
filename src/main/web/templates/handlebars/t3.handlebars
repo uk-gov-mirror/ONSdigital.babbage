@@ -22,7 +22,7 @@
 					<div class="grid-wrap">
 						<div class="grid-col grid-two-thirds">
 							<div class="box box--padded--small headline--stat-centred">
-								<img src="{{items.0.data.uri}}/sparkline" alt="{{items.0.data.description.title}}">
+								<a href="{{items.0.data.uri}}"><img src="{{items.0.data.uri}}/sparkline" alt="{{items.0.data.description.title}}"></a>
 							</div>
 						</div>
 						<div class="grid-col grid-one-third no-padding">
@@ -95,6 +95,7 @@
 <section class="panel wrapper panel--bottom-mar">
 	<div class="box box--green box--green--separated--left" >
 		<div class="box__inner border box--padded">
+			{{#if items}}
 			<div class="box__section">
 				<header>
 					<h2 class="list--table-header panel--pad">Time series related to {{description.title}}</h2>
@@ -144,6 +145,8 @@
 				<!-- /list--table -->
 			</div>
 			<!-- /box-section -->
+			{{/if}}
+			{{#if datasets}}
 			<div class="panel flush">
 				<div class="grid-wrap">
 					<div class="grid-col desktop-grid-two-thirds">
@@ -193,6 +196,7 @@
 				<!-- /grid-col -->
 			</div>
 			<!-- /box__section -->
+			{{/if}}
 		</div>
 		<!-- /box__inner -->
 	</div>
@@ -204,6 +208,7 @@
 	<div class="box box--teal box--teal--separated--left" >
 		<div class="box__inner border box--padded">
 			<!-- Latest statistical bulletins -->
+			{{#if statsBulletins}}
 			<div class="panel flush">
 				<div class="grid-wrap">
 					<div class="grid-col desktop-grid-full-width">
@@ -231,7 +236,9 @@
 				<a  href="#">View all statistical bulletins</a>
 				<!-- /grid-wrap -->
 			</div>
+			{{/if}}
 			<!-- Related articles-->
+			{{#if relatedArticles}}
 			<div class="panel flush">
 				<div class="grid-wrap">
 					<div class="grid-col desktop-grid-full-width">
@@ -259,6 +266,7 @@
 				<a  href="#">View all related articles</a>
 				<!-- /grid-wrap -->
 			</div>
+			{{/if}}
 		</div>
 	</div>
 </section>
