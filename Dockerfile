@@ -21,8 +21,6 @@ ENV PACKAGE_PREFIX=com.github.onsdigital
 
 # Update the entry point script
 RUN mv /usr/entrypoint/container.sh /usr/src/
-# Download build and start highcharts server
-RUN echo "./highcharts-export-server.sh" >> container.sh
 RUN echo "java -Xmx2048m \
           -Drestolino.files=$RESTOLINO_STATIC \
           -Drestolino.classes=$RESTOLINO_CLASSES \
