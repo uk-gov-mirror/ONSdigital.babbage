@@ -107,7 +107,7 @@
 					{{#each items}}
 					<li class="list--table__item list--table__body">
 						<div class="list--table__item__body list--table__item__body--caption">
-							<h3 class="flush--half--bottom">
+							<h3 class="flush--half--bottom gamma">
 							<a href="{{data.uri}}">{{data.description.title}}</a>
 							</h3>
 							{{#if description}}
@@ -119,22 +119,24 @@
 						<div class="list--table__item__body list--table__item__body--update">
 							<img class="full-width" src="{{data.uri}}/sparkline" alt="{{data.description.title}}">
 						</div>
-						<div class="list--table__item__body list--table__item__body--stat">
-							<div class="stat__figure">
-								{{#if data.description.preUnit}}
-								<span class="stat__figure__preunit">{{data.description.preUnit}}</span>
-								{{/if}}
-								<span class="stat__figure-enhance">{{data.description.number}}</span><span class="stat__figure__unit"> {{data.description.unit}}</span>
-								<div class="stat__description">{{data.description.date}}</div>
+						<div class="list--table__item__body">
+							<div class="list--table__item__body list--table__item__body--stat float-left">
+								<div class="stat__figure">
+									{{#if data.description.preUnit}}
+									<span class="stat__figure__preunit">{{data.description.preUnit}}</span>
+									{{/if}}
+									<span class="stat__figure-enhance">{{data.description.number}}</span><span class="stat__figure__unit"> {{data.description.unit}}</span>
+									<div class="stat__description">{{data.description.date}}</div>
+								</div>
 							</div>
-						</div>
-						<div class="list--table__item__body list--table__item__body--update">
-							<dl class="micro flush--half--vertical">
-								<dt>Last updated:</dt>
-								<dd class="flush flush--third--bottom">{{df data.description.releaseDate}}</dd>
-								<dt>Next update:</dt>
-								<dd class="flush flush--third--bottom">{{data.description.nextRelease}}</dd>
-							</dl>
+							<div class="list--table__item__body list--table__item__body--update">
+								<dl class="micro flush--half--vertical">
+									<dt>Last updated:</dt>
+									<dd class="flush flush--third--bottom">{{df data.description.releaseDate}}</dd>
+									<dt>Next update:</dt>
+									<dd class="flush flush--third--bottom">{{data.description.nextRelease}}</dd>
+								</dl>
+							</div>
 						</div>
 					</li>
 					<!-- /list-table__item -->
@@ -153,7 +155,7 @@
 			<div class="panel flush">
 				<div class="grid-wrap">
 					<div class="grid-col desktop-grid-two-thirds">
-						<h2 id="data" class="flush">Key datasets</h2>
+						<h2 id="data" class="flush">Datasets related to {{description.title}}</h2>
 						<div class="grid-wrap">
 							<ul class="list--neutral">
 								{{#each datasets}}
@@ -194,7 +196,7 @@
 					</div>
 					<!-- /grid-wrap -->
 				</div>
-				<a href="#">View more datasets</a>
+				<a href="#">View all datasets</a>
 				<!-- /grid-wrap -->
 				<!-- /grid-col -->
 			</div>

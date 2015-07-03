@@ -7,7 +7,7 @@
 				Article
 			</p>
 			<h1 class="page-header__title flush--half--bottom">{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}</h1>
-			<div class="grid-wrap">
+			<div class="grid-wrap mini">
 				<p class="grid-col tablet-grid-one-quarter {{#if description.nationalStatistic}}page-header__meta-block-with-img{{/if}}">
 					{{#if description.nationalStatistic}}
 				    <img src="/node_modules/ONS-Pattern-Library/dist/img/national-statistics.png" alt="National Statistics logo" />
@@ -93,6 +93,7 @@
 			<!-- Sidebar -->
 			<div class="grid-col desktop-grid-one-third tablet-grid-full-width panel--top-mar">
 				<!-- article__content -->
+				{{#if relatedData}}
 				<div class="box box--green box--green--separated--left">
 					<div class="box__inner border box--padded">
 						<header class="box__header">
@@ -100,13 +101,14 @@
 						</header>
 						<div class="box__content">
 							<ul class="list--neutral">
-								{{#each data}}
+								{{#each relatedData}}
 								<li class="flush--third--bottom"><a href="{{uri}}">{{description.title}}</a></li>
 								{{/each}}
 							</ul>
 						</div>
 					</div>
 				</div>
+				{{/if}}
 				<!-- /article__content -->
 		        <div class="box__inner border box--padded">
 		            <header class="box__header">
@@ -115,7 +117,7 @@
 		            <!-- /box__header -->
 		            <div class="box__content">
 		                <address>
-							{{#if description.contact.name}}{{description.contact.name}}</br>{{/if}}
+											{{#if description.contact.name}}{{description.contact.name}}</br>{{/if}}
 	                		<a href="mailto:{{description.contact.email}}">{{description.contact.email}}</a></br>
 	                		{{#if description.contact.telephone}}Telephone: {{description.contact.telephone}}{{/if}}
 		                </address>
@@ -133,6 +135,7 @@
 			<!-- grid-wrap -->
 			<div class="grid-wrap">
 				<div class="grid-col desktop-grid-two-thirds tablet-grid-full-width">
+					{{#if relatedArticles}}
 					<article class="box box--teal--separated--left">
 						<div class="box__inner border box--padded solid">
 							<h3>Related articles</h3>
@@ -148,6 +151,7 @@
 							</ul>
 						</div>
 					</article>
+					{{/if}}
 				</div>
         		<div class="grid-col desktop-grid-one-third tablet-grid-full-width">
          			{{> partials/local-box}}

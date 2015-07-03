@@ -1,13 +1,14 @@
 <div id="{{uri}}" class="markdown-chart-container">
-    {{title}}
-  </br>
-    {{subtitle}}
+    <h4>{{title}}</h4>
+    <h5>{{subtitle}}</h5>
   </br>
   <div class="markdown-chart">
     <img src="{{uri}}/image" alt="{{alt-text}}">
   </div>
+    {{#if source}}<h6>Source:{{source}}</h6>{{/if}}
   </br>
-    {{source}}
-  </br>
+  {{#if notes}}
+  <h6>Notes:</h6>
     {{md notes}}
+  {{/if}}
 </div>

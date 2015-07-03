@@ -11,7 +11,7 @@
             <strong>Time series</strong>
         </p>
         <h1 class="page-header__title">{{description.title}}</h1>
-        <div class="grid-wrap">
+        <div class="grid-wrap mini">
             <p class="grid-col tablet-grid-one-quarter page-header__meta-block-with-img">
                 {{#if description.nationalStatistic}}
                 <img src="/node_modules/ONS-Pattern-Library/dist/img/national-statistics.png" alt="National Statistics logo"/>
@@ -56,7 +56,7 @@
             </form>
         </div>
     </div>
-    <div class="chart-area slate nojs-hidden js-enhance--show" >
+    <div class="panel--mar-small chart-area slate nojs-hidden js-enhance--show" >
         <div class="chart-area__controls ">
             <div data-chart-controls="" data-chart-controls-for="">
                 <div class="button-bar chart-area__controls__buttons">
@@ -73,15 +73,15 @@
                         </label>
                     </div>
                     <div class="button-group chart-area__controls__timespan">
-                        <label class="btn btn--secondary btn--small btn--narrow btn--thin">
+                        <label class="btn btn--secondary btn--small btn--narrow btn--thin frequency-select">
                             Monthly
                             <input type="radio" name="scale" data-chart-controls-scale="months" value="months">
                         </label>
-                        <label class="btn btn--secondary btn--small btn--narrow btn--thin">
+                        <label class="btn btn--secondary btn--small btn--narrow btn--thin frequency-select">
                             Quarterly
                             <input type="radio" name="scale" data-chart-controls-scale="quarters" value="quarters">
                         </label>
-                        <label class="btn btn--secondary btn--small btn--narrow btn--thin">
+                        <label class="btn btn--secondary btn--small btn--narrow btn--thin frequency-select">
                             Yearly
                             <input type="radio" name="scale" data-chart-controls-scale="years" value="years">
                         </label>
@@ -201,18 +201,38 @@
     <div class="chart-area__footer nojs-hidden js-enhance--show" data-chart-custom="">
         <span class="chart-area__footer__label">Download custom data</span>
         <div class="chart-area__footer__actions">
-            <a class="btn btn--primary btn--small" href="#">
-                .csv
-                <span class="icon-download icon--button-inline" role="presentation"></span>
-            </a>
-            <a class="btn btn--primary btn--small" href="#">
-                .xsl
-                <span class="icon-download icon--button-inline" role="presentation"></span>
-            </a>
-            <a class="btn btn--primary btn--small" href="#">
-                Image
-                <span class="icon-download icon--button-inline" role="presentation"></span>
-            </a>
+          <form method="post" action="/chartimage" class="inline">
+              <button id="download-custom-image" type="submit" class="btn btn--primary btn--small" target="_blank" name="uri" value="{{uri}}">
+              Image
+              <span class="icon-download icon--button-inline" role="presentation"></span>
+              </button>
+              <input type="hidden" name="fileName" value="{{description.title}}" />
+
+          </form>
+          <form id="dlCustomData" method="post" action="/download" class="inline">
+              <button id="download-custom-csv" type="submit" name="type" value="csv" class="btn btn--primary btn--small">
+              .csv ()
+              <span class="icon-download icon--button-inline" role="presentation"></span>
+              </button>
+              <button id="download-custom-excel" type="submit" name="type" value="xlsx" class="btn btn--primary btn--small" href="#">
+              .xlsx ()
+              <span class="icon-download icon--button-inline" role="presentation"></span>
+              </button>
+              <input type="hidden" name="uri" value="{{uri}}" />
+              <input type="hidden" name="fileName" value="{{description.title}}" />
+          </form>
+          <!-- <a class="btn btn--primary btn--small" href="#">
+              Image
+              <span class="icon-download icon--button-inline" role="presentation"></span>
+          </a>
+          <a class="btn btn--primary btn--small" href="#">
+              .csv
+              <span class="icon-download icon--button-inline" role="presentation"></span>
+          </a>
+          <a class="btn btn--primary btn--small" href="#">
+              .xsl
+              <span class="icon-download icon--button-inline" role="presentation"></span>
+          </a> -->
         </div>
     </div>
     <!-- /chart-area -->
@@ -309,6 +329,7 @@
         <!-- Sidebar -->
         <div class="grid-col desktop-grid-one-third">
             <!-- article__content -->
+            {{#if relatedDocuments}}
             <article class="box box--teal--separated--left">
                 <div class="box__inner border box--padded">
                     <header class="">
@@ -330,33 +351,50 @@
                     </div>
                 </div>
             </article>
+            {{/if}}
             <!-- /article__content -->
-            <article class="box box--orange--separated--left">
-                <div class="box__inner border box--padded">
-                    <header>
-                        <div class="grid-wrap">
-                            <div class="grid-col desktop-grid-five-sixths">
-                                <h3>Contact details for this statistical bulletin</h3>
-                            </div>
+            <div class="box box--teal--separated--left">
+                {{> partials/local-box}}
+            </div>
+        </div>
+        <div class="grid-col desktop-grid-full-width">
+            <div class="grid-wrap">
+                <div class="grid-col desktop-grid-one-half">
+                    <article class="box box--padded sectioned">
+                        <header class="box__header">
+                            <h3>Methodology</h3>
+                        </header>
+                        <div class="box__content">
+                            <ul class="list--neutral">
+                                {{#each relatedMethodology}}
+                                <li class="flush--third--bottom">
+                                    <a href="{{uri}}" title="{{description.title}}">{{description.title}}</a>
+                                </li>
+                                {{/each}}
+                            </ul>
                         </div>
-                    </header>
-                    <!-- /box__header -->
-                    <div class="box__content">
-                        <div>
-                            <p>
-                                {{#if description.contact.name}}{{description.contact.name}}{{/if}}
+                    </article>
+                </div>
+                <!-- /grid-desktop-one-half -->
+                <div class="grid-col desktop-grid-one-half">
+                    <article class="box box--padded sectioned">
+                        <header class="box__header">
+                            <h3>Contact details</h3>
+                        </header>
+                        <div class="box__content">
+                            <address>
+                                {{#if description.contact.name}}{{description.contact.name}}</br>{{/if}}
                                 <a href="mailto:{{description.contact.email}}">{{description.contact.email}}</a></br>
                                 {{#if description.contact.telephone}}Telephone: {{description.contact.telephone}}{{/if}}
-                            </p>
+                            </address>
                         </div>
-                    </div>
-                    <!-- /box__content -->
-                    <footer class="box__footer box__actions">
-                    </footer>
+                    </article>
                 </div>
-            </article>
-            <!-- /article__content -->
+                <!-- /grid-desktop-one-half -->
+            </div>
+            <!-- /grid-wrap -->
         </div>
+        <!--/grid-col desktop-grid-full-width -->
     </div>
 </div>
 </main>
