@@ -108,7 +108,10 @@ function renderChartObject(bindTag, chart, chartHeight, chartWidth) {
         categories: chart.categories,
         tick: {
           format: function (x) {
-            if( labelInterval == null ) {
+            var data_point = chart.data[x];
+            if(data_point == null) {
+              return "";
+            } else if( labelInterval == null ) {
               return chart.data[x][chart.headers[0]];
             } else {
               if(x % labelInterval === 0) {
