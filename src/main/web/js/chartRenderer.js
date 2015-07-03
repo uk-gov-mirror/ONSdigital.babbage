@@ -62,12 +62,12 @@ function renderChartObject(bindTag, chart, chartHeight, chartWidth) {
   var labelInterval = chart.labelInterval;
   _.each(chart.data, function (data_point) {
     if( labelInterval == null ) {
-      culledLabels[data_point.label] = data_point.label;
+      culledLabels[data_point[chart.headers[0]]] = data_point[chart.headers[0]];
     } else {
       if(labelRotate === 0) {
-        culledLabels[data_point.label] = data_point.label;
+        culledLabels[data_point[chart.headers[0]]] = data_point[chart.headers[0]];
       } else {
-        culledLabels[data_point.label] = "";
+        culledLabels[data_point[chart.headers[0]]] = "";
       }
       labelRotate = (labelRotate + 1) % labelInterval;
     }
@@ -109,10 +109,10 @@ function renderChartObject(bindTag, chart, chartHeight, chartWidth) {
         tick: {
           format: function (x) {
             if( labelInterval == null ) {
-              return chart.data[x].label;
+              return chart.data[x][chart.headers[0]];
             } else {
               if(x % labelInterval === 0) {
-                return chart.data[x].label;
+                return chart.data[x][chart.headers[0]];
               } else {
                 return "";
               }
@@ -142,7 +142,7 @@ function renderChartObject(bindTag, chart, chartHeight, chartWidth) {
              }
            },
            // This line ensures all data labels are displayed in tooltips when ticks are culled
-           title: function (name, ratio, id, index) { return chart.data[name].label; }
+           title: function (name, ratio, id, index) { return chart.data[name][chart.headers[0]]; }
         }
       }
   };
