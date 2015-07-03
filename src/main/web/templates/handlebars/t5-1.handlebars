@@ -73,15 +73,15 @@
                         </label>
                     </div>
                     <div class="button-group chart-area__controls__timespan">
-                        <label class="btn btn--secondary btn--small btn--narrow btn--thin">
+                        <label class="btn btn--secondary btn--small btn--narrow btn--thin frequency-select">
                             Monthly
                             <input type="radio" name="scale" data-chart-controls-scale="months" value="months">
                         </label>
-                        <label class="btn btn--secondary btn--small btn--narrow btn--thin">
+                        <label class="btn btn--secondary btn--small btn--narrow btn--thin frequency-select">
                             Quarterly
                             <input type="radio" name="scale" data-chart-controls-scale="quarters" value="quarters">
                         </label>
-                        <label class="btn btn--secondary btn--small btn--narrow btn--thin">
+                        <label class="btn btn--secondary btn--small btn--narrow btn--thin frequency-select">
                             Yearly
                             <input type="radio" name="scale" data-chart-controls-scale="years" value="years">
                         </label>
@@ -201,22 +201,42 @@
     <div class="chart-area__footer nojs-hidden js-enhance--show" data-chart-custom="">
         <span class="chart-area__footer__label">Download custom data</span>
         <div class="chart-area__footer__actions">
-            <a class="btn btn--primary btn--small" href="#">
-                .csv
-                <span class="icon-download icon--button-inline" role="presentation"></span>
-            </a>
-            <a class="btn btn--primary btn--small" href="#">
-                .xsl
-                <span class="icon-download icon--button-inline" role="presentation"></span>
-            </a>
-            <a class="btn btn--primary btn--small" href="#">
-                Image
-                <span class="icon-download icon--button-inline" role="presentation"></span>
-            </a>
+          <form method="post" action="/chartimage" class="inline">
+              <button id="download-custom-image" type="submit" class="btn btn--primary btn--small" target="_blank" name="uri" value="{{uri}}">
+              Image
+              <span class="icon-download icon--button-inline" role="presentation"></span>
+              </button>
+              <input type="hidden" name="fileName" value="{{description.title}}" />
+
+          </form>
+          <form id="dlCustomData" method="post" action="/download" class="inline">
+              <button id="download-custom-csv" type="submit" name="type" value="csv" class="btn btn--primary btn--small">
+              .csv ()
+              <span class="icon-download icon--button-inline" role="presentation"></span>
+              </button>
+              <button id="download-custom-excel" type="submit" name="type" value="xlsx" class="btn btn--primary btn--small" href="#">
+              .xlsx ()
+              <span class="icon-download icon--button-inline" role="presentation"></span>
+              </button>
+              <input type="hidden" name="uri" value="{{uri}}" />
+              <input type="hidden" name="fileName" value="{{description.title}}" />
+          </form>
+          <!-- <a class="btn btn--primary btn--small" href="#">
+              Image
+              <span class="icon-download icon--button-inline" role="presentation"></span>
+          </a>
+          <a class="btn btn--primary btn--small" href="#">
+              .csv
+              <span class="icon-download icon--button-inline" role="presentation"></span>
+          </a>
+          <a class="btn btn--primary btn--small" href="#">
+              .xsl
+              <span class="icon-download icon--button-inline" role="presentation"></span>
+          </a> -->
         </div>
     </div>
     <!-- /chart-area -->
-    {{!-- <div class="slate--mid-grey box box--padded">
+    <div class="slate--mid-grey box box--padded">
         <span>Explore other {{description.title}} <strong>time series</strong> and <strong>datasets</strong></span>
         <div class="box__inner">
             <div class="grid-wrap">
@@ -244,7 +264,7 @@
                 </div>
             </div>
         </div>
-    </div> --}}
+    </div>
     <div class="panel--bottom-mar js-enhance--hide">
         <table class="tablesaw">
             <thead>
@@ -309,6 +329,7 @@
         <!-- Sidebar -->
         <div class="grid-col desktop-grid-one-third">
             <!-- article__content -->
+            {{#if relatedDocuments}}
             <article class="box box--teal--separated--left">
                 <div class="box__inner border box--padded">
                     <header class="">
@@ -330,9 +351,10 @@
                     </div>
                 </div>
             </article>
+            {{/if}}
             <!-- /article__content -->
             <div class="box box--teal--separated--left">
-                {{> partials/local-box}}    
+                {{> partials/local-box}}
             </div>
         </div>
         <div class="grid-col desktop-grid-full-width">

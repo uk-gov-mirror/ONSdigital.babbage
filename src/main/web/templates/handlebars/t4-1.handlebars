@@ -93,6 +93,7 @@
 			<!-- Sidebar -->
 			<div class="grid-col desktop-grid-one-third tablet-grid-full-width panel--top-mar">
 				<!-- article__content -->
+				{{#if relatedData}}
 				<div class="box box--green box--green--separated--left">
 					<div class="box__inner border box--padded">
 						<header class="box__header">
@@ -107,6 +108,7 @@
 						</div>
 					</div>
 				</div>
+				{{/if}}
 				<!-- /article__content -->
         <div class="box__inner border box--padded">
 					<h3 class="box__section__header">
@@ -132,7 +134,8 @@
 			<!-- grid-wrap -->
 			<div class="grid-wrap">
 				<div class="grid-col desktop-grid-two-thirds tablet-grid-full-width">
-					<article class="box box--teal--separated--left">
+					{{#if relatedBulletins}}
+			    <article class="box box--teal--separated--left">
 						<div class="box__inner border box--padded solid">
 							<h3>Related bulletins</h3>
 							<ul class="list--neutral">
@@ -147,6 +150,7 @@
 							</ul>
 						</div>
 					</article>
+					{{/if}}
 				</div>
       			<div class="grid-col desktop-grid-one-third tablet-grid-full-width">
 	      			{{> partials/local-box}}

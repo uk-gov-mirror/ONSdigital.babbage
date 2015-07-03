@@ -195,7 +195,7 @@ public class Configuration {
         if (highchartsExportUrl == null) {
             synchronized (DEFAULT_HIGHCHARTS_EXPORT_SEVER_URL) {
                 if (highchartsExportUrl == null) {
-                    highchartsExportUrl = getValue("HIGHCHART_EXPORT_SERVER");
+                    highchartsExportUrl = getValue("HIGHCHARTS_EXPORT_SERVER");
                     highchartsExportUrl = StringUtils.defaultIfBlank(highchartsExportUrl, DEFAULT_HIGHCHARTS_EXPORT_SEVER_URL);
                 }
             }
