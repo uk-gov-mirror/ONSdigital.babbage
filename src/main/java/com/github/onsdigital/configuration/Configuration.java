@@ -19,7 +19,7 @@ public class Configuration {
     private static final String DEFAULT_ZEBEDEE_URL = "http://localhost:8082";
 
     //Trailing slash seems to be important. Export server redirects to trailing slash url if not there
-    private final static String HIGHCHARTS_EXPORT_SEVER_URL = "http://localhost:9999/export/";
+    private final static String DEFAULT_HIGHCHARTS_EXPORT_SEVER_URL = "http://localhost:9999/export/";
 
     private static final String DEFAULT_HANDLEBARS_DATE_PATTERN = "d MMMM yyyy";
 
@@ -48,6 +48,8 @@ public class Configuration {
     private static String templatesDir;
 
     private static String templatesSuffix;
+
+    private static String highchartsExportUrl;
 
     public static String getZebedeeUrl() {
         return StringUtils.defaultIfBlank(getValue("ZEBEDEE_URL"), DEFAULT_ZEBEDEE_URL);
@@ -190,9 +192,17 @@ public class Configuration {
     }
 
     public static String getHighchartsExportSeverUrl() {
-        return HIGHCHARTS_EXPORT_SEVER_URL;
-    }
+        if (highchartsExportUrl == null) {
+            synchronized (DEFAULT_HIGHCHARTS_EXPORT_SEVER_URL) {
+                if (highchartsExportUrl == null) {
+                    highchartsExportUrl = getValue("HIGHCHARTS_EXPORT_SERVER");
+                    highchartsExportUrl = StringUtils.defaultIfBlank(highchartsExportUrl, DEFAULT_HIGHCHARTS_EXPORT_SEVER_URL);
+                }
+            }
+        }
 
+        return highchartsExportUrl;
+    }
 
     /**
      * Use this method to generate new credentials.
