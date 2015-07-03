@@ -38,7 +38,7 @@ function renderChartObject(bindTag, chart, chartHeight, chartWidth) {
     .attr("viewBox", "0 0 " + chartWidth + " " + chartHeight)
     .attr("preserveAspectRatio", "xMinYMin meet");
 
-  // If we are talking time series skip
+   //If we are talking time series skip
   if (chart.isTimeSeries && (chart.chartType == 'line')) {
     renderTimeseriesChartObject(bindTag, chart, chartWidth, chartHeight);
     setFontStyle();
@@ -56,6 +56,22 @@ function renderChartObject(bindTag, chart, chartHeight, chartWidth) {
   // work out position for chart legend
   var seriesCount = chart.series.length;
   var yOffset = (chart.legend == 'bottom-left' || chart.legend == 'bottom-right') ? seriesCount * 20 + 10 : 5;
+
+  var culledLabels = {};
+  var labelRotate = 0;
+  var labelInterval = chart.labelInterval;
+  _.each(chart.data, function (data_point) {
+    if( labelInterval == null ) {
+      culledLabels[data_point.label] = data_point.label;
+    } else {
+      if(labelRotate === 0) {
+        culledLabels[data_point.label] = data_point.label;
+      } else {
+        culledLabels[data_point.label] = "";
+      }
+      labelRotate = (labelRotate + 1) % labelInterval;
+    }
+  });
 
   // Generate the chart
   var c3Config = {
@@ -89,7 +105,20 @@ function renderChartObject(bindTag, chart, chartHeight, chartWidth) {
       x: {
         label: chart.xaxis,
         type: 'category',
-        categories: chart.categories
+        categories: chart.categories,
+        tick: {
+          format: function (x) {
+            if( labelInterval == null ) {
+              return chart.data[x].label;
+            } else {
+              if(x % labelInterval === 0) {
+                return chart.data[x].label;
+              } else {
+                return "";
+              }
+            }
+          }
+        }
       },
       y: {
         label: yLabel,
@@ -101,7 +130,21 @@ function renderChartObject(bindTag, chart, chartHeight, chartWidth) {
       y: {
         show: true
       }
-    }
+    },
+    tooltip: {
+        format: {
+          value: function (value, ratio, id, index) {
+             if(chart.decimalPlaces == null) {
+               return value;
+             } else {
+             // This line ensures rounding to certain decimal places
+               return parseFloat(Math.round(value * Math.pow(10,chart.decimalPlaces)) / Math.pow(10,chart.decimalPlaces)).toFixed(chart.decimalPlaces);
+             }
+           },
+           // This line ensures all data labels are displayed in tooltips when ticks are culled
+           title: function (name, ratio, id, index) { return chart.data[name].label; }
+        }
+      }
   };
 
   c3.generate(c3Config);
@@ -240,6 +283,9 @@ function renderChartObject(bindTag, chart, chartHeight, chartWidth) {
         height: chartHeight,
         width: chartWidth
       },
+      padding: {
+        right: 15
+      },
       data: {
         json: chart.timeSeries,
         keys: keys,
@@ -276,7 +322,18 @@ function renderChartObject(bindTag, chart, chartHeight, chartWidth) {
         y: {
           show: true
         }
-      }
+      },
+       tooltip: {
+         format: {
+           value: function (value, ratio, id, index) {
+              if(chart.decimalPlaces == null) {
+                return value;
+              } else {
+                return parseFloat(Math.round(value * Math.pow(10,chart.decimalPlaces)) / Math.pow(10,chart.decimalPlaces)).toFixed(chart.decimalPlaces);
+              }
+            }
+         }
+       }
     });
   }
 
