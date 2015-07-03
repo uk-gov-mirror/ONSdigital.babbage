@@ -22,6 +22,7 @@ public class LoadIndexHelper {
     private static final String RELEASE_DATE = "releaseDate";
     private static final String TAGS = "tags";
     private static final String TITLE = "title";
+    private static final String EDITION = "edition";
     private static final String TYPE = "type";
     private static final String URI = "uri";
     private static final String DELIMITTER = "/";
@@ -67,12 +68,13 @@ public class LoadIndexHelper {
         String splitUrl = url.substring(0, url.indexOf("data.json"));
         JsonObject description = jsonObject.getAsJsonObject(DESCRIPTION);
         String title = getField(description, TITLE);
+        String edition = getField(description, EDITION);
         String summary = getField(description, SUMMARY);
         String releaseDate = getField(description, RELEASE_DATE);
         switch (pageType) {
             case taxonomy_landing_page:
             case product_page:
-                documentMap = buildDocumentMap(splitUrl, splitPathAsList, type, title, summary, releaseDate);
+                documentMap = buildDocumentMap(splitUrl, splitPathAsList, type, title, summary, releaseDate, edition);
                 break;
             case timeseries:
                 String cdid = getField(description, CDID);
@@ -82,21 +84,26 @@ public class LoadIndexHelper {
                 System.out.println("json file: " + absoluteFilePath + "has unknown content type: " + pageType);
                 break;
             default:
-                documentMap = buildDocumentMap(splitUrl, splitPathAsList, type, title, summary, releaseDate);
+                documentMap = buildDocumentMap(splitUrl, splitPathAsList, type, title, summary, releaseDate, edition);
                 break;
         }
 
         return documentMap;
     }
 
-    private static Map<String, String> buildDocumentMap(String url, List<String> pathTokens, String type, String title, String summary, String releaseDate) {
+    private static Map<String, String> buildDocumentMap(String url, List<String> pathTokens, String type, String title, String summary, String releaseDate, String edition) {
 
         Map<String, String> documentMap = new HashMap<String, String>();
         documentMap.put(URI, url);
         documentMap.put(TYPE, type);
         documentMap.put(TITLE, title);
+        if (edition != null) {
+            documentMap.put(EDITION, edition);
+        }
         documentMap.put(TAGS, pathTokens.toString());
-        documentMap.put(RELEASE_DATE, releaseDate);
+        if (releaseDate != null) {
+            documentMap.put(RELEASE_DATE, releaseDate);
+        }
         documentMap.put(SUMMARY, summary);
         return documentMap;
     }

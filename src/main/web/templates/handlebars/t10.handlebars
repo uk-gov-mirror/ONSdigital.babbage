@@ -5,9 +5,9 @@
 		{{#if statisticsSearchResult.results}}
 		{{#if suggestionBased}}
 		Sorry, there were no results for <strong>'{{searchTerm}}'</strong>.</br>
-		Shwowing <span class="stand-out-text">{{statisticsSearchResult.numberOfResults}}</span> results for <strong>'{{suggestion}}'</strong> showing <strong>??</strong><span class="icon-cancel"></span> and <strong>??</strong><span class="icon-cancel"></span>.
+		Shwowing <span class="stand-out-text">{{statisticsSearchResult.numberOfResults}}</span> results for <strong>'{{suggestion}}'</strong> {{#if types}}{{#each types}}showing <strong>{{this}}s</strong><span class="icon-cancel"></span>{{/each}}{{/if}}.
 		{{else}}
-		<span class="stand-out-text">{{statisticsSearchResult.numberOfResults}}</span> results for <span class="stand-out-text">'{{searchTerm}}'</span> showing <strong>??</strong><span class="icon-cancel"></span> and <strong>??</strong><span class="icon-cancel"></span>.
+		<span class="stand-out-text">{{statisticsSearchResult.numberOfResults}}</span> results for <span class="stand-out-text">'{{searchTerm}}'</span> {{#if types}}{{#each types}}showing <strong>{{this}}s</strong><span class="icon-cancel"></span>{{/each}}{{/if}}.
 		{{/if}}
 		{{else}}
 		Sorry, there were no results for <span class="stand-out-text">'{{searchTerm}}'</span>.
