@@ -4,6 +4,7 @@ import com.github.davidcarboni.restolino.framework.Api;
 import com.github.onsdigital.api.util.ApiErrorHandler;
 import com.github.onsdigital.api.util.URIUtil;
 import com.github.onsdigital.content.link.PageReference;
+import com.github.onsdigital.content.page.base.Page;
 import com.github.onsdigital.content.page.base.PageType;
 import com.github.onsdigital.content.page.search.SearchResultsPage;
 import com.github.onsdigital.content.page.taxonomy.ProductPage;
@@ -49,7 +50,7 @@ public class Search {
             String query = extractQuery(request);
             Object searchResult = null;
             int page = extractPage(request);
-            String[] types = extractTypes(request);
+            String[] types = resolveTypes(request);
             if (StringUtils.isNotBlank(request.getParameter("q"))) {
                 searchResult = search(query, page, types);
                 if (searchResult == null) {
@@ -76,6 +77,14 @@ public class Search {
             ApiErrorHandler.handle(e, response);
             return null;
         }
+    }
+
+    private String[] resolveTypes(@Context HttpServletRequest request) {
+        String[] types = extractTypes(request);
+//        if (types == null || ArrayUtils.isEmpty(types)) {
+//            types = new String[]{PageType.bulletin.name(), PageType.article.name(), PageType.dataset.name()};
+//        }
+        return types;
     }
 
 
