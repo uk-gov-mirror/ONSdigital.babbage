@@ -15,7 +15,6 @@
 	</p>
 </div>
 <!-- /wrapper -->
-{{#if statisticsSearchResult.results}}
 <div class="wrapper panel--mar print-links">
 	<div class="grid-wrap panel--bottom-mar print-hidden">
 		<div class="grid-col desktop-grid-one-quarter desktop-grid-push-three-quarters tablet-grid-full-width">
@@ -111,6 +110,7 @@
 		</div>
 		<!-- /grid-desktop-one-third -->
 		<div class="grid-col desktop-grid-two-thirds">
+			{{#if statisticsSearchResult.results}}
 			{{#if headlinePage}}
 			<article class="box box--padded sectioned">
 				<div class="box__content">
@@ -173,11 +173,11 @@
 				</ul>
 			</nav>
 			{{/ne}}
+			{{/if}}
 		</div>
 		<!-- /desktop-grid-two-thirds -->
 	</div>
 	<!-- /grid-wrap -->
 </div>
 <!-- /wrapper -->
-{{/if}}
 {{> partials/footer}}
