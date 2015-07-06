@@ -1,18 +1,6 @@
 {{> partials/header}}
 <div class="wrapper panel--top-mar">
-	<h1 class="page-header__title flush--half--bottom">{{title}}</h1>
-	<p>
-		{{#if statisticsSearchResult.results}}
-		{{#if suggestionBased}}
-		Sorry, there were no results for <strong>'{{searchTerm}}'</strong>.</br>
-		Showing <span class="stand-out-text">{{statisticsSearchResult.numberOfResults}}</span> results for <strong>'{{suggestion}}'</strong> {{#if types}}showing{{#each types}} <strong>{{#eq this 'bulletin'}}statistical bulletin{{/eq}}{{#ne this 'bulletin'}}{{this}}{{/ne}}s</strong><span class="icon-cancel"></span>{{/each}}{{/if}}.
-		{{else}}
-		<span class="stand-out-text">{{statisticsSearchResult.numberOfResults}}</span> results for <span class="stand-out-text">'{{searchTerm}}'</span> {{#if types}}showing{{#each types}} <strong>{{#eq this 'bulletin'}}statistical bulletin{{/eq}}{{#ne this 'bulletin'}}{{this}}{{/ne}}s</strong><span class="icon-cancel"></span>{{/each}}{{/if}}.
-		{{/if}}
-		{{else}}
-		Sorry, there were no results for <span class="stand-out-text">'{{searchTerm}}'</span>.
-		{{/if}}
-	</p>
+	<h3 class="page-header__title">Search results</h3>
 </div>
 <!-- /wrapper -->
 <div class="wrapper panel--mar print-links">
@@ -111,6 +99,19 @@
 		<!-- /grid-desktop-one-third -->
 		<div class="grid-col desktop-grid-two-thirds">
 			{{#if statisticsSearchResult.results}}
+			<p class="flush--half--bottom">
+				{{#if statisticsSearchResult.results}}
+				{{#if suggestionBased}}
+				Sorry, there were no results for <strong>'{{searchTerm}}'</strong>.</br>
+				Showing <span class="stand-out-text">{{statisticsSearchResult.numberOfResults}}</span> results for <strong>'{{suggestion}}'</strong> {{#if types}}showing{{#each types}} <strong>{{#eq this 'bulletin'}}statistical bulletin{{/eq}}{{#ne this 'bulletin'}}{{this}}{{/ne}}s</strong><span class="icon-cancel"></span>{{/each}}{{/if}}.
+				{{else}}
+				<span class="stand-out-text">{{statisticsSearchResult.numberOfResults}}</span> results for <span class="stand-out-text">'{{searchTerm}}'</span> {{#if types}}showing{{#each types}} <strong>{{#eq this 'bulletin'}}statistical bulletin{{/eq}}{{#ne this 'bulletin'}}{{this}}{{/ne}}s</strong><span class="icon-cancel"></span>{{/each}}{{/if}}.
+				{{/if}}
+				{{else}}
+				Sorry, there were no results for <span class="stand-out-text">'{{searchTerm}}'</span>.
+				{{/if}}
+			</p>
+
 			{{#if headlinePage}}
 			<article class="box box--padded sectioned">
 				<div class="box__content">
@@ -154,18 +155,18 @@
 			{{#ne numberOfPages 1}}
 			<nav>
 				<ul>
-					{{#ne currentPage 1}}
+					{{#ne currentPage startPage}}
 					<li>
 						<a href="/search?q={{searchTerm}}{{#each types}}&type={{this}}{{/each}}&page={{decrement currentPage}}{{#if includeStatics}}&includeStatics=1{{/if}}" class="page-link previous">Prev</a>
 					</li>
 					{{/ne}}
-					{{#loop numberOfPages}}
+					{{#each pages}}
 					<li>
-						{{#eq @index_1 currentPage}}<span>{{@index_1}}</span>{{/eq}}
-						{{#ne @index_1 currentPage}}<a href="/search?q={{searchTerm}}{{#each types}}&type={{this}}{{/each}}&page={{@index_1}}{{#if includeStatics}}&includeStatics=1{{/if}}" class="page-link" >{{@index_1}}</a>{{/ne}}
+						{{#eq this currentPage}}<span>{{this}}</span>{{/eq}}
+						{{#ne this currentPage}}<a href="/search?q={{searchTerm}}{{#each types}}&type={{this}}{{/each}}&page={{this}}{{#if includeStatics}}&includeStatics=1{{/if}}" class="page-link" >{{this}}</a>{{/ne}}
 					</li>
-					{{/loop}}
-					{{#ne currentPage numberOfPages}}
+					{{/each}}
+					{{#ne currentPage endPage}}
 					<li>
 						<a href="/search?q={{searchTerm}}{{#each types}}&type={{this}}{{/each}}&page={{increment currentPage}}{{#if includeStatics}}&includeStatics=1{{/if}}" class="page-link next" >Next</a>
 					</li>
@@ -173,6 +174,15 @@
 				</ul>
 			</nav>
 			{{/ne}}
+			{{else}}
+			<div>
+				Sorry, no results were found for <strong>‘{{searchTerm}}’</strong></br></br>
+				<strong>You could try one of the following:</strong>
+				<ul>
+					<li>search again using different words</li>
+					<li>remove any filters selected</li>
+				</ul>
+			</div>
 			{{/if}}
 		</div>
 		<!-- /desktop-grid-two-thirds -->
