@@ -136,7 +136,7 @@
 			{{#each statisticsSearchResult.results}}
 			<ul class="list--neutral">
 				<li>
-					<h3 class="flush inline"><a href="{{uri}}">{{description.title}}</a></h3>
+					<h3 class="flush inline"><a href="{{uri}}">{{description.title}}{{#if description.edition}}:{{/if}} {{description.edition}}</a></h3>
 					<span class="lozenge">{{type}}</span>
 					{{#if partOf}}
 					<p class="micro flush">

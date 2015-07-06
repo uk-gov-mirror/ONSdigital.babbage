@@ -8,6 +8,7 @@ import com.github.onsdigital.content.page.base.Page;
 import com.github.onsdigital.content.page.base.PageDescription;
 import com.github.onsdigital.content.page.base.PageType;
 import com.github.onsdigital.content.page.statistics.base.StatisticsDescription;
+import com.github.onsdigital.content.page.statistics.document.base.StatisticalDocumentDescription;
 import com.github.onsdigital.content.partial.SearchResult;
 import com.github.onsdigital.content.util.ContentUtil;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -157,7 +158,7 @@ public class SearchService {
             Map<String, Object> next = iterator.next();
             PageReference reference = new PageReference(URI.create((String) next.get("uri")));
             reference.setType(PageType.valueOf((String) next.get("type")));
-            PageDescription pageDescription = ContentUtil.deserialise(ContentUtil.serialise(next), StatisticsDescription.class);
+            PageDescription pageDescription = ContentUtil.deserialise(ContentUtil.serialise(next), StatisticalDocumentDescription.class);
             reference.setDescription(pageDescription);
             references.add(reference);
         }
