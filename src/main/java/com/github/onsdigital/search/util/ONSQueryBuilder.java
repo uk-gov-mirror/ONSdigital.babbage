@@ -71,7 +71,7 @@ public class ONSQueryBuilder {
 	 * Set type to query under index, if not set, all documents are queried
 	 * under the index set.
 	 * 
-	 * @param type
+	 * @param types
 	 * @return
 	 */
 	public ONSQueryBuilder setTypes(String... types) {
@@ -94,10 +94,9 @@ public class ONSQueryBuilder {
 	}
 
 	/**
-	 * Queried result will return documents starting from given index. Useful
-	 * for paging. Default is zero
+	 * Queried result will return documents starting from given page number
 	 * 
-	 * @param from
+	 * @param page
 	 * @return
 	 */
 	public ONSQueryBuilder setPage(int page) {

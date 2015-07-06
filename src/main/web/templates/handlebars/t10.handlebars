@@ -5,9 +5,9 @@
 		{{#if statisticsSearchResult.results}}
 		{{#if suggestionBased}}
 		Sorry, there were no results for <strong>'{{searchTerm}}'</strong>.</br>
-		Shwowing <span class="stand-out-text">{{statisticsSearchResult.numberOfResults}}</span> results for <strong>'{{suggestion}}'</strong> {{#if types}}{{#each types}}showing <strong>{{#eq this 'bulletin'}}statistical bulletin{{/eq}}{{#ne this 'bulletin'}}{{this}}{{/ne}}s</strong><span class="icon-cancel"></span>{{/each}}{{/if}}.
+		Showing <span class="stand-out-text">{{statisticsSearchResult.numberOfResults}}</span> results for <strong>'{{suggestion}}'</strong> {{#if types}}showing{{#each types}} <strong>{{#eq this 'bulletin'}}statistical bulletin{{/eq}}{{#ne this 'bulletin'}}{{this}}{{/ne}}s</strong><span class="icon-cancel"></span>{{/each}}{{/if}}.
 		{{else}}
-		<span class="stand-out-text">{{statisticsSearchResult.numberOfResults}}</span> results for <span class="stand-out-text">'{{searchTerm}}'</span> {{#if types}}{{#each types}}showing <strong>{{#eq this 'bulletin'}}statistical bulletin{{/eq}}{{#ne this 'bulletin'}}{{this}}{{/ne}}s</strong><span class="icon-cancel"></span>{{/each}}{{/if}}.
+		<span class="stand-out-text">{{statisticsSearchResult.numberOfResults}}</span> results for <span class="stand-out-text">'{{searchTerm}}'</span> {{#if types}}showing{{#each types}} <strong>{{#eq this 'bulletin'}}statistical bulletin{{/eq}}{{#ne this 'bulletin'}}{{this}}{{/ne}}s</strong><span class="icon-cancel"></span>{{/each}}{{/if}}.
 		{{/if}}
 		{{else}}
 		Sorry, there were no results for <span class="stand-out-text">'{{searchTerm}}'</span>.
@@ -82,7 +82,7 @@
 							</label>
 						</div>
 						<div class="panel--mar-small">
-							<input type="checkbox" name="checkbox" value="1">
+							<input type="checkbox" name="includeStatics" value="1" {{#if includeStatics}}checked{{/if}}>
 							<label for="checkbox">
 								Include all other website content </br>
 								<span class="micro">(User requested data, about us, media releases, freedom of information (FOI) requests etc.)</span>
@@ -156,18 +156,18 @@
 				<ul>
 					{{#ne currentPage 1}}
 					<li>
-						<a href="/search?q={{searchTerm}}{{#each types}}&type={{this}}{{/each}}&page={{decrement currentPage}}" class="page-link previous">Prev</a>
+						<a href="/search?q={{searchTerm}}{{#each types}}&type={{this}}{{/each}}&page={{decrement currentPage}}{{#if includeStatics}}&includeStatics=1{{/if}}" class="page-link previous">Prev</a>
 					</li>
 					{{/ne}}
 					{{#loop numberOfPages}}
 					<li>
 						{{#eq @index_1 currentPage}}<span>{{@index_1}}</span>{{/eq}}
-						{{#ne @index_1 currentPage}}<a href="/search?q={{searchTerm}}{{#each types}}&type={{this}}{{/each}}&page={{@index_1}}" class="page-link" >{{@index_1}}</a>{{/ne}}
+						{{#ne @index_1 currentPage}}<a href="/search?q={{searchTerm}}{{#each types}}&type={{this}}{{/each}}&page={{@index_1}}{{#if includeStatics}}&includeStatics=1{{/if}}" class="page-link" >{{@index_1}}</a>{{/ne}}
 					</li>
 					{{/loop}}
 					{{#ne currentPage numberOfPages}}
 					<li>
-						<a href="/search?q={{searchTerm}}{{#each types}}&type={{this}}{{/each}}&page={{increment currentPage}}" class="page-link next" >Next</a>
+						<a href="/search?q={{searchTerm}}{{#each types}}&type={{this}}{{/each}}&page={{increment currentPage}}{{#if includeStatics}}&includeStatics=1{{/if}}" class="page-link next" >Next</a>
 					</li>
 					{{/ne}}
 				</ul>

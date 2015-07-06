@@ -109,7 +109,7 @@ public class SearchService {
 		searchBuilder.setExtraSource(queryBuilder.buildQuery());
 		return searchBuilder;
 	}
-	
+
 	private static CountRequestBuilder buildCountRequest(ONSQueryBuilder queryBuilder) {
 		CountRequestBuilder countBuilder = getClient().prepareCount(queryBuilder.getIndex());
 		String[] types = queryBuilder.getTypes();
