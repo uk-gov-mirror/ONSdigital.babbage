@@ -13,7 +13,7 @@
 		<div class="grid-wrap">
 			{{#if items.0.data}}
 			<div class="grid-col tablet-grid-one-half headline--box-container">
-				<div class="box--padded solid panel--bottom-mar">
+				<div class="box--padded box--headline solid panel--bottom-mar">
 					<h2>Latest data</h2>
 					<header class="box___section">
 						<h3 class="navpanel-list-heading lede box--padded-bottom-small">
@@ -56,7 +56,7 @@
 			{{/if}}
 			<!-- /grid-col -->
 			<div class="grid-col  {{#if items.0.data}}tablet-grid-one-half{{/if}} headline--box-container">
-				<div class="panel--bottom-mar box--padded solid">
+				<div class="box--padded box--headline solid panel--bottom-mar ">
 					<h2>Latest statistical bulletin</h2>
 					<header class="box___section">
 						<h3 class="navpanel-list-heading lede box--padded-bottom-small">
@@ -107,7 +107,7 @@
 					{{#each items}}
 					<li class="list--table__item list--table__body">
 						<div class="list--table__item__body list--table__item__body--caption">
-							<h3 class="flush--half--bottom gamma">
+							<h3 class="flush--half--bottom">
 							<a href="{{data.uri}}">{{data.description.title}}</a>
 							</h3>
 							{{#if description}}
@@ -155,7 +155,7 @@
 			<div class="panel flush">
 				<div class="grid-wrap">
 					<div class="grid-col desktop-grid-two-thirds">
-						<h2 id="data" class="flush">Datasets related to {{description.title}}</h2>
+						<h2 id="data" class="flush">Key datasets</h2>
 						<div class="grid-wrap">
 							<ul class="list--neutral">
 								{{#each datasets}}
@@ -196,7 +196,7 @@
 					</div>
 					<!-- /grid-wrap -->
 				</div>
-				<a href="#">View all datasets</a>
+				<a href="#">View more datasets</a>
 				<!-- /grid-wrap -->
 				<!-- /grid-col -->
 			</div>
