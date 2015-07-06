@@ -33,6 +33,7 @@ jQuery(window).load(function() {
         jsEnhanceMarkdownCharts();
         jsEnhanceMarkdownTables();
         jsEnhancePrintCompendium();
+        jsEnhanceBoxHeight();
 
         setTimeout(function() {
             $('#loading-overlay').fadeOut(300);
@@ -232,5 +233,16 @@ jQuery(window).load(function() {
                 location.reload();
             });
         });
+    }
+
+    function jsEnhanceBoxHeight() {
+        var highestBox = 0;
+        $('.box--headline').each(function(){
+        
+            if($(this).height() > highestBox) 
+               highestBox = $(this).height(); 
+        });  
+        
+        $('.box--headline').height(highestBox);
     }
 });
