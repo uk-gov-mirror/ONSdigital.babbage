@@ -14,6 +14,7 @@
 					{{/if}}
 					<span>Contact: </span></br>
 					<a href="mailto:{{description.contact.email}}">{{#if description.contact.name}}{{description.contact.name}}{{else}}{{description.contact.email}}{{/if}}</a>
+				</p>
 				<p class="grid-col tablet-grid-one-quarter divider--border-left">
 					<span>Release date: </span></br>{{df description.releaseDate}}
 					</br>
@@ -61,14 +62,17 @@
 					</div>
 				</section>
 				<!-- /accordion -->
-				<section class="accordion is-collapsed">
-					<h3 id="sc-{{@index}}" class="accordion__title" aria-controls="content-{{@index}}">Data</h3>
-					<div id="content-{{@index}}" class="accordion__content" aria-labelledby="sc-{{@index}}">
+				<section>
+				<!--<section class="accordion is-collapsed">-->
+					<!--<h3 id="sc-{{@index}}" class="accordion__title" aria-controls="content-{{@index}}">Data</h3>-->
+					<h3 class="accordion__title">Data</h3>
+					<!--<div id="content-{{@index}}" class="accordion__content" aria-labelledby="sc-{{@index}}">-->
+					<div class="accordion__content">
 						<ul class="list--neutral">
 							{{#each data}}
 							<li>
 								<h4 class="flush"><a href="{{uri}}">{{title}}</a></h4>
-								{{md description}}
+                <p>All the time series data in this compendium.</p>
 							</li>
 							{{/each}}
 						</ul>
