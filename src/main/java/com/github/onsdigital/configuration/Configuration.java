@@ -27,6 +27,7 @@ public class Configuration {
     private static final String SPARKLINE_FILE = "sparklineconfig.js";
     private static final String LINECHART_FILE = "linechartconfig.js";
     private static final String SEARCHCHART_FILE = "searchchartconfig.js";
+    private static final int MAX_VISIBLE_PAGINATOR_LINK = 10;
 
     /**
      * Mongo is currently only used to provide feedback on the search terms
@@ -202,6 +203,11 @@ public class Configuration {
         }
 
         return highchartsExportUrl;
+    }
+
+
+    public static int getMaxVisiblePaginatorLink() {
+        return MAX_VISIBLE_PAGINATOR_LINK;
     }
 
     /**

@@ -3,6 +3,7 @@ package com.github.onsdigital.api.search;
 import com.github.davidcarboni.restolino.framework.Api;
 import com.github.onsdigital.api.util.ApiErrorHandler;
 import com.github.onsdigital.api.util.URIUtil;
+import com.github.onsdigital.configuration.Configuration;
 import com.github.onsdigital.content.link.PageReference;
 import com.github.onsdigital.content.page.base.Page;
 import com.github.onsdigital.content.page.base.PageType;
@@ -26,6 +27,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.core.Context;
 import java.io.IOException;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -127,6 +129,9 @@ public class Search {
         page.setIncludeStatics(includeStatics);
         page.setNumberOfResults(results.getNumberOfResults());
         page.setNumberOfPages((long) Math.ceil((double) results.statisticsSearchResult.getNumberOfResults() / 10));
+        page.setEndPage((int) getEndPage(page.getNumberOfPages(), currentPage, Configuration.getMaxVisiblePaginatorLink()));
+        page.setStartPage(getStartPage((int) page.getNumberOfPages(), Configuration.getMaxVisiblePaginatorLink(), page.getEndPage()));
+        page.setPages(getPageList(page.getStartPage(), page.getEndPage()));
         page.setSearchTerm(searchTerm);
         page.setTypes(types);
         page.setSuggestionBased(results.isSuggestionBasedResult());
@@ -138,6 +143,38 @@ public class Search {
             resolveSearchHeadline(page);
         }
         return page;
+    }
+
+
+    //List of numbers for handlebars to loop through
+    private List<Integer> getPageList(int start, int end) {
+        ArrayList<Integer> pageList = new ArrayList<Integer>();
+        for (int i = start; i <= end; i++) {
+            pageList.add(i);
+        }
+        return pageList;
+    }
+
+    //Used for paginator start
+    private int getStartPage(int numberOfPages, int maxVisible, int endPage) {
+        if (numberOfPages <= maxVisible) {
+            return 1;
+        }
+        int start = endPage - maxVisible + 1;
+        start = start > 0 ? start : 1;
+        return start;
+    }
+
+    private long getEndPage(long numberOfPages, int currentPage, int maxVisible) {
+        long max = numberOfPages;
+        if (max <= maxVisible) {
+            return max;
+        }
+        //Half of the pages are visible after current page
+        long end = (int) (currentPage + Math.ceil(maxVisible / 2));
+        end = (end > max) ? max : end;
+        end = (end < maxVisible) ? maxVisible : end;
+        return end;
     }
 
     private void resolveSearchHeadline(SearchResultsPage page) {
