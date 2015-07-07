@@ -34,6 +34,7 @@ jQuery(window).load(function() {
         jsEnhanceMarkdownTables();
         jsEnhancePrintCompendium();
         jsEnhanceBoxHeight();
+        jsEnhanceBoxHeightResize();
 
         setTimeout(function() {
             $('#loading-overlay').fadeOut(300);
@@ -236,13 +237,24 @@ jQuery(window).load(function() {
     }
 
     function jsEnhanceBoxHeight() {
-        var highestBox = 0;
-        $('.box--headline').each(function(){
-        
-            if($(this).height() > highestBox) 
-               highestBox = $(this).height(); 
-        });  
-        
-        $('.box--headline').height(highestBox);
+        if ($(window).width() > 608) {
+            var highestBox = 0;
+            $('.box--headline').each(function(){
+            
+                if($(this).height() > highestBox) {
+                   highestBox = $(this).height(); 
+               }
+            });  
+            
+            $('.box--headline').height(highestBox);
+        }
+
+        function jsEnhanceBoxHeightResize() {
+            $( window ).resize(function() {
+                $('.box--headline').height('auto');
+                jsEnhanceBoxHeight();
+            });
+        }
     }
+    
 });
