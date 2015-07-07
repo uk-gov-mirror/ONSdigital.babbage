@@ -12,7 +12,7 @@
         </p>
         <h1 class="page-header__title">{{description.title}}</h1>
         <div class="grid-wrap mini">
-            <p class="grid-col tablet-grid-one-quarter page-header__meta-block-with-img">
+            <p class="grid-col tablet-grid-one-quarter {{#if description.nationalStatistic}}page-header__meta-block-with-img{{/if}}">
                 {{#if description.nationalStatistic}}
                 <img src="/node_modules/ONS-Pattern-Library/dist/img/national-statistics.png" alt="National Statistics logo"/>
                 {{/if}}
@@ -25,7 +25,8 @@
                 <span>Next release: </span><br/>{{description.nextRelease}}
             </p>
             <p class="grid-col tablet-grid-one-quarter divider--border-left">
-                Series ID: {{description.cdid}} <a>what is this? </a><br/>Units: {{description.preUnit}} {{description.unit}}<br/>{{seasonalAdjustment}}
+                Series ID: {{description.cdid}}
+                <a href="#" class="tooltip" title="This series ID is a unique random identifier for this individual time series. The digits themselves do not have any specific meaning" aria-label="This series ID is a unique random identifier for this individual time series. The digits themselves do not have any specific meaning">what is this? </a><br/>Units: {{description.preUnit}} {{description.unit}}<br/>{{seasonalAdjustment}}
             </p>
         </div>
     </div>
@@ -200,7 +201,7 @@
     <div class="chart-area__footer nojs-hidden js-enhance--show" data-chart-custom="">
         <span class="chart-area__footer__label">Download custom data</span>
         <div class="chart-area__footer__actions">
-          <form method="post" action="/chartimage" class="inline">
+          <form method="post" action="/chartimage" class="inline dlCustomData">
               <button id="download-custom-image" type="submit" class="btn btn--primary btn--small" target="_blank" name="uri" value="{{uri}}">
               Image
               <span class="icon-download icon--button-inline" role="presentation"></span>
@@ -208,7 +209,7 @@
               <input type="hidden" name="fileName" value="{{description.title}}" />
 
           </form>
-          <form id="dlCustomData" method="post" action="/download" class="inline">
+          <form method="post" action="/download" class="inline dlCustomData">
               <button id="download-custom-csv" type="submit" name="type" value="csv" class="btn btn--primary btn--small">
               .csv ()
               <span class="icon-download icon--button-inline" role="presentation"></span>

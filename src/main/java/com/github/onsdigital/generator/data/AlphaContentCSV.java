@@ -1,7 +1,7 @@
 package com.github.onsdigital.generator.data;
 
+import com.github.onsdigital.content.page.base.PageDescription;
 import com.github.onsdigital.content.page.statistics.data.timeseries.TimeSeries;
-import com.github.onsdigital.content.page.statistics.data.timeseries.TimeseriesDescription;
 import com.github.onsdigital.generator.ContentNode;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.BooleanUtils;
@@ -79,7 +79,7 @@ class AlphaContentCSV {
 
 			// Get the timeseries to work with:
 			TimeSeries timeseries = Data.timeseries(cdid);
-			TimeseriesDescription timeseriesDescription = new TimeseriesDescription();
+			PageDescription timeseriesDescription = new PageDescription();
 
 			if (timeseries == null) {
 				// We haven't seen this one before, so add it:

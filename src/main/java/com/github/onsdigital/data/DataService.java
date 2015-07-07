@@ -3,8 +3,10 @@ package com.github.onsdigital.data;
 import com.github.davidcarboni.ResourceUtils;
 import com.github.onsdigital.api.data.Data;
 import com.github.onsdigital.configuration.Configuration;
+import com.github.onsdigital.content.DirectoryListing;
 import com.github.onsdigital.content.service.ContentNotFoundException;
 import com.github.onsdigital.content.service.ContentService;
+import com.github.onsdigital.content.util.ContentUtil;
 import com.github.onsdigital.util.JsonPrettyprint;
 import com.github.onsdigital.util.Validator;
 import com.google.gson.stream.JsonReader;
@@ -48,6 +50,19 @@ public class DataService implements ContentService {
             throw new RuntimeException("Failed reading data at " + uri);
         } catch (DataNotFoundException e) {
             throw new ContentNotFoundException(e);
+        }
+    }
+
+    @Override
+    public DirectoryListing readDirectory(String uri) throws ContentNotFoundException {
+        try {
+            String uriPath = cleanPath(uri);
+            Path taxonomy = FileSystems.getDefault().getPath(
+                    Configuration.getContentPath());
+
+            return ContentUtil.listDirectory(taxonomy.resolve(uriPath));
+        } catch (IOException e) {
+            throw new RuntimeException("Failed reading directory at " + uri);
         }
     }
 

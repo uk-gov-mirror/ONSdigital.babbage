@@ -45,7 +45,7 @@
 		<div class="grid-wrap">
 			<div class="grid-col desktop-grid-full-width">
 				<div class="lede print-links">
-					{{md lede}}
+					{{md summary}}
 				</div>
 				<h2>What's in this compendium?</h2>
 				<section class="accordion is-collapsed">
@@ -54,8 +54,8 @@
 						<ul class="list--neutral">
 							{{#each chapters}}
 							<li>
-								<h4 class="flush" ><a href="/templates/handlebars/t6-2.handlebars" class="chapter">{{title}}</a></h4>
-								{{md description}}
+								<h4 class="flush" ><a href="{{uri}}" class="chapter">{{description.title}}</a></h4>
+								{{md headline}}
 							</li>
 							{{/each}}
 						</ul>
