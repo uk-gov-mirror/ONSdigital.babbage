@@ -1,16 +1,11 @@
 package com.github.onsdigital.search;
 
-import java.net.URI;
-import java.util.*;
-
 import com.github.onsdigital.content.link.PageReference;
-import com.github.onsdigital.content.page.base.Page;
 import com.github.onsdigital.content.page.base.PageDescription;
 import com.github.onsdigital.content.page.base.PageType;
-import com.github.onsdigital.content.page.statistics.base.StatisticsDescription;
-import com.github.onsdigital.content.page.statistics.document.base.StatisticalDocumentDescription;
 import com.github.onsdigital.content.partial.SearchResult;
 import com.github.onsdigital.content.util.ContentUtil;
+import com.github.onsdigital.search.util.ONSQueryBuilder;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.elasticsearch.action.count.CountRequestBuilder;
 import org.elasticsearch.action.count.CountResponse;
@@ -20,11 +15,12 @@ import org.elasticsearch.action.search.MultiSearchResponse.Item;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.Client;
-
-import com.github.onsdigital.search.util.ONSQueryBuilder;
 import org.elasticsearch.common.text.Text;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.highlight.HighlightField;
+
+import java.net.URI;
+import java.util.*;
 
 /**
  * 
@@ -158,7 +154,7 @@ public class SearchService {
             Map<String, Object> next = iterator.next();
             PageReference reference = new PageReference(URI.create((String) next.get("uri")));
             reference.setType(PageType.valueOf((String) next.get("type")));
-            PageDescription pageDescription = ContentUtil.deserialise(ContentUtil.serialise(next), StatisticalDocumentDescription.class);
+            PageDescription pageDescription = ContentUtil.deserialise(ContentUtil.serialise(next), PageDescription.class);
             reference.setDescription(pageDescription);
             references.add(reference);
         }

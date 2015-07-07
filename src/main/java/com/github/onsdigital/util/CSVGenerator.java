@@ -85,20 +85,20 @@ public class CSVGenerator {
         column++;
 
         // Data
-        for (TimeSeries TimeSeries : this.TimeSeries) {
-            name[column] = TimeSeries.getDescription().getTitle();
-            cdid[column] = TimeSeries.getCdid();
-            preUnit[column] = TimeSeries.getDescription().getPreUnit();
-            unit[column] = TimeSeries.getDescription().getUnit();
-            source[column] = TimeSeries.getDescription().getSource();
-            keyNote[column] = TimeSeries.getDescription().getKeyNote();
-            additionalText[column] = TimeSeries.getDescription().getAdditionalText();
-            if (TimeSeries.getNotes() != null) {
-                note1[column] = TimeSeries.getNotes().get(0);
-                note2[column] = TimeSeries.getNotes().get(1);
+        for (TimeSeries timeseries : this.TimeSeries) {
+            name[column] = timeseries.getDescription().getTitle();
+            cdid[column] = timeseries.getCdid();
+            preUnit[column] = timeseries.getDescription().getPreUnit();
+            unit[column] = timeseries.getDescription().getUnit();
+            source[column] = timeseries.getDescription().getSource();
+            keyNote[column] = timeseries.getDescription().getKeyNote();
+            additionalText[column] = timeseries.getDescription().getAdditionalText();
+            if (timeseries.getNotes() != null) {
+                note1[column] = (String) timeseries.getNotes().get(0);
+                note2[column] = (String) timeseries.getNotes().get(1);
             }
             column++;
-            System.out.println("Geneararing CSV for: " + TimeSeries.getDescription().getTitle() + " at: " + TimeSeries.getUri());
+            System.out.println("Geneararing CSV for: " + timeseries.getDescription().getTitle() + " at: " + timeseries.getUri());
         }
         writer.writeNext(name);
         writer.writeNext(cdid);

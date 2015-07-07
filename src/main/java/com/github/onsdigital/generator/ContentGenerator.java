@@ -7,7 +7,6 @@ import com.github.onsdigital.content.page.base.Page;
 import com.github.onsdigital.content.page.base.PageDescription;
 import com.github.onsdigital.content.page.home.HomePage;
 import com.github.onsdigital.content.page.release.Release;
-import com.github.onsdigital.content.page.release.ReleaseDescription;
 import com.github.onsdigital.content.page.statistics.data.timeseries.TimeSeries;
 import com.github.onsdigital.content.page.statistics.dataset.Dataset;
 import com.github.onsdigital.content.page.statistics.document.article.Article;
@@ -20,7 +19,6 @@ import com.github.onsdigital.generator.data.Data;
 import com.github.onsdigital.generator.data.DatasetMappingsCSV;
 import com.github.onsdigital.generator.markdown.ArticleMarkdown;
 import com.github.onsdigital.generator.markdown.BulletinMarkdown;
-//import com.github.onsdigital.generator.markdown.MethodologyMarkdown;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -28,6 +26,8 @@ import java.io.*;
 import java.net.URI;
 import java.nio.charset.Charset;
 import java.util.*;
+
+//import com.github.onsdigital.generator.markdown.MethodologyMarkdown;
 
 
 /**
@@ -211,7 +211,7 @@ public class ContentGenerator {
         Release release = new Release();
         release.setUri(URI.create(RELEASES_DIRECTORY + "/" + node.filename()));
 
-        ReleaseDescription releaseDescription = new ReleaseDescription();
+        PageDescription releaseDescription = new PageDescription();
         releaseDescription.setTitle(productPage.getDescription().getTitle());
         releaseDescription.setSummary(productPage.getDescription().getSummary());
 

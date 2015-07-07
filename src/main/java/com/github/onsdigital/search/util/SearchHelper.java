@@ -2,11 +2,7 @@ package com.github.onsdigital.search.util;
 
 import com.github.onsdigital.content.link.PageReference;
 import com.github.onsdigital.content.page.base.PageType;
-import com.github.onsdigital.content.page.statistics.data.timeseries.TimeSeries;
-import com.github.onsdigital.content.page.statistics.data.timeseries.TimeseriesDescription;
 import com.github.onsdigital.content.partial.SearchResult;
-import com.github.onsdigital.content.util.ContentUtil;
-import com.github.onsdigital.data.DataService;
 import com.github.onsdigital.search.ElasticSearchServer;
 import com.github.onsdigital.search.SearchService;
 import com.github.onsdigital.search.bean.AggregatedSearchResult;
