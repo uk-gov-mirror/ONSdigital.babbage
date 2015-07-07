@@ -1,7 +1,7 @@
 package com.github.onsdigital.generator.markdown;
 
+import com.github.onsdigital.content.page.base.PageDescription;
 import com.github.onsdigital.content.page.statistics.document.bulletin.Bulletin;
-import com.github.onsdigital.content.page.statistics.document.bulletin.BulletinDescription;
 import com.github.onsdigital.content.partial.Contact;
 import com.github.onsdigital.generator.ContentNode;
 import com.github.onsdigital.generator.data.Data;
@@ -51,7 +51,7 @@ public class BulletinMarkdown {
 
         // Set up the bulletin
         Bulletin bulletin = new Bulletin();
-        BulletinDescription description = new BulletinDescription();
+        PageDescription description = new PageDescription();
 
         description.setTitle(markdown.title);
         setDescription(description, markdown);
@@ -84,10 +84,10 @@ public class BulletinMarkdown {
      * <li>Release Date</li>
      * </ul>
      *
-     * @param bulletinDescription The {@link BulletinDescription} description to be filled.
+     * @param bulletinDescription The {@link PageDescription} description to be filled.
      * @param markdown The parsed {@link Markdown}.
      */
-    private static void setDescription(BulletinDescription bulletinDescription, Markdown markdown) {
+    private static void setDescription(PageDescription bulletinDescription, Markdown markdown) {
 
         Map<String, String> properties = markdown.properties;
 

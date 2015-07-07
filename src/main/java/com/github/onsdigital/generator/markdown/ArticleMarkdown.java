@@ -1,13 +1,11 @@
 package com.github.onsdigital.generator.markdown;
 
+import com.github.onsdigital.content.page.base.PageDescription;
 import com.github.onsdigital.content.page.statistics.document.article.Article;
-import com.github.onsdigital.content.page.statistics.document.article.ArticleDescription;
-import com.github.onsdigital.content.page.statistics.document.bulletin.BulletinDescription;
 import com.github.onsdigital.content.partial.Contact;
 import com.github.onsdigital.generator.ContentNode;
 import com.github.onsdigital.generator.data.Data;
 import org.apache.commons.lang.BooleanUtils;
-import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -41,7 +39,7 @@ public class ArticleMarkdown {
 
 		// Set up the article
 		Article article = new Article();
-		ArticleDescription description = new ArticleDescription();
+		PageDescription description = new PageDescription();
 
 		description.setTitle(markdown.title);
 		setDescription(description, markdown);
@@ -71,7 +69,7 @@ public class ArticleMarkdown {
 	 * @param markdown
 	 *            The {@link Scanner} to read lines from.
 	 */
-	private static void setDescription(ArticleDescription articleDescription, Markdown markdown) {
+	private static void setDescription(PageDescription articleDescription, Markdown markdown) {
 
 		Map<String, String> properties = markdown.properties;
 

@@ -18,5 +18,6 @@ public class BabbageBinaryResponse extends BabbageResponse {
     public void apply(HttpServletResponse response) throws IOException {
         response.setContentType(getMimeType());
         IOUtils.copy(input, response.getOutputStream());
+        IOUtils.closeQuietly(input);
     }
 }

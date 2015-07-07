@@ -54,19 +54,19 @@
 									Methodology
 								</label>
 							</li>
-							<li>
+							{{!-- <li>
 								<input type="checkbox" name="type" value="timeseries" {{#contains types 'timeseries'}}checked{{/contains}}>
 								<label for="checkbox-timeseries">
 									Time series and data slices
 								</label>
-							</li>
+							</li> --}}
 						</ul>
 						<p class="panel--mar-small">You can also expand your search results to include the following:</p>
 						<div class="panel--mar-small">
-							<input type="checkbox" name="checkbox" value="1">
+							<input type="checkbox" name="includeAllData" value="1" {{#if includeAllData}}checked{{/if}}>
 							<label for="checkbox">
-								Include all individual time series data and data slices </br>
-								<span class="micro">(currently max 5 shown by default)</span>
+								Include{{!-- all --}}individual time series data and data slices </br>
+								{{!-- <span class="micro">(currently max 5 shown by default)</span> --}}
 							</label>
 						</div>
 						<div class="panel--mar-small">
@@ -103,9 +103,9 @@
 				{{#if statisticsSearchResult.results}}
 				{{#if suggestionBased}}
 				Sorry, there were no results for <strong>'{{searchTerm}}'</strong>.</br>
-				Showing <span class="stand-out-text">{{statisticsSearchResult.numberOfResults}}</span> results for <strong>'{{suggestion}}'</strong> {{#if types}}showing{{#each types}} <strong>{{#eq this 'bulletin'}}statistical bulletin{{/eq}}{{#ne this 'bulletin'}}{{this}}{{/ne}}s</strong><span class="icon-cancel"></span>{{/each}}{{/if}}.
+				Showing <span class="stand-out-text">{{statisticsSearchResult.numberOfResults}}</span> results for <strong>'{{suggestion}}'</strong> {{#if types}}showing{{#each types}} <strong>{{#eq this 'bulletin'}}statistical bulletins{{/eq}}{{#ne this 'bulletin'}}{{this}}{{/ne}}</strong><span class="icon-cancel"></span>{{/each}}{{/if}}.
 				{{else}}
-				<span class="stand-out-text">{{statisticsSearchResult.numberOfResults}}</span> results for <span class="stand-out-text">'{{searchTerm}}'</span> {{#if types}}showing{{#each types}} <strong>{{#eq this 'bulletin'}}statistical bulletin{{/eq}}{{#ne this 'bulletin'}}{{this}}{{/ne}}s</strong><span class="icon-cancel"></span>{{/each}}{{/if}}.
+				<span class="stand-out-text">{{statisticsSearchResult.numberOfResults}}</span> results for <span class="stand-out-text">'{{searchTerm}}'</span> {{#if types}}showing{{#each types}} <strong>{{#eq this 'bulletin'}}statistical bulletins{{/eq}}{{#ne this 'bulletin'}}{{this}}{{/ne}}</strong><span class="icon-cancel"></span>{{/each}}{{/if}}.
 				{{/if}}
 				{{else}}
 				Sorry, there were no results for <span class="stand-out-text">'{{searchTerm}}'</span>.
@@ -119,7 +119,7 @@
 						{{#if headlinePage.items.0}}
 						<div class="grid-col desktop-grid-one-half">
 							<p class="alpha">
-								<img src="{{headlinePage.items.0.data.uri}}/searchchart" alt="{{headlinePage.items.0.data.description.title}}">
+								<img src="{{headlinePage.items.0.uri}}/searchchart" alt="{{headlinePage.items.0.description.title}}">
 							</p>
 						</div>
 						{{/if}}
@@ -138,7 +138,7 @@
 			<ul class="list--neutral">
 				<li>
 					<h3 class="flush inline"><a href="{{uri}}">{{description.title}}{{#if description.edition}}:{{/if}} {{description.edition}}</a></h3>
-					<span class="lozenge">{{type}}</span>
+					<span class="lozenge">{{#eq type 'bulletin'}}statistical bulletin{{/eq}}{{#ne type 'bulletin'}}{{type}}{{/ne}}</span>
 					{{#if partOf}}
 					<p class="micro flush">
 						<a href="{{uri}}">[{{description.title}}]</a><span class="icon-search-1"></span>
@@ -157,18 +157,18 @@
 				<ul>
 					{{#ne currentPage startPage}}
 					<li>
-						<a href="/search?q={{searchTerm}}{{#each types}}&type={{this}}{{/each}}&page={{decrement currentPage}}{{#if includeStatics}}&includeStatics=1{{/if}}" class="page-link previous">Prev</a>
+						<a href="/search?q={{searchTerm}}{{#each types}}&type={{this}}{{/each}}&page={{decrement currentPage}}{{#if includeStatics}}&includeStatics=1{{/if}}{{#if includeAllData}}&includeAllData=1{{/if}}" class="page-link previous">Prev</a>
 					</li>
 					{{/ne}}
 					{{#each pages}}
 					<li>
 						{{#eq this currentPage}}<span>{{this}}</span>{{/eq}}
-						{{#ne this currentPage}}<a href="/search?q={{searchTerm}}{{#each types}}&type={{this}}{{/each}}&page={{this}}{{#if includeStatics}}&includeStatics=1{{/if}}" class="page-link" >{{this}}</a>{{/ne}}
+						{{#ne this currentPage}}<a href="/search?q={{searchTerm}}{{#each types}}&type={{this}}{{/each}}&page={{this}}{{#if includeStatics}}&includeStatics=1{{/if}}{{#if includeAllData}}&includeAllData=1{{/if}}" class="page-link" >{{this}}</a>{{/ne}}
 					</li>
 					{{/each}}
 					{{#ne currentPage endPage}}
 					<li>
-						<a href="/search?q={{searchTerm}}{{#each types}}&type={{this}}{{/each}}&page={{increment currentPage}}{{#if includeStatics}}&includeStatics=1{{/if}}" class="page-link next" >Next</a>
+						<a href="/search?q={{searchTerm}}{{#each types}}&type={{this}}{{/each}}&page={{increment currentPage}}{{#if includeStatics}}&includeStatics=1{{/if}}{{#if includeAllData}}&includeAllData=1{{/if}}" class="page-link next" >Next</a>
 					</li>
 					{{/ne}}
 				</ul>

@@ -5,7 +5,6 @@ import com.github.onsdigital.api.util.ApiErrorHandler;
 import com.github.onsdigital.api.util.URIUtil;
 import com.github.onsdigital.configuration.Configuration;
 import com.github.onsdigital.content.link.PageReference;
-import com.github.onsdigital.content.page.base.Page;
 import com.github.onsdigital.content.page.base.PageType;
 import com.github.onsdigital.content.page.search.SearchResultsPage;
 import com.github.onsdigital.content.page.taxonomy.ProductPage;
@@ -54,28 +53,30 @@ public class Search {
             int page = extractPage(request);
             String[] types = extractTypes(request);
             boolean includeStatics = "1".equals(request.getParameter("includeStatics"));
-            String[] filterTypes = resolveTypes(types, includeStatics); //Not chaning original type request as it is modified here and should remain same for the page
-            if (StringUtils.isNotBlank(request.getParameter("q"))) {
-                searchResult = search(query, page, types);
-                if (searchResult == null) {
-                    System.out.println("Attempting search against timeseries as no results found for: " + query);
-                    URI timeseriesUri = searchTimseries(query);
-                    if (timeseriesUri == null) {
-                        System.out.println("No results found from timeseries so using suggestions for: " + query);
-                        searchResult = searchAutocorrect(query, page, filterTypes);
-                    } else {
-                        response.sendRedirect(timeseriesUri.toString());
-                        return null;
-                    }
+            boolean includeAllData = "1".equals(request.getParameter("includeAllData"));
+            String[] filterTypes = resolveTypes(types, includeStatics, includeAllData); //Not changing original type request as it is modified here and should remain same for the page
+            searchResult = search(query, page, filterTypes);
+            if (searchResult == null) {
+                System.out.println("Attempting search against timeseries as no results found for: " + query);
+                URI timeseriesUri = searchTimseries(query);
+                if (timeseriesUri == null) {
+                    System.out.println("No results found from timeseries so using suggestions for: " + query);
+                    searchResult = searchAutocorrect(query, page, filterTypes);
+                } else {
+                    response.sendRedirect(timeseriesUri.toString());
+                    return null;
                 }
-            } /*else if (StringUtils.isNotBlank(request.getParameter("term"))) {
-                searchResult = autoComplete(query);
-            }*/ else if (StringUtils.isNotBlank(request.getParameter("cdid"))) {
-                URI timeseriesUri = SearchHelper.searchCdid(query);
-                return timeseriesUri == null ? "" : timeseriesUri;
             }
 
-            handleResponse(type, searchResult, response, page, query, types, includeStatics);
+            /*else if (StringUtils.isNotBlank(request.getParameter("term"))) {
+                searchResult = autoComplete(query);
+            } else if (StringUtils.isNotBlank(request.getParameter("cdid"))) {
+                URI timeseriesUri = SearchHelper.searchCdid(query);
+                return timeseriesUri == null ? "" : timeseriesUri;
+            }*/
+
+
+            handleResponse(type, searchResult, response, page, query, types, includeStatics, includeAllData);
             return null;
         } catch (Exception e) {
             ApiErrorHandler.handle(e, response);
@@ -84,15 +85,22 @@ public class Search {
     }
 
     //Decide if json should be returned ( in case search/data requested) or page should be rendered
-    private void handleResponse(String requestType, Object searchResult, HttpServletResponse response, int page, String query, String[] types, boolean includeStatics) throws IOException {
+    private void handleResponse(String requestType, Object searchResult, HttpServletResponse response, int page, String query, String[] types, boolean includeStatics, boolean includeAllData) throws IOException {
         BabbageResponse babbageResponse;
+
+        AggregatedSearchResult result = (AggregatedSearchResult) searchResult;
+        long numberOfPages = (long) Math.ceil((double) result.statisticsSearchResult.getNumberOfResults() / 10);
+        numberOfPages = numberOfPages == 0 ? 1 : numberOfPages; //If no results number should be pages is 1 to show the page
+        if (page > numberOfPages) {
+            throw new ResourceNotFoundException();
+        }
 
         switch (requestType) {
             case DATA_REQUEST:
-                babbageResponse = new BabbageStringResponse(ContentUtil.serialise(buildResultsPage((AggregatedSearchResult) searchResult, page, query, types, includeStatics)));
+                babbageResponse = new BabbageStringResponse(ContentUtil.serialise(buildResultsPage(result, page, query, types, includeStatics, includeAllData)));
                 break;
             case SEARCH_REQUEST:
-                babbageResponse = new BabbageStringResponse(renderSearchPage((AggregatedSearchResult) searchResult, page, query, types, includeStatics), HTML_MIME);
+                babbageResponse = new BabbageStringResponse(renderSearchPage(result, page, query, types, includeStatics, includeAllData), HTML_MIME);
                 break;
             default:
                 throw new ResourceNotFoundException();
@@ -100,14 +108,14 @@ public class Search {
         babbageResponse.apply(response);
     }
 
-    public String renderSearchPage(AggregatedSearchResult results, int currentPage, String searchTerm, String[] types, boolean includeStatics) throws IOException {
-        SearchResultsPage searchPage = buildResultsPage(results, currentPage, searchTerm, types, includeStatics);
+    public String renderSearchPage(AggregatedSearchResult results, int currentPage, String searchTerm, String[] types, boolean includeStatics, boolean includeAllData) throws IOException {
+        SearchResultsPage searchPage = buildResultsPage(results, currentPage, searchTerm, types, includeStatics, includeAllData);
         searchPage.setNavigation(NavigationUtil.getNavigation());
         return TemplateService.getInstance().renderPage(searchPage);
     }
 
 
-    private String[] resolveTypes(String[] types, boolean includeStatics) {
+    private String[] resolveTypes(String[] types, boolean includeStatics, boolean includeAllData) {
         String[] filterTypes = ArrayUtils.clone(types);
         if (includeStatics) {
             filterTypes = ArrayUtils.add(filterTypes, PageType.static_adhoc.name());
@@ -115,18 +123,22 @@ public class Search {
             filterTypes = ArrayUtils.add(filterTypes, PageType.static_article.name());
             filterTypes = ArrayUtils.add(filterTypes, PageType.static_foi.name());
         }
+        if (includeAllData) {
+            filterTypes = ArrayUtils.add(filterTypes, PageType.timeseries.name());
+        }
 
         return filterTypes;
     }
 
 
     //Resolve search headlines and build search page
-    private SearchResultsPage buildResultsPage(AggregatedSearchResult results, int currentPage, String searchTerm, String[] types, boolean includeStatics) {
+    private SearchResultsPage buildResultsPage(AggregatedSearchResult results, int currentPage, String searchTerm, String[] types, boolean includeStatics, boolean includeAllData) {
         SearchResultsPage page = new SearchResultsPage();
         page.setStatisticsSearchResult(results.statisticsSearchResult);
         page.setTaxonomySearchResult(results.taxonomySearchResult);
         page.setCurrentPage(currentPage);
         page.setIncludeStatics(includeStatics);
+        page.setIncludeAllData(includeAllData);
         page.setNumberOfResults(results.getNumberOfResults());
         page.setNumberOfPages((long) Math.ceil((double) results.statisticsSearchResult.getNumberOfResults() / 10));
         page.setEndPage((int) getEndPage(page.getNumberOfPages(), currentPage, Configuration.getMaxVisiblePaginatorLink()));
@@ -194,7 +206,7 @@ public class Search {
                     if (items.size() > 0) {
                         PageReference headlineData = items.iterator().next();
                         if (headlineData != null) {
-                            ContentUtil.loadReferencedPage(DataService.getInstance(), headlineData);
+                            ContentUtil.loadReferencedPageDescription(DataService.getInstance(), headlineData);
                             iterator.remove();
                             break;
                         }
@@ -206,7 +218,6 @@ public class Search {
     }
 
     private Object search(String query, int page, String[] types) throws Exception {
-
         AggregatedSearchResult searchResult = SearchHelper.search(query, page, types);
         if (searchResult.getNumberOfResults() == 0 && types == null) {
             return null;
@@ -229,11 +240,20 @@ public class Search {
 
     private int extractPage(HttpServletRequest request) {
         String page = request.getParameter("page");
-        if (StringUtils.isNotEmpty(page) && StringUtils.isNumeric(page)) {
-            int pageNumber = Integer.parseInt(page);
-            return pageNumber < 1 ? 1 : pageNumber;
+
+        if (StringUtils.isEmpty(page)) {
+            return 1;
         }
-        return 1;
+        if (StringUtils.isNumeric(page)) {
+            int pageNumber = Integer.parseInt(page);
+            if (pageNumber < 1) {
+                throw new ResourceNotFoundException();
+            }
+            return pageNumber;
+        } else {
+            throw new ResourceNotFoundException();
+        }
+
     }
 
     private String[] extractTypes(HttpServletRequest request) {

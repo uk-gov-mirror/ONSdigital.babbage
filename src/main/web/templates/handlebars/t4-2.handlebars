@@ -16,7 +16,11 @@
 				</p>
 				<p class="grid-col tablet-grid-one-quarter divider--border-left">
 					<span>Release date: </span><br/>{{df description.releaseDate}}<br/>
-				  <a class="print-hidden" href="previousreleases">previous releases</a>
+					{{#if description.latestRelease}}
+                      <a class="print-hidden" href="{{previousReleasesUri}}">previous releases</a>
+					{{else}}
+                      <a class="print-hidden" href="{{latestReleaseUri}}">view latest release</a>
+					{{/if}}
 				</p>
 				<p class="grid-col tablet-grid-one-quarter divider--border-left">
 					<span>Next release: </span><br/>{{description.nextRelease}}
@@ -38,7 +42,7 @@
 	</div>
 	<!-- Table of contents -->
 	<div class="wrapper">
-		<p class="lede">{{description.summary}}</p>
+		<p class="lede">{{description.abstract}}</p>
 		<div class="panel--separated--bottom">
 			<h2>Table of contents</h2>
 			<ol id="toc" class="table-of-contents-ordered-list">
@@ -145,7 +149,7 @@
 									<h3 class="flush--bottom">
 									<a href="{{uri}}">{{description.title}}</a>
 									</h3>
-									{{md description.summary}}
+									{{md description.abstract}}
 								</li>
 								{{/each}}
 							</ul>

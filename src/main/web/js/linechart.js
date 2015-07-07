@@ -582,7 +582,7 @@ function removeHiddenInputs() {
 	$( "input[name='toYear']" ).remove();
 }
 
-$('#dlCustomData').submit(function(){
+$('.dlCustomData').submit(function(){
 
 	//Grab all the custom date values
 	fromYear = $('[data-chart-controls-from-year]').val();
@@ -603,7 +603,7 @@ $('#dlCustomData').submit(function(){
 			// remove any previous custom date hidden inputs
 			removeHiddenInputs();
 			// append the inputs to end of form
-			$( "#dlCustomData" ).append(str);
+			$( ".dlCustomData" ).append(str);
 			break;
 
 		case 'Quarterly':
@@ -612,7 +612,7 @@ $('#dlCustomData').submit(function(){
 			// remove any previous custom date hidden inputs
 			removeHiddenInputs();
 			// append the inputs to end of form
-			$( "#dlCustomData" ).append(str);
+			$( ".dlCustomData" ).append(str);
 			break;
 
 		case 'Yearly':
@@ -621,7 +621,7 @@ $('#dlCustomData').submit(function(){
 			// remove any previous custom date hidden inputs
 			removeHiddenInputs();
 			// append the inputs to end of form
-			$( "#dlCustomData" ).append(str);
+			$( ".dlCustomData" ).append(str);
 			break;
 	}
   return true;

@@ -74,18 +74,18 @@ public class XLSXGenerator {
 		column++;
 
 		// Data
-		for (TimeSeries TimeSeries : this.TimeSeries) {
-			name.createCell(column).setCellValue(TimeSeries.getDescription().getTitle());
-			cdid.createCell(column).setCellValue(TimeSeries.getCdid());
-			preUnit.createCell(column).setCellValue(TimeSeries.getDescription().getPreUnit());
-			unit.createCell(column).setCellValue(TimeSeries.getDescription().getUnit());
-			source.createCell(column).setCellValue(TimeSeries.getDescription().getSource());
-			keyNote.createCell(column).setCellValue(TimeSeries.getDescription().getKeyNote());
-			additionalText.createCell(column).setCellValue(TimeSeries.getDescription().getAdditionalText());
-			note1.createCell(column).setCellValue(TimeSeries.getNotes() != null ? TimeSeries.getNotes().get(0) : null);
-			note2.createCell(column).setCellValue(TimeSeries.getNotes() != null ? TimeSeries.getNotes().get(1) : null);
-			column++;
-			System.out.println("Geneararing XLSX for: " + TimeSeries.getDescription().getTitle() + " at: " + TimeSeries.getUri());
+		for (TimeSeries timeseries : this.TimeSeries) {
+			name.createCell(column).setCellValue(timeseries.getDescription().getTitle());
+			cdid.createCell(column).setCellValue(timeseries.getCdid());
+			preUnit.createCell(column).setCellValue(timeseries.getDescription().getPreUnit());
+			unit.createCell(column).setCellValue(timeseries.getDescription().getUnit());
+			source.createCell(column).setCellValue(timeseries.getDescription().getSource());
+			keyNote.createCell(column).setCellValue(timeseries.getDescription().getKeyNote());
+			additionalText.createCell(column).setCellValue(timeseries.getDescription().getAdditionalText());
+            note1.createCell(column).setCellValue(timeseries.getNotes() != null ? (String) timeseries.getNotes().get(0) : null);
+            note2.createCell(column).setCellValue(timeseries.getNotes() != null ? (String) timeseries.getNotes().get(1) : null);
+            column++;
+			System.out.println("Geneararing XLSX for: " + timeseries.getDescription().getTitle() + " at: " + timeseries.getUri());
 		}
 
 		return row;

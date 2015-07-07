@@ -1,7 +1,7 @@
 package com.github.onsdigital.generator.datasets;
 
+import com.github.onsdigital.content.page.base.PageDescription;
 import com.github.onsdigital.content.page.statistics.dataset.Dataset;
-import com.github.onsdigital.content.page.statistics.dataset.DatasetDescription;
 import com.github.onsdigital.content.partial.DownloadSection;
 import com.github.onsdigital.content.partial.markdown.MarkdownSection;
 import com.github.onsdigital.generator.ContentNode;
@@ -70,7 +70,7 @@ public class DatasetContent {
             ContentNode folder = Data.getFolder(row.get(THEME), row.get(LEVEL2), row.get(LEVEL3));
 
             Dataset dataset = new Dataset();
-            DatasetDescription description = new DatasetDescription();
+            PageDescription description = new PageDescription();
             dataset.setDescription(description);
             dataset.setDownloads(new ArrayList<DownloadSection>());
 
