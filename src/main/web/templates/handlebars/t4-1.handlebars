@@ -17,11 +17,10 @@
 				<p class="grid-col tablet-grid-one-quarter divider--border-left">
 					<span>Release date: </span><br/>{{df description.releaseDate}}<br/>
 					{{#if description.latestRelease}}
-                      <a href="previousreleases">previous releases</a>
+                      <a href="{{previousReleasesUri}}">previous releases</a>
 					{{else}}
-                      <a href="latest">view latest release</a>
+                      <a href="{{latestReleaseUri}}">view latest release</a>
 					{{/if}}
-
 				</p>
 				<p class="grid-col tablet-grid-one-quarter divider--border-left">
 				  <span>Next release: </span><br/>{{description.nextRelease}}
