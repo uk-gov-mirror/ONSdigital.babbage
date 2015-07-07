@@ -157,18 +157,18 @@
 				<ul>
 					{{#ne currentPage startPage}}
 					<li>
-						<a href="/search?q={{searchTerm}}{{#each types}}&type={{this}}{{/each}}&page={{decrement currentPage}}{{#if includeStatics}}&includeStatics=1{{/if}}" class="page-link previous">Prev</a>
+						<a href="/search?q={{searchTerm}}{{#each types}}&type={{this}}{{/each}}&page={{decrement currentPage}}{{#if includeStatics}}&includeStatics=1{{/if}}{{#if includeAllData}}&includeAllData=1{{/if}}" class="page-link previous">Prev</a>
 					</li>
 					{{/ne}}
 					{{#each pages}}
 					<li>
 						{{#eq this currentPage}}<span>{{this}}</span>{{/eq}}
-						{{#ne this currentPage}}<a href="/search?q={{searchTerm}}{{#each types}}&type={{this}}{{/each}}&page={{this}}{{#if includeStatics}}&includeStatics=1{{/if}}" class="page-link" >{{this}}</a>{{/ne}}
+						{{#ne this currentPage}}<a href="/search?q={{searchTerm}}{{#each types}}&type={{this}}{{/each}}&page={{this}}{{#if includeStatics}}&includeStatics=1{{/if}}{{#if includeAllData}}&includeAllData=1{{/if}}" class="page-link" >{{this}}</a>{{/ne}}
 					</li>
 					{{/each}}
 					{{#ne currentPage endPage}}
 					<li>
-						<a href="/search?q={{searchTerm}}{{#each types}}&type={{this}}{{/each}}&page={{increment currentPage}}{{#if includeStatics}}&includeStatics=1{{/if}}" class="page-link next" >Next</a>
+						<a href="/search?q={{searchTerm}}{{#each types}}&type={{this}}{{/each}}&page={{increment currentPage}}{{#if includeStatics}}&includeStatics=1{{/if}}{{#if includeAllData}}&includeAllData=1{{/if}}" class="page-link next" >Next</a>
 					</li>
 					{{/ne}}
 				</ul>
