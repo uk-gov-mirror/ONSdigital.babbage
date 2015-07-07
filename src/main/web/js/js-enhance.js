@@ -248,13 +248,13 @@ jQuery(window).load(function() {
             
             $('.box--headline').height(highestBox);
         }
+    }
 
-        function jsEnhanceBoxHeightResize() {
-            $( window ).resize(function() {
-                $('.box--headline').height('auto');
-                jsEnhanceBoxHeight();
-            });
-        }
+    function jsEnhanceBoxHeightResize() {
+        $( window ).resize(function() {
+            $('.box--headline').height('auto');
+            jsEnhanceBoxHeight();
+        });
     }
     
 });
