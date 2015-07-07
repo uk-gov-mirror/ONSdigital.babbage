@@ -4,7 +4,6 @@ import com.github.onsdigital.configuration.Configuration;
 import com.github.onsdigital.content.link.PageReference;
 import com.github.onsdigital.content.page.base.Page;
 import com.github.onsdigital.content.page.list.ListPage;
-import com.github.onsdigital.content.page.statistics.base.StatisticsDescription;
 import com.github.onsdigital.content.partial.SearchResult;
 import com.github.onsdigital.content.service.ContentNotFoundException;
 import com.github.onsdigital.content.util.ContentUtil;
@@ -89,12 +88,15 @@ public class PreviousReleasesRequestHandler implements RequestHandler {
             @Override
             public int compare(PageReference o1, PageReference o2) {
 
-                if (o1.getDescription() instanceof StatisticsDescription) {
-                    return ((StatisticsDescription) o2.getDescription()).getReleaseDate()
-                            .compareTo(((StatisticsDescription) o1.getDescription()).getReleaseDate());
+                if (o1 == null || o1.getDescription().getReleaseDate() == null) {
+                    return -1;
+                } else if (o2 == null || o2.getDescription().getReleaseDate() == null) {
+                    return 1;
+                } else {
+                    return (o2.getDescription()).getReleaseDate()
+                            .compareTo((o1.getDescription()).getReleaseDate());
                 }
 
-                return 0;
             }
         });
     }

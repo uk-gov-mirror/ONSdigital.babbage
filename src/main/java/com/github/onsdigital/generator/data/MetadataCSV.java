@@ -1,8 +1,8 @@
 package com.github.onsdigital.generator.data;
 
 import au.com.bytecode.opencsv.CSVReader;
+import com.github.onsdigital.content.page.base.PageDescription;
 import com.github.onsdigital.content.page.statistics.data.timeseries.TimeSeries;
-import com.github.onsdigital.content.page.statistics.data.timeseries.TimeseriesDescription;
 import com.github.onsdigital.content.partial.markdown.MarkdownSection;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -60,7 +60,7 @@ public class MetadataCSV {
 		csv.read();
 		csv.getHeadings();
 		for (Map<String, String> row : csv) {
-			TimeseriesDescription description = new TimeseriesDescription();
+			PageDescription description = new PageDescription();
 
 			String cdid = row.get("CDID");
 			TimeSeries timeseries = Data.timeseries(cdid);
