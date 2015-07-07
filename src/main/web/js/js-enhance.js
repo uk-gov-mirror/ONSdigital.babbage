@@ -36,6 +36,8 @@ jQuery(window).load(function() {
         jsEnhanceBoxHeight();
         jsEnhanceBoxHeightResize();
 
+        prototypeModalButtons();
+
         setTimeout(function() {
             $('#loading-overlay').fadeOut(300);
         }, 500);
@@ -256,5 +258,16 @@ jQuery(window).load(function() {
             jsEnhanceBoxHeight();
         });
     }
+
+    function prototypeModalButtons() {
+        $('.btn-modal-continue').click(function(e){
+            e.preventDefault();
+            document.cookie='onsBetaDisclaimer=true';
+            $('#modal-overlay').fadeOut(300);
+        });
+    }
+
+    // 
+
     
 });
