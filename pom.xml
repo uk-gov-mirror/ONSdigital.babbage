@@ -155,14 +155,14 @@
         <dependency>
             <groupId>com.github.ONSdigital</groupId>
             <artifactId>content-library</artifactId>
-			<version>content-library-1.0.51</version>
+			<version>content-library-1.0.52</version>
         </dependency>
 
         <!-- ONS Content Library, snapshot local install used for development, comment out -->
         <!--<dependency>-->
             <!--<groupId>com.github.onsdigital</groupId>-->
             <!--<artifactId>content-library</artifactId>-->
-            <!--<version>1.0.49-SNAPSHOT</version>-->
+            <!--<version>1.0.52-SNAPSHOT</version>-->
         <!--</dependency>-->
 
 	</dependencies>

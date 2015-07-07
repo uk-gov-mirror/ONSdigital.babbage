@@ -5,7 +5,6 @@ import com.github.onsdigital.api.util.ApiErrorHandler;
 import com.github.onsdigital.api.util.URIUtil;
 import com.github.onsdigital.configuration.Configuration;
 import com.github.onsdigital.content.link.PageReference;
-import com.github.onsdigital.content.page.base.Page;
 import com.github.onsdigital.content.page.base.PageType;
 import com.github.onsdigital.content.page.search.SearchResultsPage;
 import com.github.onsdigital.content.page.taxonomy.ProductPage;
@@ -194,7 +193,7 @@ public class Search {
                     if (items.size() > 0) {
                         PageReference headlineData = items.iterator().next();
                         if (headlineData != null) {
-                            ContentUtil.loadReferencedPage(DataService.getInstance(), headlineData);
+                            ContentUtil.loadReferencedPageDescription(DataService.getInstance(), headlineData);
                             iterator.remove();
                             break;
                         }
