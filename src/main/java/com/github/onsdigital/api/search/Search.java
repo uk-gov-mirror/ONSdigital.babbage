@@ -3,7 +3,9 @@ package com.github.onsdigital.api.search;
 import com.github.davidcarboni.restolino.framework.Api;
 import com.github.onsdigital.api.util.ApiErrorHandler;
 import com.github.onsdigital.api.util.URIUtil;
+import com.github.onsdigital.configuration.Configuration;
 import com.github.onsdigital.content.link.PageReference;
+import com.github.onsdigital.content.page.base.Page;
 import com.github.onsdigital.content.page.base.PageType;
 import com.github.onsdigital.content.page.search.SearchResultsPage;
 import com.github.onsdigital.content.page.taxonomy.ProductPage;
@@ -25,6 +27,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.core.Context;
 import java.io.IOException;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -50,14 +53,16 @@ public class Search {
             Object searchResult = null;
             int page = extractPage(request);
             String[] types = extractTypes(request);
+            boolean includeStatics = "1".equals(request.getParameter("includeStatics"));
+            String[] filterTypes = resolveTypes(types, includeStatics); //Not chaning original type request as it is modified here and should remain same for the page
             if (StringUtils.isNotBlank(request.getParameter("q"))) {
                 searchResult = search(query, page, types);
                 if (searchResult == null) {
                     System.out.println("Attempting search against timeseries as no results found for: " + query);
-                    URI timeseriesUri = searchTimseries(query, types);
+                    URI timeseriesUri = searchTimseries(query);
                     if (timeseriesUri == null) {
                         System.out.println("No results found from timeseries so using suggestions for: " + query);
-                        searchResult = searchAutocorrect(query, page, types);
+                        searchResult = searchAutocorrect(query, page, filterTypes);
                     } else {
                         response.sendRedirect(timeseriesUri.toString());
                         return null;
@@ -70,7 +75,7 @@ public class Search {
                 return timeseriesUri == null ? "" : timeseriesUri;
             }
 
-            handleResponse(type, searchResult, response, page, query, types);
+            handleResponse(type, searchResult, response, page, query, types, includeStatics);
             return null;
         } catch (Exception e) {
             ApiErrorHandler.handle(e, response);
@@ -78,17 +83,16 @@ public class Search {
         }
     }
 
-
     //Decide if json should be returned ( in case search/data requested) or page should be rendered
-    private void handleResponse(String requestType, Object searchResult, HttpServletResponse response, int page, String query, String[] types) throws IOException {
+    private void handleResponse(String requestType, Object searchResult, HttpServletResponse response, int page, String query, String[] types, boolean includeStatics) throws IOException {
         BabbageResponse babbageResponse;
 
         switch (requestType) {
             case DATA_REQUEST:
-                babbageResponse = new BabbageStringResponse(ContentUtil.serialise(buildResultsPage((AggregatedSearchResult) searchResult, page, query, types)));
+                babbageResponse = new BabbageStringResponse(ContentUtil.serialise(buildResultsPage((AggregatedSearchResult) searchResult, page, query, types, includeStatics)));
                 break;
             case SEARCH_REQUEST:
-                babbageResponse = new BabbageStringResponse(renderSearchPage((AggregatedSearchResult) searchResult, page, query,types), HTML_MIME);
+                babbageResponse = new BabbageStringResponse(renderSearchPage((AggregatedSearchResult) searchResult, page, query, types, includeStatics), HTML_MIME);
                 break;
             default:
                 throw new ResourceNotFoundException();
@@ -96,21 +100,38 @@ public class Search {
         babbageResponse.apply(response);
     }
 
-
-    public String renderSearchPage(AggregatedSearchResult results, int currentPage, String searchTerm, String[] types) throws IOException {
-        SearchResultsPage searchPage = buildResultsPage(results, currentPage, searchTerm, types);
+    public String renderSearchPage(AggregatedSearchResult results, int currentPage, String searchTerm, String[] types, boolean includeStatics) throws IOException {
+        SearchResultsPage searchPage = buildResultsPage(results, currentPage, searchTerm, types, includeStatics);
         searchPage.setNavigation(NavigationUtil.getNavigation());
         return TemplateService.getInstance().renderPage(searchPage);
     }
 
+
+    private String[] resolveTypes(String[] types, boolean includeStatics) {
+        String[] filterTypes = ArrayUtils.clone(types);
+        if (includeStatics) {
+            filterTypes = ArrayUtils.add(filterTypes, PageType.static_adhoc.name());
+            filterTypes = ArrayUtils.add(filterTypes, PageType.static_page.name());
+            filterTypes = ArrayUtils.add(filterTypes, PageType.static_article.name());
+            filterTypes = ArrayUtils.add(filterTypes, PageType.static_foi.name());
+        }
+
+        return filterTypes;
+    }
+
+
     //Resolve search headlines and build search page
-    private SearchResultsPage buildResultsPage(AggregatedSearchResult results, int currentPage, String searchTerm, String[] types) {
+    private SearchResultsPage buildResultsPage(AggregatedSearchResult results, int currentPage, String searchTerm, String[] types, boolean includeStatics) {
         SearchResultsPage page = new SearchResultsPage();
         page.setStatisticsSearchResult(results.statisticsSearchResult);
         page.setTaxonomySearchResult(results.taxonomySearchResult);
         page.setCurrentPage(currentPage);
+        page.setIncludeStatics(includeStatics);
         page.setNumberOfResults(results.getNumberOfResults());
         page.setNumberOfPages((long) Math.ceil((double) results.statisticsSearchResult.getNumberOfResults() / 10));
+        page.setEndPage((int) getEndPage(page.getNumberOfPages(), currentPage, Configuration.getMaxVisiblePaginatorLink()));
+        page.setStartPage(getStartPage((int) page.getNumberOfPages(), Configuration.getMaxVisiblePaginatorLink(), page.getEndPage()));
+        page.setPages(getPageList(page.getStartPage(), page.getEndPage()));
         page.setSearchTerm(searchTerm);
         page.setTypes(types);
         page.setSuggestionBased(results.isSuggestionBasedResult());
@@ -122,6 +143,38 @@ public class Search {
             resolveSearchHeadline(page);
         }
         return page;
+    }
+
+
+    //List of numbers for handlebars to loop through
+    private List<Integer> getPageList(int start, int end) {
+        ArrayList<Integer> pageList = new ArrayList<Integer>();
+        for (int i = start; i <= end; i++) {
+            pageList.add(i);
+        }
+        return pageList;
+    }
+
+    //Used for paginator start
+    private int getStartPage(int numberOfPages, int maxVisible, int endPage) {
+        if (numberOfPages <= maxVisible) {
+            return 1;
+        }
+        int start = endPage - maxVisible + 1;
+        start = start > 0 ? start : 1;
+        return start;
+    }
+
+    private long getEndPage(long numberOfPages, int currentPage, int maxVisible) {
+        long max = numberOfPages;
+        if (max <= maxVisible) {
+            return max;
+        }
+        //Half of the pages are visible after current page
+        long end = (int) (currentPage + Math.ceil(maxVisible / 2));
+        end = (end > max) ? max : end;
+        end = (end < maxVisible) ? maxVisible : end;
+        return end;
     }
 
     private void resolveSearchHeadline(SearchResultsPage page) {
@@ -138,7 +191,7 @@ public class Search {
                 page.setHeadlinePage(productPage);
                 List<PageReference> items = productPage.getItems();
                 if (items != null) {
-                    if(items.size() > 0) {
+                    if (items.size() > 0) {
                         PageReference headlineData = items.iterator().next();
                         if (headlineData != null) {
                             ContentUtil.loadReferencedPage(DataService.getInstance(), headlineData);
@@ -161,7 +214,7 @@ public class Search {
         return searchResult;
     }
 
-    private URI searchTimseries(String query, String[] types) {
+    private URI searchTimseries(String query) {
         return SearchHelper.searchCdid(query);
     }
 

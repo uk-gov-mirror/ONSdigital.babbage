@@ -1,21 +1,8 @@
 {{> partials/header}}
 <div class="wrapper panel--top-mar">
-	<h1 class="page-header__title flush--half--bottom">{{title}}</h1>
-	<p>
-		{{#if statisticsSearchResult.results}}
-		{{#if suggestionBased}}
-		Sorry, there were no results for <strong>'{{searchTerm}}'</strong>.</br>
-		Shwowing <span class="stand-out-text">{{statisticsSearchResult.numberOfResults}}</span> results for <strong>'{{suggestion}}'</strong> {{#if types}}{{#each types}}showing <strong>{{this}}s</strong><span class="icon-cancel"></span>{{/each}}{{/if}}.
-		{{else}}
-		<span class="stand-out-text">{{statisticsSearchResult.numberOfResults}}</span> results for <span class="stand-out-text">'{{searchTerm}}'</span> {{#if types}}{{#each types}}showing <strong>{{this}}s</strong><span class="icon-cancel"></span>{{/each}}{{/if}}.
-		{{/if}}
-		{{else}}
-		Sorry, there were no results for <span class="stand-out-text">'{{searchTerm}}'</span>.
-		{{/if}}
-	</p>
+	<h3 class="page-header__title">Search results</h3>
 </div>
 <!-- /wrapper -->
-{{#if statisticsSearchResult.results}}
 <div class="wrapper panel--mar print-links">
 	<div class="grid-wrap panel--bottom-mar print-hidden">
 		<div class="grid-col desktop-grid-one-quarter desktop-grid-push-three-quarters tablet-grid-full-width">
@@ -34,40 +21,41 @@
 	<div class="grid-wrap">
 		<div class="grid-col desktop-grid-one-third">
 			<article class="box box--padded sectioned print-hidden">
-				<form id="fitlers">
+				<form id="fitlers" action="/search">
 					<div class="panel panel--bottom-pad panel--separated--bottom flush">
 						<h3 class="flush float-left">Refine results</h3>
-						<button type="reset" value="Reset" class="btn btn--primary btn--small btn--thin btn--narrow btn--clear-results float-right">Clear</button>
+						<a href="/search?q={{searchTerm}}" value="Reset" class="btn btn--primary btn--small btn--thin btn--narrow btn--clear-results float-right">Clear</a>
+						<button type="submit" name="q" value="{{searchTerm}}" class="btn btn--primary btn--small btn--thin btn--narrow btn--clear-results float-right">Filter</button>
 					</div>
 					<div class="box__content">
 						<p class="panel panel--separated--bottom">Content types to show</p>
 						<ul class="list--neutral">
 							<li>
-								<input type="checkbox" name="checkbox-statsbulletin" value="1" checked>
+								<input type="checkbox" name="type" value="bulletin" {{#contains types 'bulletin'}}checked{{/contains}} >
 								<label for="checkbox-statsbulletin">
 									Statistical bulletin
 								</label>
 							</li>
 							<li>
-								<input type="checkbox" name="checkbox-article" value="1">
+								<input type="checkbox" name="type" value="article" {{#contains types 'article'}}checked{{/contains}}>
 								<label for="checkbox-article">
 									Article
 								</label>
 							</li>
 							<li>
-								<input type="checkbox" name="checkbox-dataset" value="1" checked>
+								<input type="checkbox" name="type" value="dataset" {{#contains types 'dataset'}}checked{{/contains}}>
 								<label for="checkbox-dataset">
 									Dataset
 								</label>
 							</li>
 							<li>
-								<input type="checkbox" name="checkbox-methodology" value="1">
+								<input type="checkbox" name="type" value="methodology" {{#contains types 'methodology'}}checked{{/contains}} >
 								<label for="checkbox-methodology">
 									Methodology
 								</label>
 							</li>
 							<li>
-								<input type="checkbox" name="checkbox-timeseries" value="1">
+								<input type="checkbox" name="type" value="timeseries" {{#contains types 'timeseries'}}checked{{/contains}}>
 								<label for="checkbox-timeseries">
 									Time series and data slices
 								</label>
@@ -82,7 +70,7 @@
 							</label>
 						</div>
 						<div class="panel--mar-small">
-							<input type="checkbox" name="checkbox" value="1">
+							<input type="checkbox" name="includeStatics" value="1" {{#if includeStatics}}checked{{/if}}>
 							<label for="checkbox">
 								Include all other website content </br>
 								<span class="micro">(User requested data, about us, media releases, freedom of information (FOI) requests etc.)</span>
@@ -110,6 +98,20 @@
 		</div>
 		<!-- /grid-desktop-one-third -->
 		<div class="grid-col desktop-grid-two-thirds">
+			{{#if statisticsSearchResult.results}}
+			<p class="flush--half--bottom">
+				{{#if statisticsSearchResult.results}}
+				{{#if suggestionBased}}
+				Sorry, there were no results for <strong>'{{searchTerm}}'</strong>.</br>
+				Showing <span class="stand-out-text">{{statisticsSearchResult.numberOfResults}}</span> results for <strong>'{{suggestion}}'</strong> {{#if types}}showing{{#each types}} <strong>{{#eq this 'bulletin'}}statistical bulletin{{/eq}}{{#ne this 'bulletin'}}{{this}}{{/ne}}s</strong><span class="icon-cancel"></span>{{/each}}{{/if}}.
+				{{else}}
+				<span class="stand-out-text">{{statisticsSearchResult.numberOfResults}}</span> results for <span class="stand-out-text">'{{searchTerm}}'</span> {{#if types}}showing{{#each types}} <strong>{{#eq this 'bulletin'}}statistical bulletin{{/eq}}{{#ne this 'bulletin'}}{{this}}{{/ne}}s</strong><span class="icon-cancel"></span>{{/each}}{{/if}}.
+				{{/if}}
+				{{else}}
+				Sorry, there were no results for <span class="stand-out-text">'{{searchTerm}}'</span>.
+				{{/if}}
+			</p>
+
 			{{#if headlinePage}}
 			<article class="box box--padded sectioned">
 				<div class="box__content">
@@ -135,7 +137,7 @@
 			{{#each statisticsSearchResult.results}}
 			<ul class="list--neutral">
 				<li>
-					<h3 class="flush inline"><a href="{{uri}}">{{description.title}}</a></h3>
+					<h3 class="flush inline"><a href="{{uri}}">{{description.title}}{{#if description.edition}}:{{/if}} {{description.edition}}</a></h3>
 					<span class="lozenge">{{type}}</span>
 					{{#if partOf}}
 					<p class="micro flush">
@@ -153,30 +155,39 @@
 			{{#ne numberOfPages 1}}
 			<nav>
 				<ul>
-					{{#ne currentPage 1}}
+					{{#ne currentPage startPage}}
 					<li>
-						<a href="/search?q={{searchTerm}}&page={{decrement currentPage}}" class="page-link previous">Prev</a>
+						<a href="/search?q={{searchTerm}}{{#each types}}&type={{this}}{{/each}}&page={{decrement currentPage}}{{#if includeStatics}}&includeStatics=1{{/if}}" class="page-link previous">Prev</a>
 					</li>
 					{{/ne}}
-					{{#loop numberOfPages}}
+					{{#each pages}}
 					<li>
-						{{#eq @index_1 currentPage}}<span>{{@index_1}}</span>{{/eq}}
-						{{#ne @index_1 currentPage}}<a href="/search?q={{searchTerm}}&page={{@index_1}}" class="page-link" >{{@index_1}}</a>{{/ne}}
+						{{#eq this currentPage}}<span>{{this}}</span>{{/eq}}
+						{{#ne this currentPage}}<a href="/search?q={{searchTerm}}{{#each types}}&type={{this}}{{/each}}&page={{this}}{{#if includeStatics}}&includeStatics=1{{/if}}" class="page-link" >{{this}}</a>{{/ne}}
 					</li>
-					{{/loop}}
-					{{#ne currentPage numberOfPages}}
+					{{/each}}
+					{{#ne currentPage endPage}}
 					<li>
-						<a href="/search?q={{searchTerm}}&page={{increment currentPage}}" class="page-link next" >Next</a>
+						<a href="/search?q={{searchTerm}}{{#each types}}&type={{this}}{{/each}}&page={{increment currentPage}}{{#if includeStatics}}&includeStatics=1{{/if}}" class="page-link next" >Next</a>
 					</li>
 					{{/ne}}
 				</ul>
 			</nav>
 			{{/ne}}
+			{{else}}
+			<div>
+				Sorry, no results were found for <strong>‘{{searchTerm}}’</strong></br></br>
+				<strong>You could try one of the following:</strong>
+				<ul>
+					<li>search again using different words</li>
+					<li>remove any filters selected</li>
+				</ul>
+			</div>
+			{{/if}}
 		</div>
 		<!-- /desktop-grid-two-thirds -->
 	</div>
 	<!-- /grid-wrap -->
 </div>
 <!-- /wrapper -->
-{{/if}}
 {{> partials/footer}}

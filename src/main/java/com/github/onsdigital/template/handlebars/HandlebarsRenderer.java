@@ -31,6 +31,7 @@ public class HandlebarsRenderer implements TemplateRenderer {
         handlebars.registerHelper("df", new DateFormatHelper());
         handlebars.registerHelper(ConditionHelper.eq.name(), ConditionHelper.eq);
         handlebars.registerHelper(ConditionHelper.ne.name(), ConditionHelper.ne);
+        handlebars.registerHelper(ArrayHelpers.contains.name(), ArrayHelpers.contains);
         handlebars.registerHelper(MathHelper.increment.name(), MathHelper.increment);
         handlebars.registerHelper(MathHelper.decrement.name(), MathHelper.decrement);
         handlebars.registerHelper(LoopHelper.NAME, new LoopHelper());

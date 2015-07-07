@@ -21,12 +21,14 @@ public class TemplateMapping {
         put(PageType.timeseries, "t5-1");
         put(PageType.data_slice, "t5-2");
         put(PageType.compendium_landing_page, "t6-1");
-        put(PageType.compendium, "t6-2");
+        put(PageType.compendium_chapter, "t6-2");
+        put(PageType.compendium_data, "t6-3");
         put(PageType.reference_tables, "t8-1");
         put(PageType.dataset, "t8-3");
         put(PageType.static_landing_page, "t7-4-1");
         put(PageType.static_page, "t7-5");
         put(PageType.static_article, "t7-6");
+        put(PageType.static_methodology, "t7-6");
         put(PageType.static_qmi, "t7-1");
         put(PageType.static_adhoc, "t7-2");
         put(PageType.static_foi, "t7-3");
