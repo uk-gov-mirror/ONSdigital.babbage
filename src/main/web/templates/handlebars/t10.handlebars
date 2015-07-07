@@ -54,19 +54,19 @@
 									Methodology
 								</label>
 							</li>
-							<li>
+							{{!-- <li>
 								<input type="checkbox" name="type" value="timeseries" {{#contains types 'timeseries'}}checked{{/contains}}>
 								<label for="checkbox-timeseries">
 									Time series and data slices
 								</label>
-							</li>
+							</li> --}}
 						</ul>
 						<p class="panel--mar-small">You can also expand your search results to include the following:</p>
 						<div class="panel--mar-small">
-							<input type="checkbox" name="checkbox" value="1">
+							<input type="checkbox" name="includeAllData" value="1" {{#if includeAllData}}checked{{/if}}>
 							<label for="checkbox">
 								Include all individual time series data and data slices </br>
-								<span class="micro">(currently max 5 shown by default)</span>
+								<span class="micro">(No time series or data slices are included in the results if not checked){{!-- (currently max 5 shown by default) --}}</span>
 							</label>
 						</div>
 						<div class="panel--mar-small">
@@ -103,9 +103,9 @@
 				{{#if statisticsSearchResult.results}}
 				{{#if suggestionBased}}
 				Sorry, there were no results for <strong>'{{searchTerm}}'</strong>.</br>
-				Showing <span class="stand-out-text">{{statisticsSearchResult.numberOfResults}}</span> results for <strong>'{{suggestion}}'</strong> {{#if types}}showing{{#each types}} <strong>{{#eq this 'bulletin'}}statistical bulletin{{/eq}}{{#ne this 'bulletin'}}{{this}}{{/ne}}s</strong><span class="icon-cancel"></span>{{/each}}{{/if}}.
+				Showing <span class="stand-out-text">{{statisticsSearchResult.numberOfResults}}</span> results for <strong>'{{suggestion}}'</strong> {{#if types}}showing{{#each types}} <strong>{{#eq this 'bulletin'}}statistical bulletins{{/eq}}{{#ne this 'bulletin'}}{{this}}{{/ne}}</strong><span class="icon-cancel"></span>{{/each}}{{/if}}.
 				{{else}}
-				<span class="stand-out-text">{{statisticsSearchResult.numberOfResults}}</span> results for <span class="stand-out-text">'{{searchTerm}}'</span> {{#if types}}showing{{#each types}} <strong>{{#eq this 'bulletin'}}statistical bulletin{{/eq}}{{#ne this 'bulletin'}}{{this}}{{/ne}}s</strong><span class="icon-cancel"></span>{{/each}}{{/if}}.
+				<span class="stand-out-text">{{statisticsSearchResult.numberOfResults}}</span> results for <span class="stand-out-text">'{{searchTerm}}'</span> {{#if types}}showing{{#each types}} <strong>{{#eq this 'bulletin'}}statistical bulletins{{/eq}}{{#ne this 'bulletin'}}{{this}}{{/ne}}</strong><span class="icon-cancel"></span>{{/each}}{{/if}}.
 				{{/if}}
 				{{else}}
 				Sorry, there were no results for <span class="stand-out-text">'{{searchTerm}}'</span>.
