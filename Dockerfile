@@ -1,4 +1,4 @@
-from carboni.io/java-node-component
+from carboni.io/java-phantom-component
 
 # Consul
 WORKDIR /etc/consul.d
