@@ -123,9 +123,9 @@
 							</p>
 						</div>
 						{{/if}}
-						<div class="grid-col {{#if headlinePage.items.0}}desktop-grid-one-half{{/if}} box--padded-vertical">
+						<div class="grid-col {{#if headlinePage.items.0}}desktop-grid-one-half{{/if}} box--padded-vertical nav--block-landing">
 							<h3><a href="{{headlinePage.uri}}">{{headlinePage.description.title}}</a></h3>
-							{{headlinePage.description.summary}}
+							{{md headlinePage.description.summary}}
 						</div>
 						<!-- /desktop-grid -->
 					</div>
