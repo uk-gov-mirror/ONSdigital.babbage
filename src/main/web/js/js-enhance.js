@@ -35,6 +35,7 @@ jQuery(window).load(function() {
         jsEnhancePrintCompendium();
         jsEnhanceBoxHeight();
         jsEnhanceBoxHeightResize();
+        // jsEnhanceIframes();
 
         prototypeModalButtons();
 
@@ -256,6 +257,17 @@ jQuery(window).load(function() {
         $( window ).resize(function() {
             $('.box--headline').height('auto');
             jsEnhanceBoxHeight();
+        });
+    }
+
+    function jsEnhanceIframes() {
+        $('iframe').each(function(i) {
+            $(this).contents().find('iframe').remove();
+            $(this).contents().find('script').remove();
+            var iframecontent = $(this).contents().find('body').html();
+            // console.log(iframecontent);
+            $('<div>' + iframecontent + '</div>').insertAfter($(this));
+            $(this).remove();
         });
     }
 
