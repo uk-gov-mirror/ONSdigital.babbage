@@ -17,6 +17,7 @@ import com.github.onsdigital.search.bean.AggregatedSearchResult;
 import com.github.onsdigital.search.util.SearchHelper;
 import com.github.onsdigital.template.TemplateService;
 import com.github.onsdigital.util.NavigationUtil;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -25,6 +26,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.GET;
 import javax.ws.rs.core.Context;
 import java.io.IOException;
+import java.io.StringReader;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -49,6 +51,10 @@ public class Search {
 
         try {
             String query = extractQuery(request);
+            if (query == null) {
+                IOUtils.copy(new StringReader(renderEmptySearchPage()),response.getOutputStream());
+                return null;
+            }
             Object searchResult = null;
             int page = extractPage(request);
             String[] types = extractTypes(request);
@@ -110,6 +116,12 @@ public class Search {
 
     public String renderSearchPage(AggregatedSearchResult results, int currentPage, String searchTerm, String[] types, boolean includeStatics, boolean includeAllData) throws IOException {
         SearchResultsPage searchPage = buildResultsPage(results, currentPage, searchTerm, types, includeStatics, includeAllData);
+        searchPage.setNavigation(NavigationUtil.getNavigation());
+        return TemplateService.getInstance().renderPage(searchPage);
+    }
+
+    public String renderEmptySearchPage() throws IOException {
+        SearchResultsPage searchPage = new SearchResultsPage();
         searchPage.setNavigation(NavigationUtil.getNavigation());
         return TemplateService.getInstance().renderPage(searchPage);
     }
@@ -270,7 +282,7 @@ public class Search {
             if (StringUtils.isEmpty(query)) {
                 query = request.getParameter("cdid");
                 if (StringUtils.isEmpty(query)) {
-                    throw new IllegalArgumentException("No search query provided");
+                    return null;
                 }
             }
         }
