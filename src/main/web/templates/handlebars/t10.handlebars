@@ -25,7 +25,6 @@
 					<div class="panel panel--bottom-pad panel--separated--bottom flush">
 						<h3 class="flush float-left">Refine results</h3>
 						<a href="/search?q={{searchTerm}}" value="Reset" class="btn btn--primary btn--small btn--thin btn--narrow btn--clear-results float-right">Clear</a>
-						<button type="submit" name="q" value="{{searchTerm}}" class="btn btn--primary btn--small btn--thin btn--narrow btn--clear-results float-right">Filter</button>
 					</div>
 					<div class="box__content">
 						<p class="panel panel--separated--bottom">Content types to show</p>
@@ -65,7 +64,7 @@
 						<div class="panel--mar-small">
 							<input type="checkbox" name="includeAllData" value="1" {{#if includeAllData}}checked{{/if}}>
 							<label for="checkbox">
-								Include{{!-- all --}}individual time series data and data slices </br>
+								Include{{!-- all --}} individual time series data and data slices </br>
 								{{!-- <span class="micro">(currently max 5 shown by default)</span> --}}
 							</label>
 						</div>
@@ -76,6 +75,9 @@
 								<span class="micro">(User requested data, about us, media releases, freedom of information (FOI) requests etc.)</span>
 							</label>
 						</div>
+					</div>
+					<div>
+						<button type="submit" name="q" value="{{searchTerm}}" class="btn btn--primary btn--small panel--mar-small">Filter</button>
 					</div>
 					<!-- /box__content -->
 				</form>
@@ -111,7 +113,6 @@
 				Sorry, there were no results for <span class="stand-out-text">'{{searchTerm}}'</span>.
 				{{/if}}
 			</p>
-
 			{{#if headlinePage}}
 			<article class="box box--padded sectioned">
 				<div class="box__content">
@@ -181,6 +182,9 @@
 				<ul>
 					<li>search again using different words</li>
 					<li>remove any filters selected</li>
+					{{#unless includeAllData}}
+					<li><a href="/search?q={{searchTerm}}{{#each types}}&type={{this}}{{/each}}&page={{currentPage}}{{#if includeStatics}}&includeStatics=1{{/if}}&includeAllData=1">include individual time series data and data slices</a></li>
+					{{/unless}}
 				</ul>
 			</div>
 			{{/if}}
