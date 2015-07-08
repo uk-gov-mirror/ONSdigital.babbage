@@ -36,6 +36,9 @@ public class TemplateMapping {
         put(PageType.chart, "chart");
         put(PageType.table, "table");
         put(PageType.search_results_page, "t10");
+        put(PageType.error404, "404");
+        put(PageType.error500, "500");
+        put(PageType.search_results_page, "t10");
     }
 
 
