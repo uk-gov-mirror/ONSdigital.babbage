@@ -69,7 +69,8 @@ function addPrototypeModal() {
     overlay.style['bottom'] = '0';
     overlay.style['left'] = '0';
     overlay.style['right'] = '0';
-    overlay.style['background'] = 'rgba(255,255,255,0.95)';
+    // overlay.style['background'] = 'rgba(255,255,255,0.95)';
+    overlay.style['background'] = '#ffffff';
     overlay.style['z-index'] = '99990';
     overlay.style['right'] = '0';
 
