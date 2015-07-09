@@ -3,12 +3,15 @@ package com.github.onsdigital.api.data;
 import com.github.davidcarboni.restolino.framework.Api;
 import com.github.onsdigital.bean.DateVal;
 import com.github.onsdigital.bean.DownloadRequest;
+import com.github.onsdigital.configuration.Configuration;
 import com.github.onsdigital.content.page.statistics.data.timeseries.TimeSeries;
 import com.github.onsdigital.content.partial.TimeseriesValue;
 import com.github.onsdigital.content.util.ContentUtil;
 import com.github.onsdigital.data.DataService;
 import com.github.onsdigital.util.CSVGenerator;
 import com.github.onsdigital.util.XLSXGenerator;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.eclipse.jetty.http.HttpStatus;
 
@@ -16,9 +19,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.POST;
 import javax.ws.rs.core.Context;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.FileSystem;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.*;
 
 /**
@@ -96,7 +104,24 @@ public class Download {
         return null;
     }
 
-    private void processRequest(OutputStream output, DownloadRequest downloadRequest) throws IOException {
+    private void processRequest(OutputStream output , DownloadRequest downloadRequest) throws IOException {
+
+
+        Path tempDirectory = FileSystems.getDefault().getPath(FileUtils.getTempDirectoryPath());
+        String from = downloadRequest.from == null ? "" : downloadRequest.from.toString();
+        String to = downloadRequest.to == null ? "" : downloadRequest.to.toString();
+        String fileName = downloadRequest.fileName + "_" + from + "-"  +to + "." + downloadRequest.type;
+
+        //If file exists on temp directory read it from temp
+        Path tempFile = tempDirectory.resolve(fileName);
+        if (Files.exists(tempFile)) {
+            System.out.println("Find generated file in temp directory:" + fileName);
+            IOUtils.copy(Files.newInputStream(tempFile), output);
+            return;
+        }
+
+        System.out.println("File not generated before, generating:" + fileName);
+        OutputStream outputStream = Files.newOutputStream(tempFile);
 
         // Normally only uriList or cdidList should be present in the request,
         // but let's be lenient in what we'll accept:
@@ -123,9 +148,7 @@ public class Download {
         Map<String, TimeseriesValue[]> data = collateData(TimeSeries, downloadRequest);
 
         // Apply the range:
-        Date from = toDate(downloadRequest.from);
-        Date to = toDate(downloadRequest.to);
-        data = applyRange(data, from, to);
+        data = applyRange(data, toDate(downloadRequest.from), toDate(downloadRequest.to));
 
         // Debug:
         // System.out.println("Data grid:");
@@ -141,26 +164,24 @@ public class Download {
 
         switch (downloadRequest.type) {
             case "xlsx":
-                new XLSXGenerator(TimeSeries, data).write(output);
+                new XLSXGenerator(TimeSeries, data).write(outputStream);
+                break;
             case "csv":
-                new CSVGenerator(TimeSeries, data).write(output);
+                new CSVGenerator(TimeSeries, data).write(outputStream);
+                break;
             default:
                 break;
         }
+        IOUtils.closeQuietly(outputStream);
+
+        IOUtils.copy(Files.newInputStream(tempFile), output);
 
     }
 
     private Date toDate(DateVal from) {
         Date result = null;
         if (from != null) {
-            String date = String.valueOf(from.year);
-            if (StringUtils.isNotBlank(from.month)) {
-                date += " " + from.month;
-            }
-            if (StringUtils.isNotBlank(from.quarter)) {
-                date += " " + from.quarter;
-            }
-            result = TimeseriesValue.toDate(date);
+            result = TimeseriesValue.toDate(from.toString());
         }
         return result;
     }
