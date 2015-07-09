@@ -141,11 +141,12 @@
 					</li>
 					<!-- /list-table__item -->
 					{{/each}}
+					{{!--
 					<li class="list--table__item list--table__footer">
 						<div class="table__actions box--inline box__footer--right ">
 							<a href="">View all 12,000 time series for inflation and price indices <span class="icon-right-open-big"></span> </a>
 						</div>
-					</li>
+					</li>--}}
 				</ol>
 				<!-- /list--table -->
 			</div>
@@ -154,12 +155,12 @@
 			{{#if datasets}}
 			<div class="panel flush">
 				<div class="grid-wrap">
-					<div class="grid-col desktop-grid-two-thirds">
+					<div class="grid-col desktop-grid-full-width">
 						<h2 id="data" class="flush">Datasets related to {{description.title}}</h2>
 						<div class="grid-wrap">
 							<ul class="list--neutral">
 								{{#each datasets}}
-								<li class="grid-col desktop-grid-one-half box--padded-vertical nav--block-landing">
+								<li class="grid-col desktop-grid-one-third box--padded-vertical nav--block-landing">
 									<h3>
 									<a href="{{uri}}" title="{{description.title}}">
 										{{description.title}}
@@ -174,6 +175,8 @@
 						</div>
 						<!-- /grid-col -->
 					</div>
+
+					{{!
 					<div class="grid-col desktop-grid-one-third">
 						<div class="box box--padded slate">
 							<h2 class="delta panel--bottom-mar">
@@ -193,10 +196,10 @@
 							<!-- /box -->
 						</div>
 						<!-- /grid-col -->
-					</div>
+					</div>--}}
 					<!-- /grid-wrap -->
 				</div>
-				<a href="#">View more datasets</a>
+				{{!--<a href="#">View more datasets</a>--}}
 				<!-- /grid-wrap -->
 				<!-- /grid-col -->
 			</div>
@@ -238,7 +241,7 @@
 					</div>
 					<!-- /grid-wrap -->
 				</div>
-				<a  href="#">View all statistical bulletins</a>
+				{{!--<a href="#">View all statistical bulletins</a> --}}
 				<!-- /grid-wrap -->
 			</div>
 			{{/if}}
@@ -268,7 +271,7 @@
 					</div>
 					<!-- /grid-wrap -->
 				</div>
-				<a  href="#">View all related articles</a>
+				{{!--<a href="#">View all related articles</a>--}}
 				<!-- /grid-wrap -->
 			</div>
 			{{/if}}
