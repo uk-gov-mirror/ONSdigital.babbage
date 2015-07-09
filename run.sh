@@ -20,6 +20,7 @@ fi
 
 export EXPORT_SERVER_DIR="highcharts/exporting-server/java/highcharts-export"
 export EXPORT_SERVER_WEB="highcharts-export-web"
+export BABBAGE_ENV="DEVELOPMENT";
 export CWD=`pwd`
 export JAVA_OPTS="-Xrunjdwp:transport=dt_socket,address=9000,server=y,suspend=n"
 
