@@ -176,6 +176,7 @@
 			</nav>
 			{{/ne}}
 			{{else}}
+			{{#if searchTerm}}
 			<div>
 				Sorry, no results were found for <strong>‘{{searchTerm}}’</strong></br></br>
 				<strong>You could try one of the following:</strong>
@@ -185,8 +186,12 @@
 					{{#unless includeAllData}}
 					<li><a href="/search?q={{searchTerm}}{{#each types}}&type={{this}}{{/each}}&page={{currentPage}}{{#if includeStatics}}&includeStatics=1{{/if}}&includeAllData=1">include individual time series data and data slices</a></li>
 					{{/unless}}
+					{{#unless includeStatics}}
+					<li><a href="/search?q={{searchTerm}}{{#each types}}&type={{this}}{{/each}}&page={{currentPage}}{{#if includeAllData}}&includeAllData=1{{/if}}&includeStatics=1">include all other website content</a></li>
+					{{/unless}}
 				</ul>
 			</div>
+			{{/if}}
 			{{/if}}
 		</div>
 		<!-- /desktop-grid-two-thirds -->
