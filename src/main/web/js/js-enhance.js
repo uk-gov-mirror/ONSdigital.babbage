@@ -281,7 +281,10 @@ jQuery(window).load(function() {
     function prototypeModalButtons() {
         $('.btn-modal-continue').click(function(e){
             e.preventDefault();
-            document.cookie='onsBetaDisclaimer=true';
+            var d = new Date();
+            d.setTime(d.getTime() + (1*24*60*60*1000));
+            var expires = "expires="+d.toUTCString();
+            document.cookie='onsBetaDisclaimer=true; ' + expires;
             $('#modal-overlay').fadeOut(300);
         });
     }
