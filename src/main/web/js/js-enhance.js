@@ -184,10 +184,6 @@ jQuery(window).load(function() {
         });
     }
 
-    /*Track file downloads*/
-    function jsEnhanceDownloadAnalytics() {
-        // ga('send', 'pageview', path);
-    }
 
     function jsEnhanceNumberSeparator() {
       // Adapted from http://stackoverflow.com/questions/14075014/jquery-function-to-to-format-number-with-commas-and-decimal
@@ -310,6 +306,23 @@ jQuery(window).load(function() {
             $(this).closest('.markdown-table-wrap').hide();       
         });
     }
+
+    
+    /*Track file downloads*/
+    function jsEnhanceDownloadAnalytics() {
+        $('.download-analytics').click(function(){
+            var path = window.location;
+            var downloadType = $(this).attr('action');
+            
+            ga('send', 'pageview', {
+                'page': path + downloadType,
+                'hitCallback': function() {
+                    alert('event triggered for ' + path + downloadType);
+                }
+            });
+        });
+    }
+
 
     function prototypeModalButtons() {
         $('.btn-modal-continue').click(function(e){

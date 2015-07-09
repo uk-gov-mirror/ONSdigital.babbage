@@ -1,8 +1,8 @@
-{{> partials/header}}
+{{> templates/handlebars/partials/header}}
 <main id="main" role="main" tabindex="-1">
 <div class="page-header slate slate--light-green">
     <div class="wrapper">
-        {{> partials/breadcrumb}}
+        {{> templates/handlebars/partials/breadcrumb}}
         <p class="page-header__title">
             Dataset
         </p>
@@ -58,7 +58,7 @@
                                     <div class="grid-col tablet-grid-three-quarters">
                                         {{#if cdids}}
                                         <!-- generate xls or csv using given cdid list -->
-                                        <form method="post" action="/download" enctype='application/json'>
+                                        <form method="post" action="/download" enctype='application/json' class="download-analytics">
                                             <button title="Download {{title}} data in xlsx format" name="type" value="xlsx" type="submit"
                                             class="btn btn--primary btn--small btn--thin">
                                             xlsx
@@ -75,7 +75,7 @@
                                             {{/each}}
                                         </form>
                                         {{else}}
-                                        <form method="get" action="/file">
+                                        <form method="get" action="/file" class="download-analytics">
                                             <!-- link to given uris of given files-->
                                             <button type="submit" title="Lastest version" class="btn btn--primary btn--block btn--thin">
                                             xls ({{fs file}})
@@ -190,4 +190,4 @@
 </div>
 <!-- /wrapper -->
 </main>
-{{> partials/footer}}
+{{> templates/handlebars/partials/footer}}
