@@ -317,7 +317,9 @@ jQuery(window).load(function() {
             ga('send', 'pageview', {
                 'page': path + downloadType,
                 'hitCallback': function() {
-                    alert('event triggered for ' + path + downloadType);
+                    if(console && console.log) {
+                        console.log('event triggered for ' + path + downloadType);
+                    }
                 }
             });
         });
