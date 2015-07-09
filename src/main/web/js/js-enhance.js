@@ -58,11 +58,6 @@ $(function() {
         }, 500);
     }
 
-
-
-
-
-
     function jsEnhanceULNavToSelectNav() {
         $('.js-enhance--ul-to-select').each(function() {
             var labeltext = $('p:first', this).text();
