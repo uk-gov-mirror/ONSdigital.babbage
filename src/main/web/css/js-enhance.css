@@ -1,3 +1,5 @@
+/* Should be merged into pattern library */
+
 .loader:before,
 .loader:after,
 .loader {
@@ -193,6 +195,35 @@
     float: none;
   }
 
+}
+
+
+@media screen and (max-width: 799px) {
+  .markdown-table-wrap {
+
+    display: none;
+    position: fixed;
+    z-index: 100;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    overflow: scroll;
+    background: #fff;
+    padding: 60px 0 20px 0;
+  }
+
+  .btn--mobile-table-show {
+    visibility: visible !important;
+    /*display: inline-block !important;*/
+  }
+
+  .btn--mobile-table-hide {
+    visibility: visible !important;
+    position: fixed;
+    top: 0;
+    left: 0;    
+  }
 }
 
 
