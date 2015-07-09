@@ -5,6 +5,9 @@ import org.apache.commons.io.IOUtils;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
 public class BabbageBinaryResponse extends BabbageResponse {
 
@@ -15,8 +18,7 @@ public class BabbageBinaryResponse extends BabbageResponse {
         this.input = input;
     }
 
-    public void apply(HttpServletResponse response) throws IOException {
-        response.setContentType(getMimeType());
+    public void applyData(HttpServletResponse response) throws IOException {
         IOUtils.copy(input, response.getOutputStream());
         IOUtils.closeQuietly(input);
     }
