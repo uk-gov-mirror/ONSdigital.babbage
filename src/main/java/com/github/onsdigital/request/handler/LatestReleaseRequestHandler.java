@@ -4,6 +4,7 @@ import com.github.onsdigital.content.DirectoryListing;
 import com.github.onsdigital.content.page.base.Page;
 import com.github.onsdigital.content.service.ContentNotFoundException;
 import com.github.onsdigital.content.util.ContentUtil;
+import com.github.onsdigital.data.DataService;
 import com.github.onsdigital.data.zebedee.ZebedeeClient;
 import com.github.onsdigital.data.zebedee.ZebedeeRequest;
 import com.github.onsdigital.request.handler.base.RequestHandler;
@@ -42,7 +43,7 @@ public class LatestReleaseRequestHandler implements RequestHandler {
         if (zebedeeRequest != null) {
             listing = readFromZebedee(requestedUri, zebedeeRequest);
         } else {
-            listing = readFromLocal(requestedUri);
+            listing = DataService.getInstance().readDirectory(requestedUri);
         }
 
         List<String> folders = new ArrayList<>(listing.folders.keySet());
@@ -71,11 +72,6 @@ public class LatestReleaseRequestHandler implements RequestHandler {
         }
 
         return directoryListing;
-    }
-
-
-    private DirectoryListing readFromLocal(String requestedUri) throws IOException {
-        return ContentUtil.listDirectory(Paths.get(requestedUri));
     }
 
     @Override
