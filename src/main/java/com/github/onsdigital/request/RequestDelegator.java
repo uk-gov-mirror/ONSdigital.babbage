@@ -67,6 +67,11 @@ public class RequestDelegator {
 
         ZebedeeRequest zebedeeRequest = ZebedeeUtil.getZebedeeRequest(requestedUri, request.getCookies());
         if (zebedeeRequest == null) {
+            //No caching on development
+            if(Configuration.isDevelopment()) {
+                System.out.println("On development environment, not caching");
+                return handler.get(requestedUri, request);
+            }
             try {
                 return responseCache.get(fullUri, new Callable<BabbageResponse>() {
                     @Override
