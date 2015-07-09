@@ -52,7 +52,13 @@ function renderChartObject(bindTag, chart, chartHeight, chartWidth) {
 
     var data = [];
     $.each(chart.data, function (j, seriesData) {
-      data.push(parseFloat(seriesData[seriesName]))
+      var value = parseFloat(seriesData[seriesName]);
+      console.log(value);
+      if(isNaN(value)) {
+        value = null;
+      }
+
+      data.push(value)
     });
 
     var seriesItem = {
@@ -84,7 +90,6 @@ function renderChartObject(bindTag, chart, chartHeight, chartWidth) {
   //  }
   //};
 
-
   // render chart
   var options = {
     chart: {
@@ -99,12 +104,7 @@ function renderChartObject(bindTag, chart, chartHeight, chartWidth) {
     },
     xAxis: {
       categories: chart.categories,
-      labels: {
-        rotation: 0,
-        staggerLines: 2
-      },
-      tickInterval: 2
-
+      tickInterval: chart.labelInterval
     },
     //yAxis: yAxis,
     series: series,
@@ -126,7 +126,6 @@ function renderChartObject(bindTag, chart, chartHeight, chartWidth) {
 
   var chart = new Highcharts.Chart(options);
 
-
   function checkType(chartType) {
 
     if (chartType === 'rotated') {
@@ -143,6 +142,11 @@ function renderChartObject(bindTag, chart, chartHeight, chartWidth) {
     } else {
       return type = chartType;
     }
+
+
+    //"stackedArea">Stacked Area</option>
+    //<option value="stackedPercent">Stacked Percent</option>
+    //<option value="pyramid">Pyram
   }
 
   function renderTimeseriesChartObject(bindTag, timechart, chartWidth, chartHeight) {
