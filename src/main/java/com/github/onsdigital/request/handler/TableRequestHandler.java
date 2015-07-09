@@ -40,11 +40,11 @@ public class TableRequestHandler implements RequestHandler {
     @Override
     public BabbageResponse get(String requestedUri, HttpServletRequest request, ZebedeeRequest zebedeeRequest) throws Exception {
 
-        String html = getHtml(requestedUri, zebedeeRequest);
+        String html = getHtml(requestedUri, zebedeeRequest, "table");
         return new BabbageStringResponse(html, CONTENT_TYPE);
     }
 
-    public String getHtml(String requestedUri, ZebedeeRequest zebedeeRequest) throws ContentNotFoundException, IOException {
+    public String getHtml(String requestedUri, ZebedeeRequest zebedeeRequest, String template) throws ContentNotFoundException, IOException {
         Page page;
         String tableHtml;
 
@@ -60,7 +60,7 @@ public class TableRequestHandler implements RequestHandler {
             ((Table) page).setHtml(tableHtml);
         }
 
-        return TemplateService.getInstance().renderPage(page);
+        return TemplateService.getInstance().render(page, template);
     }
 
     @Override
