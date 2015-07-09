@@ -34,7 +34,7 @@ import java.nio.file.Files;
 public class File {
 
     @GET
-    public Object post(@Context HttpServletRequest request, @Context HttpServletResponse response) throws IOException {
+    public Object get(@Context HttpServletRequest request, @Context HttpServletResponse response) throws IOException {
         ZebedeeClient zebedeeClient = null;
         try {
             String uri = request.getParameter("uri");

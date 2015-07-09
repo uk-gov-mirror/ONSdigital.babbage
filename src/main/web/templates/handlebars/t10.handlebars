@@ -123,9 +123,9 @@
 							</p>
 						</div>
 						{{/if}}
-						<div class="grid-col {{#if headlinePage.items.0}}desktop-grid-one-half{{/if}} box--padded-vertical">
+						<div class="grid-col {{#if headlinePage.items.0}}desktop-grid-one-half{{/if}} box--padded-vertical nav--block-landing">
 							<h3><a href="{{headlinePage.uri}}">{{headlinePage.description.title}}</a></h3>
-							{{headlinePage.description.summary}}
+							{{md headlinePage.description.summary}}
 						</div>
 						<!-- /desktop-grid -->
 					</div>
@@ -154,7 +154,7 @@
 			{{!-- Paginator --}}
 			{{#ne numberOfPages 1}}
 			<nav>
-				<ul>
+				<ul class="nav nav--inline-block">
 					{{#ne currentPage startPage}}
 					<li>
 						<a href="/search?q={{searchTerm}}{{#each types}}&type={{this}}{{/each}}&page={{decrement currentPage}}{{#if includeStatics}}&includeStatics=1{{/if}}{{#if includeAllData}}&includeAllData=1{{/if}}" class="page-link previous">Prev</a>

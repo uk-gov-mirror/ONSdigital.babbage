@@ -81,7 +81,7 @@
 					<a href="{{uri}}">{{title}}</a>
 						<ul class="nav--primary__sub js-expandable__content js-nav-hidden">
 							{{#each children}}
-								<li class="{{#eq uri ../../uri}}nav--primary__active{{/eq}}" >
+								<li class="{{#eq uri ../breadcrumb.2/uri}}nav--primary__active{{/eq}} {{#eq uri ../../uri}}nav--primary__active{{/eq}}" >
 									<a href="{{uri}}" >{{title}}</a>
 								</li>
 							{{/each}} <!-- /each to find 2nd level nodes -->

@@ -29,6 +29,7 @@ public class HandlebarsRenderer implements TemplateRenderer {
     private void initializeHelpers() {
         handlebars.registerHelper("md", new CustomMarkdownTagHelper());
         handlebars.registerHelper("df", new DateFormatHelper());
+        handlebars.registerHelper("fs", new FileSizeHelper());
         handlebars.registerHelper(ConditionHelper.eq.name(), ConditionHelper.eq);
         handlebars.registerHelper(ConditionHelper.ne.name(), ConditionHelper.ne);
         handlebars.registerHelper(ArrayHelpers.contains.name(), ArrayHelpers.contains);

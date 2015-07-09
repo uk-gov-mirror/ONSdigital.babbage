@@ -24,7 +24,7 @@
             </p>
             <p class="grid-col tablet-grid-one-quarter divider--border-left">
                 <span>Dataset id: </span>{{description.datasetId}}
-                <a href="#">what is this?</a>
+                <a href="#" class="tooltip nojs-hidden" title="This series ID is a unique random identifier for this individual time series. The digits themselves do not have any specific meaning" aria-label="This series ID is a unique random identifier for this individual time series. The digits themselves do not have any specific meaning">what is this? </a>
             </p>
         </div>
         <!-- /grip-wrap -->
@@ -59,12 +59,12 @@
                                         <form method="post" action="/download" enctype='application/json'>
                                             <button title="Download {{title}} data in xlsx format" name="type" value="xlsx" type="submit"
                                             class="btn btn--primary btn--small btn--thin">
-                                            xlsx ({{fileSize}})
+                                            xlsx
                                             <span class="icon icon-download" role="presentation"></span>
                                             </button>
                                             <button title="Download {{title}} data in csv format" name="type" value="csv" type="submit"
                                             class="btn btn--primary btn--small btn--thin">
-                                            csv ({{fileSize}})
+                                            csv
                                             <span class="icon icon-download" role="presentation"></span>
                                             </button>
                                             <input type="hidden" name="fileName" value="{{description.title}}"/>
@@ -76,7 +76,7 @@
                                         <form method="get" action="/file">
                                             <!-- link to given uris of given files-->
                                             <button type="submit" title="Lastest version" class="btn btn--primary btn--block btn--thin">
-                                            xls()
+                                            xls ({{fs file}})
                                             <span class="icon icon-download" role="presentation"></span>
                                             </button>
                                             <input  type="hidden" name="uri" value="{{file}}"/>
