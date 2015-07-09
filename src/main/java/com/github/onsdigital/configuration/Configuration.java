@@ -29,6 +29,9 @@ public class Configuration {
     private static final String SEARCHCHART_FILE = "searchchartconfig.js";
     private static final int MAX_VISIBLE_PAGINATOR_LINK = 10;
 
+
+    private static final int GLOBAL_REQUEST_CACHE_SIZE = 1000;
+
     /**
      * Mongo is currently only used to provide feedback on the search terms
      * users are typing in.
@@ -91,6 +94,11 @@ public class Configuration {
             }
         }
         return templatesSuffix;
+    }
+
+
+    public static int getGlobalRequestCacheSize() {
+        return GLOBAL_REQUEST_CACHE_SIZE;
     }
 
     /**

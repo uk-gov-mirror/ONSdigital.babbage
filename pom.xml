@@ -158,6 +158,15 @@
 			<version>content-library-1.0.55</version>
         </dependency>
 
+        <!--Using Guava for caching in memory currently-->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>18.0</version>
+        </dependency>
+
+
+
         <!--</dependency>-->
 
         <!-- ONS Content Library, snapshot local install used for development, comment out -->

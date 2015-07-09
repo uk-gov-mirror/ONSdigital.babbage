@@ -32,7 +32,7 @@ public class Error404 implements NotFound {
 //		}
         try {
             RequestDelegator.get(request, response);
-        } catch (Exception e) {
+        } catch (Throwable e) {
             ApiErrorHandler.handle(e, response);
         }
         return "";
