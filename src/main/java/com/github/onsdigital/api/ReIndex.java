@@ -31,12 +31,14 @@ public class ReIndex {
                     Indexer.loadIndex(ElasticSearchServer.getClient());
                 } else {
                     System.out.println("Wrong key, skip re-indexing");
+                    return;
                 }
             } catch (Exception e) {
                 System.out.println("Indexing error");
                 System.out.println(ExceptionUtils.getStackTrace(e));
                 ApiErrorHandler.handle(e, response);
             }
+            System.out.println("Elasticsearch: indexing complete");
         }
 
     }
