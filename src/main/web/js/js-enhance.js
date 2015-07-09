@@ -242,20 +242,20 @@ jQuery(window).load(function() {
     function jsEnhanceBoxHeight() {
         if ($(window).width() > 608) {
             var highestBox = 0;
-            $('.box--headline').each(function(){
+            $('.equal-height').each(function(){
             
                 if($(this).height() > highestBox) {
                    highestBox = $(this).height(); 
                }
             });  
             
-            $('.box--headline').height(highestBox);
+            $('.equal-height').height(highestBox);
         }
     }
 
     function jsEnhanceBoxHeightResize() {
         $( window ).resize(function() {
-            $('.box--headline').height('auto');
+            $('.equal-height').height('auto');
             jsEnhanceBoxHeight();
         });
     }
