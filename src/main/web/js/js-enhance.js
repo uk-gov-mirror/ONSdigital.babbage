@@ -35,6 +35,7 @@ jQuery(window).load(function() {
         jsEnhancePrintCompendium();
         jsEnhanceBoxHeight();
         jsEnhanceBoxHeightResize();
+        jsEnhanceIframes();
 
         prototypeModalButtons();
 
@@ -241,21 +242,39 @@ jQuery(window).load(function() {
     function jsEnhanceBoxHeight() {
         if ($(window).width() > 608) {
             var highestBox = 0;
-            $('.box--headline').each(function(){
+            $('.equal-height').each(function(){
             
                 if($(this).height() > highestBox) {
                    highestBox = $(this).height(); 
                }
             });  
             
-            $('.box--headline').height(highestBox);
+            $('.equal-height').height(highestBox);
         }
     }
 
     function jsEnhanceBoxHeightResize() {
         $( window ).resize(function() {
-            $('.box--headline').height('auto');
+            $('.equal-height').height('auto');
             jsEnhanceBoxHeight();
+        });
+    }
+
+    function jsEnhanceIframes() {
+        $('iframe').each(function(i) {
+            // markdown-table-container
+            if($(this).contents().find('div').hasClass('markdown-table-container')) {
+                // console.log('iframe with table found');
+                $(this).contents().find('iframe').remove();
+                $(this).contents().find('script').remove();
+                $(this).contents().find('*').css('width','auto');
+                $(this).contents().find('*').css('height','auto');
+
+                var iframecontent = $(this).contents().find('body').html();
+
+                $(iframecontent).insertAfter($(this));
+                $(this).remove();
+             }
         });
     }
 
