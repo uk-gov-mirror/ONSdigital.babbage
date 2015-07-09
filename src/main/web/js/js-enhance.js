@@ -25,6 +25,7 @@ jQuery(window).load(function() {
         $('.js-enhance--hide').hide();
         $('.nojs-hidden').removeClass('nojs-hidden');
 
+        //The order of these functions being called is important...
         jsEnhanceULNavToSelectNav();
         jsEnhanceHome();
         jsEnhanceLinechart();
@@ -35,9 +36,14 @@ jQuery(window).load(function() {
         jsEnhancePrintCompendium();
         jsEnhanceBoxHeight();
         jsEnhanceBoxHeightResize();
-        // jsEnhanceIframes();
-
+        
         prototypeModalButtons();
+
+        setTimeout(function() {
+            jsEnhanceIframedTables();
+            jsEnhanceMobileTables();
+        }, 400);
+
 
         setTimeout(function() {
             $('#loading-overlay').fadeOut(300);
@@ -260,21 +266,52 @@ jQuery(window).load(function() {
         });
     }
 
-    function jsEnhanceIframes() {
+    function jsEnhanceIframedTables() {
         $('iframe').each(function(i) {
-            $(this).contents().find('iframe').remove();
-            $(this).contents().find('script').remove();
-            var iframecontent = $(this).contents().find('body').html();
-            // console.log(iframecontent);
-            $('<div>' + iframecontent + '</div>').insertAfter($(this));
-            $(this).remove();
+            // markdown-table-container
+            if($(this).contents().find('div').hasClass('markdown-table-container')) {
+                // console.log('iframe with table found');
+                $(this).contents().find('iframe').remove();
+                $(this).contents().find('script').remove();
+                $(this).contents().find('*').css('width','auto');
+                $(this).contents().find('*').css('height','auto');
+
+                // var iframedtable =  $(this).contents().find('table');
+
+                var iframecontent = $(this).contents().find('body').html();
+
+                // $('<div class="table-wrapper">' + iframecontent + '</div>').insertAfter($(this));
+                $(iframecontent).insertAfter($(this));
+                $(this).remove();
+             }
+        });
+    }
+
+    function jsEnhanceMobileTables() {
+        //<span class=" icon-table" role="presentation"></span>
+        // $('markdown-table-container').addClass('table-holder-mobile');
+
+        $('<button class="invisible btn btn--mobile-table-show">View table</button>').insertAfter($('.markdown-table-wrap'));
+        $('<button class="invisible btn btn--mobile-table-hide">Close table</button>').insertAfter($('.markdown-table-wrap table'));
+        
+        $('.btn--mobile-table-show').click(function(e) {
+            // console.log($(this).closest('.markdown-table-container').find('.markdown-table-wrap'));
+            $(this).closest('.markdown-table-container').find('.markdown-table-wrap').show();       
+        });
+
+        $('.btn--mobile-table-hide').click(function(e) {
+            // console.log($(this).closest('.markdown-table-container').find('.markdown-table-wrap'));
+            $(this).closest('.markdown-table-wrap').hide();       
         });
     }
 
     function prototypeModalButtons() {
         $('.btn-modal-continue').click(function(e){
             e.preventDefault();
-            document.cookie='onsBetaDisclaimer=true';
+            var d = new Date();
+            d.setTime(d.getTime() + (1*24*60*60*1000));
+            var expires = "expires="+d.toUTCString();
+            document.cookie='onsBetaDisclaimer=true; ' + expires;
             $('#modal-overlay').fadeOut(300);
         });
     }

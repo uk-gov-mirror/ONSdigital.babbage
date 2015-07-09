@@ -26,8 +26,7 @@ public class HelperUtils {
         if(o1 instanceof Number && o2 instanceof Number) {
             return isEqualNumbers((Number) o1, (Number) o2);
         }
-
-        return o1.equals(o2);
+        return String.valueOf(o1).equals(String.valueOf(o2));
     }
 
     public static Long getFileSize(String uri) throws IOException {
