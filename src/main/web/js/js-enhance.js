@@ -311,14 +311,25 @@ jQuery(window).load(function() {
     /*Track file downloads*/
     function jsEnhanceDownloadAnalytics() {
         $('.download-analytics').click(function(){
-            var path = window.location;
-            var downloadType = $(this).attr('action');
+            var downloadType = $(this).parent().attr('action');
+            var path = $('#pagePath').text();
+            var downloadTitle = $('#title').text();
+            var downloadFormat = $(this).attr('value');
+
+            if(downloadType == '/file') {
+                var downloadType = '/download';
+                var downloadFormat = 'xls';
+            }
+
+            if(downloadType == '/chartimage') {
+                downloadFormat = 'png';
+            }
             
             ga('send', 'pageview', {
                 'page': path + downloadType,
                 'hitCallback': function() {
                     if(console && console.log) {
-                        console.log('event triggered for ' + path + downloadType);
+                        console.log('Analytics event triggered for ' + downloadType + ('?uri=') + path + ('/') + downloadTitle + '.' + downloadFormat);
                     }
                 }
             });

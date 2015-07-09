@@ -10,7 +10,7 @@
         <p class="page-header__title page-header--stat-bulletin-desc">
             <strong>Time series</strong>
         </p>
-        <h1 class="page-header__title">{{description.title}}</h1>
+        <h1 class="page-header__title" id="title">{{description.title}}</h1>
         <div class="grid-wrap mini">
             <p class="grid-col tablet-grid-one-quarter {{#if description.nationalStatistic}}page-header__meta-block-with-img{{/if}}">
                 {{#if description.nationalStatistic}}
@@ -37,19 +37,19 @@
         <!-- This title will need to be dynamically generated on the server -->
         <h2 class="actionable-header--tight__title gamma flush--bottom body-type--heavy">Download this entire time series</h2>
         <div class="actionable-header--tight__action actionable-header--tight__action--left">
-            <form method="post" action="/chartimage" class="inline download-analytics">
-                <button type="submit" class="btn btn--primary btn--small" target="_blank" name="uri" value="{{uri}}">
+            <form method="post" action="/chartimage" class="inline">
+                <button type="submit" class="btn btn--primary btn--small download-analytics" target="_blank" name="uri" value="{{uri}}">
                 image
                 <span class="icon-download icon--button-inline" role="presentation"></span>
                 </button>
                 <input type="hidden" name="fileName" value="{{description.title}}" />
             </form>
-            <form method="post" action="/download" class="inline download-analytics">
-                <button type="submit" name="type" value="csv" class="btn btn--primary btn--small">
+            <form method="post" action="/download" class="inline">
+                <button type="submit" name="type" value="csv" class="btn btn--primary btn--small download-analytics">
                 .csv
                 <span class="icon-download icon--button-inline" role="presentation"></span>
                 </button>
-                <button type="submit" name="type" value="xlsx" class="btn btn--primary btn--small" href="#">
+                <button type="submit" name="type" value="xlsx" class="btn btn--primary btn--small download-analytics" href="#">
                 .xlsx
                 <span class="icon-download icon--button-inline" role="presentation"></span>
                 </button>

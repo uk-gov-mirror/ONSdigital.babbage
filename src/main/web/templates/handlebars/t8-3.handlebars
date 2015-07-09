@@ -6,7 +6,7 @@
         <p class="page-header__title">
             Dataset
         </p>
-        <h1 class="page-header__title flush--half--bottom">{{description.title}}</h1>
+        <h1 class="page-header__title flush--half--bottom" id="title">{{description.title}}</h1>
         <div class="grid-wrap mini">
             <p class="grid-col tablet-grid-one-quarter {{#if description.nationalStatistic}}page-header__meta-block-with-img{{/if}}">
                 {{#if description.nationalStatistic}}
@@ -58,14 +58,14 @@
                                     <div class="grid-col tablet-grid-three-quarters">
                                         {{#if cdids}}
                                         <!-- generate xls or csv using given cdid list -->
-                                        <form method="post" action="/download" enctype='application/json' class="download-analytics">
+                                        <form method="post" action="/download" enctype='application/json'>
                                             <button title="Download {{title}} data in xlsx format" name="type" value="xlsx" type="submit"
-                                            class="btn btn--primary btn--small btn--thin">
+                                            class="btn btn--primary btn--small btn--thin download-analytics">
                                             xlsx
                                             <span class="icon icon-download" role="presentation"></span>
                                             </button>
                                             <button title="Download {{title}} data in csv format" name="type" value="csv" type="submit"
-                                            class="btn btn--primary btn--small btn--thin">
+                                            class="btn btn--primary btn--small btn--thin download-analytics">
                                             csv
                                             <span class="icon icon-download" role="presentation"></span>
                                             </button>
