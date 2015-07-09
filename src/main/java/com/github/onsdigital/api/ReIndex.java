@@ -21,7 +21,7 @@ public class ReIndex {
     private static final String REINDEX_KEY = "e48041e14e78978e1c44b23f3979d8e6";
 
     @POST
-    public void reIndex(@Context HttpServletRequest request, @Context HttpServletResponse response) throws IOException {
+    public Object reIndex(@Context HttpServletRequest request, @Context HttpServletResponse response) throws IOException {
 
         synchronized (REINDEX_KEY) {
             try {
@@ -30,15 +30,14 @@ public class ReIndex {
                     System.out.println("Triggering reindex");
                     Indexer.loadIndex(ElasticSearchServer.getClient());
                 } else {
-                    System.out.println("Wrong key, skip re-indexing");
-                    return;
+                    return "Wrong key, make sure you pass in the right key";
                 }
             } catch (Exception e) {
                 System.out.println("Indexing error");
                 System.out.println(ExceptionUtils.getStackTrace(e));
                 ApiErrorHandler.handle(e, response);
             }
-            System.out.println("Elasticsearch: indexing complete");
+            return "Elasticsearch: indexing complete";
         }
 
     }
