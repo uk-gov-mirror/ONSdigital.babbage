@@ -36,6 +36,7 @@ jQuery(window).load(function() {
         jsEnhancePrintCompendium();
         jsEnhanceBoxHeight();
         jsEnhanceBoxHeightResize();
+        jsEnhanceDownloadAnalytics();
         
         prototypeModalButtons();
 
@@ -181,6 +182,11 @@ jQuery(window).load(function() {
             window.print();
             return false;
         });
+    }
+
+    /*Track file downloads*/
+    function jsEnhanceDownloadAnalytics() {
+        ga('send', 'pageview', path);
     }
 
     function jsEnhanceNumberSeparator() {
