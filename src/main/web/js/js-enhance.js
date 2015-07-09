@@ -35,7 +35,7 @@ jQuery(window).load(function() {
         jsEnhancePrintCompendium();
         jsEnhanceBoxHeight();
         jsEnhanceBoxHeightResize();
-        // jsEnhanceIframes();
+        jsEnhanceIframes();
 
         prototypeModalButtons();
 
@@ -262,12 +262,19 @@ jQuery(window).load(function() {
 
     function jsEnhanceIframes() {
         $('iframe').each(function(i) {
-            $(this).contents().find('iframe').remove();
-            $(this).contents().find('script').remove();
-            var iframecontent = $(this).contents().find('body').html();
-            // console.log(iframecontent);
-            $('<div>' + iframecontent + '</div>').insertAfter($(this));
-            $(this).remove();
+            // markdown-table-container
+            if($(this).contents().find('div').hasClass('markdown-table-container')) {
+                // console.log('iframe with table found');
+                $(this).contents().find('iframe').remove();
+                $(this).contents().find('script').remove();
+                $(this).contents().find('*').css('width','auto');
+                $(this).contents().find('*').css('height','auto');
+
+                var iframecontent = $(this).contents().find('body').html();
+
+                $(iframecontent).insertAfter($(this));
+                $(this).remove();
+             }
         });
     }
 
