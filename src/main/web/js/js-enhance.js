@@ -186,7 +186,7 @@ jQuery(window).load(function() {
 
     /*Track file downloads*/
     function jsEnhanceDownloadAnalytics() {
-        ga('send', 'pageview', path);
+        //ga('send', 'pageview', path);
     }
 
     function jsEnhanceNumberSeparator() {
