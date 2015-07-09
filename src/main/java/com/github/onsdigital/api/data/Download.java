@@ -3,13 +3,14 @@ package com.github.onsdigital.api.data;
 import com.github.davidcarboni.restolino.framework.Api;
 import com.github.onsdigital.bean.DateVal;
 import com.github.onsdigital.bean.DownloadRequest;
-import com.github.onsdigital.configuration.Configuration;
 import com.github.onsdigital.content.page.statistics.data.timeseries.TimeSeries;
 import com.github.onsdigital.content.partial.TimeseriesValue;
 import com.github.onsdigital.content.util.ContentUtil;
 import com.github.onsdigital.data.DataService;
 import com.github.onsdigital.util.CSVGenerator;
 import com.github.onsdigital.util.XLSXGenerator;
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
@@ -19,15 +20,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.POST;
 import javax.ws.rs.core.Context;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.attribute.FileTime;
 import java.util.*;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Serves data files in xls or csv format
@@ -37,7 +40,6 @@ import java.util.*;
 public class Download {
 
     private static final String XLSX = "xlsx";
-
 
     /*
 
@@ -77,7 +79,7 @@ public class Download {
 
         /*From*/
         String fromYear = request.getParameter("fromYear");
-        if(fromYear != null) {
+        if (fromYear != null) {
             downloadRequest.from = new DateVal();
             downloadRequest.from.month = request.getParameter("fromMonth");
             downloadRequest.from.quarter = request.getParameter("fromQuarter");
@@ -104,20 +106,25 @@ public class Download {
         return null;
     }
 
-    private void processRequest(OutputStream output , DownloadRequest downloadRequest) throws IOException {
-
+    private void processRequest(OutputStream output, DownloadRequest downloadRequest) throws IOException {
 
         Path tempDirectory = FileSystems.getDefault().getPath(FileUtils.getTempDirectoryPath());
         String from = downloadRequest.from == null ? "" : downloadRequest.from.toString();
         String to = downloadRequest.to == null ? "" : downloadRequest.to.toString();
-        String fileName = downloadRequest.fileName + "_" + from + "-"  +to + "." + downloadRequest.type;
+        final String fileName = downloadRequest.fileName + "_" + from + "-" + to + "." + downloadRequest.type;
 
         //If file exists on temp directory read it from temp
         Path tempFile = tempDirectory.resolve(fileName);
         if (Files.exists(tempFile)) {
-            System.out.println("Find generated file in temp directory:" + fileName);
-            IOUtils.copy(Files.newInputStream(tempFile), output);
-            return;
+            FileTime lastModifiedTime = Files.getLastModifiedTime(tempFile);
+            if(new Date().getTime() -  (lastModifiedTime.toMillis()) < TimeUnit.MINUTES.toMillis(5)) {
+                System.out.println("Find generated file in temp directory:" + fileName);
+                IOUtils.copy(Files.newInputStream(tempFile), output);
+                return;
+            } else {
+                System.out.println("Deleting expired file");
+                Files.delete(tempFile);
+            }
         }
 
         System.out.println("File not generated before, generating:" + fileName);
