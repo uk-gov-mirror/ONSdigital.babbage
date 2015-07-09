@@ -345,7 +345,7 @@
                     <div class="box__content">
                         <div>
                             {{#each relatedDocuments}}
-                            <p><a href="{{uri}}">{{description.title}}</a></p>
+                            <p><a href="{{uri}}">{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}</a></p>
                             {{/each}}
                         </div>
                     </div>
