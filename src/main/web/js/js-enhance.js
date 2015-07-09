@@ -35,6 +35,7 @@ jQuery(window).load(function() {
         jsEnhancePrintCompendium();
         jsEnhanceBoxHeight();
         jsEnhanceBoxHeightResize();
+        // jsEnhanceIframes();
 
         prototypeModalButtons();
 
@@ -241,21 +242,32 @@ jQuery(window).load(function() {
     function jsEnhanceBoxHeight() {
         if ($(window).width() > 608) {
             var highestBox = 0;
-            $('.box--headline').each(function(){
+            $('.equal-height').each(function(){
             
                 if($(this).height() > highestBox) {
                    highestBox = $(this).height(); 
                }
             });  
             
-            $('.box--headline').height(highestBox);
+            $('.equal-height').height(highestBox);
         }
     }
 
     function jsEnhanceBoxHeightResize() {
         $( window ).resize(function() {
-            $('.box--headline').height('auto');
+            $('.equal-height').height('auto');
             jsEnhanceBoxHeight();
+        });
+    }
+
+    function jsEnhanceIframes() {
+        $('iframe').each(function(i) {
+            $(this).contents().find('iframe').remove();
+            $(this).contents().find('script').remove();
+            var iframecontent = $(this).contents().find('body').html();
+            // console.log(iframecontent);
+            $('<div>' + iframecontent + '</div>').insertAfter($(this));
+            $(this).remove();
         });
     }
 

@@ -70,11 +70,12 @@
   left: 0;
   right: 0;
   background: #fff;
-  z-index: 100;
+  z-index: 210;
 }
 
 #modal-overlay {
   position: absolute;
+  z-index: 200;
 }
 
 
