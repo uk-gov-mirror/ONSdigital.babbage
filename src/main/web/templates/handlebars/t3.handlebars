@@ -78,9 +78,11 @@
 					<p class="text-right"><a href="{{statsBulletins.0.uri}}">Read statistical bulletin</a></p>
 				</div>
 				{{#unless items.0.data}}
-				<a href="#data" class="btn btn--primary">view latest data
-					<span class="icon icon-down-open-big icon--button-inline"></span>
-				</a>
+					{{#if datasets}}
+					<a href="#data" class="btn btn--primary">view latest data
+						<span class="icon icon-down-open-big icon--button-inline"></span>
+					</a>
+					{{/if}}
 				{{/unless}}
 				<a href="#reports" class="btn btn--primary">view latest reports
 					<span class="icon icon-down-open-big icon--button-inline"></span>
