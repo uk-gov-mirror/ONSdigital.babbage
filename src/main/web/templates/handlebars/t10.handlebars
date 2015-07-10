@@ -119,13 +119,13 @@
 			<article class="box box--padded sectioned">
 				<div class="box__content">
 					<div class="grid-wrap">
-						{{#if headlinePage.items.0}}
+						{{#ifany headlinePage.items.0.years headlinePage.items.0.quarters headlinePage.items.0.months}}
 						<div class="grid-col desktop-grid-one-half">
 							<p class="alpha">
 								<img src="{{headlinePage.items.0.uri}}/searchchart" alt="{{headlinePage.items.0.description.title}}">
 							</p>
 						</div>
-						{{/if}}
+						{{/ifany}}
 						<div class="grid-col {{#if headlinePage.items.0}}desktop-grid-one-half{{/if}} box--padded-vertical nav--block-landing">
 							<h3><a href="{{headlinePage.uri}}">{{headlinePage.description.title}}</a></h3>
 							{{md headlinePage.description.summary}}
