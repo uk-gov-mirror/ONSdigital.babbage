@@ -16,25 +16,13 @@
 	<div class="grid-wrap">
 		<ul class="list--neutral">
 			{{#each sections}}
-				{{#if data.items}}
+				{{#ifany data.items data.datasets data.statsBulletins data.relatedArticles}}
 					{{> partials/t2/t2-section}}
 				{{else}}
-					{{#if data.datasets}}
+					{{#eq data.type 'taxonomy_landing_page'}}
 						{{> partials/t2/t2-section}}
-					{{else}}
-						{{#if data.statsBulletins}}
-							{{> partials/t2/t2-section}}
-						{{else}}
-							{{#if data.relatedArticles}}
-								{{> partials/t2/t2-section}}
-							{{else}}
-								{{#eq data.type 'taxonomy_landing_page'}}
-									{{> partials/t2/t2-section}}
-								{{/eq}}
-							{{/if}}
-						{{/if}}
-					{{/if}}
-				{{/if}}
+					{{/eq}}
+				{{/ifany}}
 			{{/each}}
 		</ul>
 		<div class="grid-col desktop-grid-one-third tablet-grid-one-half clear-left box--padded-vertical">
