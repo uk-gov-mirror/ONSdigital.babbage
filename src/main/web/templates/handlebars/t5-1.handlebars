@@ -300,6 +300,7 @@
 </div>
 <div class="wrapper panel--bottom-mar">
     <div class="grid-wrap">
+      {{#if section.markdown}}
         <div class="grid-col desktop-grid-two-thirds tablet-grid-full-width">
             <article class="box border-horizontal-single content-section">
                 <!-- <header class="box__header">
@@ -328,6 +329,7 @@
                 </div>
             </article>
         </div>
+        {{/if}}
         <!-- Sidebar -->
         <div class="grid-col desktop-grid-one-third">
             <!-- article__content -->
@@ -361,6 +363,7 @@
         </div>
         <div class="grid-col desktop-grid-full-width">
             <div class="grid-wrap">
+              {{#if relatedMethodology}}
                 <div class="grid-col desktop-grid-one-half">
                     <article class="box box--padded sectioned">
                         <header class="box__header">
@@ -377,7 +380,9 @@
                         </div>
                     </article>
                 </div>
+                {{/if}}
                 <!-- /grid-desktop-one-half -->
+                {{#if description.contact.name}}
                 <div class="grid-col desktop-grid-one-half">
                     <article class="box box--padded sectioned">
                         <header class="box__header">
@@ -392,6 +397,7 @@
                         </div>
                     </article>
                 </div>
+                {{/if}}
                 <!-- /grid-desktop-one-half -->
             </div>
             <!-- /grid-wrap -->
