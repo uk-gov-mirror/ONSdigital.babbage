@@ -1,5 +1,7 @@
 package com.github.onsdigital.api;
 
+import com.github.davidcarboni.cryptolite.Password;
+import com.github.davidcarboni.cryptolite.Random;
 import com.github.davidcarboni.restolino.framework.Api;
 import com.github.onsdigital.api.util.ApiErrorHandler;
 import com.github.onsdigital.search.ElasticSearchServer;
@@ -18,15 +20,15 @@ import java.io.IOException;
 @Api
 public class ReIndex {
 
-    private static final String REINDEX_KEY = "e48041e14e78978e1c44b23f3979d8e6";
+    private static final String REINDEX_KEY_HASH = "5NpB6/uAgk14nYwHzMbIQRnuI2W63MrBOS2279YlcUUY2kNOhrL+R5UFR3O066bQ";
 
     @POST
     public Object reIndex(@Context HttpServletRequest request, @Context HttpServletResponse response) throws IOException {
 
-        synchronized (REINDEX_KEY) {
+        synchronized (REINDEX_KEY_HASH) {
             try {
                 String key = request.getParameter("key");
-                if (REINDEX_KEY.equals(key)) {
+                if (Password.verify(key, REINDEX_KEY_HASH)) {
                     System.out.println("Triggering reindex");
                     Indexer.loadIndex(ElasticSearchServer.getClient());
                 } else {
@@ -40,6 +42,16 @@ public class ReIndex {
             return "Elasticsearch: indexing complete";
         }
 
+    }
+
+    /**
+     * Generates new reindexing key/hash values.
+     * @param args Not used.
+     */
+    public static void main(String[] args) {
+        String key = Random.password(64);
+        System.out.println("Key (add to environment): " + key);
+        System.out.println("Key hash (for REINDEX_KEY_HASH)" + Password.hash(key));
     }
 
 
