@@ -1,0 +1,27 @@
+<div class="panel flush">
+	<div class="grid-wrap">
+		<div class="grid-col desktop-grid-full-width">
+			<h2 class="flush">Related articles</h2>
+			<div class="grid-wrap">
+				<ul class="list--neutral">
+					{{#each relatedArticles}}
+					<li class="grid-col desktop-grid-one-third box--padded-vertical nav--block-landing">
+						<h3>
+						<a href="{{uri}}" title="{{description.title}}">
+							{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}
+						</a>
+						</h3>
+						<p>
+							{{description.summary}}
+						</p>
+					</li>
+					{{/each}}
+				</ul>
+			</div>
+			<!-- /grid-col -->
+		</div>
+		<!-- /grid-wrap -->
+	</div>
+	{{!--<a href="#">View all related articles</a>--}}
+	<!-- /grid-wrap -->
+</div>

@@ -17,16 +17,16 @@
 		<ul class="list--neutral">
 			{{#each sections}}
 				{{#if data.items}}
-					{{> partials/t2-section}}
+					{{> partials/t2/t2-section}}
 				{{else}}
 					{{#if data.datasets}}
-						{{> partials/t2-section}}
+						{{> partials/t2/t2-section}}
 					{{else}}
 						{{#if data.statsBulletins}}
-							{{> partials/t2-section}}
+							{{> partials/t2/t2-section}}
 						{{else}}
 							{{#if data.relatedArticles}}
-								{{> partials/t2-section}}
+								{{> partials/t2/t2-section}}
 							{{else}}
 							{{/if}}
 						{{/if}}
