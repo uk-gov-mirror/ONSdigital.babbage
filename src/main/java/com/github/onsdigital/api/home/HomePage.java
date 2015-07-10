@@ -14,7 +14,7 @@ public class HomePage implements Home {
     public Object get(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
             RequestDelegator.get(request, response);
-        } catch (Exception e) {
+        } catch (Throwable e) {
             ApiErrorHandler.handle(e, response);
         }
         return null;

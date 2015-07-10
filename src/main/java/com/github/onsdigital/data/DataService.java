@@ -1,7 +1,6 @@
 package com.github.onsdigital.data;
 
 import com.github.davidcarboni.ResourceUtils;
-import com.github.onsdigital.api.data.Data;
 import com.github.onsdigital.configuration.Configuration;
 import com.github.onsdigital.content.DirectoryListing;
 import com.github.onsdigital.content.service.ContentNotFoundException;
@@ -145,7 +144,7 @@ public class DataService implements ContentService {
     private static void triggerValidation() {
         // Ensures ResourceUtils gets the right classloader when running
         // reloadable in development:
-        ResourceUtils.classLoaderClass = Data.class;
+        ResourceUtils.classLoaderClass = DataService.class;
 
         // Validate all Json so that we get a warning if
         // there's an issue with a file that's been edited.

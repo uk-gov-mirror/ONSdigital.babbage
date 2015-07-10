@@ -36,6 +36,7 @@ jQuery(window).load(function() {
         jsEnhancePrintCompendium();
         jsEnhanceBoxHeight();
         jsEnhanceBoxHeightResize();
+        jsEnhanceDownloadAnalytics();
         
         prototypeModalButtons();
 
@@ -183,6 +184,7 @@ jQuery(window).load(function() {
         });
     }
 
+
     function jsEnhanceNumberSeparator() {
       // Adapted from http://stackoverflow.com/questions/14075014/jquery-function-to-to-format-number-with-commas-and-decimal
       $( ".stat__figure-enhance" ).each(function( index ) {
@@ -304,6 +306,36 @@ jQuery(window).load(function() {
             $(this).closest('.markdown-table-wrap').hide();       
         });
     }
+
+    
+    /*Track file downloads*/
+    function jsEnhanceDownloadAnalytics() {
+        $('.download-analytics').click(function(){
+            var downloadType = $(this).parent().attr('action');
+            var path = $('#pagePath').text();
+            var downloadTitle = $('#title').text();
+            var downloadFormat = $(this).attr('value');
+
+            if(downloadType == '/file') {
+                var downloadType = '/download';
+                var downloadFormat = 'xls';
+            }
+
+            if(downloadType == '/chartimage') {
+                downloadFormat = 'png';
+            }
+            
+            ga('send', 'pageview', {
+                'page': path + downloadType,
+                'hitCallback': function() {
+                    if(console && console.log) {
+                        console.log('Analytics event triggered for ' + downloadType + ('?uri=') + path + ('/') + downloadTitle + '.' + downloadFormat);
+                    }
+                }
+            });
+        });
+    }
+
 
     function prototypeModalButtons() {
         $('.btn-modal-continue').click(function(e){

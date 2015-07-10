@@ -29,6 +29,9 @@ public class Configuration {
     private static final String SEARCHCHART_FILE = "searchchartconfig.js";
     private static final int MAX_VISIBLE_PAGINATOR_LINK = 10;
 
+
+    private static final int GLOBAL_REQUEST_CACHE_SIZE = 1000;
+
     /**
      * Mongo is currently only used to provide feedback on the search terms
      * users are typing in.
@@ -54,6 +57,11 @@ public class Configuration {
 
     public static String getZebedeeUrl() {
         return StringUtils.defaultIfBlank(getValue("ZEBEDEE_URL"), DEFAULT_ZEBEDEE_URL);
+    }
+
+    public static boolean isDevelopment() {
+        String babbage_env = StringUtils.defaultIfBlank(getValue("BABBAGE_ENV"), "");
+        return "DEVELOPMENT".equals(babbage_env);
     }
 
     public static String getContentPath() {
@@ -91,6 +99,11 @@ public class Configuration {
             }
         }
         return templatesSuffix;
+    }
+
+
+    public static int getGlobalRequestCacheSize() {
+        return Integer.parseInt(StringUtils.defaultIfBlank(getValue("GLOBAL_CACHE_SIZE"), String.valueOf(GLOBAL_REQUEST_CACHE_SIZE)));
     }
 
     /**
