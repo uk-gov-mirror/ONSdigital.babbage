@@ -59,6 +59,11 @@ public class Configuration {
         return StringUtils.defaultIfBlank(getValue("ZEBEDEE_URL"), DEFAULT_ZEBEDEE_URL);
     }
 
+    public static boolean isDevelopment() {
+        String babbage_env = StringUtils.defaultIfBlank(getValue("BABBAGE_ENV"), "");
+        return "DEVELOPMENT".equals(babbage_env);
+    }
+
     public static String getContentPath() {
         return StringUtils.defaultIfBlank(getValue("CONTENT_DIR"), DEFAULT_CONTENT_DIRECTORY);
     }
