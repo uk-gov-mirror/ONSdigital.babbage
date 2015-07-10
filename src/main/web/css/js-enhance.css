@@ -158,19 +158,26 @@
 }
 
 
-
+#modal-overlay {
+    position: fixed;
+    /*top: 0;
+    bottom: 0;*/
+  }
 
 @media screen and (min-width: 768px) {
   #modal-overlay {
     /*position: fixed;*/
   }
 
-  .prototype-modal {
+  /*.prototype-modal {
     margin: 0;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+  }*/
+  .prototype-modal {
+    margin: 20px auto 20px auto;
   }
 }
 
