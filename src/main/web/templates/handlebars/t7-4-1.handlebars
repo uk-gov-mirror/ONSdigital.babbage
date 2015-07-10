@@ -23,22 +23,20 @@
 			{{#if links}}
 			<div class="grid-col desktop-grid-two-thirds">
 			{{/if}}
-				<div class="grid-wrap">
-					<ul class="list--neutral">
-					{{#each sections}}
-						{{#if links}}
-						<li class="grid-col tablet-grid-one-half box--padded-vertical nav--block-landing--pairs">
-						{{else}}
-            <li class="grid-col desktop-grid-one-third tablet-grid-one-half box--padded-vertical nav--block-landing">
-						{{/if}}
-							<h3>
-								<a href="{{uri}}">{{description.title}}</a>
-							</h3>
-							{{md summary}}
-						</li>
-					{{/each}}
-					</ul>
-				</div>
+				<ul class="list--neutral">
+				{{#each sections}}
+					{{#if links}}
+					<li class="grid-col tablet-grid-one-half box--padded-vertical nav--block-landing--pairs">
+					{{else}}
+          <li class="grid-col desktop-grid-one-third tablet-grid-one-half box--padded-vertical nav--block-landing">
+					{{/if}}
+						<h3>
+							<a href="{{uri}}">{{description.title}}</a>
+						</h3>
+						{{md summary}}
+					</li>
+				{{/each}}
+				</ul>
 			</div>
 			<!-- /desktop-grid-two-thirds -->
 			{{#if links}}
