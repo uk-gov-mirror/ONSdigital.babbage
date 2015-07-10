@@ -37,13 +37,15 @@ jQuery(window).load(function() {
         jsEnhanceBoxHeight();
         jsEnhanceBoxHeightResize();
         jsEnhanceDownloadAnalytics();
-        
-        prototypeModalButtons();
 
-        setTimeout(function() {
-            jsEnhanceIframedTables();
-            jsEnhanceMobileTables();
-        }, 400);
+        // jsEnhanceMobileTables();
+        
+        // prototypeModalButtons();
+
+        // setTimeout(function() {
+        //     jsEnhanceIframedTables();
+        //     jsEnhanceMobileTables();
+        // }, 400);
 
 
         setTimeout(function() {
@@ -338,14 +340,15 @@ jQuery(window).load(function() {
 
 
     function prototypeModalButtons() {
-        $('.btn-modal-continue').click(function(e){
+        // $('.btn-modal-continue').click(function(e){
+            alert('hello');
             e.preventDefault();
             var d = new Date();
             d.setTime(d.getTime() + (1*24*60*60*1000));
             var expires = "expires="+d.toUTCString();
-            document.cookie='onsBetaDisclaimer=true; ' + expires;
+            // document.cookie='onsBetaDisclaimer=true; ' + expires;
             $('#modal-overlay').fadeOut(300);
-        });
+        // });
     }
 
     // 
