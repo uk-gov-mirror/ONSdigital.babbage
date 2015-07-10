@@ -9,14 +9,20 @@ jQuery(window).load(function() {
         div.innerHTML = '<!--[if lte IE 8]><I></I><![endif]-->';
         return div.getElementsByTagName('I').length > 0;
     }());
-    if (browserNotSupported) {
-        setTimeout(function() {
-            $('#loading-overlay').fadeOut(300);
-        }, 500);
-    } else {
-        $('body').append('<script type="text/javascript" src="/js/third-party/pym.min.js"></script>');
-        jsEnhance();
-    }
+
+    // disabeling jsEnhance completely for testing
+    // if (browserNotSupported) {
+    //     setTimeout(function() {
+    //         $('#loading-overlay').fadeOut(300);
+    //     }, 500);
+    // } else {
+    //     $('body').append('<script type="text/javascript" src="/js/third-party/pym.min.js"></script>');
+    //     jsEnhance();
+    // }
+
+    setTimeout(function() {
+        $('#loading-overlay').fadeOut(300);
+    }, 500);
 
     
 
