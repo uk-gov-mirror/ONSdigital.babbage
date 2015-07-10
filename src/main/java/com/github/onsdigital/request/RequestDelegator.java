@@ -9,12 +9,14 @@ import com.github.onsdigital.request.handler.base.RequestHandler;
 import com.github.onsdigital.request.response.BabbageResponse;
 import com.google.common.cache.CacheLoader;
 import com.google.common.util.concurrent.UncheckedExecutionException;
+import org.apache.commons.lang3.StringUtils;
 import org.reflections.Reflections;
 import org.reflections.util.ConfigurationBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.Callable;
@@ -46,14 +48,15 @@ public class RequestDelegator {
     public static void get(HttpServletRequest request, HttpServletResponse response) throws Throwable {
 
         String fullUri = URIUtil.cleanUri(request.getRequestURI());
+        String uriWithParams = fullUri + "?" + StringUtils.lowerCase(request.getQueryString());
         String requestType = URIUtil.resolveRequestType(fullUri);
         RequestHandler handler = resolveRequestHandler(requestType);
         BabbageResponse getResponse = null;
         if (handler == null) {
             handler = handlers.get("/"); //default handler
-            getResponse = get(fullUri,fullUri, request, handler);
+            getResponse = get(uriWithParams,fullUri, request, handler);
         } else {
-            getResponse = get(fullUri,URIUtil.resolveResouceUri(fullUri), request, handler);
+            getResponse = get(uriWithParams,URIUtil.resolveResouceUri(fullUri), request, handler);
         }
 
         //tell client not to ask again for 5 mins
