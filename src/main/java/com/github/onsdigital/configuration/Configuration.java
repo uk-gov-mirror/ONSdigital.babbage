@@ -103,7 +103,7 @@ public class Configuration {
 
 
     public static int getGlobalRequestCacheSize() {
-        return GLOBAL_REQUEST_CACHE_SIZE;
+        return Integer.parseInt(StringUtils.defaultIfBlank(getValue("GLOBAL_CACHE_SIZE"), String.valueOf(GLOBAL_REQUEST_CACHE_SIZE)));
     }
 
     /**
