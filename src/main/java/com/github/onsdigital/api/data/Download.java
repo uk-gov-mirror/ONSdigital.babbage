@@ -3,6 +3,7 @@ package com.github.onsdigital.api.data;
 import com.github.davidcarboni.restolino.framework.Api;
 import com.github.onsdigital.bean.DateVal;
 import com.github.onsdigital.bean.DownloadRequest;
+import com.github.onsdigital.configuration.Configuration;
 import com.github.onsdigital.content.page.statistics.data.timeseries.TimeSeries;
 import com.github.onsdigital.content.partial.TimeseriesValue;
 import com.github.onsdigital.content.util.ContentUtil;
@@ -117,7 +118,7 @@ public class Download {
         Path tempFile = tempDirectory.resolve(fileName);
         if (Files.exists(tempFile)) {
             FileTime lastModifiedTime = Files.getLastModifiedTime(tempFile);
-            if(new Date().getTime() -  (lastModifiedTime.toMillis()) < TimeUnit.MINUTES.toMillis(5)) {
+            if(new Date().getTime() -  (lastModifiedTime.toMillis()) < TimeUnit.MINUTES.toMillis(Configuration.getGlobalCacheTimeout())) {
                 System.out.println("Find generated file in temp directory:" + fileName);
                 IOUtils.copy(Files.newInputStream(tempFile), output);
                 return;
@@ -156,18 +157,6 @@ public class Download {
 
         // Apply the range:
         data = applyRange(data, toDate(downloadRequest.from), toDate(downloadRequest.to));
-
-        // Debug:
-        // System.out.println("Data grid:");
-        // System.out.println("---");
-        // for (Entry<String, TimeSeriesValue[]> row : data.entrySet()) {
-        // System.out.print(row.getKey());
-        // for (TimeSeriesValue value : row.getValue()) {
-        // System.out.print("\t" + (value == null ? "null" : value.value));
-        // }
-        // System.out.println();
-        // }
-        // System.out.println("---");
 
         switch (downloadRequest.type) {
             case "xlsx":

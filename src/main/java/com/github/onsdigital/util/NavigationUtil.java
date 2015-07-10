@@ -2,11 +2,13 @@ package com.github.onsdigital.util;
 
 import com.github.onsdigital.configuration.Configuration;
 import com.github.onsdigital.content.page.base.Page;
+import com.github.onsdigital.content.page.taxonomy.ProductPage;
 import com.github.onsdigital.content.page.taxonomy.base.TaxonomyPage;
 import com.github.onsdigital.content.partial.navigation.Navigation;
 import com.github.onsdigital.content.partial.navigation.NavigationNode;
 import com.github.onsdigital.content.util.ContentUtil;
 import com.google.gson.JsonSyntaxException;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.w3c.dom.DOMException;
 
@@ -18,12 +20,15 @@ import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class NavigationUtil {
 
     private static Navigation navigation;
+    private static long lastGenerated = 0; //milliseconds
 
     /**
      * Flag to avoid caching a broken navigation. This ensures it gets reloaded
@@ -36,18 +41,31 @@ public class NavigationUtil {
     }
 
     public static Navigation getNavigation() throws IOException {
-        if (navigation == null) {
+        if (navigation == null || isExpired()) {
             synchronized (NavigationUtil.class) {
-                if (navigation == null) {
+                if (navigation == null || isExpired()) {
                     List<NavigationNode> nodes = buildNavigationNodes();
                     if (!jsonError) {
                         NavigationUtil.navigation = new Navigation();
                         navigation.setNodes(nodes);
+                        lastGenerated = System.currentTimeMillis();
                     }
                 }
             }
         }
         return navigation;
+    }
+
+
+    public static boolean isExpired() {
+        if (Configuration.isDevelopment()) {
+            return true;//No caching on dev environment
+        }
+
+        if (lastGenerated > 0) {
+            return (System.currentTimeMillis() - lastGenerated) < TimeUnit.MINUTES.toMillis(Configuration.getGlobalCacheTimeout());
+        }
+        return false;
     }
 
     private static List<NavigationNode> buildNavigationNodes() throws IOException {
@@ -105,7 +123,16 @@ public class NavigationUtil {
         if (Files.exists(dataJson)) {
             try (InputStream input = Files.newInputStream(dataJson)) {
                 Page page = ContentUtil.deserialisePage(input);
-                if (page !=null && page instanceof TaxonomyPage) {
+                if (page != null && page instanceof TaxonomyPage) {
+                    if (page instanceof ProductPage) {
+                        ProductPage productPage = (ProductPage) page;
+                        if (isEmpty(productPage.getItems()) &&
+                                isEmpty(productPage.getDatasets()) &&
+                                isEmpty(productPage.getRelatedArticles()) &&
+                                isEmpty(productPage.getStatsBulletins())) {
+                            return null;//Skip if no data in the page at all
+                        }
+                    }
                     TaxonomyPage taxonomyPage = (TaxonomyPage) page;
                     result = new NavigationNode(taxonomyPage);
                     result.fileName = path.getFileName().toString();
@@ -113,6 +140,10 @@ public class NavigationUtil {
             }
         }
         return result;
+    }
+
+    private static boolean isEmpty(Collection collection) {
+        return collection == null || collection.isEmpty();
     }
 
 

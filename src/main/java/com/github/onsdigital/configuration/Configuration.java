@@ -31,6 +31,7 @@ public class Configuration {
 
 
     private static final int GLOBAL_REQUEST_CACHE_SIZE = 1000;
+    private static final int GLOBAL_CACHE_TIMEOUT = 5; //mins
 
     /**
      * Mongo is currently only used to provide feedback on the search terms
@@ -104,6 +105,10 @@ public class Configuration {
 
     public static int getGlobalRequestCacheSize() {
         return Integer.parseInt(StringUtils.defaultIfBlank(getValue("GLOBAL_CACHE_SIZE"), String.valueOf(GLOBAL_REQUEST_CACHE_SIZE)));
+    }
+
+    public static int getGlobalCacheTimeout() {
+        return Integer.parseInt(StringUtils.defaultIfBlank(getValue("GLOBAL_CACHE_TIMEOUT"), String.valueOf(GLOBAL_CACHE_TIMEOUT)));
     }
 
     /**
