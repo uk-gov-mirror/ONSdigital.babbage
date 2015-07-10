@@ -37,13 +37,15 @@ jQuery(window).load(function() {
         jsEnhanceBoxHeight();
         jsEnhanceBoxHeightResize();
         jsEnhanceDownloadAnalytics();
+
+        // jsEnhanceMobileTables();
         
         // prototypeModalButtons();
 
-        setTimeout(function() {
-            jsEnhanceIframedTables();
-            jsEnhanceMobileTables();
-        }, 400);
+        // setTimeout(function() {
+        //     jsEnhanceIframedTables();
+        //     jsEnhanceMobileTables();
+        // }, 400);
 
 
         setTimeout(function() {
