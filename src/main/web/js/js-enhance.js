@@ -10,19 +10,15 @@ jQuery(window).load(function() {
         return div.getElementsByTagName('I').length > 0;
     }());
 
-    // disabeling jsEnhance completely for testing
-    // if (browserNotSupported) {
-    //     setTimeout(function() {
-    //         $('#loading-overlay').fadeOut(300);
-    //     }, 500);
-    // } else {
-    //     $('body').append('<script type="text/javascript" src="/js/third-party/pym.min.js"></script>');
-    //     jsEnhance();
-    // }
-
-    setTimeout(function() {
-        $('#loading-overlay').fadeOut(300);
-    }, 500);
+    
+    if (browserNotSupported) {
+        setTimeout(function() {
+            $('#loading-overlay').fadeOut(300);
+        }, 500);
+    } else {
+        $('body').append('<script type="text/javascript" src="/js/third-party/pym.min.js"></script>');
+        jsEnhance();
+    }
 
     
 
@@ -37,8 +33,8 @@ jQuery(window).load(function() {
         jsEnhanceLinechart();
         jsEnhancePrint();
         jsEnhanceNumberSeparator();
-        jsEnhanceMarkdownCharts();
-        jsEnhanceMarkdownTables();
+        // jsEnhanceMarkdownCharts(); // disabling markdown table and chart enhancements
+        // jsEnhanceMarkdownTables(); // disabling table and chart enhancements
         jsEnhancePrintCompendium();
         jsEnhanceBoxHeight();
         jsEnhanceBoxHeightResize();
