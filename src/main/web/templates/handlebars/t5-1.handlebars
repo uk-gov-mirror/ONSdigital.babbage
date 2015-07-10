@@ -33,6 +33,8 @@
         </div>
     </div>
 </div>
+{{!-- Hide chart section if no data to draw the chart with --}}
+{{#ifany years quarters months}}
 <div class="wrapper">
     <div class="actionable-header--tight panel--mar-small">
         <!-- This title will need to be dynamically generated on the server -->
@@ -298,6 +300,7 @@
         </table>
     </div>
 </div>
+{{/ifany}}
 <div class="wrapper panel--bottom-mar">
     <div class="grid-wrap">
       {{#if section.markdown}}

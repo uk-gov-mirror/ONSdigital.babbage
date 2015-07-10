@@ -33,6 +33,8 @@ public class HandlebarsRenderer implements TemplateRenderer {
         handlebars.registerHelper("fs", new FileSizeHelper());
         handlebars.registerHelper(ConditionHelper.eq.name(), ConditionHelper.eq);
         handlebars.registerHelper(ConditionHelper.ne.name(), ConditionHelper.ne);
+        handlebars.registerHelper(ConditionHelper.ifall.name(), ConditionHelper.ifall);
+        handlebars.registerHelper(ConditionHelper.ifany.name(), ConditionHelper.ifany);
         handlebars.registerHelper(ArrayHelpers.contains.name(), ArrayHelpers.contains);
         handlebars.registerHelper(MathHelper.increment.name(), MathHelper.increment);
         handlebars.registerHelper(MathHelper.decrement.name(), MathHelper.decrement);
