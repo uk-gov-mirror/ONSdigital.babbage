@@ -28,6 +28,9 @@
 							{{#if data.relatedArticles}}
 								{{> partials/t2/t2-section}}
 							{{else}}
+								{{#eq data.type 'taxonomy_landing_page'}}
+									{{> partials/t2/t2-section}}
+								{{/eq}}
 							{{/if}}
 						{{/if}}
 					{{/if}}
