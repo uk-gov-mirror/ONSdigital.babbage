@@ -20,7 +20,9 @@
 					{{> partials/t2/t2-section}}
 				{{else}}
 					{{#eq data.type 'taxonomy_landing_page'}}
-						{{> partials/t2/t2-section}}
+						{{#if data.sections}}
+							{{> partials/t2/t2-section}}
+						{{/if}}
 					{{/eq}}
 				{{/ifany}}
 			{{/each}}

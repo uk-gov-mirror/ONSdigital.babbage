@@ -3,6 +3,7 @@ package com.github.onsdigital.util;
 import com.github.onsdigital.configuration.Configuration;
 import com.github.onsdigital.content.page.base.Page;
 import com.github.onsdigital.content.page.taxonomy.ProductPage;
+import com.github.onsdigital.content.page.taxonomy.TaxonomyLandingPage;
 import com.github.onsdigital.content.page.taxonomy.base.TaxonomyPage;
 import com.github.onsdigital.content.partial.navigation.Navigation;
 import com.github.onsdigital.content.partial.navigation.NavigationNode;
@@ -131,6 +132,13 @@ public class NavigationUtil {
                                 isEmpty(productPage.getRelatedArticles()) &&
                                 isEmpty(productPage.getStatsBulletins())) {
                             return null;//Skip if no data in the page at all
+                        }
+                    }
+
+                    if(page instanceof TaxonomyLandingPage) {
+                        TaxonomyLandingPage landingPage = (TaxonomyLandingPage) page;
+                        if (isEmpty(landingPage.getSections())) {
+                            return null;//skip landing page if no sub sections
                         }
                     }
                     TaxonomyPage taxonomyPage = (TaxonomyPage) page;

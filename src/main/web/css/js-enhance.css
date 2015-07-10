@@ -205,6 +205,11 @@
 }
 
 
+.anonymousReport .feedbackTab {
+  background-color: #FF9933;
+}
+
+
 @media screen and (max-width: 799px) {
   .markdown-table-wrap {
 
