@@ -210,8 +210,16 @@
 }
 
 
-.anonymousReport .feedbackTab {
-  background-color: #FF9933 !important;
+#my_feedback {
+  background-color: #FF9933;
+  position: absolute;
+  margin: 0 1rem;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  color: rgb(48, 48, 48);
+  bottom: 0px;
+  right: 0;
+  border-radius: 3px 3px 0 0;
 }
 
 
