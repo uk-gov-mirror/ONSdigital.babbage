@@ -30,11 +30,10 @@
 						<span class="icon-print"></span>
 						<span class="link-complex__target">Print full report</span>
 					</a>
-					<br class="nojs-hidden js-enhance--show"/>
+					{{!--<br class="nojs-hidden js-enhance--show"/>
 					<a href="#" class="link-complex">
 						<span class="icon-download" role="presentation"></span>
-						<span class="link-complex__target">Download PDF</span>
-						<span>(??KB)</span>
+						<span class="link-complex__target">Download PDF</span>--}}
 					</a>
 				</p>
 			</div>
@@ -121,7 +120,7 @@
 		            <!-- /box__header -->
 		            <div class="box__content">
 		                <address>
-											{{#if description.contact.name}}{{description.contact.name}}</br>{{/if}}
+							{{#if description.contact.name}}{{description.contact.name}}</br>{{/if}}
 	                		<a href="mailto:{{description.contact.email}}">{{description.contact.email}}</a></br>
 	                		{{#if description.contact.telephone}}Telephone: {{description.contact.telephone}}{{/if}}
 		                </address>
@@ -147,7 +146,7 @@
 								{{#each relatedArticles}}
 								<li>
 									<h3 class="flush--bottom">
-									<a href="{{uri}}">{{description.title}}</a>
+									<a href="{{uri}}">{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}</a>
 									</h3>
 									{{md description.abstract}}
 								</li>

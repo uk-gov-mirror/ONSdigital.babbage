@@ -17,7 +17,7 @@
 			<p class="grid-col tablet-grid-one-quarter divider--border-left">
 				<span>Release date: </span><br/>{{df description.releaseDate}}
 				</br>
-				<a class="print-hidden" href="#">previous versions</a>
+				{{!--<a class="print-hidden" href="#">previous versions</a>--}}
 			</p>
 			<p class="grid-col tablet-grid-one-quarter divider--border-left">
 				<span>Next release: </span><br/>{{description.nextRelease}}
@@ -51,16 +51,18 @@
 			<div class="lede">
 				{{md description.summary}}
 			</div>
+
+			{{!-- TODO display number of results
 			<p>
 				<span class="stand-out-text">{{resultsNumber}}</span> results
-			</p>
+			</p> --}}
 		</div>
 		<!-- /grid-col -->
 		<div class="grid-col desktop-grid-two-thirds">
 			<ul class="list--neutral">
 				{{#each downloads}}
 				<li>
-					<h3 class="flush"><a href="/file?uri={{file}}" title="{{title}}">{{title}}</a></h3>
+					<h3 class="flush"><a href="/file?uri={{file}}" title="{{title}}" class="file-download-analytics">{{title}}</a></h3>
 					{{md fileDescription}}
 				</li>
 				{{/each}}

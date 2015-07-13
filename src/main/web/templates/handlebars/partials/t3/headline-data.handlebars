@@ -1,0 +1,41 @@
+<div class="grid-col tablet-grid-one-half headline--box-container panel--mobile-bottom-mar">
+	<div class="box--padded equal-height solid panel--bottom-mar">
+		<h2>Latest data</h2>
+		<header class="box___section">
+			<h3 class="navpanel-list-heading lede box--padded-bottom-small">
+			<a href="{{items.0.data.uri}}">{{items.0.data.description.title}}</a>
+			</h3>
+		</header>
+		<div class="grid-wrap">
+			<div class="grid-col grid-two-thirds">
+				<div class="box box--padded--small headline--stat-centred">
+					<a href="{{items.0.data.uri}}"><img src="{{items.0.data.uri}}/sparkline" alt="{{items.0.data.description.title}}"></a>
+				</div>
+			</div>
+			<div class="grid-col grid-one-third no-padding">
+				<div class="stat">
+					<div class="stat__figure ">
+						<div>
+							<span class="stat__figure-enhance">{{items.0.data.description.number}}</span><span class="stat__figure__unit"> {{items.0.data.description.unit}}</span>
+						</div>
+						<div class="stat__description">
+							{{items.0.data.description.date}}
+						</div>
+					</div>
+				</div>
+				<dl class="micro definition-list definition-list--inline">
+					<dt>Last updated:</dt>
+					<dd class="flush flush--third--bottom">{{df items.0.data.description.releaseDate}}</dd>
+					<dt>Next update:</dt>
+					<dd class="flush flush--third--bottom">{{items.0.data.description.nextRelease}}</dd>
+				</dl>
+			</div>
+			<!-- /grid-col -->
+		</div>
+		<!-- /grid-wrap -->
+	</div>
+	<!-- /box--padded -->
+	<a href="#data" class="btn btn--primary">view latest data
+		{{!-- <span class="icon icon-down-open-big icon--button-inline"></span>--}}
+	</a>
+</div>

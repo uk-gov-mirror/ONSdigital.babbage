@@ -1,3 +1,5 @@
+/* Should be merged into pattern library */
+
 .loader:before,
 .loader:after,
 .loader {
@@ -156,19 +158,26 @@
 }
 
 
-
+#modal-overlay {
+    position: fixed;
+    /*top: 0;
+    bottom: 0;*/
+  }
 
 @media screen and (min-width: 768px) {
   #modal-overlay {
     /*position: fixed;*/
   }
 
-  .prototype-modal {
+  /*.prototype-modal {
     margin: 0;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+  }*/
+  .prototype-modal {
+    margin: 20px auto 20px auto;
   }
 }
 
@@ -194,6 +203,41 @@
   }
 
 }
+
+
+.anonymousReport .feedbackTab {
+  background-color: #FF9933;
+}
+
+
+@media screen and (max-width: 799px) {
+  .markdown-table-wrap {
+
+    display: none;
+    position: fixed;
+    z-index: 100;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    overflow: scroll;
+    background: #fff;
+    padding: 60px 0 20px 0;
+  }
+
+  .btn--mobile-table-show {
+    visibility: visible !important;
+    /*display: inline-block !important;*/
+  }
+
+  .btn--mobile-table-hide {
+    visibility: visible !important;
+    position: fixed;
+    top: 0;
+    left: 0;    
+  }
+}
+
 
 
 

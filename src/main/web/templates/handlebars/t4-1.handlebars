@@ -30,11 +30,10 @@
 						<span class="icon-print"></span>
 						<span class="link-complex__target">Print full report</span>
 					</a>
-					<br class="nojs-hidden js-enhance--show"/>
+					{{!--<br class="nojs-hidden js-enhance--show"/>
 					<a href="#" class="link-complex">
 						<span class="icon-download" role="presentation"></span>
-						<span class="link-complex__target">Download PDF</span>
-						<span>(??KB)</span>
+						<span class="link-complex__target">Download PDF</span>--}}
 					</a>
 				</p>
 			</div>
@@ -114,7 +113,7 @@
 				</div>
 				{{/if}}
 				<!-- /article__content -->
-        <div class="box__inner border box--padded">
+        		<div class="box__inner border box--padded">
 					<h3 class="box__section__header">
 						Contact details for this statistical bulletin
 					</h3>
@@ -126,8 +125,8 @@
 							{{#if description.contact.telephone}}Telephone: {{description.contact.telephone}}{{/if}}
 						</address>
 					</div>
-            <!-- /box__content -->
-        </div>
+            		<!-- /box__content -->
+        		</div>
 			</div>
 		</div>
 	</div>
@@ -146,7 +145,7 @@
 								{{#each relatedBulletins}}
 								<li>
 									<h3 class="flush--bottom">
-									<a href="{{uri}}">{{description.title}}</a>
+									<a href="{{uri}}">{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}</a>
 									</h3>
 									<p>{{md description.summary}}</p>
 								</li>
