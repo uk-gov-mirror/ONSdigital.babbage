@@ -34,7 +34,7 @@ jQuery(window).load(function() {
         jsEnhancePrint();
         jsEnhanceNumberSeparator();
         // jsEnhanceMarkdownCharts(); // disabling markdown table and chart enhancements
-        // jsEnhanceMarkdownTables(); // disabling table and chart enhancements
+        jsEnhanceMarkdownTables(); // disabling table and chart enhancements
         jsEnhancePrintCompendium();
         jsEnhanceBoxHeight();
         jsEnhanceBoxHeightResize();
