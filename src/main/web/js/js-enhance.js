@@ -319,6 +319,7 @@ jQuery(window).load(function() {
             var path = $('#pagePath').text();
             var downloadTitle = $('#title').text();
             var downloadFormat = $(this).attr('value');
+            var page = downloadType + ('?uri=') + path + ('/') + downloadTitle + '.' + downloadFormat;
 
             if(downloadType == '/file') {
                 var downloadType = '/download';
@@ -330,10 +331,24 @@ jQuery(window).load(function() {
             }
             
             ga('send', 'pageview', {
-                'page': path + downloadType,
+                'page': page,
                 'hitCallback': function() {
                     if(console && console.log) {
-                        console.log('Analytics event triggered for ' + downloadType + ('?uri=') + path + ('/') + downloadTitle + '.' + downloadFormat);
+                        console.log('Analytics event triggered for ' + page);
+                    }
+                }
+            });
+        });
+
+        $('.file-download-analytics').click(function(){
+            var fileName = $(this).attr('href').split('=')[1];
+            var page = '/download?' + fileName ;
+
+            ga('send', 'pageview', {
+                'page': page,
+                'hitCallback': function() {
+                    if(console && console.log) {
+                        console.log('Analytics event triggered for ' + page);
                     }
                 }
             });
