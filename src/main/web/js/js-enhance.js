@@ -341,9 +341,8 @@ jQuery(window).load(function() {
         });
 
         $('.file-download-analytics').click(function(){
-            var path = $(this).attr('href').split('=')[1];
-            var file = ;
-            var page = ;
+            var fileName = $(this).attr('href').split('=')[1];
+            var page = '/download?' + fileName ;
 
             ga('send', 'pageview', {
                 'page': page,
