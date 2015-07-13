@@ -184,6 +184,11 @@
 @media screen and (max-width: 420px) {
   .prototype-modal {
     margin: 20px 20px 20px 20px;
+    font-size: 10px;
+  }
+
+  .prototype-modal section {
+    font-size: 10px;
   }
 
   .prototype-modal .modal-nav li{
