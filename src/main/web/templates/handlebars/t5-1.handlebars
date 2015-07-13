@@ -43,18 +43,18 @@
             <form method="post" action="/chartimage" class="inline">
                 <button type="submit" class="btn btn--primary btn--small download-analytics" target="_blank" name="uri" value="{{uri}}">
                 image
-                <span class="icon-download icon--button-inline" role="presentation"></span>
+                {{!--<span class="icon-download icon--button-inline" role="presentation"></span>--}}
                 </button>
                 <input type="hidden" name="fileName" value="{{description.title}}" />
             </form>
             <form method="post" action="/download" class="inline">
                 <button type="submit" name="type" value="csv" class="btn btn--primary btn--small download-analytics">
                 .csv
-                <span class="icon-download icon--button-inline" role="presentation"></span>
+                {{!--<span class="icon-download icon--button-inline" role="presentation"></span>--}}
                 </button>
                 <button type="submit" name="type" value="xlsx" class="btn btn--primary btn--small download-analytics" href="#">
                 .xlsx
-                <span class="icon-download icon--button-inline" role="presentation"></span>
+                {{!--<span class="icon-download icon--button-inline" role="presentation"></span>--}}
                 </button>
                 <input type="hidden" name="uri" value="{{uri}}" />
                 <input type="hidden" name="fileName" value="{{description.title}}" />
@@ -208,19 +208,19 @@
           <form method="post" action="/chartimage" class="inline dlCustomData">
               <button id="download-custom-image" type="submit" class="btn btn--primary btn--small download-analytics" target="_blank" name="uri" value="{{uri}}">
               Image
-              <span class="icon-download icon--button-inline" role="presentation"></span>
+              {{!-- <span class="icon-download icon--button-inline" role="presentation"></span> --}}
               </button>
               <input type="hidden" name="fileName" value="{{description.title}}" />
 
           </form>
           <form method="post" action="/download" class="inline dlCustomData">
               <button id="download-custom-csv" type="submit" name="type" value="csv" class="btn btn--primary btn--small download-analytics">
-              .csv ()
-              <span class="icon-download icon--button-inline" role="presentation"></span>
+              .csv
+              {{!-- <span class="icon-download icon--button-inline" role="presentation"></span> --}}
               </button>
               <button id="download-custom-excel" type="submit" name="type" value="xlsx" class="btn btn--primary btn--small download-analytics" href="#">
-              .xlsx ()
-              <span class="icon-download icon--button-inline" role="presentation"></span>
+              .xlsx
+              {{!-- <span class="icon-download icon--button-inline" role="presentation"></span> --}}
               </button>
               <input type="hidden" name="uri" value="{{uri}}" />
               <input type="hidden" name="fileName" value="{{description.title}}" />

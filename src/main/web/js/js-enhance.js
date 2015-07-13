@@ -331,12 +331,12 @@ jQuery(window).load(function() {
             }
             
             ga('send', 'pageview', {
-                'page': page,
-                'hitCallback': function() {
-                    if(console && console.log) {
-                        console.log('Analytics event triggered for ' + page);
-                    }
-                }
+                'page': page
+                // 'hitCallback': function() {
+                //     if(console && console.log) {
+                //         console.log('Analytics event triggered for ' + page);
+                //     }
+                // }
             });
         });
 
@@ -345,12 +345,12 @@ jQuery(window).load(function() {
             var page = '/download?' + fileName ;
 
             ga('send', 'pageview', {
-                'page': page,
-                'hitCallback': function() {
-                    if(console && console.log) {
-                        console.log('Analytics event triggered for ' + page);
-                    }
-                }
+                'page': page
+                // 'hitCallback': function() {
+                //     if(console && console.log) {
+                //         console.log('Analytics event triggered for ' + page);
+                //     }
+                // }
             });
         });
     }
