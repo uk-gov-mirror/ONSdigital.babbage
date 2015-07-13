@@ -34,7 +34,7 @@ jQuery(window).load(function() {
         jsEnhancePrint();
         jsEnhanceNumberSeparator();
         // jsEnhanceMarkdownCharts(); // disabling markdown table and chart enhancements
-        // jsEnhanceMarkdownTables(); // disabling table and chart enhancements
+        jsEnhanceMarkdownTables(); // disabling table and chart enhancements
         jsEnhancePrintCompendium();
         jsEnhanceBoxHeight();
         jsEnhanceBoxHeightResize();
@@ -319,7 +319,6 @@ jQuery(window).load(function() {
             var path = $('#pagePath').text();
             var downloadTitle = $('#title').text();
             var downloadFormat = $(this).attr('value');
-            var page = downloadType + ('?uri=') + path + ('/') + downloadTitle + '.' + downloadFormat;
 
             if(downloadType == '/file') {
                 var downloadType = '/download';
@@ -329,6 +328,8 @@ jQuery(window).load(function() {
             if(downloadType == '/chartimage') {
                 downloadFormat = 'png';
             }
+
+            var page = downloadType + ('?uri=') + path + ('/') + downloadTitle + '.' + downloadFormat;
             
             ga('send', 'pageview', {
                 'page': page
