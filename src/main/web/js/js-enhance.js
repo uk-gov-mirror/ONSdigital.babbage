@@ -370,15 +370,24 @@ $(function() {
             //remove html and bodyu height 100% to allow jquery scroll functions to work properly
             $('html, body').css('height', 'auto');
 
+
             //insert sticky wrapper
             var tocStickyWrap = $('<div class="toc-sticky-wrap"><div class="wrapper">');
             $(tocStickyWrap).insertAfter($('#toc'));
+            $('.toc-sticky-wrap .wrapper').append('<h2 class="flush">Table of contents</h2>');
+
 
             //cerate select list of sections
             var tocSelectList = $('<select class="toc-select-list">');
 
-            $('#toc li a').each(function(){
-                var text = $(this).text();
+            $(tocSelectList).append($('<option/>', { 
+                    value: '',
+                    text : '-- Select a section --' 
+                }));
+
+            $('#toc li a').each(function(i){
+                i = i + 1;
+                var text = i + '. ' + $(this).text();
                 var href = $(this).attr('href');
                 $(tocSelectList).append($('<option/>', { 
                     value: href,
@@ -386,10 +395,12 @@ $(function() {
                 }));
             });
 
+
             //add toc select to sticky wrapper
             $('.toc-sticky-wrap .wrapper').append(tocSelectList);
 
-            //ad select change function to toc select option
+
+            //add select change function to toc select option
             $('.toc-select-list').change(function() {
                 var location = $(this).find('option:selected').val();
                 if (location) {
