@@ -6,7 +6,7 @@ jQuery(window).load(function() {
     var browserNotSupported = (function () {
         var div = document.createElement('DIV');
         // http://msdn.microsoft.com/en-us/library/ms537512(v=vs.85).aspx
-        div.innerHTML = '<!--[if lte IE 8]><I></I><![endif]-->';
+        div.innerHTML = '<!--[if lte IE 9]><I></I><![endif]-->';
         return div.getElementsByTagName('I').length > 0;
     }());
 
@@ -33,8 +33,8 @@ jQuery(window).load(function() {
         jsEnhanceLinechart();
         jsEnhancePrint();
         jsEnhanceNumberSeparator();
-        // jsEnhanceMarkdownCharts(); // disabling markdown table and chart enhancements
-        // jsEnhanceMarkdownTables(); // disabling table and chart enhancements
+        jsEnhanceMarkdownCharts(); // disabling markdown table and chart enhancements
+        jsEnhanceMarkdownTables(); // disabling table and chart enhancements
         jsEnhancePrintCompendium();
         jsEnhanceBoxHeight();
         jsEnhanceBoxHeightResize();
@@ -319,7 +319,6 @@ jQuery(window).load(function() {
             var path = $('#pagePath').text();
             var downloadTitle = $('#title').text();
             var downloadFormat = $(this).attr('value');
-            var page = downloadType + ('?uri=') + path + ('/') + downloadTitle + '.' + downloadFormat;
 
             if(downloadType == '/file') {
                 var downloadType = '/download';
@@ -329,6 +328,8 @@ jQuery(window).load(function() {
             if(downloadType == '/chartimage') {
                 downloadFormat = 'png';
             }
+
+            var page = downloadType + ('?uri=') + path + ('/') + downloadTitle + '.' + downloadFormat;
             
             ga('send', 'pageview', {
                 'page': page

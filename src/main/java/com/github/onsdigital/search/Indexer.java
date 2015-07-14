@@ -2,6 +2,7 @@ package com.github.onsdigital.search;
 
 import com.github.onsdigital.configuration.Configuration;
 import com.github.onsdigital.content.page.base.PageType;
+import com.github.onsdigital.search.error.IndexingInProgressException;
 import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.action.ListenableActionFuture;
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequestBuilder;
@@ -20,21 +21,35 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import static org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder;
 
 public class Indexer {
 
+	private static final Lock indexingLock = new ReentrantLock();
+
 	public static void loadIndex(Client client) throws IOException {
-		List<String> absoluteFilePaths = LoadIndexHelper.getAbsoluteFilePaths(Configuration.getContentPath());
-		if (absoluteFilePaths.isEmpty()) {
-			throw new IllegalStateException("No items were found for indexing");
-		}
-		try {
-			createIndex(client, absoluteFilePaths);
-			indexDocuments(client, absoluteFilePaths);
-		} catch (Exception e) {
-			e.printStackTrace();
+
+		if (indexingLock.tryLock()) {
+			try {
+				List<String> absoluteFilePaths = LoadIndexHelper.getAbsoluteFilePaths(Configuration.getContentPath());
+				if (absoluteFilePaths.isEmpty()) {
+					throw new IllegalStateException("No items were found for indexing");
+				}
+				try {
+					createIndex(client, absoluteFilePaths);
+					indexDocuments(client, absoluteFilePaths);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+
+			} finally {
+				indexingLock.unlock();
+			}
+		} else {
+			throw new IndexingInProgressException();
 		}
 	}
 

@@ -1,13 +1,15 @@
 package com.github.onsdigital.template.handlebars;
 
-import com.github.jknack.handlebars.*;
+import com.github.jknack.handlebars.Context;
+import com.github.jknack.handlebars.Handlebars;
+import com.github.jknack.handlebars.HumanizeHelper;
+import com.github.jknack.handlebars.Template;
 import com.github.jknack.handlebars.cache.HighConcurrencyTemplateCache;
 import com.github.jknack.handlebars.context.FieldValueResolver;
 import com.github.jknack.handlebars.context.MapValueResolver;
 import com.github.jknack.handlebars.helper.StringHelpers;
 import com.github.jknack.handlebars.io.FileTemplateLoader;
 import com.github.onsdigital.configuration.Configuration;
-import com.github.onsdigital.content.page.base.Page;
 import com.github.onsdigital.template.TemplateRenderer;
 import com.github.onsdigital.template.handlebars.helpers.*;
 
@@ -23,22 +25,20 @@ public class HandlebarsRenderer implements TemplateRenderer {
     private Handlebars handlebars;
 
     public HandlebarsRenderer(String templatesDirectory, String templatesSuffix) {
-        handlebars = new Handlebars(new FileTemplateLoader(Configuration.getTemplatesDirectory(), Configuration.getTemplatesSuffix())).with(new HighConcurrencyTemplateCache());
+        handlebars = new Handlebars(new FileTemplateLoader(templatesDirectory, templatesSuffix)).with(new HighConcurrencyTemplateCache());
         initializeHelpers();
     }
 
     private void initializeHelpers() {
         handlebars.registerHelper("md", new CustomMarkdownTagHelper());
         handlebars.registerHelper("df", new DateFormatHelper());
-        handlebars.registerHelper("fs", new FileSizeHelper());
-        handlebars.registerHelper(ConditionHelper.eq.name(), ConditionHelper.eq);
-        handlebars.registerHelper(ConditionHelper.ne.name(), ConditionHelper.ne);
-        handlebars.registerHelper(ConditionHelper.ifall.name(), ConditionHelper.ifall);
-        handlebars.registerHelper(ConditionHelper.ifany.name(), ConditionHelper.ifany);
+        registerFileHelpers();
+        registerConditionHelpers();
         handlebars.registerHelper(ArrayHelpers.contains.name(), ArrayHelpers.contains);
         handlebars.registerHelper(MathHelper.increment.name(), MathHelper.increment);
         handlebars.registerHelper(MathHelper.decrement.name(), MathHelper.decrement);
         handlebars.registerHelper(LoopHelper.NAME, new LoopHelper());
+        handlebars.registerHelper(PathHelper.rootpath.name(), PathHelper.rootpath);
         // String helpers
         StringHelpers.register(handlebars);
         // Humanize helpers
@@ -65,6 +65,22 @@ public class HandlebarsRenderer implements TemplateRenderer {
 
     private Template compileTemplate(String templateName) throws IOException {
         return handlebars.compile(templateName);
+    }
+
+    private void registerConditionHelpers() {
+        ConditionHelper[] values = ConditionHelper.values();
+        for (int i = 0; i < values.length; i++) {
+            ConditionHelper value = values[i];
+            handlebars.registerHelper(value.name(), value);
+        }
+    }
+
+    private void registerFileHelpers() {
+        FileHelpers[] values = FileHelpers.values();
+        for (int i = 0; i < values.length; i++) {
+            FileHelpers value = values[i];
+            handlebars.registerHelper(value.name(), value);
+        }
     }
 
 }

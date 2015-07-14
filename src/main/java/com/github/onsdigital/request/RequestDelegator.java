@@ -52,26 +52,30 @@ public class RequestDelegator {
         String requestType = URIUtil.resolveRequestType(fullUri);
         RequestHandler handler = resolveRequestHandler(requestType);
         BabbageResponse getResponse = null;
+        String requestedUri = fullUri;
         if (handler == null) {
             handler = handlers.get("/"); //default handler
-            getResponse = get(uriWithParams,fullUri, request, handler);
         } else {
-            getResponse = get(uriWithParams,URIUtil.resolveResouceUri(fullUri), request, handler);
+            requestedUri = URIUtil.resolveResouceUri(fullUri);
         }
 
+        ZebedeeRequest zebedeeRequest = ZebedeeUtil.getZebedeeRequest(requestedUri, request.getCookies());
+        getResponse = get(zebedeeRequest, uriWithParams,requestedUri, request, handler);
+
         //tell client not to ask again for 5 mins
-        response.addHeader("cache-control", "public, max-age=300");
+        if(zebedeeRequest == null && Configuration.isDevelopment() == false) {
+            response.addHeader("cache-control", "public, max-age=300");
+        }
         response.setStatus(HttpServletResponse.SC_OK);
         getResponse.apply(response);
         return;
     }
 
-    private static BabbageResponse get(final String fullUri, final String requestedUri, final HttpServletRequest request, final RequestHandler handler) throws Throwable {
+    private static BabbageResponse get(ZebedeeRequest zebedeeRequest, final String fullUri, final String requestedUri, final HttpServletRequest request, final RequestHandler handler) throws Throwable {
 
-        ZebedeeRequest zebedeeRequest = ZebedeeUtil.getZebedeeRequest(requestedUri, request.getCookies());
         if (zebedeeRequest == null) {
             //No caching on development
-            if(Configuration.isDevelopment()) {
+            if (Configuration.isDevelopment()) {
                 System.out.println("On development environment, not caching");
                 return handler.get(requestedUri, request);
             }

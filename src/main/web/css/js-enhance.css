@@ -157,6 +157,12 @@
   color: #db852f;
 }
 
+.modal-scrollable {
+  height: 100%;
+  width: 100%;
+  overflow-y: scroll;
+}
+
 
 #modal-overlay {
     position: fixed;
@@ -184,6 +190,11 @@
 @media screen and (max-width: 420px) {
   .prototype-modal {
     margin: 20px 20px 20px 20px;
+    /*font-size: 10px;*/
+  }
+
+  .prototype-modal section {
+    /*font-size: 10px;*/
   }
 
   .prototype-modal .modal-nav li{
@@ -205,8 +216,16 @@
 }
 
 
-.anonymousReport .feedbackTab {
+#my_feedback {
   background-color: #FF9933;
+  position: absolute;
+  margin: 0 1.5rem;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  color: rgb(48, 48, 48);
+  bottom: 0px;
+  right: 0;
+  border-radius: 3px 3px 0 0;
 }
 
 
@@ -235,6 +254,10 @@
     position: fixed;
     top: 0;
     left: 0;    
+  }
+
+  #my_feedback {
+    margin: 0;
   }
 }
 

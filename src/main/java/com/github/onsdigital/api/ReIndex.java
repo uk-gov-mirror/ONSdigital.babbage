@@ -6,6 +6,7 @@ import com.github.davidcarboni.restolino.framework.Api;
 import com.github.onsdigital.api.util.ApiErrorHandler;
 import com.github.onsdigital.search.ElasticSearchServer;
 import com.github.onsdigital.search.Indexer;
+import com.github.onsdigital.search.error.IndexingInProgressException;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.eclipse.jetty.http.HttpStatus;
 
@@ -24,41 +25,35 @@ import java.util.concurrent.locks.ReentrantLock;
 public class ReIndex {
 
     private static final String REINDEX_KEY_HASH = "5NpB6/uAgk14nYwHzMbIQRnuI2W63MrBOS2279YlcUUY2kNOhrL+R5UFR3O066bQ";
-    private static final Lock indexingLock = new ReentrantLock();
 
     @POST
     public Object reIndex(@Context HttpServletRequest request, @Context HttpServletResponse response) throws IOException {
 
-            try {
-                String key = request.getParameter("key");
-                if (Password.verify(key, REINDEX_KEY_HASH)) {
-                    if (indexingLock.tryLock()) {
-                        try {
-                            System.out.println("Triggering reindex");
-                            Indexer.loadIndex(ElasticSearchServer.getClient());
-                            response.setStatus(HttpStatus.OK_200);
-                            return "Elasticsearch: indexing complete";
-                        } finally {
-                            indexingLock.unlock();
-                        }
-                    } else {
-                        response.setStatus(HttpStatus.CONFLICT_409);
-                        return "Indexing already in progress.";
-                    }
-                } else {
-                    response.setStatus(HttpStatus.UNAUTHORIZED_401);
-                    return "Wrong key, make sure you pass in the right key";
-                }
-            } catch (Exception e) {
-                System.out.println("Indexing error");
-                System.out.println(ExceptionUtils.getStackTrace(e));
-                ApiErrorHandler.handle(e, response);
-                return null;
+        try {
+            String key = request.getParameter("key");
+            if (Password.verify(key, REINDEX_KEY_HASH)) {
+                System.out.println("Triggering reindex");
+                Indexer.loadIndex(ElasticSearchServer.getClient());
+                response.setStatus(HttpStatus.OK_200);
+                return "Elasticsearch: indexing complete";
+            } else {
+                response.setStatus(HttpStatus.UNAUTHORIZED_401);
+                return "Wrong key, make sure you pass in the right key";
             }
+        } catch (IndexingInProgressException ex) {
+            response.setStatus(HttpStatus.CONFLICT_409);
+            return "Indexing already in progress.";
+        } catch (Exception e) {
+            System.out.println("Indexing error");
+            System.out.println(ExceptionUtils.getStackTrace(e));
+            ApiErrorHandler.handle(e, response);
+            return null;
+        }
     }
 
     /**
      * Generates new reindexing key/hash values.
+     *
      * @param args Not used.
      */
     public static void main(String[] args) {
