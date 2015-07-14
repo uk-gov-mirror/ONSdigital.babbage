@@ -114,7 +114,7 @@
                     <div class="box__content">
                         <ul class="list--neutral">
                             {{#each relatedDatasets}}
-                            <li class="flush--third--bottom"><a href="{{uri}}" title="{{description.title}}">{{description.title}}</a></li>
+                            <li class="flush--third--bottom"><a href="{{rootpath uri}}" title="{{description.title}}">{{description.title}}</a></li>
                             {{/each}}
                         </ul>
                     </div>
@@ -133,7 +133,12 @@
                         <ul class="list--neutral">
                             {{#each relatedDocuments}}
                             <li class="flush--third--bottom">
-                                <a href="{{uri}}" title="{{description.title}}">{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}</a>
+                                <a href="{{uri}}" title="{{description.title}}">{{description.title}}
+                                {{#if description.edition}}
+                                    {{#eq description.edition 'yes'}}{{/eq}}
+                                    {{#ne description.edition 'yes'}}: {{description.edition}}{{/ne}}
+                                {{/if}}
+                                </a>
                             </li>
                             {{/each}}
                         </ul>

@@ -24,14 +24,28 @@
 							{{#if @first}}
 							<li>
 								<h3 class="flush">Latest release</h3>
-								<h3 class="flush stand-out-text"><a href="{{uri}}">{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}</a></h3>
+								<h3 class="flush stand-out-text">
+									<a href="{{uri}}">{{description.title}}
+									{{#if description.edition}}
+										{{#eq description.edition 'yes'}}{{/eq}}
+										{{#ne description.edition 'yes'}}: {{description.edition}}{{/ne}}
+									{{/if}}
+									</a>
+								</h3>
 								<p class="stand-out-text">
 									Released: {{df description.releaseDate}}
 								</p>
 							</li>
 							{{else}}
 							<li>
-								<h3 class="flush"><a href="{{uri}}">{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}</a></h3>
+								<h3 class="flush">
+									<a href="{{uri}}">{{description.title}}
+									{{#if description.edition}}
+										{{#eq description.edition 'yes'}}{{/eq}}
+										{{#ne description.edition 'yes'}}: {{description.edition}}{{/ne}}
+									{{/if}}										
+									</a>
+								</h3>
 								<p>
 									Released: {{df description.releaseDate}}
 								</p>
