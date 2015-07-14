@@ -68,9 +68,9 @@
 					<!--<div id="content-{{@index}}" class="accordion__content" aria-labelledby="sc-{{@index}}">-->
 					<div class="accordion__content">
 						<ul class="list--neutral">
-							{{#each data}}
+							{{#each datasets}}
 							<li>
-								<h4 class="flush"><a href="{{uri}}">{{title}}</a></h4>
+								<h4 class="flush"><a href="{{uri}}">{{description.title}}</a></h4>
                					<p>All the time series data in this compendium.</p>
 							</li>
 							{{/each}}
