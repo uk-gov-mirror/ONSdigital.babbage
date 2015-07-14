@@ -127,23 +127,23 @@ function getLinechartConfig(timeseries) {
      formatter: function() {
        var id1 = '<div id="custom-tooltip" class="tooltip-left tooltip-right">';
        var block = id1 + "<div class='sidebar' >";
-       var title = '<b class="title">' + this.points[0].key + ': </b><br/>';
+       var title = '<b class="title">' + this.points[0].key + ': </b>';
        var symbol = ['<div class="circle">●</div>', '<div class="square">■</div>', '<div class="diamond">♦</div>', '<div class="triangle">▲</div>', '<div class="triangle">▼</div>'];
 
-       var content = block + "<div class='title'>&nbsp;</div>";
+       var content = block;
 
        // symbols
        $.each(this.points, function(i, val) {
          content += symbol[i];
        });
 
-       content += "</div>";
-       content += "<div class='mainText'>";
+       content += "<br/></div>";
+       content += "<div class='maintext'>";
        content += title;
 
        // series names and values
        $.each(this.points, function(i, val) {
-         content += '<div class="tiptext"><i>' + val.point.series.chart.series[i].name + "</i><br/><b>Value: " + val.point.series.chart.series[i].options.preUnit + val.y + " " + val.point.series.chart.series[i].options.unit + '</b></div>';
+         content += '<div class="tiptext">' + val.point.series.chart.series[i].name + "<br/><b>Value: " + val.point.series.chart.series[i].options.preUnit + val.y + " " + val.point.series.chart.series[i].options.unit + '</b></div>';
        });
        content += "</div>";
        return content;
