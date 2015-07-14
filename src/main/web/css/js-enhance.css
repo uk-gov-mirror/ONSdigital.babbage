@@ -157,6 +157,12 @@
   color: #db852f;
 }
 
+.modal-scrollable {
+  height: 100%;
+  width: 100%;
+  overflow-y: scroll;
+}
+
 
 #modal-overlay {
     position: fixed;
@@ -184,7 +190,7 @@
 @media screen and (max-width: 420px) {
   .prototype-modal {
     margin: 20px 20px 20px 20px;
-    font-size: 10px;
+    /*font-size: 10px;*/
   }
 
   .prototype-modal section {
