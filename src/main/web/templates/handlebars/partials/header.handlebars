@@ -98,11 +98,11 @@
 								<li class="{{#eq uri ../breadcrumb.2/uri}}nav--primary__active{{/eq}} {{#eq uri ../../uri}}nav--primary__active{{/eq}}" >
 									<a href="{{uri}}" >{{title}}</a>
 								</li>
-							{{/each}} <!-- /each to find 2nd level nodes -->
+							{{/each}} {{!-- /each to find 2nd level nodes --}}
 						</ul>
 				</li>
-			{{/each}} <!-- /each to find 1st level nodes -->
-			<li class="nav--primary__respondents {{#eq uri ../breadcrumb.2/uri}}nav--primary__active{{/eq}} {{#eq uri ../../uri}}nav--primary__active{{/eq}}">
+			{{/each}} {{!-- /each to find 1st level nodes --}}
+			<li class="nav--primary__respondents {{#eq uri '/about/surveys'}}nav--primary__active{{/eq}}">
 				<a href="/about/surveys">
 					<span class="icon-comment icon--inline" role="presentation"></span>
 					Taking part in a survey?
