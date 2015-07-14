@@ -15,10 +15,10 @@
     <meta content="on" http-equiv="cleartype" />
     <meta name="format-detection" content="telephone=no">
     <!--[if IE]><![endif]-->
-    <!--[if lte IE 8]>
+    <!--[if lte IE 9]>
 <link rel="stylesheet" href="/node_modules/ONS-Pattern-Library/dist/css/oldie.min.css"/>
 <![endif]-->
-    <!--[if gt IE 8]><!-->
+    <!--[if gt IE 9]><!-->
 		<link rel="stylesheet" href="/node_modules/ONS-Pattern-Library/dist/css/main.min.css"/>
 		<![endif]-->
 		<link rel="stylesheet" href="/css/js-enhance.css"/>
@@ -123,7 +123,7 @@
 			<form class="nav-search nav-search--hidden" id="searchBar" action="/search">
 				<div class="nav-search__container">
 					<label class="visuallyhidden" for="nav-search">Search for keyword or time series ID</label>
-					<input type="search" class="nav-search__field" id="nav-search" name="q" value="" placeholder="Search for keyword or time series ID">
+					<input type="search" autocomplete="off" class="nav-search__field" id="nav-search" name="q" value="" placeholder="Search for keyword or time series ID">
 				</div>
 				<button type="submit" class="btn btn--primary btn--nav-search" id="nav-search-submit">
 				<span class="icon-search-1" role="presentation"></span>
