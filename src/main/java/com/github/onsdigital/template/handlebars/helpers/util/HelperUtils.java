@@ -30,16 +30,22 @@ public class HelperUtils {
     }
 
     public static Long getFileSize(String uri) throws IOException {
-            // Standardise the path:
-            String uriPath = StringUtils.removeStart(uri, "/");
-            Path path = FileSystems.getDefault().getPath(
-                    Configuration.getContentPath());
+        Path file = getFile(uri);
 
-            Path file = path.resolve(uriPath);
-            if (!java.nio.file.Files.exists(file)) {
-                throw new FileNotFoundException();
-            }
-            return Files.size(file);
+        return Files.size(file);
+    }
+
+    private static Path getFile(String uri) throws FileNotFoundException {
+        // Standardise the path:
+        String uriPath = StringUtils.removeStart(uri, "/");
+        Path path = FileSystems.getDefault().getPath(
+                Configuration.getContentPath());
+
+        Path file = path.resolve(uriPath);
+        if (!Files.exists(file)) {
+            throw new FileNotFoundException();
+        }
+        return file;
     }
 
 }
