@@ -75,8 +75,8 @@ function addPrototypeModal() {
     // overlay.style['right'] = '0';
 
     var modal = document.createElement('div');
-    modal.innerHTML = '<div><header><h1>ONS Beta <span class="modal-beta">&beta;</span</h1></header><section><p>Welcome to an experimental prototype (beta) for the Office for National Statistics website.</p><p>PLEASE BE AWARE – this is a test website. It may contain inaccuracies or be misleading.</p><p><a href="http://www.ons.gov.uk" title="ONS web site">www.ons.gov.uk</a> remains the official website for ONS information.</p><p>Your suggestions will help us make this site better, so if you have any comments please send us <a href="mailto:web.comments@ons.gov.uk" title="Feedback">feedback</a>.</p><ul class="modal-nav"><li><a href="#" onclick="prototypeModalButtons();" class="btn-modal-continue">Proceed</a></li><li><a class="btn-modal-cancel" href="http://www.ons.gov.uk">Cancel</a></li></ul></section></div>';
-    modal.className = 'prototype-modal print-hidden';
+    modal.innerHTML = '<div class="prototype-modal"><header><h1>ONS Beta <span class="modal-beta">&beta;</span</h1></header><section><p>Welcome to an experimental prototype (beta) for the Office for National Statistics website.</p><p>PLEASE BE AWARE – this is a test website. It may contain inaccuracies or be misleading.</p><p><a href="http://www.ons.gov.uk" title="ONS web site">www.ons.gov.uk</a> remains the official website for ONS information.</p><p>Your suggestions will help us make this site better, so if you have any comments please send us <a href="mailto:web.comments@ons.gov.uk" title="Feedback">feedback</a>.</p><ul class="modal-nav"><li><a href="#" onclick="prototypeModalButtons();" class="btn-modal-continue">Proceed</a></li><li><a class="btn-modal-cancel" href="http://www.ons.gov.uk">Cancel</a></li></ul></section></div>';
+    modal.className = 'modal-scrollable print-hidden';
 
     if(!CookieUtils.getCookieValue('onsBetaDisclaimer')) {
         // console.log('no cookie');
