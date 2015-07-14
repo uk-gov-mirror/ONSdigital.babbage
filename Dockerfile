@@ -26,6 +26,9 @@ ENV RESTOLINO_STATIC="src/main/web"
 ENV RESTOLINO_CLASSES="target/classes"
 ENV PACKAGE_PREFIX=com.github.onsdigital
 
+# Temporary: expose Elasticsearch
+EXPOSE 9200
+
 # Update the entry point script
 RUN mv /usr/entrypoint/container.sh /usr/src/
 RUN echo "java -Xmx2048m \

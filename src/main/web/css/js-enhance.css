@@ -1,3 +1,5 @@
+/* Should be merged into pattern library */
+
 .loader:before,
 .loader:after,
 .loader {
@@ -155,26 +157,44 @@
   color: #db852f;
 }
 
+.modal-scrollable {
+  height: 100%;
+  width: 100%;
+  overflow-y: scroll;
+}
 
 
+#modal-overlay {
+    position: fixed;
+    /*top: 0;
+    bottom: 0;*/
+  }
 
 @media screen and (min-width: 768px) {
   #modal-overlay {
     /*position: fixed;*/
   }
 
-  .prototype-modal {
+  /*.prototype-modal {
     margin: 0;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+  }*/
+  .prototype-modal {
+    margin: 20px auto 20px auto;
   }
 }
 
 @media screen and (max-width: 420px) {
   .prototype-modal {
     margin: 20px 20px 20px 20px;
+    /*font-size: 10px;*/
+  }
+
+  .prototype-modal section {
+    font-size: 10px;
   }
 
   .prototype-modal .modal-nav li{
@@ -194,6 +214,53 @@
   }
 
 }
+
+
+#my_feedback {
+  background-color: #FF9933;
+  position: absolute;
+  margin: 0 1.5rem;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  color: rgb(48, 48, 48);
+  bottom: 0px;
+  right: 0;
+  border-radius: 3px 3px 0 0;
+}
+
+
+@media screen and (max-width: 799px) {
+  .markdown-table-wrap {
+
+    display: none;
+    position: fixed;
+    z-index: 100;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    overflow: scroll;
+    background: #fff;
+    padding: 60px 0 20px 0;
+  }
+
+  .btn--mobile-table-show {
+    visibility: visible !important;
+    /*display: inline-block !important;*/
+  }
+
+  .btn--mobile-table-hide {
+    visibility: visible !important;
+    position: fixed;
+    top: 0;
+    left: 0;    
+  }
+
+  #my_feedback {
+    margin: 0;
+  }
+}
+
 
 
 

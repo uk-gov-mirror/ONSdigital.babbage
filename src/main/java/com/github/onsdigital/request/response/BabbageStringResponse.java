@@ -10,7 +10,6 @@ import java.io.StringReader;
 public class BabbageStringResponse extends BabbageResponse {
 
     private String data;
-    private String charEncoding = CharEncoding.UTF_8;//Default encoding
 
     public BabbageStringResponse(String data) {
         this.data = data;
@@ -23,12 +22,10 @@ public class BabbageStringResponse extends BabbageResponse {
 
     public BabbageStringResponse(String data, String mimeType, String charEncoding) {
         this(data, mimeType);
-        this.charEncoding = charEncoding;
+        setCharEncoding(charEncoding);
     }
 
-    public void apply(HttpServletResponse response) throws IOException {
-        response.setCharacterEncoding(getCharEncoding());
-        response.setContentType(getMimeType());
+    public void applyData(HttpServletResponse response) throws IOException {
         IOUtils.copy(new StringReader(getData()), response.getOutputStream());
     }
 
@@ -36,7 +33,4 @@ public class BabbageStringResponse extends BabbageResponse {
         return data;
     }
 
-    public String getCharEncoding() {
-        return charEncoding;
-    }
 }

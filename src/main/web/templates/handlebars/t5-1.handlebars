@@ -10,7 +10,7 @@
         <p class="page-header__title page-header--stat-bulletin-desc">
             <strong>Time series</strong>
         </p>
-        <h1 class="page-header__title">{{description.title}}</h1>
+        <h1 class="page-header__title" id="title">{{description.title}}</h1>
         <div class="grid-wrap mini">
             <p class="grid-col tablet-grid-one-quarter {{#if description.nationalStatistic}}page-header__meta-block-with-img{{/if}}">
                 {{#if description.nationalStatistic}}
@@ -19,38 +19,42 @@
                 <span>Contact: </span><br/><a href="mailto:{{description.contact.email}}">{{#if description.contact.name}}{{description.contact.name}}{{else}}{{description.contact.email}}{{/if}}</a>
             </p>
             <p class="grid-col tablet-grid-one-quarter divider--border-left">
-                <span>Release date: </span><br/>{{df description.releaseDate}}<br/><a href="#">previous versions</a>
+                <span>Release date: </span><br/>{{df description.releaseDate}}<br/>{{!--<a href="#">previous versions</a>--}}
             </p>
             <p class="grid-col tablet-grid-one-quarter divider--border-left">
                 <span>Next release: </span><br/>{{description.nextRelease}}
             </p>
             <p class="grid-col tablet-grid-one-quarter divider--border-left">
-                Series ID: {{description.cdid}}
-                <a href="#" class="tooltip" title="This series ID is a unique random identifier for this individual time series. The digits themselves do not have any specific meaning" aria-label="This series ID is a unique random identifier for this individual time series. The digits themselves do not have any specific meaning">what is this? </a><br/>Units: {{description.preUnit}} {{description.unit}}<br/>{{seasonalAdjustment}}
+                {{#if description.cdid}}Series ID: {{description.cdid}}
+                <a href="#" class="tooltip nojs-hidden" title="This series ID is a unique random identifier for this individual time series. The digits themselves do not have any specific meaning" aria-label="This series ID is a unique random identifier for this individual time series. The digits themselves do not have any specific meaning">what is this? </a><br/>{{/if}}
+                {{#if description.unit}}Units: {{description.preUnit}} {{description.unit}}<br/>{{/if}}
+                {{seasonalAdjustment}}
             </p>
         </div>
     </div>
 </div>
+{{!-- Hide chart section if no data to draw the chart with --}}
+{{#ifany years quarters months}}
 <div class="wrapper">
     <div class="actionable-header--tight panel--mar-small">
         <!-- This title will need to be dynamically generated on the server -->
         <h2 class="actionable-header--tight__title gamma flush--bottom body-type--heavy">Download this entire time series</h2>
         <div class="actionable-header--tight__action actionable-header--tight__action--left">
             <form method="post" action="/chartimage" class="inline">
-                <button type="submit" class="btn btn--primary btn--small" target="_blank" name="uri" value="{{uri}}">
-                image (54kb)
-                <span class="icon-download icon--button-inline" role="presentation"></span>
+                <button type="submit" class="btn btn--primary btn--small download-analytics" target="_blank" name="uri" value="{{uri}}">
+                image
+                {{!--<span class="icon-download icon--button-inline" role="presentation"></span>--}}
                 </button>
                 <input type="hidden" name="fileName" value="{{description.title}}" />
             </form>
             <form method="post" action="/download" class="inline">
-                <button type="submit" name="type" value="csv" class="btn btn--primary btn--small">
-                .csv ()
-                <span class="icon-download icon--button-inline" role="presentation"></span>
+                <button type="submit" name="type" value="csv" class="btn btn--primary btn--small download-analytics">
+                .csv
+                {{!--<span class="icon-download icon--button-inline" role="presentation"></span>--}}
                 </button>
-                <button type="submit" name="type" value="xlsx" class="btn btn--primary btn--small" href="#">
-                .xlsx ()
-                <span class="icon-download icon--button-inline" role="presentation"></span>
+                <button type="submit" name="type" value="xlsx" class="btn btn--primary btn--small download-analytics" href="#">
+                .xlsx
+                {{!--<span class="icon-download icon--button-inline" role="presentation"></span>--}}
                 </button>
                 <input type="hidden" name="uri" value="{{uri}}" />
                 <input type="hidden" name="fileName" value="{{description.title}}" />
@@ -202,21 +206,21 @@
         <span class="chart-area__footer__label">Download custom data</span>
         <div class="chart-area__footer__actions">
           <form method="post" action="/chartimage" class="inline dlCustomData">
-              <button id="download-custom-image" type="submit" class="btn btn--primary btn--small" target="_blank" name="uri" value="{{uri}}">
+              <button id="download-custom-image" type="submit" class="btn btn--primary btn--small download-analytics" target="_blank" name="uri" value="{{uri}}">
               Image
-              <span class="icon-download icon--button-inline" role="presentation"></span>
+              {{!-- <span class="icon-download icon--button-inline" role="presentation"></span> --}}
               </button>
               <input type="hidden" name="fileName" value="{{description.title}}" />
 
           </form>
           <form method="post" action="/download" class="inline dlCustomData">
-              <button id="download-custom-csv" type="submit" name="type" value="csv" class="btn btn--primary btn--small">
-              .csv ()
-              <span class="icon-download icon--button-inline" role="presentation"></span>
+              <button id="download-custom-csv" type="submit" name="type" value="csv" class="btn btn--primary btn--small download-analytics">
+              .csv
+              {{!-- <span class="icon-download icon--button-inline" role="presentation"></span> --}}
               </button>
-              <button id="download-custom-excel" type="submit" name="type" value="xlsx" class="btn btn--primary btn--small" href="#">
-              .xlsx ()
-              <span class="icon-download icon--button-inline" role="presentation"></span>
+              <button id="download-custom-excel" type="submit" name="type" value="xlsx" class="btn btn--primary btn--small download-analytics" href="#">
+              .xlsx
+              {{!-- <span class="icon-download icon--button-inline" role="presentation"></span> --}}
               </button>
               <input type="hidden" name="uri" value="{{uri}}" />
               <input type="hidden" name="fileName" value="{{description.title}}" />
@@ -296,8 +300,10 @@
         </table>
     </div>
 </div>
+{{/ifany}}
 <div class="wrapper panel--bottom-mar">
     <div class="grid-wrap">
+      {{#if section.markdown}}
         <div class="grid-col desktop-grid-two-thirds tablet-grid-full-width">
             <article class="box border-horizontal-single content-section">
                 <!-- <header class="box__header">
@@ -326,6 +332,7 @@
                 </div>
             </article>
         </div>
+        {{/if}}
         <!-- Sidebar -->
         <div class="grid-col desktop-grid-one-third">
             <!-- article__content -->
@@ -359,6 +366,7 @@
         </div>
         <div class="grid-col desktop-grid-full-width">
             <div class="grid-wrap">
+              {{#if relatedMethodology}}
                 <div class="grid-col desktop-grid-one-half">
                     <article class="box box--padded sectioned">
                         <header class="box__header">
@@ -375,7 +383,9 @@
                         </div>
                     </article>
                 </div>
+                {{/if}}
                 <!-- /grid-desktop-one-half -->
+                {{#if description.contact.name}}
                 <div class="grid-col desktop-grid-one-half">
                     <article class="box box--padded sectioned">
                         <header class="box__header">
@@ -390,6 +400,7 @@
                         </div>
                     </article>
                 </div>
+                {{/if}}
                 <!-- /grid-desktop-one-half -->
             </div>
             <!-- /grid-wrap -->

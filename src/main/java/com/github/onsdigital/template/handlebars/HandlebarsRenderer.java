@@ -1,6 +1,7 @@
 package com.github.onsdigital.template.handlebars;
 
 import com.github.jknack.handlebars.*;
+import com.github.jknack.handlebars.cache.HighConcurrencyTemplateCache;
 import com.github.jknack.handlebars.context.FieldValueResolver;
 import com.github.jknack.handlebars.context.MapValueResolver;
 import com.github.jknack.handlebars.helper.StringHelpers;
@@ -22,7 +23,7 @@ public class HandlebarsRenderer implements TemplateRenderer {
     private Handlebars handlebars;
 
     public HandlebarsRenderer(String templatesDirectory, String templatesSuffix) {
-        handlebars = new Handlebars(new FileTemplateLoader(Configuration.getTemplatesDirectory(), Configuration.getTemplatesSuffix()));
+        handlebars = new Handlebars(new FileTemplateLoader(Configuration.getTemplatesDirectory(), Configuration.getTemplatesSuffix())).with(new HighConcurrencyTemplateCache());
         initializeHelpers();
     }
 
@@ -32,6 +33,8 @@ public class HandlebarsRenderer implements TemplateRenderer {
         handlebars.registerHelper("fs", new FileSizeHelper());
         handlebars.registerHelper(ConditionHelper.eq.name(), ConditionHelper.eq);
         handlebars.registerHelper(ConditionHelper.ne.name(), ConditionHelper.ne);
+        handlebars.registerHelper(ConditionHelper.ifall.name(), ConditionHelper.ifall);
+        handlebars.registerHelper(ConditionHelper.ifany.name(), ConditionHelper.ifany);
         handlebars.registerHelper(ArrayHelpers.contains.name(), ArrayHelpers.contains);
         handlebars.registerHelper(MathHelper.increment.name(), MathHelper.increment);
         handlebars.registerHelper(MathHelper.decrement.name(), MathHelper.decrement);
@@ -58,17 +61,9 @@ public class HandlebarsRenderer implements TemplateRenderer {
 
     private Template getTemplate(String templateName) throws IOException {
         return compileTemplate(templateName);
-
-//        Template template = templatesCache.get(templateName);
-//        if (template == null) {
-//            template = compileTemplate(templateName);
-//            templatesCache.put(templateName, template);
-//        }
-//        return template;
     }
 
     private Template compileTemplate(String templateName) throws IOException {
-        System.out.println("Compiling template for " + templateName + " for the first time");
         return handlebars.compile(templateName);
     }
 

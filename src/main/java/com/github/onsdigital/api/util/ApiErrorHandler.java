@@ -22,7 +22,7 @@ public class ApiErrorHandler {
 
     private static String HTML_CONTENT_TYPE = "text/html";
 
-    public static void handle(Exception e, HttpServletResponse response) throws IOException {
+    public static void handle(Throwable e, HttpServletResponse response) throws IOException {
 
         logError(e);
         Map<String, String> errorResponse = new HashMap<String, String>();
@@ -51,7 +51,7 @@ public class ApiErrorHandler {
         }
     }
 
-    private static void logError(Exception e) {
+    private static void logError(Throwable e) {
         e.printStackTrace();
     }
 }

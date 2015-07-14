@@ -12,21 +12,23 @@
 	<!-- /wrapper -->
 </div>
 <!-- /page-header -->
-
 <div class="wrapper">
 	<div class="grid-wrap">
 		<ul class="list--neutral">
-		{{#each sections}}
-            <li class="grid-col tablet-grid-one-third box--padded-vertical nav--block-landing">
-             	<h3>
-					<a href="{{uri}}">{{description.title}}</a>
-				</h3>
-				<p>{{description.summary}}</p>
-			</li>
-		{{/each}}
+			{{#each sections}}
+				{{#ifany data.items data.datasets data.statsBulletins data.relatedArticles}}
+					{{> partials/t2/t2-section}}
+				{{else}}
+					{{#eq data.type 'taxonomy_landing_page'}}
+						{{#if data.sections}}
+							{{> partials/t2/t2-section}}
+						{{/if}}
+					{{/eq}}
+				{{/ifany}}
+			{{/each}}
 		</ul>
 		<div class="grid-col desktop-grid-one-third tablet-grid-one-half clear-left box--padded-vertical">
-			{{> partials/local-box}}	
+			{{> partials/local-box}}
 		</div>
 		<!-- /grid-col -->
 	</div>
