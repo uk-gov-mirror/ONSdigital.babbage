@@ -16,7 +16,9 @@
 				{{/if}}
 			</div>
 			<div class="list--table__item__body list--table__item__body--chart">
+				 {{#ifany data.years data.quarters data.months}}
 				<img class="full-width" src="{{data.uri}}/sparkline" alt="{{data.description.title}}">
+				{{/ifany}}
 			</div>
 			<div class="list--table__item__body">
 				<div class="list--table__item__body list--table__item__body--stat float-left">
