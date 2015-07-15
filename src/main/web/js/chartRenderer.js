@@ -109,17 +109,20 @@ function renderChartObject(bindTag, chart, chartHeight, chartWidth) {
     tooltip: {
       valueDecimals:chart.decimalPlaces
     },
+    plotOptions: {
+      series: {
+        animation: false
+      }
+    },
     credits: {
       enabled: false
     }
   };
 
   if (stacked) {
-    options.plotOptions = {
-      column: {
+    options.plotOptions.column= {
         stacking: 'normal'
       }
-    }
   }
 
   var chart = new Highcharts.Chart(options);
