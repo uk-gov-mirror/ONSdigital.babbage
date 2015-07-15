@@ -342,11 +342,6 @@ $(function() {
             
             ga('send', 'pageview', {
                 'page': page
-                // 'hitCallback': function() {
-                //     if(console && console.log) {
-                //         console.log('Analytics event triggered for ' + page);
-                //     }
-                // }
             });
         });
 
@@ -357,25 +352,16 @@ $(function() {
 
             ga('send', 'pageview', {
                 'page': page
-                // 'hitCallback': function() {
-                //     if(console && console.log) {
-                //         console.log('Analytics event triggered for ' + page);
-                //     }
-                // }
             });
         });
 
+        //Track click on 'print full report' link
         $('.print-analytics').click(function(){
         	var path = $('#pagePath').text();
-        	var page = '/print?' + path;
+        	var page = '/print?uri=' + path;
 
         	ga('send', 'pageview', {
                 'page': page
-                // 'hitCallback': function() {
-                //     if(console && console.log) {
-                //         console.log('Analytics event triggered for ' + page);
-                //     }
-                // }
             });
         });
     }
