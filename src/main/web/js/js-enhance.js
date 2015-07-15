@@ -1,7 +1,7 @@
 //progressive enhancement (jQuery)
 
-// $(function() {
-jQuery(window).load(function() {
+$(function() {
+// jQuery(window).load(function() {
 
     var browserNotSupported = (function () {
         var div = document.createElement('DIV');
@@ -40,6 +40,8 @@ jQuery(window).load(function() {
         jsEnhanceBoxHeightResize();
         jsEnhanceDownloadAnalytics();
 
+        jsEnhanceTableOfContents();
+
         // jsEnhanceMobileTables();
         
         // prototypeModalButtons();
@@ -54,6 +56,11 @@ jQuery(window).load(function() {
             $('#loading-overlay').fadeOut(300);
         }, 500);
     }
+
+
+
+
+
 
     function jsEnhanceULNavToSelectNav() {
         $('.js-enhance--ul-to-select').each(function() {
@@ -357,19 +364,81 @@ jQuery(window).load(function() {
     }
 
 
-    // function prototypeModalButtons() {
-    //     $('.btn-modal-continue').click(function(e){
-    //         alert('hello');
-    //         e.preventDefault();
-    //         var d = new Date();
-    //         d.setTime(d.getTime() + (1*24*60*60*1000));
-    //         var expires = "expires="+d.toUTCString();
-    //         document.cookie='onsBetaDisclaimer=true; ' + expires;
-    //         $('#modal-overlay').fadeOut(300);
-    //     });
-    // }
+    function jsEnhanceTableOfContents() {
+        if($('body').contents().find('*').hasClass('wrapper--content')) {
+            
+            //remove html and bodyu height 100% to allow jquery scroll functions to work properly
+            $('html, body').css('height', 'auto');
 
-    // 
+
+            //insert sticky wrapper
+            var tocStickyWrap = $('<div class="toc-sticky-wrap"><div class="wrapper">');
+            $(tocStickyWrap).insertAfter($('#toc'));
+            $('.toc-sticky-wrap .wrapper').append('<h2 class="flush">Table of contents</h2>');
+
+
+            //cerate select list of sections
+            var tocSelectList = $('<select class="toc-select-list">');
+
+            $(tocSelectList).append($('<option/>', { 
+                    value: '',
+                    text : '-- Select a section --' 
+                }));
+
+            $('#toc li a').each(function(i){
+                i = i + 1;
+                var text = i + '. ' + $(this).text();
+                var href = $(this).attr('href');
+                $(tocSelectList).append($('<option/>', { 
+                    value: href,
+                    text : text 
+                }));
+            });
+
+
+            //add toc select to sticky wrapper
+            $('.toc-sticky-wrap .wrapper').append(tocSelectList);
+
+
+            //add select change function to toc select option
+            $('.toc-select-list').change(function() {
+                var location = $(this).find('option:selected').val();
+                if (location) {
+                    // window.location = location;
+                    // var locationhash = '#' + location;
+                    $('html, body').animate({ scrollTop: $(location).offset().top - 60}, 1000);
+                }
+            });
+            
+
+
+
+            // sticky toc function that evaluates scroll position and activates the sticky toc as appropriate
+            function stickyTOC() {
+                var contentStart = $('.wrapper--content').offset().top;
+                var scrollTop = $(window).scrollTop();
+                // console.log(scrollTop);
+                if (scrollTop > contentStart) { 
+                    $('#toc').addClass('table-of-contents-ordered-list-hide');
+                    // $('#toc').removeClass('table-of-contents-ordered-list');
+                    $('.wrapper--content').css('padding-top','9rem');
+                    $('.toc-sticky-wrap').show();
+                } else {
+                    // $('#toc').addClass('table-of-contents-ordered-list');
+                    $('#toc').removeClass('table-of-contents-ordered-list-hide');
+                    $('.wrapper--content').css('padding-top','0');
+                    $('.toc-sticky-wrap').hide();
+                }
+            }
+
+            stickyTOC();
+            $(window).scroll(function() {
+                stickyTOC();
+                // console.log($(window).scrollTop());
+            });
+        }
+        
+    }
 
     
 });
