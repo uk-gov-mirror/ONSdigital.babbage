@@ -1,8 +1,8 @@
-{{> partials/header}}
+{{> templates/handlebars/partials/header}}
 <main id="main" role="main" tabindex="-1">
 <div class="page-header slate slate--light-green">
 	<div class="wrapper">
-		{{> partials/breadcrumb}}
+		{{> templates/handlebars/partials/breadcrumb}}
 		<p class="page-header__title">
 			Dataset
 		</p>
@@ -49,11 +49,15 @@
 			<div class="lede">
 				{{md description.summary}}
 			</div>
-
-			{{!-- TODO display number of results
 			<p>
-				<span class="stand-out-text">{{resultsNumber}}</span> results
-			</p> --}}
+				<span class="stand-out-text">
+				{{#each downloads}}
+					{{#if @last}}
+						{{@index_1}}
+					{{/if}}
+				{{/each}}
+				</span> results
+			</p>
 		</div>
 		<!-- /grid-col -->
 		<div class="grid-col desktop-grid-two-thirds">
@@ -135,4 +139,4 @@
 </div>
 <!-- /wrapper -->
 </main>
-{{> partials/footer}}
+{{> templates/handlebars/partials/footer}}
