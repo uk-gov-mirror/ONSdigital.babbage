@@ -321,6 +321,7 @@ $(function() {
     
     /*Track file downloads*/
     function jsEnhanceDownloadAnalytics() {
+        //Track generated file downloads (eg chart xlsx download)
         $('.download-analytics').click(function(){
             var downloadType = $(this).parent().attr('action');
             var path = $('#pagePath').text();
@@ -332,6 +333,7 @@ $(function() {
                 var downloadFormat = 'xls';
             }
 
+            // Charts don't contain file type information so 'png' hardcoded
             if(downloadType == '/chartimage') {
                 downloadFormat = 'png';
             }
@@ -348,6 +350,7 @@ $(function() {
             });
         });
 
+        //Track uploaded file downloads
         $('.file-download-analytics').click(function(){
             var fileName = $(this).attr('href').split('=')[1];
             var page = '/download?' + fileName ;
@@ -380,7 +383,7 @@ $(function() {
             //cerate select list of sections
             var tocSelectList = $('<select class="toc-select-list">');
 
-            $(tocSelectList).append($('<option/>', { 
+            $(tocSelectList).append($('<option/>', {
                     value: '',
                     text : '-- Select a section --' 
                 }));
@@ -404,8 +407,9 @@ $(function() {
             $('.toc-select-list').change(function() {
                 var location = $(this).find('option:selected').val();
                 if (location) {
-                    // window.location = location;
+                    window.location = location;
                     // var locationhash = '#' + location;
+                    expandAccordion();
                     $('html, body').animate({ scrollTop: $(location).offset().top - 60}, 1000);
                 }
             });
@@ -437,8 +441,6 @@ $(function() {
                 // console.log($(window).scrollTop());
             });
         }
-        
     }
-
     
 });

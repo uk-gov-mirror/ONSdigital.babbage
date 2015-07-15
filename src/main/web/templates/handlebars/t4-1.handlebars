@@ -1,8 +1,8 @@
-{{> partials/header}}
+{{> templates/handlebars/partials/header}}
 <main id="main" role="main" tabindex="-1">
 	<div class="page-header page-header--article page-header--stat-bulletin slate--blue">
 		<div class="wrapper" >
-			{{> partials/breadcrumb}}
+			{{> templates/handlebars/partials/breadcrumb}}
 			<p class="page-header__title page-header--stat-bulletin-desc">
 				Statistical bulletin
 			</p>
@@ -53,7 +53,7 @@
 				{{#if accordion}}
 					{{#each accordion}}
 					<li>
-						<a href="#{{slugify title}}" class="footnote-body">{{title}}</a>
+						<a href="#{{slugify title}}" class="expand-accordion">{{title}}</a>
 					</li>
 					{{/each}}
 				{{/if}}
@@ -156,10 +156,10 @@
 					{{/if}}
 				</div>
       			<div class="grid-col desktop-grid-one-third tablet-grid-full-width">
-	      			{{> partials/local-box}}
+	      			{{> templates/handlebars/partials/local-box}}
       			</div>
 			</div>
 		</div>
 	</div>
 </main>
-{{> partials/footer}}
+{{> templates/handlebars/partials/footer}}
