@@ -1,10 +1,9 @@
-
 function renderChartForUri(uri, id, $graphic) {
 
   var chart;
 
   function drawGraphic() {
-    var chartWidth = $graphic.width(); //- margin.left - margin.right;
+    var chartWidth = $graphic.width();
     var chartHeight = chartWidth * chart.aspectRatio;
     renderChartObject('#' + id, chart, chartHeight, chartWidth);
   }
@@ -23,7 +22,6 @@ function renderChartForUri(uri, id, $graphic) {
     }
   });
 }
-
 
 // Do the rendering
 function renderChartObject(bindTag, chart, chartHeight, chartWidth) {
@@ -53,7 +51,7 @@ function renderChartObject(bindTag, chart, chartHeight, chartWidth) {
     var data = [];
     $.each(chart.data, function (j, seriesData) {
       var value = parseFloat(seriesData[seriesName]);
-      console.log(value);
+      //console.log(value);
       if(isNaN(value)) {
         value = null;
       }
