@@ -97,7 +97,6 @@ page.open(address, function(status) {
 
         // Now create the output file and exit PhantomJS
         var result = page.render(output);
-        console.log('successfully generated pdf file ', result);
         phantom.exit();
     }
 });
