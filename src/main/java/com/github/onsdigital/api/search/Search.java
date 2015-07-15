@@ -218,7 +218,7 @@ public class Search {
                     if (items.size() > 0) {
                         PageReference headlineData = items.iterator().next();
                         if (headlineData != null) {
-                            ContentUtil.loadReferencedPageDescription(DataService.getInstance(), headlineData);
+                            ContentUtil.loadReferencedPage(DataService.getInstance(), headlineData);
                             iterator.remove();
                             break;
                         }
