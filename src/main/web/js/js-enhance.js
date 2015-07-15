@@ -364,6 +364,20 @@ $(function() {
                 // }
             });
         });
+
+        $('.print-analytics').click(function(){
+        	var path = $('#pagePath').text();
+        	var page = '/print?' + path;
+
+        	ga('send', 'pageview', {
+                'page': page
+                // 'hitCallback': function() {
+                //     if(console && console.log) {
+                //         console.log('Analytics event triggered for ' + page);
+                //     }
+                // }
+            });
+        });
     }
 
 
