@@ -45,7 +45,7 @@ public class PreviousReleasesRequestHandler implements RequestHandler {
         List<String> folders = new ArrayList<>(listing.folders.keySet());
         Collections.sort(folders, Collections.reverseOrder());
 
-        for (String folder : listing.folders.keySet()) {
+        for (String folder : folders) {
             URI pageReferenceUri = URI.create(requestedUri + "/" + folder);
             PageReference pageReference = new PageReference(pageReferenceUri);
             Page referencedPage = dataService.readAsPage(pageReferenceUri.toString(), false, zebedeeRequest);
