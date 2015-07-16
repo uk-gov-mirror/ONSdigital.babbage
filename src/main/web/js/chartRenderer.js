@@ -1,16 +1,12 @@
 
-function renderChartForUri(uri) {
+function renderChartForUri(uri, id, $graphic) {
 
   var chart;
-  var selector = '.markdown-chart'; //'#' + uri.replace(/\//g, '\\/');
-  var $graphic = $(selector);
-  var pymChild = new pym.Child({});
 
   function drawGraphic() {
     var chartWidth = $graphic.width(); //- margin.left - margin.right;
     var chartHeight = chartWidth * chart.aspectRatio;
-    renderChartObject('.markdown-chart', chart, chartHeight, chartWidth);
-    pymChild.sendHeight();
+    renderChartObject('#' + id, chart, chartHeight, chartWidth);
   }
 
   var dataUri = uri + "/data";
@@ -24,7 +20,6 @@ function renderChartForUri(uri) {
     success: function (data) {
       chart = data;
       drawGraphic();
-      window.onresize = drawGraphic;
     }
   });
 }
@@ -34,9 +29,9 @@ function renderChartForUri(uri) {
 function renderChartObject(bindTag, chart, chartHeight, chartWidth) {
 
   // Create our svg
-  var svg = d3.select(bindTag + " svg")
-    .attr("viewBox", "0 0 " + chartWidth + " " + chartHeight)
-    .attr("preserveAspectRatio", "xMinYMin meet");
+  //var svg = d3.select(bindTag + " svg")
+  //  .attr("viewBox", "0 0 " + chartWidth + " " + chartHeight)
+  //  .attr("preserveAspectRatio", "xMinYMin meet");
 
    //If we are talking time series skip
   if (chart.isTimeSeries && (chart.chartType == 'line')) {
