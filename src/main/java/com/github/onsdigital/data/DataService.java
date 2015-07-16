@@ -4,7 +4,6 @@ import com.github.onsdigital.content.DirectoryListing;
 import com.github.onsdigital.content.page.base.Page;
 import com.github.onsdigital.content.service.ContentNotFoundException;
 import com.github.onsdigital.content.util.ContentUtil;
-import com.github.onsdigital.data.zebedee.ZebedeeClient;
 import com.github.onsdigital.data.zebedee.ZebedeeDataService;
 import com.github.onsdigital.data.zebedee.ZebedeeRequest;
 import org.apache.commons.io.IOUtils;
@@ -57,15 +56,10 @@ public class DataService {
 
     public DirectoryListing readDirectory(String uri, ZebedeeRequest zebedeeRequest) throws ContentNotFoundException {
 
-        // make request to browse api
-        ZebedeeClient zebedeeClient = new ZebedeeClient(zebedeeRequest);
-        DirectoryListing directoryListing;
-        try {
-            directoryListing = ContentUtil.deserialise(zebedeeClient.get("browse", uri, false), DirectoryListing.class);
-        } finally {
-            zebedeeClient.closeConnection();
+        if (zebedeeRequest != null) {
+            return ZebedeeDataService.getInstance().readDirectory(uri, zebedeeRequest);
         }
 
-        return directoryListing;
+        return LocalFileDataService.getInstance().readDirectory(uri);
     }
 }
