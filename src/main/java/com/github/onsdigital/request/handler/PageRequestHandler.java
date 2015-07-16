@@ -44,7 +44,7 @@ public class PageRequestHandler implements RequestHandler {
         }
     }
 
-    private boolean isJsEnhanced(HttpServletRequest request) {
+    public static boolean isJsEnhanced(HttpServletRequest request) {
         boolean jsEnhanced = false;
         Cookie[] cookies = request.getCookies();
 
