@@ -65,9 +65,7 @@ export BONSAI_CLUSTERNAME=elasticsearch
 export BONSAI_HOSTNAME=localhost
 export BONSAI_TRANSPORT_PORT=9300
 
-# Mongodb
-export MONGO_USER=ons
-export MONGO_PASSWORD=uJlVY2FDGI5SFawS/PN+jnZpymKWpU7C
+export PHANTOMJS_PATH=`which phantomjs`
 
 # Development: reloadable
 $JAVA_HOME/bin/java $JAVA_OPTS \

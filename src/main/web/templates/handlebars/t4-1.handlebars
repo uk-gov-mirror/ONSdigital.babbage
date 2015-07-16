@@ -28,13 +28,13 @@
 				<p class="grid-col tablet-grid-one-quarter divider--border-left print-hidden">
 					<a href="" id="jsEnhancePrint" class="link-complex nojs-hidden js-enhance--show">
 						<span class="icon-print"></span>
-						<span class="link-complex__target">Print full report</span>
+						<span class="link-complex__target print-analytics">Print full report</span>
 					</a>
-					{{!--<br class="nojs-hidden js-enhance--show"/>
-					<a href="#" class="link-complex">
+					{{!-- <br class="nojs-hidden js-enhance--show"/>
+					<a href="{{uri}}/pdf" class="link-complex">
 						<span class="icon-download" role="presentation"></span>
-						<span class="link-complex__target">Download PDF</span>--}}
-					</a>
+						<span class="link-complex__target">Download PDF</span>
+					</a> --}}
 				</p>
 			</div>
 		</div>
@@ -53,7 +53,7 @@
 				{{#if accordion}}
 					{{#each accordion}}
 					<li>
-						<a href="#{{slugify title}}" class="footnote-body">{{title}}</a>
+						<a href="#{{slugify title}}" class="expand-accordion">{{title}}</a>
 					</li>
 					{{/each}}
 				{{/if}}

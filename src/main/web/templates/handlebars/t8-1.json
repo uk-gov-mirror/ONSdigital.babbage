@@ -1,121 +1,134 @@
 {
-  "datasets": [
+  "migrated": true,
+  "downloads": [
     {
-      "summary": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam bibendum, odio sit amet accumsan dignissim, mi est tristique enim.",
-      "title": "Link to dataset 1",
-      "uri": "#",
-      "index": 0
+      "title": "Intermediate Estimates 2013, Quality Measures",
+      "file": "businessindustryandtrade/manufacturingandproductionindustry/datasets/ukmanufacturerssalesbyproductsurveyprodcomintermediateresults2013andfinalresults2012referencetables/qualitymeasuresdivisions083320102013_tcm77-389739.xls",
+      "fileDescription": "The sales by UK based manufacturers of the individual products covered by the PRODCOM inquiry. It contains the quality measures for 2013 intermediate and final estimates for 2012."
     },
     {
-        "summary": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam bibendum, odio sit amet accumsan dignissim, mi est tristique enim.",
-        "title": "Link to dataset 2",
-        "uri": "#",
-        "index": 1
+      "title": "UK Manufacturers\u0027 Sales by Product - Intermediate 2013",
+      "file": "businessindustryandtrade/manufacturingandproductionindustry/datasets/ukmanufacturerssalesbyproductsurveyprodcomintermediateresults2013andfinalresults2012referencetables/rftprod2013_tcm77-389735.xls",
+      "fileDescription": "The sales by UK based manufacturers of the individual products covered by the PRODCOM inquiry. It provides intermediate estimates of manufacturers’ sales by product, from businesses based in the UK in 2013, and final estimates for 2012."
     },
     {
-        "summary": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam bibendum, odio sit amet accumsan dignissim, mi est tristique enim.",
-        "title": "Link to dataset 3",
-        "uri": "#",
-        "index": 2
+      "title": "UK Manufacturers\u0027 Sales by Product - Intermediate 2013",
+      "file": "businessindustryandtrade/manufacturingandproductionindustry/datasets/ukmanufacturerssalesbyproductsurveyprodcomintermediateresults2013andfinalresults2012referencetables/rftprod2013_tcm77-389735.xls",
+      "fileDescription": "The sales by UK based manufacturers of the individual products covered by the PRODCOM inquiry. It provides intermediate estimates of manufacturers’ sales by product, from businesses based in the UK in 2013, and final estimates for 2012."
     },
     {
-        "summary": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam bibendum, odio sit amet accumsan dignissim, mi est tristique enim.",
-        "title": "Link to dataset 4",
-        "uri": "#",
-        "index": 3
+      "title": "UK Manufacturers\u0027 Sales by Product - Intermediate 2013",
+      "file": "businessindustryandtrade/manufacturingandproductionindustry/datasets/ukmanufacturerssalesbyproductsurveyprodcomintermediateresults2013andfinalresults2012referencetables/rftprod2013_tcm77-389735.xls",
+      "fileDescription": "The sales by UK based manufacturers of the individual products covered by the PRODCOM inquiry. It provides intermediate estimates of manufacturers’ sales by product, from businesses based in the UK in 2013, and final estimates for 2012."
     },
     {
-        "summary": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam bibendum, odio sit amet accumsan dignissim, mi est tristique enim.",
-        "title": "Link to dataset 5",
-        "uri": "#",
-        "index": 4
+      "title": "UK Manufacturers\u0027 Sales by Product - Intermediate 2013",
+      "file": "businessindustryandtrade/manufacturingandproductionindustry/datasets/ukmanufacturerssalesbyproductsurveyprodcomintermediateresults2013andfinalresults2012referencetables/rftprod2013_tcm77-389735.xls",
+      "fileDescription": "The sales by UK based manufacturers of the individual products covered by the PRODCOM inquiry. It provides intermediate estimates of manufacturers’ sales by product, from businesses based in the UK in 2013, and final estimates for 2012."
     },
     {
-        "summary": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam bibendum, odio sit amet accumsan dignissim, mi est tristique enim.",
-        "title": "Link to dataset 6",
-        "uri": "#",
-        "index": 5
+      "title": "UK Manufacturers\u0027 Sales by Product - Intermediate 2013",
+      "file": "businessindustryandtrade/manufacturingandproductionindustry/datasets/ukmanufacturerssalesbyproductsurveyprodcomintermediateresults2013andfinalresults2012referencetables/rftprod2013_tcm77-389735.xls",
+      "fileDescription": "The sales by UK based manufacturers of the individual products covered by the PRODCOM inquiry. It provides intermediate estimates of manufacturers’ sales by product, from businesses based in the UK in 2013, and final estimates for 2012."
     },
     {
-        "summary": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam bibendum, odio sit amet accumsan dignissim, mi est tristique enim.",
-        "title": "Link to dataset 7",
-        "uri": "#",
-        "index": 6
+      "title": "UK Manufacturers\u0027 Sales by Product - Intermediate 2013",
+      "file": "businessindustryandtrade/manufacturingandproductionindustry/datasets/ukmanufacturerssalesbyproductsurveyprodcomintermediateresults2013andfinalresults2012referencetables/rftprod2013_tcm77-389735.xls",
+      "fileDescription": "The sales by UK based manufacturers of the individual products covered by the PRODCOM inquiry. It provides intermediate estimates of manufacturers’ sales by product, from businesses based in the UK in 2013, and final estimates for 2012."
     },
     {
-        "summary": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam bibendum, odio sit amet accumsan dignissim, mi est tristique enim.",
-        "title": "Link to dataset 8",
-        "uri": "#",
-        "index": 7
+      "title": "UK Manufacturers\u0027 Sales by Product - Intermediate 2013",
+      "file": "businessindustryandtrade/manufacturingandproductionindustry/datasets/ukmanufacturerssalesbyproductsurveyprodcomintermediateresults2013andfinalresults2012referencetables/rftprod2013_tcm77-389735.xls",
+      "fileDescription": "The sales by UK based manufacturers of the individual products covered by the PRODCOM inquiry. It provides intermediate estimates of manufacturers’ sales by product, from businesses based in the UK in 2013, and final estimates for 2012."
     },
     {
-        "summary": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam bibendum, odio sit amet accumsan dignissim, mi est tristique enim.",
-        "title": "Link to dataset 9",
-        "uri": "#",
-        "index": 8
+      "title": "UK Manufacturers\u0027 Sales by Product - Intermediate 2013",
+      "file": "businessindustryandtrade/manufacturingandproductionindustry/datasets/ukmanufacturerssalesbyproductsurveyprodcomintermediateresults2013andfinalresults2012referencetables/rftprod2013_tcm77-389735.xls",
+      "fileDescription": "The sales by UK based manufacturers of the individual products covered by the PRODCOM inquiry. It provides intermediate estimates of manufacturers’ sales by product, from businesses based in the UK in 2013, and final estimates for 2012."
     },
     {
-        "summary": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam bibendum, odio sit amet accumsan dignissim, mi est tristique enim.",
-        "title": "Link to dataset 10",
-        "uri": "#",
-        "index": 9
+      "title": "UK Manufacturers\u0027 Sales by Product - Intermediate 2013",
+      "file": "businessindustryandtrade/manufacturingandproductionindustry/datasets/ukmanufacturerssalesbyproductsurveyprodcomintermediateresults2013andfinalresults2012referencetables/rftprod2013_tcm77-389735.xls",
+      "fileDescription": "The sales by UK based manufacturers of the individual products covered by the PRODCOM inquiry. It provides intermediate estimates of manufacturers’ sales by product, from businesses based in the UK in 2013, and final estimates for 2012."
+    },
+    {
+      "title": "UK Manufacturers\u0027 Sales by Product - Intermediate 2013",
+      "file": "businessindustryandtrade/manufacturingandproductionindustry/datasets/ukmanufacturerssalesbyproductsurveyprodcomintermediateresults2013andfinalresults2012referencetables/rftprod2013_tcm77-389735.xls",
+      "fileDescription": "The sales by UK based manufacturers of the individual products covered by the PRODCOM inquiry. It provides intermediate estimates of manufacturers’ sales by product, from businesses based in the UK in 2013, and final estimates for 2012."
+    },
+    {
+      "title": "UK Manufacturers\u0027 Sales by Product - Intermediate 2013",
+      "file": "businessindustryandtrade/manufacturingandproductionindustry/datasets/ukmanufacturerssalesbyproductsurveyprodcomintermediateresults2013andfinalresults2012referencetables/rftprod2013_tcm77-389735.xls",
+      "fileDescription": "The sales by UK based manufacturers of the individual products covered by the PRODCOM inquiry. It provides intermediate estimates of manufacturers’ sales by product, from businesses based in the UK in 2013, and final estimates for 2012."
     }
   ],
-  "index": 1,
-  "type": "dataset",
-  "uri": "employmentandlabour market/peopleinwork/employmentandemployeetypes",
-  "notice": "This content has been migrated directly from our previous site for this beta and is currently in a temporary format. We are working to update these to a new format during the course of the beta.",
-  "lede": "This dataset contains estimates of labour market statistics (including employment, unemployment and economic inactivity) for the United Kingdom.",
-  "description": {
-    "title": "Labour market statistics",
-    "releaseDate": "22 Aug 2014",
-    "nextRelease": "24 Sep 2015",
-    "contact": {
-        "name": "John Smith",
-        "email": "john.smith@email.address.com",
-        "telephone": "+44 (0)1633 900000"
-    },
-    "datasetID": "R6DO"
-  },
+  "relatedMethodology": [],
+  "relatedDocuments": [],
+  "type": "reference_tables",
+  "uri": "/businessindustryandtrade/manufacturingandproductionindustry/datasets/ukmanufacturerssalesbyproductsurveyprodcomintermediateresults2013andfinalresults2012referencetables",
   "breadcrumb": [
     {
+      "uri": "/",
       "description": {
-      "title": "Home"
-      },
-      "uri": "/"
+        "title": "Home",
+        "summary": "The UK\u0027s largest independent producer of official statistics and the recognised national statistical institute of the UK.",
+        "nationalStatistic": false,
+        "latestRelease": false,
+        "unit": "",
+        "preUnit": "",
+        "source": "",
+        "sampleSize": 0
+      }
     },
     {
+      "uri": "/businessindustryandtrade",
       "description": {
-      "title": "Employment and labour market"
-      },
-      "uri": "/employmentandlabourmarket"
-    }
-],
-"resultsNumber": 10,
-  "methodology": [
-    {
-      "title": "Link to methodology 1",
-      "uri": "#",
-      "index": 0
+        "title": "Business, industry and trade",
+        "summary": "Statistics about the production and trade of goods and services help us identify patterns and trends in the UK economy. We look at figures on retail sales, business activity, indices for the construction and manufacturing industries and international trade.",
+        "nationalStatistic": false,
+        "latestRelease": false,
+        "unit": "",
+        "preUnit": "",
+        "source": "",
+        "sampleSize": 0
+      }
     },
     {
-      "title": "Link to methodology 2",
-      "uri": "#",
-      "index": 1
-    },
-    {
-      "title": "Link to methodology 3",
-      "uri": "#",
-      "index": 2
+      "uri": "/businessindustryandtrade/manufacturingandproductionindustry",
+      "description": {
+        "title": "Manufacturing and production industry",
+        "summary": "Manufacturing is the biggest industry in the production sector. This sector includes the mining and quarrying, energy supply and water supply and waste management industries. These statistics are widely used in the private and public sector, particularly by the Bank of England, the Treasury and the Office for Budget Responsibility to help with policy and decision making.",
+        "nationalStatistic": false,
+        "latestRelease": false,
+        "unit": "",
+        "preUnit": "",
+        "source": "",
+        "sampleSize": 0
+      }
     }
-],
-"relatedContent": [
-  {
-    "title": "Statistical bulletin",
-    "uri": "#",
-    "index": 0
-  }
   ],
+  "description": {
+    "title": "UK Manufacturers’ Sales by Product Survey (Prodcom), Intermediate Results 2013 and Final Results 2012 reference tables",
+    "summary": "Revised estimates of UK Manufacturing Sales by Product (PRODCOM). Estimates of product sales value and volume, linked with international trade statistics.",
+    "keywords": [
+      "manufacturing,production,trade,commodity,product,sales,industry"
+    ],
+    "metaDescription": "Revised estimates of UK Manufacturing Sales by Product (PRODCOM). Estimates of product sales value and volume, linked with international trade statistics.",
+    "nationalStatistic": true,
+    "latestRelease": false,
+    "contact": {
+      "email": "prodcompublications@ons.gsi.gov.uk ",
+      "name": "William Barnes",
+      "telephone": "+44 (0)1633 455711"
+    },
+    "releaseDate": "2014-12-18T00:00:00.000Z",
+    "nextRelease": "25 June 2015",
+    "datasetId": "",
+    "unit": "",
+    "preUnit": "",
+    "source": "",
+    "sampleSize": 0
+  },
   "navigation":{
       "nodes": [
         {
