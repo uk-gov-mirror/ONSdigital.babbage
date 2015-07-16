@@ -21,10 +21,12 @@
 				<p class="grid-col tablet-grid-one-quarter divider--border-left">
 					<span>Next release: </span><br/>{{description.nextRelease}}
 				</p>
+				{{#if description.datasetId}}
 				<p class="grid-col tablet-grid-one-quarter divider--border-left">
-					<span>Dataset id: </span>{{description.datasetId}}
-					<a href="#" class="tooltip nojs-hidden" title="This series ID is a unique random identifier for this individual time series. The digits themselves do not have any specific meaning" aria-label="This series ID is a unique random identifier for this individual time series. The digits themselves do not have any specific meaning">what is this? </a>
+						<span>Dataset id: </span>{{description.datasetId}}
+						<a href="#" class="tooltip nojs-hidden" title="This series ID is a unique random identifier for this individual time series. The digits themselves do not have any specific meaning" aria-label="This series ID is a unique random identifier for this individual time series. The digits themselves do not have any specific meaning">what is this? </a>
 				</p>
+				{{/if}}
 			</div>
 			<!-- /grip-wrap -->
 		</div>

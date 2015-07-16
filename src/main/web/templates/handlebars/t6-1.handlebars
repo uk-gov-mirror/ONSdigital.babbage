@@ -26,7 +26,7 @@
 				<p class="grid-col tablet-grid-one-quarter divider--border-left print-hidden">
 					<a href="" id="jsEnhancePrintCompendium" class="link-complex nojs-hidden js-enhance--show">
 						<span class="icon-print"></span>
-						<span class="link-complex__target">Print full report</span>
+						<span class="link-complex__target print-analytics">Print full report</span>
 					</a>
 					{{!--<br class="nojs-hidden js-enhance--show"/>
 					<a href="#" class="link-complex">
@@ -54,7 +54,7 @@
 							{{#each chapters}}
 							<li>
 								<h4 class="flush" ><a href="{{uri}}" class="chapter">{{description.title}}</a></h4>
-								{{md headline}}
+								<p>{{description.headline}}</p>
 							</li>
 							{{/each}}
 						</ul>

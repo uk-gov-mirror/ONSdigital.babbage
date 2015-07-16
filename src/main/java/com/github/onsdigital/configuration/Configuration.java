@@ -29,9 +29,10 @@ public class Configuration {
     private static final String SEARCHCHART_FILE = "searchchartconfig.js";
     private static final int MAX_VISIBLE_PAGINATOR_LINK = 10;
 
-
     private static final int GLOBAL_REQUEST_CACHE_SIZE = 1000;
     private static final int GLOBAL_CACHE_TIMEOUT = 5; //mins
+
+    private static final String PHANTOMJS_PATH = "/usr/local/bin/phantomjs";
 
     /**
      * Mongo is currently only used to provide feedback on the search terms
@@ -223,6 +224,10 @@ public class Configuration {
         return highchartsExportUrl;
     }
 
+
+    public static String getPhantomjsPath() {
+        return StringUtils.defaultIfBlank(getValue("PHANTOMJS_PATH"), PHANTOMJS_PATH);
+    }
 
     public static int getMaxVisiblePaginatorLink() {
         return MAX_VISIBLE_PAGINATOR_LINK;
