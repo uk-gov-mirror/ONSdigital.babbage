@@ -34,7 +34,7 @@ $(function() {
         jsEnhancePrint();
         jsEnhanceNumberSeparator();
         jsEnhanceMarkdownCharts(); // disabling markdown table and chart enhancements
-        jsEnhanceMarkdownTables(); // disabling table and chart enhancements
+
         jsEnhancePrintCompendium();
         jsEnhanceBoxHeight();
         jsEnhanceBoxHeightResize();
@@ -43,7 +43,7 @@ $(function() {
         jsEnhanceTableOfContents();
 
         // jsEnhanceMobileTables();
-        
+
         // prototypeModalButtons();
 
         // setTimeout(function() {
@@ -56,11 +56,6 @@ $(function() {
             $('#loading-overlay').fadeOut(300);
         }, 500);
     }
-
-
-
-
-
 
     function jsEnhanceULNavToSelectNav() {
         $('.js-enhance--ul-to-select').each(function() {
@@ -169,21 +164,23 @@ $(function() {
 
     function jsEnhanceMarkdownCharts() {
 
-        var chartContainer = $(".markdown-chart-container");
+        var chartContainer = $(".markdown-chart");
         if (!chartContainer.length) {
             return;
         }
 
         chartContainer.each(function() {
             var $this = $(this);
-            var uri = $this.attr('id');
+            var id = $this.attr('id');
+            var uri = $this.data('uri');
             $this.empty();
 
             if (uri.indexOf('/') !== 0) {
                 uri = '/' + uri;
             }
 
-            new pym.Parent(uri, uri + "/chart", {});
+            //new pym.Parent(uri, uri + "/chart", {});
+            renderChartForUri(uri, id, $this);
         });
     }
 
@@ -207,26 +204,6 @@ $(function() {
         // //Combines the two sections
         $( this ).text(n.join("."));
       });
-    }
-
-    function jsEnhanceMarkdownTables() {
-
-        var chartContainer = $(".markdown-table-container");
-        if (!chartContainer.length) {
-            return;
-        }
-
-        chartContainer.each(function() {
-            var $this = $(this);
-            var uri = $this.attr('id');
-            $this.empty();
-
-            if (uri.indexOf('/') !== 0) {
-                uri = '/' + uri;
-            }
-
-            new pym.Parent(uri, uri + "/table", {});
-        });
     }
 
     function jsEnhancePrintCompendium() {      
