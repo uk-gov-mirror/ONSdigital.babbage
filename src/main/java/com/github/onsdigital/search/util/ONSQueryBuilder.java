@@ -21,9 +21,6 @@ import com.github.onsdigital.configuration.ElasticSearchProperties;
  * <p>
  * By default it queries all documents under given index.
  * </p>
- * 
- * 
- * @author boorhun
  *
  */
 public class ONSQueryBuilder {
