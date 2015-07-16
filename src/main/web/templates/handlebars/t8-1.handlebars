@@ -1,8 +1,8 @@
-{{> partials/header}}
+{{> templates/handlebars/partials/header}}
 <main id="main" role="main" tabindex="-1">
 <div class="page-header slate slate--light-green">
 	<div class="wrapper">
-		{{> partials/breadcrumb}}
+		{{> templates/handlebars/partials/breadcrumb}}
 		<p class="page-header__title">
 			Dataset
 		</p>
@@ -55,10 +55,14 @@
 				<span class="stand-out-text">
 				{{#each downloads}}
 					{{#if @last}}
-						{{@index_1}}
+						{{#eq @index_1 '1'}}
+							{{@index_1}}</span> result
+						{{/eq}}
+						{{#ne @index_1 '1'}}
+							{{@index_1}}</span> results
+						{{/ne}}
 					{{/if}}
 				{{/each}}
-				</span> results
 			</p>
 		</div>
 		<!-- /grid-col -->
@@ -141,4 +145,4 @@
 </div>
 <!-- /wrapper -->
 </main>
-{{> partials/footer}}
+{{> templates/handlebars/partials/footer}}
