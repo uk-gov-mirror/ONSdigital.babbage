@@ -12,13 +12,22 @@ import com.github.onsdigital.util.NavigationUtil;
 import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ContentRenderer implements ContentRenderingService {
 
-    ZebedeeRequest zebedeeRequest;
+    private final ZebedeeRequest zebedeeRequest;
+    private final boolean jsEnhanced;
 
     public ContentRenderer(ZebedeeRequest zebedeeRequest) {
         this.zebedeeRequest = zebedeeRequest;
+        this.jsEnhanced = false;
+    }
+
+    public ContentRenderer(ZebedeeRequest zebedeeRequest, boolean jsEnhanced) {
+        this.zebedeeRequest = zebedeeRequest;
+        this.jsEnhanced = jsEnhanced;
     }
 
     @Override
@@ -31,7 +40,10 @@ public class ContentRenderer implements ContentRenderingService {
             template = "partials/" + template;
         }
 
-        return TemplateService.getInstance().render(page, template);
+        Map<String, Object> additionalData = new HashMap<>();
+        additionalData.put("jsEnhanced", jsEnhanced);
+
+        return TemplateService.getInstance().render(page, template, additionalData);
     }
 
     @Override
@@ -55,6 +67,7 @@ public class ContentRenderer implements ContentRenderingService {
         return TemplateService.getInstance().render(page, template);
     }
 
+    @Override
     public String renderPage(String uri) throws IOException, ContentNotFoundException {
         Page page = DataService.getInstance().readAsPage(uri, true, zebedeeRequest);
         page.processContent(LocalFileDataService.getInstance(), this);

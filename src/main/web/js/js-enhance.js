@@ -16,7 +16,6 @@ $(function() {
             $('#loading-overlay').fadeOut(300);
         }, 500);
     } else {
-        $('body').append('<script type="text/javascript" src="/js/third-party/pym.min.js"></script>');
         jsEnhance();
     }
 
@@ -33,7 +32,7 @@ $(function() {
         jsEnhanceLinechart();
         jsEnhancePrint();
         jsEnhanceNumberSeparator();
-        jsEnhanceMarkdownCharts(); // disabling markdown table and chart enhancements
+        jsEnhanceMarkdownCharts();
 
         jsEnhancePrintCompendium();
         jsEnhanceBoxHeight();
@@ -50,6 +49,11 @@ $(function() {
         //     jsEnhanceIframedTables();
         //     jsEnhanceMobileTables();
         // }, 400);
+
+        // set jsEnhanced cookie for server side optimisations.
+        var expires = new Date();
+        expires.setDate(expires.getDate() + (10*365)); // 10 years
+        document.cookie='jsEnhanced=true;expires=' + expires.toUTCString() + ';path=/';
 
 
         setTimeout(function() {

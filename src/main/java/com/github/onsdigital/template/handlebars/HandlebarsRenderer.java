@@ -10,6 +10,7 @@ import com.github.onsdigital.template.TemplateRenderer;
 import com.github.onsdigital.template.handlebars.helpers.*;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -46,10 +47,16 @@ public class HandlebarsRenderer implements TemplateRenderer {
 
     @Override
     public String renderTemplate(String templateName, Object data) throws IOException {
+        return renderTemplate(templateName, data, new HashMap<String, Object>());
+    }
+
+    @Override
+    public String renderTemplate(String templateName, Object data, Map<String, ?> additionalData) throws IOException {
         Template template = getTemplate(templateName);
 
         Context context = Context
                 .newBuilder(data)
+                .combine(additionalData)
                 .resolver(FieldValueResolver.INSTANCE, MapValueResolver.INSTANCE)
                 .build();
         return template.apply(context);

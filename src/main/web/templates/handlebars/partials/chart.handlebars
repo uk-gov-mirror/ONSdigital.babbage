@@ -3,9 +3,12 @@
     <h5>{{subtitle}}</h5>
   </br>
   <div id="chart-{{filename}}" data-uri="{{uri}}" class="markdown-chart">
-    <img src="{{uri}}/image" alt="{{alt-text}}">
+    {{#unless jsEnhanced}}
+      <img src="{{uri}}/image" alt="{{alt-text}}">
+    {{/unless}}
+
   </div>
-    {{#if source}}<h6>Source: {{source}}</h6>{{/if}}
+  {{#if source}}<h6>Source: {{source}}</h6>{{/if}}
   </br>
   {{#if notes}}
   <h6>Notes:</h6>
