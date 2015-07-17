@@ -55,10 +55,14 @@
 				<span class="stand-out-text">
 				{{#each downloads}}
 					{{#if @last}}
-						{{@index_1}}
+						{{#eq @index_1 '1'}}
+							{{@index_1}}</span> result
+						{{/eq}}
+						{{#ne @index_1 '1'}}
+							{{@index_1}}</span> results
+						{{/ne}}
 					{{/if}}
 				{{/each}}
-				</span> results
 			</p>
 		</div>
 		<!-- /grid-col -->

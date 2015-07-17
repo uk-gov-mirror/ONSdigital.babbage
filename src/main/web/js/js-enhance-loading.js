@@ -99,7 +99,7 @@ function prototypeModalButtons() {
     var d = new Date();
     d.setTime(d.getTime() + (1*24*60*60*1000));
     var expires = "expires="+d.toUTCString();
-    document.cookie='onsBetaDisclaimer=true; ' + expires;
+    document.cookie='onsBetaDisclaimer=true; ' + expires + ';path=/';
     
     //can use jquery as this function will only be aclled when modal is visible, and modal will only be visible when window has loaded meaning jQuery has loaded (at the bottom of the body)
     $('#modal-overlay').fadeOut(300);

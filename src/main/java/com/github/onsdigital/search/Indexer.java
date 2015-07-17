@@ -6,6 +6,7 @@ import com.github.onsdigital.search.error.IndexingInProgressException;
 import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.action.ListenableActionFuture;
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequestBuilder;
+import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequestBuilder;
 import org.elasticsearch.action.index.IndexRequestBuilder;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.client.Client;
@@ -39,7 +40,8 @@ public class Indexer {
 					throw new IllegalStateException("No items were found for indexing");
 				}
 				try {
-					createIndex(client, absoluteFilePaths);
+					deleteIndex(client);
+					createIndex(client);
 					indexDocuments(client, absoluteFilePaths);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -53,7 +55,7 @@ public class Indexer {
 		}
 	}
 
-	private static void createIndex(Client client, List<String> absoluteFilePaths) throws IOException {
+	private static void createIndex(Client client) throws IOException {
 
 		System.out.println("Creating index ons");
 		// Set up the synonyms
@@ -71,6 +73,12 @@ public class Indexer {
 		indexBuilder.addMapping(PageType.timeseries.toString(), getTimeseriesMappingProperties(PageType.timeseries.toString()));
 
 		indexBuilder.execute();
+	}
+
+	private static void deleteIndex(Client client){
+		System.out.println("Deleting index ons");
+		DeleteIndexRequestBuilder deleteIndexRequestBuilder = client.admin().indices().prepareDelete("ons");
+		deleteIndexRequestBuilder.execute();
 	}
 
 	// Mapping for field properties. To decide which field will be indexed

@@ -16,7 +16,6 @@ $(function() {
             $('#loading-overlay').fadeOut(300);
         }, 500);
     } else {
-        $('body').append('<script type="text/javascript" src="/js/third-party/pym.min.js"></script>');
         jsEnhance();
     }
 
@@ -33,8 +32,8 @@ $(function() {
         jsEnhanceLinechart();
         jsEnhancePrint();
         jsEnhanceNumberSeparator();
-        jsEnhanceMarkdownCharts(); // disabling markdown table and chart enhancements
-        jsEnhanceMarkdownTables(); // disabling table and chart enhancements
+        jsEnhanceMarkdownCharts();
+
         jsEnhancePrintCompendium();
         jsEnhanceBoxHeight();
         jsEnhanceBoxHeightResize();
@@ -43,7 +42,7 @@ $(function() {
         jsEnhanceTableOfContents();
 
         // jsEnhanceMobileTables();
-        
+
         // prototypeModalButtons();
 
         // setTimeout(function() {
@@ -51,16 +50,16 @@ $(function() {
         //     jsEnhanceMobileTables();
         // }, 400);
 
+        // set jsEnhanced cookie for server side optimisations.
+        var expires = new Date();
+        expires.setDate(expires.getDate() + (10*365)); // 10 years
+        document.cookie='jsEnhanced=true;expires=' + expires.toUTCString() + ';path=/';
+
 
         setTimeout(function() {
             $('#loading-overlay').fadeOut(300);
         }, 500);
     }
-
-
-
-
-
 
     function jsEnhanceULNavToSelectNav() {
         $('.js-enhance--ul-to-select').each(function() {
@@ -169,21 +168,23 @@ $(function() {
 
     function jsEnhanceMarkdownCharts() {
 
-        var chartContainer = $(".markdown-chart-container");
+        var chartContainer = $(".markdown-chart");
         if (!chartContainer.length) {
             return;
         }
 
         chartContainer.each(function() {
             var $this = $(this);
-            var uri = $this.attr('id');
+            var id = $this.attr('id');
+            var uri = $this.data('uri');
             $this.empty();
 
             if (uri.indexOf('/') !== 0) {
                 uri = '/' + uri;
             }
 
-            new pym.Parent(uri, uri + "/chart", {});
+            //new pym.Parent(uri, uri + "/chart", {});
+            renderChartForUri(uri, id, $this);
         });
     }
 
@@ -207,26 +208,6 @@ $(function() {
         // //Combines the two sections
         $( this ).text(n.join("."));
       });
-    }
-
-    function jsEnhanceMarkdownTables() {
-
-        var chartContainer = $(".markdown-table-container");
-        if (!chartContainer.length) {
-            return;
-        }
-
-        chartContainer.each(function() {
-            var $this = $(this);
-            var uri = $this.attr('id');
-            $this.empty();
-
-            if (uri.indexOf('/') !== 0) {
-                uri = '/' + uri;
-            }
-
-            new pym.Parent(uri, uri + "/table", {});
-        });
     }
 
     function jsEnhancePrintCompendium() {      
@@ -342,11 +323,6 @@ $(function() {
             
             ga('send', 'pageview', {
                 'page': page
-                // 'hitCallback': function() {
-                //     if(console && console.log) {
-                //         console.log('Analytics event triggered for ' + page);
-                //     }
-                // }
             });
         });
 
@@ -357,11 +333,16 @@ $(function() {
 
             ga('send', 'pageview', {
                 'page': page
-                // 'hitCallback': function() {
-                //     if(console && console.log) {
-                //         console.log('Analytics event triggered for ' + page);
-                //     }
-                // }
+            });
+        });
+
+        //Track click on 'print full report' link
+        $('.print-analytics').click(function(){
+        	var path = $('#pagePath').text();
+        	var page = '/print?uri=' + path;
+
+        	ga('send', 'pageview', {
+                'page': page
             });
         });
     }
