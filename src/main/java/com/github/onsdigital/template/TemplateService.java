@@ -28,6 +28,11 @@ public class TemplateService {
         return templateRenderer.renderTemplate(TemplateMapping.getTemplateName(page.getType()), page);
     }
 
+    public String renderPage(Page page, Map<String, ?> additionalData) throws IOException {
+        System.out.println("Page rendering requested for content type: " + page.getType());
+        return templateRenderer.renderTemplate(TemplateMapping.getTemplateName(page.getType()), page, additionalData);
+    }
+
     /**
      *Object as json file or data
      *
