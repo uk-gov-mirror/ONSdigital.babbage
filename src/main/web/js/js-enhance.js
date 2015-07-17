@@ -40,6 +40,7 @@ $(function() {
         jsEnhanceDownloadAnalytics();
 
         jsEnhanceTableOfContents();
+        jsEnhanceScrollToSection();
 
         // jsEnhanceMobileTables();
 
@@ -388,10 +389,17 @@ $(function() {
             $('.toc-select-list').change(function() {
                 var location = $(this).find('option:selected').val();
                 if (location) {
-                    window.location = location;
+                    //window.location = location; //breaks scroll animation
                     // var locationhash = '#' + location;
-                    expandAccordion();
-                    $('html, body').animate({ scrollTop: $(location).offset().top - 60}, 1000);
+                    $('html, body').animate({ scrollTop: $(location).offset().top - 60}, 1000, function(){
+                        //if selecting according set it to expand
+                        //TODO stop according opening when you arrive at it, causing odd page jump
+                        var section = $(location);
+                        if (section.hasClass('is-collapsed')) {
+                          section.removeClass('is-collapsed').addClass('is-expanded');
+                          section.get(0).scrollIntoView();
+                        }
+                    });
                 }
             });
             
@@ -406,7 +414,7 @@ $(function() {
                 if (scrollTop > contentStart) { 
                     $('#toc').addClass('table-of-contents-ordered-list-hide');
                     // $('#toc').removeClass('table-of-contents-ordered-list');
-                    $('.wrapper--content').css('padding-top','9rem');
+                    $('.wrapper--content').css('padding-top','7.2rem');
                     $('.toc-sticky-wrap').show();
                 } else {
                     // $('#toc').addClass('table-of-contents-ordered-list');
@@ -422,6 +430,31 @@ $(function() {
                 // console.log($(window).scrollTop());
             });
         }
+    }    
+
+    function jsEnhanceScrollToSection() {
+
+        //Offsets page to make room for sticky nav if arrive on page directly at section
+        $(window).load(function(){
+            if (location.hash) {
+                if (location.hash == '#toc') {
+                    console.log('Table of contents anchor');
+                } else {
+                    console.log(location); 
+                    $(document).scrollTop( $(location.hash).offset().top - 60 );
+                }
+            }
+        });
+
+        //Animate scroll to anchor on same page
+        $('a[href^="#"]').click(function(e) {
+            e.preventDefault();
+            
+            var target = this.hash;
+            
+            $('html, body').stop().animate({scrollTop: $(target).offset().top}, 1000, function(){
+                location.hash = target;
+            });
+        });
     }
-    
 });
