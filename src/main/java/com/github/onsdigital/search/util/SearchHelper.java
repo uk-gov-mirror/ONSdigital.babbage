@@ -111,7 +111,6 @@ public class SearchHelper {
         SearchResult homeResult = SearchService.search(buildHomeQuery(searchTerm, page));
         if (types == null && homeResult != null && homeResult.getNumberOfResults() != 0) {
             long numberOfResults = searchResult.getNumberOfResults();
-            ++numberOfResults;
             searchResult.setNumberOfResults(numberOfResults);
         }
 

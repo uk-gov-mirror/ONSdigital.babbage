@@ -7,11 +7,9 @@ import com.github.onsdigital.configuration.Configuration;
 import com.github.onsdigital.content.page.statistics.data.timeseries.TimeSeries;
 import com.github.onsdigital.content.partial.TimeseriesValue;
 import com.github.onsdigital.content.util.ContentUtil;
-import com.github.onsdigital.data.DataService;
+import com.github.onsdigital.data.LocalFileDataService;
 import com.github.onsdigital.util.CSVGenerator;
 import com.github.onsdigital.util.XLSXGenerator;
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
@@ -29,8 +27,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.attribute.FileTime;
 import java.util.*;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -138,7 +134,7 @@ public class Download {
         // Process URIs
         if (downloadRequest.uriList != null) {
             for (String uri : downloadRequest.uriList) {
-                try (InputStream input = DataService.getInstance().getDataStream(uri)) {
+                try (InputStream input = LocalFileDataService.getInstance().getDataStream(uri)) {
                     TimeSeries.add(ContentUtil.deserialise(input, TimeSeries.class));
                 }
             }
