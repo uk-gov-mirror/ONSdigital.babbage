@@ -5,7 +5,7 @@ function renderChartForUri(uri, id, $graphic) {
   function drawGraphic() {
     var chartWidth = $graphic.width();
     var chartHeight = chartWidth * chart.aspectRatio;
-    renderChartObject('#' + id, chart, chartHeight, chartWidth);
+    renderChartObject(id, chart, chartHeight, chartWidth);
   }
 
   var dataUri = uri + "/data";
