@@ -94,7 +94,6 @@ function renderChartObject(bindTag, chart, chartHeight, chartWidth) {
       renderTo: bindTag,
       height: chartHeight,
       width: chartWidth
-      //marginTop: marginTop
     },
     colors: ['#274796','#F5942F','#E73F40','#7BCAE2', '#979796', '#E9E117', '#74B630', '#674796', '#BD5B9E'],
     title:{
@@ -104,15 +103,31 @@ function renderChartObject(bindTag, chart, chartHeight, chartWidth) {
       categories: chart.categories,
       tickInterval: chart.labelInterval
     },
-    //yAxis: yAxis,
+    yAxis: {
+      title: {
+        text: chart.unit
+      }
+    },
     series: series,
     tooltip: {
       valueDecimals:chart.decimalPlaces
     },
     plotOptions: {
       series: {
-        animation: false
+        animation: false,
+        pointPadding: 0,
+        groupPadding: 0.1
+      },
+      line: {
+        lineWidth:1,
+        marker: {
+          radius: 2,
+          symbol: 'circle'
+        }
       }
+    },
+    legend: {
+      verticalAlign: "top"
     },
     credits: {
       enabled: false
@@ -151,15 +166,14 @@ function renderChartObject(bindTag, chart, chartHeight, chartWidth) {
   }
 
   function renderTimeseriesChartObject(bindTag, timechart, chartWidth, chartHeight) {
-    var padding = 25;
     var chart = timechart; //timeSubchart(timechart, period);
 
     // Create a dictionary so we can reverse lookup a tooltip label
-    var dates_to_label = {};
-    _.each(chart.timeSeries, function (data_point) {
-      data_point.date = new Date(data_point.date);
-      dates_to_label[data_point.date] = data_point.label;
-    });
+    //var dates_to_label = {};
+    //_.each(chart.timeSeries, function (data_point) {
+    //  data_point.date = new Date(data_point.date);
+    //  dates_to_label[data_point.date] = data_point.label;
+    //});
 
     // should we show
     var showPoints = true;
