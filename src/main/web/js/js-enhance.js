@@ -383,21 +383,19 @@ $(function() {
             //add toc select to sticky wrapper
             $('.toc-sticky-wrap .wrapper').append(tocSelectList);
 
-
-            //add select change function to toc select option
             $('.toc-select-list').change(function() {
                 var location = $(this).find('option:selected').val();
                 if (location) {
-                    //window.location = location; //breaks scroll animation
-                    // var locationhash = '#' + location;
+                    // expands section if accordion
+                    var section = $(location);
+                    if (section.hasClass('is-collapsed')) {
+                      section.removeClass('is-collapsed').addClass('is-expanded');
+                    }
+
+                    //animates scroll and offsets page to counteract sticky nav
                     $('html, body').animate({ scrollTop: $(location).offset().top - 60}, 1000, function(){
-                        //if selecting according set it to expand
-                        //TODO stop according opening when you arrive at it, causing odd page jump
-                        var section = $(location);
-                        if (section.hasClass('is-collapsed')) {
-                          section.removeClass('is-collapsed').addClass('is-expanded');
-                          section.get(0).scrollIntoView();
-                        }
+                        //adds location hash to url without causing page to jump to it - credit to http://lea.verou.me/2011/05/change-url-hash-without-page-jump/
+                        history.pushState(null, null, location);
                     });
                 }
             });
@@ -437,9 +435,10 @@ $(function() {
         $(window).load(function(){
             if (location.hash) {
                 if (location.hash == '#toc') {
-                    console.log('Table of contents anchor');
+                    // Stop offset if on TOC because sticky-nav isn't present
+                    //console.log('Table of contents anchor');
                 } else {
-                    console.log(location); 
+                    //console.log(location); 
                     $(document).scrollTop( $(location.hash).offset().top - 60 );
                 }
             }
