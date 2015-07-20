@@ -1,8 +1,8 @@
-{{> partials/header}}
+{{> templates/handlebars/partials/header}}
 <main id="main" role="main" tabindex="-1">
 	<div class="page-header slate slate--grey-bar">
 		<div class="wrapper" >
-			{{> partials/breadcrumb}}
+			{{> templates/handlebars/partials/breadcrumb}}
 			<p class="page-header__title page-header--stat-bulletin-desc">
 				Article
 			</p>
@@ -144,7 +144,7 @@
 				<div class="grid-col desktop-grid-two-thirds tablet-grid-full-width">
 					{{#if relatedArticles}}
 					<article class="box box--teal--separated--left">
-						<div class="box__inner border box--padded solid"> 
+						<div class="box__inner border box--padded solid">
 							<h3>Related articles</h3>
 							<ul class="list--neutral">
 								{{#each relatedArticles}}
@@ -161,10 +161,10 @@
 					{{/if}}
 				</div>
         		<div class="grid-col desktop-grid-one-third tablet-grid-full-width">
-         			{{> partials/local-box}}
+         			{{> templates/handlebars/partials/local-box}}
         		</div>
 			</div>
 		</div>
 	</div>
 </main>
-{{> partials/footer}}
+{{> templates/handlebars/partials/footer}}

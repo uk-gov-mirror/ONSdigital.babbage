@@ -434,11 +434,11 @@ $(function() {
         //Offsets page to make room for sticky nav if arrive on page directly at section
         $(window).load(function(){
             if (location.hash) {
-                if (location.hash == '#toc') {
-                    // Stop offset if on TOC because sticky-nav isn't present
-                    //console.log('Table of contents anchor');
-                } else {
-                    //console.log(location); 
+                var contentStart = $('.wrapper--content').offset().top;
+                var scrollTop = $(window).scrollTop();
+                
+                if (scrollTop > contentStart) {
+                    //console.log('scrollTop = ' + scrollTop + ' contentStart = ' + contentStart)
                     $(document).scrollTop( $(location.hash).offset().top - 60 );
                 }
             }
