@@ -395,7 +395,9 @@ $(function() {
                     //animates scroll and offsets page to counteract sticky nav
                     $('html, body').animate({ scrollTop: $(location).offset().top - 60}, 1000, function(){
                         //adds location hash to url without causing page to jump to it - credit to http://lea.verou.me/2011/05/change-url-hash-without-page-jump/
-                        history.pushState(null, null, location);
+                        if (history.pushState) {
+                            history.pushState(null, null, location);
+                        }
                     });
                 }
             });
