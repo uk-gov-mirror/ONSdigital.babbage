@@ -51,12 +51,17 @@ function renderChartObject(bindTag, chart, chartHeight, chartWidth) {
     var data = [];
     $.each(chart.data, function (j, seriesData) {
       var value = parseFloat(seriesData[seriesName]);
-      //console.log(value);
       if(isNaN(value)) {
         value = null;
       }
 
-      data.push(value)
+      //if(chart.isTimeSeries) { // type = line?
+      //  var date = new Date(seriesData['date']);
+      //  //data.push([Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDay()),value])
+      //  data.push([Date.UTC(date.getFullYear(), date.getMonth()),value])
+      //} else {
+        data.push(value)
+      //}
     });
 
     var seriesItem = {
@@ -88,6 +93,17 @@ function renderChartObject(bindTag, chart, chartHeight, chartWidth) {
   //  }
   //};
 
+  var xAxis = {
+    categories: chart.categories,
+    tickInterval: chart.labelInterval
+  };
+
+  //if(chart.isTimeSeries) {
+  //  xAxis = {
+  //    type: 'datetime'
+  //  }
+  //}
+
   // render chart
   var options = {
     chart: {
@@ -99,10 +115,7 @@ function renderChartObject(bindTag, chart, chartHeight, chartWidth) {
     title:{
       text:''
     },
-    xAxis: {
-      categories: chart.categories,
-      tickInterval: chart.labelInterval
-    },
+    xAxis: xAxis,
     yAxis: {
       title: {
         text: chart.unit
