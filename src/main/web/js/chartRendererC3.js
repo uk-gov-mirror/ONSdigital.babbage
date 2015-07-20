@@ -1,11 +1,16 @@
-function renderChartForUri(uri, id, $graphic) {
+
+function renderChartForUri(uri) {
 
   var chart;
+  var selector = '.markdown-chart'; //'#' + uri.replace(/\//g, '\\/');
+  var $graphic = $(selector);
+  var pymChild = new pym.Child({});
 
   function drawGraphic() {
-    var chartWidth = $graphic.width();
+    var chartWidth = $graphic.width(); //- margin.left - margin.right;
     var chartHeight = chartWidth * chart.aspectRatio;
-    renderChartObject(id, chart, chartHeight, chartWidth);
+    renderChartObject('.markdown-chart', chart, chartHeight, chartWidth);
+    pymChild.sendHeight();
   }
 
   var dataUri = uri + "/data";
@@ -19,169 +24,188 @@ function renderChartForUri(uri, id, $graphic) {
     success: function (data) {
       chart = data;
       drawGraphic();
+      window.onresize = drawGraphic;
     }
   });
 }
+
 
 // Do the rendering
 function renderChartObject(bindTag, chart, chartHeight, chartWidth) {
 
   // Create our svg
-  //var svg = d3.select(bindTag + " svg")
-  //  .attr("viewBox", "0 0 " + chartWidth + " " + chartHeight)
-  //  .attr("preserveAspectRatio", "xMinYMin meet");
+  var svg = d3.select(bindTag + " svg")
+    .attr("viewBox", "0 0 " + chartWidth + " " + chartHeight)
+    .attr("preserveAspectRatio", "xMinYMin meet");
 
    //If we are talking time series skip
-  //if (chart.isTimeSeries && (chart.chartType == 'line')) {
-  //  renderTimeseriesChartObject(bindTag, chart, chartWidth, chartHeight);
-  //  return;
-  //}
-
-  var chartType = checkType(chart.chartType);
-  var stacked = false;
-
-  var series = [];
-  $.each(chart.series, function(i, seriesName) {
-
-    var seriesType = chartType;
-    if (chart.chartType === 'barline') {
-      seriesType = checkType(chart.chartTypes[seriesName]);
-    }
-
-    var data = [];
-    $.each(chart.data, function (j, seriesData) {
-      var value = parseFloat(seriesData[seriesName]);
-      if(isNaN(value)) {
-        value = null;
-      }
-
-      //if(chart.isTimeSeries) { // type = line?
-      //  var date = new Date(seriesData['date']);
-      //  //data.push([Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDay()),value])
-      //  data.push([Date.UTC(date.getFullYear(), date.getMonth()),value])
-      //} else {
-        data.push(value)
-      //}
-    });
-
-    var seriesItem = {
-      name: seriesName,
-      data: data,
-      type: seriesType
-    };
-
-    if (chart.chartType === 'barline') {
-      if ($.inArray(seriesName, chart.groups[0]) > -1) {
-        seriesItem.stack = 'group1'; // we only support one group.
-        stacked = true;
-      } else {
-        seriesItem.stack = seriesName; // set a unique stack group to not stack
-      }
-    }
-
-    series.push(seriesItem);
-  });
-
-  //var marginTop = 35; // todo: if type = bar set to 0
-  var yAxis = {
-    title: {
-      text: chart.unit,
-      align: "high"
-    }
-  };
-
-  if (chart.chartType !== 'rotated') {
-    yAxis = {
-      title: {
-        text: chart.unit,
-        rotation: 0,
-        align: "high",
-        margin: -40,
-        x: 0,
-        y: -20
-      }
-    };
+  if (chart.isTimeSeries && (chart.chartType == 'line')) {
+    renderTimeseriesChartObject(bindTag, chart, chartWidth, chartHeight);
+    setFontStyle();
+    renderChartUnit();
+    return;
   }
 
-  var xAxis = {
-    categories: chart.categories,
-    tickInterval: chart.labelInterval
-  };
+  // Calculate padding at top (and left) of SVG
+  var types = chart.chartType === 'barline' ? chart.chartTypes : {};
+  var groups = chart.chartType === 'barline' ? chart.groups : [];
+  var type = checkType(chart);
+  var rotate = chart.chartType === 'rotated';
+  var yLabel = rotate === true ? chart.unit : '';
 
-  //if(chart.isTimeSeries) {
-  //  xAxis = {
-  //    type: 'datetime'
-  //  }
-  //}
+  // work out position for chart legend
+  var seriesCount = chart.series.length;
+  var yOffset = (chart.legend == 'bottom-left' || chart.legend == 'bottom-right') ? seriesCount * 20 + 10 : 5;
 
-  // render chart
-  var options = {
-    chart: {
-      renderTo: bindTag,
+  var culledLabels = {};
+  var labelRotate = 0;
+  var labelInterval = chart.labelInterval;
+  _.each(chart.data, function (data_point) {
+    if( labelInterval == null ) {
+      culledLabels[data_point[chart.headers[0]]] = data_point[chart.headers[0]];
+    } else {
+      if(labelRotate === 0) {
+        culledLabels[data_point[chart.headers[0]]] = data_point[chart.headers[0]];
+      } else {
+        culledLabels[data_point[chart.headers[0]]] = "";
+      }
+      labelRotate = (labelRotate + 1) % labelInterval;
+    }
+  });
+
+  // Generate the chart
+  var c3Config = {
+    bindto: bindTag,
+    size: {
       height: chartHeight,
       width: chartWidth
     },
-    colors: ['#274796','#F5942F','#E73F40','#7BCAE2', '#979796', '#E9E117', '#74B630', '#674796', '#BD5B9E'],
-    title:{
-      text:''
-    },
-    xAxis: xAxis,
-    yAxis: yAxis,
-    series: series,
-    tooltip: {
-      valueDecimals:chart.decimalPlaces
-    },
-    plotOptions: {
-      series: {
-        animation: false,
-        pointPadding: 0,
-        groupPadding: 0.1
+    data: {
+      json: chart.data,
+      keys: {
+        value: chart.series
       },
-      line: {
-        lineWidth:1,
-        marker: {
-          radius: 2,
-          symbol: 'circle'
-        }
-      }
+      type: type,
+      types: types,
+      groups: groups,
+      colors: getColours(chart.series)
     },
     legend: {
-      verticalAlign: "top"
+      hide: chart.hideLegend,
+      position: 'inset',
+      inset: {
+        anchor: chart.legend,
+        x: 10,
+        y: yOffset
+      },
+      title: chart.title,
+      subTitle: chart.subtitle
     },
-    credits: {
-      enabled: false
-    }
+    axis: {
+      x: {
+        label: chart.xaxis,
+        type: 'category',
+        categories: chart.categories,
+        tick: {
+          format: function (x) {
+            var data_point = chart.data[x];
+            if(data_point == null) {
+              return "";
+            } else if( labelInterval == null ) {
+              return chart.data[x][chart.headers[0]];
+            } else {
+              if(x % labelInterval === 0) {
+                return chart.data[x][chart.headers[0]];
+              } else {
+                return "";
+              }
+            }
+          }
+        }
+      },
+      y: {
+        label: yLabel,
+        position: 'outer-top'
+      },
+      rotated: rotate
+    },
+    grid: {
+      y: {
+        show: true
+      }
+    },
+    tooltip: {
+        format: {
+          value: function (value, ratio, id, index) {
+             if(chart.decimalPlaces == null) {
+               return value;
+             } else {
+             // This line ensures rounding to certain decimal places
+               return parseFloat(Math.round(value * Math.pow(10,chart.decimalPlaces)) / Math.pow(10,chart.decimalPlaces)).toFixed(chart.decimalPlaces);
+             }
+           },
+           // This line ensures all data labels are displayed in tooltips when ticks are culled
+           title: function (name, ratio, id, index) { return chart.data[name][chart.headers[0]]; }
+        }
+      }
   };
 
-  if (stacked) {
-    options.plotOptions.column= {
-        stacking: 'normal'
-      }
+  c3.generate(c3Config);
+  setFontStyle();
+  renderChartUnit();
+
+  function setFontStyle() {
+    var chartText = d3.select(bindTag + ' svg');
+    chartText.style('font-size', '12px')
+      .style('font-family', '"Open Sans", sans-serif')
+      .style('fill', '#000000');
   }
 
-  var chart = new Highcharts.Chart(options);
+  function renderChartUnit() {
 
-  function checkType(chartType) {
+    var svg = d3.select(bindTag + ' svg');
+    var headerGroup = svg.append('g');
+    var chartGroup = d3.select('g');
 
-    if (chartType === 'rotated') {
-      type = 'bar';
-      //marginTop = 0;
-      //yAxis = {};
-      return type;
-    } else if (chartType === 'barline') {
-      type = 'column';
-      return type;
-    } else if (chartType === 'bar') {
-        type = 'column';
-        return type;
-    } else {
-      return type = chartType;
+    var transform = chartGroup.attr("transform");
+    var chartXOffset = 0;
+
+    if (typeof transform !== 'undefined') {
+      var splitParts = transform.split(",");
+      chartXOffset = ~~splitParts [0].split("(")[1];
     }
+    if (chart.unit && !rotate) {
+      headerGroup.append('text') // Unit (if non rotated)
+        .attr("transform", "translate(" + (chartXOffset + 10) + "," + 15 + ")")
+        .style('font-size', '12px')
+        .style('font-family', '"Open Sans", sans-serif')
+        .style('fill', '#000000')
+        .text(chart.unit);
+    }
+  }
 
+  function getColours(series) {
 
-    //"stackedArea">Stacked Area</option>
-    //<option value="stackedPercent">Stacked Percent</option>
-    //<option value="pyramid">Pyram
+    var availableColours = ['#274796','#F5942F','#E73F40','#7BCAE2', '#979796', '#E9E117', '#74B630', '#674796', '#BD5B9E'];
+    var colours = {};
+
+    $.each(series, function(index, series) {
+      colours[series] = availableColours[index];
+    });
+
+    return colours;
+  }
+
+  function checkType(chart) {
+    if (chart.chartType === 'rotated') {
+      type = 'bar';
+      return type;
+    } else if (chart.chartType === 'barline') {
+      type = 'bar';
+      return type;
+    } else {
+      return type = chart.chartType;
+    }
   }
 
   function renderTimeseriesChartObject(bindTag, timechart, chartWidth, chartHeight) {
@@ -194,11 +218,8 @@ function renderChartObject(bindTag, chart, chartHeight, chartWidth) {
     //  dates_to_label[data_point.date] = data_point.label;
     //});
 
-    // should we show
-    var showPoints = true;
-    if (chart.data.length > 100) {
-      showPoints = false;
-    }
+
+
 
     // refers to the issue of time axes not being applicable to non continuous charts
     var axisType;
@@ -256,7 +277,7 @@ function renderChartObject(bindTag, chart, chartHeight, chartWidth) {
         keys: keys,
         type: chart.chartType,
         xFormat: '%Y-%m-%d %H:%M:%S',
-        //colors: getColours(chart.series)
+        colors: getColours(chart.series)
       },
 
       point: {

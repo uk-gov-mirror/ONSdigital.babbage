@@ -184,7 +184,6 @@ $(function() {
                 uri = '/' + uri;
             }
 
-            //new pym.Parent(uri, uri + "/chart", {});
             renderChartForUri(uri, id, $this);
         });
     }
