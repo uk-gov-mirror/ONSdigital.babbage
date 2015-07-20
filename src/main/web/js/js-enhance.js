@@ -357,13 +357,13 @@ $(function() {
 
 
             //insert sticky wrapper
-            var tocStickyWrap = $('<div class="toc-sticky-wrap"><div class="wrapper">');
+            var tocStickyWrap = $('<div class="toc-sticky-wrap print-hidden"><div class="wrapper">');
             $(tocStickyWrap).insertAfter($('#toc'));
             $('.toc-sticky-wrap .wrapper').append('<h2 class="flush">Table of contents</h2>');
 
 
             //cerate select list of sections
-            var tocSelectList = $('<select class="toc-select-list">');
+            var tocSelectList = $('<select class="toc-select-list ">');
 
             $(tocSelectList).append($('<option/>', {
                     value: '',
@@ -447,7 +447,7 @@ $(function() {
         });
 
         //Animate scroll to anchor on same page
-        $('a[href^="#"]').click(function(e) {
+        $('.jsEnhanceAnimateScroll').click(function(e) {
             e.preventDefault();
             
             var target = this.hash;

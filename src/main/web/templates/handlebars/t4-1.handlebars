@@ -47,13 +47,13 @@
 			<ol id="toc" class="table-of-contents-ordered-list">
 				{{#each sections}}
 				<li>
-					<a href="#{{slugify title}}">{{title}}</a>
+					<a href="#{{slugify title}}" class="jsEnhanceAnimateScroll">{{title}}</a>
 				</li>
 				{{/each}}
 				{{#if accordion}}
 					{{#each accordion}}
 					<li>
-						<a href="#{{slugify title}}" class=" expand-accordion">{{title}}</a>
+						<a href="#{{slugify title}}" class="jsEnhanceAnimateScroll expand-accordion">{{title}}</a>
 					</li>
 					{{/each}}
 				{{/if}}
@@ -75,7 +75,7 @@
 							<h2>{{@index_1}}. {{title}}</h2>
 						</header>
 						{{md markdown}}
-						<a class="print-hidden " href="#toc" title="Back to table of contents">Back to table of contents</a>
+						<a class="print-hidden jsEnhanceAnimateScroll" href="#toc" title="Back to table of contents">Back to table of contents</a>
 					</section>
 				{{/each}}
 				<!-- Accordion -->
@@ -86,7 +86,7 @@
 						<h2 class="accordion__title" aria-controls="content-{{@index}}">{{title}}</h2>
 						<div class="accordion__content panel--bottom-mar-small" aria-labelledby="sc-{{@index}}">
 							{{md markdown}}
-							<a class="print-hidden " href="#toc" title="Back to table of contents" class="">Back to table of contents</a>
+							<a class="print-hidden jsEnhanceAnimateScroll" href="#toc" title="Back to table of contents" class="">Back to table of contents</a>
 						</div>
 					</section>
 					{{/each}}
