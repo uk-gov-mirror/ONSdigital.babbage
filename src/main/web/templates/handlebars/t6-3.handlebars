@@ -43,7 +43,17 @@
 				{{md description.summary}}
 			</div>
 			<p>
-				<span class="stand-out-text">{{resultsNumber}}</span> results
+				<span class="stand-out-text">
+					{{#each downloads}}
+						{{#if @last}}
+							{{#eq @index_1 '1'}}
+								{{@index_1}}</span> result
+							{{/eq}}
+							{{#ne @index_1 '1'}}
+								{{@index_1}}</span> results
+							{{/ne}}
+						{{/if}}
+					{{/each}}
 			</p>
 		</div>
 		<!-- /grid-col -->
