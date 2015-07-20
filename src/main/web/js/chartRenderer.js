@@ -83,15 +83,25 @@ function renderChartObject(bindTag, chart, chartHeight, chartWidth) {
   });
 
   //var marginTop = 35; // todo: if type = bar set to 0
-  //var yAxis = {
-  //  title: {
-  //    text: chart.unit,
-  //    rotation: 0,
-  //    align: "high",
-  //    margin: -40,
-  //    y: -20
-  //  }
-  //};
+  var yAxis = {
+    title: {
+      text: chart.unit,
+      align: "high"
+    }
+  };
+
+  if (chart.chartType !== 'rotated') {
+    yAxis = {
+      title: {
+        text: chart.unit,
+        rotation: 0,
+        align: "high",
+        margin: -40,
+        x: 0,
+        y: -20
+      }
+    };
+  }
 
   var xAxis = {
     categories: chart.categories,
@@ -116,11 +126,7 @@ function renderChartObject(bindTag, chart, chartHeight, chartWidth) {
       text:''
     },
     xAxis: xAxis,
-    yAxis: {
-      title: {
-        text: chart.unit
-      }
-    },
+    yAxis: yAxis,
     series: series,
     tooltip: {
       valueDecimals:chart.decimalPlaces
