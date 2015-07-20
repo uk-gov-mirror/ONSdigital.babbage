@@ -89,18 +89,27 @@ function renderChartObject(bindTag, chart, chartHeight, chartWidth) {
       align: "high"
     }
   };
+  var labels = {};
 
+  // typically do not use the chart label on y axis, just overlay a label with the unit inside the chart area.
   if (chart.chartType !== 'rotated') {
     yAxis = {
       title: {
-        text: chart.unit,
-        rotation: 0,
-        align: "high",
-        margin: -40,
-        x: 0,
-        y: -20
+        text: ''
       }
     };
+
+    labels = {
+      items: [
+        {
+          html: chart.unit,
+          style: {
+            left: '0px',
+            top: '0px'
+          }
+        }
+      ]
+    }
   }
 
   var xAxis = {
@@ -125,6 +134,7 @@ function renderChartObject(bindTag, chart, chartHeight, chartWidth) {
     title:{
       text:''
     },
+    labels: labels,
     xAxis: xAxis,
     yAxis: yAxis,
     series: series,
