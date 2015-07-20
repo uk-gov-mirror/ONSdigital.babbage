@@ -454,6 +454,7 @@ $(function() {
             
             $('html, body').stop().animate({scrollTop: $(target).offset().top}, 1000, function(){
                 location.hash = target;
+                $(document).scrollTop( $(location.hash).offset().top - 60 );
             });
         });
     }
