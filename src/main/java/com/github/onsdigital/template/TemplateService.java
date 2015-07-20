@@ -5,6 +5,7 @@ import com.github.onsdigital.content.page.base.Page;
 import com.github.onsdigital.template.handlebars.HandlebarsRenderer;
 
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * Created by bren on 28/05/15. Resolves data type and renders html page.
@@ -37,5 +38,9 @@ public class TemplateService {
      */
     public String render(Object data, String templateName) throws IOException {
         return templateRenderer.renderTemplate(templateName, data);
+    }
+
+    public String render(Object data, String templateName, Map<String, ?> additionalData) throws IOException {
+        return templateRenderer.renderTemplate(templateName, data, additionalData);
     }
 }

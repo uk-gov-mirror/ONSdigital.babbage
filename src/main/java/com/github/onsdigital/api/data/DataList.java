@@ -3,7 +3,7 @@ package com.github.onsdigital.api.data;
 import com.github.davidcarboni.restolino.framework.Api;
 import com.github.davidcarboni.restolino.json.Serialiser;
 import com.github.onsdigital.bean.DataListRequest;
-import com.github.onsdigital.data.DataService;
+import com.github.onsdigital.data.LocalFileDataService;
 import org.eclipse.jetty.http.HttpStatus;
 
 import javax.servlet.http.HttpServletRequest;
@@ -37,7 +37,7 @@ public class DataList {
 			arrayList.add("/economy/inflationandpriceindices/timeseries/d7g7");
 			arrayList.add("/economy/inflationandpriceindices");
 			
-			response.getWriter().write(DataService.getInstance().getDataAsString(dataListRequest.uriList).toString());
+			response.getWriter().write(LocalFileDataService.getInstance().getDataAsString(dataListRequest.uriList).toString());
 		} catch (IOException e) {
 			response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR_500);
 			response.setContentType("text/plain");

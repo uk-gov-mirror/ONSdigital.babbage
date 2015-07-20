@@ -1,19 +1,16 @@
 package com.github.onsdigital.template.handlebars;
 
-import com.github.jknack.handlebars.Context;
-import com.github.jknack.handlebars.Handlebars;
-import com.github.jknack.handlebars.HumanizeHelper;
-import com.github.jknack.handlebars.Template;
+import com.github.jknack.handlebars.*;
 import com.github.jknack.handlebars.cache.HighConcurrencyTemplateCache;
 import com.github.jknack.handlebars.context.FieldValueResolver;
 import com.github.jknack.handlebars.context.MapValueResolver;
 import com.github.jknack.handlebars.helper.StringHelpers;
 import com.github.jknack.handlebars.io.FileTemplateLoader;
-import com.github.onsdigital.configuration.Configuration;
 import com.github.onsdigital.template.TemplateRenderer;
 import com.github.onsdigital.template.handlebars.helpers.*;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -30,7 +27,7 @@ public class HandlebarsRenderer implements TemplateRenderer {
     }
 
     private void initializeHelpers() {
-        handlebars.registerHelper("md", new CustomMarkdownTagHelper());
+        handlebars.registerHelper("md", new MarkdownHelper());
         handlebars.registerHelper("df", new DateFormatHelper());
         registerFileHelpers();
         registerConditionHelpers();
@@ -50,10 +47,16 @@ public class HandlebarsRenderer implements TemplateRenderer {
 
     @Override
     public String renderTemplate(String templateName, Object data) throws IOException {
+        return renderTemplate(templateName, data, new HashMap<String, Object>());
+    }
+
+    @Override
+    public String renderTemplate(String templateName, Object data, Map<String, ?> additionalData) throws IOException {
         Template template = getTemplate(templateName);
 
         Context context = Context
                 .newBuilder(data)
+                .combine(additionalData)
                 .resolver(FieldValueResolver.INSTANCE, MapValueResolver.INSTANCE)
                 .build();
         return template.apply(context);

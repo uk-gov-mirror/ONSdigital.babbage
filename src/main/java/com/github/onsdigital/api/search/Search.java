@@ -9,7 +9,7 @@ import com.github.onsdigital.content.page.base.PageType;
 import com.github.onsdigital.content.page.search.SearchResultsPage;
 import com.github.onsdigital.content.page.taxonomy.ProductPage;
 import com.github.onsdigital.content.util.ContentUtil;
-import com.github.onsdigital.data.DataService;
+import com.github.onsdigital.data.LocalFileDataService;
 import com.github.onsdigital.error.ResourceNotFoundException;
 import com.github.onsdigital.request.response.BabbageResponse;
 import com.github.onsdigital.request.response.BabbageStringResponse;
@@ -210,7 +210,7 @@ public class Search {
             //Search in general needs tidying up. After going live hopefuly
 
             if (PageType.product_page == pageReference.getType()) {
-                ContentUtil.loadReferencedPage(DataService.getInstance(), pageReference);
+                ContentUtil.loadReferencedPage(LocalFileDataService.getInstance(), pageReference);
                 ProductPage productPage = (ProductPage) pageReference.getData();
                 page.setHeadlinePage(productPage);
                 List<PageReference> items = productPage.getItems();
@@ -218,7 +218,7 @@ public class Search {
                     if (items.size() > 0) {
                         PageReference headlineData = items.iterator().next();
                         if (headlineData != null) {
-                            ContentUtil.loadReferencedPage(DataService.getInstance(), headlineData);
+                            ContentUtil.loadReferencedPageDescription(LocalFileDataService.getInstance(), headlineData);
                             iterator.remove();
                             break;
                         }
