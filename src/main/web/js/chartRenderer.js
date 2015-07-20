@@ -138,9 +138,6 @@ function renderChartObject(bindTag, chart, chartHeight, chartWidth) {
     xAxis: xAxis,
     yAxis: yAxis,
     series: series,
-    tooltip: {
-      valueDecimals:chart.decimalPlaces
-    },
     plotOptions: {
       series: {
         animation: false,
@@ -157,6 +154,10 @@ function renderChartObject(bindTag, chart, chartHeight, chartWidth) {
     },
     legend: {
       verticalAlign: "top"
+    },
+    tooltip: {
+      valueDecimals:chart.decimalPlaces,
+      shared: true
     },
     credits: {
       enabled: false
