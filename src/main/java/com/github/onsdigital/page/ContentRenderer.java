@@ -72,6 +72,10 @@ public class ContentRenderer implements ContentRenderingService {
         Page page = DataService.getInstance().readAsPage(uri, true, zebedeeRequest);
         page.processContent(LocalFileDataService.getInstance(), this);
         page.setNavigation(NavigationUtil.getNavigation());
-        return TemplateService.getInstance().renderPage(page);
+
+        Map<String, Object> additionalData = new HashMap<>();
+        additionalData.put("jsEnhanced", jsEnhanced);
+
+        return TemplateService.getInstance().renderPage(page, additionalData);
     }
 }
