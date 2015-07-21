@@ -1,16 +1,14 @@
 <div class="markdown-chart-container">
-    <h4>{{title}}</h4>
-    <h5>{{subtitle}}</h5>
-  </br>
+    <h4 class="flush--third--vertical">{{title}}</h4>
+    <h5 class="flush--third--bottom">{{subtitle}}</h5>
   <div id="chart-{{filename}}" data-uri="{{uri}}" class="markdown-chart">
     {{#unless jsEnhanced}}
       <img src="{{uri}}/image" alt="{{alt-text}}">
     {{/unless}}
   </div>
-  {{#if source}}<h6>Source: {{source}}</h6>{{/if}}
-  </br>
+  {{#if source}}<h6 class="text-right flush--third--bottom">Source: {{source}}</h6>{{/if}}
   {{#if notes}}
-  <h6>Notes:</h6>
+  <h6 class="flush--third--bottom">Notes:</h6>
     {{md notes}}
   {{/if}}
 </div>
