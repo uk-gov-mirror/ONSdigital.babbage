@@ -6,8 +6,8 @@ RUN echo '{"service": {"name": "babbage", "tags": ["blue"], "port": 8080, "check
 
 # Add the repo source
 WORKDIR /usr/src
-ADD ./target/dependency /usr/src/target/
-ADD ./target/classes /usr/src/target/
+ADD ./target/dependency/* /usr/src/target/dependency/
+ADD ./target/classes/* /usr/src/target/classes/
 ADD ./target/*-jar-with-dependencies.jar /usr/src/target/
 
 # Build web content
