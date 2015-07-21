@@ -6,7 +6,7 @@ $(function() {
     var browserNotSupported = (function () {
         var div = document.createElement('DIV');
         // http://msdn.microsoft.com/en-us/library/ms537512(v=vs.85).aspx
-        div.innerHTML = '<!--[if lte IE 9]><I></I><![endif]-->';
+        div.innerHTML = '<!--[if lte IE 7]><I></I><![endif]-->';
         return div.getElementsByTagName('I').length > 0;
     }());
 
@@ -40,6 +40,7 @@ $(function() {
         jsEnhanceDownloadAnalytics();
 
         jsEnhanceTableOfContents();
+        jsEnhanceScrollToSection();
 
         // jsEnhanceMobileTables();
 
@@ -183,7 +184,6 @@ $(function() {
                 uri = '/' + uri;
             }
 
-            //new pym.Parent(uri, uri + "/chart", {});
             renderChartForUri(uri, id, $this);
         });
     }
@@ -356,13 +356,13 @@ $(function() {
 
 
             //insert sticky wrapper
-            var tocStickyWrap = $('<div class="toc-sticky-wrap"><div class="wrapper">');
+            var tocStickyWrap = $('<div class="toc-sticky-wrap print-hidden"><div class="wrapper">');
             $(tocStickyWrap).insertAfter($('#toc'));
             $('.toc-sticky-wrap .wrapper').append('<h2 class="flush">Table of contents</h2>');
 
 
             //cerate select list of sections
-            var tocSelectList = $('<select class="toc-select-list">');
+            var tocSelectList = $('<select class="toc-select-list ">');
 
             $(tocSelectList).append($('<option/>', {
                     value: '',
@@ -383,15 +383,22 @@ $(function() {
             //add toc select to sticky wrapper
             $('.toc-sticky-wrap .wrapper').append(tocSelectList);
 
-
-            //add select change function to toc select option
             $('.toc-select-list').change(function() {
                 var location = $(this).find('option:selected').val();
                 if (location) {
-                    window.location = location;
-                    // var locationhash = '#' + location;
-                    expandAccordion();
-                    $('html, body').animate({ scrollTop: $(location).offset().top - 60}, 1000);
+                    // expands section if accordion
+                    var section = $(location);
+                    if (section.hasClass('is-collapsed')) {
+                      section.removeClass('is-collapsed').addClass('is-expanded');
+                    }
+
+                    //animates scroll and offsets page to counteract sticky nav
+                    $('html, body').animate({ scrollTop: $(location).offset().top - 60}, 1000, function(){
+                        //adds location hash to url without causing page to jump to it - credit to http://lea.verou.me/2011/05/change-url-hash-without-page-jump/
+                        if (history.pushState) {
+                            history.pushState(null, null, location);
+                        }
+                    });
                 }
             });
             
@@ -406,7 +413,7 @@ $(function() {
                 if (scrollTop > contentStart) { 
                     $('#toc').addClass('table-of-contents-ordered-list-hide');
                     // $('#toc').removeClass('table-of-contents-ordered-list');
-                    $('.wrapper--content').css('padding-top','9rem');
+                    $('.wrapper--content').css('padding-top','7.2rem');
                     $('.toc-sticky-wrap').show();
                 } else {
                     // $('#toc').addClass('table-of-contents-ordered-list');
@@ -422,6 +429,36 @@ $(function() {
                 // console.log($(window).scrollTop());
             });
         }
+    }    
+
+    function jsEnhanceScrollToSection() {
+
+        //Offsets page to make room for sticky nav if arrive on page directly at section
+        $(window).load(function(){
+            if (location.hash) {
+                var contentStart = $('.wrapper--content').offset().top;
+                var scrollTop = $(window).scrollTop();
+                
+                if (scrollTop > contentStart) {
+                    //console.log('scrollTop = ' + scrollTop + ' contentStart = ' + contentStart)
+                    $(document).scrollTop( $(location.hash).offset().top - 60 );
+                }
+            }
+        });
+
+        //Animate scroll to anchor on same page
+        $('.jsEnhanceAnimateScroll').click(function(e) {
+            e.preventDefault();
+            
+            var target = this.hash;
+            
+            $('html, body').stop().animate({scrollTop: $(target).offset().top}, 1000, function(){
+                location.hash = target;
+
+                //Temporary fix for IE8-9 not offsetting properly on click from main toc
+                //TODO Fix root cause of IE offsetting.
+                $(document).scrollTop( $(location.hash).offset().top - 60 );
+            });
+        });
     }
-    
 });
