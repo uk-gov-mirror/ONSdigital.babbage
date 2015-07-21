@@ -449,15 +449,14 @@ $(function() {
         //Animate scroll to anchor on same page
         $('.jsEnhanceAnimateScroll').click(function(e) {
             e.preventDefault();
-            
+
             var target = this.hash;
             
-            $('html, body').stop().animate({scrollTop: $(target).offset().top}, 1000, function(){
+            $('html, body').animate({scrollTop: $(target).offset().top}, 1000, function(){
                 location.hash = target;
 
-                //Temporary fix for IE8-9 not offsetting properly on click from main toc
-                //TODO Fix root cause of IE offsetting.
-                $(document).scrollTop( $(location.hash).offset().top - 60 );
+                //TODO Fix root cause of IE offsetting. Temporary fix: 
+                //$('html, body').scrollTop( $(location.hash).offset().top - 60 );
             });
         });
     }
