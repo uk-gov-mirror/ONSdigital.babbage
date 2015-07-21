@@ -6,13 +6,15 @@ RUN echo '{"service": {"name": "babbage", "tags": ["blue"], "port": 8080, "check
 
 # Add the repo source
 WORKDIR /usr/src
-ADD . /usr/src
+ADD ./target/dependency /usr/src/target/
+ADD ./target/classes /usr/src/target/
+ADD ./target/*-jar-with-dependencies.jar /usr/src/target/
 
 # Build web content
-RUN npm install --prefix=src/main/web --unsafe-perm
+#RUN npm install --prefix=src/main/web --unsafe-perm
 
 # Build jar-with-dependencies
-RUN mvn install dependency:copy-dependencies -DskipTests
+#RUN mvn dependency:copy-dependencies
 
 # Restolino
 ENV RESTOLINO_STATIC="src/main/web"
