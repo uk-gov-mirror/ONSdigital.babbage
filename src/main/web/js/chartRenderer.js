@@ -96,7 +96,8 @@ function renderChartObject(bindTag, chart, chartHeight, chartWidth) {
     yAxis = {
       title: {
         text: ''
-      }
+      },
+      lineWidth: 1
     };
 
     labels = {
@@ -153,7 +154,8 @@ function renderChartObject(bindTag, chart, chartHeight, chartWidth) {
       }
     },
     legend: {
-      verticalAlign: "top"
+      verticalAlign: "top",
+      enabled : (series.length > 1)
     },
     tooltip: {
       valueDecimals:chart.decimalPlaces,
