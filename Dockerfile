@@ -8,6 +8,7 @@ RUN echo '{"service": {"name": "babbage", "tags": ["blue"], "port": 8080, "check
 WORKDIR /usr/src
 ADD ./target/dependency /usr/src/target/dependency
 ADD ./target/classes /usr/src/target/classes
+ADD ./src/main/web /usr/src/src/main/web
 #ADD ./target/*-jar-with-dependencies.jar /usr/src/target/
 
 # Temporary: expose Elasticsearch
