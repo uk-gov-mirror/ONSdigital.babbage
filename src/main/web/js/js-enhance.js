@@ -28,8 +28,7 @@ $(function() {
 
         //The order of these functions being called is important...
         jsEnhanceULNavToSelectNav();
-        jsEnhanceHome();
-        jsEnhanceT3List();
+        jsEnhanceClickableDiv();
         jsEnhanceLinechart();
         jsEnhancePrint();
         jsEnhanceNumberSeparator();
@@ -114,59 +113,31 @@ $(function() {
         });
     }
 
-    function jsEnhanceHome() {
+    function jsEnhanceClickableDiv() {
+      // get any content with clickable-wrap class
+      var clickableDiv = $('.clickable-wrap');
 
-        var herostatarea = $('.stat__wrap--home');
+      // on click grab the first link of the content and go there
+      $(clickableDiv).click(function() {
+        var link = $('a:first', this).attr('href');
+        window.location = link;
+      });
 
+      // on hover change the cursor so that it looks clickable
+      $(clickableDiv).css({
+          'cursor': 'pointer'
+      });
 
-        $(herostatarea).click(function() {
-            var herostatarealink = $('a:last', this).attr('href');
-
-            window.location = herostatarealink;
-        });
-
-        $(herostatarea).css({
-            'cursor': 'pointer'
-        });
-
-        $(herostatarea).hover(function() {
-            $(this).css({
-                'background-color': '#f8fadc'
-            });
-        }, function() {
-            $(this).css({
-                'background-color': 'transparent'
-            });
-        });
-
-    }
-
-    function jsEnhanceT3List() {
-
-        var timseriesArea = $('.timeseries-wrap');
-
-
-        $(timseriesArea).click(function() {
-            var timeseriesLink = $('a:first', this).attr('href');
-            console.log(timeseriesLink);
-
-            window.location = timeseriesLink;
-        });
-
-        $(timseriesArea).css({
-            'cursor': 'pointer'
-        });
-
-        $(timseriesArea).hover(function() {
-            $(this).css({
-                'background-color': '#f8fadc'
-            });
-        }, function() {
-            $(this).css({
-                'background-color': 'transparent'
-            });
-        });
-
+      // change the background colour on hover
+      $(clickableDiv).hover(function() {
+          $(this).css({
+              'background-color': '#f8fadc'
+          });
+      }, function() {
+          $(this).css({
+              'background-color': 'transparent'
+          });
+      });
     }
 
 
