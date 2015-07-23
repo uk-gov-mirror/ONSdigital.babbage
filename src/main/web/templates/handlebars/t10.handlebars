@@ -116,13 +116,13 @@
 				{{/if}}
 			</p>
 			{{#if headlinePage}}
-			<article class="box box--padded sectioned">
+			<article class="box box--padded--med sectioned">
 				<div class="box__content">
 					<div class="grid-wrap">
 						{{#ifany headlinePage.items.0.data.years headlinePage.items.0.data.quarters headlinePage.items.0.data.months}}
 						<div class="grid-col desktop-grid-one-half">
 							<p class="alpha">
-								<img src="{{headlinePage.items.0.data.uri}}/searchchart" alt="{{headlinePage.items.0.data.title}}">
+								<a href="{{headlinePage.items.0.data.uri}}"><img src="{{headlinePage.items.0.data.uri}}/searchchart" alt="{{headlinePage.items.0.data.title}}"></a>
 							</p>
 						</div>
 						{{/ifany}}

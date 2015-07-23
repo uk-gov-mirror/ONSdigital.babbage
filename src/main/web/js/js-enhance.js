@@ -10,7 +10,7 @@ $(function() {
         return div.getElementsByTagName('I').length > 0;
     }());
 
-    
+
     if (browserNotSupported) {
         setTimeout(function() {
             $('#loading-overlay').fadeOut(300);
@@ -19,7 +19,7 @@ $(function() {
         jsEnhance();
     }
 
-    
+
 
     function jsEnhance() {
         $('.js-enhance--show').show();
@@ -29,6 +29,7 @@ $(function() {
         //The order of these functions being called is important...
         jsEnhanceULNavToSelectNav();
         jsEnhanceHome();
+        jsEnhanceT3List();
         jsEnhanceLinechart();
         jsEnhancePrint();
         jsEnhanceNumberSeparator();
@@ -131,7 +132,35 @@ $(function() {
         $(herostatarea).hover(function() {
             $(this).css({
                 'background-color': '#f8fadc'
-            })
+            });
+        }, function() {
+            $(this).css({
+                'background-color': 'transparent'
+            });
+        });
+
+    }
+
+    function jsEnhanceT3List() {
+
+        var timseriesArea = $('.timeseries-wrap');
+
+
+        $(timseriesArea).click(function() {
+            var timeseriesLink = $('a:first', this).attr('href');
+            console.log(timeseriesLink);
+
+            window.location = timeseriesLink;
+        });
+
+        $(timseriesArea).css({
+            'cursor': 'pointer'
+        });
+
+        $(timseriesArea).hover(function() {
+            $(this).css({
+                'background-color': '#f8fadc'
+            });
         }, function() {
             $(this).css({
                 'background-color': 'transparent'
@@ -210,7 +239,7 @@ $(function() {
       });
     }
 
-    function jsEnhancePrintCompendium() {      
+    function jsEnhancePrintCompendium() {
         $('#jsEnhancePrintCompendium').click(function(e) {
             addLoadingOverlay();
 
@@ -222,13 +251,13 @@ $(function() {
 
             $('.chapter').each(function() {
                 var url = $(this).attr('href');
-                
+
                 var getContent = ('main');
-                
+
                 $('<section>').load(url, function() {
                     $('.print-content').append("<div class='print__break-after'>" + $(this).find(getContent).html() + "</div>");
                 });
-                
+
                 e.preventDefault();
             });
 
@@ -243,12 +272,12 @@ $(function() {
         if ($(window).width() > 608) {
             var highestBox = 0;
             $('.equal-height').each(function(){
-            
+
                 if($(this).height() > highestBox) {
-                   highestBox = $(this).height(); 
+                   highestBox = $(this).height();
                }
-            });  
-            
+            });
+
             $('.equal-height').height(highestBox);
         }
     }
@@ -287,19 +316,19 @@ $(function() {
 
         $('<button class="invisible btn btn--mobile-table-show">View table</button>').insertAfter($('.markdown-table-wrap'));
         $('<button class="invisible btn btn--mobile-table-hide">Close table</button>').insertAfter($('.markdown-table-wrap table'));
-        
+
         $('.btn--mobile-table-show').click(function(e) {
             // console.log($(this).closest('.markdown-table-container').find('.markdown-table-wrap'));
-            $(this).closest('.markdown-table-container').find('.markdown-table-wrap').show();       
+            $(this).closest('.markdown-table-container').find('.markdown-table-wrap').show();
         });
 
         $('.btn--mobile-table-hide').click(function(e) {
             // console.log($(this).closest('.markdown-table-container').find('.markdown-table-wrap'));
-            $(this).closest('.markdown-table-wrap').hide();       
+            $(this).closest('.markdown-table-wrap').hide();
         });
     }
 
-    
+
     /*Track file downloads*/
     function jsEnhanceDownloadAnalytics() {
         //Track generated file downloads (eg chart xlsx download)
@@ -320,7 +349,7 @@ $(function() {
             }
 
             var page = downloadType + ('?uri=') + path + ('/') + downloadTitle + '.' + downloadFormat;
-            
+
             ga('send', 'pageview', {
                 'page': page
             });
@@ -350,7 +379,7 @@ $(function() {
 
     function jsEnhanceTableOfContents() {
         if($('body').contents().find('*').hasClass('wrapper--content')) {
-            
+
             //remove html and bodyu height 100% to allow jquery scroll functions to work properly
             $('html, body').css('height', 'auto');
 
@@ -366,16 +395,16 @@ $(function() {
 
             $(tocSelectList).append($('<option/>', {
                     value: '',
-                    text : '-- Select a section --' 
+                    text : '-- Select a section --'
                 }));
 
             $('#toc li a').each(function(i){
                 i = i + 1;
                 var text = i + '. ' + $(this).text();
                 var href = $(this).attr('href');
-                $(tocSelectList).append($('<option/>', { 
+                $(tocSelectList).append($('<option/>', {
                     value: href,
-                    text : text 
+                    text : text
                 }));
             });
 
@@ -401,7 +430,7 @@ $(function() {
                     });
                 }
             });
-            
+
 
 
 
@@ -410,7 +439,7 @@ $(function() {
                 var contentStart = $('.wrapper--content').offset().top;
                 var scrollTop = $(window).scrollTop();
                 // console.log(scrollTop);
-                if (scrollTop > contentStart) { 
+                if (scrollTop > contentStart) {
                     $('#toc').addClass('table-of-contents-ordered-list-hide');
                     // $('#toc').removeClass('table-of-contents-ordered-list');
                     $('.wrapper--content').css('padding-top','7.2rem');
@@ -429,7 +458,7 @@ $(function() {
                 // console.log($(window).scrollTop());
             });
         }
-    }    
+    }
 
     function jsEnhanceScrollToSection() {
 
@@ -438,7 +467,7 @@ $(function() {
             if (location.hash) {
                 var contentStart = $('.wrapper--content').offset().top;
                 var scrollTop = $(window).scrollTop();
-                
+
                 if (scrollTop > contentStart) {
                     //console.log('scrollTop = ' + scrollTop + ' contentStart = ' + contentStart)
                     $(document).scrollTop( $(location.hash).offset().top - 60 );
@@ -449,15 +478,14 @@ $(function() {
         //Animate scroll to anchor on same page
         $('.jsEnhanceAnimateScroll').click(function(e) {
             e.preventDefault();
-            
+
             var target = this.hash;
-            
-            $('html, body').stop().animate({scrollTop: $(target).offset().top}, 1000, function(){
+
+            $('html, body').animate({scrollTop: $(target).offset().top}, 1000, function(){
                 location.hash = target;
 
-                //Temporary fix for IE8-9 not offsetting properly on click from main toc
-                //TODO Fix root cause of IE offsetting.
-                $(document).scrollTop( $(location.hash).offset().top - 60 );
+                //TODO Fix root cause of IE offsetting. Temporary fix:
+                //$('html, body').scrollTop( $(location.hash).offset().top - 60 );
             });
         });
     }

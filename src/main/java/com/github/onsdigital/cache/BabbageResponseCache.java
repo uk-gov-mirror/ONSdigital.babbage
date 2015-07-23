@@ -18,8 +18,7 @@ public class BabbageResponseCache {
 
     public BabbageResponseCache(long maxSize) {
         cache = CacheBuilder.newBuilder()
-                .maximumSize(maxSize)
-                .expireAfterAccess(Configuration.getGlobalCacheTimeout(), TimeUnit.MINUTES)
+                .maximumSize(maxSize).expireAfterWrite(Configuration.getGlobalCacheTimeout(), TimeUnit.MINUTES)
                 .build();
     }
 

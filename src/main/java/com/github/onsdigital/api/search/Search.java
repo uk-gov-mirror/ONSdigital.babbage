@@ -286,8 +286,8 @@ public class Search {
                 }
             }
         }
-        if (query.length() > 100) {
-            throw new IllegalArgumentException("Search query contains too many characters");
+        if (query.length() > 200) {
+            throw new RuntimeException("Search query contains too many characters");
         }
         String sanitizedQuery = query.replaceAll("[^a-zA-Z0-9 ]+", "");
 
