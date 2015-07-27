@@ -115,8 +115,9 @@
 				Sorry, there were no results for <span class="stand-out-text">'{{searchTerm}}'</span>.
 				{{/if}}
 			</p>
+			{{!-- HEADLINE BOX --}}
 			{{#if headlinePage}}
-			<article class="box box--padded--med sectioned">
+			<article class="box box--padded--med sectioned clickable-wrap">
 				<div class="box__content">
 					<div class="grid-wrap">
 						{{#ifany headlinePage.items.0.data.years headlinePage.items.0.data.quarters headlinePage.items.0.data.months}}
@@ -137,6 +138,7 @@
 				<!-- /box__content -->
 			</article>
 			{{/if}}
+			{{!-- end of HEADLINE BOX --}}
 			{{#each statisticsSearchResult.results}}
 			<ul class="list--neutral">
 				<li>
