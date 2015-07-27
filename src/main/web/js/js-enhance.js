@@ -140,7 +140,7 @@ $(function() {
       });
 
       // check if there's a nav--block-landing to remove :after class
-      if ($('.nav--block-landing').length > 0) {
+      if ($('.nav--block-landing')) {
           $(clickableDiv).hover(function() {
             $('.nav--block-landing').addClass('nav--block-landing--remove');
           }, function() {
