@@ -77,27 +77,52 @@
 			</ul>
 		</div>
 		<!-- /grid-col desktop-grid-two-thirds -->
+		<!-- /grid-col desktop-grid-two-thirds -->
 		<div class="grid-col desktop-grid-one-third">
-			{{#if relatedDocuments}}
-			<article class="box solid box--teal--separated--left">
-				<div class="box__inner border box--padded">
-					<header class="box__header">
-						<h3>Statistical bulletins and articles that use this time series</h3>
-					</header>
-					<div class="box__content">
-						<ul class="list--neutral">
-							{{#each relatedDocuments}}
-							<li class="flush--third--bottom">
-								<a href="{{uri}}" title="{{description.title}}">{{description.title}}</a>
-							</li>
-							{{/each}}
-						</ul>
-					</div>
-				</div>
-				<!-- /box__inner -->
-			</article>
-			{{/if}}
-			<!-- /box -->
+				<!-- RELATED DATASETS -->
+				{{#if relatedDatasets}}
+				<article class="box solid box--green--separated--left">
+						<div class="box__inner border box--padded">
+								<header class="box__header">
+										<h3>Related datasets</h3>
+								</header>
+								<div class="box__content">
+										<ul class="list--neutral">
+												{{#each relatedDatasets}}
+												<li class="flush--third--bottom"><a href="{{rootpath uri}}" title="{{description.title}}">{{description.title}}</a></li>
+												{{/each}}
+										</ul>
+								</div>
+						</div>
+						<!-- /box__inner -->
+				</article>
+				{{/if}}
+				<!-- RELATED BULLETINS & ARTICLES -->
+				{{#if relatedDocuments}}
+				<article class="box solid box--teal--separated--left">
+						<div class="box__inner border box--padded">
+								<header class="box__header">
+										<h3>Statistical bulletins and articles that use this time series</h3>
+								</header>
+								<div class="box__content">
+										<ul class="list--neutral">
+												{{#each relatedDocuments}}
+												<li class="flush--third--bottom">
+														<a href="{{uri}}" title="{{description.title}}">{{description.title}}
+														{{#if description.edition}}
+																{{#ne description.edition 'yes'}}: {{description.edition}}{{/ne}}
+														{{/if}}
+														</a>
+												</li>
+												{{/each}}
+										</ul>
+								</div>
+						</div>
+						<!-- /box__inner -->
+				</article>
+				{{/if}}
+				<!-- /box -->
+				{{> partials/local-box}}
 		</div>
 		<!-- /grid-col -->
 		<div class="grid-col desktop-grid-full-width">
