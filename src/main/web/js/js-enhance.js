@@ -138,7 +138,16 @@ $(function() {
               'background-color': 'transparent'
           });
       });
-    }
+
+      // check if there's a nav--block-landing to remove :after class
+      if ($('.nav--block-landing').length > 0) {
+          $(clickableDiv).hover(function() {
+            $('.nav--block-landing').addClass('nav--block-landing--remove');
+          }, function() {
+            $('.nav--block-landing').removeClass('nav--block-landing--remove');
+          });
+        }
+      }
 
 
     function jsEnhanceLinechart() {
