@@ -26,9 +26,11 @@
                       <a class="print-hidden" href="{{latestReleaseUri}}">view latest release</a>
 					{{/if}}
 				</p>
+				{{#if description.nextRelease}}
 				<p class="grid-col tablet-grid-one-quarter divider--border-left">
 					<span>Next release: </span><br/>{{description.nextRelease}}
 				</p>
+				{{/if}}
 				<p class="grid-col tablet-grid-one-quarter divider--border-left print-hidden">
 					<a href="" id="jsEnhancePrint" class="link-complex nojs-hidden js-enhance--show">
 						<span class="icon-print"></span>

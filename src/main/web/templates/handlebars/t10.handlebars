@@ -115,15 +115,16 @@
 				Sorry, there were no results for <span class="stand-out-text">'{{searchTerm}}'</span>.
 				{{/if}}
 			</p>
+			{{!-- HEADLINE BOX --}}
 			{{#if headlinePage}}
-			<article class="box box--padded--med sectioned">
+			<article class="box box--padded--med sectioned clickable-wrap">
 				<div class="box__content">
 					<div class="grid-wrap">
 						{{#ifany headlinePage.items.0.data.years headlinePage.items.0.data.quarters headlinePage.items.0.data.months}}
 						<div class="grid-col desktop-grid-one-half">
-							<p class="alpha">
-								<a href="{{headlinePage.items.0.data.uri}}"><img src="{{headlinePage.items.0.data.uri}}/searchchart" alt="{{headlinePage.items.0.data.title}}"></a>
-							</p>
+							<!-- <p class="alpha"> -->
+								<a href="{{headlinePage.uri}}"><img src="{{headlinePage.items.0.data.uri}}/searchchart" alt="{{headlinePage.items.0.data.title}}"></a>
+							<!-- </p> -->
 						</div>
 						{{/ifany}}
 						<div class="grid-col {{#ifany headlinePage.items.0.data.years headlinePage.items.0.data.quarters headlinePage.items.0.data.months}}desktop-grid-one-half{{/ifany}} box--padded-vertical nav--block-landing">
@@ -137,6 +138,7 @@
 				<!-- /box__content -->
 			</article>
 			{{/if}}
+			{{!-- end of HEADLINE BOX --}}
 			{{#each statisticsSearchResult.results}}
 			<ul class="list--neutral">
 				<li>

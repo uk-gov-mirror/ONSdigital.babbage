@@ -6,6 +6,7 @@ RUN echo '{"service": {"name": "babbage", "tags": ["blue"], "port": 8080, "check
 
 # Add the repo source
 WORKDIR /usr/src
+ADD git_commit_id /usr/src/
 ADD ./target/dependency /usr/src/target/dependency
 ADD ./target/classes /usr/src/target/classes
 ADD ./src/main/web /usr/src/src/main/web

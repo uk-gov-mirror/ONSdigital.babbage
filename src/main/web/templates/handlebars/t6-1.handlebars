@@ -20,9 +20,11 @@
 					</br>
 					<a class="print-hidden" href="#">previous versions</a>
 				</p>
+				{{#if description.nextRelease}}
 				<p class="grid-col tablet-grid-one-quarter divider--border-left">
 					<span>Next release: </span></br>{{description.nextRelease}}
 				</p>
+				{{/if}}
 				<p class="grid-col tablet-grid-one-quarter divider--border-left print-hidden">
 					<a href="" id="jsEnhancePrintCompendium" class="link-complex nojs-hidden js-enhance--show">
 						<span class="icon-print"></span>

@@ -93,9 +93,10 @@ public class CSVGenerator {
             source[column] = timeseries.getDescription().getSource();
             keyNote[column] = timeseries.getDescription().getKeyNote();
             additionalText[column] = timeseries.getDescription().getAdditionalText();
-            if (timeseries.getNotes() != null) {
-                note1[column] = (String) timeseries.getNotes().get(0);
-                note2[column] = (String) timeseries.getNotes().get(1);
+            List<String> notes = timeseries.getNotes();
+            if (notes != null) {
+                note1[column] = notes.size() >= 1 ? timeseries.getNotes().get(0) : null;
+                note2[column] = notes.size() >= 2 ? timeseries.getNotes().get(1) : null;
             }
             column++;
             System.out.println("Geneararing CSV for: " + timeseries.getDescription().getTitle() + " at: " + timeseries.getUri());
