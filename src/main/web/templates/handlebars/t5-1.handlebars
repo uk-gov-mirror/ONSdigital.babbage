@@ -242,9 +242,10 @@
         </div>
     </div>
     <!-- /chart-area -->
+    <!-- headlinePage.items.0.data.months -->
     <div class="slate nojs-hidden box box--padded">
       {{#ifany relatedData relatedDatasets}}
-        <span>Explore other {{description.title}} <strong>time series</strong> and <strong>datasets</strong></span>
+        <span>Explore other {{#each breadcrumb}}{{#if @last}}{{description.title}}{{/if}}{{/each}} <strong>time series</strong> and <strong>datasets</strong></span>
         <div class="box__inner">
             <div class="grid-wrap">
               {{#if relatedData}}
@@ -275,7 +276,7 @@
                 {{/if}}
             </div>
         </div>
-        {{/ifany}}
+      {{/ifany}}
     </div>
     <div class="panel--bottom-mar js-enhance--hide">
         <table class="tablesaw">
