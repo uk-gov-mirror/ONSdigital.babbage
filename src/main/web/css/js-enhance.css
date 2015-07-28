@@ -253,7 +253,7 @@
     visibility: visible !important;
     position: fixed;
     top: 0;
-    left: 0;    
+    left: 0;
   }
 
   #my_feedback {
@@ -307,14 +307,10 @@
   z-index: 100;
 }
 
+.toc-select-list {
+  max-width: 100%;
+}
 
-
-
-
-
-
-
-
-
-
-
+.markdown-chart-container ol {
+  margin-bottom: 0;
+}

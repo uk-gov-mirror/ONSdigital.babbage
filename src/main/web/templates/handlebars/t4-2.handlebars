@@ -34,10 +34,10 @@
 						<span class="icon-print"></span>
 						<span class="link-complex__target print-analytics">Print full report</span>
 					</a>
-					{{!--<br class="nojs-hidden js-enhance--show"/>
-					<a href="#" class="link-complex">
+					<br class="nojs-hidden js-enhance--show"/>
+					<a href="{{uri}}/pdf" class="link-complex">
 						<span class="icon-download" role="presentation"></span>
-						<span class="link-complex__target">Download PDF</span>--}}
+						<span class="link-complex__target">Download PDF</span>
 					</a>
 				</p>
 			</div>
@@ -144,7 +144,7 @@
 				<div class="grid-col desktop-grid-two-thirds tablet-grid-full-width">
 					{{#if relatedArticles}}
 					<article class="box box--teal--separated--left">
-						<div class="box__inner border box--padded solid"> 
+						<div class="box__inner border box--padded solid">
 							<h3>Related articles</h3>
 							<ul class="list--neutral">
 								{{#each relatedArticles}}
