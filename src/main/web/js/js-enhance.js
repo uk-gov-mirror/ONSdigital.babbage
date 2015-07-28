@@ -42,7 +42,7 @@ $(function() {
         jsEnhanceTableOfContents();
         jsEnhanceScrollToSection();
 
-        // jsEnhanceMobileTables();
+        jsEnhanceMobileTables();
 
         // prototypeModalButtons();
 
