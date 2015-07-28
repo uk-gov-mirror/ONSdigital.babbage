@@ -243,19 +243,19 @@
     </div>
     <!-- /chart-area -->
     <div class="slate nojs-hidden box box--padded">
-      
+      {{#ifany relatedData relatedDatasets}}
         <span>Explore other {{description.title}} <strong>time series</strong> and <strong>datasets</strong></span>
         <div class="box__inner">
             <div class="grid-wrap">
               {{#if relatedData}}
                 <div class="grid-col desktop-grid-one-half ">
                     <div class="js-enhance--ul-to-select">
+                      <p>Related time series:</p>
                         <ul>
                             {{#each relatedData}}
                             <li><a href="{{uri}}">{{description.cdid}}: {{description.title}}</a></li>
                             {{/each}}
                         </ul>
-                        <p>Related time series:</p>
                     </div>
                     {{!-- <a href="#!/previous">view all time series</a> --}}
                 </div>
@@ -266,7 +266,7 @@
                         <p>Related datasets:</p>
                         <ul>
                             {{#each relatedDatasets}}
-                            <li><a href="{{uri}}">{{description.title}}</a></li>
+                            <li><a href="{{uri}}">{{description.datasetId}}: {{description.title}}</a></li>
                             {{/each}}
                         </ul>
                     </div>
@@ -275,6 +275,7 @@
                 {{/if}}
             </div>
         </div>
+        {{/ifany}}
     </div>
     <div class="panel--bottom-mar js-enhance--hide">
         <table class="tablesaw">
