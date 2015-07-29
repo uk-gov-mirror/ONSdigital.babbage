@@ -84,7 +84,7 @@ $(function() {
             //     class: 'field field--spaced'
             // });
             var newselect = $(document.createElement('select'));
-            newselect.attr('class', 'field field--spaced');
+            newselect.attr('class', 'field field--spaced max-width');
 
 
             newselect.append($('<option>', {
