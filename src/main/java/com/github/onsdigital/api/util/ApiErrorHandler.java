@@ -2,6 +2,7 @@ package com.github.onsdigital.api.util;
 
 import com.github.onsdigital.content.page.error.Error404;
 import com.github.onsdigital.content.page.error.Error500;
+import com.github.onsdigital.content.service.ContentNotFoundException;
 import com.github.onsdigital.error.ResourceNotFoundException;
 import com.github.onsdigital.template.TemplateService;
 import com.github.onsdigital.util.NavigationUtil;
@@ -28,7 +29,7 @@ public class ApiErrorHandler {
         Map<String, String> errorResponse = new HashMap<String, String>();
 
         //TODO: Tidy up exception management
-        if (e instanceof ResourceNotFoundException) {
+        if (e instanceof ResourceNotFoundException || e instanceof ContentNotFoundException) {
             Error404 error404 = new Error404();
             error404.setNavigation(NavigationUtil.getNavigation());
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
