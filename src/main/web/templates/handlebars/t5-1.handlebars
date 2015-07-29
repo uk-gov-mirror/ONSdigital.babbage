@@ -254,7 +254,7 @@
                       <p>Related time series:</p>
                         <ul>
                             {{#each relatedData}}
-                            <li><a href="{{uri}}">{{description.cdid}}: {{description.title}}</a></li>
+                            <li><a href="/{{uri}}">{{description.cdid}}: {{description.title}}</a></li>
                             {{/each}}
                         </ul>
                     </div>
@@ -267,7 +267,7 @@
                         <p>Related datasets:</p>
                         <ul>
                             {{#each relatedDatasets}}
-                            <li><a href="{{uri}}">{{description.datasetId}}: {{description.title}}</a></li>
+                            <li><a href="/{{uri}}">{{description.datasetId}}: {{description.title}}</a></li>
                             {{/each}}
                         </ul>
                     </div>
