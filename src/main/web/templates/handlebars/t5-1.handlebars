@@ -21,9 +21,11 @@
             <p class="grid-col tablet-grid-one-quarter divider--border-left">
                 <span>Release date: </span><br/>{{df description.releaseDate}}<br/>{{!--<a href="#">previous versions</a>--}}
             </p>
+            {{#if description.nextRelease}}
             <p class="grid-col tablet-grid-one-quarter divider--border-left">
                 <span>Next release: </span><br/>{{description.nextRelease}}
             </p>
+            {{/if}}
             <p class="grid-col tablet-grid-one-quarter divider--border-left">
                 {{#if description.cdid}}Series ID: {{description.cdid}}
                 <a href="#" class="tooltip nojs-hidden" title="This series ID is a unique random identifier for this individual time series. The digits themselves do not have any specific meaning" aria-label="This series ID is a unique random identifier for this individual time series. The digits themselves do not have any specific meaning">what is this? </a><br/>{{/if}}
