@@ -306,7 +306,8 @@ $(function() {
 
         $('.btn--mobile-table-hide').click(function(e) {
             // console.log($(this).closest('.markdown-table-container').find('.markdown-table-wrap'));
-            $(this).closest('.markdown-table-wrap').hide();
+            // $(this).closest('.markdown-table-wrap').hide();
+            $(this).closest('.markdown-table-wrap').css('display', '');
         });
     }
 
