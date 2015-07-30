@@ -242,34 +242,41 @@
         </div>
     </div>
     <!-- /chart-area -->
+    <!-- headlinePage.items.0.data.months -->
     <div class="slate nojs-hidden box box--padded">
-        {{!-- <span>Explore other {{description.title}} <strong>time series</strong> and <strong>datasets</strong></span>
+      {{#ifany relatedData relatedDatasets}}
+        <span>Explore other {{#each breadcrumb}}{{#if @last}}{{description.title}}{{/if}}{{/each}} <strong>time series</strong> and <strong>datasets</strong></span>
         <div class="box__inner">
             <div class="grid-wrap">
+              {{#if relatedData}}
                 <div class="grid-col desktop-grid-one-half ">
                     <div class="js-enhance--ul-to-select">
+                      <p>Related time series:</p>
                         <ul>
                             {{#each relatedData}}
-                            <li><a href="{{uri}}">{{description.cdid}}: {{description.title}}</a></li>
+                            <li><a href="{{uri}}">{{#if description.cdid}}{{description.cdid}}: {{/if}}{{description.title}}</a></li>
                             {{/each}}
                         </ul>
-                        <p>Related time series:</p>
                     </div>
-                    <a href="#!/previous">view all time series</a>
+                    {{!-- <a href="#!/previous">view all time series</a> --}}
                 </div>
+                {{/if}}
+                {{#if relatedDatasets}}
                 <div class="grid-col desktop-grid-one-half ">
                     <div class="js-enhance--ul-to-select">
                         <p>Related datasets:</p>
                         <ul>
                             {{#each relatedDatasets}}
-                            <li><a href="{{uri}}">{{description.title}}</a></li>
+                            <li><a href="{{uri}}">{{#if description.cdid}}{{description.cdid}}: {{/if}} {{description.title}}</a></li>
                             {{/each}}
                         </ul>
                     </div>
-                    <a href="#!/previous">view all datasets</a>
+                    {{!-- <a href="#!/previous">view all datasets</a> --}}
                 </div>
+                {{/if}}
             </div>
-        </div>--}}
+        </div>
+      {{/ifany}}
     </div>
     <div class="panel--bottom-mar js-enhance--hide">
         <table class="tablesaw">

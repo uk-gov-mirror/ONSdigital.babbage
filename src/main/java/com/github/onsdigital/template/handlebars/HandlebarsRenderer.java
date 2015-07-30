@@ -27,7 +27,7 @@ public class HandlebarsRenderer implements TemplateRenderer {
     }
 
     private void initializeHelpers() {
-        handlebars.registerHelper("md", new MarkdownHelper());
+        handlebars.registerHelper("md", new CustomMarkdownHelper());
         handlebars.registerHelper("df", new DateFormatHelper());
         registerFileHelpers();
         registerConditionHelpers();
