@@ -228,7 +228,7 @@
   border-radius: 3px 3px 0 0;
 }
 
-.btn--mobile-table-show {
+.btn--mobile-table-show, .btn--mobile-table-hide {
   display: none;
 }
 
