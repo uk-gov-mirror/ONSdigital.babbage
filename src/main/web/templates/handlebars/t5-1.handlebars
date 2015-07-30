@@ -267,7 +267,7 @@
                         <p>Related datasets:</p>
                         <ul>
                             {{#each relatedDatasets}}
-                            <li><a href="{{uri}}">{{#if description.cdid}}{{description.cdid}}: {{/if}} {{description.title}}</a></li>
+                            <li><a href="{{uri}}">{{#if description.datasetId}}{{description.datasetId}}: {{/if}}{{description.title}}</a></li>
                             {{/each}}
                         </ul>
                     </div>
@@ -361,7 +361,10 @@
                     <div class="box__content">
                         <div>
                             {{#each relatedDocuments}}
-                            <p><a href="{{uri}}">{{description.title}}</a></p>
+                            <p><a href="{{uri}}">{{description.title}}
+              							{{#if description.edition}}
+              								{{#ne description.edition 'yes'}}: {{description.edition}}{{/ne}}
+              							{{/if}}</a></p>
                             {{/each}}
                         </div>
                     </div>
