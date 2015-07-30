@@ -21,8 +21,7 @@ import java.util.List;
  */
 public class LatestReleaseRequestHandler implements RequestHandler {
 
-    private static final String REQUEST_TYPE = "latest";
-
+    public static final String REQUEST_TYPE = "latest";
     public static final String CONTENT_TYPE = "text/html";
 
     @Override
@@ -37,7 +36,6 @@ public class LatestReleaseRequestHandler implements RequestHandler {
         //ContentRenderer pageRenderingService = new ContentRenderer(zebedeeRequest, jsEnhanced);
 
         Path latestPagePath = getLatestPagePath(requestedUri, zebedeeRequest);
-
         return new BabbageRedirectResponse(latestPagePath.toString());
         //return new BabbageStringResponse(pageRenderingService.renderPage(latestPagePath.toString()), CONTENT_TYPE);
     }

@@ -2,7 +2,7 @@
 //
 //import com.github.davidcarboni.restolino.framework.Api;
 //import com.github.onsdigital.api.util.ApiErrorHandler;
-//import com.github.onsdigital.api.util.URIUtil;
+//import com.github.onsdigital.content.util.URIUtil;
 //import com.github.onsdigital.data.zebedee.ZebedeeRequest;
 //import com.github.onsdigital.data.zebedee.ZebedeeUtil;
 //import com.github.onsdigital.request.handler.DataRequestHandler;
