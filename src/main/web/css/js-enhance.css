@@ -228,6 +228,10 @@
   border-radius: 3px 3px 0 0;
 }
 
+.btn--mobile-table-show {
+  display: none;
+}
+
 
 @media screen and (max-width: 799px) {
   .markdown-table-wrap {
@@ -245,12 +249,14 @@
   }
 
   .btn--mobile-table-show {
-    visibility: visible !important;
+    display: inline-block;
+    /*visibility: visible !important;*/
     /*display: inline-block !important;*/
   }
 
   .btn--mobile-table-hide {
-    visibility: visible !important;
+    display: inline-block;
+    /*visibility: visible !important;*/
     position: fixed;
     top: 0;
     left: 0;
