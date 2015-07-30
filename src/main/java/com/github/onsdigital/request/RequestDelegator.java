@@ -64,7 +64,7 @@ public class RequestDelegator {
         if(zebedeeRequest == null && Configuration.isDevelopment() == false) {
             response.addHeader("cache-control", "public, max-age=300");
         }
-        response.setStatus(HttpServletResponse.SC_OK);
+
         getResponse.apply(response);
         return;
     }

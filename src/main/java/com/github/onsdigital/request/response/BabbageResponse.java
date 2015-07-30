@@ -25,6 +25,7 @@ public abstract class BabbageResponse {
     public BabbageResponse() { }
 
     public void apply(HttpServletResponse response) throws IOException {
+        response.setStatus(HttpServletResponse.SC_OK);
         response.setCharacterEncoding(getCharEncoding());
         response.setContentType(getMimeType());
         if (getHeader() != null) {
