@@ -1,8 +1,8 @@
 package com.github.onsdigital.request;
 
-import com.github.onsdigital.api.util.URIUtil;
 import com.github.onsdigital.cache.BabbageResponseCache;
 import com.github.onsdigital.configuration.Configuration;
+import com.github.onsdigital.content.util.URIUtil;
 import com.github.onsdigital.data.zebedee.ZebedeeRequest;
 import com.github.onsdigital.data.zebedee.ZebedeeUtil;
 import com.github.onsdigital.request.handler.base.RequestHandler;
@@ -64,7 +64,7 @@ public class RequestDelegator {
         if(zebedeeRequest == null && Configuration.isDevelopment() == false) {
             response.addHeader("cache-control", "public, max-age=300");
         }
-        response.setStatus(HttpServletResponse.SC_OK);
+
         getResponse.apply(response);
         return;
     }
