@@ -85,11 +85,13 @@ $(function() {
             // });
             var newselect = $(document.createElement('select'));
             newselect.attr('class', 'field field--spaced max-width');
-
+            
+            // convert to lower case and remove colon from end of string
+            labeltext = labeltext.toLowerCase().substring(0, labeltext.length - 1);
 
             newselect.append($('<option>', {
                 value: '',
-                text: 'Select a related time series'
+                text: 'Select a  ' + labeltext
             }));
 
             newselect.change(function() {
