@@ -35,7 +35,13 @@ public class HighChartsExportClient {
         }
     }
 
-   public InputStream getImage(HighchartsChart chart) throws IOException {
+    public InputStream getImage(HighchartsChart chart) throws IOException {
+        String chartConfig = chart.toString();
+        InputStream data = getImage(chartConfig);
+        return data;
+    }
+
+    public InputStream getImage(String chartConfig) throws IOException {
         if (client == null) {
             openConnection();
         }
@@ -43,27 +49,27 @@ public class HighChartsExportClient {
         InputStream data = null;
         System.out.println("Calling Highcharts export server");
 
-       HttpPost post = new HttpPost(Configuration.getHighchartsExportSeverUrl());
+        HttpPost post = new HttpPost(Configuration.getHighchartsExportSeverUrl());
 
-       List<NameValuePair> postParameters = new ArrayList<NameValuePair>();
-       postParameters.add(new BasicNameValuePair("options", chart.toString()));
-       postParameters.add(new BasicNameValuePair("type", "png"));
-       postParameters.add(new BasicNameValuePair("width", "1500"));
-       postParameters.add(new BasicNameValuePair("async", "false"));
-       post.setEntity(new UrlEncodedFormEntity(postParameters));
+        List<NameValuePair> postParameters = new ArrayList<NameValuePair>();
+        postParameters.add(new BasicNameValuePair("options", chartConfig));
+        postParameters.add(new BasicNameValuePair("type", "png"));
+        postParameters.add(new BasicNameValuePair("width", "1500"));
+        postParameters.add(new BasicNameValuePair("async", "false"));
+        post.setEntity(new UrlEncodedFormEntity(postParameters));
 
-       response = client.execute(post);
-       HttpEntity responseEntity = response.getEntity();
+        response = client.execute(post);
+        HttpEntity responseEntity = response.getEntity();
 
         if (responseEntity != null && responseEntity.getContent() != null) {
             data = responseEntity.getContent();
         }
-       System.out.println("Highcharts export response: " + response.getStatusLine());
+        System.out.println("Highcharts export response: " + response.getStatusLine());
 
-       if(HttpStatus.SC_OK != response.getStatusLine().getStatusCode()) {
-           System.err.println(IOUtils.toString(data));
-           throw new RuntimeException("Failed fetching image");
-       }
+        if (HttpStatus.SC_OK != response.getStatusLine().getStatusCode()) {
+            System.err.println(IOUtils.toString(data));
+            throw new RuntimeException("Failed fetching image");
+        }
         return data;
     }
 
