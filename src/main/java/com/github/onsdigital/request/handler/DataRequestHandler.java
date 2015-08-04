@@ -52,7 +52,13 @@ public class DataRequestHandler implements RequestHandler {
 
         DataService dataService = DataService.getInstance();
         try {
-            Path dataPath = Paths.get(StringUtils.removeEnd(uri, "/")).resolve("data.json");
+            if (StringUtils.isEmpty(uri)) {
+                uri = "/";
+            } else {
+                StringUtils.removeEnd(uri, "/");
+            }
+
+            Path dataPath = Paths.get(uri).resolve("data.json");
             return IOUtils.toString(dataService.readData(dataPath.toString(), resolveReferences, zebedeeRequest));
         } catch (ContentNotFoundException e) {
             return IOUtils.toString(dataService.readData(uri + ".json", resolveReferences, zebedeeRequest));
