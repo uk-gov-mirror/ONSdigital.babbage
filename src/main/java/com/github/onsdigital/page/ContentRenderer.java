@@ -4,8 +4,9 @@ import com.github.onsdigital.content.page.base.Page;
 import com.github.onsdigital.content.page.statistics.document.figure.table.Table;
 import com.github.onsdigital.content.service.ContentNotFoundException;
 import com.github.onsdigital.content.service.ContentRenderingService;
+import com.github.onsdigital.content.util.markdown.ChartTagReplacer;
+import com.github.onsdigital.content.util.markdown.TableTagReplacer;
 import com.github.onsdigital.data.DataService;
-import com.github.onsdigital.data.LocalFileDataService;
 import com.github.onsdigital.data.zebedee.ZebedeeRequest;
 import com.github.onsdigital.template.TemplateService;
 import com.github.onsdigital.util.NavigationUtil;
@@ -70,12 +71,17 @@ public class ContentRenderer implements ContentRenderingService {
     @Override
     public String renderPage(String uri) throws IOException, ContentNotFoundException {
         Page page = DataService.getInstance().readAsPage(uri, true, zebedeeRequest);
-        page.processContent(LocalFileDataService.getInstance(), this);
+
         page.setNavigation(NavigationUtil.getNavigation());
 
         Map<String, Object> additionalData = new HashMap<>();
         additionalData.put("jsEnhanced", jsEnhanced);
 
-        return TemplateService.getInstance().renderPage(page, additionalData);
+        String pageContent = TemplateService.getInstance().renderPage(page, additionalData);
+
+        pageContent = (new TableTagReplacer()).replaceCustomTags(pageContent, this);
+        pageContent = (new ChartTagReplacer()).replaceCustomTags(pageContent, this);
+
+        return pageContent;
     }
 }
