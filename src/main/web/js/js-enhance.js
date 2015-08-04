@@ -195,7 +195,7 @@ $(function() {
                 uri = '/' + uri;
             }
 
-            renderChartForUri(uri, id, $this);
+            renderChartForUri(uri, id);
         });
     }
 

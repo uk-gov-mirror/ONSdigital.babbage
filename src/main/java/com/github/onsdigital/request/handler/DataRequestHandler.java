@@ -1,6 +1,7 @@
 package com.github.onsdigital.request.handler;
 
 import com.github.onsdigital.content.service.ContentNotFoundException;
+import com.github.onsdigital.content.util.URIUtil;
 import com.github.onsdigital.data.DataService;
 import com.github.onsdigital.data.zebedee.ZebedeeRequest;
 import com.github.onsdigital.request.handler.base.RequestHandler;
@@ -42,9 +43,22 @@ public class DataRequestHandler implements RequestHandler {
 
     public static String getData(String uri, boolean resolveReferences, ZebedeeRequest zebedeeRequest) throws ContentNotFoundException, IOException {
 
+        // if request is /latest then resolve to actual url before getting data.
+        String requestType = URIUtil.resolveRequestType(uri);
+        if (requestType.equals(LatestReleaseRequestHandler.REQUEST_TYPE)) {
+            String baseUri = URIUtil.resolveResouceUri(uri);
+            uri = LatestReleaseRequestHandler.getLatestPagePath(baseUri, zebedeeRequest).toString();
+        }
+
         DataService dataService = DataService.getInstance();
         try {
-            Path dataPath = Paths.get(StringUtils.removeEnd(uri, "/")).resolve("data.json");
+            if (StringUtils.isEmpty(uri)) {
+                uri = "/";
+            } else {
+                StringUtils.removeEnd(uri, "/");
+            }
+
+            Path dataPath = Paths.get(uri).resolve("data.json");
             return IOUtils.toString(dataService.readData(dataPath.toString(), resolveReferences, zebedeeRequest));
         } catch (ContentNotFoundException e) {
             return IOUtils.toString(dataService.readData(uri + ".json", resolveReferences, zebedeeRequest));
