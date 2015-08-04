@@ -12,7 +12,7 @@
 				<span>Release date: </span><br/>{{df description.releaseDate}}
 			</p>
 			<p class="grid-col tablet-grid-one-quarter divider--border-left">
-				<span>Reference number: </span><br/>{{description.ref}}
+				<span>Reference number: </span><br/>{{description.reference}}
 			</p>
 		</div>
 	</div>
@@ -21,13 +21,16 @@
 <div class="wrapper panel--mar">
 	<div class="grid-wrap">
 		<article class="grid-col desktop-grid-two-thirds">
-			{{md markdown}}
+			<h2>Summary of request</h2>
+			{{#each markdown}}
+				{{md this}}
+			{{/each}}
 
 			<h2>Data provided for request</h2>
 			<ul class="list--neutral">
 				{{#each downloads}}
 				<li class="flush--third--bottom">
-					<a href="{{downloads.uri}}" title="{{download.title}}">{{downloads.title}}</a>
+					<a href="{{uri}}" title="{{title}}">{{title}}</a>
 				</li>
 				{{/each}}
 			</ul>
@@ -44,7 +47,7 @@
 						<ul class="list--neutral">
 							{{#each downloads}}
 							<li class="flush--third--bottom">
-								<a href="{{downloads.uri}}" title="{{download.title}}">{{downloads.title}}</a>
+								<a href="{{uri}}" title="{{title}}">{{title}}</a>
 							</li>
 							{{/each}}
 						</ul>
