@@ -61,7 +61,9 @@
 	<div class="wrapper panel--mar">
 		<div class="grid-wrap">
 			<article class="grid-col desktop-grid-two-thirds">
-				{{md markdown}}
+				{{#each markdown}}
+					{{md this}}
+				{{/each}}
 			</article>
 			<!-- /grid-two-thirds -->
 			<div class="grid-col desktop-grid-one-third">
