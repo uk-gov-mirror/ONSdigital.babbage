@@ -21,15 +21,25 @@
 				{{#each markdown}}
 					{{md this}}
 				{{/each}}
+				{{#if downloads}}
+        <h2>{{#eq downloads.size 1}}Download associated with request{{/eq}} {{#ne downloads.size 1}}Downloads associated with request{{/ne}}</h2>
+        <ul class="list--neutral">
+					{{#each downloads}}
+            <li class="flush--third--bottom">
+              <a href="{{file}}" title="{{title}}">{{title}}</a>
+            </li>
+					{{/each}}
+        </ul>
+				{{/if}}
 			</article>
 			<!-- /desktop-grid-two-thirds -->
 			<div class="grid-col desktop-grid-one-third">
         <article>
-					{{#if downloads}}
+					<!--{{#if downloads}}-->
             <div class="box solid box--purple--separated--left">
               <div class="box__inner border box--padded">
                 <h3 class="box__section__header">
-                  Download data for this FOI
+									{{#eq downloads.size 1}}Download associated with request{{/eq}} {{#ne downloads.size 1}}Downloads associated with request{{/ne}}
                 </h3>
                 <!-- /box__header -->
                 <div class="box__content">
@@ -46,7 +56,7 @@
               <!-- /box__inner -->
             </div>
             <!-- /box -->
-					{{/if}}
+					<!--{{/if}}-->
         </article>
 				<article>
 					<div class="box solid box--purple--separated--left">
