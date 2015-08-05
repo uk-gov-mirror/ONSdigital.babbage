@@ -21,9 +21,16 @@
 <div class="wrapper panel--mar">
 	<div class="grid-wrap">
 		<article class="grid-col desktop-grid-two-thirds">
-			{{#each markdown}}
-			{{md this}}
-			{{/each}}
+			{{md markdown}}
+
+			<h2>Data provided for request</h2>
+			<ul class="list--neutral">
+				{{#each downloads}}
+				<li class="flush--third--bottom">
+					<a href="{{downloads.uri}}" title="{{download.title}}">{{downloads.title}}</a>
+				</li>
+				{{/each}}
+			</ul>
 		</article>
 		<!-- /desktop-grid-two-thirds -->
 		<div class="grid-col desktop-grid-one-third">
@@ -34,9 +41,13 @@
 					</h3>
 					<!-- /box__header -->
 					<div class="box__content">
-						{{#each downloads}}
-						<a href="{{uri}}">{{title}}</a> ({{!-- {{size}} --}} {{format}})
-						{{/each}}
+						<ul class="list--neutral">
+							{{#each downloads}}
+							<li class="flush--third--bottom">
+								<a href="{{downloads.uri}}" title="{{download.title}}">{{downloads.title}}</a>
+							</li>
+							{{/each}}
+						</ul>
 					</div>
 					<!-- /box__content -->
 				</div>

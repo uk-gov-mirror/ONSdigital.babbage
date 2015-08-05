@@ -4,8 +4,10 @@ import com.github.onsdigital.content.DirectoryListing;
 import com.github.onsdigital.content.page.base.Page;
 import com.github.onsdigital.content.service.ContentNotFoundException;
 import com.github.onsdigital.content.util.ContentUtil;
+import com.github.onsdigital.content.util.URIUtil;
 import com.github.onsdigital.data.zebedee.ZebedeeDataService;
 import com.github.onsdigital.data.zebedee.ZebedeeRequest;
+import com.github.onsdigital.request.handler.LatestReleaseRequestHandler;
 import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
@@ -23,6 +25,13 @@ public class DataService {
     }
 
     public InputStream readData(String uri, boolean resolveReferences, ZebedeeRequest zebedeeRequest) throws ContentNotFoundException, IOException {
+
+        // if the uri is /latest then resolve the uri to the latest.
+        String requestType = URIUtil.resolveRequestType(uri);
+        if (requestType.equals(LatestReleaseRequestHandler.REQUEST_TYPE)) {
+            uri = LatestReleaseRequestHandler.getLatestPagePath(uri, zebedeeRequest).toString();
+        }
+
         if (zebedeeRequest != null) {
             return ZebedeeDataService.getInstance().readData(uri, zebedeeRequest, resolveReferences);
         }

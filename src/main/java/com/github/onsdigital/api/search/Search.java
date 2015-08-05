@@ -2,13 +2,13 @@ package com.github.onsdigital.api.search;
 
 import com.github.davidcarboni.restolino.framework.Api;
 import com.github.onsdigital.api.util.ApiErrorHandler;
-import com.github.onsdigital.api.util.URIUtil;
 import com.github.onsdigital.configuration.Configuration;
 import com.github.onsdigital.content.link.PageReference;
 import com.github.onsdigital.content.page.base.PageType;
 import com.github.onsdigital.content.page.search.SearchResultsPage;
 import com.github.onsdigital.content.page.taxonomy.ProductPage;
 import com.github.onsdigital.content.util.ContentUtil;
+import com.github.onsdigital.content.util.URIUtil;
 import com.github.onsdigital.data.LocalFileDataService;
 import com.github.onsdigital.error.ResourceNotFoundException;
 import com.github.onsdigital.request.response.BabbageResponse;

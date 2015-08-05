@@ -5,6 +5,7 @@ import com.github.onsdigital.content.page.base.PageType;
 import com.github.onsdigital.search.error.IndexingInProgressException;
 import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.action.ListenableActionFuture;
+import org.elasticsearch.action.admin.indices.alias.IndicesAliasesRequestBuilder;
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequestBuilder;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequestBuilder;
 import org.elasticsearch.action.index.IndexRequestBuilder;
@@ -30,6 +31,7 @@ import static org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder;
 public class Indexer {
 
 	private static final Lock indexingLock = new ReentrantLock();
+    private static String currentIndex;
 
 	public static void loadIndex(Client client) throws IOException {
 
@@ -40,10 +42,16 @@ public class Indexer {
 					throw new IllegalStateException("No items were found for indexing");
 				}
 				try {
-					deleteIndex(client);
-					createIndex(client);
-					indexDocuments(client, absoluteFilePaths);
-				} catch (Exception e) {
+                    String indexName = generateIndexName();
+                    createIndex(client, indexName);
+                    indexDocuments(client, indexName, absoluteFilePaths);
+                    updateAlias(client, indexName, currentIndex);
+                    if (currentIndex != null) {
+                        System.out.println("Deleting old index " + currentIndex);
+                        deleteIndex(client,currentIndex);
+                    }
+                    currentIndex = indexName;
+                } catch (Exception e) {
 					e.printStackTrace();
 				}
 
@@ -55,11 +63,25 @@ public class Indexer {
 		}
 	}
 
-	private static void createIndex(Client client) throws IOException {
+    //Update index alias ons to point at given indexName
+    private static void updateAlias(Client client, String newIndex, String oldIndex) {
+        IndicesAliasesRequestBuilder aliasBuilder = client.admin().indices().prepareAliases().addAlias(newIndex, "ons");
+        if (oldIndex != null) {
+            aliasBuilder.removeAlias(oldIndex, "ons");
+        }
+        aliasBuilder.execute().actionGet();
+    }
 
-		System.out.println("Creating index ons");
+    private static String generateIndexName() {
+        return "ons" + System.currentTimeMillis();
+    }
+
+
+	private static void createIndex(Client client,String indexName) throws IOException {
+
+		System.out.println("Creating index " + indexName);
 		// Set up the synonyms
-		CreateIndexRequestBuilder indexBuilder = client.admin().indices().prepareCreate("ons").setSettings(buildSettings());
+		CreateIndexRequestBuilder indexBuilder = client.admin().indices().prepareCreate(indexName).setSettings(buildSettings());
 		System.out.println("Adding document mappings");
 
 		indexBuilder.addMapping(PageType.dataset.toString(), getMappingProperties(PageType.dataset.toString()));
@@ -69,15 +91,15 @@ public class Indexer {
 		indexBuilder.addMapping(PageType.article.toString(), getMappingProperties(PageType.article.toString()));
 //		indexBuilder.addMapping(PageType.methodology.toString(), getMappingProperties(PageType.methodology.toString()));
 
-		System.out.println("Adding timeseries mappings");
+		System.out.println("Adding time series mappings");
 		indexBuilder.addMapping(PageType.timeseries.toString(), getTimeseriesMappingProperties(PageType.timeseries.toString()));
 
 		indexBuilder.execute();
 	}
 
-	private static void deleteIndex(Client client){
-		System.out.println("Deleting index ons");
-		DeleteIndexRequestBuilder deleteIndexRequestBuilder = client.admin().indices().prepareDelete("ons");
+	private static void deleteIndex(Client client, String indexName){
+		System.out.println("Deleting index " + indexName);
+		DeleteIndexRequestBuilder deleteIndexRequestBuilder = client.admin().indices().prepareDelete(indexName);
 		deleteIndexRequestBuilder.execute();
 	}
 
@@ -120,26 +142,26 @@ public class Indexer {
 		}
 	}
 
-	private static void indexDocuments(Client client, List<String> absoluteFilePaths) throws IOException {
+	private static void indexDocuments(Client client, String indexName, List<String> absoluteFilePaths) throws IOException {
 		AtomicInteger idCounter = new AtomicInteger();
 		for (String absoluteFilePath : absoluteFilePaths) {
 
 			Map<String, String> documentMap = LoadIndexHelper.getDocumentMap(absoluteFilePath);
 			if (documentMap != null && StringUtils.isNotEmpty(documentMap.get("title"))) {
 				if (documentMap.get("type").equals(PageType.timeseries.toString())) {
-					buildTimeseries(client, documentMap, idCounter.getAndIncrement());
+					buildTimeseries(client, indexName, documentMap, idCounter.getAndIncrement());
 				} else {
-					buildDocument(client, documentMap, idCounter.getAndIncrement());
+					buildDocument(client, indexName, documentMap, idCounter.getAndIncrement());
 				}
 			}
 		}
 	}
 
-	private static void buildTimeseries(Client client, Map<String, String> documentMap, int idCounter) throws IOException {
+	private static void buildTimeseries(Client client, String indexName, Map<String, String> documentMap, int idCounter) throws IOException {
 		XContentBuilder source = jsonBuilder().startObject().field("title", documentMap.get("title")).field("uri", documentMap.get("uri")).field("path", documentMap.get("tags"))
 				.field("cdid", documentMap.get("cdid")).endObject();
 		try {
-			build(client, documentMap, idCounter, source);
+			build(client, indexName, documentMap, idCounter, source);
 		} finally {
 			if (source != null) {
 				source.close();
@@ -147,12 +169,12 @@ public class Indexer {
 		}
 	}
 
-	private static void buildDocument(Client client, Map<String, String> documentMap, int idCounter) throws IOException {
+	private static void buildDocument(Client client,String indexName,  Map<String, String> documentMap, int idCounter) throws IOException {
 
 		XContentBuilder source = jsonBuilder().startObject().field("title", documentMap.get("title")).field("uri", documentMap.get("uri")).field("path", documentMap.get("tags"))
 				.field("releaseDate", documentMap.get("releaseDate")).field("edition", documentMap.get("edition")).field("summary", documentMap.get("summary")).endObject();
 		try {
-			build(client, documentMap, idCounter, source);
+			build(client, indexName,  documentMap, idCounter, source);
 		} finally {
 			if (source != null) {
 				source.close();
@@ -160,11 +182,10 @@ public class Indexer {
 		}
 	}
 
-	private static void build(Client client, Map<String, String> documentMap, int idCounter, XContentBuilder source) {
-		String name = "ons";
+	private static void build(Client client, String indexName, Map<String, String> documentMap, int idCounter, XContentBuilder source) {
 		String type = StringUtils.lowerCase(documentMap.get("type"));
 		String id = String.valueOf(idCounter);
-		IndexRequestBuilder index = client.prepareIndex(name, type, id);
+		IndexRequestBuilder index = client.prepareIndex(indexName, type, id);
 		index.setSource(source);
 		ListenableActionFuture<IndexResponse> execution = index.execute();
 		execution.actionGet();

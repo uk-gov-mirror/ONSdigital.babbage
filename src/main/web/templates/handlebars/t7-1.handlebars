@@ -34,10 +34,10 @@
 					<span>Frequency: </span><br/>{{description.frequency}}
 				</p>
 				<p class="grid-col tablet-grid-one-quarter divider--border-left">
-					<span>How compiled: </span><br/>{{description.dataSource}}
+					<span>How compiled: </span><br/>{{description.compilation}}
 				</p>
 				<p class="grid-col tablet-grid-one-quarter divider--border-left">
-					<span>Graphical coverage: </span><br/>{{description.coverage}}
+					<span>Graphical coverage: </span><br/>{{description.geographicCoverage}}
 				</p>
 			</div>
 		</div>
@@ -46,13 +46,11 @@
 	<div class="wrapper panel--mar">
 		<div class="grid-wrap">
 			<article class="grid-col desktop-grid-two-thirds">
-				{{#each markdown}}
-					{{md this}}
-				{{/each}}
+				{{md markdown}}
 			</article>
 			<!-- /grid-two-thirds -->
 			<div class="grid-col desktop-grid-one-third">
-				{{#if usedIn}}
+				{{#if relatedDocuments}}
 				<article class="box solid box--teal--separated--left">
 					<div class="box__inner border box--padded">
 						<h3 class="box__section__header">
@@ -61,8 +59,8 @@
 						<!-- /box__header -->
 						<div class="box__content">
 							<ul class="list--neutral">
-								{{#each usedIn}}
-								<li class="flush--third--bottom"><a href="{{uri}}">{{title}}</a></li>
+								{{#each relatedDocuments}}
+								<li class="flush--third--bottom"><a href="{{uri}}">{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}</a></li>
 								{{/each}}
 							</ul>
 						</div>
@@ -100,7 +98,13 @@
 						</h3>
 						<!-- /box__header -->
 						<div class="box__content">
-							<a href="{{download.uri}}" title="{{download.title}}">{{download.title}}</a> (??MB)
+							<ul class="list--neutral">
+								{{#each downloads}}
+								<li class="flush--third--bottom">
+									<a href="{{downloads.uri}}" title="{{download.title}}">{{downloads.title}}</a>
+								</li>
+								{{/each}}
+							</ul>
 						</div>
 						<!-- /box__content -->
 					</div>

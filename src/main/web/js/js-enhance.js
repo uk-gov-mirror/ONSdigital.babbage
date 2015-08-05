@@ -195,7 +195,7 @@ $(function() {
                 uri = '/' + uri;
             }
 
-            renderChartForUri(uri, id, $this);
+            renderChartForUri(uri, id);
         });
     }
 
@@ -296,8 +296,8 @@ $(function() {
         //<span class=" icon-table" role="presentation"></span>
         // $('markdown-table-container').addClass('table-holder-mobile');
 
-        $('<button class="invisible btn btn--mobile-table-show">View table</button>').insertAfter($('.markdown-table-wrap'));
-        $('<button class="invisible btn btn--mobile-table-hide">Close table</button>').insertAfter($('.markdown-table-wrap table'));
+        $('<button class="btn btn--mobile-table-show">View table</button>').insertAfter($('.markdown-table-wrap'));
+        $('<button class="btn btn--mobile-table-hide">Close table</button>').insertAfter($('.markdown-table-wrap table'));
 
         $('.btn--mobile-table-show').click(function(e) {
             // console.log($(this).closest('.markdown-table-container').find('.markdown-table-wrap'));
@@ -306,7 +306,8 @@ $(function() {
 
         $('.btn--mobile-table-hide').click(function(e) {
             // console.log($(this).closest('.markdown-table-container').find('.markdown-table-wrap'));
-            $(this).closest('.markdown-table-wrap').hide();
+            // $(this).closest('.markdown-table-wrap').hide();
+            $(this).closest('.markdown-table-wrap').css('display', '');
         });
     }
 

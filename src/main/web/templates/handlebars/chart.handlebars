@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <title>Florence</title>
   <link rel="stylesheet" href="/node_modules/ONS-Pattern-Library/dist/css/main.min.css"/>
-  <link href="/css/c3.css" rel="stylesheet" type="text/css">
 
   <style>
 
@@ -20,14 +19,11 @@
 {{> partials/chart}}
 
 <script type="text/javascript" src="/node_modules/ONS-Pattern-Library/dist/js/footer.js"></script>
-<script type="text/javascript" src="/js/third-party/d3.min.js"></script>
-<script type="text/javascript" src="/js/third-party/c3.js"></script>
-<script type="text/javascript" src="/js/third-party/pym.min.js"></script>
 <script type="text/javascript" src="/js/chartRenderer.js"></script>
 <script type="text/javascript">
 
   (function () {
-    renderChartForUri('{{uri}}');
+    renderChartForUri('{{uri}}', 'chart-{{filename}}');
   })();
 
 </script>
