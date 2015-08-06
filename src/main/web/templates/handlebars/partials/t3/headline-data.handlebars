@@ -16,7 +16,13 @@
 				<div class="stat">
 					<div class="stat__figure ">
 						<div>
-							<span class="stat__figure-enhance">{{items.0.data.description.number}}</span><span class="stat__figure__unit"> {{items.0.data.description.unit}}</span>
+							{{#if items.0.data.description.preUnit}}
+							<span class="stat__figure__preunit">{{items.0.data.description.preUnit}}</span>
+							{{/if}}
+							<span class="stat__figure-enhance">{{items.0.data.description.number}}</span>
+							{{#if items.0.data.description.unit}}
+							<span class="stat__figure__unit"> {{items.0.data.description.unit}}</span>
+							{{/if}}
 						</div>
 						<div class="stat__description">
 							{{items.0.data.description.date}}
