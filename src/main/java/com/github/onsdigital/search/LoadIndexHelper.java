@@ -80,9 +80,6 @@ public class LoadIndexHelper {
                 String cdid = getField(description, CDID);
                 documentMap = buildTimeseriesMap(splitUrl, splitPathAsList, type, title, cdid);
                 break;
-            case unknown:
-                System.out.println("json file: " + absoluteFilePath + "has unknown content type: " + pageType);
-                break;
             default:
                 documentMap = buildDocumentMap(splitUrl, splitPathAsList, type, title, summary, releaseDate, edition);
                 break;
