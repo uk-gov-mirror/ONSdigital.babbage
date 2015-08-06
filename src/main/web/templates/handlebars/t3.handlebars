@@ -57,7 +57,7 @@
 <!-- /page-header -->
 <!-- Body sections -->
 {{#ifany items datasets}}
-	<section class="panel wrapper panel--bottom-mar">
+	<section class="panel wrapper panel--bottom-mar-small">
 		<div class="box box--green box--green--separated--left" >
 			<div class="box__inner border box--padded">
 				{{#if items}}
@@ -76,7 +76,7 @@
 
 <!-- Latest statistical bulletins and Related articles-->
 {{#ifany statsBulletins relatedArticles}}
-	<section class="panel wrapper panel--bottom-mar">
+	<section class="panel wrapper panel--bottom-mar-small">
 		<div class="box box--teal box--teal--separated--left" >
 			<div class="box__inner border box--padded">
 				<!-- Latest statistical bulletins -->
@@ -91,6 +91,29 @@
 		</div>
 	</section>
 {{/ifany}}
+
+<section class="panel wrapper panel--bottom-mar-small">
+	<div class="grid-wrap">
+		<div class="grid-col desktop-grid-one-half">
+			<div class="box__inner border box--padded">
+				<h3 class="box__section__header">
+					Methodology
+				</h3>
+				<div class="box__content">
+					<ul class="list--neutral">
+						<li class="flush--third--bottom"><a href="{{rootpath uri}}">Hello1</a></li>
+						<li class="flush--third--bottom"><a href="{{rootpath uri}}">Hello2</a></li>
+						<li class="flush--third--bottom"><a href="{{rootpath uri}}">Hello3</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="grid-col desktop-grid-one-half">
+			{{> partials/local-box}}
+		</div>
+	</div>
+</section>
+
 
 <!--/panel wrapper -->
 {{> partials/footer}}
