@@ -27,15 +27,16 @@ function getSparklineConfig(timeseries) {
 			categories: [],
 			labels: {
 				crop: false,
+				endOnTick: true,
 				style: {
 					'font-size': '40px'
 				},
 				formatter: function() {
 					if (this.isFirst) {
-						return this.value
+						return this.value;
 					}
 					if (this.isLast) {
-						return this.value
+						return this.value;
 					}
 				},
 				step: 1
