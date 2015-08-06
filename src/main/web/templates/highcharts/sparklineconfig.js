@@ -27,7 +27,6 @@ function getSparklineConfig(timeseries) {
 			categories: [],
 			labels: {
 				crop: false,
-				endOnTick: true,
 				style: {
 					'font-size': '40px'
 				},
@@ -42,7 +41,7 @@ function getSparklineConfig(timeseries) {
 				step: 1
 			},
 			tickLength: 0,
-			tickInterval: ':tickInterval:',
+			//tickInterval: ':tickInterval:',
 			lineColor: 'transparent'
 		},
 		yAxis: {
