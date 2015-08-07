@@ -9,9 +9,9 @@
 				<h3 class="flush--half--bottom">
 				<a href="{{data.uri}}">{{data.description.title}}</a>
 				</h3>
-				{{#if description}}
+				{{#if data.description.keyNote}}
 				<p class="list--table__item__description">
-					{{data.description.summary}}
+					{{data.description.keyNote}}
 				</p>
 				{{/if}}
 			</div>
