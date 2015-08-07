@@ -71,7 +71,7 @@
 				<article class="box solid box--teal--separated--left">
 					<div class="box__inner border box--padded">
 						<h3 class="box__section__header">
-							This methodology is used for
+							Documents using this methodology
 						</h3>
 						<!-- /box__header -->
 						<div class="box__content">
@@ -85,6 +85,22 @@
 					</div>
 					<!-- /box__inner -->
 				</article>
+				{{/if}}
+				{{#if relatedDatasets}}
+					<article class="box box--green box--green--separated--left">
+						<div class="box__inner border box--padded">
+							<h3 class="box__section__header">
+								Data using this methodology
+							</h3>
+							<div class="box__content">
+								<ul class="list--neutral">
+									{{#each relatedDatasets}}
+										<li class="flush--third--bottom"><a href="{{uri}}">{{description.title}}</a></li>
+									{{/each}}
+								</ul>
+							</div>
+						</div>
+					</article>
 				{{/if}}
 				<!-- /box -->
 				<div class="box box--padded sectioned">
