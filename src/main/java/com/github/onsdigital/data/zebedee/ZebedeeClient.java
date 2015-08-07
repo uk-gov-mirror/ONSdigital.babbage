@@ -64,7 +64,7 @@ public class ZebedeeClient {
         }
 
         InputStream data = null;
-        String url = Configuration.getZebedeeUrl() + "/" + endpoint + "/" + collection;
+        String url = Configuration.ZEBEDEE.getZebedeeUrl() + "/" + endpoint + "/" + collection;
         System.out.println("Calling zebedee: " + url + " for path " + uriPath + " with token: " + authToken);
         url += "?uri=" + uriPath;
         if (resolveReferences) {

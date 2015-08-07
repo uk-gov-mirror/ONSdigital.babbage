@@ -258,7 +258,7 @@ class Markdown {
 
 			try (DirectoryStream<Path> stream = Files.newDirectoryStream(folder, "*.md")) {
 
-				// Iterate the paths in this directory:
+				// Iterate the paths in this api:
 				for (Path item : stream) {
 					result.add(item);
 				}

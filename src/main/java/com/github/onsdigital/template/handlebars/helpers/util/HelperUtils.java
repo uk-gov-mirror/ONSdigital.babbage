@@ -1,7 +1,6 @@
 package com.github.onsdigital.template.handlebars.helpers.util;
 
 import com.github.onsdigital.configuration.Configuration;
-import com.github.onsdigital.error.ResourceNotFoundException;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.FileNotFoundException;
@@ -39,7 +38,7 @@ public class HelperUtils {
         // Standardise the path:
         String uriPath = StringUtils.removeStart(uri, "/");
         Path path = FileSystems.getDefault().getPath(
-                Configuration.getContentPath());
+                Configuration.CONTENT_SERVICE.getContentPath());
 
         Path file = path.resolve(uriPath);
         if (!Files.exists(file)) {

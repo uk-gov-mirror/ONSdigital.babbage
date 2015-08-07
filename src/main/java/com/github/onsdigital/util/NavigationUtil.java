@@ -9,7 +9,6 @@ import com.github.onsdigital.content.partial.navigation.Navigation;
 import com.github.onsdigital.content.partial.navigation.NavigationNode;
 import com.github.onsdigital.content.util.ContentUtil;
 import com.google.gson.JsonSyntaxException;
-import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.w3c.dom.DOMException;
 
@@ -59,12 +58,12 @@ public class NavigationUtil {
 
 
     public static boolean isExpired() {
-        if (Configuration.isDevelopment()) {
+        if (Configuration.GENERAL.isDevelopment()) {
             return true;//No caching on dev environment
         }
 
         if (lastGenerated > 0) {
-            return (System.currentTimeMillis() - lastGenerated) < TimeUnit.MINUTES.toMillis(Configuration.getGlobalCacheTimeout());
+            return (System.currentTimeMillis() - lastGenerated) < TimeUnit.MINUTES.toMillis(Configuration.GENERAL.getGlobalCacheTimeout());
         }
         return false;
     }
@@ -156,7 +155,7 @@ public class NavigationUtil {
 
 
     private static Path getContentPath() {
-        return FileSystems.getDefault().getPath(Configuration.getContentPath());
+        return FileSystems.getDefault().getPath(Configuration.CONTENT_SERVICE.getContentPath());
     }
 
     public static void main(String[] args) {

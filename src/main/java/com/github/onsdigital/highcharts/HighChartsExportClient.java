@@ -49,7 +49,7 @@ public class HighChartsExportClient {
         InputStream data = null;
         System.out.println("Calling Highcharts export server");
 
-        HttpPost post = new HttpPost(Configuration.getHighchartsExportSeverUrl());
+        HttpPost post = new HttpPost(Configuration.HIGHCHARTS.getExportSeverUrl());
 
         List<NameValuePair> postParameters = new ArrayList<NameValuePair>();
         postParameters.add(new BasicNameValuePair("options", chartConfig));

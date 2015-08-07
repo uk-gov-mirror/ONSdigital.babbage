@@ -153,8 +153,8 @@ public class Search {
         page.setIncludeAllData(includeAllData);
         page.setNumberOfResults(results.getNumberOfResults());
         page.setNumberOfPages((long) Math.ceil((double) results.statisticsSearchResult.getNumberOfResults() / 10));
-        page.setEndPage((int) getEndPage(page.getNumberOfPages(), currentPage, Configuration.getMaxVisiblePaginatorLink()));
-        page.setStartPage(getStartPage((int) page.getNumberOfPages(), Configuration.getMaxVisiblePaginatorLink(), page.getEndPage()));
+        page.setEndPage((int) getEndPage(page.getNumberOfPages(), currentPage, Configuration.GENERAL.getMaxVisiblePaginatorLink()));
+        page.setStartPage(getStartPage((int) page.getNumberOfPages(), Configuration.GENERAL.getMaxVisiblePaginatorLink(), page.getEndPage()));
         page.setPages(getPageList(page.getStartPage(), page.getEndPage()));
         page.setSearchTerm(searchTerm);
         page.setTypes(types);

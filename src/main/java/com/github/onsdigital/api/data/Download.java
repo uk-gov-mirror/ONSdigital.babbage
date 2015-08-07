@@ -110,11 +110,11 @@ public class Download {
         String to = downloadRequest.to == null ? "" : downloadRequest.to.toString();
         final String fileName = downloadRequest.fileName + "_" + from + "-" + to + "." + downloadRequest.type;
 
-        //If file exists on temp directory read it from temp
+        //If file exists on temp api read it from temp
         Path tempFile = tempDirectory.resolve(fileName);
         if (Files.exists(tempFile)) {
             FileTime lastModifiedTime = Files.getLastModifiedTime(tempFile);
-            if(new Date().getTime() -  (lastModifiedTime.toMillis()) < TimeUnit.MINUTES.toMillis(Configuration.getGlobalCacheTimeout())) {
+            if(new Date().getTime() -  (lastModifiedTime.toMillis()) < TimeUnit.MINUTES.toMillis(Configuration.GENERAL.getGlobalCacheTimeout())) {
                 System.out.println("Find generated file in temp directory:" + fileName);
                 IOUtils.copy(Files.newInputStream(tempFile), output);
                 return;

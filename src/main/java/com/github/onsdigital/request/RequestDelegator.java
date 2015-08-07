@@ -35,7 +35,7 @@ public class RequestDelegator {
 
 
     //Using a common cache for all request types for now, data requests, image requests , latest data requests, chart requests are all cached in a single cache with uri's as keys
-    private static BabbageResponseCache responseCache = new BabbageResponseCache(Configuration.getGlobalRequestCacheSize());
+    private static BabbageResponseCache responseCache = new BabbageResponseCache(Configuration.GENERAL.getGlobalRequestCacheSize());
 
 
     //Find request handlers and register
@@ -61,7 +61,7 @@ public class RequestDelegator {
         getResponse = get(zebedeeRequest, uriWithParams,requestedUri, request, handler);
 
         //tell client not to ask again for 5 mins
-        if(zebedeeRequest == null && Configuration.isDevelopment() == false) {
+        if(zebedeeRequest == null && Configuration.GENERAL.isDevelopment() == false) {
             response.addHeader("cache-control", "public, max-age=300");
         }
 
@@ -73,7 +73,7 @@ public class RequestDelegator {
 
         if (zebedeeRequest == null) {
             //No caching on development
-            if (Configuration.isDevelopment()) {
+            if (Configuration.GENERAL.isDevelopment()) {
                 System.out.println("On development environment, not caching");
                 return handler.get(requestedUri, request);
             }

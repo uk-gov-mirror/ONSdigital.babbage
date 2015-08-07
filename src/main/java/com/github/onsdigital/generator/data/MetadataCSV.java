@@ -123,7 +123,7 @@ public class MetadataCSV {
 
 			try (DirectoryStream<Path> stream = Files.newDirectoryStream(folder, "*.csv")) {
 
-				// Iterate the paths in this directory:
+				// Iterate the paths in this api:
 				for (Path item : stream) {
 					if (!StringUtils.equals("TimeseriesMetadata - CPI.csv", item.getFileName().toString())) {
 						result.add(item);

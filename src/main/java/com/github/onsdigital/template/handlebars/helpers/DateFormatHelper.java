@@ -35,7 +35,7 @@ public class DateFormatHelper implements Helper<Date> {
 
     private String resolvePattern(Object[] params) {
         if (params == null || params.length == 0) {
-            return Configuration.getDefaultHandlebarsDatePattern();
+            return Configuration.HANDLEBARS.getHandlebarsDatePattern();
         }
 
         return (String) params[0];

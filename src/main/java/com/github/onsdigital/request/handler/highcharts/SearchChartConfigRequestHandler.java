@@ -36,7 +36,7 @@ public class SearchChartConfigRequestHandler implements RequestHandler {
         if (!(page instanceof TimeSeries)) {
             throw new IllegalArgumentException("Requested data is not a timseries");
         }
-        return new HighchartsChart((TimeSeries) page, Configuration.getSearchchartFile());
+        return new HighchartsChart((TimeSeries) page, Configuration.HIGHCHARTS.getSearchchartFile());
     }
 
     @Override

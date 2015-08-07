@@ -205,7 +205,7 @@ public class DataCSV {
 
 			try (DirectoryStream<Path> stream = Files.newDirectoryStream(folder, "*.csv")) {
 
-				// Iterate the paths in this directory:
+				// Iterate the paths in this api:
 				for (Path item : stream) {
 					if (!StringUtils.equals(item.getFileName().toString(), "Timeseries data - MM23_CSDB_DS.csdb.csv")) {
 						result.add(item);

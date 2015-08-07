@@ -1,5 +1,7 @@
 package com.github.onsdigital.api.util;
 
+import com.github.davidcarboni.restolino.api.RequestHandler;
+import com.github.davidcarboni.restolino.framework.ServerError;
 import com.github.onsdigital.content.page.error.Error404;
 import com.github.onsdigital.content.page.error.Error500;
 import com.github.onsdigital.content.service.ContentNotFoundException;
@@ -8,6 +10,7 @@ import com.github.onsdigital.template.TemplateService;
 import com.github.onsdigital.util.NavigationUtil;
 import org.apache.commons.io.IOUtils;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.StringReader;
@@ -19,12 +22,16 @@ import java.util.Map;
  * <p/>
  * Handles exceptions and returns appropriate response to the client. It is possible to take actions for specific error types
  */
-public class ApiErrorHandler {
+public class ApiErrorHandler implements ServerError {
 
     private static String HTML_CONTENT_TYPE = "text/html";
 
-    public static void handle(Throwable e, HttpServletResponse response) throws IOException {
+    private static void logError(Throwable e) {
+        e.printStackTrace();
+    }
 
+    @Override
+    public Object handle(HttpServletRequest req, HttpServletResponse res, RequestHandler requestHandler, Throwable t) throws IOException {
         logError(e);
         Map<String, String> errorResponse = new HashMap<String, String>();
 
@@ -50,9 +57,7 @@ public class ApiErrorHandler {
 //            errorResponse.put("status", String.valueOf(HttpServletResponse.SC_INTERNAL_SERVER_ERROR));
 //            errorResponse.put("message", "Internal Server Error Occurred!");
         }
-    }
 
-    private static void logError(Throwable e) {
-        e.printStackTrace();
+
     }
 }

@@ -38,7 +38,7 @@ public class LineChartConfigHandler implements RequestHandler {
         if (!(page instanceof TimeSeries)) {
             throw new IllegalArgumentException("Requested data is not a timseries");
         }
-        return new HighchartsChart((TimeSeries) page, Configuration.getLinechartConfig());
+        return new HighchartsChart((TimeSeries) page, Configuration.HIGHCHARTS.getLinechartConfig());
 
     }
 

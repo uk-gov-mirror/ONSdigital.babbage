@@ -32,7 +32,7 @@ public class EmbeddedElasticSearchServer {
 
 		if (settings != null) {
 			settingsBuilder.put(settings);
-			// If data directory is overwritten update data directory
+			// If data api is overwritten update data api
 			// accordingly for cleanup at shutdown
 			String directory = settings.get("path.data");
 			if (directory != null) {

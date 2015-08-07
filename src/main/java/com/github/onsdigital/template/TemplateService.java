@@ -14,7 +14,7 @@ public class TemplateService {
 
     private static TemplateService instance = new TemplateService();
 
-    private static TemplateRenderer templateRenderer = new HandlebarsRenderer(Configuration.getTemplatesDirectory(), Configuration.getTemplatesSuffix());
+    private static TemplateRenderer templateRenderer = new HandlebarsRenderer(Configuration.HANDLEBARS.getTemplatesDirectory(), Configuration.HANDLEBARS.getTemplatesSuffix());
 
     private TemplateService() {
     }

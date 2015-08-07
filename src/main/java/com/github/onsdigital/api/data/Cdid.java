@@ -90,7 +90,7 @@ static Map<String, TimeSeries> cache = new ConcurrentHashMap<String, TimeSeries>
 	private static List<Path> findTimeSeries(final List<String> cdids) throws IOException {
 		final List<Path> result = new ArrayList<>();
 
-		Path taxonomy = FileSystems.getDefault().getPath(Configuration.getContentPath());
+		Path taxonomy = FileSystems.getDefault().getPath(Configuration.CONTENT_SERVICE.getContentPath());
 
 		/**
 		 * Finds json files inside folders that match a cdid value.

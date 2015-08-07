@@ -14,141 +14,177 @@ import java.security.InvalidKeyException;
 
 public class Configuration {
 
-    private static final String DEFAULT_CONTENT_DIRECTORY = "target/content";
-
-    private static final String DEFAULT_ZEBEDEE_URL = "http://localhost:8082";
-
-    //Trailing slash seems to be important. Export server redirects to trailing slash url if not there
-    private final static String DEFAULT_HIGHCHARTS_EXPORT_SEVER_URL = "http://localhost:9999/export/";
-
-    private static final String DEFAULT_HANDLEBARS_DATE_PATTERN = "d MMMM yyyy";
-
-    private static final String HIGHCHARTS_CONFIG_DIR = "src/main/web/templates/highcharts";
-    private static final String SPARKLINE_FILE = "sparklineconfig.js";
-    private static final String LINECHART_FILE = "linechartconfig.js";
-    private static final String SEARCHCHART_FILE = "searchchartconfig.js";
-    private static final int MAX_VISIBLE_PAGINATOR_LINK = 10;
-
-    private static final int GLOBAL_REQUEST_CACHE_SIZE = 1000;
-    private static final int GLOBAL_CACHE_TIMEOUT = 5; //mins
-
-    private static final String PHANTOMJS_PATH = "/usr/local/bin/phantomjs";
-
-    /**
-     * Mongo is currently only used to provide feedback on the search terms
-     * users are typing in.
-     */
-    private static final String DEFAULT_MONGO_URI = "mongodb://<dbuser>:<dbpassword>@ds055990.mongolab.com:55990/ons";
-
-    /**
-     * David Carboni: This token relates to a Prerender.io accout I set up. If
-     * necessary this account can be transferred, or a new one set up for ONS.
-     */
-    private static final String DEFAULT_PRERENDER_TOKEN = "cCc113eXWWV2TbRcnoMV";
+    /*General Babbage app settings*/
+    public static class GENERAL {
+        private static final int MAX_VISIBLE_PAGINATOR_LINK = 10;
+        private static final int GLOBAL_CACHE_TIMEOUT = 5;
+        private static final int GLOBAL_REQUEST_CACHE_SIZE = 1000;
 
 
-    private static final String DEFAULT_TEMPLATES_DIR = "src/main/web/templates/handlebars";
+        public static int getMaxVisiblePaginatorLink() {
+            return MAX_VISIBLE_PAGINATOR_LINK;
+        }
 
-    private static final String DEFAULT_TEMPLATES_SUFFIX = ".handlebars";
+        public static int getGlobalCacheTimeout() {
+            return GLOBAL_CACHE_TIMEOUT;
+        }
 
-    private static String templatesDir;
+        public static int getGlobalRequestCacheSize() {
+            return Integer.parseInt(StringUtils.defaultIfBlank(getValue("GLOBAL_CACHE_SIZE"), String.valueOf(GLOBAL_REQUEST_CACHE_SIZE)));
+        }
 
-    private static String templatesSuffix;
+        public static boolean isCacheEnabled() {
+            String babbage_env = StringUtils.defaultIfBlank(getValue("ENABLE_CACHE"), "");
+            return "Y".equals(babbage_env);
+        }
 
-    private static String highchartsExportUrl;
-
-    public static String getZebedeeUrl() {
-        return StringUtils.defaultIfBlank(getValue("ZEBEDEE_URL"), DEFAULT_ZEBEDEE_URL);
     }
 
-    public static boolean isDevelopment() {
-        String babbage_env = StringUtils.defaultIfBlank(getValue("BABBAGE_ENV"), "");
-        return "DEVELOPMENT".equals(babbage_env);
+    /*External services configuration*/
+    public static class CONTENT_SERVICE {
+        private static final String SERVICE_URL = StringUtils.defaultIfBlank(getValue("CONTENT_SERVICE_URL"), "http://localhost:9090");
+        private static final int MAX_CONTENT_SERVICE_CONNECTION = defaultNumberIfBlank(getNumberValue("CONTENT_SERVICE_MAX_CONNECTION"), 50);
+
+        public static String getContentServiceUrl() {
+            return SERVICE_URL;
+        }
+
+        public static int getMaxContentServiceConnection() {
+            return MAX_CONTENT_SERVICE_CONNECTION;
+        }
+
+        //TODO: get rid of content path, should only be using content service
+        private static final String DEFAULT_CONTENT_DIRECTORY = "target/content";
+
+        public static String getContentPath() {
+            return StringUtils.defaultIfBlank(getValue("CONTENT_DIR"), DEFAULT_CONTENT_DIRECTORY);
+        }
+
+
+
     }
 
-    public static String getContentPath() {
-        return StringUtils.defaultIfBlank(getValue("CONTENT_DIR"), DEFAULT_CONTENT_DIRECTORY);
+
+    //TODO: Delete zebedee configuration , will use content service
+    public static class ZEBEDEE {
+        private static final String DEFAULT_ZEBEDEE_URL = "http://localhost:8082";
+
+        public static String getZebedeeUrl() {
+            return StringUtils.defaultIfBlank(getValue("ZEBEDEE_URL"), DEFAULT_ZEBEDEE_URL);
+        }
     }
 
-    public static String getPrerenderToken() {
-        return StringUtils.defaultIfBlank(getValue("PRERENDER_TOKEN"), DEFAULT_PRERENDER_TOKEN);
+
+    public static class ELASTIC_SEARCH {
+        private static final String ELASTIC_SEARCH_URL = StringUtils.defaultIfBlank(getValue("ELASTIC_SEARCH_URL"), "http://localhost:8090");
+
+        public static String getELASTIC_SEARCH_URL() {
+            return ELASTIC_SEARCH_URL;
+        }
     }
 
-    public static String getDefaultHandlebarsDatePattern() {
-        return DEFAULT_HANDLEBARS_DATE_PATTERN;
+
+    /*Handlebars configuration*/
+    public static class HANDLEBARS {
+        private static final String DEFAULT_HANDLEBARS_DATE_PATTERN = "d MMMM yyyy";
+        private static final String TEMPLATES_DIR = StringUtils.defaultIfBlank(getValue("TEMPLATES_DIR"), "src/main/web/templates/handlebars");
+        private static final String TEMPLATES_SUFFIX = StringUtils.defaultIfBlank(getValue("TEMPLATES_SUFFIX"), ".handlebars");
+
+        public static String getHandlebarsDatePattern() {
+            return DEFAULT_HANDLEBARS_DATE_PATTERN;
+        }
+
+        public static String getTemplatesDirectory() {
+            return TEMPLATES_DIR;
+        }
+
+        public static String getTemplatesSuffix() {
+            return TEMPLATES_SUFFIX;
+        }
     }
 
-    public static String getTemplatesDirectory() {
-        if (templatesDir == null) {
-            synchronized (DEFAULT_TEMPLATES_DIR) {
-                if (templatesDir == null) {
-                    templatesDir = getValue("TEMPLATES_DIR");
-                    templatesDir = StringUtils.defaultIfBlank(templatesDir, DEFAULT_TEMPLATES_DIR);
-                }
+    /*Phantom JS Configuration*/
+    public static class PHANTOMJS {
+        private static final String PHANTOMJS_PATH = StringUtils.defaultIfBlank(getValue("PHANTOMJS_PATH"), "/usr/local/bin/phantomjs");
+
+        public static String getPhantomjsPath() {
+            return PHANTOMJS_PATH;
+        }
+    }
+
+
+    /*Highcharts Image rendering configuration*/
+    public static class HIGHCHARTS {
+        private final static String SPARKLINE_FILE = "sparklineconfig.js";
+        private final static String LINECHART_FILE = "linechartconfig.js";
+        private final static String SEARCHCHART_FILE = "searchchartconfig.js";
+        private static final String HIGHCHARTS_CONFIG_DIR = "src/main/web/templates/highcharts";
+
+        //Trailing slash seems to be important. Export server redirects to trailing slash url if not there
+        private static final String EXPORT_SEVER_URL = StringUtils.defaultIfBlank(getValue("HIGHCHARTS_EXPORT_SERVER"), "http://localhost:9999/export/");
+        ;
+
+        public static String getExportSeverUrl() {
+            return EXPORT_SEVER_URL;
+        }
+
+        public static String getSearchchartFile() {
+            //TODO:Cache configuration
+            try {
+                Path highchartsconfigDir = FileSystems.getDefault().getPath(HIGHCHARTS_CONFIG_DIR);
+                Path searchChartPath = highchartsconfigDir.resolve(SEARCHCHART_FILE);
+                return getChartConfig(searchChartPath, Files.newInputStream(searchChartPath));
+            } catch (IOException e) {
+                e.printStackTrace();
+                throw new RuntimeException("Failed reading search chart config file");
             }
         }
 
-        return templatesDir;
-    }
 
-    public static String getTemplatesSuffix() {
-        if (templatesSuffix == null) {
-            synchronized (DEFAULT_TEMPLATES_SUFFIX) {
-                if (templatesSuffix == null) {
-                    templatesSuffix = getValue("TEMPLATES_DIR");
-                    templatesSuffix = StringUtils.defaultIfBlank(templatesSuffix, DEFAULT_TEMPLATES_SUFFIX);
-                }
+        public static String getSparklineConfig() {
+            //TODO:Cache configuration
+            try {
+                Path highchartsconfigDir = FileSystems.getDefault().getPath(HIGHCHARTS_CONFIG_DIR);
+                Path sparklinePath = highchartsconfigDir.resolve(SPARKLINE_FILE);
+                return getChartConfig(sparklinePath, Files.newInputStream(sparklinePath));
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                throw new RuntimeException("Failed reading sparkline config file");
             }
         }
-        return templatesSuffix;
-    }
 
-
-    public static int getGlobalRequestCacheSize() {
-        return Integer.parseInt(StringUtils.defaultIfBlank(getValue("GLOBAL_CACHE_SIZE"), String.valueOf(GLOBAL_REQUEST_CACHE_SIZE)));
-    }
-
-    public static int getGlobalCacheTimeout() {
-        return Integer.parseInt(StringUtils.defaultIfBlank(getValue("GLOBAL_CACHE_TIMEOUT"), String.valueOf(GLOBAL_CACHE_TIMEOUT)));
-    }
-
-    /**
-     * @return The Mongo URI. When deployed, credentials are set in Heroku
-     * config. In development, a shared database-as-a-service is used,
-     * so we need to decrypt credentials provided in the run script.
-     */
-    public static String getMongoDbUri() {
-
-        // Normal operation:
-        String mongolabUri = getValue("MONGOLAB_URI");
-        if (StringUtils.isNotBlank(mongolabUri)) {
-            return mongolabUri;
+        public static String getLinechartConfig() {
+            //TODO:Cache configuration
+            try {
+                Path highchartsconfigDir = FileSystems.getDefault().getPath(HIGHCHARTS_CONFIG_DIR);
+                Path linechartPath = highchartsconfigDir.resolve(LINECHART_FILE);
+                return getChartConfig(linechartPath, Files.newInputStream(linechartPath));
+            } catch (IOException e) {
+                e.printStackTrace();
+                throw new RuntimeException("Failed reading linechart config file");
+            }
         }
 
-        // Just for development.
-        // This is not actually secure, but it's just a development database so
-        // it's "good enough":
-        String user = getValue("mongo.user");
-        String keyPassword = new String(ByteArray.fromBase64String("S3VJNlNrb0U="));
-        String salt = "LZNEwAt8CtB664Xw3ml3aA==";
-        SecretKey key = new KeyWrapper(keyPassword, salt).unwrapSecretKey("RopLZk7YVsZpOIid6RuZxdqDdeaXIRMr");
-        String password = getValue("mongo.password");
-        try {
-            password = new Crypto().decrypt(password, key);
-        } catch (InvalidKeyException e) {
-            e.printStackTrace();
+        private static String getChartConfig(Path filePath, InputStream input) throws IOException {
+            if (Files.exists(filePath)) {
+                String config = IOUtils.toString(input);
+                int startIndex = config.indexOf("/*chart:start*/");
+                int endIndex = config.indexOf("/*chart:end*/");
+                return "{\n" + config.substring(startIndex, endIndex) + "}";
+            } else {
+                throw new IllegalStateException("******** CHART CONFIGURATION FILE NOT FOUND!!!!!! ***********");
+            }
         }
-        // Not
-        mongolabUri = DEFAULT_MONGO_URI;
-        mongolabUri = StringUtils.replace(mongolabUri, "<dbuser>", user);
-        mongolabUri = StringUtils.replace(mongolabUri, "<dbpassword>", password);
-        return mongolabUri;
     }
+
+    ;
+
 
     /**
      * Gets a configured value for the given key from either the system
      * properties or an environment variable.
-     * <p>
+     * <p/>
      * Copied from {@link com.github.davidcarboni.restolino.Configuration}.
      *
      * @param key The title of the configuration value.
@@ -157,81 +193,24 @@ public class Configuration {
      * corresponding to the given key (e.g. EXPORT key=value). If that
      * is blank, {@link StringUtils#EMPTY}.
      */
-    static String getValue(String key) {
+    private static String getValue(String key) {
         return StringUtils.defaultIfBlank(System.getProperty(key), System.getenv(key));
     }
 
-
-    public static String getSearchchartFile() {
-        //TODO:Cache configuration
-        try {
-            Path highchartsconfigDir = FileSystems.getDefault().getPath(HIGHCHARTS_CONFIG_DIR);
-            Path searchChartPath = highchartsconfigDir.resolve(SEARCHCHART_FILE);
-            return getChartConfig(searchChartPath, Files.newInputStream(searchChartPath));
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException("Failed reading search chart config file");
-        }
-    }
-
-
-    public static String getSparklineConfig() {
-        //TODO:Cache configuration
-        try {
-            Path highchartsconfigDir = FileSystems.getDefault().getPath(HIGHCHARTS_CONFIG_DIR);
-            Path sparklinePath = highchartsconfigDir.resolve(SPARKLINE_FILE);
-            return getChartConfig(sparklinePath, Files.newInputStream(sparklinePath));
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException("Failed reading sparkline config file");
-        }
-    }
-
-    public static String getLinechartConfig() {
-        //TODO:Cache configuration
-        try {
-            Path highchartsconfigDir = FileSystems.getDefault().getPath(HIGHCHARTS_CONFIG_DIR);
-            Path linechartPath = highchartsconfigDir.resolve(LINECHART_FILE);
-            return getChartConfig(linechartPath, Files.newInputStream(linechartPath));
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException("Failed reading linechart config file");
-        }
-    }
-
-    private static String getChartConfig(Path filePath, InputStream input) throws IOException {
-        if (Files.exists(filePath)) {
-            String config = IOUtils.toString(input);
-            int startIndex = config.indexOf("/*chart:start*/");
-            int endIndex = config.indexOf("/*chart:end*/");
-            return "{\n" + config.substring(startIndex, endIndex) + "}";
-        } else {
-            throw new IllegalStateException( "******** CHART CONFIGURATION FILE NOT FOUND!!!!!! ***********");
-        }
-    }
-
-    public static String getHighchartsExportSeverUrl() {
-        if (highchartsExportUrl == null) {
-            synchronized (DEFAULT_HIGHCHARTS_EXPORT_SEVER_URL) {
-                if (highchartsExportUrl == null) {
-                    highchartsExportUrl = getValue("HIGHCHARTS_EXPORT_SERVER");
-                    highchartsExportUrl = StringUtils.defaultIfBlank(highchartsExportUrl, DEFAULT_HIGHCHARTS_EXPORT_SEVER_URL);
-                }
-            }
+    private static Integer getNumberValue(String key) {
+        String value = getValue(key);
+        if (StringUtils.isEmpty(value)) {
+            return null;
         }
 
-        return highchartsExportUrl;
+        return Integer.valueOf(value.trim());
     }
 
 
-    public static String getPhantomjsPath() {
-        return StringUtils.defaultIfBlank(getValue("PHANTOMJS_PATH"), PHANTOMJS_PATH);
+    private static Integer defaultNumberIfBlank(Integer value, Integer defaultValue) {
+        return value == null ? defaultValue : value;
     }
 
-    public static int getMaxVisiblePaginatorLink() {
-        return MAX_VISIBLE_PAGINATOR_LINK;
-    }
 
     /**
      * Use this method to generate new credentials.

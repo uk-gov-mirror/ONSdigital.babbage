@@ -48,7 +48,7 @@ public class ImageRequestHandler implements RequestHandler {
     //Read from babbage's file system
     private InputStream readFromLocalData(String requestedUri) throws IOException {
         Path taxonomy = FileSystems.getDefault().getPath(
-                Configuration.getContentPath());
+                Configuration.CONTENT_SERVICE.getContentPath());
 
         Path data = taxonomy.resolve(requestedUri);
 

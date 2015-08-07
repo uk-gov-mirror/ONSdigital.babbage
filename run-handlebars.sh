@@ -2,7 +2,7 @@
 
 
 ###Starts handlebars java server which will render handlebars templates under web/templates/handlebars with accompanying .json files
-###e.g. example.handlebars under web/templates/handlebars with example.json under same directory. Or passing a get parameter of data file title
+###e.g. example.handlebars under web/templates/handlebars with example.json under same api. Or passing a get parameter of data file title
 ###Access server using http://localhost:6780/exampe.handlebars
 ###For more info: https://github.com/jknack/handlebars.java#the-handlebarsjava-server
 

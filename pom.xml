@@ -62,13 +62,6 @@
 			<version>${es.version}</version>
 		</dependency>
 
-		<!-- MongoDB -->
-		<!--<dependency>-->
-			<!--<groupId>org.mongodb</groupId>-->
-			<!--<artifactId>mongo-java-driver</artifactId>-->
-			<!--<version>2.12.4</version>-->
-		<!--</dependency>-->
-
  		<!-- Encryption -->
 		<dependency>
 			<groupId>com.github.davidcarboni</groupId>
@@ -126,23 +119,11 @@
 			<version>1.9.5</version>
 			<scope>test</scope>
 		</dependency>
-		<!-- <dependency> -->
-		<!-- <groupId>org.powermock</groupId> -->
-		<!-- <artifactId>powermock-module-junit4</artifactId> -->
-		<!-- <version>${powermock.version}</version> -->
-		<!-- <scope>test</scope> -->
-		<!-- </dependency> -->
-		<!-- <dependency> -->
-		<!-- <groupId>org.powermock</groupId> -->
-		<!-- <artifactId>powermock-api-mockito</artifactId> -->
-		<!-- <version>${powermock.version}</version> -->
-		<!-- <scope>test</scope> -->
-		<!-- </dependency> -->
 
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
-			<version>4.4</version>
+			<version>4.5</version>
 		</dependency>
 
 		<dependency>
@@ -164,17 +145,6 @@
             <artifactId>guava</artifactId>
             <version>18.0</version>
         </dependency>
-
-
-
-        <!--</dependency>-->
-
-        <!-- ONS Content Library, snapshot local install used for development, comment out -->
-        <!--<dependency>-->
-            <!--<groupId>com.github.onsdigital</groupId>-->
-            <!--<artifactId>content-library</artifactId>-->
-            <!--<version>1.0.61-SNAPSHOT</version>-->
-        <!--</dependency>-->
 
 	</dependencies>
 
@@ -246,7 +216,7 @@
 						<goals>
 							<goal>copy-dependencies</goal>
 						</goals>
-						<!-- Default output folder is ${project.build.directory}/dependency -->
+						<!-- Default output folder is ${project.build.api}/dependency -->
 					</execution>
 				</executions>
 			</plugin>

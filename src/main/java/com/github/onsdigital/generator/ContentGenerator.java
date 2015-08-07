@@ -202,7 +202,7 @@ public class ContentGenerator {
 
         persistBulletins(node, directory, productPage);
         persistArticles(node, directory, productPage);
-//        persistMethodologies(node, directory, productPage);
+//        persistMethodologies(node, api, productPage);
         persistDatasets(node, directory, productPage);
 
 
@@ -459,7 +459,7 @@ public class ContentGenerator {
         }
     }
 
-    //Creates content directory. If it already exists deletes it
+    //Creates content api. If it already exists deletes it
     private File initializeContentsDirectory() throws IOException {
         // Walk folder tree:
         System.out.printf("Deleting content directory");

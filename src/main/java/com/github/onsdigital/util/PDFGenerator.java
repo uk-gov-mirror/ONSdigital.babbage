@@ -27,7 +27,7 @@ public class PDFGenerator {
         Runtime rt = Runtime.getRuntime();
         // Execute command, redirect error to output to print all in the console
         String[] command = {
-                Configuration.getPhantomjsPath(), "src/main/web/js/generatepdf.js", URL + uri, "" + TEMP_DIRECTORY_PATH + "/" + fileName + ".pdf"
+                Configuration.PHANTOMJS.getPhantomjsPath(), "src/main/web/js/generatepdf.js", URL + uri, "" + TEMP_DIRECTORY_PATH + "/" + fileName + ".pdf"
         };
         try {
             Process process = new ProcessBuilder(command).redirectErrorStream(true).start();

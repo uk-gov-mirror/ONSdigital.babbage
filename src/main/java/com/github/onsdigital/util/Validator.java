@@ -28,7 +28,7 @@ public class Validator implements Runnable {
 
 	@Override
 	public void run() {
-		Path path = FileSystems.getDefault().getPath(Configuration.getContentPath());
+		Path path = FileSystems.getDefault().getPath(Configuration.CONTENT_SERVICE.getContentPath());
 
 		executorService = Executors.newCachedThreadPool();
 		System.out.println("Validating taxonomy Json");
@@ -62,7 +62,7 @@ public class Validator implements Runnable {
 
 		try (DirectoryStream<Path> stream = Files.newDirectoryStream(path)) {
 
-			// Iterate the paths in this directory:
+			// Iterate the paths in this api:
 			for (Path item : stream) {
 				if (Files.isDirectory(item)) {
 					subdirectories.add(item);
