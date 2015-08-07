@@ -2,9 +2,14 @@
 	<div class="box--padded equal-height solid panel--bottom-mar">
 		<h2>Latest data</h2>
 		<header class="box___section">
-			<h3 class="navpanel-list-heading lede box--padded-bottom-small">
+			<h3 class="navpanel-list-heading lede flush">
 			<a href="{{items.0.data.uri}}">{{items.0.data.description.title}}</a>
 			</h3>
+			{{#if items.0.data.description.keyNote}}
+			<p class="panel--bottom-mar">
+				{{items.0.data.description.keyNote}}
+			</p>
+			{{/if}}
 		</header>
 		<div class="grid-wrap">
 			<div class="grid-col grid-two-thirds">
@@ -14,7 +19,7 @@
 			</div>
 			<div class="grid-col grid-one-third no-padding">
 				<div class="stat">
-					<div class="stat__figure ">
+					<div class="stat__figure">
 						<div>
 							{{#if items.0.data.description.preUnit}}
 							<span class="stat__figure__preunit">{{items.0.data.description.preUnit}}</span>
