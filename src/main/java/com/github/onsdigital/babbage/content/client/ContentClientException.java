@@ -7,16 +7,16 @@ package com.github.onsdigital.babbage.content.client;
  *
  * Babbage, maps any content read exceptions into appropriate http status codes
  */
-public class ContentReadException extends Exception {
+public class ContentClientException extends Exception {
 
     //http status code to be sent to the client
     private final int statusCode;
 
-    ContentReadException(final int statusCode, final String s) {
+    ContentClientException(final int statusCode, final String s) {
         this(statusCode, s, null);
     }
 
-    ContentReadException(final int statusCode, final String s, Throwable cause) {
+    ContentClientException(final int statusCode, final String s, Throwable cause) {
         super(s, cause);
         this.statusCode = statusCode;
     }

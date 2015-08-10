@@ -1,9 +1,9 @@
 package com.github.onsdigital.request.handler;
 
+import com.github.onsdigital.babbage.request.handler.base.RequestHandler;
 import com.github.onsdigital.content.service.ContentNotFoundException;
 import com.github.onsdigital.data.zebedee.ZebedeeRequest;
 import com.github.onsdigital.page.ContentRenderer;
-import com.github.onsdigital.request.handler.base.RequestHandler;
 import com.github.onsdigital.request.response.BabbageResponse;
 import com.github.onsdigital.request.response.BabbageStringResponse;
 import org.apache.commons.lang3.StringUtils;

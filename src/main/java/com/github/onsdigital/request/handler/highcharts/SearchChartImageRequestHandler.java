@@ -1,9 +1,9 @@
 package com.github.onsdigital.request.handler.highcharts;
 
+import com.github.onsdigital.babbage.request.handler.base.RequestHandler;
 import com.github.onsdigital.data.zebedee.ZebedeeRequest;
 import com.github.onsdigital.highcharts.HighChartsExportClient;
 import com.github.onsdigital.highcharts.HighchartsChart;
-import com.github.onsdigital.request.handler.base.RequestHandler;
 import com.github.onsdigital.request.response.BabbageBinaryResponse;
 import com.github.onsdigital.request.response.BabbageResponse;
 

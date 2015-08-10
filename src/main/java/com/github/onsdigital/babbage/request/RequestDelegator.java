@@ -1,9 +1,10 @@
 package com.github.onsdigital.babbage.request;
 
+import com.github.onsdigital.babbage.request.handler.base.RequestHandler;
+import com.github.onsdigital.babbage.util.RequestUtil;
 import com.github.onsdigital.babbage.util.URIUtil;
 import com.github.onsdigital.cache.BabbageResponseCache;
 import com.github.onsdigital.configuration.Configuration;
-import com.github.onsdigital.request.handler.base.RequestHandler;
 import com.github.onsdigital.request.response.BabbageResponse;
 import com.google.common.util.concurrent.UncheckedExecutionException;
 import org.apache.commons.lang3.StringUtils;
@@ -45,28 +46,34 @@ public class RequestDelegator {
 
     public static void get(HttpServletRequest request, HttpServletResponse response) throws Throwable {
 
-        String uri = URIUtil.cleanUri(request.getRequestURI());
-        String fullUri = uri + "?" + StringUtils.lowerCase(request.getQueryString());
-        String requestType = URIUtil.resolveRequestType(uri);
-        RequestHandler handler = resolveRequestHandler(requestType);
-        BabbageResponse getResponse = null;
-        String requestedUri = uri;
-        if (handler == null) {
-            handler = handlers.get("/"); //default handler
-        } else {
-            //remove last segment to get requested resource uri
-            requestedUri = com.github.onsdigital.babbage.util.URIUtil.resolveResouceUri(uri);
+        try {
+            RequestUtil.saveAccessToken(request);
+
+            String uri = URIUtil.cleanUri(request.getRequestURI());
+            String fullUri = uri + "?" + StringUtils.lowerCase(request.getQueryString());
+            String requestType = URIUtil.resolveRequestType(uri);
+            RequestHandler handler = resolveRequestHandler(requestType);
+            BabbageResponse getResponse = null;
+            String requestedUri = uri;
+            if (handler == null) {
+                handler = handlers.get("/"); //default handler
+            } else {
+                //remove last segment to get requested resource uri
+                requestedUri = com.github.onsdigital.babbage.util.URIUtil.resolveResouceUri(uri);
+            }
+
+            getResponse = get(fullUri, requestedUri, request, handler);
+
+            //tell client not to ask again for 5 mins //todo: caching should be based on cache-headers from content service
+            if (isCacheEnabled()) {
+                response.addHeader("cache-control", "public, max-age=300");
+            }
+
+            getResponse.apply(response);
+            return;
+        } finally {
+            RequestUtil.clearAllSaved();
         }
-
-        getResponse = get(fullUri, requestedUri, request, handler);
-
-        //tell client not to ask again for 5 mins //todo: caching should be based on cache-headers from content service
-        if (isCacheEnabled()) {
-            response.addHeader("cache-control", "public, max-age=300");
-        }
-
-        getResponse.apply(response);
-        return;
     }
 
     private static BabbageResponse get(final String fullUri, final String requestedUri, final HttpServletRequest request, final RequestHandler handler) throws Throwable {

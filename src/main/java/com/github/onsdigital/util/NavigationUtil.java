@@ -58,8 +58,8 @@ public class NavigationUtil {
 
 
     public static boolean isExpired() {
-        if (Configuration.GENERAL.isDevelopment()) {
-            return true;//No caching on dev environment
+        if (!Configuration.GENERAL.isCacheEnabled()) {
+            return true;
         }
 
         if (lastGenerated > 0) {

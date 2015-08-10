@@ -16,7 +16,10 @@ import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by bren on 22/07/15.
@@ -51,11 +54,39 @@ public class PooledHttpClient {
      *                                 catch HttpResponseException for  status code
      */
     public CloseableHttpResponse sendGet(String path) throws IOException {
-        return sendGet(path, null);
+        return sendGet(path, null, null);
+    }
+
+
+    /**
+     * @param path path, should not contain any query string, only path info
+     * @param queryParameters query parameters to be sent as get query string
+     * @return response
+     * @throws IOException             All exceptions thrown are IOException implementations
+     * @throws ClientProtocolException for protocol related exceptions, HttpResponseExceptions are a subclass of this exception type
+     * @throws HttpResponseException   exception for http status code > 300, HttpResponseException is a subclass of IOException
+     *                                 catch HttpResponseException for  status code
+     */
+    public CloseableHttpResponse sendGet(String path, List<NameValuePair> queryParameters) throws IOException {
+        return sendGet(path, null, queryParameters);
+    }
+
+    /**
+     * @param path path, should not contain any query string, only path info
+     * @param cookies       key-value map to to be added to request as cookie headers
+     * @return response
+     * @throws IOException             All exceptions thrown are IOException implementations
+     * @throws ClientProtocolException for protocol related exceptions, HttpResponseExceptions are a subclass of this exception type
+     * @throws HttpResponseException   exception for http status code > 300, HttpResponseException is a subclass of IOException
+     *                                 catch HttpResponseException for  status code
+     */
+    public CloseableHttpResponse sendGet(String path, Map<String, String> cookies) throws IOException {
+        return sendGet(path, cookies, null);
     }
 
     /**
      * @param path       path, should not contain any query string, only path info
+     * @param headers       key-value map to to be added to request as cookie headers
      * @param queryParameters query parameters to be sent as get query string
      * @return
      * @throws IOException             All exceptions thrown are IOException implementations
@@ -63,11 +94,18 @@ public class PooledHttpClient {
      * @throws HttpResponseException   exception for http status code > 300, HttpResponseException is a subclass of IOException
      *                                 catch HttpResponseException for  status code
      */
-    public CloseableHttpResponse sendGet(String path, List<NameValuePair> cookies, List<NameValuePair> queryParameters) throws IOException {
-        URI uri = buildUri(path, cookies, queryParameters);
+    public CloseableHttpResponse sendGet(String path, Map<String,String> headers, List<NameValuePair> queryParameters) throws IOException {
+        URI uri = buildUri(path, queryParameters);
         System.out.println("Sending get request to " + uri);
         HttpGet request = new HttpGet(uri);
-        request.ad;
+        if (headers != null) {
+            Iterator<Map.Entry<String, String>> headerIterator = headers.entrySet().iterator();
+            while (headerIterator.hasNext()) {
+                Map.Entry<String, String> next = headerIterator.next();
+                request.addHeader(next.getKey(), next.getValue());
+            }
+
+        }
         return validate(httpClient.execute(request));
     }
 
@@ -77,7 +115,7 @@ public class PooledHttpClient {
 
 
 
-    private URI buildUri(String path, List<NameValuePair> cookies, List<NameValuePair> queryParameters) {
+    private URI buildUri(String path, List<NameValuePair> queryParameters) {
         try {
             URIBuilder uriBuilder = new URIBuilder().setScheme("http").setHost(HOST).setPath(path);
             if (queryParameters != null) {
