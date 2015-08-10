@@ -87,7 +87,7 @@ public class HighchartsMarkdownChart {
                 Double value = null;
                 try {
                     value = Double.parseDouble(seriesData.get(seriesName));
-                } catch (NumberFormatException exception) {
+                } catch (NumberFormatException | NullPointerException exception) {
                     // leave value as null if we cannot parse it.
                 }
 

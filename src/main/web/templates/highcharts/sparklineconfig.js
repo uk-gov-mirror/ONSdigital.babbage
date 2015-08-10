@@ -32,16 +32,16 @@ function getSparklineConfig(timeseries) {
 				},
 				formatter: function() {
 					if (this.isFirst) {
-						return this.value
+						return this.value;
 					}
 					if (this.isLast) {
-						return this.value
+						return this.value;
 					}
 				},
 				step: 1
 			},
 			tickLength: 0,
-			tickInterval: ':tickInterval:',
+			//tickInterval: ':tickInterval:',
 			lineColor: 'transparent'
 		},
 		yAxis: {
