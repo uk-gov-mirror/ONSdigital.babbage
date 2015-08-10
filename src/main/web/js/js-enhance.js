@@ -252,6 +252,7 @@ $(function() {
         });
     }
 
+    //Set adjacent boxes to same height (eg data and headlines on T3). Flexbox not suitable for this case.
     function jsEnhanceBoxHeight() {
         if ($(window).width() > 608) {
             var highestBox = 0;
@@ -266,6 +267,7 @@ $(function() {
         }
     }
 
+    //Resets the box heights on resize
     function jsEnhanceBoxHeightResize() {
         $( window ).resize(function() {
             $('.equal-height').height('auto');
