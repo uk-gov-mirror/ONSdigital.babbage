@@ -1,7 +1,6 @@
 package com.github.onsdigital.api;
 
 import com.github.davidcarboni.restolino.framework.Api;
-import com.github.onsdigital.api.util.ApiErrorHandler;
 import com.github.onsdigital.configuration.Configuration;
 import com.github.onsdigital.content.service.ContentNotFoundException;
 import com.github.onsdigital.data.zebedee.ZebedeeClient;
@@ -30,7 +29,7 @@ import java.nio.file.Files;
 public class File {
 
     @GET
-    public Object get(@Context HttpServletRequest request, @Context HttpServletResponse response) throws IOException {
+    public Object get(@Context HttpServletRequest request, @Context HttpServletResponse response) throws IOException, ContentNotFoundException {
         ZebedeeClient zebedeeClient = null;
         try {
             String uri = request.getParameter("uri");
@@ -49,8 +48,6 @@ public class File {
             }
             response.setHeader("Content-Disposition", "attachment; filename=\"" + FilenameUtils.getName(uri) + "\"");
             new BabbageBinaryResponse(fileStream, FilenameUtils.getExtension(uri)).apply(response);
-        } catch (Exception e) {
-            ApiErrorHandler.handle(e, response);
         } finally {
             if (zebedeeClient != null) {
                 zebedeeClient.closeConnection();

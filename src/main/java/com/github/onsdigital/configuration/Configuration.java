@@ -42,11 +42,16 @@ public class Configuration {
 
     /*External services configuration*/
     public static class CONTENT_SERVICE {
-        private static final String SERVICE_URL = StringUtils.defaultIfBlank(getValue("CONTENT_SERVICE_URL"), "http://localhost:9090");
+        private static final String SERVICE_URL =  StringUtils.removeEnd(StringUtils.defaultIfBlank(getValue("CONTENT_SERVICE_URL"), "http://localhost:8083"), "/");
+        private static final String DATA_ENDPOINT = "/data";
         private static final int MAX_CONTENT_SERVICE_CONNECTION = defaultNumberIfBlank(getNumberValue("CONTENT_SERVICE_MAX_CONNECTION"), 50);
 
         public static String getContentServiceUrl() {
             return SERVICE_URL;
+        }
+
+        public static String getContentServiceDataEndpoint() {
+            return SERVICE_URL + DATA_ENDPOINT;
         }
 
         public static int getMaxContentServiceConnection() {

@@ -1,5 +1,6 @@
 package com.github.onsdigital.request.handler.highcharts;
 
+import com.github.onsdigital.babbage.request.handler.base.RequestHandler;
 import com.github.onsdigital.content.page.base.Page;
 import com.github.onsdigital.content.page.statistics.document.figure.chart.Chart;
 import com.github.onsdigital.content.service.ContentNotFoundException;
@@ -7,7 +8,6 @@ import com.github.onsdigital.content.util.ContentUtil;
 import com.github.onsdigital.data.DataService;
 import com.github.onsdigital.data.zebedee.ZebedeeRequest;
 import com.github.onsdigital.highcharts.HighchartsMarkdownChart;
-import com.github.onsdigital.request.handler.base.RequestHandler;
 import com.github.onsdigital.request.response.BabbageResponse;
 import com.github.onsdigital.request.response.BabbageStringResponse;
 

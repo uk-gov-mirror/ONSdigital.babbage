@@ -1,11 +1,11 @@
 package com.github.onsdigital.request.handler;
 
+import com.github.onsdigital.babbage.request.handler.base.RequestHandler;
 import com.github.onsdigital.configuration.Configuration;
 import com.github.onsdigital.content.service.ContentNotFoundException;
 import com.github.onsdigital.data.DataNotFoundException;
 import com.github.onsdigital.data.zebedee.ZebedeeClient;
 import com.github.onsdigital.data.zebedee.ZebedeeRequest;
-import com.github.onsdigital.request.handler.base.RequestHandler;
 import com.github.onsdigital.request.response.BabbageBinaryResponse;
 import com.github.onsdigital.request.response.BabbageResponse;
 import org.apache.commons.io.IOUtils;

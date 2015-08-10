@@ -3,11 +3,9 @@ package com.github.onsdigital.api;
 import com.github.davidcarboni.cryptolite.Password;
 import com.github.davidcarboni.cryptolite.Random;
 import com.github.davidcarboni.restolino.framework.Api;
-import com.github.onsdigital.api.util.ApiErrorHandler;
 import com.github.onsdigital.search.ElasticSearchServer;
 import com.github.onsdigital.search.Indexer;
 import com.github.onsdigital.search.error.IndexingInProgressException;
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.eclipse.jetty.http.HttpStatus;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,8 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.POST;
 import javax.ws.rs.core.Context;
 import java.io.IOException;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Created by bren on 09/07/15.
@@ -43,11 +39,6 @@ public class ReIndex {
         } catch (IndexingInProgressException ex) {
             response.setStatus(HttpStatus.CONFLICT_409);
             return "Indexing already in progress.";
-        } catch (Exception e) {
-            System.out.println("Indexing error");
-            System.out.println(ExceptionUtils.getStackTrace(e));
-            ApiErrorHandler.handle(e, response);
-            return null;
         }
     }
 

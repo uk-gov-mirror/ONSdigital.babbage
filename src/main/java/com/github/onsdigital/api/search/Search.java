@@ -1,7 +1,6 @@
 package com.github.onsdigital.api.search;
 
 import com.github.davidcarboni.restolino.framework.Api;
-import com.github.onsdigital.api.util.ApiErrorHandler;
 import com.github.onsdigital.configuration.Configuration;
 import com.github.onsdigital.content.link.PageReference;
 import com.github.onsdigital.content.page.base.PageType;
@@ -45,34 +44,33 @@ public class Search {
     private final static String SEARCH_REQUEST = "search";
 
     @GET
-    public Object get(@Context HttpServletRequest request, @Context HttpServletResponse response) throws IOException {
+    public Object get(@Context HttpServletRequest request, @Context HttpServletResponse response) throws Exception {
 
         String type = URIUtil.resolveRequestType(request.getRequestURI());
 
-        try {
-            String query = extractQuery(request);
-            if (query == null) {
-                IOUtils.copy(new StringReader(renderEmptySearchPage()),response.getOutputStream());
+        String query = extractQuery(request);
+        if (query == null) {
+            IOUtils.copy(new StringReader(renderEmptySearchPage()), response.getOutputStream());
+            return null;
+        }
+        Object searchResult = null;
+        int page = extractPage(request);
+        String[] types = extractTypes(request);
+        boolean includeStatics = "1".equals(request.getParameter("includeStatics"));
+        boolean includeAllData = "1".equals(request.getParameter("includeAllData"));
+        String[] filterTypes = resolveTypes(types, includeStatics, includeAllData); //Not changing original type request as it is modified here and should remain same for the page
+        searchResult = search(query, page, filterTypes);
+        if (searchResult == null) {
+            System.out.println("Attempting search against timeseries as no results found for: " + query);
+            URI timeseriesUri = searchTimseries(query);
+            if (timeseriesUri == null) {
+                System.out.println("No results found from timeseries so using suggestions for: " + query);
+                searchResult = searchAutocorrect(query, page, filterTypes);
+            } else {
+                response.sendRedirect(timeseriesUri.toString());
                 return null;
             }
-            Object searchResult = null;
-            int page = extractPage(request);
-            String[] types = extractTypes(request);
-            boolean includeStatics = "1".equals(request.getParameter("includeStatics"));
-            boolean includeAllData = "1".equals(request.getParameter("includeAllData"));
-            String[] filterTypes = resolveTypes(types, includeStatics, includeAllData); //Not changing original type request as it is modified here and should remain same for the page
-            searchResult = search(query, page, filterTypes);
-            if (searchResult == null) {
-                System.out.println("Attempting search against timeseries as no results found for: " + query);
-                URI timeseriesUri = searchTimseries(query);
-                if (timeseriesUri == null) {
-                    System.out.println("No results found from timeseries so using suggestions for: " + query);
-                    searchResult = searchAutocorrect(query, page, filterTypes);
-                } else {
-                    response.sendRedirect(timeseriesUri.toString());
-                    return null;
-                }
-            }
+        }
 
             /*else if (StringUtils.isNotBlank(request.getParameter("term"))) {
                 searchResult = autoComplete(query);
@@ -82,12 +80,8 @@ public class Search {
             }*/
 
 
-            handleResponse(type, searchResult, response, page, query, types, includeStatics, includeAllData);
-            return null;
-        } catch (Exception e) {
-            ApiErrorHandler.handle(e, response);
-            return null;
-        }
+        handleResponse(type, searchResult, response, page, query, types, includeStatics, includeAllData);
+        return null;
     }
 
     //Decide if json should be returned ( in case search/data requested) or page should be rendered

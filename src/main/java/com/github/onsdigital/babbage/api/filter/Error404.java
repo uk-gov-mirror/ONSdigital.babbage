@@ -1,16 +1,19 @@
-package com.github.onsdigital.error.handler;
+package com.github.onsdigital.babbage.api.filter;
 
-import com.github.davidcarboni.ResourceUtils;
 import com.github.davidcarboni.restolino.framework.Api;
 import com.github.davidcarboni.restolino.framework.NotFound;
-import com.github.onsdigital.api.util.ApiErrorHandler;
-import com.github.onsdigital.request.RequestDelegator;
+import com.github.onsdigital.babbage.request.RequestDelegator;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.GET;
 import java.io.IOException;
 
+
+/**
+ * Error404 is used as a delegator rather than a not found handler due to url design with request type being at the end of urls for data and other endpoints
+ *
+ */
 @Api
 public class Error404 implements NotFound {
 
@@ -21,22 +24,12 @@ public class Error404 implements NotFound {
 
     @Override
     public Object handle(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
-        // Ensure ResourceUtils "sees" the reloadable classloader in
-        // development:
-        ResourceUtils.classLoaderClass = Error404.class;
-//		try (Reader input = ResourceUtils.getReader("/files/404.html")) {
-//			res.setContentType("text/html");
-//			res.setCharacterEncoding("UTF8");
-//			IOUtils.copy(input, res.getWriter());
-//		}
         try {
             RequestDelegator.get(request, response);
         } catch (Throwable e) {
-            ApiErrorHandler.handle(e, response);
+            new ErrorHandler().handle(request, response, null, e);
         }
-        return "";
-
+        return null;
     }
 
 }

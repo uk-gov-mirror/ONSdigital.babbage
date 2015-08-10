@@ -1,8 +1,8 @@
-package com.github.onsdigital.request;
+package com.github.onsdigital.babbage.request;
 
-import com.github.onsdigital.request.handler.DataRequestHandler;
+import com.github.onsdigital.babbage.request.handler.DataRequestHandler;
+import com.github.onsdigital.babbage.request.handler.base.RequestHandler;
 import com.github.onsdigital.request.handler.PageRequestHandler;
-import com.github.onsdigital.request.handler.base.RequestHandler;
 import org.junit.Assert;
 import org.junit.Test;
 

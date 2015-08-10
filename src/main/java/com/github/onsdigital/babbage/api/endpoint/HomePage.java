@@ -1,8 +1,8 @@
-package com.github.onsdigital.api.home;
+package com.github.onsdigital.babbage.api.endpoint;
 
 import com.github.davidcarboni.restolino.framework.Home;
-import com.github.onsdigital.api.util.ApiErrorHandler;
-import com.github.onsdigital.request.RequestDelegator;
+import com.github.onsdigital.babbage.api.filter.ErrorHandler;
+import com.github.onsdigital.babbage.request.RequestDelegator;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,8 +14,8 @@ public class HomePage implements Home {
     public Object get(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
             RequestDelegator.get(request, response);
-        } catch (Throwable e) {
-            ApiErrorHandler.handle(e, response);
+        } catch (Throwable t) {
+            new ErrorHandler().handle(request, response, null, t);
         }
         return null;
     }
