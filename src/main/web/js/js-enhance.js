@@ -37,7 +37,9 @@ $(function() {
         jsEnhancePrintCompendium();
         jsEnhanceBoxHeight();
         jsEnhanceBoxHeightResize();
+        //jsEnhanceTriggerAnalyticsEvent();
         jsEnhanceDownloadAnalytics();
+        jsEnhanceAnchorAnalytics();
 
         jsEnhanceTableOfContents();
         jsEnhanceScrollToSection();
@@ -311,8 +313,15 @@ $(function() {
         });
     }
 
+    // Trigger Google Analytic pageview event
+    function jsEnhanceTriggerAnalyticsEvent(page) {
+        //console.log(page);
+        ga('send', 'pageview', {
+            'page': page
+        });
+    }
 
-    /*Track file downloads*/
+    //Track file downloads in analytics
     function jsEnhanceDownloadAnalytics() {
         //Track generated file downloads (eg chart xlsx download)
         $('.download-analytics').click(function(){
@@ -333,9 +342,7 @@ $(function() {
 
             var page = downloadType + ('?uri=') + path + ('/') + downloadTitle + '.' + downloadFormat;
 
-            ga('send', 'pageview', {
-                'page': page
-            });
+            jsEnhanceTriggerAnalyticsEvent(page);
         });
 
         //Track uploaded file downloads
@@ -343,9 +350,7 @@ $(function() {
             var fileName = $(this).attr('href').split('=')[1];
             var page = '/download?' + fileName ;
 
-            ga('send', 'pageview', {
-                'page': page
-            });
+            jsEnhanceTriggerAnalyticsEvent(page);
         });
 
         //Track click on 'print full report' link
@@ -353,9 +358,16 @@ $(function() {
         	var path = $('#pagePath').text();
         	var page = '/print?uri=' + path;
 
-        	ga('send', 'pageview', {
-                'page': page
-            });
+        	jsEnhanceTriggerAnalyticsEvent(page);
+        });
+    }
+
+    function jsEnhanceAnchorAnalytics(){
+        //Trigger analytics pageview on click of any # anchor
+        $("a[href*='#'").click(function(e){
+            var hash = $(this).attr('href');
+            var page = window.location.pathname + hash;
+            jsEnhanceTriggerAnalyticsEvent(page);
         });
     }
 
@@ -404,11 +416,25 @@ $(function() {
                       section.removeClass('is-collapsed').addClass('is-expanded');
                     }
 
+                    var functionTrigger = true;
+
                     //animates scroll and offsets page to counteract sticky nav
                     $('html, body').animate({ scrollTop: $(location).offset().top - 60}, 1000, function(){
-                        //adds location hash to url without causing page to jump to it - credit to http://lea.verou.me/2011/05/change-url-hash-without-page-jump/
-                        if (history.pushState) {
-                            history.pushState(null, null, location);
+                        //stops function running twice - once for 'html' and another for 'body'
+                        if(functionTrigger) {
+                            //adds location hash to url without causing page to jump to it - credit to http://lea.verou.me/2011/05/change-url-hash-without-page-jump/
+                            if (history.pushState) {
+                                history.pushState(null, null, location);
+                            }
+                            //TODO Add hash to window.location in IE8-9 (don't support history.pushState)
+                            // else {
+                            //     window.location.hash = location;
+                            //     $('html, body').scrollTop( $(location.hash).offset().top - 60 );
+                            // }
+
+                            var page = window.location.pathname + location;
+                            jsEnhanceTriggerAnalyticsEvent(page);
+                            functionTrigger = false;
                         }
                     });
                 }
