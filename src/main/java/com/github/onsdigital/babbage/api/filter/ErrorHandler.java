@@ -44,9 +44,8 @@ public class ErrorHandler implements ServerError {
         if (ContentClientException.class.isAssignableFrom(t.getClass())) {
             ContentClientException exception = (ContentClientException) t;
             response.setStatus(exception.getStatusCode());
-            System.out.println(exception.getStatusCode() + ": " + exception.getMessage());
             response.setContentType(MediaType.APPLICATION_JSON);
-            Serialiser.serialise(response, new ErrorResponse(t.getMessage()));
+            Serialiser.serialise(response, new ErrorResponse(exception.getStatusCode() + ": " + exception.getMessage()));
         }
         //todo:get rid of this exception types as they are thrown when reading from file system. We will take out that bit of the code
         else if (t instanceof ResourceNotFoundException || t instanceof ContentNotFoundException) {
