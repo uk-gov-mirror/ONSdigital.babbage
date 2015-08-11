@@ -60,7 +60,7 @@ public class ContentClient {
      * @param uri             uri for requested content.
      *                        e.g./economy/inflationandpriceindices for content data requests
      *                        e.g./economy/inflationandpriceindices/somecontent.xls  ( no data.json after the uri )
-     * @param queryParameters query parameters that needs to be passed to content service (e.g. filter parameters)
+     * @param queryParameters GET parameters that needs to be passed to content service (e.g. filter parameters)
      * @return Json for requested content
      * @throws ContentClientException If content read fails due content service error status is set to whatever error is sent back from content service,
      *                                all other IO Exceptions are rethrown with HTTP status 500
@@ -69,7 +69,25 @@ public class ContentClient {
         System.out.println("getContentStream(): Reading content from content server, uri:" + uri);
         CloseableHttpResponse response = null;
         try {
-            response = client.sendGet(getPath(), getHeaders(), getParameters(uri, queryParameters));
+            response = client.sendGet(getDataPath(), getHeaders(), getParameters(uri, queryParameters));
+            return new ContentStream(response);
+        } catch (HttpResponseException e) {
+            IOUtils.closeQuietly(response);
+            throw wrapException(e);
+        } catch (IOException e) {
+            IOUtils.closeQuietly(response);
+            throw wrapException(e);
+        }
+    }
+
+    public ContentStream getNavigationData() throws ContentClientException {
+        System.out.println("getNavigationData(): Reading child tree for root for navigation:");
+        ArrayList<NameValuePair> queryParameters = new ArrayList<>();
+        queryParameters.add(new BasicNameValuePair("depth", "2"));
+
+        CloseableHttpResponse response = null;
+        try {
+            response  = client.sendGet(getNavigationPath(), getHeaders(), queryParameters);
             return new ContentStream(response);
         } catch (HttpResponseException e) {
             IOUtils.closeQuietly(response);
@@ -142,11 +160,21 @@ public class ContentClient {
         return cookies;
     }
 
-    private String getPath() {
+    private String getDataPath() {
         if (collectionId == null) {
             return getContentServiceDataEndpoint();
         } else {
             return getContentServiceDataEndpoint() + "/" + collectionId;
         }
     }
+
+    private String getNavigationPath() {
+        if (collectionId == null) {
+            return getBrowseEndpoint();
+        } else {
+            return getBrowseEndpoint() + "/" + collectionId;
+        }
+    }
+
+
 }

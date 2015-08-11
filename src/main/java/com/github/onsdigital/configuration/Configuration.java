@@ -44,6 +44,7 @@ public class Configuration {
     public static class CONTENT_SERVICE {
         private static final String SERVICE_URL =  StringUtils.removeEnd(StringUtils.defaultIfBlank(getValue("CONTENT_SERVICE_URL"), "localhost:8083"), "/");
         private static final String DATA_ENDPOINT = "/data";
+        private static final String BROWSE_ENDPOINT = "/browstree";
         private static final int MAX_CONTENT_SERVICE_CONNECTION = defaultNumberIfBlank(getNumberValue("CONTENT_SERVICE_MAX_CONNECTION"), 50);
 
         public static String getContentServiceUrl() {
@@ -52,6 +53,10 @@ public class Configuration {
 
         public static String getContentServiceDataEndpoint() {
             return DATA_ENDPOINT;
+        }
+
+        public static String getBrowseEndpoint() {
+            return BROWSE_ENDPOINT;
         }
 
         public static int getMaxContentServiceConnection() {
