@@ -1,6 +1,5 @@
 package com.github.onsdigital.babbage.request.handler.base;
 
-import com.github.onsdigital.data.zebedee.ZebedeeRequest;
 import com.github.onsdigital.request.response.BabbageResponse;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,12 +13,7 @@ import javax.servlet.http.HttpServletRequest;
  *
  */
 public interface RequestHandler {
-    BabbageResponse get(String requestedUri, HttpServletRequest request) throws Exception;
-
-
-
-    //todo:delete this method as all contents should be read throught content service configured
-    BabbageResponse get(String requestedUri, HttpServletRequest request, ZebedeeRequest zebedeeRequest) throws Exception;
+    BabbageResponse get(String uri, HttpServletRequest request) throws Exception;
 
     /**
      *

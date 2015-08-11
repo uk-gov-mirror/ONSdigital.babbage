@@ -28,7 +28,7 @@ public class TemplateService {
         return templateRenderer.renderTemplate(page);
     }
 
-    public String renderPage(Page page, Map<String, ?> additionalData) throws IOException {
+    public String renderPage(Page page, Map<String, Object> additionalData) throws IOException {
         System.out.println("Page rendering requested for content type: " + page.getType());
         return templateRenderer.renderTemplate(page, additionalData);
     }
@@ -36,16 +36,16 @@ public class TemplateService {
     /**
      *Object as json file or data
      *
-     * @param data
      * @param templateName
+     * @param data
      * @return
      * @throws IOException
      */
-    public String render(Object data, String templateName) throws IOException {
+    public String render(String templateName,Object data) throws IOException {
         return templateRenderer.renderTemplate( templateName, data);
     }
 
-    public String render(Object data, String templateName, Map<String, ?> additionalData) throws IOException {
+    public String render(String templateName, Object data, Map<String, Object> additionalData) throws IOException {
         return templateRenderer.renderTemplate(templateName, data, additionalData);
     }
 }

@@ -6,13 +6,17 @@ import com.github.jknack.handlebars.context.FieldValueResolver;
 import com.github.jknack.handlebars.context.MapValueResolver;
 import com.github.jknack.handlebars.helper.StringHelpers;
 import com.github.jknack.handlebars.io.FileTemplateLoader;
+import com.github.onsdigital.configuration.Configuration;
 import com.github.onsdigital.template.TemplateRenderer;
 import com.github.onsdigital.template.handlebars.helpers.*;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+
+import static com.github.onsdigital.configuration.Configuration.HANDLEBARS.getMainContentTemplateName;
 
 /**
  * Created by bren on 28/05/15.
@@ -44,12 +48,12 @@ public class HandlebarsRenderer implements TemplateRenderer {
 
     @Override
     public String renderTemplate(Object data) throws IOException {
-        return renderTemplate("main", data, null);
+        return renderTemplate(getMainContentTemplateName(), data, null);
     }
 
     @Override
-    public String renderTemplate(Object data, Map<String, ?> additionalData) throws IOException {
-        return renderTemplate("main", data, additionalData);
+    public String renderTemplate(Object data, Map<String, Object> additionalData) throws IOException {
+        return renderTemplate(getMainContentTemplateName(), data, additionalData);
     }
 
     @Override
@@ -58,17 +62,19 @@ public class HandlebarsRenderer implements TemplateRenderer {
     }
 
     @Override
-    public String renderTemplate(String templateName, Object data, Map<String, ?> additionalData) throws IOException {
+    public String renderTemplate(String templateName, Object data, Map<String, Object> additionalData) throws IOException {
         Template template = getTemplate(templateName);
 
-        Context.Builder contextBuilder = Context
+        Context.Builder builder = Context
                 .newBuilder(data)
                 .resolver(FieldValueResolver.INSTANCE, MapValueResolver.INSTANCE);
 
         if (additionalData != null) {
-            contextBuilder.combine(additionalData);
+            for (Map.Entry<String, Object> entry : additionalData.entrySet()) {
+                builder.combine(entry.getKey(), entry.getValue());
+            }
         }
-        return template.apply(contextBuilder.build());
+        return template.apply(builder.build());
     }
 
 

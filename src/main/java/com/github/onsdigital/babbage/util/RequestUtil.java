@@ -15,6 +15,7 @@ import java.util.Map;
  */
 public class RequestUtil {
 
+    private static final String COLLECTION_COOKIE_NAME = "collection";
     private static final String ACCESS_TOKEN_COOKIENAME = "access_token";
     private static final String TOKEN_HEADER = "X-Florence-Token";
 
@@ -35,6 +36,10 @@ public class RequestUtil {
             System.out.println("Found collection cookie: " + accessToken);
             ThreadContext.addData(TOKEN_HEADER, accessToken);
         }
+    }
+
+    public static String getCollectionId(HttpServletRequest request) {
+        return getCookieValue(request, COLLECTION_COOKIE_NAME)
     }
 
     public static void clearAllSaved() {

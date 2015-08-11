@@ -6,13 +6,14 @@ import com.github.onsdigital.babbage.content.client.ContentStream;
 import com.github.onsdigital.babbage.request.handler.base.RequestHandler;
 import com.github.onsdigital.babbage.util.RequestUtil;
 import com.github.onsdigital.content.service.ContentNotFoundException;
-import com.github.onsdigital.data.zebedee.ZebedeeRequest;
 import com.github.onsdigital.request.response.BabbageResponse;
 import com.github.onsdigital.request.response.BabbageStringResponse;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
+import static com.github.onsdigital.babbage.util.RequestUtil.getCollectionId;
+import static com.github.onsdigital.babbage.util.RequestUtil.getCookieValue;
 import static com.github.onsdigital.babbage.util.RequestUtil.getQueryParameters;
 
 /**
@@ -23,16 +24,10 @@ import static com.github.onsdigital.babbage.util.RequestUtil.getQueryParameters;
 public class DataRequestHandler implements RequestHandler {
 
     private static final String REQUEST_TYPE = "data";
-    private static final String COLLECTION_COOKIE_NAME = "collection";
 
     @Override
     public BabbageResponse get(String requestedUri, HttpServletRequest request) throws Exception {
         return new BabbageStringResponse(getData(requestedUri, request));
-    }
-
-    @Override
-    public BabbageResponse get(String requestedUri, HttpServletRequest request, ZebedeeRequest zebedeeRequest) throws Exception {
-        return get(requestedUri, request);
     }
 
     @Override
@@ -41,7 +36,7 @@ public class DataRequestHandler implements RequestHandler {
     }
 
     public String getData(String uri, HttpServletRequest request) throws ContentNotFoundException, IOException, ContentClientException {
-        ContentStream contentStream = new ContentClient(RequestUtil.getCookieValue(request, COLLECTION_COOKIE_NAME)).getContentStream(uri, getQueryParameters(request));
+        ContentStream contentStream = new ContentClient(getCollectionId(request)).getContentStream(uri, getQueryParameters(request));
         return contentStream.getAsString();
     }
 
