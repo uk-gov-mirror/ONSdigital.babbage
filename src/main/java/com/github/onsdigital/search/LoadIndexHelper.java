@@ -4,6 +4,7 @@ import com.github.onsdigital.configuration.Configuration;
 import com.github.onsdigital.content.page.base.PageType;
 import com.google.gson.*;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
@@ -21,6 +22,7 @@ public class LoadIndexHelper {
     private static final String CDID = "cdid";
     private static final String RELEASE_DATE = "releaseDate";
     private static final String TAGS = "tags";
+    private static final String PATH = "path";
     private static final String TITLE = "title";
     private static final String EDITION = "edition";
     private static final String KEYWORDS = "keywords";
@@ -53,14 +55,13 @@ public class LoadIndexHelper {
      */
     public static Map<String, String> getDocumentMap(String absoluteFilePath) throws JsonIOException, JsonSyntaxException, IOException {
         String url = absoluteFilePath.substring(absoluteFilePath.indexOf(Configuration.getContentPath()) + Configuration.getContentPath().length());
-//        String[] splitPath = url.split(DELIMITTER);
-//
-//        List<String> splitPathAsList = new ArrayList<String>(Arrays.asList(splitPath));
-//        // remove first index which is just a space
-//        splitPathAsList.remove(0);
-//        // remove last index which is the data.json
-//        splitPathAsList.remove(splitPathAsList.size() - 1);
+        String[] splitPath = url.split(DELIMITTER);
 
+        List<String> splitPathAsList = new ArrayList<String>(Arrays.asList(splitPath));
+        // remove first index which is just a space
+        splitPathAsList.remove(0);
+        // remove last index which is the data.json
+        splitPathAsList.remove(splitPathAsList.size() - 1);
         JsonObject jsonObject = getJsonObject(absoluteFilePath);
         String type = getField(jsonObject, TYPE);
 
@@ -76,21 +77,21 @@ public class LoadIndexHelper {
         switch (pageType) {
             case taxonomy_landing_page:
             case product_page:
-                documentMap = buildDocumentMap(splitUrl, keywords, type, title, summary, releaseDate, edition);
+                documentMap = buildDocumentMap(splitUrl, keywords,  splitPathAsList, type, title, summary, releaseDate, edition);
                 break;
             case timeseries:
                 String cdid = getField(description, CDID);
-                documentMap = buildTimeseriesMap(splitUrl, keywords, type, title, cdid);
+                documentMap = buildTimeseriesMap(splitUrl, keywords, splitPathAsList, type, title, cdid);
                 break;
             default:
-                documentMap = buildDocumentMap(splitUrl, keywords, type, title, summary, releaseDate, edition);
+                documentMap = buildDocumentMap(splitUrl, keywords, splitPathAsList, type, title, summary, releaseDate, edition);
                 break;
         }
 
         return documentMap;
     }
 
-    private static Map<String, String> buildDocumentMap(String url, String keywords, String type, String title, String summary, String releaseDate, String edition) {
+    private static Map<String, String> buildDocumentMap(String url, String keywords, List<String> path, String type, String title, String summary, String releaseDate, String edition) {
 
         Map<String, String> documentMap = new HashMap<String, String>();
         documentMap.put(URI, url);
@@ -102,6 +103,9 @@ public class LoadIndexHelper {
         if (keywords != null) {
             documentMap.put(TAGS, keywords);
         }
+        if (path != null) {
+            documentMap.put(PATH, listToString(path));
+        }
         if (releaseDate != null) {
             documentMap.put(RELEASE_DATE, releaseDate);
         }
@@ -109,12 +113,15 @@ public class LoadIndexHelper {
         return documentMap;
     }
 
-    private static Map<String, String> buildTimeseriesMap(String url, String keywords, String type, String title, String cdid) {
+    private static Map<String, String> buildTimeseriesMap(String url, String keywords,  List<String> path, String type, String title, String cdid) {
 
         Map<String, String> documentMap = new HashMap<String, String>();
         documentMap.put(URI, url);
         documentMap.put(TYPE, type);
         documentMap.put(TITLE, title);
+        if (path != null) {
+            documentMap.put(PATH, listToString(path));
+        }
         if (keywords != null) {
             documentMap.put(TAGS, keywords);
         }
@@ -156,5 +163,14 @@ public class LoadIndexHelper {
         }
 
         return jsonElement.getAsString();
+    }
+
+    private static String listToString(List<String> list) {
+        String result = "";
+        for (String s : list) {
+            result += s + ", ";
+        }
+
+        return result;
     }
 }
