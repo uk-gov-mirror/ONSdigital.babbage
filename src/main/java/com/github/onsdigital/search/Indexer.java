@@ -112,8 +112,9 @@ public class Indexer {
             builder.startObject("summary").field("type", "string").field("index", "no").endObject();
             builder.startObject("title").field("type", "string").field("index", "analyzed").endObject();
             builder.startObject("tags").field("type", "string").field("index", "analyzed").endObject();
+            builder.startObject("path").field("type", "string").field("index", "analyzed").endObject();
             builder.startObject("edition").field("type", "string").field("index", "analyzed").endObject();
-            builder.startObject("uri").field("type", "string").field("index", "analyzed").endObject();
+            builder.startObject("uri").field("type", "string").field("index", "no").endObject();
             builder.endObject().endObject().endObject();
             return builder;
         } finally {
@@ -131,7 +132,8 @@ public class Indexer {
             builder.startObject("cdid").field("type", "string").field("index", "not_analyzed").endObject();
             builder.startObject("title").field("type", "string").field("index", "analyzed").endObject();
             builder.startObject("tags").field("type", "string").field("index", "analyzed").endObject();
-            builder.startObject("uri").field("type", "string").field("index", "analyzed").endObject();
+            builder.startObject("path").field("type", "string").field("index", "analyzed").endObject();
+            builder.startObject("uri").field("type", "string").field("index", "no").endObject();
             builder.endObject().endObject().endObject();
             System.out.println(builder.string() + "\n\n");
             return builder;
