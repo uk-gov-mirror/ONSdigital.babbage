@@ -5,7 +5,7 @@
 ./build-web.sh
 
 ### 2 - BUILD API
-./build-api.sh "$1" 
+./build-api.sh 
 
 ### 3- Start Highcharts export server
 
