@@ -42,25 +42,35 @@ public class HandlebarsRenderer implements TemplateRenderer {
         HumanizeHelper.register(handlebars);
     }
 
-    //Compiled templates cache
-    private static Map<String, Template> templatesCache = new ConcurrentHashMap<>();
+    @Override
+    public String renderTemplate(Object data) throws IOException {
+        return renderTemplate("main", data, null);
+    }
+
+    @Override
+    public String renderTemplate(Object data, Map<String, ?> additionalData) throws IOException {
+        return renderTemplate("main", data, additionalData);
+    }
 
     @Override
     public String renderTemplate(String templateName, Object data) throws IOException {
-        return renderTemplate(templateName, data, new HashMap<String, Object>());
+        return renderTemplate(templateName, data, null);
     }
 
     @Override
     public String renderTemplate(String templateName, Object data, Map<String, ?> additionalData) throws IOException {
         Template template = getTemplate(templateName);
 
-        Context context = Context
+        Context.Builder contextBuilder = Context
                 .newBuilder(data)
-                .combine(additionalData)
-                .resolver(FieldValueResolver.INSTANCE, MapValueResolver.INSTANCE)
-                .build();
-        return template.apply(context);
+                .resolver(FieldValueResolver.INSTANCE, MapValueResolver.INSTANCE);
+
+        if (additionalData != null) {
+            contextBuilder.combine(additionalData);
+        }
+        return template.apply(contextBuilder.build());
     }
+
 
     private Template getTemplate(String templateName) throws IOException {
         return compileTemplate(templateName);

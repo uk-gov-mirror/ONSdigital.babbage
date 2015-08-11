@@ -8,6 +8,10 @@ import java.util.Map;
  */
 public interface TemplateRenderer {
 
+    String renderTemplate(Object data) throws IOException;
+
+    String renderTemplate(Object data, Map<String, ?> additionalData) throws IOException;
+
     String renderTemplate(String templateName, Object data) throws IOException;
 
     String renderTemplate(String templateName, Object data, Map<String, ?> additionalData) throws IOException;
