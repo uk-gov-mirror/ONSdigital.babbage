@@ -23,7 +23,6 @@ public class LoadIndexHelper {
     private static final String TAGS = "tags";
     private static final String TITLE = "title";
     private static final String EDITION = "edition";
-    private static final String KEYWORDS = "keywords";
     private static final String TYPE = "type";
     private static final String URI = "uri";
     private static final String DELIMITTER = "/";
@@ -53,44 +52,43 @@ public class LoadIndexHelper {
      */
     public static Map<String, String> getDocumentMap(String absoluteFilePath) throws JsonIOException, JsonSyntaxException, IOException {
         String url = absoluteFilePath.substring(absoluteFilePath.indexOf(Configuration.getContentPath()) + Configuration.getContentPath().length());
-//        String[] splitPath = url.split(DELIMITTER);
-//
-//        List<String> splitPathAsList = new ArrayList<String>(Arrays.asList(splitPath));
-//        // remove first index which is just a space
-//        splitPathAsList.remove(0);
-//        // remove last index which is the data.json
-//        splitPathAsList.remove(splitPathAsList.size() - 1);
+        String[] splitPath = url.split(DELIMITTER);
+
+        List<String> splitPathAsList = new ArrayList<String>(Arrays.asList(splitPath));
+        // remove first index which is just a space
+        splitPathAsList.remove(0);
+        // remove last index which is the data.json
+        splitPathAsList.remove(splitPathAsList.size() - 1);
 
         JsonObject jsonObject = getJsonObject(absoluteFilePath);
         String type = getField(jsonObject, TYPE);
 
-        Map<String, String> documentMap;
+        Map<String, String> documentMap = null;
         PageType pageType = PageType.valueOf(type);
         String splitUrl = url.substring(0, url.indexOf("data.json"));
         JsonObject description = jsonObject.getAsJsonObject(DESCRIPTION);
         String title = getField(description, TITLE);
-        String keywords = getArray(description, KEYWORDS);
         String edition = getField(description, EDITION);
         String summary = getField(description, SUMMARY);
         String releaseDate = getField(description, RELEASE_DATE);
         switch (pageType) {
             case taxonomy_landing_page:
             case product_page:
-                documentMap = buildDocumentMap(splitUrl, keywords, type, title, summary, releaseDate, edition);
+                documentMap = buildDocumentMap(splitUrl, splitPathAsList, type, title, summary, releaseDate, edition);
                 break;
             case timeseries:
                 String cdid = getField(description, CDID);
-                documentMap = buildTimeseriesMap(splitUrl, keywords, type, title, cdid);
+                documentMap = buildTimeseriesMap(splitUrl, splitPathAsList, type, title, cdid);
                 break;
             default:
-                documentMap = buildDocumentMap(splitUrl, keywords, type, title, summary, releaseDate, edition);
+                documentMap = buildDocumentMap(splitUrl, splitPathAsList, type, title, summary, releaseDate, edition);
                 break;
         }
 
         return documentMap;
     }
 
-    private static Map<String, String> buildDocumentMap(String url, String keywords, String type, String title, String summary, String releaseDate, String edition) {
+    private static Map<String, String> buildDocumentMap(String url, List<String> pathTokens, String type, String title, String summary, String releaseDate, String edition) {
 
         Map<String, String> documentMap = new HashMap<String, String>();
         documentMap.put(URI, url);
@@ -99,9 +97,7 @@ public class LoadIndexHelper {
         if (edition != null) {
             documentMap.put(EDITION, edition);
         }
-        if (keywords != null) {
-            documentMap.put(TAGS, keywords);
-        }
+        documentMap.put(TAGS, pathTokens.toString());
         if (releaseDate != null) {
             documentMap.put(RELEASE_DATE, releaseDate);
         }
@@ -109,15 +105,13 @@ public class LoadIndexHelper {
         return documentMap;
     }
 
-    private static Map<String, String> buildTimeseriesMap(String url, String keywords, String type, String title, String cdid) {
+    private static Map<String, String> buildTimeseriesMap(String url, List<String> pathTokens, String type, String title, String cdid) {
 
         Map<String, String> documentMap = new HashMap<String, String>();
         documentMap.put(URI, url);
         documentMap.put(TYPE, type);
         documentMap.put(TITLE, title);
-        if (keywords != null) {
-            documentMap.put(TAGS, keywords);
-        }
+        documentMap.put(TAGS, pathTokens.toString());
         documentMap.put(CDID, cdid);
         return documentMap;
     }
@@ -130,19 +124,6 @@ public class LoadIndexHelper {
             throw new RuntimeException("Failed to parse json: " + absoluteFilePath, e);
         }
         return jsonObject;
-    }
-
-    private static String getArray(JsonObject jsonObject, String field) {
-        if (StringUtils.isEmpty(field)) {
-            throw new IllegalArgumentException("Field cannot be null");
-        }
-
-        JsonElement jsonElement = jsonObject.get(field);
-        if (jsonElement == null || !jsonElement.isJsonArray()) {
-            return null;
-        }
-
-        return jsonElement.getAsJsonArray().toString();
     }
 
     private static String getField(JsonObject jsonObject, String field) {
