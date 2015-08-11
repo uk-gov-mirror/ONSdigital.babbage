@@ -25,12 +25,12 @@ public class TemplateService {
 
     public String renderPage(Page page) throws IOException {
         System.out.println("Page rendering requested for content type: " + page.getType());
-        return templateRenderer.renderTemplate(TemplateMapping.getTemplateName(page.getType()), page);
+        return templateRenderer.renderTemplate(page);
     }
 
     public String renderPage(Page page, Map<String, ?> additionalData) throws IOException {
         System.out.println("Page rendering requested for content type: " + page.getType());
-        return templateRenderer.renderTemplate(TemplateMapping.getTemplateName(page.getType()), page, additionalData);
+        return templateRenderer.renderTemplate(page, additionalData);
     }
 
     /**
@@ -42,7 +42,7 @@ public class TemplateService {
      * @throws IOException
      */
     public String render(Object data, String templateName) throws IOException {
-        return templateRenderer.renderTemplate(templateName, data);
+        return templateRenderer.renderTemplate( templateName, data);
     }
 
     public String render(Object data, String templateName, Map<String, ?> additionalData) throws IOException {

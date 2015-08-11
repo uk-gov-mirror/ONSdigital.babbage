@@ -1,0 +1,83 @@
+<div class="page-header slate slate--green">
+	<div class="wrapper">
+		{{> templates/handlebars/partials/breadcrumb}}
+		<p class="page-header__title">
+			Release
+		</p>
+		<h1 class="page-header__title flush--half--bottom">{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}</h1>
+		<div class="grid-wrap mini">
+			<p class="grid-col tablet-grid-one-quarter {{#if description.nationalStatistic}}page-header__meta-block-with-img{{/if}}">
+				{{#if description.nationalStatistic}}
+			    <img src="../../node_modules/ONS-Pattern-Library/ui/img/national-statistics.png" alt="National Statistics logo" />
+			    {{/if}}
+				<span>Contact: </span><br/><a href="mailto:{{description.contact.email}}">{{#if description.contact.name}}{{description.contact.name}}{{else}}{{description.contact.email}}{{/if}}</a>
+			</p>
+			<p class="grid-col tablet-grid-one-quarter divider--border-left">
+				<span>Release date:</span></br>{{df description.releaseDate}}
+			</p>
+			<p class="grid-col tablet-grid-one-quarter divider--border-left">
+				<span>Next release:</span></br>{{df description.nextRelease}}
+				</br>
+				<a href="#">pre-release access list</a>
+			</p>
+		</div>
+		<!-- /grip-wrap -->
+		
+	</div>
+</div>
+<!-- /page-header -->
+<div class="wrapper panel--mar ">
+	<div class="grid-wrap">
+		<div class="grid-col desktop-grid-full-width">
+			{{md summary}}
+			<div class="grid-wrap panel--pad">
+				<div class="grid-col desktop-grid-one-third">
+					<h2>Statistical bulletins and articles</h2>
+				</div>
+				<!-- /desktop-grid-one-third -->
+				{{#each bulletins}}
+				<div class="grid-col desktop-grid-one-third">
+					<h3 class="flush"><a href="{{uri}}">{{title}}</a></h3>
+					{{md description}}
+				</div>
+				<!-- /desktop-grid-one-third -->
+				{{/each}}
+			</div>
+			<!-- /grid-wrap -->
+			<div class="grid-wrap panel--bottom-pad">
+				<div class="grid-col desktop-grid-one-third">
+					<h2 class="flush">Datasets in this release</h2>
+					<p><a href="{{allData}}">See all datasets in this release &#62;</a></p>
+				</div>
+				<!-- /desktop-grid-one-third -->
+				{{#each datasets}}
+				<div class="grid-col desktop-grid-one-third">
+					<h3 class="flush"><a href="{{uri}}">{{title}}</a></h3>
+					{{md description}}
+				</div>
+				<!-- /desktop-grid-one-third -->
+				{{/each}}
+			</div>
+			<!-- /grid-wrap -->
+			{{#each sections}}
+			<h2 class="delta">{{title}}</h2>
+			{{md markdown}}
+			{{/each}}
+			{{#if accordions}}
+				{{#each}}
+				<section id="{{slugify title}}" class="accordion is-collapsed">
+					<h2 id="sc-{{@index}}" class="accordion__title delta" aria-controls="content-{{@index}}">{{title}}</h2>
+					<div id="content-{{@index}}" class="accordion__content" aria-labelledby="sc-{{@index}}">
+						{{md markdown}}
+					</div>
+					<!-- /accordion__content -->
+				</section>
+				<!-- /accordion -->
+				{{/each}}
+			{{/if}}
+		</div>
+		<!-- / desktop-grid-full-width -->
+	</div>
+	<!-- / grid-wrap -->
+</div>
+<!-- / wrapper panel--mar -->

@@ -1,0 +1,65 @@
+<main id="main" role="main" tabindex="-1">
+<div class="page-header slate slate--red">
+	<div class="wrapper">
+		{{> partials/breadcrumb}}
+		<p class="page-header__title">
+			User requested data
+		</p>
+		<h1 class="page-header__title flush--half--bottom">{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}</h1>
+		<div class="grid-wrap mini">
+			<p class="grid-col tablet-grid-one-quarter">
+				<span>Release date: </span><br/>{{df description.releaseDate}}
+			</p>
+			<p class="grid-col tablet-grid-one-quarter divider--border-left">
+				<span>Reference number: </span><br/>{{description.reference}}
+			</p>
+		</div>
+	</div>
+</div>
+<!-- /page-header 'slate' -->
+<div class="wrapper panel--mar">
+	<div class="grid-wrap">
+		<article class="grid-col desktop-grid-two-thirds">
+			<h2>Summary of request</h2>
+			{{#each markdown}}
+				{{md this}}
+			{{/each}}
+
+			<h2>{{#eq downloads.size 1}}Download associated with request{{/eq}} {{#ne downloads.size 1}}Downloads associated with request{{/ne}}</h2>
+			<ul class="list--neutral">
+				{{#each downloads}}
+				<li class="flush--third--bottom">
+					<a href="/file?uri={{file}}" title="{{title}}">{{title}}</a>
+				</li>
+				{{/each}}
+			</ul>
+		</article>
+		<!-- /desktop-grid-two-thirds -->
+		<div class="grid-col desktop-grid-one-third">
+			<article class="box solid box--purple--separated--left">
+				<div class="box__inner border box--padded">
+					<h3 class="box__section__header">
+						{{#eq downloads.size 1}}Download associated with request{{/eq}} {{#ne downloads.size 1}}Downloads associated with request{{/ne}}
+					</h3>
+					<!-- /box__header -->
+					<div class="box__content">
+						<ul class="list--neutral">
+							{{#each downloads}}
+							<li class="flush--third--bottom">
+								<a href="/file?uri={{file}}" title="{{title}}">{{title}}</a>
+							</li>
+							{{/each}}
+						</ul>
+					</div>
+					<!-- /box__content -->
+				</div>
+				<!-- /box__inner -->
+			</article>
+			<!-- /box -->
+		</div>
+		<!-- /desktop-grid-one-third -->
+	</div>
+	<!-- /grid-wrap -->
+</div>
+<!-- /wrapper -->
+</main>

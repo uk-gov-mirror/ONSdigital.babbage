@@ -1,0 +1,117 @@
+<div class="page-header slate">
+	<div class="wrapper" >
+		{{> partials/breadcrumb}}
+		<h1 class="page-header__title flush--half--bottom">{{description.title}}</h1>
+			<p>
+				{{description.summary}}
+			</p>
+		<!-- /lede -->
+		{{#if statsBulletins}}
+		<div class="grid-wrap">
+			{{#ifany items.0.data.years items.0.data.quarters items.0.data.months}}
+				{{> partials/t3/headline-data}}
+			{{/ifany}}
+			<!-- /grid-col -->
+			<div class="grid-col  {{#ifany items.0.data.years items.0.data.quarters items.0.data.months}}tablet-grid-one-half{{/ifany}} headline--box-container panel--mobile-bottom-mar">
+				<div class="box--padded equal-height solid panel--bottom-mar">
+					<h2>Latest statistical bulletin</h2>
+					<header class="box___section">
+						<h3 class="navpanel-list-heading lede box--padded-bottom-small">
+						<a href="{{statsBulletins.0.uri}}">{{statsBulletins.0.description.title}}{{#if statsBulletins.0.description.edition}}: {{statsBulletins.0.description.edition}}{{/if}}</a>
+						</h3>
+					</header>
+					<h3>What's in the bulletin?</h3>
+					<ul class="list--bullet mini flush--half--top navpanel-list headline--box-container-text">
+						<li>
+							{{statsBulletins.0.description.headline1}}
+						</li>
+						<li>
+							{{statsBulletins.0.description.headline2}}
+						</li>
+						<li>
+							{{statsBulletins.0.description.headline3}}
+						</li>
+					</ul>
+					<p class="text-right"><a href="{{statsBulletins.0.uri}}">Read statistical bulletin</a></p>
+				</div>
+				{{#ifany items.0.data.years items.0.data.quarters items.0.data.months}}
+				{{else}}
+				{{#if datasets}}
+					<a href="#data" class="btn btn--primary">view latest data
+						{{!-- <span class="icon icon-down-open-big icon--button-inline"></span> --}}
+					</a>
+				{{/if}}
+				{{/ifany}}
+				<a href="#reports" class="btn btn--primary">view latest reports
+					{{!-- <span class="icon icon-down-open-big icon--button-inline"></span> --}}
+				</a>
+			</div>
+			<!-- /grid-col -->
+		</div>
+		<!-- /grid-wrap -->
+		{{/if}}
+	</div>
+	<!-- /wrapper -->
+</div>
+<!-- /page-header -->
+<!-- Body sections -->
+{{#ifany items datasets}}
+	<section class="panel wrapper panel--bottom-mar-small">
+		<div class="box box--green box--green--separated--left" >
+			<div class="box__inner border box--padded">
+				{{#if items}}
+				{{> partials/t3/timeseries-list}}
+				{{/if}}
+				{{#if datasets}}
+				{{> partials/t3/dataset-list}}
+				{{/if}}
+			</div>
+			<!-- /box__inner -->
+		</div>
+		<!-- /box -->
+	</section>
+	<!-- /panel wrapper -->
+{{/ifany}}
+
+<!-- Latest statistical bulletins and Related articles-->
+{{#ifany statsBulletins relatedArticles}}
+	<section class="panel wrapper panel--bottom-mar-small">
+		<div class="box box--teal box--teal--separated--left" >
+			<div class="box__inner border box--padded">
+				<!-- Latest statistical bulletins -->
+				{{#if statsBulletins}}
+				{{> partials/t3/stats-bulletins}}
+				{{/if}}
+				<!-- Related articles-->
+				{{#if relatedArticles}}
+				{{> partials/t3/related-articles}}
+				{{/if}}
+			</div>
+		</div>
+	</section>
+{{/ifany}}
+
+{{#if relatedMethodology}}
+	<section class="panel wrapper panel--bottom-mar-small">
+		<div class="grid-wrap">
+			<div class="grid-col desktop-grid-one-half">
+				<div class="box__inner border box--padded">
+					<h3 class="box__section__header">
+						Methodology
+					</h3>
+					<div class="box__content">
+						<ul class="list--neutral">
+							{{#each relatedMethodology}}
+							<li class="flush--third--bottom"><a href="{{rootpath uri}}">{{description.title}}</a></li>
+							{{/each}}
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div class="grid-col desktop-grid-one-half">
+				{{> partials/local-box}}
+			</div>
+		</div>
+	</section>
+{{/if}}
+<!--/panel wrapper -->
