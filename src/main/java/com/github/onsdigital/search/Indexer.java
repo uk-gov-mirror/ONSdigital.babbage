@@ -111,9 +111,9 @@ public class Indexer {
 			builder.startObject("releaseDate").field("type", "string").field("index", "no").endObject();
 			builder.startObject("summary").field("type", "string").field("index", "no").endObject();
 			builder.startObject("title").field("type", "string").field("index", "analyzed").endObject();
+			builder.startObject("tags").field("type", "string").field("index", "analyzed").endObject();
 			builder.startObject("edition").field("type", "string").field("index", "analyzed").endObject();
-			builder.startObject("path").field("type", "string").field("index", "analyzed").endObject();
-			builder.startObject("uri").field("type", "string").field("index", "analyzed").endObject();
+			builder.startObject("uri").field("type", "string").field("index", "no").endObject();
 			builder.endObject().endObject().endObject();
 			return builder;
 		} finally {
@@ -130,8 +130,8 @@ public class Indexer {
 			// cdid not analyzed for exact match
 			builder.startObject("cdid").field("type", "string").field("index", "not_analyzed").endObject();
 			builder.startObject("title").field("type", "string").field("index", "analyzed").endObject();
-			builder.startObject("uri").field("type", "string").field("index", "analyzed").endObject();
-			builder.startObject("path").field("type", "string").field("index", "analyzed").endObject();
+			builder.startObject("tags").field("type", "string").field("index", "analyzed").endObject();
+			builder.startObject("uri").field("type", "string").field("index", "no").endObject();
 			builder.endObject().endObject().endObject();
 			System.out.println(builder.string() + "\n\n");
 			return builder;
@@ -158,7 +158,7 @@ public class Indexer {
 	}
 
 	private static void buildTimeseries(Client client, String indexName, Map<String, String> documentMap, int idCounter) throws IOException {
-		XContentBuilder source = jsonBuilder().startObject().field("title", documentMap.get("title")).field("uri", documentMap.get("uri")).field("path", documentMap.get("tags"))
+		XContentBuilder source = jsonBuilder().startObject().field("title", documentMap.get("title")).field("uri", documentMap.get("uri")).field("tags", documentMap.get("tags"))
 				.field("cdid", documentMap.get("cdid")).endObject();
 		try {
 			build(client, indexName, documentMap, idCounter, source);
@@ -171,7 +171,7 @@ public class Indexer {
 
 	private static void buildDocument(Client client,String indexName,  Map<String, String> documentMap, int idCounter) throws IOException {
 
-		XContentBuilder source = jsonBuilder().startObject().field("title", documentMap.get("title")).field("uri", documentMap.get("uri")).field("path", documentMap.get("tags"))
+		XContentBuilder source = jsonBuilder().startObject().field("title", documentMap.get("title")).field("uri", documentMap.get("uri")).field("tags", documentMap.get("tags"))
 				.field("releaseDate", documentMap.get("releaseDate")).field("edition", documentMap.get("edition")).field("summary", documentMap.get("summary")).endObject();
 		try {
 			build(client, indexName,  documentMap, idCounter, source);
