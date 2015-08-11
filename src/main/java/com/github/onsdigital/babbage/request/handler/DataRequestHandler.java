@@ -13,7 +13,7 @@ import com.github.onsdigital.request.response.BabbageStringResponse;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
-import static com.github.onsdigital.babbage.util.RequestUtil.getQueryStringParameters;
+import static com.github.onsdigital.babbage.util.RequestUtil.getQueryParameters;
 
 /**
  * Created by bren on 28/05/15.
@@ -41,7 +41,7 @@ public class DataRequestHandler implements RequestHandler {
     }
 
     public String getData(String uri, HttpServletRequest request) throws ContentNotFoundException, IOException, ContentClientException {
-        ContentStream contentStream = new ContentClient(RequestUtil.getCookieValue(request, COLLECTION_COOKIE_NAME)).getContentStream(uri, getQueryStringParameters(request));
+        ContentStream contentStream = new ContentClient(RequestUtil.getCookieValue(request, COLLECTION_COOKIE_NAME)).getContentStream(uri, getQueryParameters(request));
         return contentStream.getAsString();
     }
 

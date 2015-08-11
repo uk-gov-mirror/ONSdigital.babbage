@@ -4,9 +4,9 @@ import com.github.onsdigital.babbage.util.ThreadContext;
 import com.github.onsdigital.babbage.util.http.PooledHttpClient;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.message.BasicNameValuePair;
@@ -69,14 +69,14 @@ public class ContentClient {
         System.out.println("getContentStream(): Reading content from content server, uri:" + uri);
         CloseableHttpResponse response = null;
         try {
-            response = client.sendGet(getUri(), getHeaders(), getParameters(uri, queryParameters));
+            response = client.sendGet(getPath(), getHeaders(), getParameters(uri, queryParameters));
             return new ContentStream(response);
         } catch (HttpResponseException e) {
+            IOUtils.closeQuietly(response);
             throw wrapException(e);
         } catch (IOException e) {
-            throw wrapException(e);
-        } finally {
             IOUtils.closeQuietly(response);
+            throw wrapException(e);
         }
     }
 
@@ -100,8 +100,10 @@ public class ContentClient {
     private List<NameValuePair> getParameters(String uri, Map<String, String[]> parametes) {
         List<NameValuePair> nameValuePairs = new ArrayList<>();
 
+        uri = StringUtils.isEmpty(uri) ? "/" : uri;
+
         //uris are requested as get parameter from content service
-        nameValuePairs.add(new BasicNameValuePair("uri", uri));
+        nameValuePairs.add(new BasicNameValuePair("uri", uri ));
         if (parametes != null) {
             for (Iterator<Map.Entry<String, String[]>> iterator = parametes.entrySet().iterator(); iterator.hasNext(); ) {
                 Map.Entry<String, String[]> entry = iterator.next();
@@ -140,7 +142,7 @@ public class ContentClient {
         return cookies;
     }
 
-    private String getUri() {
+    private String getPath() {
         if (collectionId == null) {
             return getContentServiceDataEndpoint();
         } else {

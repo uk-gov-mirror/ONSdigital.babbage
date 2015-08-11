@@ -1,17 +1,17 @@
 package com.github.onsdigital.babbage.util.http;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpHost;
-import org.apache.http.NameValuePair;
-import org.apache.http.StatusLine;
+import com.google.gson.Gson;
+import org.apache.http.*;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.entity.ContentType;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
+import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
 import java.net.URI;
@@ -135,15 +135,31 @@ public class PooledHttpClient {
         StatusLine statusLine = response.getStatusLine();
         HttpEntity entity = response.getEntity();
         if (statusLine.getStatusCode() >= 300) {
+            String errorMessage = getErrorMessage(entity);
             throw new HttpResponseException(
                     statusLine.getStatusCode(),
-                    statusLine.getReasonPhrase());
+                    errorMessage == null ? statusLine.getReasonPhrase() : errorMessage);
         }
         if (entity == null) {
             throw new ClientProtocolException("Response contains no content");
         }
 
         return response;
+    }
+
+    private String getErrorMessage(HttpEntity entity) {
+        ContentType contentType = ContentType.getLenient(entity);
+        if (ContentType.APPLICATION_JSON.getMimeType().equals(contentType.getMimeType())) {
+            try {
+                String s = EntityUtils.toString(entity);
+                Message message = new Gson().fromJson(s, Message.class);
+                return message.getMessage();
+            } catch (Exception e) {
+                System.err.println("Failed reading content service error message");
+                e.printStackTrace();
+            }
+        }
+        return null;
     }
 
 
