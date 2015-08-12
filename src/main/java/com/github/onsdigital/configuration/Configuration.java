@@ -104,8 +104,7 @@ public class Configuration {
         private static final String DEFAULT_HANDLEBARS_DATE_PATTERN = "d MMMM yyyy";
         private static final String TEMPLATES_DIR = StringUtils.defaultIfBlank(getValue("TEMPLATES_DIR"), "src/main/web/templates/handlebars");
         private static final String TEMPLATES_SUFFIX = StringUtils.defaultIfBlank(getValue("TEMPLATES_SUFFIX"), ".handlebars");
-        private static final String MAIN_CONTENT_TEMPLATE_NAME =  "content/main";
-        private static final String SEARCH_RESULTS_TEMPLATE_NAME =  "content/t10";
+        private static final String MAIN_CONTENT_TEMPLATE_NAME =  "main";
 
         public static String getHandlebarsDatePattern() {
             return DEFAULT_HANDLEBARS_DATE_PATTERN;
@@ -121,10 +120,6 @@ public class Configuration {
 
         public static String getMainContentTemplateName() {
             return MAIN_CONTENT_TEMPLATE_NAME;
-        }
-
-        public static String getSearchResultsTemplateName() {
-            return SEARCH_RESULTS_TEMPLATE_NAME;
         }
     }
 

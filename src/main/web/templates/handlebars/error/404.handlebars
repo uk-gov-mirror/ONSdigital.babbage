@@ -1,3 +1,5 @@
+{{!-- Resolve navigation fetching children of root uri "/" with depth 2 --}}
+{{#resolveChildren "navigation" "/" 2}}
 {{> partials/header}}
 <main id="main" role="main" tabindex="-1">
 <div class="page-header slate">
@@ -8,7 +10,7 @@
   <!-- /nav-panel -->
 </div>
 <div class="wrapper">
-  <div class="panel"> </div>
+  <div class="PANEL"> </div>
 </div>
 <div class="wrapper panel--bottom-mar">
   <div class="grid-wrap">
@@ -37,3 +39,4 @@
 </div>
 </main>
 {{> partials/footer}}
+{{/resolveChildren}}

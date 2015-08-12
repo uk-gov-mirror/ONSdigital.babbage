@@ -15,18 +15,19 @@
 	<div class="grid-wrap">
 		<ul class="list--neutral">
 			{{#each sections}}
-				{{#resolve uri}}
-				{{#ifany items data.datasets statsBulletins relatedArticles}}
-					{{> partials/t2/t2-section}}
-				{{else}}
-					{{#resolve uri}}
-					{{#eq type 'taxonomy_landing_page'}}
-						{{#if sections}}
-							{{> partials/t2/t2-section}}
-						{{/if}}
-					{{/eq}}
-					{{/resolve}}
-				{{/ifany}}
+				{{#resolve "section" uri}}
+				{{#if section}}
+				    {{#ifany section.items section.datasets section.statsBulletins section.relatedArticles}}
+				    	{{> partials/t2/t2-section}}
+				    {{else}}
+				    	{{#eq section.type 'taxonomy_landing_page'}}
+				    	    {{!-- if child landing page has sections to show --}}
+				    		{{#if section.sections}} 
+				    			{{> partials/t2/t2-section}}
+				    		{{/if}}
+				    	{{/eq}}
+				    {{/ifany}}
+				{{/if}}
 				{{/resolve}}
 			{{/each}}
 		</ul>

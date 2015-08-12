@@ -92,6 +92,10 @@ public class ContentClient {
         return sendGet(getChildContentPath(), getParameters(uri, queryParameters));
     }
 
+    public ContentStream getParents(String uri) throws ContentReadException {
+        return sendGet(getParentsPath(), getParameters(uri,null));
+    }
+
     public ContentStream getParents(String uri, Map<String, String[]> queryParameters) throws ContentReadException {
         System.out.println("getParents(): Reading parents, uri:" + uri);
         return sendGet(getParentsPath(), getParameters(uri,queryParameters));
@@ -164,14 +168,20 @@ public class ContentClient {
     //Reads collection cookie saved in thread context
     private String getCollectionId() {
         Map<String, String> cookies = (Map<String, String>) ThreadContext.getData("cookies");
-        return cookies.get("collection");
+        if (cookies != null) {
+            return cookies.get("collection");
+        }
+        return null;
     }
 
     private Map<String, String> getHeaders() {
         Map<String, String> cookies = (Map<String, String>) ThreadContext.getData("cookies");
+        if (cookies != null) {
         HashMap<String, String> headers = new HashMap<String, String>();
         headers.put(TOKEN_HEADER, cookies.get("access_token"));
         return headers;
+        }
+        return null;
     }
 
     private String getDataPath() {

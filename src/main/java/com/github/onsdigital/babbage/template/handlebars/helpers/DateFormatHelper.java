@@ -15,20 +15,22 @@ import java.util.TimeZone;
  * <p>
  * //Date format helper
  */
-public class DateFormatHelper implements BabbageHandlebarsHelper<String> {
+public class DateFormatHelper implements BabbageHandlebarsHelper<Object> {
 
     private final String HELPER_NAME = "df";
     private static final TimeZone timeZone = TimeZone.getTimeZone("Europe/London");
 
     @Override
-    public CharSequence apply(String date, Options options) throws IOException {
+    public CharSequence apply(Object date, Options options) throws IOException {
         if (options.isFalsy(date)) {
             options.inverse();
         }
         try {
-            Date parseDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(date);
+            if (!(date instanceof Date)) {
+                date= new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(date.toString());
+            }
             String pattern = resolvePattern(options.params);
-            return FastDateFormat.getInstance(pattern, timeZone).format(parseDate);
+            return FastDateFormat.getInstance(pattern, timeZone).format(date);
         } catch (Exception e) {
             System.out.println("Failed fomatting date : " + date);
             e.printStackTrace();

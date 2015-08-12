@@ -10,6 +10,7 @@ import org.apache.commons.io.IOUtils;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.core.MediaType;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.StringReader;
 
@@ -34,8 +35,11 @@ public class ErrorHandler implements ServerError {
             response.setStatus(exception.getStatusCode());
             try {
                 renderErrorPage(exception.getStatusCode(), response);//render template with status code name e.g. 404
-            } catch (Exception e) {
+            } catch (FileNotFoundException e) {
                 System.out.println("No template found for error code, rendering 500. Error code: " + exception.getStatusCode());
+            } catch (Exception e) {
+                logError(e);
+                System.out.println("Failed rendering error template, rendering 500, Error code:" + exception.getStatusCode());
             }
         }
         //todo: get rid of this exception type, all content should be read from content server

@@ -109,7 +109,7 @@ public class Search {
 
     public String renderSearchPage(AggregatedSearchResult results, int currentPage, String searchTerm, String[] types, boolean includeStatics, boolean includeAllData) throws IOException {
         SearchResultsPage searchPage = buildResultsPage(results, currentPage, searchTerm, types, includeStatics, includeAllData);
-        return TemplateService.getInstance().render(Configuration.HANDLEBARS.getSearchResultsTemplateName(), searchPage);
+        return TemplateService.getInstance().render(searchPage);
     }
 
     public String renderEmptySearchPage() throws IOException {

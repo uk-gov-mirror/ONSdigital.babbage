@@ -8,7 +8,7 @@ import com.github.jknack.handlebars.Helper;
 public interface BabbageHandlebarsHelper<T> extends Helper<T> {
 
     /**
-     * @return Name of the helper to be register in handlebars
+     * @return Name of to registered in handlebars
      */
     String getHelperName();
 

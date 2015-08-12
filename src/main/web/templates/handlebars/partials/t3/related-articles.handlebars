@@ -5,19 +5,21 @@
 			<div class="grid-wrap">
 				<ul class="list--neutral">
 					{{#each relatedArticles}}
+					{{#resolve "" uri "description"}}
 					<li class="grid-col desktop-grid-one-third box--padded-vertical nav--block-landing">
 						<h3>
-						<a href="{{uri}}" title="{{description.title}}">
-							{{description.title}}
-							{{#if description.edition}}
-								{{#ne description.edition 'yes'}}: {{description.edition}}{{/ne}}
+						<a href="{{uri}}" title="{{title}}">
+							{{title}}
+							{{#if edition}}
+								{{#ne edition 'yes'}}: {{edition}}{{/ne}}
 							{{/if}}
 						</a>
 						</h3>
 						<p>
-							{{description._abstract}}
+							{{_abstract}}
 						</p>
 					</li>
+					{{/resolve}}
 					{{/each}}
 				</ul>
 			</div>

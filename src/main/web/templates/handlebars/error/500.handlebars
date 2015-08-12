@@ -1,3 +1,5 @@
+{{!-- Resolve navigation fetching children of root uri "/" with depth 2 --}}
+{{#resolveChildren "navigation" "/" 2}}
 {{> partials/header}}
 <main id="main" role="main" tabindex="-1">
 <div class="page-header slate">
@@ -34,3 +36,4 @@
 </div>
 </main>
 {{> partials/footer}}
+{{/resolveChildren}}

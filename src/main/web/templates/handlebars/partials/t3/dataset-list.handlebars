@@ -5,16 +5,18 @@
 			<div class="grid-wrap">
 				<ul class="list--neutral">
 					{{#each datasets}}
+					{{#resolve "" uri "description"}}
 					<li class="grid-col desktop-grid-one-third box--padded-vertical nav--block-landing">
 						<h3>
-						<a href="{{rootpath uri}}" title="{{description.title}}">
-							{{description.title}}
+						<a href="{{rootpath uri}}" title="{{title}}">
+							{{title}}
 						</a>
 						</h3>
 						<p>
-							{{description.summary}}
+							{{summary}}
 						</p>
 					</li>
+					{{/resolve}}
 					{{/each}}
 				</ul>
 			</div>

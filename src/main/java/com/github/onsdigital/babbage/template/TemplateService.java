@@ -32,7 +32,7 @@ public class TemplateService {
      * @return
      * @throws IOException
      */
-    public String render(String data) throws IOException {
+    public String render(Object data) throws IOException {
         return templateRenderer.renderTemplate(data, getThreadContext());
     }
 
@@ -47,7 +47,6 @@ public class TemplateService {
     public String render(String templateName, Object data) throws IOException {
         return templateRenderer.renderTemplate(templateName, data, getThreadContext());
     }
-
 
     private Map<String, Object> getThreadContext() {
         return ThreadContext.getAllData();
