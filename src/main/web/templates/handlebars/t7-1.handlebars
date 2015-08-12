@@ -8,7 +8,10 @@
 			</p>
 			<h1 class="page-header__title flush--half--bottom">{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}</h1>
 			<div class="grid-wrap mini">
-				<p class="grid-col tablet-grid-one-quarter">
+        <p class="grid-col tablet-grid-one-quarter {{#if description.nationalStatistic}}page-header__meta-block-with-img{{/if}}">
+					{{#if description.nationalStatistic}}
+            <img src="/node_modules/ONS-Pattern-Library/ui/img/national-statistics.png" alt="National Statistics logo" />
+					{{/if}}
 					<span>Contact: </span></br>
 					<a href="mailto:{{description.contact.email}}">{{#if description.contact.name}}{{description.contact.name}}{{else}}{{description.contact.email}}{{/if}}</a>
 				</p>
@@ -27,9 +30,6 @@
 			<div class="grid-wrap mini">
 				{{#if description.surveyName}}
 				<p class="grid-col {{#ifall description.surveyName description.frequency description.compilation description.sampleSize description.geographicCoverage}}tablet-grid-one-fifth{{else}}tablet-grid-one-quarter{{/ifall}} {{#if description.nationalStatistic}}page-header__meta-block-with-img{{/if}}">
-					{{#if description.nationalStatistic}}
-					<img src="/node_modules/ONS-Pattern-Library/ui/img/national-statistics.png" alt="National Statistics logo" />
-					{{/if}}
 					<span>Survey name: </span><br/>{{description.surveyName}}
 				</p>
 				{{/if}}
@@ -134,7 +134,7 @@
 							<ul class="list--neutral">
 								{{#each downloads}}
 								<li class="flush--third--bottom">
-									<a href="{{file}}" title="{{title}}">{{title}}</a>
+									<a href="/file?uri={{file}}" title="{{title}}">{{title}}</a>
 								</li>
 								{{/each}}
 							</ul>
