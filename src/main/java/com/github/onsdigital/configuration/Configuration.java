@@ -40,23 +40,28 @@ public class Configuration {
 
     }
 
-    /*External services configuration*/
-    public static class CONTENT_SERVICE {
-        private static final String SERVICE_URL =  StringUtils.removeEnd(StringUtils.defaultIfBlank(getValue("CONTENT_SERVICE_URL"), "localhost:8083"), "/");
+    /*External content server configuration*/
+    public static class CONTENT_SERVER {
+        private static final String SERVER_URL =  StringUtils.removeEnd(StringUtils.defaultIfBlank(getValue("CONTENT_SERVICE_URL"), "localhost:8083"), "/");
         private static final String DATA_ENDPOINT = "/data";
-        private static final String BROWSE_ENDPOINT = "/browstree";
+        private static final String CHILDREN_ENDPOINT = "/children";
+        private static final String PARENTS_ENDPOINT = "/parents";
         private static final int MAX_CONTENT_SERVICE_CONNECTION = defaultNumberIfBlank(getNumberValue("CONTENT_SERVICE_MAX_CONNECTION"), 50);
 
-        public static String getContentServiceUrl() {
-            return SERVICE_URL;
+        public static String getServerUrl() {
+            return SERVER_URL;
         }
 
-        public static String getContentServiceDataEndpoint() {
+        public static String getDataEndpoint() {
             return DATA_ENDPOINT;
         }
 
-        public static String getBrowseEndpoint() {
-            return BROWSE_ENDPOINT;
+        public static String getChildrenEndpoint() {
+            return CHILDREN_ENDPOINT;
+        }
+
+        public static String getParentsEndpoint() {
+            return PARENTS_ENDPOINT;
         }
 
         public static int getMaxContentServiceConnection() {
@@ -99,7 +104,8 @@ public class Configuration {
         private static final String DEFAULT_HANDLEBARS_DATE_PATTERN = "d MMMM yyyy";
         private static final String TEMPLATES_DIR = StringUtils.defaultIfBlank(getValue("TEMPLATES_DIR"), "src/main/web/templates/handlebars");
         private static final String TEMPLATES_SUFFIX = StringUtils.defaultIfBlank(getValue("TEMPLATES_SUFFIX"), ".handlebars");
-        private static final String MAIN_CONTENT_TEMPLATE_NAME =  "main";
+        private static final String MAIN_CONTENT_TEMPLATE_NAME =  "content/main";
+        private static final String SEARCH_RESULTS_TEMPLATE_NAME =  "content/t10";
 
         public static String getHandlebarsDatePattern() {
             return DEFAULT_HANDLEBARS_DATE_PATTERN;
@@ -115,6 +121,10 @@ public class Configuration {
 
         public static String getMainContentTemplateName() {
             return MAIN_CONTENT_TEMPLATE_NAME;
+        }
+
+        public static String getSearchResultsTemplateName() {
+            return SEARCH_RESULTS_TEMPLATE_NAME;
         }
     }
 

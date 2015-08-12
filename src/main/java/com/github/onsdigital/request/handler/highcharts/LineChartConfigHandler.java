@@ -6,7 +6,6 @@ import com.github.onsdigital.content.page.base.Page;
 import com.github.onsdigital.content.page.statistics.data.timeseries.TimeSeries;
 import com.github.onsdigital.content.util.ContentUtil;
 import com.github.onsdigital.data.LocalFileDataService;
-import com.github.onsdigital.data.zebedee.ZebedeeRequest;
 import com.github.onsdigital.highcharts.HighchartsChart;
 import com.github.onsdigital.request.response.BabbageResponse;
 import com.github.onsdigital.request.response.BabbageStringResponse;
@@ -23,12 +22,6 @@ public class LineChartConfigHandler implements RequestHandler {
 
     @Override
     public BabbageResponse get(String requestedUri, HttpServletRequest request) throws Exception {
-        return get(requestedUri, request, null);
-    }
-
-
-    @Override
-    public BabbageResponse get(String requestedUri, HttpServletRequest request, ZebedeeRequest zebedeeRequest) throws Exception {
         return new BabbageStringResponse(getChartConfig(requestedUri).toString());
     }
 

@@ -47,7 +47,7 @@ public class RequestDelegator {
     public static void get(HttpServletRequest request, HttpServletResponse response) throws Throwable {
 
         try {
-            RequestUtil.saveAccessToken(request);
+            RequestUtil.saveRequestContext(request);
 
             String uri = URIUtil.cleanUri(request.getRequestURI());
             String fullUri = uri + "?" + StringUtils.lowerCase(request.getQueryString());
@@ -72,7 +72,7 @@ public class RequestDelegator {
             getResponse.apply(response);
             return;
         } finally {
-            RequestUtil.clearAllSaved();
+            RequestUtil.clearContext();
         }
     }
 

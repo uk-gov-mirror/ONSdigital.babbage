@@ -17,32 +17,18 @@ public class RequestUtil {
 
     private static final String COLLECTION_COOKIE_NAME = "collection";
     private static final String ACCESS_TOKEN_COOKIENAME = "access_token";
-    private static final String TOKEN_HEADER = "X-Florence-Token";
 
     /**
      * Saves Authentication token and collection id to thread context if available when a request is made to babbage,
      * this ensures all data requests from content service can be authorized both  when data is requested for any purpose on Babbage ( rendering page, sending data back etc. )
      */
-    public static void saveAccessToken(HttpServletRequest request) {
-        Cookie[] cookies = request.getCookies();
-        if (cookies == null) {
-            return;
-        }
+    public static void saveRequestContext(HttpServletRequest request) {
+        ThreadContext.addData("cookies",getAllCookies(request));
+        ThreadContext.addData("parameters", request.getParameterMap());
 
-
-        String accessToken = getCookieValue(request, ACCESS_TOKEN_COOKIENAME);
-        if (StringUtils.isNotEmpty(accessToken)) {
-            //todo:delete this log for securiy reasons
-            System.out.println("Found collection cookie: " + accessToken);
-            ThreadContext.addData(TOKEN_HEADER, accessToken);
-        }
     }
 
-    public static String getCollectionId(HttpServletRequest request) {
-        return getCookieValue(request, COLLECTION_COOKIE_NAME)
-    }
-
-    public static void clearAllSaved() {
+    public static void clearContext() {
         ThreadContext.clear();
     }
 
@@ -57,6 +43,18 @@ public class RequestUtil {
             }
         }
         return null;
+    }
+
+    public static Map<String, String> getAllCookies(HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+        Map<String, String> cookiesMap = new HashMap<>();
+        if (cookiesMap == null) {
+            return cookiesMap;
+        }
+        for (Cookie cookie : cookies) {
+            cookiesMap.put(cookie.getName(), cookie.getValue());
+        }
+        return cookiesMap;
     }
 
     /**

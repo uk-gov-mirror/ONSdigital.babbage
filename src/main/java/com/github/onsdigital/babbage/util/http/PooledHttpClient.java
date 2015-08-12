@@ -44,49 +44,9 @@ public class PooledHttpClient {
         this.configuration = new ClientConfiguration();
     }
 
-
-    /**
-     * @param path path, should not contain any query string, only path info
-     * @return response
-     * @throws IOException             All exceptions thrown are IOException implementations
-     * @throws ClientProtocolException for protocol related exceptions, HttpResponseExceptions are a subclass of this exception type
-     * @throws HttpResponseException   exception for http status code > 300, HttpResponseException is a subclass of IOException
-     *                                 catch HttpResponseException for  status code
-     */
-    public CloseableHttpResponse sendGet(String path) throws IOException {
-        return sendGet(path, null, null);
-    }
-
-
-    /**
-     * @param path path, should not contain any query string, only path info
-     * @param queryParameters query parameters to be sent as get query string
-     * @return response
-     * @throws IOException             All exceptions thrown are IOException implementations
-     * @throws ClientProtocolException for protocol related exceptions, HttpResponseExceptions are a subclass of this exception type
-     * @throws HttpResponseException   exception for http status code > 300, HttpResponseException is a subclass of IOException
-     *                                 catch HttpResponseException for  status code
-     */
-    public CloseableHttpResponse sendGet(String path, List<NameValuePair> queryParameters) throws IOException {
-        return sendGet(path, null, queryParameters);
-    }
-
-    /**
-     * @param path path, should not contain any query string, only path info
-     * @param cookies       key-value map to to be added to request as cookie headers
-     * @return response
-     * @throws IOException             All exceptions thrown are IOException implementations
-     * @throws ClientProtocolException for protocol related exceptions, HttpResponseExceptions are a subclass of this exception type
-     * @throws HttpResponseException   exception for http status code > 300, HttpResponseException is a subclass of IOException
-     *                                 catch HttpResponseException for  status code
-     */
-    public CloseableHttpResponse sendGet(String path, Map<String, String> cookies) throws IOException {
-        return sendGet(path, cookies, null);
-    }
-
     /**
      * @param path       path, should not contain any query string, only path info
-     * @param headers       key-value map to to be added to request as cookie headers
+     * @param headers       key-value map to to be added to request as headers
      * @param queryParameters query parameters to be sent as get query string
      * @return
      * @throws IOException             All exceptions thrown are IOException implementations
@@ -96,7 +56,6 @@ public class PooledHttpClient {
      */
     public CloseableHttpResponse sendGet(String path, Map<String,String> headers, List<NameValuePair> queryParameters) throws IOException {
         URI uri = buildUri(path, queryParameters);
-        System.out.println("Sending get request to " + uri);
         HttpGet request = new HttpGet(uri);
         if (headers != null) {
             Iterator<Map.Entry<String, String>> headerIterator = headers.entrySet().iterator();

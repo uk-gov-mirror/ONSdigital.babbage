@@ -62,7 +62,7 @@ public class File {
         String uriPath = StringUtils.removeStart(uriString, "/");
         System.out.println("Reading file under" + uriPath);
         Path path = FileSystems.getDefault().getPath(
-                Configuration.CONTENT_SERVICE.getContentPath());
+                Configuration.CONTENT_SERVER.getContentPath());
 
         Path data = path.resolve(uriPath);
         if (!java.nio.file.Files.exists(data)) {

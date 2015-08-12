@@ -15,15 +15,19 @@
 	<div class="grid-wrap">
 		<ul class="list--neutral">
 			{{#each sections}}
-				{{#ifany data.items data.datasets data.statsBulletins data.relatedArticles}}
+				{{#resolve uri}}
+				{{#ifany items data.datasets statsBulletins relatedArticles}}
 					{{> partials/t2/t2-section}}
 				{{else}}
-					{{#eq data.type 'taxonomy_landing_page'}}
-						{{#if data.sections}}
+					{{#resolve uri}}
+					{{#eq type 'taxonomy_landing_page'}}
+						{{#if sections}}
 							{{> partials/t2/t2-section}}
 						{{/if}}
 					{{/eq}}
+					{{/resolve}}
 				{{/ifany}}
+				{{/resolve}}
 			{{/each}}
 		</ul>
 		<div class="grid-col desktop-grid-one-third tablet-grid-one-half clear-left box--padded-vertical">

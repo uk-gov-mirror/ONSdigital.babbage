@@ -28,7 +28,7 @@ public class Validator implements Runnable {
 
 	@Override
 	public void run() {
-		Path path = FileSystems.getDefault().getPath(Configuration.CONTENT_SERVICE.getContentPath());
+		Path path = FileSystems.getDefault().getPath(Configuration.CONTENT_SERVER.getContentPath());
 
 		executorService = Executors.newCachedThreadPool();
 		System.out.println("Validating taxonomy Json");

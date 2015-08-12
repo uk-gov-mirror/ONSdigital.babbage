@@ -197,63 +197,62 @@
                 </tr>
             </thead>
             <tbody>
-
             </tbody>
         </table>
     </div>
-
     <img class="js-enhance--hide" src="{{uri}}/linechart" alt="{{description.title}}" width="875" height="400">
     <div class="chart-area__footer nojs-hidden js-enhance--show" data-chart-custom="">
         <span class="chart-area__footer__label">Download custom data</span>
         <div class="chart-area__footer__actions">
-           <!-- <form method="post" action="/chartimage" class="inline dlCustomData">
-              <button id="download-custom-image" type="submit" class="btn btn--primary btn--small download-analytics" target="_blank" name="uri" value="{{uri}}">
-              Image
-              {{!-- <span class="icon-download icon--button-inline" role="presentation"></span> --}}
-              </button>
-              <input type="hidden" name="fileName" value="{{description.title}}" />
-
-          </form> -->
-          <form method="post" action="/download" class="inline dlCustomData">
-              <button id="download-custom-csv" type="submit" name="type" value="csv" class="btn btn--primary btn--small download-analytics">
-              .csv
-              {{!-- <span class="icon-download icon--button-inline" role="presentation"></span> --}}
-              </button>
-              <button id="download-custom-excel" type="submit" name="type" value="xlsx" class="btn btn--primary btn--small download-analytics" href="#">
-              .xlsx
-              {{!-- <span class="icon-download icon--button-inline" role="presentation"></span> --}}
-              </button>
-              <input type="hidden" name="uri" value="{{uri}}" />
-              <input type="hidden" name="fileName" value="{{description.title}}" />
-          </form>
-          <!-- <a class="btn btn--primary btn--small" href="#">
-              Image
-              <span class="icon-download icon--button-inline" role="presentation"></span>
-          </a>
-          <a class="btn btn--primary btn--small" href="#">
-              .csv
-              <span class="icon-download icon--button-inline" role="presentation"></span>
-          </a>
-          <a class="btn btn--primary btn--small" href="#">
-              .xsl
-              <span class="icon-download icon--button-inline" role="presentation"></span>
-          </a> -->
+            <!-- <form method="post" action="/chartimage" class="inline dlCustomData">
+                <button id="download-custom-image" type="submit" class="btn btn--primary btn--small download-analytics" target="_blank" name="uri" value="{{uri}}">
+                Image
+                {{!-- <span class="icon-download icon--button-inline" role="presentation"></span> --}}
+                </button>
+                <input type="hidden" name="fileName" value="{{description.title}}" />
+            </form> -->
+            <form method="post" action="/download" class="inline dlCustomData">
+                <button id="download-custom-csv" type="submit" name="type" value="csv" class="btn btn--primary btn--small download-analytics">
+                .csv
+                {{!-- <span class="icon-download icon--button-inline" role="presentation"></span> --}}
+                </button>
+                <button id="download-custom-excel" type="submit" name="type" value="xlsx" class="btn btn--primary btn--small download-analytics" href="#">
+                .xlsx
+                {{!-- <span class="icon-download icon--button-inline" role="presentation"></span> --}}
+                </button>
+                <input type="hidden" name="uri" value="{{uri}}" />
+                <input type="hidden" name="fileName" value="{{description.title}}" />
+            </form>
+            <!-- <a class="btn btn--primary btn--small" href="#">
+                Image
+                <span class="icon-download icon--button-inline" role="presentation"></span>
+            </a>
+            <a class="btn btn--primary btn--small" href="#">
+                .csv
+                <span class="icon-download icon--button-inline" role="presentation"></span>
+            </a>
+            <a class="btn btn--primary btn--small" href="#">
+                .xsl
+                <span class="icon-download icon--button-inline" role="presentation"></span>
+            </a> -->
         </div>
     </div>
     <!-- /chart-area -->
     <!-- headlinePage.items.0.data.months -->
     <div class="slate nojs-hidden box box--padded">
-      {{#ifany relatedData relatedDatasets}}
+        {{#ifany relatedData relatedDatasets}}
         <span>Explore other {{#each breadcrumb}}{{#if @last}}{{description.title}}{{/if}}{{/each}} <strong>time series</strong> and <strong>datasets</strong></span>
         <div class="box__inner">
             <div class="grid-wrap">
-              {{#if relatedData}}
+                {{#if relatedData}}
                 <div class="grid-col desktop-grid-one-half ">
                     <div class="js-enhance--ul-to-select">
-                      <p>Related time series:</p>
+                        <p>Related time series:</p>
                         <ul>
                             {{#each relatedData}}
-                            <li><a href="{{uri}}">{{#if description.cdid}}{{description.cdid}}: {{/if}}{{description.title}}</a></li>
+                            {{#resolve uri "description"}}
+                            <li><a href="{{uri}}">{{#if cdid}}{{cdid}}: {{/if}}{{title}}</a></li>
+                            {{/resolve}}
                             {{/each}}
                         </ul>
                     </div>
@@ -266,7 +265,9 @@
                         <p>Related datasets:</p>
                         <ul>
                             {{#each relatedDatasets}}
-                            <li><a href="{{uri}}">{{#if description.datasetId}}{{description.datasetId}}: {{/if}}{{description.title}}</a></li>
+                            {{#resolve uri "description"}}
+                            <li><a href="{{uri}}">{{#if datasetId}}{{datasetId}}: {{/if}}{{title}}</a></li>
+                            {{/resolve}}
                             {{/each}}
                         </ul>
                     </div>
@@ -275,7 +276,7 @@
                 {{/if}}
             </div>
         </div>
-      {{/ifany}}
+        {{/ifany}}
     </div>
     <div class="panel--bottom-mar js-enhance--hide">
         <table class="tablesaw">
@@ -311,7 +312,7 @@
 {{/ifany}}
 <div class="wrapper panel--bottom-mar">
     <div class="grid-wrap">
-      {{#if section.markdown}}
+        {{#if section.markdown}}
         <div class="grid-col desktop-grid-two-thirds tablet-grid-full-width">
             <article class="box border-horizontal-single content-section">
                 <!-- <header class="box__header">
@@ -360,10 +361,12 @@
                     <div class="box__content">
                         <div>
                             {{#each relatedDocuments}}
-                            <p><a href="{{uri}}">{{description.title}}
-              							{{#if description.edition}}
-              								{{#ne description.edition 'yes'}}: {{description.edition}}{{/ne}}
-              							{{/if}}</a></p>
+                            {{#resolve uri "title"}}
+                            <p><a href="{{uri}}">{{title}}
+                                {{#if edition}}
+                                {{#ne edition 'yes'}}: {{edition}}{{/ne}}
+                            {{/if}}</a></p>
+                            {{/resolve}}
                             {{/each}}
                         </div>
                     </div>
@@ -377,7 +380,7 @@
         </div>
         <div class="grid-col desktop-grid-full-width">
             <div class="grid-wrap">
-              {{#if relatedMethodology}}
+                {{#if relatedMethodology}}
                 <div class="grid-col desktop-grid-one-half">
                     <article class="box box--padded sectioned">
                         <header class="box__header">
@@ -386,9 +389,11 @@
                         <div class="box__content">
                             <ul class="list--neutral">
                                 {{#each relatedMethodology}}
+                                {{#resolve uri "title"}}
                                 <li class="flush--third--bottom">
-                                    <a href="{{uri}}" title="{{description.title}}">{{description.title}}</a>
+                                    <a href="{{uri}}" title="{{title}}">{{title}}</a>
                                 </li>
+                                {{/resolve}}
                                 {{/each}}
                             </ul>
                         </div>

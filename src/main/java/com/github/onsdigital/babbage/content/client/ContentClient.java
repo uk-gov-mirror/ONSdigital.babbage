@@ -14,47 +14,64 @@ import org.apache.http.message.BasicNameValuePair;
 import java.io.IOException;
 import java.util.*;
 
-import static com.github.onsdigital.configuration.Configuration.CONTENT_SERVICE.*;
+import static com.github.onsdigital.configuration.Configuration.CONTENT_SERVER.*;
 
 /**
  * Created by bren on 23/07/15.
- * <p/>
+ * <p>
  * Content service reads content from external server over http.
- * <p/>
+ * <p>
  * Using Apache http client with connection pooling.
  */
 //TODO: Get http client use cache headers returned from content service
 public class ContentClient {
 
+    private static final String TOKEN_HEADER = "X-Florence-Token";
+
+
     private static PooledHttpClient client;
-    private static String collectionId;
+    private static ContentClient instance;
 
-    //Singleton
-    public ContentClient() {
-        init();
+    //singleton
+    private ContentClient() {
     }
 
-    public ContentClient(String collectionId) {
-        init();
-        this.collectionId = collectionId;
-    }
-
-    private void init() {
-        if (client == null) {
+    public static ContentClient getInstance() {
+        if (instance == null) {
             synchronized (ContentClient.class) {
-                if (client == null) {
+                if (instance == null) {
+                    instance = new ContentClient();
                     System.out.println("Initializing content service http client");
-                    client = new PooledHttpClient(getContentServiceUrl());
+                    client = new PooledHttpClient(getServerUrl());
                     client.getConfiguration().setMaxConnection(getMaxContentServiceConnection());
                 }
             }
         }
+        return instance;
+    }
+
+
+    /**
+     * Serves requested content data, stream should be closed after use or fully consumed, fully consuming the stream will close the stream automatically
+     * Content  client forwards any requests headers and cookies to content service using saved ThreadContext
+     * <p>
+     * Any request headers like authentication tokens or collection ids should be saved to ThreadContext before calling content service
+     *
+     * @param uri uri for requested content.
+     *            e.g./economy/inflationandpriceindices for content data requests
+     *            e.g./economy/inflationandpriceindices/somecontent.xls  ( no data.json after the uri )
+     * @return Json for requested content
+     * @throws ContentReadException If content read fails due content service error status is set to whatever error is sent back from content service,
+     *                                all other IO Exceptions are rethrown with HTTP status 500
+     */
+    public ContentStream getContentStream(String uri) throws ContentReadException, IOException {
+        return getContentStream(uri, null);
     }
 
     /**
      * Serves requested content data, stream should be closed after use or fully consumed, fully consuming the stream will close the stream automatically
      * Content  client forwards any requests headers and cookies to content service using saved ThreadContext
-     * <p/>
+     * <p>
      * Any request headers like authentication tokens or collection ids should be saved to ThreadContext before calling content client
      *
      * @param uri             uri for requested content.
@@ -62,15 +79,28 @@ public class ContentClient {
      *                        e.g./economy/inflationandpriceindices/somecontent.xls  ( no data.json after the uri )
      * @param queryParameters GET parameters that needs to be passed to content service (e.g. filter parameters)
      * @return Json for requested content
-     * @throws ContentClientException If content read fails due content service error status is set to whatever error is sent back from content service,
+     * @throws ContentReadException If content read fails due content service error status is set to whatever error is sent back from content service,
      *                                all other IO Exceptions are rethrown with HTTP status 500
      */
-    public ContentStream getContentStream(String uri, Map<String, String[]> queryParameters) throws ContentClientException {
+    public ContentStream getContentStream(String uri, Map<String, String[]> queryParameters) throws ContentReadException {
         System.out.println("getContentStream(): Reading content from content server, uri:" + uri);
+        return sendGet(getDataPath(), getParameters(uri, queryParameters));
+    }
+
+    public ContentStream getChildren(String uri, Map<String, String[]> queryParameters) throws ContentReadException {
+        System.out.println("getChildren(): Reading child tree, uri: " + uri);
+        return sendGet(getChildContentPath(), getParameters(uri, queryParameters));
+    }
+
+    public ContentStream getParents(String uri, Map<String, String[]> queryParameters) throws ContentReadException {
+        System.out.println("getParents(): Reading parents, uri:" + uri);
+        return sendGet(getParentsPath(), getParameters(uri,queryParameters));
+    }
+
+    private ContentStream sendGet(String path, List<NameValuePair> getParameters) throws ContentReadException {
         CloseableHttpResponse response = null;
         try {
-            response = client.sendGet(getDataPath(), getHeaders(), getParameters(uri, queryParameters));
-            return new ContentStream(response);
+            return new ContentStream(client.sendGet(path, getHeaders(),getParameters ));
         } catch (HttpResponseException e) {
             IOUtils.closeQuietly(response);
             throw wrapException(e);
@@ -80,14 +110,14 @@ public class ContentClient {
         }
     }
 
-    public ContentStream getNavigationData() throws ContentClientException {
-        System.out.println("getNavigationData(): Reading child tree for root for navigation:");
+    public ContentStream getBreadCrumb(String uri) throws ContentReadException {
+        System.out.println("getBreadcrumb(): Reading breadcrumb from content server:" + uri);
         ArrayList<NameValuePair> queryParameters = new ArrayList<>();
-        queryParameters.add(new BasicNameValuePair("depth", "2"));
+        queryParameters.add(new BasicNameValuePair("uri", uri));
 
         CloseableHttpResponse response = null;
         try {
-            response  = client.sendGet(getNavigationPath(), getHeaders(), queryParameters);
+            response = client.sendGet(getParentsPath(), getHeaders(), queryParameters);
             return new ContentStream(response);
         } catch (HttpResponseException e) {
             IOUtils.closeQuietly(response);
@@ -96,23 +126,6 @@ public class ContentClient {
             IOUtils.closeQuietly(response);
             throw wrapException(e);
         }
-    }
-
-    /**
-     * Serves requested content data, stream should be closed after use or fully consumed, fully consuming the stream will close the stream automatically
-     * Content  client forwards any requests headers and cookies to content service using saved ThreadContext
-     * <p/>
-     * Any request headers like authentication tokens or collection ids should be saved to ThreadContext before calling content service
-     *
-     * @param uri uri for requested content.
-     *            e.g./economy/inflationandpriceindices for content data requests
-     *            e.g./economy/inflationandpriceindices/somecontent.xls  ( no data.json after the uri )
-     * @return Json for requested content
-     * @throws ContentClientException If content read fails due content service error status is set to whatever error is sent back from content service,
-     *                                all other IO Exceptions are rethrown with HTTP status 500
-     */
-    public ContentStream getContentStream(String uri) throws ContentClientException {
-        return getContentStream(uri, null);
     }
 
     private List<NameValuePair> getParameters(String uri, Map<String, String[]> parametes) {
@@ -121,7 +134,7 @@ public class ContentClient {
         uri = StringUtils.isEmpty(uri) ? "/" : uri;
 
         //uris are requested as get parameter from content service
-        nameValuePairs.add(new BasicNameValuePair("uri", uri ));
+        nameValuePairs.add(new BasicNameValuePair("uri", uri));
         if (parametes != null) {
             for (Iterator<Map.Entry<String, String[]>> iterator = parametes.entrySet().iterator(); iterator.hasNext(); ) {
                 Map.Entry<String, String[]> entry = iterator.next();
@@ -140,41 +153,53 @@ public class ContentClient {
     }
 
 
-    private ContentClientException wrapException(HttpResponseException e) {
-        return new ContentClientException(e.getStatusCode(), e.getMessage(), e);
+    private ContentReadException wrapException(HttpResponseException e) {
+        return new ContentReadException(e.getStatusCode(), e.getMessage());
     }
 
-    private ContentClientException wrapException(IOException e) {
-        return new ContentClientException(HttpStatus.SC_INTERNAL_SERVER_ERROR, "Internal Server Error",e);
+    private ContentReadException wrapException(IOException e) {
+        return new ContentReadException(HttpStatus.SC_INTERNAL_SERVER_ERROR, "Internal Server Error", e);
     }
 
-    //Reads any parameters saved to thread context and sends it to content services as request headers
+    //Reads collection cookie saved in thread context
+    private String getCollectionId() {
+        Map<String, String> cookies = (Map<String, String>) ThreadContext.getData("cookies");
+        return cookies.get("collection");
+    }
+
     private Map<String, String> getHeaders() {
-        Map<String, String> cookies = new HashMap<>();
-        Iterator<Map.Entry<String, Object>> iterate = ThreadContext.iterate();
-        while (iterate.hasNext()) {
-            Map.Entry<String, Object> next = iterate.next();
-            Object value = next.getValue();
-            cookies.put(next.getKey(), value == null ? null : value.toString());
-        }
-        return cookies;
+        Map<String, String> cookies = (Map<String, String>) ThreadContext.getData("cookies");
+        HashMap<String, String> headers = new HashMap<String, String>();
+        headers.put(TOKEN_HEADER, cookies.get("access_token"));
+        return headers;
     }
 
     private String getDataPath() {
+        String collectionId = getCollectionId();
         if (collectionId == null) {
-            return getContentServiceDataEndpoint();
+            return getDataEndpoint();
         } else {
-            return getContentServiceDataEndpoint() + "/" + collectionId;
+            return getDataPath() + "/" + collectionId;
         }
     }
 
-    private String getNavigationPath() {
+    private String getChildContentPath() {
+        String collectionId = getCollectionId();
         if (collectionId == null) {
-            return getBrowseEndpoint();
+            return getChildrenEndpoint();
         } else {
-            return getBrowseEndpoint() + "/" + collectionId;
+            return getChildrenEndpoint() + "/" + collectionId;
         }
     }
 
+
+    private String getParentsPath() {
+        String collectionId = getCollectionId();
+        if (collectionId == null) {
+            return getParentsEndpoint();
+        } else {
+            return getParentsEndpoint() + "/" + collectionId;
+        }
+    }
 
 }

@@ -17,6 +17,7 @@ public abstract class BabbageResponse {
     private String mimeType = "application/json"; //Default mimetype
     private String charEncoding = CharEncoding.UTF_8;//Default encoding
     private Map<String, String> header;
+    private int statusCode = HttpServletResponse.SC_OK; //default status code
 
     public BabbageResponse(String mimeType) {
         this.mimeType = mimeType;
@@ -25,7 +26,7 @@ public abstract class BabbageResponse {
     public BabbageResponse() { }
 
     public void apply(HttpServletResponse response) throws IOException {
-        response.setStatus(HttpServletResponse.SC_OK);
+        response.setStatus(statusCode);
         response.setCharacterEncoding(getCharEncoding());
         response.setContentType(getMimeType());
         if (getHeader() != null) {
@@ -42,6 +43,10 @@ public abstract class BabbageResponse {
 
     public String getMimeType() {
         return mimeType;
+    }
+
+    public void setMimeType(String mimeType) {
+        this.mimeType = mimeType;
     }
 
     public void addHeader(String key, String value) {
@@ -61,5 +66,13 @@ public abstract class BabbageResponse {
 
     public String getCharEncoding() {
         return charEncoding;
+    }
+
+    public int getStatusCode() {
+        return statusCode;
+    }
+
+    public void setStatusCode(int statusCode) {
+        this.statusCode = statusCode;
     }
 }

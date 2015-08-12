@@ -1,9 +1,8 @@
 package com.github.onsdigital.request.handler.highcharts;
 
 import com.github.onsdigital.babbage.request.handler.base.RequestHandler;
-import com.github.onsdigital.data.zebedee.ZebedeeRequest;
-import com.github.onsdigital.highcharts.HighchartsChart;
 import com.github.onsdigital.highcharts.HighChartsExportClient;
+import com.github.onsdigital.highcharts.HighchartsChart;
 import com.github.onsdigital.request.response.BabbageBinaryResponse;
 import com.github.onsdigital.request.response.BabbageResponse;
 
@@ -20,12 +19,6 @@ public class LineChartImageHandler implements RequestHandler {
 
     @Override
     public BabbageResponse get(String requestedUri, HttpServletRequest request) throws Exception {
-        return get(requestedUri, request, null);
-    }
-
-
-    @Override
-    public BabbageResponse get(String requestedUri, HttpServletRequest request, ZebedeeRequest zebedeeRequest) throws Exception {
         System.out.println("Generating linechart image for " + requestedUri);
         HighchartsChart chartConfig = new LineChartConfigHandler().getChartConfig(requestedUri);
         InputStream stream = new HighChartsExportClient().getImage(chartConfig);

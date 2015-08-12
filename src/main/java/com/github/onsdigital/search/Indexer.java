@@ -37,7 +37,7 @@ public class Indexer {
 
 		if (indexingLock.tryLock()) {
 			try {
-				List<String> absoluteFilePaths = LoadIndexHelper.getAbsoluteFilePaths(Configuration.CONTENT_SERVICE.getContentPath());
+				List<String> absoluteFilePaths = LoadIndexHelper.getAbsoluteFilePaths(Configuration.CONTENT_SERVER.getContentPath());
 				if (absoluteFilePaths.isEmpty()) {
 					throw new IllegalStateException("No items were found for indexing");
 				}

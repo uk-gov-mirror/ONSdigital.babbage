@@ -50,6 +50,17 @@ public final class ThreadContext {
         return params.get(key);
     }
 
+
+    /**
+     *
+     * Get all data bound to current thread
+     *
+     * @return
+     */
+    public static Map<String, Object> getAllData() {
+        return threadContext.get();
+    }
+
     public static Iterator<Map.Entry<String, Object>> iterate() {
         return threadContext.get().entrySet().iterator();
     }

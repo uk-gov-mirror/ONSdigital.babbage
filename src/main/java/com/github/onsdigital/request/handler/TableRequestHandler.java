@@ -1,8 +1,6 @@
 package com.github.onsdigital.request.handler;
 
 import com.github.onsdigital.babbage.request.handler.base.RequestHandler;
-import com.github.onsdigital.data.zebedee.ZebedeeRequest;
-import com.github.onsdigital.page.ContentRenderer;
 import com.github.onsdigital.request.response.BabbageResponse;
 import com.github.onsdigital.request.response.BabbageStringResponse;
 
@@ -19,13 +17,7 @@ public class TableRequestHandler implements RequestHandler {
 
     @Override
     public BabbageResponse get(String requestedUri, HttpServletRequest request) throws Exception {
-        return get(requestedUri, request, null);
-    }
-
-    @Override
-    public BabbageResponse get(String requestedUri, HttpServletRequest request, ZebedeeRequest zebedeeRequest) throws Exception {
-        String html = new ContentRenderer(zebedeeRequest).renderTable(requestedUri, false);
-        return new BabbageStringResponse(html, CONTENT_TYPE);
+        return new BabbageStringResponse("", CONTENT_TYPE);
     }
 
     @Override

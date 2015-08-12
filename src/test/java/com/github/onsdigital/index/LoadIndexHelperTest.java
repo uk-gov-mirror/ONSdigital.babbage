@@ -17,7 +17,7 @@ import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;
 
 public class LoadIndexHelperTest {
-	private final static String RESOURCE_FILE_PATH = Configuration.CONTENT_SERVICE.getContentPath();
+	private final static String RESOURCE_FILE_PATH = Configuration.CONTENT_SERVER.getContentPath();
 
 	@Test
 	public void testGetFileNames() throws IOException {
