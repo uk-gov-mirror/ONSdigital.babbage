@@ -1,0 +1,111 @@
+<main id="main" role="main" tabindex="-1">
+	<div class="wrapper panel--top-mar">
+		{{> templates/handlebars/partials/breadcrumb}}
+		<!-- / breadcrumb -->
+		<h1>Release calendar</h1>
+	</div>
+	<!-- / wrapper -->
+	<div class="wrapper panel--mar">
+		<div class="tab-interface">
+			<div class="tab-pane tab-pane--dual">
+				<ul class="list--neutral nav--block--spaced">
+					<li>
+						<a href="#published" class="tab-pane__tab">Published releases</a>
+					</li>
+					<li>
+						<a href="#upcoming" class="tab-pane__tab">Upcoming releases</a>
+					</li>
+				</ul>
+				<!-- /grid-wrap -->
+					{{!-- <div class="grid-col desktop-grid-two-thirds"> --}}
+					<section class="desktop-grid-full-width tab-pane__content" id="published">
+						<div class="grid-wrap">
+							<div class="grid-col mini desktop-grid-one-third desktop-grid-push-two-thirds">
+								<p>
+									Get updates to this list
+									<a href="#" class="icon-mail">Email</a>
+									<a href="#" class="icon-rss">RSS</a>
+								</p>
+							</div>
+							<!-- /desktop-grid -->
+						</div>
+						<div class="grid-col desktop-grid-one-third">
+							<article class="box box--padded lifted sectioned print-hidden">
+								<form id="filters">
+									<div class="panel panel--bottom-pad panel--separated--bottom flush">
+										<h3 class="flush float-left">Refine results</h3>
+										<button type="reset" value="Reset" class="btn btn--primary btn--small btn--thin btn--narrow btn--clear-results float-right">Clear</button>
+									</div>
+									<div class="box__content">
+										<label class="field flush field--spaced field--text">
+											<p class="panel panel--separated--bottom">Contains</p>
+											<input class="input input--med" type="text" placeholder="Keywords">
+										</label>
+										<label class="field field--spaced field--text">
+											<p class="panel panel--separated--bottom">Release date</p>
+											<p class="flush">Published after</p>
+											<input class="input input--med" type="text" placeholder="eg 01/01/2015">
+											<p class="flush">Published after</p>
+											<input class="input input--med" type="text" placeholder="eg 01/02/2015">
+										</label>
+										<div class="panel panel--separated--bottom">
+											<label for="select">Topics</label>
+										</div>
+										<div class="field field--spaced">
+											<select class="input input--mini" id="select" name="Topics">
+												<option value="1" selected>All</option>
+												<option value="2">Business, industry and trade</option>
+												<option value="3">Economy</option>
+												<option value="4">Employment and labour market</option>
+												<option value="5">People, population and community</option>
+											</select>
+										</div>
+										<!-- /field drop-down -->
+									</div>
+								<!-- /box__content -->
+								</form>
+							</article>
+							<!-- /box 'refine results' -->
+						</div>
+						<!-- /desktop-grid-one-third -->
+						<div class="grid-col desktop-grid-two-thirds box box--padded print-links">
+							<p>
+								<span class="stand-out-text">{{resultsNumbers}}</span> releases by Inflation and Price Indices<span class="icon-cancel"></span> publisher after 1 January 2015<span class="icon-cancel"></span>
+							</p>
+							<ul class="list--neutral">
+								{{#each releases}}
+								<li>
+									<h3 class="flush panel--top-pad-small panel--separated--top">
+										<a href="{{uri}}" title="{{name}}">
+											{{name}}
+										</a>
+									</h3>
+									<p class="mini description">
+										{{df releaseDate}}
+									</p>
+								</li>
+								{{/each}}
+							</ul>
+							<ul class="nav">
+								<li>
+									<a href="#">1</a>
+								</li>
+								<li>
+									<a href="#">2</a>
+								</li>
+								<li>
+									<a href="#">Next &gt;</a>
+								</li>
+							</ul>
+						</div>
+					</section>
+					<section class="desktop-grid-full-width tab-pane__content" id="upcoming">
+						Upcoming releases
+					</section>
+					{{!-- </div> --}}
+				</div>
+				<!-- /desktop-grid-two-thirds -->
+			</div>
+	</div>
+	<!-- / wrapper panel--mar -->
+</div>
