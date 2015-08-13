@@ -90,21 +90,20 @@
 				<a href="/">Home</a>
 			</li>
 			{{#each navigation}}
-			{{#eq type "taxonomy_landing_page"}}
-			{{!-- Using two eq condition since eq is very simple and can't handle or operaand. --}}
-				<li class="nav__expandable js-expandable {{#eq uri ../breadcrumb.1/uri}}nav--primary__active{{/eq}} {{#eq uri ../uri}}nav--primary__active{{/eq}}">
+			{{#if_eq this.type "taxonomy_landing_page"}}
+				<li class="nav__expandable js-expandable {{#if_any (eq uri breadcrumb.1/uri)  (eq uri ../../uri) }}nav--primary__active{{/if_any}}">
 					<a href="{{uri}}">{{description.title}}</a>
 						<ul class="nav--primary__sub js-expandable__content js-nav-hidden">
 							{{#each children}}
-								<li class="{{#eq uri ../breadcrumb.2/uri}}nav--primary__active{{/eq}} {{#eq uri ../../uri}}nav--primary__active{{/eq}}" >
+								<li {{#if_any (eq uri breadcrumb.2/uri) (eq uri ../../uri)}}class="nav--primary__active"{{/if_any}}>
 									<a href="{{uri}}" >{{description.title}}</a>
 								</li>
 							{{/each}} {{!-- /each to find 2nd level nodes --}}
 						</ul>
 				</li>
-			{{/eq}}
+			{{/if_eq}}
 			{{/each}} {{!-- /each to find 1st level nodes --}}
-			<li class="nav--primary__respondents {{#eq uri '/about/surveys'}}nav--primary__active{{/eq}}">
+			<li class="nav--primary__respondents {{#if_eq uri '/about/surveys'}}nav--primary__active{{/if_eq}}">
 				<a href="/about/surveys">
 					<span class="icon-comment icon--inline" role="presentation"></span>
 					Taking part in a survey?

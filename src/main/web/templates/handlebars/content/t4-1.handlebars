@@ -106,7 +106,9 @@
 						<div class="box__content">
 							<ul class="list--neutral">
 								{{#each relatedData}}
-								<li class="flush--third--bottom"><a href="{{rootpath uri}}">{{description.title}}</a></li>
+								{{#resolve this.uri filter="title"}}
+								<li class="flush--third--bottom"><a href="{{rootpath uri}}">{{title}}</a></li>
+								{{/resolve}}
 								{{/each}}
 							</ul>
 						</div>
@@ -144,12 +146,14 @@
 							<h3>Related bulletins</h3>
 							<ul class="list--neutral">
 								{{#each relatedBulletins}}
+								{{#resolve this.uri filter="title"}}
 								<li>
 									<h3 class="flush--bottom">
 									<a href="{{uri}}">{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}</a>
 									</h3>
 									<p>{{md description.summary}}</p>
 								</li>
+								{{/resolve}}
 								{{/each}}
 							</ul>
 						</div>

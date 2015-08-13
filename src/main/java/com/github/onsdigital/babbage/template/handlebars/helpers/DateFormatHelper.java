@@ -1,5 +1,6 @@
 package com.github.onsdigital.babbage.template.handlebars.helpers;
 
+import com.github.jknack.handlebars.Handlebars;
 import com.github.jknack.handlebars.Options;
 import com.github.onsdigital.babbage.template.handlebars.helpers.base.BabbageHandlebarsHelper;
 import com.github.onsdigital.configuration.Configuration;
@@ -26,7 +27,7 @@ public class DateFormatHelper implements BabbageHandlebarsHelper<String> {
             return "";
         }
         try {
-            Date parsedDate = new SimpleDateFormat(Configuration.CONTENT_SERVER.getDefaultContentDatePattern()).parse(date.toString());
+            Date parsedDate = new SimpleDateFormat(Configuration.CONTENT_SERVICE.getDefaultContentDatePattern()).parse(date.toString());
             String pattern = resolvePattern(options.params);
             return FastDateFormat.getInstance(pattern, timeZone).format(parsedDate);
         } catch (Exception e) {
@@ -44,7 +45,7 @@ public class DateFormatHelper implements BabbageHandlebarsHelper<String> {
     }
 
     @Override
-    public String getHelperName() {
-        return HELPER_NAME;
+    public void register(Handlebars handlebars) {
+        handlebars.registerHelper(HELPER_NAME, this);
     }
 }

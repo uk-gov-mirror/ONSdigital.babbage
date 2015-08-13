@@ -47,12 +47,12 @@
 				<span class="stand-out-text">
 					{{#each downloads}}
 						{{#if @last}}
-							{{#eq @index_1 '1'}}
+							{{#if_eq @index_1 '1'}}
 								{{@index_1}}</span> result
-							{{/eq}}
-							{{#ne @index_1 '1'}}
+							{{/if_eq}}
+							{{#if_ne @index_1 '1'}}
 								{{@index_1}}</span> results
-							{{/ne}}
+							{{/if_ne}}
 						{{/if}}
 					{{/each}}
 			</p>
@@ -101,7 +101,7 @@
                   <li class="flush--third--bottom">
                     <a href="{{uri}}" title="{{description.title}}">{{description.title}}
 											{{#if description.edition}}
-												{{#ne description.edition 'yes'}}: {{description.edition}}{{/ne}}
+												{{#if_ne description.edition 'yes'}}: {{description.edition}}{{/if_ne}}
 											{{/if}}
                     </a>
                   </li>

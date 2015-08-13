@@ -1,9 +1,9 @@
 package com.github.onsdigital.babbage.template.handlebars.helpers;
 
+import com.github.jknack.handlebars.Handlebars;
 import com.github.jknack.handlebars.Options;
 import com.github.jknack.handlebars.helper.EachHelper;
 import com.github.onsdigital.babbage.template.handlebars.helpers.base.BabbageHandlebarsHelper;
-import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -44,7 +44,8 @@ public class LoopHelper extends EachHelper implements BabbageHandlebarsHelper<Ob
     }
 
     @Override
-    public String getHelperName() {
-        return HELPER_NAME;
+    public void register(Handlebars handlebars) {
+        handlebars.registerHelper(HELPER_NAME, this);
     }
+
 }

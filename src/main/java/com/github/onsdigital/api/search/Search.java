@@ -1,6 +1,8 @@
 package com.github.onsdigital.api.search;
 
 import com.github.davidcarboni.restolino.framework.Api;
+import com.github.onsdigital.babbage.api.filter.ErrorHandler;
+import com.github.onsdigital.babbage.util.RequestUtil;
 import com.github.onsdigital.configuration.Configuration;
 import com.github.onsdigital.content.link.PageReference;
 import com.github.onsdigital.content.page.base.PageType;
@@ -46,6 +48,18 @@ public class Search {
     @GET
     public Object get(@Context HttpServletRequest request, @Context HttpServletResponse response) throws Exception {
 
+        try {
+            RequestUtil.saveRequestContext(request);
+            return search(request, response);
+        } catch (Throwable t) {
+            ErrorHandler.handle(request, response, t);
+        } finally {
+            RequestUtil.clearContext();
+        }
+        return null;
+    }
+
+    private Object search(@Context HttpServletRequest request, @Context HttpServletResponse response) throws Exception {
         String type = URIUtil.resolveRequestType(request.getRequestURI());
 
         String query = extractQuery(request);

@@ -52,7 +52,7 @@ public class LocalFileDataService implements ContentService {
         try {
             String uriPath = cleanPath(uri);
             Path taxonomy = FileSystems.getDefault().getPath(
-                    Configuration.CONTENT_SERVER.getContentPath());
+                    Configuration.CONTENT_SERVICE.getContentPath());
 
             return ContentUtil.listDirectory(taxonomy.resolve(uriPath));
         } catch (IOException e) {
@@ -99,7 +99,7 @@ public class LocalFileDataService implements ContentService {
         String uriPath = cleanPath(uriString);
         System.out.println("Reading data under uri:" + uriPath);
         Path taxonomy = FileSystems.getDefault().getPath(
-                Configuration.CONTENT_SERVER.getContentPath());
+                Configuration.CONTENT_SERVICE.getContentPath());
 
         Path data = taxonomy.resolve(uriPath);
 

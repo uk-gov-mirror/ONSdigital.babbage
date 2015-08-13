@@ -97,8 +97,8 @@ public class HandlebarsRenderer {
                 if (helperClass.isEnum()) {
                     BabbageHandlebarsHelper[] helpers = helperClass.getEnumConstants();
                     for (BabbageHandlebarsHelper helper : helpers) {
-                        System.out.println("Registering Handlebars helper " + helper.getHelperName() + ":" + helper);
-                        handlebars.registerHelper(helper.getHelperName(), helper);
+                        System.out.println("Registering Handlebars helper " + helper.getClass().getSimpleName() + ":" + helper);
+                        helper.register(handlebars);
                     }
                 } else {
                     //enum constant classes are anonymous classes that are already registered above by getting constants above
@@ -106,8 +106,8 @@ public class HandlebarsRenderer {
                         continue;
                     }
                     BabbageHandlebarsHelper helperInstance = helperClass.newInstance();
-                    System.out.println("Registering Handlebars helper  " + helperInstance.getHelperName() + ":" + className);
-                    handlebars.registerHelper(helperInstance.getHelperName(), helperInstance);
+                    System.out.println("Registering Handlebars helper  " + helperInstance.getClass() + ":" + className);
+                    helperInstance.register(handlebars);
                 }
             }
 

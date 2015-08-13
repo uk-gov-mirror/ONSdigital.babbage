@@ -5,7 +5,7 @@
 			<div class="grid-wrap">
 				<ul class="list--neutral">
 					{{#each statsBulletins}}
-					{{#resolve uri filter="description"}}
+					{{#resolve this.uri filter="description"}}
 					<li class="grid-col desktop-grid-one-third box--padded-vertical nav--block-landing">
 						<h3>
 						<a href="{{uri}}" title="{{title}}">

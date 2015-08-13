@@ -35,7 +35,7 @@
     </div>
 </div>
 {{!-- Hide chart section if no data to draw the chart with --}}
-{{#ifany years quarters months}}
+{{#if_any years quarters months}}
 <div class="wrapper">
     <div class="actionable-header--tight panel--mar-small">
         <!-- This title will need to be dynamically generated on the server -->
@@ -242,7 +242,7 @@
     <!-- /chart-area -->
     <!-- headlinePage.items.0.data.months -->
     <div class="slate nojs-hidden box box--padded">
-        {{#ifany relatedData relatedDatasets}}
+        {{#if_any relatedData relatedDatasets}}
         <span>Explore other {{#each breadcrumb}}{{#if @last}}{{description.title}}{{/if}}{{/each}} <strong>time series</strong> and <strong>datasets</strong></span>
         <div class="box__inner">
             <div class="grid-wrap">
@@ -252,7 +252,7 @@
                         <p>Related time series:</p>
                         <ul>
                             {{#each relatedData}}
-                            {{#resolve uri filter="description"}}
+                            {{#resolve this.uri filter="description"}}
                             <li><a href="{{uri}}">{{#if cdid}}{{cdid}}: {{/if}}{{title}}</a></li>
                             {{/resolve}}
                             {{/each}}
@@ -267,7 +267,7 @@
                         <p>Related datasets:</p>
                         <ul>
                             {{#each relatedDatasets}}
-                            {{#resolve uri filter="description"}}
+                            {{#resolve this.uri filter="description"}}
                             <li><a href="{{uri}}">{{#if datasetId}}{{datasetId}}: {{/if}}{{title}}</a></li>
                             {{/resolve}}
                             {{/each}}
@@ -278,8 +278,9 @@
                 {{/if}}
             </div>
         </div>
-        {{/ifany}}
+        {{/if_any}}
     </div>
+    {{#unless cookies.jsEnhanced}}
     <div class="panel--bottom-mar js-enhance--hide">
         <table class="tablesaw">
             <thead>
@@ -310,8 +311,9 @@
             </tbody>
         </table>
     </div>
+    {{/unless}}
 </div>
-{{/ifany}}
+{{/if_any}}
 <div class="wrapper panel--bottom-mar">
     <div class="grid-wrap">
         {{#if section.markdown}}
@@ -363,10 +365,10 @@
                     <div class="box__content">
                         <div>
                             {{#each relatedDocuments}}
-                            {{#resolve uri filter="title"}}
+                            {{#resolve this.uri filter="title"}}
                             <p><a href="{{uri}}">{{title}}
                                 {{#if edition}}
-                                {{#ne edition 'yes'}}: {{edition}}{{/ne}}
+                                {{#if_ne edition 'yes'}}: {{edition}}{{/if_ne}}
                             {{/if}}</a></p>
                             {{/resolve}}
                             {{/each}}
@@ -391,7 +393,7 @@
                         <div class="box__content">
                             <ul class="list--neutral">
                                 {{#each relatedMethodology}}
-                                {{#resolve uri filter="title"}}
+                                {{#resolve this.uri filter="title"}}
                                 <li class="flush--third--bottom">
                                     <a href="{{uri}}" title="{{title}}">{{title}}</a>
                                 </li>

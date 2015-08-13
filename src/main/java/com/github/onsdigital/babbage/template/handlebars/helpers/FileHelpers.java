@@ -1,5 +1,6 @@
 package com.github.onsdigital.babbage.template.handlebars.helpers;
 
+import com.github.jknack.handlebars.Handlebars;
 import com.github.jknack.handlebars.Options;
 import com.github.onsdigital.babbage.template.handlebars.helpers.base.BabbageHandlebarsHelper;
 import com.github.onsdigital.babbage.template.handlebars.helpers.util.HelperUtils;
@@ -14,12 +15,6 @@ public enum FileHelpers implements BabbageHandlebarsHelper<String> {
 
     /*File size helper*/
     fs {
-        private final String HELPER_NAME = "fs";
-
-        @Override
-        public String getHelperName() {
-            return HELPER_NAME;
-        }
 
         @Override
         public CharSequence apply(String uri, Options options) throws IOException {
@@ -42,17 +37,16 @@ public enum FileHelpers implements BabbageHandlebarsHelper<String> {
             String pre = (si ? "kMGTPE" : "KMGTPE").charAt(exp-1) + (si ? "" : "i");
             return String.format("%.1f %sB", bytes / Math.pow(unit, exp), pre);
         }
+
+        @Override
+        public void register(Handlebars handlebars) {
+            handlebars.registerHelper(this.name(), this);
+        }
+
     },
 
     /*File extension*/
     fe {
-
-        private final String HELPER_NAME = "fe";
-
-        @Override
-        public String getHelperName() {
-            return HELPER_NAME;
-        }
 
         @Override
         public CharSequence apply(String uri, Options options) throws IOException {
@@ -61,5 +55,11 @@ public enum FileHelpers implements BabbageHandlebarsHelper<String> {
             }
             return FilenameUtils.getExtension(uri);
         }
+
+        @Override
+        public void register(Handlebars handlebars) {
+            handlebars.registerHelper(this.name(), this);
+        }
+
     }
 }

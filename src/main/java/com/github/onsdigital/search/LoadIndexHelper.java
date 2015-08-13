@@ -51,7 +51,7 @@ public class LoadIndexHelper {
      * @throws JsonIOException
      */
     public static Map<String, String> getDocumentMap(String absoluteFilePath) throws JsonIOException, JsonSyntaxException, IOException {
-        String url = absoluteFilePath.substring(absoluteFilePath.indexOf(Configuration.CONTENT_SERVER.getContentPath()) + Configuration.CONTENT_SERVER.getContentPath().length());
+        String url = absoluteFilePath.substring(absoluteFilePath.indexOf(Configuration.CONTENT_SERVICE.getContentPath()) + Configuration.CONTENT_SERVICE.getContentPath().length());
         String[] splitPath = url.split(DELIMITTER);
 
         List<String> splitPathAsList = new ArrayList<String>(Arrays.asList(splitPath));

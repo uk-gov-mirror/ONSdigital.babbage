@@ -1,5 +1,6 @@
 package com.github.onsdigital.babbage.template.handlebars.helpers;
 
+import com.github.jknack.handlebars.Handlebars;
 import com.github.jknack.handlebars.MarkdownHelper;
 import com.github.jknack.handlebars.Options;
 import com.github.onsdigital.babbage.template.handlebars.helpers.base.BabbageHandlebarsHelper;
@@ -8,10 +9,10 @@ import java.io.IOException;
 
 /**
  * Created by bren on 28/07/15.
- *
+ * <p/>
  * Extending functionality of Handlebars java markdown helper
  */
-public class CustomMarkdownHelper extends MarkdownHelper  implements BabbageHandlebarsHelper<Object>{
+public class CustomMarkdownHelper extends MarkdownHelper implements BabbageHandlebarsHelper<Object> {
 
     private final static String SUBSCRIPT_PATTERN = "~(?=\\S)(\\S*)~";
     private final static String SUPER_SCRIPT_PATTERN = "\\^(?=\\S)(\\S*)\\^";
@@ -19,7 +20,7 @@ public class CustomMarkdownHelper extends MarkdownHelper  implements BabbageHand
 
     @Override
     public CharSequence apply(Object context, Options options) throws IOException {
-        if(options.isFalsy(context)) {
+        if (options.isFalsy(context)) {
             return "";
         }
         String markdown = context.toString();
@@ -29,7 +30,7 @@ public class CustomMarkdownHelper extends MarkdownHelper  implements BabbageHand
     }
 
     @Override
-    public String getHelperName() {
-        return HELPER_NAME;
+    public void register(Handlebars handlebars) {
+        handlebars.registerHelper(HELPER_NAME, this);
     }
 }

@@ -1,5 +1,6 @@
 package com.github.onsdigital.babbage.template.handlebars.helpers.util;
 
+import com.github.jknack.handlebars.Options;
 import com.github.onsdigital.configuration.Configuration;
 import org.apache.commons.lang3.StringUtils;
 
@@ -28,14 +29,18 @@ public class HelperUtils {
      * @param o2
      * @return
      */
-    public static boolean isEqual(Object o1, Object o2) {
-        if (o1 == null || o2 == null) {
+    public static boolean isEqual(Options op, Object o1, Object o2) {
+        if (op.isFalsy(o1) || op.isFalsy(o2)) {
             return false;
         }
         if (o1 instanceof Number && o2 instanceof Number) {
             return isEqualNumbers((Number) o1, (Number) o2);
         }
         return o1.equals(o2);
+    }
+
+    public static boolean isNotEqual(Options op, Object o1, Object o2) {
+        return !isEqual(op, o1, o2);
     }
 
     public static Long getFileSize(String uri) throws IOException {
@@ -48,7 +53,7 @@ public class HelperUtils {
         // Standardise the path:
         String uriPath = StringUtils.removeStart(uri, "/");
         Path path = FileSystems.getDefault().getPath(
-                Configuration.CONTENT_SERVER.getContentPath());
+                Configuration.CONTENT_SERVICE.getContentPath());
 
         Path file = path.resolve(uriPath);
         if (!Files.exists(file)) {

@@ -1,5 +1,6 @@
 package com.github.onsdigital.babbage.template.handlebars.helpers;
 
+import com.github.jknack.handlebars.Handlebars;
 import com.github.jknack.handlebars.Options;
 import com.github.onsdigital.babbage.template.handlebars.helpers.base.BabbageHandlebarsHelper;
 
@@ -15,16 +16,17 @@ public enum PathHelper implements BabbageHandlebarsHelper<String> {
 
     rootpath   {
         @Override
-        public String getHelperName() {
-            return "rootpath";
-        }
-
-        @Override
         public CharSequence apply(String uri, Options options) throws IOException {
             if(options.isFalsy(uri)) {
                 return null;
             }
             return uri.startsWith("/") ? uri : "/" + uri;
         }
+
+        @Override
+        public void register(Handlebars handlebars) {
+            handlebars.registerHelper(this.name(), this);
+        }
+
     }
 }

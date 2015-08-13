@@ -7,13 +7,14 @@
 		</p>
 		<!-- /lede -->
 		{{resolve statsBulletins.0.uri filter="description" assign="bulletin"}}
+		{{#if bulletin}}
 		{{resolve items.0.uri assign="data"}}
 		<div class="grid-wrap">
-			{{#ifany data.years data.quarters data.months}}
+			{{#if_any data.years data.quarters data.months}}
 			{{> partials/t3/headline-data}}
-			{{/ifany}}
+			{{/if_any}}
 			<!-- /grid-col -->
-			<div class="grid-col  {{#ifany data.years data.quarters data.months}}tablet-grid-one-half{{/ifany}} headline--box-container panel--mobile-bottom-mar">
+			<div class="grid-col  {{#if_any data.years data.quarters data.months}}tablet-grid-one-half{{/if_any}} headline--box-container panel--mobile-bottom-mar">
 				<div class="box--padded equal-height solid panel--bottom-mar">
 					<h2>Latest statistical bulletin</h2>
 					<header class="box___section">
@@ -35,18 +36,19 @@
 					</ul>
 					<p class="text-right"><a href="{{statsBulletins.0.uri}}">Read statistical bulletin</a></p>
 				</div>
-				{{#ifany data.years data.quarters data.months}}
+				{{#if_any data.years data.quarters data.months}}
 				{{else}}
 				{{#if datasets}}
 				<a href="#data" class="btn btn--primary">view latest data
 					{{!-- <span class="icon icon-down-open-big icon--button-inline"></span> --}}
 				</a>
 				{{/if}}
-				{{/ifany}}
+				{{/if_any}}
 				<a href="#reports" class="btn btn--primary">view latest reports
 					{{!-- <span class="icon icon-down-open-big icon--button-inline"></span> --}}
 				</a>
 			</div>
+			{{/if}}
 			<!-- /grid-col -->
 		</div>
 		<!-- /grid-wrap -->
@@ -55,7 +57,7 @@
 </div>
 <!-- /page-header -->
 <!-- Body sections -->
-{{#ifany items datasets}}
+{{#if_any items datasets}}
 <section class="panel wrapper panel--bottom-mar-small">
 	<div class="box box--green box--green--separated--left" >
 		<div class="box__inner border box--padded">
@@ -71,9 +73,9 @@
 	<!-- /box -->
 </section>
 <!-- /panel wrapper -->
-{{/ifany}}
+{{/if_any}}
 <!-- Latest statistical bulletins and Related articles-->
-{{#ifany statsBulletins relatedArticles}}
+{{#if_any statsBulletins relatedArticles}}
 <section class="panel wrapper panel--bottom-mar-small">
 	<div class="box box--teal box--teal--separated--left" >
 		<div class="box__inner border box--padded">
@@ -88,7 +90,7 @@
 		</div>
 	</div>
 </section>
-{{/ifany}}
+{{/if_any}}
 {{#if relatedMethodology}}
 <section class="panel wrapper panel--bottom-mar-small">
 	<div class="grid-wrap">
@@ -100,7 +102,9 @@
 				<div class="box__content">
 					<ul class="list--neutral">
 						{{#each relatedMethodology}}
+						{{#resolve this.uri filter="title"}}
 						<li class="flush--third--bottom"><a href="{{rootpath uri}}">{{description.title}}</a></li>
+						{{/resolve}}
 						{{/each}}
 					</ul>
 				</div>

@@ -157,8 +157,8 @@
 			             	<h3 class="flush--bottom">
 			               	<a href="{{uri}}">{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}</a>
 			             	</h3>
-										{{#eq type bulletin}}{{description.summary}}{{/eq}}
-										{{#eq type article}}{{description._abstract}}{{/eq}}
+										{{#if_eq type bulletin}}{{description.summary}}{{/if_eq}}
+										{{#if_eq type article}}{{description._abstract}}{{/if_eq}}
 			            </li>
 								{{/each}}
 			        	</ul>

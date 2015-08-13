@@ -1,5 +1,6 @@
 package com.github.onsdigital.babbage.template.handlebars.helpers.base;
 
+import com.github.jknack.handlebars.Handlebars;
 import com.github.jknack.handlebars.Helper;
 
 /**
@@ -7,9 +8,6 @@ import com.github.jknack.handlebars.Helper;
  */
 public interface BabbageHandlebarsHelper<T> extends Helper<T> {
 
-    /**
-     * @return Name of to registered in handlebars
-     */
-    String getHelperName();
+    void register(Handlebars handlebars);
 
 }

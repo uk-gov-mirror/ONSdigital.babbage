@@ -7,7 +7,7 @@
 			</p>
 			<h1 class="page-header__title flush--half--bottom">{{description.title}}
 				{{#if description.edition}}
-					{{#ne description.edition 'yes'}}: {{description.edition}}{{/ne}}
+					{{#if_ne description.edition 'yes'}}: {{description.edition}}{{/if_ne}}
 				{{/if}}
 			</h1>
 			<div class="grid-wrap mini">
@@ -110,7 +110,9 @@
 						<div class="box__content">
 							<ul class="list--neutral">
 								{{#each relatedData}}
+								{{#resolve this.uri filter="title"}}
 								<li class="flush--third--bottom"><a href="{{uri}}">{{description.title}}</a></li>
+								{{/resolve}}
 								{{/each}}
 							</ul>
 						</div>
@@ -149,12 +151,14 @@
 							<h3>Related articles</h3>
 							<ul class="list--neutral">
 								{{#each relatedArticles}}
+								{{#resolve this.uri filter="title"}}
 								<li>
 									<h3 class="flush--bottom">
 									<a href="{{uri}}">{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}</a>
 									</h3>
 									{{md description.abstract}}
 								</li>
+								{{/resolve}}
 								{{/each}}
 							</ul>
 						</div>

@@ -14,7 +14,7 @@ import org.apache.http.message.BasicNameValuePair;
 import java.io.IOException;
 import java.util.*;
 
-import static com.github.onsdigital.configuration.Configuration.CONTENT_SERVER.*;
+import static com.github.onsdigital.configuration.Configuration.CONTENT_SERVICE.*;
 
 /**
  * Created by bren on 23/07/15.
@@ -158,11 +158,11 @@ public class ContentClient {
 
 
     private ContentReadException wrapException(HttpResponseException e) {
-        return new ContentReadException(e.getStatusCode(), e.getMessage(),e);
+        return new ContentReadException(e.getStatusCode(), "Failed reading from content service",e);
     }
 
     private ContentReadException wrapException(IOException e) {
-        return new ContentReadException(HttpStatus.SC_INTERNAL_SERVER_ERROR, e.getMessage(), e);
+        return new ContentReadException(HttpStatus.SC_INTERNAL_SERVER_ERROR, "Failed reading from content service", e);
     }
 
     //Reads collection cookie saved in thread context

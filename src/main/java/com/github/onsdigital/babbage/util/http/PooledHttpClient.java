@@ -1,17 +1,19 @@
 package com.github.onsdigital.babbage.util.http;
 
-import com.google.gson.Gson;
-import org.apache.http.*;
+import com.github.onsdigital.search.EmbeddedElasticSearchServer;
+import org.apache.http.HttpEntity;
+import org.apache.http.NameValuePair;
+import org.apache.http.StatusLine;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.utils.URIBuilder;
-import org.apache.http.entity.ContentType;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.util.EntityUtils;
+import org.elasticsearch.client.Client;
 
 import java.io.IOException;
 import java.net.URI;
@@ -41,11 +43,13 @@ public class PooledHttpClient {
                 .setConnectionManager(connectionManager)
                 .build();
         this.configuration = new ClientConfiguration();
+        Runtime.getRuntime().addShutdownHook(new ShutdownHook());
     }
 
+
     /**
-     * @param path       path, should not contain any query string, only path info
-     * @param headers       key-value map to to be added to request as headers
+     * @param path            path, should not contain any query string, only path info
+     * @param headers         key-value map to to be added to request as headers
      * @param queryParameters query parameters to be sent as get query string
      * @return
      * @throws IOException             All exceptions thrown are IOException implementations
@@ -53,7 +57,7 @@ public class PooledHttpClient {
      * @throws HttpResponseException   exception for http status code > 300, HttpResponseException is a subclass of IOException
      *                                 catch HttpResponseException for  status code
      */
-    public CloseableHttpResponse sendGet(String path, Map<String,String> headers, List<NameValuePair> queryParameters) throws IOException {
+    public CloseableHttpResponse sendGet(String path, Map<String, String> headers, List<NameValuePair> queryParameters) throws IOException {
         URI uri = buildUri(path, queryParameters);
         HttpGet request = new HttpGet(uri);
         if (headers != null) {
@@ -72,6 +76,9 @@ public class PooledHttpClient {
     }
 
 
+    public void shutdown() throws IOException {
+        httpClient.close();
+    }
 
     private URI buildUri(String path, List<NameValuePair> queryParameters) {
         try {
@@ -106,24 +113,19 @@ public class PooledHttpClient {
     }
 
     private String getErrorMessage(HttpEntity entity) {
-        ContentType contentType = ContentType.getLenient(entity);
-        if (ContentType.APPLICATION_JSON.getMimeType().equals(contentType.getMimeType())) {
-            try {
-                String s = EntityUtils.toString(entity);
-                ErrorMessage errorMessage = new Gson().fromJson(s, ErrorMessage.class);
-                return errorMessage.getMessage();
-            } catch (Exception e) {
-                System.err.println("Failed reading content service error message");
-                e.printStackTrace();
-            }
+        try {
+            String s = EntityUtils.toString(entity);
+            return s;
+        } catch (Exception e) {
+            System.err.println("Failed reading content service:");
+            e.printStackTrace();
         }
         return null;
     }
 
 
-    /***
+    /**
      * Wrapping client connection manager setters to simplify configuration for single host
-     *
      */
     public class ClientConfiguration {
 
@@ -135,6 +137,25 @@ public class PooledHttpClient {
             connectionManager.setDefaultMaxPerRoute(connectionNumber);
         }
 
+    }
+
+    private void addShutdownHook() {
+    }
+
+    private class ShutdownHook extends Thread {
+        @Override
+        public void run() {
+            System.out.println("Shutting down connection pool to host: %s" + HOST);
+            try {
+                if (httpClient != null) {
+                    shutdown();
+                }
+                System.out.println("Successfully shut down connection pool");
+            } catch (IOException e) {
+                System.err.println("Falied shutting down connection pool");
+                e.printStackTrace();
+            }
+        }
     }
 
 

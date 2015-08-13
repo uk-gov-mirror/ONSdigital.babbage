@@ -13,30 +13,31 @@ public enum MathHelper implements BabbageHandlebarsHelper<Integer> {
 
     increment {
         @Override
-        public String getHelperName() {
-            return "increment";
-        }
-
-        @Override
         public CharSequence apply(Integer context, Options options) throws IOException {
-            if(context != null) {
+            if (context != null) {
                 context++;
             }
             return new Handlebars.SafeString(String.valueOf(context));
         }
+
+        @Override
+        public void register(Handlebars handlebars) {
+            handlebars.registerHelper(this.name(), this);
+        }
+
     },
     decrement {
         @Override
-        public String getHelperName() {
-            return "decrement";
-        }
-
-        @Override
         public CharSequence apply(Integer context, Options options) throws IOException {
-            if(context != null) {
+            if (context != null) {
                 context--;
             }
             return new Handlebars.SafeString(String.valueOf(context));
+        }
+
+        @Override
+        public void register(Handlebars handlebars) {
+            handlebars.registerHelper(this.name(), this);
         }
     }
 }

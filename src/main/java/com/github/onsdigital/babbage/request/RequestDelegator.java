@@ -1,5 +1,6 @@
 package com.github.onsdigital.babbage.request;
 
+import com.github.onsdigital.babbage.api.filter.ErrorHandler;
 import com.github.onsdigital.babbage.request.handler.base.RequestHandler;
 import com.github.onsdigital.babbage.util.RequestUtil;
 import com.github.onsdigital.babbage.util.URIUtil;
@@ -71,6 +72,8 @@ public class RequestDelegator {
 
             getResponse.apply(response);
             return;
+        } catch (Throwable t) {
+            ErrorHandler.handle(request, response, t);
         } finally {
             RequestUtil.clearContext();
         }

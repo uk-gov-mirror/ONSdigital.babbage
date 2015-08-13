@@ -1,5 +1,6 @@
 package com.github.onsdigital.babbage.template.handlebars.helpers.resolve;
 
+import com.github.jknack.handlebars.Handlebars;
 import com.github.jknack.handlebars.Options;
 import com.github.onsdigital.babbage.content.client.ContentClient;
 import com.github.onsdigital.babbage.content.client.ContentReadException;
@@ -28,11 +29,6 @@ public enum DataHelpers implements BabbageHandlebarsHelper<String> {
      */
     resolve {
         @Override
-        public String getHelperName() {
-            return "resolve";
-        }
-
-        @Override
         public CharSequence apply(String uri, Options options) throws IOException {
             try {
                 validateUri(uri);
@@ -53,6 +49,12 @@ public enum DataHelpers implements BabbageHandlebarsHelper<String> {
                 return options.inverse();
             }
         }
+
+        @Override
+        public void register(Handlebars handlebars) {
+            handlebars.registerHelper(this.name(), this);
+        }
+
     },
 
     /**
@@ -61,11 +63,6 @@ public enum DataHelpers implements BabbageHandlebarsHelper<String> {
      * If assign is not empty data is assigned to given variable name
      */
     resolveChildren {
-        @Override
-        public String getHelperName() {
-            return "resolveChildren";
-        }
-
         @Override
         public CharSequence apply(String uri, Options options) throws IOException {
             try {
@@ -82,6 +79,12 @@ public enum DataHelpers implements BabbageHandlebarsHelper<String> {
                 return options.inverse();
             }
         }
+
+        @Override
+        public void register(Handlebars handlebars) {
+            handlebars.registerHelper(this.name(), this);
+        }
+
     },
 
     /**
@@ -90,10 +93,6 @@ public enum DataHelpers implements BabbageHandlebarsHelper<String> {
      * If variableName is not empty data is assigned to given variable name
      */
     resolveParents {
-        @Override
-        public String getHelperName() {
-            return "resolveParents";
-        }
 
         @Override
         public CharSequence apply(String uri, Options options) throws IOException {
@@ -111,6 +110,12 @@ public enum DataHelpers implements BabbageHandlebarsHelper<String> {
                 return options.inverse();
             }
         }
+
+        @Override
+        public void register(Handlebars handlebars) {
+            handlebars.registerHelper(this.name(), this);
+        }
+
     };
 
     //gets first parameter as uri, throws exception if not valid

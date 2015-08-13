@@ -17,7 +17,7 @@ import java.io.StringReader;
 /**
  * Created by bren on 28/05/15.
  * <p>
- * Handles exceptions and returns appropriate response to the client. It is possible to take actions for specific error types
+ * Handles exceptions and returns appropriate response to the client.
  */
 public class ErrorHandler implements ServerError {
 
@@ -27,6 +27,11 @@ public class ErrorHandler implements ServerError {
 
     @Override
     public Object handle(HttpServletRequest req, HttpServletResponse response, RequestHandler requestHandler, Throwable t) throws IOException {
+        handle(req, response, t);
+        return null;
+    }
+
+    public static void handle(HttpServletRequest req, HttpServletResponse response, Throwable t) throws IOException {
         logError(t);
         response.setContentType(MediaType.TEXT_HTML);
 
@@ -35,7 +40,7 @@ public class ErrorHandler implements ServerError {
             response.setStatus(exception.getStatusCode());
             try {
                 renderErrorPage(exception.getStatusCode(), response);//render template with status code name e.g. 404
-                return null;
+                return;
             } catch (FileNotFoundException e) {
                 System.out.println("No template found for error code, rendering 500. Error code: " + exception.getStatusCode());
             } catch (Exception e) {
@@ -47,15 +52,15 @@ public class ErrorHandler implements ServerError {
         else if (t instanceof ResourceNotFoundException) {
             try {
                 renderErrorPage(404, response);
-                return null;
+                return;
             } catch (Exception e) {
             }
         }
         renderErrorPage(500, response);
-        return null;
     }
 
-    private void renderErrorPage(int statusCode, HttpServletResponse response) throws IOException {
+
+    private static void renderErrorPage(int statusCode, HttpServletResponse response) throws IOException {
         String errorHtml = TemplateService.getInstance().render("error/" + String.valueOf(statusCode), null);
         IOUtils.copy(new StringReader(errorHtml), response.getOutputStream());
     }
