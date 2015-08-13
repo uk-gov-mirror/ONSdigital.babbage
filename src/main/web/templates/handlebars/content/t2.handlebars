@@ -15,19 +15,17 @@
 	<div class="grid-wrap">
 		<ul class="list--neutral">
 			{{#each sections}}
-				{{#resolve "section" uri}}
-				{{#if section}}
-				    {{#ifany section.items section.datasets section.statsBulletins section.relatedArticles}}
+				{{#resolve uri}}
+				    {{#ifany items datasets statsBulletins relatedArticles}}
 				    	{{> partials/t2/t2-section}}
 				    {{else}}
-				    	{{#eq section.type 'taxonomy_landing_page'}}
+				    	{{#eq type 'taxonomy_landing_page'}}
 				    	    {{!-- if child landing page has sections to show --}}
-				    		{{#if section.sections}} 
+				    		{{#if sections}} 
 				    			{{> partials/t2/t2-section}}
 				    		{{/if}}
 				    	{{/eq}}
 				    {{/ifany}}
-				{{/if}}
 				{{/resolve}}
 			{{/each}}
 		</ul>

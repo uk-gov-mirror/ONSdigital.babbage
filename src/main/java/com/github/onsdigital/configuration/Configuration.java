@@ -47,6 +47,7 @@ public class Configuration {
         private static final String CHILDREN_ENDPOINT = "/children";
         private static final String PARENTS_ENDPOINT = "/parents";
         private static final int MAX_CONTENT_SERVICE_CONNECTION = defaultNumberIfBlank(getNumberValue("CONTENT_SERVICE_MAX_CONNECTION"), 50);
+        private static final String DEFAULT_CONTENT_DATE_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
 
         public static String getServerUrl() {
             return SERVER_URL;
@@ -66,6 +67,10 @@ public class Configuration {
 
         public static int getMaxContentServiceConnection() {
             return MAX_CONTENT_SERVICE_CONNECTION;
+        }
+
+        public static String getDefaultContentDatePattern() {
+            return DEFAULT_CONTENT_DATE_PATTERN;
         }
 
         //TODO: get rid of content path, should only be using content service

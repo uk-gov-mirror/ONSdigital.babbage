@@ -48,7 +48,7 @@ public class RequestUtil {
     public static Map<String, String> getAllCookies(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
         Map<String, String> cookiesMap = new HashMap<>();
-        if (cookiesMap == null) {
+        if (cookies == null) {
             return cookiesMap;
         }
         for (Cookie cookie : cookies) {

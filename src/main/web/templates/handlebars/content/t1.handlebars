@@ -16,31 +16,31 @@
         {{#each sections}}
         <div class="grid-col grid-col--home-hero tablet-wide-grid-one-fifth">
             <article class="nav-panel nav-panel--stats nav-panel--home-hero sectioned">
-                {{#resolve statistics.uri "description"}}
+                {{#resolve statistics.uri filter="description"}}
                 <div class="stat__wrap--home clickable-wrap">
                     <!-- add to dl -->
                     <!-- change to dt -->
                     <dl>
                         <dt class="nav-panel__header gamma flush equal-height">
-                        {{stat.title}}
+                        {{title}}
                         </dt>
                         <!-- change to dd's -->
                         <dd>
                         <span class="stat__figure--home block">
-                            {{stat.preUnit}} <span class="stat__figure-enhance">{{stat.number}}</span> {{unit}}
+                            {{preUnit}} <span class="stat__figure-enhance">{{number}}</span> {{unit}}
                         </span>
                         <span class="stat__description block">
-                            {{stat.date}}
+                            {{date}}
                         </span>
-                        <img class="stat__image--home" src="{{statistics.uri}}/sparkline" alt="{{stat.title}}">
+                        <img class="stat__image--home" src="{{statistics.uri}}/sparkline" alt="{{title}}">
                         <a class="js-enhance--hide" href="{{statistics.uri}}">More info</a>
                         </dd>
                     </dl>
                 </div>
                 {{/resolve}}
                 <footer class="nav-panel__footer-home-hero">
-                {{#resolve "t" theme.uri "title"}}
-                    <a href="{{theme.uri}}">Explore {{t.title}}</a>
+                {{#resolve theme.uri filter="title"}}
+                    <a href="{{theme.uri}}">Explore {{title}}</a>
                 {{/resolve}}
                 </footer>
             </article>

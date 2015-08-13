@@ -6,8 +6,8 @@
 			{{description.summary}}
 		</p>
 		<!-- /lede -->
-		{{#resolve "bulletin" statsBulletins.0.uri "description"}}
-		{{#resolve "data" items.0.uri}}
+		{{resolve statsBulletins.0.uri filter="description" assign="bulletin"}}
+		{{resolve items.0.uri assign="data"}}
 		<div class="grid-wrap">
 			{{#ifany data.years data.quarters data.months}}
 			{{> partials/t3/headline-data}}
@@ -33,7 +33,7 @@
 							{{bulletin.headline3}}
 						</li>
 					</ul>
-					<p class="text-right"><a href="{{bulletin.uri}}">Read statistical bulletin</a></p>
+					<p class="text-right"><a href="{{statsBulletins.0.uri}}">Read statistical bulletin</a></p>
 				</div>
 				{{#ifany data.years data.quarters data.months}}
 				{{else}}
@@ -50,8 +50,6 @@
 			<!-- /grid-col -->
 		</div>
 		<!-- /grid-wrap -->
-		{{/resolve}}
-		{{/resolve}}
 	</div>
 	<!-- /wrapper -->
 </div>

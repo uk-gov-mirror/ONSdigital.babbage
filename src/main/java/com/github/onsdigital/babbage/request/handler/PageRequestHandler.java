@@ -24,7 +24,7 @@ public class PageRequestHandler implements RequestHandler {
 
     @Override
     public BabbageResponse get(String uri, HttpServletRequest request) throws IOException, ContentNotFoundException, ContentReadException {
-        String html = TemplateService.getInstance().render(ContentClient.getInstance().getContentStream(uri).getAsString());
+        String html = TemplateService.getInstance().renderContent(ContentClient.getInstance().getContentStream(uri).getDataStream());
         return new BabbageStringResponse(html, CONTENT_TYPE);
     }
 

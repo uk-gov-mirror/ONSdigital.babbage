@@ -15,6 +15,7 @@ import com.github.onsdigital.request.response.BabbageStringResponse;
 import com.github.onsdigital.search.bean.AggregatedSearchResult;
 import com.github.onsdigital.search.util.SearchHelper;
 import com.github.onsdigital.babbage.template.TemplateService;
+import com.google.gson.Gson;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -109,12 +110,12 @@ public class Search {
 
     public String renderSearchPage(AggregatedSearchResult results, int currentPage, String searchTerm, String[] types, boolean includeStatics, boolean includeAllData) throws IOException {
         SearchResultsPage searchPage = buildResultsPage(results, currentPage, searchTerm, types, includeStatics, includeAllData);
-        return TemplateService.getInstance().render(searchPage);
+        return TemplateService.getInstance().renderContent(ContentUtil.serialise(searchPage));
     }
 
     public String renderEmptySearchPage() throws IOException {
         SearchResultsPage searchPage = new SearchResultsPage();
-        return TemplateService.getInstance().render("content/t10", searchPage);
+        return TemplateService.getInstance().renderContent(ContentUtil.serialise(searchPage));
     }
 
 

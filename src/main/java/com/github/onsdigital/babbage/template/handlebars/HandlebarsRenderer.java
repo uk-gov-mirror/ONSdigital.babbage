@@ -1,17 +1,13 @@
 package com.github.onsdigital.babbage.template.handlebars;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.jknack.handlebars.*;
+import com.github.jknack.handlebars.Context;
+import com.github.jknack.handlebars.Handlebars;
+import com.github.jknack.handlebars.HumanizeHelper;
+import com.github.jknack.handlebars.Template;
 import com.github.jknack.handlebars.cache.HighConcurrencyTemplateCache;
-import com.github.jknack.handlebars.context.FieldValueResolver;
 import com.github.jknack.handlebars.context.MapValueResolver;
-import com.github.jknack.handlebars.context.MethodValueResolver;
 import com.github.jknack.handlebars.helper.StringHelpers;
 import com.github.jknack.handlebars.io.FileTemplateLoader;
-import com.github.onsdigital.babbage.template.TemplateRenderer;
-import com.github.onsdigital.babbage.template.handlebars.helpers.*;
 import com.github.onsdigital.babbage.template.handlebars.helpers.base.BabbageHandlebarsHelper;
 import org.reflections.Reflections;
 import org.reflections.util.ConfigurationBuilder;
@@ -25,8 +21,11 @@ import static com.github.onsdigital.configuration.Configuration.HANDLEBARS.getMa
 
 /**
  * Created by bren on 28/05/15.
+ *
+ * HandlebarsRenderer renders data in Map Value structure
+ *
  */
-public class HandlebarsRenderer implements TemplateRenderer {
+public class HandlebarsRenderer {
 
     private Handlebars handlebars;
 
@@ -43,23 +42,24 @@ public class HandlebarsRenderer implements TemplateRenderer {
         registerHelpers();
     }
 
-    @Override
-    public String renderTemplate(Object data, Map<String, Object> additionalData) throws IOException {
-        return renderTemplate(getMainContentTemplateName(), data, additionalData);
+    /**
+     *
+     * Renders content using main handlebars template
+     * @param data
+     * @param additionalData
+     * @return
+     * @throws IOException
+     */
+    public String renderContent(Map<String, Object> data, Map<String, Object> additionalData) throws IOException {
+        return render(getMainContentTemplateName(), data, additionalData);
     }
 
-    @Override
-    public String renderTemplate(String templateName, Object data, Map<String, Object> additionalData) throws IOException {
+    public String render(String templateName, Map<String, Object> data, Map<String, Object> additionalData) throws IOException {
         Template template = getTemplate(templateName);
 
-        Object inputData = data instanceof String ? toJsonNode(data) : data;
-
         Context.Builder builder = Context
-                .newBuilder(inputData)
-                .resolver(JsonNodeValueResolver.INSTANCE,
-                        FieldValueResolver.INSTANCE,
-                        MapValueResolver.INSTANCE
-                );
+                .newBuilder(data)
+                .resolver(MapValueResolver.INSTANCE);
 
         if (additionalData != null) {
             for (Map.Entry<String, Object> entry : additionalData.entrySet()) {
@@ -116,9 +116,5 @@ public class HandlebarsRenderer implements TemplateRenderer {
             throw new RuntimeException("Failed initializing request handlers", e);
         }
 
-    }
-
-    private JsonNode toJsonNode(Object data) throws IOException {
-        return new ObjectMapper().readValue(String.valueOf(data), JsonNode.class);
     }
 }

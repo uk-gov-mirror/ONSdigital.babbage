@@ -1,11 +1,9 @@
-{{!-- Resolve navigation fetching children of root uri "/" with depth 2 --}}
-{{resolveChildren "/" depth=2 assign="navigation"}}
 {{> partials/header}}
 <main id="main" role="main" tabindex="-1">
 <div class="page-header slate">
   <div class="wrapper">
     <p class="page-header--error-desc"><strong>We're Sorry</strong></p>
-    <h1 class="page-header__title flush--half--bottom">404 - The webpage you are requesting does not exist on the site</h1>
+    <h1 class="page-header__title flush--half--bottom">401 - Unauhorized</h1>
   </div>
   <!-- /nav-panel -->
 </div>
@@ -18,17 +16,15 @@
       <article>
         <div class="box box--padded box--red-dark box--red-dark--separated-left sectioned">
           <header class="box__header">
-            <h2 class="gamma">Well this is so embarassing</h2>
+            <h2 class="gamma">Restricted</h2>
           </header>
           <!-- /box__header -->
           <div class="grid-wrap">
             <div class="grid-col desktop-grid-two-thirds">
-              <p> The page may have been moved, updated or deleted or you may have typed the web address incorrectly, please check the url and spelling. Alternatively, please try the search, or return to the <a href="/" title="Our homepage" target="_self">homepage</a> and use the sitemap.
-            </p>
-            <p>If you still encounter problems please <a href="mailto:web.comments@ons.gov.uk" title="Contact Us">contact us</a>. We apologise for any inconvenience this may have caused.</p>
+              <p> The page you are requesting has restricted access, please log in.</p>
           </div>
           <div class="grid-col desktop-grid-one-third">
-            <p><a href="http://xkcd.com/882/"><img src="/ui/img/404.png" alt="404image"/></a></p>
+            <p><a href="http://xkcd.com/882/"><img src="/ui/img/404.png" alt="401image"/></a></p>
           </div>
         </div>
       </article>

@@ -53,10 +53,12 @@
 					<div id="content-{{@index}}" class="accordion__content" aria-labelledby="sc-{{@index}}">
 						<ul class="list--neutral">
 							{{#each chapters}}
+							{{#resolve uri filter="description"}}
 							<li>
-								<h4 class="flush" ><a href="{{uri}}" class="chapter">{{description.title}}</a></h4>
-								<p>{{description.headline}}</p>
+								<h4 class="flush" ><a href="{{uri}}" class="chapter">{{title}}</a></h4>
+								<p>{{headline}}</p>
 							</li>
+							{{/resolve}}
 							{{/each}}
 						</ul>
 					</div>
@@ -70,10 +72,12 @@
 					<div class="accordion__content">
 						<ul class="list--neutral">
 							{{#each datasets}}
+							{{#resolve uri filter="title"}}
 							<li>
-								<h4 class="flush"><a href="{{uri}}">{{description.title}}</a></h4>
+								<h4 class="flush"><a href="{{uri}}">{{title}}</a></h4>
                					<p>All the time series data in this compendium.</p>
 							</li>
+							{{/resolve}}
 							{{/each}}
 						</ul>
 					</div>
@@ -86,9 +90,11 @@
 							<div class="box__content">
 								<ul class="list--neutral">
 									{{#each relatedMethodology}}
+									{{#resolve uri filter="title"}}
 									<li class="flush--third--bottom">
-										<a href="{{uri}}" title="{{description.title}}">{{description.title}}</a>
+										<a href="{{uri}}" title="{{title}}">{{title}}</a>
 									</li>
+									{{/resolve}}
 									{{/each}}
 								</ul>
 							</div>

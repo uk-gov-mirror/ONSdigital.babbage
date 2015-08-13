@@ -158,11 +158,11 @@ public class ContentClient {
 
 
     private ContentReadException wrapException(HttpResponseException e) {
-        return new ContentReadException(e.getStatusCode(), e.getMessage());
+        return new ContentReadException(e.getStatusCode(), e.getMessage(),e);
     }
 
     private ContentReadException wrapException(IOException e) {
-        return new ContentReadException(HttpStatus.SC_INTERNAL_SERVER_ERROR, "Internal Server Error", e);
+        return new ContentReadException(HttpStatus.SC_INTERNAL_SERVER_ERROR, e.getMessage(), e);
     }
 
     //Reads collection cookie saved in thread context

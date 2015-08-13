@@ -19,7 +19,6 @@ import java.net.URISyntaxException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Created by bren on 22/07/15.
@@ -111,8 +110,8 @@ public class PooledHttpClient {
         if (ContentType.APPLICATION_JSON.getMimeType().equals(contentType.getMimeType())) {
             try {
                 String s = EntityUtils.toString(entity);
-                Message message = new Gson().fromJson(s, Message.class);
-                return message.getMessage();
+                ErrorMessage errorMessage = new Gson().fromJson(s, ErrorMessage.class);
+                return errorMessage.getMessage();
             } catch (Exception e) {
                 System.err.println("Failed reading content service error message");
                 e.printStackTrace();

@@ -4,7 +4,7 @@
 	</header>
 	<ol class="list--table list--table--complex table--striped-light table-light--sectioned">
 		{{#each items}}
-		{{#resolve "item" uri "description"}}
+		{{#resolve uri filter="description"}}
 		<li class="list--table__item list--table__body clickable-wrap">
 			<div class="list--table__item__body list--table__item__body--caption">
 				<h3 class="flush--half--bottom">

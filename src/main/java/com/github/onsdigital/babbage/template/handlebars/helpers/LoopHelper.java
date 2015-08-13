@@ -22,7 +22,7 @@ public class LoopHelper extends EachHelper implements BabbageHandlebarsHelper<Ob
     @Override
     public CharSequence apply(Object context, Options options) throws IOException {
         if (context == null) {
-            return StringUtils.EMPTY;
+            return "";
         }
 
         //Delegate everything other than repeat number to each helper

@@ -22,7 +22,7 @@ import java.io.StringReader;
 public class ErrorHandler implements ServerError {
 
     private static void logError(Throwable e) {
-        e.printStackTrace();
+        System.err.println(e.getMessage() + ", cause: " + (e.getCause() != null ? e.getCause().getMessage() : ""));
     }
 
     @Override
@@ -35,6 +35,7 @@ public class ErrorHandler implements ServerError {
             response.setStatus(exception.getStatusCode());
             try {
                 renderErrorPage(exception.getStatusCode(), response);//render template with status code name e.g. 404
+                return null;
             } catch (FileNotFoundException e) {
                 System.out.println("No template found for error code, rendering 500. Error code: " + exception.getStatusCode());
             } catch (Exception e) {
@@ -46,12 +47,11 @@ public class ErrorHandler implements ServerError {
         else if (t instanceof ResourceNotFoundException) {
             try {
                 renderErrorPage(404, response);
+                return null;
             } catch (Exception e) {
             }
-        } else {
-            renderErrorPage(500, response);
         }
-
+        renderErrorPage(500, response);
         return null;
     }
 

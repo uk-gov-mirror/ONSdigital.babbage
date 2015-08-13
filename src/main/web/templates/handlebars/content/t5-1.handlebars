@@ -200,7 +200,9 @@
             </tbody>
         </table>
     </div>
+    {{#unless cookies.jsEnhanced}}
     <img class="js-enhance--hide" src="{{uri}}/linechart" alt="{{description.title}}" width="875" height="400">
+    {{/unless}}
     <div class="chart-area__footer nojs-hidden js-enhance--show" data-chart-custom="">
         <span class="chart-area__footer__label">Download custom data</span>
         <div class="chart-area__footer__actions">
@@ -250,7 +252,7 @@
                         <p>Related time series:</p>
                         <ul>
                             {{#each relatedData}}
-                            {{#resolve uri "description"}}
+                            {{#resolve uri filter="description"}}
                             <li><a href="{{uri}}">{{#if cdid}}{{cdid}}: {{/if}}{{title}}</a></li>
                             {{/resolve}}
                             {{/each}}
@@ -265,7 +267,7 @@
                         <p>Related datasets:</p>
                         <ul>
                             {{#each relatedDatasets}}
-                            {{#resolve uri "description"}}
+                            {{#resolve uri filter="description"}}
                             <li><a href="{{uri}}">{{#if datasetId}}{{datasetId}}: {{/if}}{{title}}</a></li>
                             {{/resolve}}
                             {{/each}}
@@ -361,7 +363,7 @@
                     <div class="box__content">
                         <div>
                             {{#each relatedDocuments}}
-                            {{#resolve uri "title"}}
+                            {{#resolve uri filter="title"}}
                             <p><a href="{{uri}}">{{title}}
                                 {{#if edition}}
                                 {{#ne edition 'yes'}}: {{edition}}{{/ne}}
@@ -389,7 +391,7 @@
                         <div class="box__content">
                             <ul class="list--neutral">
                                 {{#each relatedMethodology}}
-                                {{#resolve uri "title"}}
+                                {{#resolve uri filter="title"}}
                                 <li class="flush--third--bottom">
                                     <a href="{{uri}}" title="{{title}}">{{title}}</a>
                                 </li>
