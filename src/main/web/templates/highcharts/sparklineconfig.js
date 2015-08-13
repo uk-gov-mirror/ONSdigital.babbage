@@ -28,7 +28,8 @@ function getSparklineConfig(timeseries) {
 			labels: {
 				crop: false,
 				style: {
-					'font-size': '40px'
+					'font-size': '35px',
+					'color': '#707070'
 				},
 				formatter: function() {
 					if (this.isFirst) {
@@ -42,7 +43,8 @@ function getSparklineConfig(timeseries) {
 			},
 			tickLength: 0,
 			//tickInterval: ':tickInterval:',
-			lineColor: 'transparent'
+			lineColor: '#707070',
+      lineWidth: 2
 		},
 		yAxis: {
 			endOnTick: false,
@@ -64,7 +66,7 @@ function getSparklineConfig(timeseries) {
 		plotOptions: {
 			series: {
 				animation: false,
-				lineWidth: 1,
+				lineWidth: 2,
 				shadow: false,
 				states: {
 					hover: {
@@ -72,7 +74,7 @@ function getSparklineConfig(timeseries) {
 					}
 				},
 				marker: {
-					radius: 1,
+					radius: 3,
 					states: {
 						hover: {
 							radius: 2
@@ -93,6 +95,7 @@ function getSparklineConfig(timeseries) {
 		series: [{
 			name: '',
 			data: ':data:',
+			color: '#007dc3',
 			marker: {
 				symbol: 'circle',
 				states: {
