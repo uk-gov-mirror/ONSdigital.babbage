@@ -6,6 +6,7 @@ import com.github.onsdigital.page.ContentRenderer;
 import com.github.onsdigital.request.handler.base.RequestHandler;
 import com.github.onsdigital.request.response.BabbageResponse;
 import com.github.onsdigital.request.response.BabbageStringResponse;
+import com.github.onsdigital.util.LocaleUtil;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.Cookie;
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Locale;
 
 /**
  * Created by bren on 28/05/15.
@@ -33,8 +35,12 @@ public class PageRequestHandler implements RequestHandler {
     @Override
     public BabbageResponse get(String requestedUri, HttpServletRequest request, ZebedeeRequest zebedeeRequest) throws IOException, ContentNotFoundException {
 
+        // todo: move this code up into the request delegator and pass the locale into this method?
+        Locale locale = LocaleUtil.getLocaleFromUri(request.getRequestURI());
+        requestedUri = LocaleUtil.trimLanguage(requestedUri);
+
         boolean jsEnhanced = isJsEnhanced(request);
-        ContentRenderer pageRenderingService = new ContentRenderer(zebedeeRequest, jsEnhanced);
+        ContentRenderer pageRenderingService = new ContentRenderer(zebedeeRequest, jsEnhanced, locale);
 
         try {
             Path dataPath = Paths.get(StringUtils.removeEnd(requestedUri, "/")).resolve("data.json");
@@ -44,6 +50,16 @@ public class PageRequestHandler implements RequestHandler {
         }
     }
 
+    @Override
+    public String getRequestType() {
+        return REQUEST_TYPE;
+    }
+
+    /**
+     * Return true if the client sends a jsEnhanced header.
+     * @param request
+     * @return
+     */
     public static boolean isJsEnhanced(HttpServletRequest request) {
         boolean jsEnhanced = false;
         Cookie[] cookies = request.getCookies();
@@ -59,10 +75,5 @@ public class PageRequestHandler implements RequestHandler {
             }
         }
         return jsEnhanced;
-    }
-
-    @Override
-    public String getRequestType() {
-        return REQUEST_TYPE;
     }
 }
