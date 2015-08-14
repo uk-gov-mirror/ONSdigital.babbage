@@ -9,7 +9,6 @@ import com.github.onsdigital.content.partial.navigation.Navigation;
 import com.github.onsdigital.content.partial.navigation.NavigationNode;
 import com.github.onsdigital.content.util.ContentUtil;
 import com.google.gson.JsonSyntaxException;
-import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.w3c.dom.DOMException;
 
@@ -42,10 +41,13 @@ public class NavigationUtil {
     }
 
     public static Navigation getNavigation() throws IOException {
+        return getNavigation("data.json");
+    }
+    public static Navigation getNavigation(String dataFileName) throws IOException {
         if (navigation == null || isExpired()) {
             synchronized (NavigationUtil.class) {
                 if (navigation == null || isExpired()) {
-                    List<NavigationNode> nodes = buildNavigationNodes();
+                    List<NavigationNode> nodes = buildNavigationNodes(dataFileName);
                     if (!jsonError) {
                         NavigationUtil.navigation = new Navigation();
                         navigation.setNodes(nodes);
@@ -69,13 +71,13 @@ public class NavigationUtil {
         return false;
     }
 
-    private static List<NavigationNode> buildNavigationNodes() throws IOException {
+    private static List<NavigationNode> buildNavigationNodes(String dataFileName) throws IOException {
         List<NavigationNode> navigationNodes = new ArrayList<NavigationNode>();
         Path taxonomyPath = getContentPath();
-        addNodes(navigationNodes, getNodes(taxonomyPath));
+        addNodes(navigationNodes, getNodes(taxonomyPath, dataFileName));
         for (NavigationNode node : navigationNodes) {
             node.children = new ArrayList<>();
-            addNodes(node.children, getNodes(FileSystems.getDefault().getPath(taxonomyPath + "/" + node.fileName)));
+            addNodes(node.children, getNodes(FileSystems.getDefault().getPath(taxonomyPath + "/" + node.fileName), dataFileName));
         }
         return navigationNodes;
     }
@@ -90,14 +92,14 @@ public class NavigationUtil {
         Collections.sort(nodeList);
     }
 
-    private static List<NavigationNode> getNodes(Path path) throws IOException {
+    private static List<NavigationNode> getNodes(Path path, String dataFileName) throws IOException {
         List<NavigationNode> nodes = new ArrayList<NavigationNode>();
         try (DirectoryStream<Path> stream = Files.newDirectoryStream(path)) {
             for (Path p : stream) {
                 // Iterate over the paths:
                 if (Files.isDirectory(p)) {
                     try {
-                        NavigationNode node = getNavigationNode(p);
+                        NavigationNode node = getNavigationNode(p, dataFileName);
                         if (node != null) {
                             nodes.add(node);
                         }
@@ -117,10 +119,10 @@ public class NavigationUtil {
         Collections.sort(nodeList);
     }
 
-    private static NavigationNode getNavigationNode(Path path) throws IOException {
+    private static NavigationNode getNavigationNode(Path path,String dataFileName) throws IOException {
         NavigationNode result = null;
 
-        Path dataJson = path.resolve("data.json");
+        Path dataJson = path.resolve(dataFileName);
         if (Files.exists(dataJson)) {
             try (InputStream input = Files.newInputStream(dataJson)) {
                 Page page = ContentUtil.deserialisePage(input);
@@ -161,7 +163,7 @@ public class NavigationUtil {
 
     public static void main(String[] args) {
         try {
-            List<NavigationNode> nodes = NavigationUtil.buildNavigationNodes();
+            List<NavigationNode> nodes = NavigationUtil.buildNavigationNodes("data.json");
             for (NavigationNode navigationNode : nodes) {
                 System.out.println(ReflectionToStringBuilder.toString(navigationNode));
             }
