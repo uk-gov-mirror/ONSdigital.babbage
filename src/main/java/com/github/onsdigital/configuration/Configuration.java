@@ -198,10 +198,7 @@ public class Configuration {
 
         private static String getChartConfig(Path filePath, InputStream input) throws IOException {
             if (Files.exists(filePath)) {
-                String config = IOUtils.toString(input);
-                int startIndex = config.indexOf("/*chart:start*/");
-                int endIndex = config.indexOf("/*chart:end*/");
-                return "{\n" + config.substring(startIndex, endIndex) + "}";
+                return IOUtils.toString(input);
             } else {
                 throw new IllegalStateException("******** CHART CONFIGURATION FILE NOT FOUND!!!!!! ***********");
             }
