@@ -42,8 +42,14 @@ public class PageRequestHandler implements RequestHandler {
         boolean jsEnhanced = isJsEnhanced(request);
         ContentRenderer pageRenderingService = new ContentRenderer(zebedeeRequest, jsEnhanced, locale);
 
+        String dataFileName = "data.json";
+
+        if (!Locale.ENGLISH.equals(locale)) {
+            dataFileName = "data_" + locale.getLanguage() + ".json";
+        }
+
         try {
-            Path dataPath = Paths.get(StringUtils.removeEnd(requestedUri, "/")).resolve("data.json");
+            Path dataPath = Paths.get(StringUtils.removeEnd(requestedUri, "/")).resolve(dataFileName);
             return new BabbageStringResponse(pageRenderingService.renderPage(dataPath.toString()), CONTENT_TYPE);
         } catch (ContentNotFoundException e) {
             return new BabbageStringResponse(pageRenderingService.renderPage(requestedUri + ".json"), CONTENT_TYPE);
