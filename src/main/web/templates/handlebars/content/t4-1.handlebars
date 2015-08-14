@@ -3,7 +3,7 @@
 		<div class="wrapper" >
 			{{> partials/breadcrumb}}
 			<p class="page-header__title page-header--stat-bulletin-desc">
-				Statistical bulletin
+				{{labels.bulletin}}
 			</p>
 			<h1 class="page-header__title flush--half--bottom">{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}</h1>
 			<div class="grid-wrap mini">
@@ -11,30 +11,30 @@
 				    {{#if description.nationalStatistic}}
 					<img src="/node_modules/ONS-Pattern-Library/dist/img/national-statistics.png" alt="National Statistics logo" />
 					{{/if}}
-					<span>Contact: </span><br/><a href="mailto:{{description.contact.email}}">{{#if description.contact.name}}{{description.contact.name}}{{else}}{{description.contact.email}}{{/if}}</a>
+					<span>{{labels.release-contact}} </span><br/><a href="mailto:{{description.contact.email}}">{{#if description.contact.name}}{{description.contact.name}}{{else}}{{description.contact.email}}{{/if}}</a>
 				</p>
 				<p class="grid-col tablet-grid-one-quarter divider--border-left">
-					<span>Release date: </span><br/>{{df description.releaseDate}}<br/>
+					<span>{{labels.release-date}} </span><br/>{{df description.releaseDate}}<br/>
 					{{#if description.latestRelease}}
-                      <a class="print-hidden" href="{{previousReleasesUri}}">previous releases</a>
+                      <a class="print-hidden" href="{{previousReleasesUri}}">{{labels.release-prev}}</a>
 					{{else}}
-                      <a class="print-hidden" href="{{latestReleaseUri}}">view latest release</a>
+                      <a class="print-hidden" href="{{latestReleaseUri}}">{{labels.release-next}}</a>
 					{{/if}}
 				</p>
 				{{#if description.nextRelease}}
 				<p class="grid-col tablet-grid-one-quarter divider--border-left">
-				  <span>Next release: </span><br/>{{description.nextRelease}}
+				  <span>{{labels.release-next}} </span><br/>{{description.nextRelease}}
 				</p>
 				{{/if}}
 				<p class="grid-col tablet-grid-one-quarter divider--border-left print-hidden">
 					<a href="" id="jsEnhancePrint" class="link-complex nojs-hidden js-enhance--show">
 						<span class="icon-print"></span>
-						<span class="link-complex__target print-analytics">Print full report</span>
+						<span class="link-complex__target print-analytics">{{labels.print-report}}</span>
 					</a>
 					<br class="nojs-hidden js-enhance--show"/>
 					<a href="{{uri}}/pdf" class="link-complex">
 						<span class="icon-download" role="presentation"></span>
-						<span class="link-complex__target">Download PDF</span>
+						<span class="link-complex__target">{{labels.dl-pdf}}</span>
 					</a>
 				</p>
 			</div>
@@ -44,7 +44,7 @@
 	<div class="wrapper">
 		<p class="lede">{{description.summary}}</p>
 		<div class="panel--separated--bottom page-break-avoid">
-			<h2>Table of contents</h2>
+			<h2>{{labels.toc}}</h2>
 			<ol id="toc" class="table-of-contents-ordered-list">
 				{{#each sections}}
 				<li>
@@ -76,7 +76,7 @@
 							<h2>{{@index_1}}. {{title}}</h2>
 						</header>
 						{{md markdown}}
-						<a class="print-hidden jsEnhanceAnimateScroll" href="#toc" title="Back to table of contents">Back to table of contents</a>
+						<a class="print-hidden jsEnhanceAnimateScroll" href="#toc" title="Back to table of contents">{{labels.back-to-toc}}</a>
 					</section>
 				{{/each}}
 				<!-- Accordion -->
@@ -87,7 +87,7 @@
 						<h2 class="accordion__title" aria-controls="content-{{@index}}">{{title}}</h2>
 						<div class="accordion__content panel--bottom-mar-small" aria-labelledby="sc-{{@index}}">
 							{{md markdown}}
-							<a class="print-hidden jsEnhanceAnimateScroll" href="#toc" title="Back to table of contents" class="">Back to table of contents</a>
+							<a class="print-hidden jsEnhanceAnimateScroll" href="#toc" title="Back to table of contents" class="">{{labels.back-to-toc}}</a>
 						</div>
 					</section>
 					{{/each}}
@@ -101,7 +101,7 @@
 				<div class="box box--green box--green--separated--left">
 					<div class="box__inner border box--padded">
 						<header class="box__header">
-							<h3>Data in this bulletin</h3>
+							<h3>{{labels.bulletin-related-data}}</h3>
 						</header>
 						<div class="box__content">
 							<ul class="list--neutral">
@@ -116,14 +116,14 @@
 				<!-- /article__content -->
         		<div class="box__inner border box--padded">
 					<h3 class="box__section__header">
-						Contact details for this statistical bulletin
+						{{labels.bulletin-contact}}
 					</h3>
 					<!-- /box__header -->
 					<div class="box__content">
 						<address>
 							{{#if description.contact.name}}{{description.contact.name}}<br/>{{/if}}
 							<a href="mailto:{{description.contact.email}}">{{description.contact.email}}</a></br>
-							{{#if description.contact.telephone}}Telephone: {{description.contact.telephone}}{{/if}}
+							{{#if description.contact.telephone}}{{labels.phone}}: {{description.contact.telephone}}{{/if}}
 						</address>
 					</div>
             		<!-- /box__content -->
@@ -141,7 +141,7 @@
 					{{#if relatedBulletins}}
 			    <article class="box box--teal--separated--left">
 						<div class="box__inner border box--padded solid">
-							<h3>Related bulletins</h3>
+							<h3>{{labels.bulletin-related-bulletins}}</h3>
 							<ul class="list--neutral">
 								{{#each relatedBulletins}}
 								<li>
