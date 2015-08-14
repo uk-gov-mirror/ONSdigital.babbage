@@ -1,11 +1,11 @@
 package com.github.onsdigital.babbage.util;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,62 +16,78 @@ import java.util.Map;
 public class JsonUtil {
 
     /**
-     * Converts json string to Map<String,Object>
+     * Converts json object string to Map<String,Object>
      *
      * @return
      */
-    public static Map<String, Object> deserialiseObject(String data) throws IOException {
-        return convert(data);
+    public static Map<String, Object> toMap(String data) throws IOException {
+        return fromJson(data, mapType());
     }
 
     /**
-     * Converts json stream to Map<String,Object>
+     * Converts json object stream to Map<String,Object>
      *
      * @return
      */
-    public static Map<String, Object> deserialiseObject(InputStream stream) throws IOException {
-        return convert(stream);
+    public static Map<String, Object> toMap(InputStream stream) throws IOException {
+        return fromJson(stream, mapType());
     }
 
-    public static List<Map<String, Object>> deserialiseArray(String data) throws IOException {
-        return convertArray(data);
-    }
-    public static List<Map<String, Object>> deserialiseArray(InputStream stream) throws IOException {
-        return convertArray(stream);
+    /**
+     * Converts json array to list
+     *
+     * @param data
+     * @return
+     * @throws IOException
+     */
+    public static List<Map<String, Object>> toList(String data) throws IOException {
+        return fromJson(data, listType());
     }
 
+    public static List<Map<String, Object>> toList(InputStream stream) throws IOException {
+        return fromJson(stream, listType());
+    }
 
-    private static Map<String, Object> convert(String data) throws IOException {
-        if (data == null) {
-            return Collections.emptyMap();
+    public static <T> T fromJson(String json, Class<T> clazz) throws IOException {
+        if (json == null) {
+            return null;
         }
-        return new ObjectMapper().readValue(data, new TypeReference<HashMap<String, Object>>() {
-        });
+        return objectMapper().readValue(json, clazz);
     }
 
-    private static Map<String, Object> convert(InputStream stream) throws IOException {
+    public static <T> T fromJson(InputStream stream, Class<T> clazz) throws IOException {
         if (stream == null) {
-            return Collections.emptyMap();
+            return null;
         }
-        return new ObjectMapper().readValue(stream, new TypeReference<HashMap<String, Object>>() {
-        });
+        return objectMapper().readValue(stream, clazz);
     }
 
-    private static List<Map<String, Object>> convertArray(String data) throws IOException {
-        if (data == null) {
-            return Collections.emptyList();
+
+    private static <T> T fromJson(String json, TypeReference type) throws IOException {
+        if (json == null) {
+            return null;
         }
-        return new ObjectMapper().readValue(data, new TypeReference<List<HashMap<String, Object>>>() {
-        });
+        return objectMapper().readValue(json, type);
     }
 
-    private static List<Map<String, Object>> convertArray(InputStream stream) throws IOException {
-        if (stream == null) {
-            return Collections.emptyList();
+    private static <T> T fromJson(InputStream jsonStream, TypeReference type) throws IOException {
+        if (jsonStream == null) {
+            return null;
         }
-        return new ObjectMapper().readValue(stream, new TypeReference<List<HashMap<String, Object>>>() {
-        });
+        return objectMapper().readValue(jsonStream, type);
     }
 
+    private static TypeReference<HashMap<String, Object>> mapType() {
+        return new TypeReference<HashMap<String, Object>>() {
+        };
+    }
+
+    private static TypeReference<List<HashMap<String, Object>>> listType() {
+        return new TypeReference<List<HashMap<String, Object>>>() {};
+    }
+
+    private static ObjectMapper objectMapper() {
+        return new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    }
 
 }

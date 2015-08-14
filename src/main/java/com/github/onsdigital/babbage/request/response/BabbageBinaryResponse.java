@@ -1,4 +1,4 @@
-package com.github.onsdigital.request.response;
+package com.github.onsdigital.babbage.request.response;
 
 import org.apache.commons.io.IOUtils;
 
@@ -6,10 +6,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.Reader;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
 
 public class BabbageBinaryResponse extends BabbageResponse {
 

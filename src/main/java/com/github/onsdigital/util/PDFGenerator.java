@@ -2,17 +2,15 @@ package com.github.onsdigital.util;
 
 import com.github.onsdigital.configuration.Configuration;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.ArrayUtils;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.concurrent.TimeUnit;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * Created by bren on 08/07/15.
@@ -23,13 +21,19 @@ public class PDFGenerator {
         private static final String URL = "http://localhost:8080";
     //Phantom js export code
 
-    public static Path generatePdf(String uri, String fileName) {
-        Runtime rt = Runtime.getRuntime();
-        // Execute command, redirect error to output to print all in the console
+    public static Path generatePdf(String uri, String fileName, Map<String, String> cookies) {
         String[] command = {
                 Configuration.PHANTOMJS.getPhantomjsPath(), "src/main/web/js/generatepdf.js", URL + uri, "" + TEMP_DIRECTORY_PATH + "/" + fileName + ".pdf"
         };
+
+        Iterator<Map.Entry<String, String>> iterator = cookies.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<String, String> next = iterator.next();
+            command = ArrayUtils.add(command, next.getKey());
+            command = ArrayUtils.add(command, next.getValue());
+        }
         try {
+        // Execute command, redirect error to output to print all in the console
             Process process = new ProcessBuilder(command).redirectErrorStream(true).start();
             System.out.println(ArrayUtils.toString(command));
             int exitStatus = process.waitFor();

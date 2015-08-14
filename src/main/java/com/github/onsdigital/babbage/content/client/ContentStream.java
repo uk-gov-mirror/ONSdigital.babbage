@@ -1,5 +1,8 @@
 package com.github.onsdigital.babbage.content.client;
 
+import org.apache.http.Header;
+import org.apache.http.HeaderElement;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.entity.ContentType;
 import org.apache.http.util.EntityUtils;
@@ -49,6 +52,27 @@ public class ContentStream  implements Closeable {
 
     private ContentType getContentType() {
         return ContentType.getLenient(response.getEntity());
+    }
+
+    /**
+     *
+     * @return size in bytes
+     */
+    public long getSize() {
+        return response.getEntity().getContentLength();
+    }
+
+    public String getName() {
+        Header[] contentDisposition = response.getHeaders("Content-Disposition");
+        if (contentDisposition != null && contentDisposition.length > 0) {
+            HeaderElement[] elements = contentDisposition[0].getElements();
+            if (elements != null && elements.length>0) {
+                NameValuePair filename = elements[0].getParameterByName("filename");
+                return filename == null ? null : filename.getValue();
+
+            }
+        }
+        return null;
     }
 
 

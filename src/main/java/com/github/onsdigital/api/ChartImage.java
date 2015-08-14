@@ -2,7 +2,7 @@ package com.github.onsdigital.api;
 
 import com.github.davidcarboni.restolino.framework.Api;
 import com.github.onsdigital.request.handler.highcharts.LineChartImageHandler;
-import com.github.onsdigital.request.response.BabbageResponse;
+import com.github.onsdigital.babbage.request.response.BabbageResponse;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

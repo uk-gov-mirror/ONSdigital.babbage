@@ -19,7 +19,7 @@ public class HighchartsChart {
     private String config;
     private Double min;
 
-    public HighchartsChart(TimeSeries timeSeries, String chartConfig) {
+public HighchartsChart(TimeSeries timeSeries, String chartConfig) {
         this.timeSeries = timeSeries;
         this.config = chartConfig;
         setTimseriesFields();

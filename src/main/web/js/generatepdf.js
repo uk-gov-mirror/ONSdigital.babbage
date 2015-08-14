@@ -81,16 +81,21 @@ page.viewportSize = {
 // Require the system module so I can read the command line arguments
 system = require('system');
 
-//Cookie to prevent beta disclaimer show up
-phantom.addCookie({
-    'domain': 'localhost',
-    'name': 'onsBetaDisclaimer',
-    'value': true
-});
-
 // Read the url and output file location from the command line argument
 address = system.args[1];
 output = system.args[2];
+for (var i = system.args.length - 1; i > 2; i=i-2) {
+    var cookie = system.args[i-1];
+    var value = system.args[i];
+    //Cookies to prevent beta disclaimer show up
+    phantom.addCookie({
+        'domain': 'localhost',
+        'name': cookie,
+        'value': value
+    });
+};
+
+
 page.settings.userAgent = 'WebKit/534.46 Mobile/9A405 Safari/7534.48.3';
 page.settings.javascriptEnabled = false;
 // Now we have everything settled, let's render the page

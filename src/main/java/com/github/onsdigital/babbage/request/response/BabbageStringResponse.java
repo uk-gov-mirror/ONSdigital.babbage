@@ -1,7 +1,6 @@
-package com.github.onsdigital.request.response;
+package com.github.onsdigital.babbage.request.response;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.CharEncoding;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;

@@ -6,7 +6,7 @@ import com.github.onsdigital.babbage.util.RequestUtil;
 import com.github.onsdigital.babbage.util.URIUtil;
 import com.github.onsdigital.cache.BabbageResponseCache;
 import com.github.onsdigital.configuration.Configuration;
-import com.github.onsdigital.request.response.BabbageResponse;
+import com.github.onsdigital.babbage.request.response.BabbageResponse;
 import com.google.common.util.concurrent.UncheckedExecutionException;
 import org.apache.commons.lang3.StringUtils;
 import org.reflections.Reflections;

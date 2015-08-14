@@ -87,6 +87,11 @@ public class ContentClient {
         return sendGet(getDataPath(), getParameters(uri, queryParameters));
     }
 
+    public ContentStream getResource(String uri) throws ContentReadException {
+        System.out.println("getContentStream(): Reading content from content server, uri:" + uri);
+        return sendGet(getResourcePath(), null);
+    }
+
     public ContentStream getChildren(String uri, Map<String, String[]> queryParameters) throws ContentReadException {
         System.out.println("getChildren(): Reading child tree, uri: " + uri);
         return sendGet(getChildContentPath(), getParameters(uri, queryParameters));
@@ -192,6 +197,14 @@ public class ContentClient {
             return getDataPath() + "/" + collectionId;
         }
     }
+    private String getResourcePath() {
+        String collectionId = getCollectionId();
+        if (collectionId == null) {
+            return getResourceEndpoint();
+        } else {
+            return getResourceEndpoint() + "/" + collectionId;
+        }
+    }
 
     private String getChildContentPath() {
         String collectionId = getCollectionId();
@@ -210,6 +223,43 @@ public class ContentClient {
         } else {
             return getParentsEndpoint() + "/" + collectionId;
         }
+    }
+
+    /**
+     * Create query parameters to filter content to be passed to content client
+     *
+     * @param filter
+     * @return
+     */
+    public static Map<String, String[]> filter(ContentFilter filter) {
+        if (filter == null) {
+            return Collections.emptyMap();
+        }
+        return params(filter.name().toLowerCase(), null);
+    }
+
+    /***
+     *
+     * Create query parameters to get depth of children content request
+     * @param depth
+     * @return
+     */
+    public static Map<String, String[]> depth(int depth) {
+        return params("depth", depth);
+    }
+
+    public static Map<String, String[]> params(String key, Object... values) {
+        HashMap<String, String[]> parameterMap = new HashMap<>();
+        if (values == null) {
+            parameterMap.put(key, null);
+        } else {
+            String[] strings = new String[values.length];
+            for (int i = 0; i < strings.length; i++) {
+                strings[i] = String.valueOf(values[i]);
+            }
+            parameterMap.put(key, strings);
+        }
+        return parameterMap;
     }
 
 }

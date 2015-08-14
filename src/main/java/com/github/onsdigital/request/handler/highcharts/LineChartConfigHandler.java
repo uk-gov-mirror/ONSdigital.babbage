@@ -7,8 +7,8 @@ import com.github.onsdigital.content.page.statistics.data.timeseries.TimeSeries;
 import com.github.onsdigital.content.util.ContentUtil;
 import com.github.onsdigital.data.LocalFileDataService;
 import com.github.onsdigital.highcharts.HighchartsChart;
-import com.github.onsdigital.request.response.BabbageResponse;
-import com.github.onsdigital.request.response.BabbageStringResponse;
+import com.github.onsdigital.babbage.request.response.BabbageResponse;
+import com.github.onsdigital.babbage.request.response.BabbageStringResponse;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;

@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
 
-import static com.github.onsdigital.babbage.util.JsonUtil.deserialiseObject;
+import static com.github.onsdigital.babbage.util.JsonUtil.toMap;
 
 /**
  * Created by bren on 28/05/15. Resolves data type and renders html page.
@@ -36,7 +36,7 @@ public class TemplateService {
      * @throws IOException
      */
     public String renderContent(String data) throws IOException {
-        return renderer.renderContent(deserialiseObject(data), getThreadContext());
+        return renderer.renderContent(toMap(data), getThreadContext());
     }
 
     /**
@@ -47,7 +47,7 @@ public class TemplateService {
      * @throws IOException
      */
     public String renderContent(InputStream stream) throws IOException {
-        return renderer.renderContent(deserialiseObject(stream), getThreadContext());
+        return renderer.renderContent(toMap(stream), getThreadContext());
     }
 
     /**
@@ -59,7 +59,7 @@ public class TemplateService {
      * @throws IOException
      */
     public String render(String templateName, String data) throws IOException {
-        return renderer.render(templateName, deserialiseObject(data), getThreadContext());
+        return renderer.render(templateName, toMap(data), getThreadContext());
     }
 
     private Map<String, Object> getThreadContext() {

@@ -1,12 +1,12 @@
-package com.github.onsdigital.babbage.request.handler.proxy;
+package com.github.onsdigital.babbage.request.handler.content;
 
 import com.github.onsdigital.babbage.content.client.ContentClient;
 import com.github.onsdigital.babbage.content.client.ContentReadException;
 import com.github.onsdigital.babbage.content.client.ContentStream;
 import com.github.onsdigital.babbage.request.handler.base.RequestHandler;
 import com.github.onsdigital.content.service.ContentNotFoundException;
-import com.github.onsdigital.request.response.BabbageResponse;
-import com.github.onsdigital.request.response.BabbageStringResponse;
+import com.github.onsdigital.babbage.request.response.BabbageResponse;
+import com.github.onsdigital.babbage.request.response.BabbageStringResponse;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;

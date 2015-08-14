@@ -2,18 +2,24 @@ package com.github.onsdigital.babbage.template.handlebars.helpers;
 
 import com.github.jknack.handlebars.Handlebars;
 import com.github.jknack.handlebars.Options;
+import com.github.onsdigital.babbage.content.client.ContentClient;
+import com.github.onsdigital.babbage.content.client.ContentReadException;
+import com.github.onsdigital.babbage.content.client.ContentStream;
 import com.github.onsdigital.babbage.template.handlebars.helpers.base.BabbageHandlebarsHelper;
 import com.github.onsdigital.babbage.template.handlebars.helpers.util.HelperUtils;
 import org.apache.commons.io.FilenameUtils;
 
 import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * Created by bren on 08/07/15.
  */
 public enum FileHelpers implements BabbageHandlebarsHelper<String> {
 
-    /*File size helper*/
+    /**
+     * File size helper reads file size from content service
+     */
     fs {
 
         @Override
@@ -21,10 +27,10 @@ public enum FileHelpers implements BabbageHandlebarsHelper<String> {
             if (options.isFalsy(uri)) {
                 return null;
             }
-            try {
-                Long size = HelperUtils.getFileSize(uri);
-                return humanReadableByteCount(size, true);
-            } catch (IOException e) {
+            try(ContentStream stream = ContentClient.getInstance().getContentStream(uri)) {
+                return humanReadableByteCount(stream.getSize(), true);
+            } catch (Exception e) {
+                System.err.printf("Failed reading file size from content service, uri: %s cause: %s", uri, e.getMessage());
                 return null;
             }
         }

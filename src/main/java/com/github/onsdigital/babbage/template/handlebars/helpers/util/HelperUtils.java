@@ -43,24 +43,5 @@ public class HelperUtils {
         return !isEqual(op, o1, o2);
     }
 
-    public static Long getFileSize(String uri) throws IOException {
-        Path file = getFile(uri);
-
-        return Files.size(file);
-    }
-
-    private static Path getFile(String uri) throws FileNotFoundException {
-        // Standardise the path:
-        String uriPath = StringUtils.removeStart(uri, "/");
-        Path path = FileSystems.getDefault().getPath(
-                Configuration.CONTENT_SERVICE.getContentPath());
-
-        Path file = path.resolve(uriPath);
-        if (!Files.exists(file)) {
-            throw new FileNotFoundException();
-        }
-        return file;
-    }
-
 }
 
