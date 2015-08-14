@@ -43,10 +43,9 @@ public class PageRequestHandler implements RequestHandler {
         ContentRenderer pageRenderingService = new ContentRenderer(zebedeeRequest, jsEnhanced, locale);
 
         String dataFileName = "data.json";
-
-        if (!Locale.ENGLISH.equals(locale)) {
-            dataFileName = "data_" + locale.getLanguage() + ".json";
-        }
+//        if (!Locale.ENGLISH.equals(locale)) {
+//            dataFileName = "data_" + locale.getLanguage() + ".json";
+//        }
 
         try {
             Path dataPath = Paths.get(StringUtils.removeEnd(requestedUri, "/")).resolve(dataFileName);
