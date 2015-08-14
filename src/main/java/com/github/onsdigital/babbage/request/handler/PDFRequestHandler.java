@@ -7,7 +7,7 @@ import com.github.onsdigital.babbage.content.client.ContentStream;
 import com.github.onsdigital.babbage.request.handler.base.RequestHandler;
 import com.github.onsdigital.babbage.request.response.BabbageBinaryResponse;
 import com.github.onsdigital.babbage.request.response.BabbageResponse;
-import com.github.onsdigital.babbage.util.JsonUtil;
+import com.github.onsdigital.babbage.util.json.JsonUtil;
 import com.github.onsdigital.babbage.util.RequestUtil;
 import com.github.onsdigital.util.PDFGenerator;
 import org.apache.commons.lang3.StringUtils;

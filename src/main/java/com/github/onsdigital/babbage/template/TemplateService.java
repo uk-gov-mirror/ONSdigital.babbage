@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
 
-import static com.github.onsdigital.babbage.util.JsonUtil.toMap;
+import static com.github.onsdigital.babbage.util.json.JsonUtil.toMap;
 
 /**
  * Created by bren on 28/05/15. Resolves data type and renders html page.
@@ -54,11 +54,34 @@ public class TemplateService {
      * Renders template with given name using given data
      *
      * @param templateName
+     * @return
+     * @throws IOException
+     */
+    public String renderTemplate(String templateName) throws IOException {
+        return renderTemplate(templateName, "");
+    }
+
+    /**
+     * Renders template with given name using given data
+     *
+     * @param templateName
      * @param data nullable, must be a json object, arrays are not accepted
      * @return
      * @throws IOException
      */
-    public String render(String templateName, String data) throws IOException {
+    public String renderTemplate(String templateName, String data) throws IOException {
+        return renderer.render(templateName, toMap(data), getThreadContext());
+    }
+
+    /**
+     * Renders template with given name using given data
+     *
+     * @param templateName
+     * @param data nullable, must be a json object, arrays are not accepted
+     * @return
+     * @throws IOException
+     */
+    public String renderTemplate(String templateName, InputStream data) throws IOException {
         return renderer.render(templateName, toMap(data), getThreadContext());
     }
 

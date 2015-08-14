@@ -39,7 +39,7 @@ public class ErrorHandler implements ServerError {
             ContentReadException exception = (ContentReadException) t;
             response.setStatus(exception.getStatusCode());
             try {
-                renderErrorPage(exception.getStatusCode(), response);//render template with status code name e.g. 404
+                renderErrorPage(exception.getStatusCode(), response);//renderTemplate template with status code name e.g. 404
                 return;
             } catch (FileNotFoundException e) {
                 System.out.println("No template found for error code, rendering 500. Error code: " + exception.getStatusCode());
@@ -61,7 +61,7 @@ public class ErrorHandler implements ServerError {
 
 
     private static void renderErrorPage(int statusCode, HttpServletResponse response) throws IOException {
-        String errorHtml = TemplateService.getInstance().render("error/" + String.valueOf(statusCode), null);
+        String errorHtml = TemplateService.getInstance().renderTemplate("error/" + String.valueOf(statusCode));
         IOUtils.copy(new StringReader(errorHtml), response.getOutputStream());
     }
 }

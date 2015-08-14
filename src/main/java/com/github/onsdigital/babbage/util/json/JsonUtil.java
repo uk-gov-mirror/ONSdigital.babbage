@@ -1,14 +1,19 @@
-package com.github.onsdigital.babbage.util;
+package com.github.onsdigital.babbage.util.json;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 /**
  * Created by bren on 12/08/15.
@@ -48,8 +53,16 @@ public class JsonUtil {
         return fromJson(stream, listType());
     }
 
+    public static String toJson(Object object) throws InvalidJsonException {
+        try {
+            return objectMapper().writeValueAsString(object);
+        } catch (JsonProcessingException e) {
+            throw new InvalidJsonException("Failed parsing to json", e);
+        }
+    }
+
     public static <T> T fromJson(String json, Class<T> clazz) throws IOException {
-        if (json == null) {
+        if(isEmpty(json)) {
             return null;
         }
         return objectMapper().readValue(json, clazz);
@@ -64,7 +77,7 @@ public class JsonUtil {
 
 
     private static <T> T fromJson(String json, TypeReference type) throws IOException {
-        if (json == null) {
+        if(StringUtils.isEmpty(json)) {
             return null;
         }
         return objectMapper().readValue(json, type);
@@ -87,7 +100,7 @@ public class JsonUtil {
     }
 
     private static ObjectMapper objectMapper() {
-        return new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        return new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false).setSerializationInclusion(JsonInclude.Include.NON_NULL);
     }
 
 }

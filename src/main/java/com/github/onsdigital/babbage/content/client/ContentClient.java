@@ -88,8 +88,8 @@ public class ContentClient {
     }
 
     public ContentStream getResource(String uri) throws ContentReadException {
-        System.out.println("getContentStream(): Reading content from content server, uri:" + uri);
-        return sendGet(getResourcePath(), null);
+        System.out.println("getResource(): Reading resource from content server, uri:" + uri);
+        return sendGet(getResourcePath(), getParameters(uri ,null));
     }
 
     public ContentStream getChildren(String uri, Map<String, String[]> queryParameters) throws ContentReadException {

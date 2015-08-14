@@ -27,7 +27,7 @@ import static com.github.onsdigital.configuration.Configuration.GENERAL.isCacheE
  * <p/>
  * Due to url design data, page, charts are all served through the same endpoint. The request type comes after resource uri
  * <p/>
- * e.g. /economy/inflationpriceindices will render serve cpi page, in order to get data /economy/inflationpriceindices/data is to be used
+ * e.g. /economy/inflationpriceindices will renderTemplate serve cpi page, in order to get data /economy/inflationpriceindices/data is to be used
  * <p/>
  * RequestDelegator resolves what type of GET request is made and delegates flow to appropriate handlers
  */
@@ -71,7 +71,6 @@ public class RequestDelegator {
             }
 
             getResponse.apply(response);
-            return;
         } catch (Throwable t) {
             ErrorHandler.handle(request, response, t);
         } finally {

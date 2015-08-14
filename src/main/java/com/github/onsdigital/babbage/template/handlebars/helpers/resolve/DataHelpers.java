@@ -15,8 +15,8 @@ import java.util.Map;
 
 import static com.github.onsdigital.babbage.content.client.ContentClient.depth;
 import static com.github.onsdigital.babbage.content.client.ContentClient.filter;
-import static com.github.onsdigital.babbage.util.JsonUtil.toList;
-import static com.github.onsdigital.babbage.util.JsonUtil.toMap;
+import static com.github.onsdigital.babbage.util.json.JsonUtil.toList;
+import static com.github.onsdigital.babbage.util.json.JsonUtil.toMap;
 
 /**
  * Created by bren on 11/08/15.

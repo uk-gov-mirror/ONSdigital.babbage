@@ -2,7 +2,7 @@
     <h4 class="flush--third--vertical">{{title}}</h4>
     <h5 class="flush--third--bottom">{{subtitle}}</h5>
   <div id="chart-{{filename}}" data-uri="{{uri}}" class="markdown-chart">
-    {{#unless jsEnhanced}}
+    {{#unless cookies.jsEnhanced}}
       <img src="{{uri}}/chartimage" alt="{{alt-text}}">
     {{/unless}}
   </div>
