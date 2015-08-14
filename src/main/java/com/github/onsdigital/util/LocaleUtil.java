@@ -1,5 +1,9 @@
 package com.github.onsdigital.util;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
@@ -10,6 +14,7 @@ import java.util.*;
 public class LocaleUtil {
 
     private static String defaultLanguage = "en";
+    private static Locale english = Locale.ENGLISH;
     private static List<String> supportedLanguages = new ArrayList<>(Arrays.asList(defaultLanguage, "cy"));
 
     private static Map<Locale, Map<String, String>> localeToLabels = new HashMap<>();
@@ -23,6 +28,7 @@ public class LocaleUtil {
 
     /**
      * Given a uri string determine the locale.
+     *
      * @param uri
      * @return
      */
@@ -38,30 +44,56 @@ public class LocaleUtil {
      * @return
      */
     public static Map<String, String> getLabels(Locale locale) {
-
+// disabled caching while in development
 //        if (!localeToLabels.containsKey(locale))
 //            synchronized (LocaleUtil.class) {
 //                if (!localeToLabels.containsKey(locale)) {
 //                    // resource bundle class used under the covers to automate the selection of the bundle file for the given
 //                    // locale. The supported locales are defined by the available bundle property files.
-//                    ResourceBundle labelsResourceBundle = ResourceBundle.getBundle("LabelsBundle", locale);
-//                    Map<String, String> labels = toMap(labelsResourceBundle);
-//                    ResourceBundle.clearCache(); // clear the internal cache of resource bundle as we are caching as maps.
+//                    Properties properties = loadProperties(locale);
+//                    Map<String, String> labels = toMap(properties);
 //                    localeToLabels.put(locale, labels);
 //                }
 //            }
 //
 //        return localeToLabels.get(locale);
 
-        ResourceBundle labelsResourceBundle = ResourceBundle.getBundle("LabelsBundle", locale);
-        Map<String, String> labels = toMap(labelsResourceBundle);
-        ResourceBundle.clearCache(); // clear the internal cache of resource bundle as we are caching as maps.
+        Properties properties = loadProperties(locale);
+        Map<String, String> labels = toMap(properties);
         return labels;
     }
 
+    private static Properties loadProperties(Locale locale) {
+        Properties properties;
+
+        try {
+            try {
+                if (locale.equals(english)) {
+                    properties = LoadProperties("LabelsBundle.properties");
+                } else {
+                    properties = LoadProperties("LabelsBundle_" + locale.getLanguage() + ".properties");
+                }
+
+            } catch (IOException e) {
+                properties = LoadProperties("LabelsBundle.properties");
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to load search properties file", e);
+        }
+        return properties;
+    }
+
+    private static Properties LoadProperties(String filename) throws IOException {
+        Properties properties = new Properties();
+        InputStream utf8in = LocaleUtil.class.getClassLoader().getResourceAsStream(filename);
+        Reader reader = new InputStreamReader(utf8in, "UTF-8");
+        properties.load(reader);
+        return properties;
+    }
 
     /**
      * Remove the language portion of the given uri if there is one.
+     *
      * @param uri
      * @return
      */
@@ -95,6 +127,7 @@ public class LocaleUtil {
 
     /**
      * Get the language recognised from the given uri. If no language is found then use the default.
+     *
      * @param uri
      * @return
      */
@@ -118,6 +151,7 @@ public class LocaleUtil {
 
     /**
      * Return true if a language is recognised on the front of the given path.
+     *
      * @param path
      * @return
      */
@@ -152,6 +186,18 @@ public class LocaleUtil {
         while (keys.hasMoreElements()) {
             String key = keys.nextElement();
             map.put(key, resourceBundle.getString(key));
+        }
+
+        return map;
+    }
+
+    private static Map<String, String> toMap(Properties properties) {
+        Map<String, String> map = new HashMap<>();
+
+        Enumeration<?> keys = properties.propertyNames();
+        while (keys.hasMoreElements()) {
+            String key = keys.nextElement().toString();
+            map.put(key, properties.getProperty(key));
         }
 
         return map;
