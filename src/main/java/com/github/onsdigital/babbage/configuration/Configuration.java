@@ -42,7 +42,7 @@ public class Configuration {
 
     /*External content server configuration*/
     public static class CONTENT_SERVICE {
-        private static final String SERVER_URL =  StringUtils.removeEnd(StringUtils.defaultIfBlank(getValue("CONTENT_SERVICE_URL"), "http://localhost:8083"), "/");
+        private static final String SERVER_URL =  StringUtils.removeEnd(StringUtils.defaultIfBlank(getValue("CONTENT_SERVICE_URL"), "http://localhost:8082"), "/");
         private static final String DATA_ENDPOINT = "/data";
         private static final String CHILDREN_ENDPOINT = "/children";
         private static final String PARENTS_ENDPOINT = "/parents";
