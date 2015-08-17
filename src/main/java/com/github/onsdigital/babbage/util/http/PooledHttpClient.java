@@ -54,6 +54,7 @@ public class PooledHttpClient {
             builder.setHost(givenHost.getHost());
             builder.setPort(givenHost.getPort());
             builder.setPath(givenHost.getPath());
+            builder.setUserInfo(givenHost.getUserInfo());
         } else {
             builder.setScheme("http");
             builder.setHost(host);
@@ -201,7 +202,7 @@ public class PooledHttpClient {
     private class ShutdownHook extends Thread {
         @Override
         public void run() {
-            System.out.println("Shutting down connection pool to host: %s" + HOST);
+            System.out.println("Shutting down connection pool to host:" + HOST);
             try {
                 if (httpClient != null) {
                     shutdown();
