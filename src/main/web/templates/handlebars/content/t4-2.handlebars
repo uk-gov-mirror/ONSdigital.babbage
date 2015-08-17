@@ -1,87 +1,89 @@
 <main id="main" role="main" tabindex="-1">
-	<div class="page-header slate slate--grey-bar">
-		<div class="wrapper" >
-			{{> partials/breadcrumb}}
-			<p class="page-header__title page-header--stat-bulletin-desc">
-				Article
+<div class="page-header slate slate--grey-bar">
+	<div class="wrapper" >
+		{{> partials/breadcrumb}}
+		<p class="page-header__title page-header--stat-bulletin-desc">
+			Article
+		</p>
+		<h1 class="page-header__title flush--half--bottom">{{description.title}}
+		{{#if description.edition}}
+		{{#if_ne description.edition 'yes'}}: {{description.edition}}{{/if_ne}}
+		{{/if}}
+		</h1>
+		<div class="grid-wrap mini">
+			<p class="grid-col tablet-grid-one-quarter {{#if description.nationalStatistic}}page-header__meta-block-with-img{{/if}}">
+				{{#if description.nationalStatistic}}
+				<img src="/node_modules/ONS-Pattern-Library/dist/img/national-statistics.png" alt="National Statistics logo" />
+				{{/if}}
+				<span>Contact: </span><br/><a href="mailto:{{description.contact.email}}">{{#if description.contact.name}}{{description.contact.name}}{{else}}{{description.contact.email}}{{/if}}</a>
 			</p>
-			<h1 class="page-header__title flush--half--bottom">{{description.title}}
-				{{#if description.edition}}
-					{{#if_ne description.edition 'yes'}}: {{description.edition}}{{/if_ne}}
-				{{/if}}
-			</h1>
-			<div class="grid-wrap mini">
-				<p class="grid-col tablet-grid-one-quarter {{#if description.nationalStatistic}}page-header__meta-block-with-img{{/if}}">
-					{{#if description.nationalStatistic}}
-				    <img src="/node_modules/ONS-Pattern-Library/dist/img/national-statistics.png" alt="National Statistics logo" />
-				    {{/if}}
-					<span>Contact: </span><br/><a href="mailto:{{description.contact.email}}">{{#if description.contact.name}}{{description.contact.name}}{{else}}{{description.contact.email}}{{/if}}</a>
-				</p>
-				<p class="grid-col tablet-grid-one-quarter divider--border-left">
-					<span>Release date: </span><br/>{{df description.releaseDate}}<br/>
-					{{#if description.latestRelease}}
-                      <a class="print-hidden" href="{{previousReleasesUri}}">previous releases</a>
-					{{else}}
-                      <a class="print-hidden" href="{{latestReleaseUri}}">view latest release</a>
-					{{/if}}
-				</p>
-				{{#if description.nextRelease}}
-				<p class="grid-col tablet-grid-one-quarter divider--border-left">
-					<span>Next release: </span><br/>{{description.nextRelease}}
-				</p>
-				{{/if}}
-				<p class="grid-col tablet-grid-one-quarter divider--border-left print-hidden">
-					<a href="" id="jsEnhancePrint" class="link-complex nojs-hidden js-enhance--show">
-						<span class="icon-print"></span>
-						<span class="link-complex__target print-analytics">Print full report</span>
-					</a>
-					<br class="nojs-hidden js-enhance--show"/>
-					<a href="{{uri}}/pdf" class="link-complex">
-						<span class="icon-download" role="presentation"></span>
-						<span class="link-complex__target">Download PDF</span>
-					</a>
-				</p>
-			</div>
+			<p class="grid-col tablet-grid-one-quarter divider--border-left">
+				<span>Release date: </span><br/>{{df description.releaseDate}}<br/>
+				{{#resolve (concat (parentPath uri) "/latest") filter="title"}}
+				{{#if_eq uri ../uri}}
+				<a class="print-hidden" href="{{parentPath uri}}/previousReleases">previous releases</a>
+				{{else}}
+				<a class="print-hidden" href="{{uri}}">view latest release</a>
+				{{/if_eq}}
+				{{/resolve}}
+			</p>
+			{{#if description.nextRelease}}
+			<p class="grid-col tablet-grid-one-quarter divider--border-left">
+				<span>Next release: </span><br/>{{description.nextRelease}}
+			</p>
+			{{/if}}
+			<p class="grid-col tablet-grid-one-quarter divider--border-left print-hidden">
+				<a href="" id="jsEnhancePrint" class="link-complex nojs-hidden js-enhance--show">
+					<span class="icon-print"></span>
+					<span class="link-complex__target print-analytics">Print full report</span>
+				</a>
+				<br class="nojs-hidden js-enhance--show"/>
+				<a href="{{uri}}/pdf" class="link-complex">
+					<span class="icon-download" role="presentation"></span>
+					<span class="link-complex__target">Download PDF</span>
+				</a>
+			</p>
 		</div>
 	</div>
-	<!-- Table of contents -->
-	<div class="wrapper">
-		<p class="lede">{{description._abstract}}</p>
-		<div class="panel--separated--bottom">
-			<h2>Table of contents</h2>
-			<ol id="toc" class="table-of-contents-ordered-list">
-				{{#each sections}}
-				<li>
-					<a href="#{{slugify title}}" class="jsEnhanceAnimateScroll">{{title}}</a>
-				</li>
-				{{/each}}
-				{{#if accordion}}
-					{{#each accordion}}
-					<li>
-						<a href="#{{slugify title}}" class="jsEnhanceAnimateScroll expand-accordion">{{title}}</a>
-					</li>
-					{{/each}}
-				{{/if}}
-			</ol>
-		</div>
+</div>
+<!-- Table of contents -->
+<div class="wrapper">
+	<p class="lede">{{description._abstract}}</p>
+	<div class="panel--separated--bottom">
+		<h2>Table of contents</h2>
+		<ol id="toc" class="table-of-contents-ordered-list">
+			{{#each sections}}
+			<li>
+				<a href="#{{slugify title}}" class="jsEnhanceAnimateScroll">{{title}}</a>
+			</li>
+			{{/each}}
+			{{#if accordion}}
+			{{#each accordion}}
+			<li>
+				<a href="#{{slugify title}}" class="jsEnhanceAnimateScroll expand-accordion">{{title}}</a>
+			</li>
+			{{/each}}
+			{{/if}}
+		</ol>
 	</div>
-	<!-- Body Sections -->
-	<div class="wrapper wrapper--content panel--bottom-mar print-links">
-		<div class="grid-wrap">
-			<article class="grid-col desktop-grid-two-thirds tablet-grid-full-width">
-				{{#each sections}}
-					{{!-- Prevent bottom border on last section before accordian --}}
-					{{#if @last}}
-					<section id="{{slugify title}}" class="panel--pad">
-					{{else}}
-					<section id="{{slugify title}}" class="panel--separated--bottom panel--pad">
+</div>
+<!-- Body Sections -->
+<div class="wrapper wrapper--content panel--bottom-mar print-links">
+	<div class="grid-wrap">
+		<article class="grid-col desktop-grid-two-thirds tablet-grid-full-width">
+			{{#each sections}}
+			{{!-- Prevent bottom border on last section before accordian --}}
+			{{#if @last}}
+			<section id="{{slugify title}}" class="panel--pad">
+				{{else}}
+				<section id="{{slugify title}}" class="panel--separated--bottom panel--pad">
 					{{/if}}
-						<header>
-							<h2>{{@index_1}}. {{title}}</h2>
-						</header>
-						{{md markdown}}
-						<a class="print-hidden jsEnhanceAnimateScroll" href="#toc" title="Back to table of contents">Back to table of contents</a>
-					</section>
+					<header>
+						<h2>{{@index_1}}. {{title}}</h2>
+					</header>
+					{{md markdown}}
+					<a class="print-hidden jsEnhanceAnimateScroll" href="#toc" title="Back to table of contents">Back to table of contents</a>
+				</section>
 				{{/each}}
 				<!-- Accordion -->
 				{{#if accordion}}
@@ -120,21 +122,21 @@
 				</div>
 				{{/if}}
 				<!-- /article__content -->
-		        <div class="box__inner border box--padded">
-		            <header class="box__header">
-		                <h3>Contact details for this article</h3>
-		            </header>
-		            <!-- /box__header -->
-		            <div class="box__content">
-		                <address>
+				<div class="box__inner border box--padded">
+					<header class="box__header">
+						<h3>Contact details for this article</h3>
+					</header>
+					<!-- /box__header -->
+					<div class="box__content">
+						<address>
 							{{#if description.contact.name}}{{description.contact.name}}</br>{{/if}}
-	                		<a href="mailto:{{description.contact.email}}">{{description.contact.email}}</a></br>
-	                		{{#if description.contact.telephone}}Telephone: {{description.contact.telephone}}{{/if}}
-		                </address>
-		            </div>
-		            <!-- /box__content -->
-		        </div>
-		        <!-- /box -->
+							<a href="mailto:{{description.contact.email}}">{{description.contact.email}}</a></br>
+							{{#if description.contact.telephone}}Telephone: {{description.contact.telephone}}{{/if}}
+						</address>
+					</div>
+					<!-- /box__content -->
+				</div>
+				<!-- /box -->
 			</div>
 		</div>
 	</div>
@@ -165,10 +167,10 @@
 					</article>
 					{{/if}}
 				</div>
-        		<div class="grid-col desktop-grid-one-third tablet-grid-full-width">
-         			{{> partials/local-box}}
-        		</div>
+				<div class="grid-col desktop-grid-one-third tablet-grid-full-width">
+					{{> partials/local-box}}
+				</div>
 			</div>
 		</div>
 	</div>
-</main>
+	</main>
