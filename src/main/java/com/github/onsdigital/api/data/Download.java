@@ -53,7 +53,7 @@ public class Download {
             DownloadRequest downloadRequest = initializeDownloadRequest(request);
             System.out.println("Download request recieved" + downloadRequest);
             response.setHeader("Content-Disposition", "attachment; filename=\"" + (downloadRequest.fileName != null ? downloadRequest.fileName : "data") + "." + downloadRequest.type + "\"");
-            response.setCharacterEncoding("UTF8");
+            response.setCharacterEncoding("UTF-8");
             response.setContentType("application/" + downloadRequest.type);
             processRequest(response.getOutputStream(), downloadRequest);
         } catch (IOException e) {
