@@ -1,17 +1,29 @@
-function getLinechartConfig(timeseries) {
- return  {
-   /*Do not delete or change chart:start chart:end comment blocks as it is used as markers for chart config for server side image rendering*/
-   /*chart:start*/
+{{!--This file uses filtered time series data, combines series and description filter--}} 
+(function(){
+
+{{!-- No need to set data, if jsEhanced data will be handled at client side. This is for image rendering on server side --}}
+{{#unless cookies.jsEnhanced}}
+var series = {{json series}};
+{{else}}
+{{#if parameters.download.0}}
+var series = {{json series}};
+{{else}}
+var series = [];
+{{/if}}
+{{/unless}}
+
+var description = {{json description}};
+var linechart = {
    chart: {
      type: 'line'
    },
    colors: ['#007dc3', '#409ed2', '#7fbee1', '#007dc3', '#409ed2', '#7fbee1'],
 
    title: {
-     text: timeseries.description.title
+     text: description.title
    },
    subtitle: {
-     text: 'Source: ' + timeseries.description.source,
+     text: 'Source: ' + description.source,
      floating: true,
      align: 'right',
      x: 0,
@@ -25,7 +37,21 @@ function getLinechartConfig(timeseries) {
    },
    xAxis: {
      categories: [],
-     tickInterval: ':tickInterval:',
+     tickInterval:  function(){ 
+         if (series.length <= 20) {
+            return 1;
+        } else if (series.length <= 80) {
+            return 4;
+        } else if (series.length <= 240) {
+            return 12;
+        } else if (series.length <= 480) {
+            return 48;
+        } else if (series.length <= 960) {
+            return 96;
+        } else {
+            return 192;
+        }
+     }(),
      labels: {
        formatter: function() {
          var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
@@ -48,15 +74,22 @@ function getLinechartConfig(timeseries) {
    },
    yAxis: {
      title: {
-       text: timeseries.description.preUnit + ' ' + timeseries.description.unit,
+       text: description.preUnit + description.unit,
        align: 'high',
        rotation: 0,
        textAlign: 'left',
        x: 10,
        y: -10
      },
-     min: ':yMin:'
-
+     tickPositioner: function(){
+        //Using tickpositioner to set yAxis min
+      var min = this.chart.series[0].dataMin;
+        if(min < 0) {
+          this.chart.yAxis.min = min - 1;
+        } else {
+            this.chart.yAxis.min = 0;
+        }
+    }
    },
 
    credits: {
@@ -157,11 +190,11 @@ function getLinechartConfig(timeseries) {
 
    },
    series: [{
-     name: timeseries.description.title,
-     id: timeseries.description.cdid,
-     unit: timeseries.description.unit,
-     preUnit: timeseries.description.preUnit,
-     data: ':data:',
+     name: description.title,
+     id: description.id,
+     unit: description.unit,
+     preUnit: description.preUnit,
+     data: series,
      marker: {
        enabled:true,
        radius:2,
@@ -176,6 +209,11 @@ function getLinechartConfig(timeseries) {
      },
      dashStyle: 'Solid'
    }]
-   /*chart:end*/
  };
- }
+
+
+window.linechart = linechart;
+return linechart;
+
+
+ })()

@@ -16,11 +16,13 @@ import javax.ws.rs.core.MediaType;
 public class ChartRequestHandler implements RequestHandler {
 
     private static final String REQUEST_TYPE = "chart";
+
     @Override
     public BabbageResponse get(String requestedUri, HttpServletRequest request) throws Exception {
-        ContentStream chartData = new MarkdownChartConfigHandler().getChartData(requestedUri);
-        String html = TemplateService.getInstance().renderTemplate("charts/chart", chartData.getDataStream());
-        return new BabbageStringResponse(html, MediaType.TEXT_HTML);
+        try (ContentStream chartData = new MarkdownChartConfigHandler().getChartData(requestedUri)) {
+            String html = TemplateService.getInstance().renderTemplate("highcharts/chart", chartData.getDataStream());
+            return new BabbageStringResponse(html, MediaType.TEXT_HTML);
+        }
     }
 
     @Override

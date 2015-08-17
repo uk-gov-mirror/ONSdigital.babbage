@@ -1,7 +1,7 @@
 package com.github.onsdigital.babbage.api.endpoint;
 
 import com.github.davidcarboni.restolino.framework.Home;
-import com.github.onsdigital.babbage.api.filter.ErrorHandler;
+import com.github.onsdigital.babbage.api.error.ErrorHandler;
 import com.github.onsdigital.babbage.request.RequestDelegator;
 
 import javax.servlet.http.HttpServletRequest;

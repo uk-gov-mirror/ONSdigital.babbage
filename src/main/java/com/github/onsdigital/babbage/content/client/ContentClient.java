@@ -14,7 +14,7 @@ import org.apache.http.message.BasicNameValuePair;
 import java.io.IOException;
 import java.util.*;
 
-import static com.github.onsdigital.configuration.Configuration.CONTENT_SERVICE.*;
+import static com.github.onsdigital.babbage.configuration.Configuration.CONTENT_SERVICE.*;
 
 /**
  * Created by bren on 23/07/15.
@@ -62,7 +62,7 @@ public class ContentClient {
      *            e.g./economy/inflationandpriceindices/somecontent.xls  ( no data.json after the uri )
      * @return Json for requested content
      * @throws ContentReadException If content read fails due content service error status is set to whatever error is sent back from content service,
-     *                                all other IO Exceptions are rethrown with HTTP status 500
+     *                              all other IO Exceptions are rethrown with HTTP status 500
      */
     public ContentStream getContentStream(String uri) throws ContentReadException, IOException {
         return getContentStream(uri, null);
@@ -80,7 +80,7 @@ public class ContentClient {
      * @param queryParameters GET parameters that needs to be passed to content service (e.g. filter parameters)
      * @return Json for requested content
      * @throws ContentReadException If content read fails due content service error status is set to whatever error is sent back from content service,
-     *                                all other IO Exceptions are rethrown with HTTP status 500
+     *                              all other IO Exceptions are rethrown with HTTP status 500
      */
     public ContentStream getContentStream(String uri, Map<String, String[]> queryParameters) throws ContentReadException {
         System.out.println("getContentStream(): Reading content from content server, uri:" + uri);
@@ -89,7 +89,7 @@ public class ContentClient {
 
     public ContentStream getResource(String uri) throws ContentReadException {
         System.out.println("getResource(): Reading resource from content server, uri:" + uri);
-        return sendGet(getResourcePath(), getParameters(uri ,null));
+        return sendGet(getResourcePath(), getParameters(uri, null));
     }
 
     public ContentStream getChildren(String uri, Map<String, String[]> queryParameters) throws ContentReadException {
@@ -97,19 +97,24 @@ public class ContentClient {
         return sendGet(getChildContentPath(), getParameters(uri, queryParameters));
     }
 
+
+    public ContentStream getChildren(String uri) throws ContentReadException {
+        return sendGet(getChildContentPath(), null);
+    }
+
     public ContentStream getParents(String uri) throws ContentReadException {
-        return sendGet(getParentsPath(), getParameters(uri,null));
+        return sendGet(getParentsPath(), getParameters(uri, null));
     }
 
     public ContentStream getParents(String uri, Map<String, String[]> queryParameters) throws ContentReadException {
         System.out.println("getParents(): Reading parents, uri:" + uri);
-        return sendGet(getParentsPath(), getParameters(uri,queryParameters));
+        return sendGet(getParentsPath(), getParameters(uri, queryParameters));
     }
 
     private ContentStream sendGet(String path, List<NameValuePair> getParameters) throws ContentReadException {
         CloseableHttpResponse response = null;
         try {
-            return new ContentStream(client.sendGet(path, getHeaders(),getParameters ));
+            return new ContentStream(client.sendGet(path, getHeaders(), getParameters));
         } catch (HttpResponseException e) {
             IOUtils.closeQuietly(response);
             throw wrapException(e);
@@ -118,24 +123,24 @@ public class ContentClient {
             throw wrapException(e);
         }
     }
-
-    public ContentStream getBreadCrumb(String uri) throws ContentReadException {
-        System.out.println("getBreadcrumb(): Reading breadcrumb from content server:" + uri);
-        ArrayList<NameValuePair> queryParameters = new ArrayList<>();
-        queryParameters.add(new BasicNameValuePair("uri", uri));
-
-        CloseableHttpResponse response = null;
-        try {
-            response = client.sendGet(getParentsPath(), getHeaders(), queryParameters);
-            return new ContentStream(response);
-        } catch (HttpResponseException e) {
-            IOUtils.closeQuietly(response);
-            throw wrapException(e);
-        } catch (IOException e) {
-            IOUtils.closeQuietly(response);
-            throw wrapException(e);
-        }
-    }
+//
+//    public ContentStream getBreadCrumb(String uri) throws ContentReadException {
+//        System.out.println("getBreadcrumb(): Reading breadcrumb from content server:" + uri);
+//        ArrayList<NameValuePair> queryParameters = new ArrayList<>();
+//        queryParameters.add(new BasicNameValuePair("uri", uri));
+//
+//        CloseableHttpResponse response = null;
+//        try {
+//            response = client.sendGet(getParentsPath(), getHeaders(), queryParameters);
+//            return new ContentStream(response);
+//        } catch (HttpResponseException e) {
+//            IOUtils.closeQuietly(response);
+//            throw wrapException(e);
+//        } catch (IOException e) {
+//            IOUtils.closeQuietly(response);
+//            throw wrapException(e);
+//        }
+//    }
 
     private List<NameValuePair> getParameters(String uri, Map<String, String[]> parametes) {
         List<NameValuePair> nameValuePairs = new ArrayList<>();
@@ -163,7 +168,7 @@ public class ContentClient {
 
 
     private ContentReadException wrapException(HttpResponseException e) {
-        return new ContentReadException(e.getStatusCode(), "Failed reading from content service",e);
+        return new ContentReadException(e.getStatusCode(), "Failed reading from content service", e);
     }
 
     private ContentReadException wrapException(IOException e) {
@@ -182,9 +187,9 @@ public class ContentClient {
     private Map<String, String> getHeaders() {
         Map<String, String> cookies = (Map<String, String>) ThreadContext.getData("cookies");
         if (cookies != null) {
-        HashMap<String, String> headers = new HashMap<String, String>();
-        headers.put(TOKEN_HEADER, cookies.get("access_token"));
-        return headers;
+            HashMap<String, String> headers = new HashMap<String, String>();
+            headers.put(TOKEN_HEADER, cookies.get("access_token"));
+            return headers;
         }
         return null;
     }
@@ -194,9 +199,10 @@ public class ContentClient {
         if (collectionId == null) {
             return getDataEndpoint();
         } else {
-            return getDataPath() + "/" + collectionId;
+            return getDataEndpoint() + "/" + collectionId;
         }
     }
+
     private String getResourcePath() {
         String collectionId = getCollectionId();
         if (collectionId == null) {
@@ -239,12 +245,15 @@ public class ContentClient {
     }
 
     /***
-     *
      * Create query parameters to get depth of children content request
+     *
      * @param depth
      * @return
      */
-    public static Map<String, String[]> depth(int depth) {
+    public static Map<String, String[]> depth(Integer depth) {
+        if (depth == null) {
+            return params("depth", 1);
+        }
         return params("depth", depth);
     }
 

@@ -38,5 +38,4 @@ public enum ArrayHelpers implements BabbageHandlebarsHelper<Collection> {
         }
 
     }
-
 }

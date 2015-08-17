@@ -2,6 +2,7 @@ package com.github.onsdigital.babbage.request.handler.content;
 
 import com.github.onsdigital.babbage.content.client.ContentClient;
 import com.github.onsdigital.babbage.content.client.ContentReadException;
+import com.github.onsdigital.babbage.content.client.ContentStream;
 import com.github.onsdigital.babbage.request.handler.base.RequestHandler;
 import com.github.onsdigital.content.service.ContentNotFoundException;
 import com.github.onsdigital.babbage.request.response.BabbageResponse;
@@ -23,7 +24,9 @@ public class ChildrenRequestHandler implements RequestHandler {
 
     @Override
     public BabbageResponse get(String uri, HttpServletRequest request) throws IOException, ContentNotFoundException, ContentReadException {
-        return new BabbageStringResponse(ContentClient.getInstance().getChildren(uri, getQueryParameters(request)).getAsString());
+        try (ContentStream stream = ContentClient.getInstance().getChildren(uri, getQueryParameters(request))) {
+            return new BabbageStringResponse(stream.getAsString());
+        }
     }
 
     @Override

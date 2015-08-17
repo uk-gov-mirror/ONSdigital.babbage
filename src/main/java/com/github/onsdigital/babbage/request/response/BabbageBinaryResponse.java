@@ -17,8 +17,8 @@ public class BabbageBinaryResponse extends BabbageResponse {
     }
 
     public void applyData(HttpServletResponse response) throws IOException {
-        ByteArrayInputStream input = new ByteArrayInputStream(data);
-        IOUtils.copy(input, response.getOutputStream());
-        IOUtils.closeQuietly(input);
+        try(ByteArrayInputStream input = new ByteArrayInputStream(data);) {
+            IOUtils.copy(input, response.getOutputStream());
+        }
     }
 }

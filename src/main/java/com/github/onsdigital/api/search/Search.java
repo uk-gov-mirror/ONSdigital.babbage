@@ -1,22 +1,19 @@
 package com.github.onsdigital.api.search;
 
 import com.github.davidcarboni.restolino.framework.Api;
-import com.github.onsdigital.babbage.api.filter.ErrorHandler;
-import com.github.onsdigital.babbage.util.RequestUtil;
-import com.github.onsdigital.configuration.Configuration;
-import com.github.onsdigital.content.link.PageReference;
-import com.github.onsdigital.content.page.base.PageType;
-import com.github.onsdigital.content.page.search.SearchResultsPage;
-import com.github.onsdigital.content.page.taxonomy.ProductPage;
-import com.github.onsdigital.content.util.ContentUtil;
-import com.github.onsdigital.content.util.URIUtil;
-import com.github.onsdigital.data.LocalFileDataService;
-import com.github.onsdigital.error.ResourceNotFoundException;
+import com.github.onsdigital.babbage.api.error.ErrorHandler;
 import com.github.onsdigital.babbage.request.response.BabbageResponse;
 import com.github.onsdigital.babbage.request.response.BabbageStringResponse;
+import com.github.onsdigital.babbage.template.TemplateService;
+import com.github.onsdigital.babbage.util.json.JsonUtil;
+import com.github.onsdigital.babbage.configuration.Configuration;
+import com.github.onsdigital.content.page.base.PageType;
+import com.github.onsdigital.content.page.search.SearchResultsPage;
+import com.github.onsdigital.content.util.ContentUtil;
+import com.github.onsdigital.content.util.URIUtil;
+import com.github.onsdigital.error.ResourceNotFoundException;
 import com.github.onsdigital.search.bean.AggregatedSearchResult;
 import com.github.onsdigital.search.util.SearchHelper;
-import com.github.onsdigital.babbage.template.TemplateService;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -29,8 +26,9 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Search endpoint that invokes appropriate search engine
@@ -48,12 +46,9 @@ public class Search {
     public Object get(@Context HttpServletRequest request, @Context HttpServletResponse response) throws Exception {
 
         try {
-            RequestUtil.saveRequestContext(request);
             return search(request, response);
         } catch (Throwable t) {
             ErrorHandler.handle(request, response, t);
-        } finally {
-            RequestUtil.clearContext();
         }
         return null;
     }
@@ -123,7 +118,9 @@ public class Search {
 
     public String renderSearchPage(AggregatedSearchResult results, int currentPage, String searchTerm, String[] types, boolean includeStatics, boolean includeAllData) throws IOException {
         SearchResultsPage searchPage = buildResultsPage(results, currentPage, searchTerm, types, includeStatics, includeAllData);
-        return TemplateService.getInstance().renderContent(ContentUtil.serialise(searchPage));
+        Map<String, Object> showChartTitle = new LinkedHashMap<>();
+        showChartTitle.put("showChartTitle", "yes");
+        return TemplateService.getInstance().renderContent(ContentUtil.serialise(searchPage), JsonUtil.toJson(showChartTitle));
     }
 
     public String renderEmptySearchPage() throws IOException {
@@ -167,10 +164,6 @@ public class Search {
         if (results.isSuggestionBasedResult()) {
             page.setSuggestion(results.getSuggestion());
         }
-
-        if (page.getTaxonomySearchResult() != null) {
-            resolveSearchHeadline(page);
-        }
         return page;
     }
 
@@ -204,34 +197,6 @@ public class Search {
         end = (end > max) ? max : end;
         end = (end < maxVisible) ? maxVisible : end;
         return end;
-    }
-
-    private void resolveSearchHeadline(SearchResultsPage page) {
-        for (Iterator<PageReference> iterator = page.getTaxonomySearchResult().getResults().iterator(); iterator.hasNext(); ) {
-            PageReference pageReference = iterator.next();
-            //Beware! Very messy code,
-            // Elastic search does not contain whole data, so we have to load referenced data to get headline data reference (the first data item in the product page) and then data for that page
-            //Afterwards reference needs updating back to data in elastic search to reduce data
-            //Search in general needs tidying up. After going live hopefuly
-
-            if (PageType.product_page == pageReference.getType()) {
-                ContentUtil.loadReferencedPage(LocalFileDataService.getInstance(), pageReference);
-                ProductPage productPage = (ProductPage) pageReference.getData();
-                page.setHeadlinePage(productPage);
-                List<PageReference> items = productPage.getItems();
-                if (items != null) {
-                    if (items.size() > 0) {
-                        PageReference headlineData = items.iterator().next();
-                        if (headlineData != null) {
-                            ContentUtil.loadReferencedPage(LocalFileDataService.getInstance(), headlineData);
-                            iterator.remove();
-                            break;
-                        }
-                    }
-                }
-                break;
-            }
-        }
     }
 
     private Object search(String query, int page, String[] types) throws Exception {

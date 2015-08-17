@@ -2,7 +2,8 @@ package com.github.onsdigital.babbage.template;
 
 import com.github.onsdigital.babbage.template.handlebars.HandlebarsRenderer;
 import com.github.onsdigital.babbage.util.ThreadContext;
-import com.github.onsdigital.configuration.Configuration;
+import com.github.onsdigital.babbage.configuration.Configuration;
+import org.apache.commons.lang3.ArrayUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -35,8 +36,8 @@ public class TemplateService {
      * @return
      * @throws IOException
      */
-    public String renderContent(String data) throws IOException {
-        return renderer.renderContent(toMap(data), getThreadContext());
+    public String renderContent(String... data) throws IOException {
+        return renderer.renderContent(toMapArray(data));
     }
 
     /**
@@ -46,8 +47,8 @@ public class TemplateService {
      * @return
      * @throws IOException
      */
-    public String renderContent(InputStream stream) throws IOException {
-        return renderer.renderContent(toMap(stream), getThreadContext());
+    public String renderContent(InputStream... stream) throws IOException {
+        return renderer.renderContent(toMapArray(stream));
     }
 
     /**
@@ -69,8 +70,8 @@ public class TemplateService {
      * @return
      * @throws IOException
      */
-    public String renderTemplate(String templateName, String data) throws IOException {
-        return renderer.render(templateName, toMap(data), getThreadContext());
+    public String renderTemplate(String templateName, String... data) throws IOException {
+        return renderer.render(templateName, toMapArray(data));
     }
 
     /**
@@ -81,11 +82,29 @@ public class TemplateService {
      * @return
      * @throws IOException
      */
-    public String renderTemplate(String templateName, InputStream data) throws IOException {
-        return renderer.render(templateName, toMap(data), getThreadContext());
+    public String renderTemplate(String templateName, InputStream... data) throws IOException {
+        return renderer.render(templateName, toMapArray(data));
     }
 
     private Map<String, Object> getThreadContext() {
         return ThreadContext.getAllData();
+    }
+
+    private Map<String, Object>[] toMapArray(String... data) throws IOException {
+        Map<String, Object>[] list = null;
+        list = ArrayUtils.add(list, getThreadContext());
+        for (String s : data) {
+            list = ArrayUtils.add(list, toMap(s));
+        }
+        return list;
+    }
+
+    private Map<String, Object>[] toMapArray(InputStream... data) throws IOException {
+        Map<String, Object>[] list = null;
+        list = ArrayUtils.add(list,getThreadContext());
+        for (InputStream s : data) {
+            list = ArrayUtils.add(list,toMap(s));
+        }
+        return list;
     }
 }

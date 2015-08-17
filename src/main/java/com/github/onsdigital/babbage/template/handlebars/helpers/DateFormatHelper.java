@@ -3,7 +3,7 @@ package com.github.onsdigital.babbage.template.handlebars.helpers;
 import com.github.jknack.handlebars.Handlebars;
 import com.github.jknack.handlebars.Options;
 import com.github.onsdigital.babbage.template.handlebars.helpers.base.BabbageHandlebarsHelper;
-import com.github.onsdigital.configuration.Configuration;
+import com.github.onsdigital.babbage.configuration.Configuration;
 import org.apache.commons.lang3.time.FastDateFormat;
 
 import java.io.IOException;

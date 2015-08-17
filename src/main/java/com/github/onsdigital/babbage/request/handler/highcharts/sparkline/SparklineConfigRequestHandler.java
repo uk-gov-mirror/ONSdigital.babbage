@@ -12,6 +12,8 @@ import com.github.onsdigital.babbage.template.TemplateService;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
+import static com.github.onsdigital.babbage.content.client.ContentClient.filter;
+
 /**
  * Created by bren on 18/06/15.
  */
@@ -24,9 +26,12 @@ public class SparklineConfigRequestHandler implements RequestHandler {
     }
 
     String getChartConfig(String requestedUri) throws IOException, ContentReadException {
-        ContentStream contentStream = ContentClient.getInstance().getContentStream(requestedUri, ContentClient.filter(ContentFilter.SERIES));
-        String config = TemplateService.getInstance().renderTemplate("highcharts/sparklineconfig", contentStream.getAsString());
-        return config;
+        try (
+                ContentStream series = ContentClient.getInstance().getContentStream(requestedUri, filter(ContentFilter.SERIES))
+        ) {
+            String config = TemplateService.getInstance().renderTemplate("highcharts/config/sparklineconfig", series.getDataStream());
+            return config;
+        }
     }
 
 

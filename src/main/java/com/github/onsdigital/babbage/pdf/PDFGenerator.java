@@ -1,6 +1,6 @@
-package com.github.onsdigital.util;
+package com.github.onsdigital.babbage.pdf;
 
-import com.github.onsdigital.configuration.Configuration;
+import com.github.onsdigital.babbage.configuration.Configuration;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.ArrayUtils;
 

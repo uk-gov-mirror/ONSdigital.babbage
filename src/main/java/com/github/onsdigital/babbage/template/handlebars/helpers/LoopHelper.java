@@ -7,6 +7,8 @@ import com.github.onsdigital.babbage.template.handlebars.helpers.base.BabbageHan
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -27,6 +29,11 @@ public class LoopHelper extends EachHelper implements BabbageHandlebarsHelper<Ob
 
         //Delegate everything other than repeat number to each helper
         if (context instanceof Number == false) {
+            Object reverse = options.hash("reverse");
+            if (Boolean.TRUE.equals(reverse)) {
+                List list = (List) context;
+                Collections.reverse(list);
+            }
             return super.apply(context, options);
         }
 

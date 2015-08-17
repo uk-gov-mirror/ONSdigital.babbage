@@ -79,6 +79,7 @@ public class ContentStream  implements Closeable {
     @Override
     public void close() throws IOException {
         if (response != null) {
+            System.out.printf("Closing content stream, name: %s ", getName());
             response.close();
         }
     }

@@ -8,33 +8,35 @@
 		<li class="list--table__item list--table__body clickable-wrap">
 			<div class="list--table__item__body list--table__item__body--caption">
 				<h3 class="flush--half--bottom">
-				<a href="{{uri}}">{{title}}</a>
+				<a href="{{uri}}">{{description.title}}</a>
 				</h3>
-				{{#if keyNote}}
+				{{#if description.keyNote}}
 				<p class="list--table__item__description">
-					{{keyNote}}
+					{{description.keyNote}}
 				</p>
 				{{/if}}
 			</div>
 			<div class="list--table__item__body list--table__item__body--chart">
-				<a href="{{data.uri}}"><img class="full-width" src="{{uri}}/sparkline" alt="{{title}}"></a>
+				<a href="{{uri}}">
+					{{>partials/highcharts/sparkline}}
+				</a>
 			</div>
 			<div class="list--table__item__body">
 				<div class="list--table__item__body list--table__item__body--stat float-left">
 					<div class="stat__figure">
-						{{#if preUnit}}
-						<span class="stat__figure__preunit">{{preUnit}}</span>
+						{{#if description.preUnit}}
+						<span class="stat__figure__preunit">{{description.preUnit}}</span>
 						{{/if}}
-						<span class="stat__figure-enhance">{{number}}</span><span class="stat__figure__unit"> {{unit}}</span>
-						<div class="stat__description">{{date}}</div>
+						<span class="stat__figure-enhance">{{description.number}}</span><span class="stat__figure__unit"> {{description.unit}}</span>
+						<div class="stat__description">{{description.date}}</div>
 					</div>
 				</div>
 				<div class="list--table__item__body list--table__item__body--update">
 					<dl class="micro flush--half--vertical">
 						<dt>Last updated:</dt>
-						<dd class="flush flush--third--bottom">{{df releaseDate}}</dd>
+						<dd class="flush flush--third--bottom">{{df description.releaseDate}}</dd>
 						<dt>Next update:</dt>
-						<dd class="flush flush--third--bottom">{{nextRelease}}</dd>
+						<dd class="flush flush--third--bottom">{{description.nextRelease}}</dd>
 					</dl>
 				</div>
 			</div>

@@ -15,7 +15,7 @@ import static com.github.onsdigital.babbage.util.RequestUtil.getQueryParameters;
 
 /**
  * Created by bren on 28/05/15.
- * <p/>
+ * <p>
  * Handle data requests. Proxies data requests to content service
  */
 public class DataRequestHandler implements RequestHandler {
@@ -33,8 +33,10 @@ public class DataRequestHandler implements RequestHandler {
     }
 
     public String getData(String uri, HttpServletRequest request) throws ContentNotFoundException, IOException, ContentReadException {
-        ContentStream contentStream = ContentClient.getInstance().getContentStream(uri, getQueryParameters(request));
-        return contentStream.getAsString();
+        try (ContentStream contentStream = ContentClient.getInstance().getContentStream(uri, getQueryParameters(request))) {
+            return contentStream.getAsString();
+        }
+
     }
 
 }

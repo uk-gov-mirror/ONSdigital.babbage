@@ -1,4 +1,4 @@
-package com.github.onsdigital.babbage.api.filter;
+package com.github.onsdigital.babbage.api.error;
 
 import com.github.davidcarboni.restolino.api.RequestHandler;
 import com.github.davidcarboni.restolino.framework.ServerError;
@@ -23,6 +23,7 @@ public class ErrorHandler implements ServerError {
 
     private static void logError(Throwable e) {
         System.err.println(e.getMessage() + ", cause: " + (e.getCause() != null ? e.getCause().getMessage() : ""));
+        e.printStackTrace();
     }
 
     @Override

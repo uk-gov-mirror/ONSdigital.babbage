@@ -8,12 +8,12 @@
 					{{#resolve this.uri filter="description"}}
 					<li class="grid-col desktop-grid-one-third box--padded-vertical nav--block-landing">
 						<h3>
-						<a href="{{uri}}" title="{{title}}">
-							{{title}}{{#if edition}}: {{edition}}{{/if}}
+						<a href="{{uri}}" title="{{description.title}}">
+							{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}
 						</a>
 						</h3>
 						<p>
-							{{summary}}
+							{{description.summary}}
 						</p>
 					</li>
 					{{/resolve}}

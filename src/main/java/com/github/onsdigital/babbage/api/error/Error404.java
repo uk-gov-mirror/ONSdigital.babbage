@@ -1,4 +1,4 @@
-package com.github.onsdigital.babbage.api.filter;
+package com.github.onsdigital.babbage.api.error;
 
 import com.github.davidcarboni.restolino.framework.Api;
 import com.github.davidcarboni.restolino.framework.NotFound;

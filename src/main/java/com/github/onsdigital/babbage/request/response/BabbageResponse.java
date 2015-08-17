@@ -3,6 +3,7 @@ package com.github.onsdigital.babbage.request.response;
 import org.apache.commons.lang3.CharEncoding;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.Closeable;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;

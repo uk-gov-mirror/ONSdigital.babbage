@@ -1,6 +1,6 @@
 package com.github.onsdigital.search;
 
-import com.github.onsdigital.configuration.Configuration;
+import com.github.onsdigital.babbage.configuration.Configuration;
 import com.github.onsdigital.content.page.base.PageType;
 import com.github.onsdigital.search.error.IndexingInProgressException;
 import org.apache.commons.lang3.StringUtils;

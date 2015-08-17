@@ -1,7 +1,7 @@
-package com.github.onsdigital.api;
+package com.github.onsdigital.babbage.api.endpoint;
 
 import com.github.davidcarboni.restolino.framework.Api;
-import com.github.onsdigital.request.handler.highcharts.LineChartImageHandler;
+import com.github.onsdigital.babbage.request.handler.highcharts.linechart.LineChartImageRequestHandler;
 import com.github.onsdigital.babbage.request.response.BabbageResponse;
 
 import javax.servlet.http.HttpServletRequest;
@@ -29,10 +29,7 @@ public class ChartImage {
             fileName += PNG;
             String uri = request.getParameter("uri");
             System.out.println("Download image request recieved" + fileName);
-            //TODO:Read chart data from zebedee ? Think about ability to proxy every request to zebedee.
-            //TODO: Lots of common flow in Babbage and Zebedee
-
-            BabbageResponse babbageResponse = new LineChartImageHandler().get(uri, request);
+            BabbageResponse babbageResponse = new LineChartImageRequestHandler().get(uri, request);
             response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
             babbageResponse.apply(response);
     }

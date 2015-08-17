@@ -1,11 +1,10 @@
 package com.github.onsdigital.babbage.request;
 
-import com.github.onsdigital.babbage.api.filter.ErrorHandler;
+import com.github.onsdigital.babbage.api.error.ErrorHandler;
 import com.github.onsdigital.babbage.request.handler.base.RequestHandler;
-import com.github.onsdigital.babbage.util.RequestUtil;
 import com.github.onsdigital.babbage.util.URIUtil;
 import com.github.onsdigital.cache.BabbageResponseCache;
-import com.github.onsdigital.configuration.Configuration;
+import com.github.onsdigital.babbage.configuration.Configuration;
 import com.github.onsdigital.babbage.request.response.BabbageResponse;
 import com.google.common.util.concurrent.UncheckedExecutionException;
 import org.apache.commons.lang3.StringUtils;
@@ -20,7 +19,7 @@ import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 
-import static com.github.onsdigital.configuration.Configuration.GENERAL.isCacheEnabled;
+import static com.github.onsdigital.babbage.configuration.Configuration.GENERAL.isCacheEnabled;
 
 /**
  * Created by bren on 28/05/15.
@@ -48,8 +47,6 @@ public class RequestDelegator {
     public static void get(HttpServletRequest request, HttpServletResponse response) throws Throwable {
 
         try {
-            RequestUtil.saveRequestContext(request);
-
             String uri = URIUtil.cleanUri(request.getRequestURI());
             String fullUri = uri + "?" + StringUtils.lowerCase(request.getQueryString());
             String requestType = URIUtil.resolveRequestType(uri);
@@ -60,7 +57,7 @@ public class RequestDelegator {
                 handler = handlers.get("/"); //default handler
             } else {
                 //remove last segment to get requested resource uri
-                requestedUri = com.github.onsdigital.babbage.util.URIUtil.resolveResouceUri(uri);
+                requestedUri = com.github.onsdigital.babbage.util.URIUtil.removeLastSegment(uri);
             }
 
             getResponse = get(fullUri, requestedUri, request, handler);
@@ -73,8 +70,6 @@ public class RequestDelegator {
             getResponse.apply(response);
         } catch (Throwable t) {
             ErrorHandler.handle(request, response, t);
-        } finally {
-            RequestUtil.clearContext();
         }
     }
 

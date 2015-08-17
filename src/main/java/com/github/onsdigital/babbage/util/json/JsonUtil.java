@@ -10,6 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -90,13 +91,13 @@ public class JsonUtil {
         return objectMapper().readValue(jsonStream, type);
     }
 
-    private static TypeReference<HashMap<String, Object>> mapType() {
-        return new TypeReference<HashMap<String, Object>>() {
+    private static TypeReference<LinkedHashMap<String, Object>> mapType() {
+        return new TypeReference<LinkedHashMap<String, Object>>() {
         };
     }
 
-    private static TypeReference<List<HashMap<String, Object>>> listType() {
-        return new TypeReference<List<HashMap<String, Object>>>() {};
+    private static TypeReference<List<LinkedHashMap<String, Object>>> listType() {
+        return new TypeReference<List<LinkedHashMap<String, Object>>>() {};
     }
 
     private static ObjectMapper objectMapper() {

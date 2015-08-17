@@ -114,20 +114,22 @@
 				{{/if}}
 			</p>
 			{{!-- HEADLINE BOX --}}
-			{{#if headlinePage}}
+			{{#resolve taxonomySearchResult.results.0.uri}}
 			<article class="box box--padded--med sectioned clickable-wrap">
 				<div class="box__content">
 					<div class="grid-wrap">
-						{{#if_any headlinePage.items.0.data.years headlinePage.items.0.data.quarters headlinePage.items.0.data.months}}
+						{{#resolve items.0.uri assign="series" filter="series"}}
 						<div class="grid-col desktop-grid-one-half">
 							<!-- <p class="alpha"> -->
-								<a href="{{headlinePage.uri}}"><img src="{{headlinePage.items.0.data.uri}}/searchchart" alt="{{headlinePage.items.0.data.title}}"></a>
+								<a href="{{../uri}}">
+									{{>partials/highcharts/sparkline}}
+								</a>
 							<!-- </p> -->
 						</div>
-						{{/if_any}}
-						<div class="grid-col {{#if_any headlinePage.items.0.data.years headlinePage.items.0.data.quarters headlinePage.items.0.data.months}}desktop-grid-one-half box--padded--med-vertical{{/if_any}} nav--block-landing flush">
-							<h3><a href="{{headlinePage.uri}}">{{headlinePage.description.title}}</a></h3>
-							{{md headlinePage.description.summary}}
+						{{/resolve}}
+						<div class="grid-col {{#if series}}desktop-grid-one-half box--padded--med-vertical{{/if}} nav--block-landing flush">
+							<h3><a href="{{uri}}">{{description.title}}</a></h3>
+							{{md description.summary}}
 						</div>
 						<!-- /desktop-grid -->
 					</div>
@@ -135,7 +137,7 @@
 				</div>
 				<!-- /box__content -->
 			</article>
-			{{/if}}
+			{{/resolve}}
 			{{!-- end of HEADLINE BOX --}}
 			{{#each statisticsSearchResult.results}}
 			<ul class="list--neutral">

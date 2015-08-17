@@ -5,18 +5,13 @@ import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 /**
  * Created by bren on 10/08/15.
  */
 public class RequestUtil {
-
-    private static final String COLLECTION_COOKIE_NAME = "collection";
-    private static final String ACCESS_TOKEN_COOKIENAME = "access_token";
 
     /**
      * Saves Authentication token and collection id to thread context if available when a request is made to babbage,

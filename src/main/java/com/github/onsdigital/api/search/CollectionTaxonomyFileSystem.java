@@ -1,7 +1,7 @@
 package com.github.onsdigital.api.search;
 
 import com.github.davidcarboni.restolino.framework.Api;
-import com.github.onsdigital.configuration.Configuration;
+import com.github.onsdigital.babbage.configuration.Configuration;
 import com.github.onsdigital.search.ScanFileSystem;
 import com.github.onsdigital.search.bean.CollectionSearchResult;
 import com.github.onsdigital.util.TaxonomyDateComparator;

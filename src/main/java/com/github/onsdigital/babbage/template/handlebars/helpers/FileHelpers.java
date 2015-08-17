@@ -27,7 +27,7 @@ public enum FileHelpers implements BabbageHandlebarsHelper<String> {
             if (options.isFalsy(uri)) {
                 return null;
             }
-            try(ContentStream stream = ContentClient.getInstance().getContentStream(uri)) {
+            try(ContentStream stream = ContentClient.getInstance().getResource(uri)) {
                 return humanReadableByteCount(stream.getSize(), true);
             } catch (Exception e) {
                 System.err.printf("Failed reading file size from content service, uri: %s cause: %s", uri, e.getMessage());

@@ -3,6 +3,7 @@ package com.github.onsdigital.babbage.template.handlebars.helpers;
 import com.github.jknack.handlebars.Handlebars;
 import com.github.jknack.handlebars.Options;
 import com.github.onsdigital.babbage.template.handlebars.helpers.base.BabbageHandlebarsHelper;
+import com.github.onsdigital.babbage.util.URIUtil;
 
 import java.io.IOException;
 import java.net.URI;
@@ -14,7 +15,7 @@ import java.net.URI;
  */
 public enum PathHelper implements BabbageHandlebarsHelper<String> {
 
-    rootpath   {
+    absolute   {
         @Override
         public CharSequence apply(String uri, Options options) throws IOException {
             if(options.isFalsy(uri)) {
@@ -28,5 +29,22 @@ public enum PathHelper implements BabbageHandlebarsHelper<String> {
             handlebars.registerHelper(this.name(), this);
         }
 
+    },
+
+    parentPath {
+        @Override
+        public CharSequence apply(String uri, Options options) throws IOException {
+            if (options.isFalsy(uri)) {
+                return null;
+            }
+            return URIUtil.removeLastSegment(uri);
+        }
+
+        @Override
+        public void register(Handlebars handlebars) {
+            handlebars.registerHelper(this.name(), this);
+        }
     }
+
+
 }

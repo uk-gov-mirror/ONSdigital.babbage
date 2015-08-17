@@ -1,4 +1,4 @@
-package com.github.onsdigital.highcharts;
+package com.github.onsdigital.babbage.highcharts;
 
 import java.util.*;
 

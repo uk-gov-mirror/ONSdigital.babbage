@@ -1,4 +1,4 @@
-package com.github.onsdigital.api;
+package com.github.onsdigital.babbage.api.endpoint;
 
 import com.github.davidcarboni.cryptolite.Password;
 import com.github.davidcarboni.cryptolite.Random;

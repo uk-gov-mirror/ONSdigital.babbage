@@ -22,19 +22,17 @@
                     <!-- change to dt -->
                     <dl>
                         <dt class="nav-panel__header gamma flush equal-height">
-                        {{title}}
+                        {{description.title}}
                         </dt>
                         <!-- change to dd's -->
                         <dd>
                         <span class="stat__figure--home block">
-                            {{preUnit}} <span class="stat__figure-enhance">{{number}}</span> {{unit}}
+                            {{description.preUnit}} <span class="stat__figure-enhance">{{description.number}}</span> {{description.unit}}
                         </span>
                         <span class="stat__description block">
-                            {{date}}
+                            {{description.date}}
                         </span>
-                        <div>
-                            <img class="stat__image--home" src="{{statistics.uri}}/sparkline" alt="{{title}}">
-                        </div>
+                        {{> partials/highcharts/sparkline}}
                         <a class="js-enhance--hide" href="{{statistics.uri}}">More info</a>
                         </dd>
                     </dl>

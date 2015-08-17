@@ -5,15 +5,5 @@ package com.github.onsdigital.configuration;
  */
 public class ConfigurationTest {
 
-    public void testGetSparklineConfig() {
-        String sparkline = Configuration.HIGHCHARTS.getSparklineConfig();
-//        System.out.println(sparkline);
-    }
-
-    public void testGetLinechartConfig() {
-        String lineChart = Configuration.HIGHCHARTS.getLinechartConfig();
-        System.out.println(lineChart);
-    }
-
 
 }

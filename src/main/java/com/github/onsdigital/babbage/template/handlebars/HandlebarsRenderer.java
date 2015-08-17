@@ -1,10 +1,8 @@
 package com.github.onsdigital.babbage.template.handlebars;
 
-import com.github.jknack.handlebars.Context;
-import com.github.jknack.handlebars.Handlebars;
-import com.github.jknack.handlebars.HumanizeHelper;
-import com.github.jknack.handlebars.Template;
+import com.github.jknack.handlebars.*;
 import com.github.jknack.handlebars.cache.HighConcurrencyTemplateCache;
+import com.github.jknack.handlebars.context.FieldValueResolver;
 import com.github.jknack.handlebars.context.MapValueResolver;
 import com.github.jknack.handlebars.helper.StringHelpers;
 import com.github.jknack.handlebars.io.FileTemplateLoader;
@@ -17,13 +15,12 @@ import java.lang.reflect.Modifier;
 import java.util.Map;
 import java.util.Set;
 
-import static com.github.onsdigital.configuration.Configuration.HANDLEBARS.getMainContentTemplateName;
+import static com.github.onsdigital.babbage.configuration.Configuration.HANDLEBARS.getMainContentTemplateName;
 
 /**
  * Created by bren on 28/05/15.
- *
+ * <p>
  * HandlebarsRenderer renders data in Map Value structure
- *
  */
 public class HandlebarsRenderer {
 
@@ -39,32 +36,46 @@ public class HandlebarsRenderer {
         StringHelpers.register(handlebars);
         // Humanize helpers
         HumanizeHelper.register(handlebars);
+        handlebars.registerHelper("json", Jackson2Helper.INSTANCE);
         registerHelpers();
     }
 
     /**
+     * Renders content using main handlebars template, array of data is combined into a single context
      *
-     * Renders content using main handlebars template
-     * @param data
-     * @param additionalData
+     * @param data array of data
      * @return
      * @throws IOException
      */
-    public String renderContent(Map<String, Object> data, Map<String, Object> additionalData) throws IOException {
-        return render(getMainContentTemplateName(), data, additionalData);
+    public String renderContent(Map<String, Object>... data) throws IOException {
+        return render(getMainContentTemplateName(), data);
     }
 
-    public String render(String templateName, Map<String, Object> data, Map<String, Object> additionalData) throws IOException {
+
+    /**
+     * Renders content with given template name, array of data is combined to a single context
+     *
+     * @param data array of data
+     * @return
+     * @throws IOException
+     */
+    public String render(String templateName, Map<String, Object>... data) throws IOException {
         Template template = getTemplate(templateName);
 
         Context.Builder builder = Context
                 .newBuilder(data)
-                .resolver(MapValueResolver.INSTANCE);
+                .resolver(MapValueResolver.INSTANCE, FieldValueResolver.INSTANCE);
 
-        if (additionalData != null) {
-            for (Map.Entry<String, Object> entry : additionalData.entrySet()) {
-                builder.combine(entry.getKey(), entry.getValue());
+        if (data != null) {
+            for (Map<String, Object> next : data) {
+                if (next != null) {
+                    for (Map.Entry<String, Object> entry : next.entrySet()) {
+                        builder.combine(entry.getKey(), entry.getValue());
+                    }
+                }
+
             }
+
         }
         return template.apply(builder.build());
     }

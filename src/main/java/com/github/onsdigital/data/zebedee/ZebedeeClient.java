@@ -1,6 +1,6 @@
 package com.github.onsdigital.data.zebedee;
 
-import com.github.onsdigital.configuration.Configuration;
+import com.github.onsdigital.babbage.configuration.Configuration;
 import com.github.onsdigital.content.service.ContentNotFoundException;
 import com.github.onsdigital.data.DataNotFoundException;
 import org.apache.commons.io.IOUtils;

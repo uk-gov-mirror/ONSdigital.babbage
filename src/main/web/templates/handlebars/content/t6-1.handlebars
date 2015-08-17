@@ -55,8 +55,8 @@
 							{{#each chapters}}
 							{{#resolve uri filter="description"}}
 							<li>
-								<h4 class="flush" ><a href="{{uri}}" class="chapter">{{title}}</a></h4>
-								<p>{{headline}}</p>
+								<h4 class="flush" ><a href="{{uri}}" class="chapter">{{description.title}}</a></h4>
+								<p>{{description.headline}}</p>
 							</li>
 							{{/resolve}}
 							{{/each}}

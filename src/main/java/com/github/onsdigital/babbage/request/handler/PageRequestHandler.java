@@ -10,6 +10,7 @@ import com.github.onsdigital.babbage.template.TemplateService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * Created by bren on 28/05/15.
@@ -24,9 +25,12 @@ public class PageRequestHandler implements RequestHandler {
 
     @Override
     public BabbageResponse get(String uri, HttpServletRequest request) throws IOException, ContentNotFoundException, ContentReadException {
-        String html = TemplateService.getInstance().renderContent(ContentClient.getInstance().getContentStream(uri).getDataStream());
-        return new BabbageStringResponse(html, CONTENT_TYPE);
+        try (InputStream dataStream = ContentClient.getInstance().getContentStream(uri).getDataStream()) {
+            String html = TemplateService.getInstance().renderContent(dataStream);
+            return new BabbageStringResponse(html, CONTENT_TYPE);
+        }
     }
+
 
     @Override
     public String getRequestType() {

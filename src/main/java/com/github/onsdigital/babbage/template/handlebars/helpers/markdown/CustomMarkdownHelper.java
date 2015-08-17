@@ -1,11 +1,15 @@
-package com.github.onsdigital.babbage.template.handlebars.helpers;
+package com.github.onsdigital.babbage.template.handlebars.helpers.markdown;
 
 import com.github.jknack.handlebars.Handlebars;
 import com.github.jknack.handlebars.MarkdownHelper;
 import com.github.jknack.handlebars.Options;
 import com.github.onsdigital.babbage.template.handlebars.helpers.base.BabbageHandlebarsHelper;
+import com.github.onsdigital.babbage.template.handlebars.helpers.markdown.util.ChartTagReplacer;
+import com.github.onsdigital.babbage.template.handlebars.helpers.markdown.util.TableTagReplacer;
 
 import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by bren on 28/07/15.
@@ -26,8 +30,12 @@ public class CustomMarkdownHelper extends MarkdownHelper implements BabbageHandl
         String markdown = context.toString();
         markdown = markdown.replaceAll(SUBSCRIPT_PATTERN, "<sub>$1</sub>");
         markdown = markdown.replaceAll(SUPER_SCRIPT_PATTERN, "<sup>$1</sup>");
+        markdown = new ChartTagReplacer().replaceCustomTags(markdown);
+        markdown = new TableTagReplacer().replaceCustomTags(markdown);
         return super.apply(markdown, options);
     }
+
+
 
     @Override
     public void register(Handlebars handlebars) {

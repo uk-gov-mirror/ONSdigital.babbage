@@ -27,7 +27,8 @@ public class URIUtil {
      */
     public static String removeEndpoint(String uriString) {
         uriString = cleanUri(uriString);
-        validate(uriString);
+        //TODO: Java regex does not return when there are two slashes in the uri cpu usage goes all the way up. Faulty regex ? Reactivate validation handle errors approprieately
+//        validate(uriString);
 
         int indexOfSecondSlash = StringUtils.indexOf(uriString, "/", 1);
         if (indexOfSecondSlash == -1) {
@@ -49,7 +50,7 @@ public class URIUtil {
      */
     public static String resolveRequestType(String uriString) {
         uriString = cleanUri(uriString);
-        validate(uriString);
+//        validate(uriString);
         if ("/".equals(uriString)) {
             return uriString;
         }
@@ -66,9 +67,9 @@ public class URIUtil {
      *
      * @return uri
      */
-    public static String resolveResouceUri(String uriString) {
+    public static String removeLastSegment(String uriString) {
         uriString = cleanUri(uriString);
-        validate(uriString);
+//        validate(uriString);
 
         int lastSlashIndex = StringUtils.lastIndexOf(uriString, "/");
         return StringUtils.substring(uriString, 0, lastSlashIndex);

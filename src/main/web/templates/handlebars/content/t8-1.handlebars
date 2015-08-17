@@ -91,7 +91,7 @@
 										<ul class="list--neutral">
 												{{#each relatedDatasets}}
 												{{#resolve this.uri filter="title"}}
-												<li class="flush--third--bottom"><a href="{{rootpath uri}}" title="{{title}}">{{title}}</a></li>
+												<li class="flush--third--bottom"><a href="{{absolute uri}}" title="{{title}}">{{title}}</a></li>
 												{{/resolve}}
 												{{/each}}
 										</ul>

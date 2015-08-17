@@ -1,4 +1,4 @@
-package com.github.onsdigital.configuration;
+package com.github.onsdigital.babbage.configuration;
 
 import com.github.davidcarboni.cryptolite.*;
 import org.apache.commons.io.IOUtils;
@@ -42,7 +42,7 @@ public class Configuration {
 
     /*External content server configuration*/
     public static class CONTENT_SERVICE {
-        private static final String SERVER_URL =  StringUtils.removeEnd(StringUtils.defaultIfBlank(getValue("CONTENT_SERVICE_URL"), "localhost:8083"), "/");
+        private static final String SERVER_URL =  StringUtils.removeEnd(StringUtils.defaultIfBlank(getValue("CONTENT_SERVICE_URL"), "http://localhost:8083"), "/");
         private static final String DATA_ENDPOINT = "/data";
         private static final String CHILDREN_ENDPOINT = "/children";
         private static final String PARENTS_ENDPOINT = "/parents";
@@ -149,64 +149,20 @@ public class Configuration {
         private final static String LINECHART_FILE = "linechartconfig.js";
         private final static String SEARCHCHART_FILE = "searchchartconfig.js";
         private static final String HIGHCHARTS_CONFIG_DIR = "src/main/web/templates/highcharts";
+        private static final int MAX_HIGHCHARTS_SERVER_CONNECTION = defaultNumberIfBlank(getNumberValue("HIGHCHARTS_EXPORT_MAX_CONNECTION"), 50);
+
 
         //Trailing slash seems to be important. Export server redirects to trailing slash url if not there
         private static final String EXPORT_SEVER_URL = StringUtils.defaultIfBlank(getValue("HIGHCHARTS_EXPORT_SERVER"), "http://localhost:9999/export/");
-        ;
 
         public static String getExportSeverUrl() {
             return EXPORT_SEVER_URL;
         }
 
-        public static String getSearchchartFile() {
-            //TODO:Cache configuration
-            try {
-                Path highchartsconfigDir = FileSystems.getDefault().getPath(HIGHCHARTS_CONFIG_DIR);
-                Path searchChartPath = highchartsconfigDir.resolve(SEARCHCHART_FILE);
-                return getChartConfig(searchChartPath, Files.newInputStream(searchChartPath));
-            } catch (IOException e) {
-                e.printStackTrace();
-                throw new RuntimeException("Failed reading search chart config file");
-            }
-        }
-
-
-        public static String getSparklineConfig() {
-            //TODO:Cache configuration
-            try {
-                Path highchartsconfigDir = FileSystems.getDefault().getPath(HIGHCHARTS_CONFIG_DIR);
-                Path sparklinePath = highchartsconfigDir.resolve(SPARKLINE_FILE);
-                return getChartConfig(sparklinePath, Files.newInputStream(sparklinePath));
-
-            } catch (IOException e) {
-                e.printStackTrace();
-                throw new RuntimeException("Failed reading sparkline config file");
-            }
-        }
-
-        public static String getLinechartConfig() {
-            //TODO:Cache configuration
-            try {
-                Path highchartsconfigDir = FileSystems.getDefault().getPath(HIGHCHARTS_CONFIG_DIR);
-                Path linechartPath = highchartsconfigDir.resolve(LINECHART_FILE);
-                return getChartConfig(linechartPath, Files.newInputStream(linechartPath));
-            } catch (IOException e) {
-                e.printStackTrace();
-                throw new RuntimeException("Failed reading linechart config file");
-            }
-        }
-
-        private static String getChartConfig(Path filePath, InputStream input) throws IOException {
-            if (Files.exists(filePath)) {
-                return IOUtils.toString(input);
-            } else {
-                throw new IllegalStateException("******** CHART CONFIGURATION FILE NOT FOUND!!!!!! ***********");
-            }
+        public static int getMaxHighchartsServerConnection() {
+            return MAX_HIGHCHARTS_SERVER_CONNECTION;
         }
     }
-
-    ;
-
 
     /**
      * Gets a configured value for the given key from either the system

@@ -4,6 +4,7 @@ import com.github.jknack.handlebars.Handlebars;
 import com.github.jknack.handlebars.Options;
 import com.github.onsdigital.babbage.content.client.ContentClient;
 import com.github.onsdigital.babbage.content.client.ContentFilter;
+import com.github.onsdigital.babbage.content.client.ContentStream;
 import com.github.onsdigital.babbage.template.handlebars.helpers.base.BabbageHandlebarsHelper;
 import com.github.onsdigital.babbage.util.URIUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -31,6 +32,7 @@ public enum DataHelpers implements BabbageHandlebarsHelper<String> {
     resolve {
         @Override
         public CharSequence apply(String uri, Options options) throws IOException {
+            ContentStream contentStream = null;
             try {
                 validateUri(uri);
 
@@ -39,13 +41,18 @@ public enum DataHelpers implements BabbageHandlebarsHelper<String> {
                 if (filterVal != null) {
                     filter = ContentFilter.valueOf(filterVal.toUpperCase());
                 }
-                InputStream data = ContentClient.getInstance().getContentStream(uri, filter(filter)).getDataStream();
+                contentStream = ContentClient.getInstance().getContentStream(uri, filter(filter));
+                InputStream data = contentStream.getDataStream();
                 Map<String, Object> context = toMap(data);
                 assign(options, context);
                 return options.fn(context);
             } catch (Exception e) {
                 logResolveError(uri, e);
                 return options.inverse();
+            } finally {
+                if (contentStream != null) {
+                    contentStream.close();
+                }
             }
         }
 
@@ -56,6 +63,43 @@ public enum DataHelpers implements BabbageHandlebarsHelper<String> {
 
     },
 
+    //Resolve latest article or bulletin with given uri
+    resolveLatest {
+        @Override
+        public CharSequence apply(String uri, Options options) throws IOException {
+            ContentStream contentStream = null;
+            try {
+                validateUri(uri);
+                String s = URIUtil.removeLastSegment(uri) + "/latest";
+
+                ContentFilter filter = null;
+                String filterVal = options.<String>hash("filter");
+                if (filterVal != null) {
+                    filter = ContentFilter.valueOf(filterVal.toUpperCase());
+                }
+                contentStream = ContentClient.getInstance().getContentStream(s, filter(filter));
+                InputStream data = contentStream.getDataStream();
+                Map<String, Object> context = toMap(data);
+                assign(options, context);
+                return options.fn(context);
+            } catch (Exception e) {
+                logResolveError(uri, e);
+                return options.inverse();
+            } finally {
+                if (contentStream != null) {
+                    contentStream.close();
+                }
+            }
+
+        }
+
+
+        @Override
+        public void register(Handlebars handlebars) {
+            handlebars.registerHelper(this.name(), this);
+        }
+    },
+
     /**
      * usage:  {{#resolveChildren "uri" [depth=depthvalue] [assign=variableName]}
      * <p>
@@ -64,16 +108,22 @@ public enum DataHelpers implements BabbageHandlebarsHelper<String> {
     resolveChildren {
         @Override
         public CharSequence apply(String uri, Options options) throws IOException {
+            ContentStream stream = null;
             try {
                 validateUri(uri);
                 Integer depth = options.<Integer>hash("depth");
-                InputStream data = ContentClient.getInstance().getChildren(uri, depth(depth)).getDataStream();
+                stream = ContentClient.getInstance().getChildren(uri, depth(depth));
+                InputStream data = stream.getDataStream();
                 List<Map<String, Object>> context = toList(data);
                 assign(options, context);
                 return options.fn(context);
             } catch (Exception e) {
                 logResolveError(uri, e);
                 return options.inverse();
+            } finally {
+                if (stream != null) {
+                    stream.close();
+                }
             }
         }
 
@@ -92,15 +142,21 @@ public enum DataHelpers implements BabbageHandlebarsHelper<String> {
     resolveParents {
         @Override
         public CharSequence apply(String uri, Options options) throws IOException {
+            ContentStream stream = null;
             try {
                 validateUri(uri);
-                InputStream data = ContentClient.getInstance().getParents(uri).getDataStream();
+                stream = ContentClient.getInstance().getParents(uri);
+                InputStream data = stream.getDataStream();
                 List<Map<String, Object>> context = toList(data);
                 assign(options, context);
                 return options.fn(context);
             } catch (Exception e) {
                 logResolveError(uri, e);
                 return options.inverse();
+            } finally {
+                if (stream != null) {
+                    stream.close();
+                }
             }
         }
 

@@ -1,7 +1,7 @@
 package com.github.onsdigital.data;
 
 import com.github.davidcarboni.ResourceUtils;
-import com.github.onsdigital.configuration.Configuration;
+import com.github.onsdigital.babbage.configuration.Configuration;
 import com.github.onsdigital.content.DirectoryListing;
 import com.github.onsdigital.content.service.ContentNotFoundException;
 import com.github.onsdigital.content.service.ContentService;

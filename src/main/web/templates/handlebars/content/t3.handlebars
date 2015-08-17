@@ -19,19 +19,19 @@
 					<h2>Latest statistical bulletin</h2>
 					<header class="box___section">
 						<h3 class="navpanel-list-heading lede box--padded-bottom-small">
-						<a href="{{statsBulletins.0.uri}}">{{bulletin.title}}{{#if bulletin.edition}}: {{bulletin.edition}}{{/if}}</a>
+						<a href="{{statsBulletins.0.uri}}">{{bulletin.description.title}}{{#if bulletin.description.edition}}: {{bulletin.description.edition}}{{/if}}</a>
 						</h3>
 					</header>
 					<h3>What's in the bulletin?</h3>
 					<ul class="list--bullet mini flush--half--top navpanel-list headline--box-container-text">
 						<li>
-							{{bulletin.headline1}}
+							{{bulletin.description.headline1}}
 						</li>
 						<li>
-							{{bulletin.headline2}}
+							{{bulletin.description.headline2}}
 						</li>
 						<li>
-							{{bulletin.headline3}}
+							{{bulletin.description.headline3}}
 						</li>
 					</ul>
 					<p class="text-right"><a href="{{statsBulletins.0.uri}}">Read statistical bulletin</a></p>
@@ -103,7 +103,7 @@
 					<ul class="list--neutral">
 						{{#each relatedMethodology}}
 						{{#resolve this.uri filter="title"}}
-						<li class="flush--third--bottom"><a href="{{rootpath uri}}">{{description.title}}</a></li>
+						<li class="flush--third--bottom"><a href="{{absolute uri}}">{{description.title}}</a></li>
 						{{/resolve}}
 						{{/each}}
 					</ul>

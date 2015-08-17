@@ -30,6 +30,7 @@ $(function() {
         jsEnhanceULNavToSelectNav();
         jsEnhanceClickableDiv();
         jsEnhanceLinechart();
+        jsEnhanceSparkline();
         jsEnhancePrint();
         jsEnhanceNumberSeparator();
         jsEnhanceMarkdownCharts();
@@ -166,10 +167,29 @@ $(function() {
 
         $.getJSON(location, function(timeseries) {
             // console.log("Successfuly read timseries data");
-            linechart = linechart(timeseries); //Global variable
+            renderLineChart(timeseries);
 
         }).fail(function(d, textStatus, error) {
             // console.error("Failed reading timseries, status: " + textStatus + ", error: " + error)
+        });
+    }
+
+     function jsEnhanceSparkline() {
+
+        var chartContainer = $(".sparkline");
+        if (!chartContainer.length) {
+            return;
+        }
+        chartContainer.each(function() {
+            var $this = $(this);
+            var uri = $this.data('uri');
+            $this.empty();
+            $.getJSON(uri+'data?series', function(timeseries) {
+                // console.log("Successfuly read timseries data");
+                renderSparkline(timeseries);
+            }).fail(function(d, textStatus, error) {
+                // console.error("Failed reading timseries, status: " + textStatus + ", error: " + error)
+            });
         });
     }
 

@@ -1,6 +1,6 @@
 package com.github.onsdigital.search;
 
-import com.github.onsdigital.configuration.Configuration;
+import com.github.onsdigital.babbage.configuration.Configuration;
 import com.github.onsdigital.content.page.base.PageType;
 import com.google.gson.*;
 import org.apache.commons.io.FileUtils;

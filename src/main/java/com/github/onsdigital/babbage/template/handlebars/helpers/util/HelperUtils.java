@@ -1,15 +1,8 @@
 package com.github.onsdigital.babbage.template.handlebars.helpers.util;
 
 import com.github.jknack.handlebars.Options;
-import com.github.onsdigital.configuration.Configuration;
-import org.apache.commons.lang3.StringUtils;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.math.BigDecimal;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.Path;
 
 /**
  * Created by bren on 06/07/15.
