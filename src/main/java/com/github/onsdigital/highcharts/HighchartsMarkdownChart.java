@@ -46,6 +46,9 @@ public class HighchartsMarkdownChart {
             yAxis.title = new Title();
             yAxis.title.text = "";
 
+            yAxis.labels = new HashMap<>();
+            yAxis.labels.put("format", "{value:,f}");
+
             labels = new Labels();
             Label chartUnitLabel = new Label();
             chartUnitLabel.html = markdownChart.getUnit();
@@ -142,6 +145,7 @@ public class HighchartsMarkdownChart {
         public Title title;
         public List<String> categories;
         public String tickInterval;
+        public Map<String, String> labels;
     }
 
     class Labels {
