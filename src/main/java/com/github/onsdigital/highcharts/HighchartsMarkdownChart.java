@@ -35,6 +35,9 @@ public class HighchartsMarkdownChart {
         xAxis.categories = Arrays.asList(markdownChart.getCategories());
         xAxis.tickInterval = markdownChart.getLabelInterval();
 
+        yAxis.labels = new HashMap<>();
+        yAxis.labels.put("format", "{value:,f}");
+
         if (markdownChart.isRotated()) {
 
             yAxis.title = new Title();
@@ -45,9 +48,6 @@ public class HighchartsMarkdownChart {
 
             yAxis.title = new Title();
             yAxis.title.text = "";
-
-            yAxis.labels = new HashMap<>();
-            yAxis.labels.put("format", "{value:,f}");
 
             labels = new Labels();
             Label chartUnitLabel = new Label();
