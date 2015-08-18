@@ -12,6 +12,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.conn.HttpClientConnectionManager;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
@@ -23,26 +24,30 @@ import java.net.URISyntaxException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by bren on 22/07/15.
  * <p/>
  * http client to a single host with connection pool and  cache functionality.
  */
-//TODO: SSL support for https?
+//TODO: SSL support for https? not needed currently, configure java for ssl
 //Add post,put,etc. functionality if needed
 public class PooledHttpClient {
 
     private final PoolingHttpClientConnectionManager connectionManager;
     private final CloseableHttpClient httpClient;
+    private final IdleConnectionMonitorThread monitorThread;
     private final URI HOST;
 
     public PooledHttpClient(String host) {
-        HOST =  resolveHostUri(host);
+        HOST = resolveHostUri(host);
         this.connectionManager = new PoolingHttpClientConnectionManager();
         this.httpClient = HttpClients.custom()
                 .setConnectionManager(connectionManager)
                 .build();
+        this.monitorThread = new IdleConnectionMonitorThread(connectionManager);
+        this.monitorThread.start();
         Runtime.getRuntime().addShutdownHook(new ShutdownHook());
     }
 
@@ -86,8 +91,8 @@ public class PooledHttpClient {
 
 
     /**
-     * @param path            path, should not contain any query string, only path info
-     * @param headers         key-value map to to be added to request as headers
+     * @param path           path, should not contain any query string, only path info
+     * @param headers        key-value map to to be added to request as headers
      * @param postParameters query parameters to be sent as get query string
      * @return
      * @throws IOException             All exceptions thrown are IOException implementations
@@ -122,7 +127,10 @@ public class PooledHttpClient {
 
 
     public void shutdown() throws IOException {
+        System.out.println("Shutting down connection pool to host:" + HOST);
         httpClient.close();
+        System.out.println("Successfully shut down connection pool");
+        monitorThread.shutdown();
     }
 
     private URI buildPath(String path) {
@@ -130,7 +138,7 @@ public class PooledHttpClient {
         try {
             return uriBuilder.build();
         } catch (URISyntaxException e) {
-            throw new RuntimeException("Invalid uri! " + HOST  + path);
+            throw new RuntimeException("Invalid uri! " + HOST + path);
         }
     }
 
@@ -199,17 +207,60 @@ public class PooledHttpClient {
 
     }
 
+
+    //Based on tuorial code on https://hc.apache.org/httpcomponents-client-ga/tutorial/html/connmgmt.html#d5e393
+
+    //Http client already tests connection to see if it is stale before making a request, but documents suggests using monitor thread since it is 100% reliable
+    private class IdleConnectionMonitorThread extends Thread {
+
+        private boolean shutdown;
+        private HttpClientConnectionManager connMgr;
+
+        public IdleConnectionMonitorThread(HttpClientConnectionManager connMgr) {
+            super();
+            this.connMgr = connMgr;
+        }
+
+        @Override
+        public void run() {
+            System.out.println("Running connection pool monitor");
+            try {
+                while (!shutdown) {
+                    synchronized (this) {
+                        wait(5000);
+                        // Close expired connections every 5 seconds
+                        connMgr.closeExpiredConnections();
+                        // Close connections
+                        // that have been idle longer than 30 sec
+                        connMgr.closeIdleConnections(60, TimeUnit.SECONDS);
+                    }
+                }
+            } catch (InterruptedException ex) {
+                System.err.println("Connection pool monitor failed");
+                ex.printStackTrace();
+            }
+        }
+
+        public void shutdown() {
+            System.out.println("Shutting down connection pool monitor");
+            shutdown = true;
+            synchronized (this) {
+                notifyAll();
+            }
+        }
+
+    }
+
+
     private class ShutdownHook extends Thread {
         @Override
         public void run() {
-            System.out.println("Shutting down connection pool to host:" + HOST);
             try {
                 if (httpClient != null) {
                     shutdown();
                 }
-                System.out.println("Successfully shut down connection pool");
             } catch (IOException e) {
-                System.err.println("Falied shutting down connection pool");
+                System.err.println("Falied shutting down http client for, " + HOST);
                 e.printStackTrace();
             }
         }
