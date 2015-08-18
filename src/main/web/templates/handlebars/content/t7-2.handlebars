@@ -3,15 +3,15 @@
 	<div class="wrapper">
 		{{> partials/breadcrumb}}
 		<p class="page-header__title">
-			User requested data
+			{{labels.urd}}
 		</p>
 		<h1 class="page-header__title flush--half--bottom">{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}</h1>
 		<div class="grid-wrap mini">
 			<p class="grid-col tablet-grid-one-quarter">
-				<span>Release date: </span><br/>{{df description.releaseDate}}
+				<span>{{labels.meta-contact}}: </span><br/>{{df description.releaseDate}}
 			</p>
 			<p class="grid-col tablet-grid-one-quarter divider--border-left">
-				<span>Reference number: </span><br/>{{description.reference}}
+				<span>{{labels.urd}}: </span><br/>{{description.reference}}
 			</p>
 		</div>
 	</div>
@@ -20,12 +20,12 @@
 <div class="wrapper panel--mar">
 	<div class="grid-wrap">
 		<article class="grid-col desktop-grid-two-thirds">
-			<h2>Summary of request</h2>
+			<h2 class="delta">{{labels.urd-summary}}</h2>
 			{{#each markdown}}
 				{{md this}}
 			{{/each}}
 
-			<h2>{{#eq downloads.size 1}}Download associated with request{{/eq}} {{#ne downloads.size 1}}Downloads associated with request{{/ne}}</h2>
+			<h2>{{#eq downloads.size 1}}{{labels.urd-download}}{{/eq}} {{#ne downloads.size 1}}{{labels.urd-downloads}}{{/ne}}</h2>
 			<ul class="list--neutral">
 				{{#each downloads}}
 				<li class="flush--third--bottom">
@@ -39,7 +39,7 @@
 			<article class="box solid box--purple--separated--left">
 				<div class="box__inner border box--padded">
 					<h3 class="box__section__header">
-						{{#eq downloads.size 1}}Download associated with request{{/eq}} {{#ne downloads.size 1}}Downloads associated with request{{/ne}}
+						{{#eq downloads.size 1}}{{labels.urd-download}}{{/eq}} {{#ne downloads.size 1}}{{labels.urd-downloads}}{{/ne}}
 					</h3>
 					<!-- /box__header -->
 					<div class="box__content">

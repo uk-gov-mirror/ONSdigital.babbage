@@ -3,7 +3,7 @@
 		<div class="wrapper">
 			{{> partials/breadcrumb}}
 			<p class="page-header__title">
-				Compendium
+				{{labels.compendium}}
 			</p>
 			<h1 class="page-header__title flush--half--bottom">{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}</h1>
 			<div class="grid-wrap mini">
@@ -11,23 +11,23 @@
 					{{#if description.nationalStatistic}}
 					<img src="/node_modules/ONS-Pattern-Library/ui/img/national-statistics.png" alt="National Statistics logo">
 					{{/if}}
-					<span>Contact: </span></br>
+					<span>{{labels.meta-contact}}: </span></br>
 					<a href="mailto:{{description.contact.email}}">{{#if description.contact.name}}{{description.contact.name}}{{else}}{{description.contact.email}}{{/if}}</a>
 				</p>
 				<p class="grid-col tablet-grid-one-quarter divider--border-left">
-					<span>Release date: </span></br>{{df description.releaseDate}}
+					<span>{{labels.release-date}}: </span></br>{{df description.releaseDate}}
 					</br>
-					<a class="print-hidden" href="#">previous versions</a>
+					<a class="print-hidden" href="#">{{labels.release-prev}}</a>
 				</p>
 				{{#if description.nextRelease}}
 				<p class="grid-col tablet-grid-one-quarter divider--border-left">
-					<span>Next release: </span></br>{{description.nextRelease}}
+					<span>{{labels.release-next}} </span></br>{{description.nextRelease}}
 				</p>
 				{{/if}}
 				<p class="grid-col tablet-grid-one-quarter divider--border-left print-hidden">
 					<a href="" id="jsEnhancePrintCompendium" class="link-complex nojs-hidden js-enhance--show">
 						<span class="icon-print"></span>
-						<span class="link-complex__target print-analytics">Print full report</span>
+						<span class="link-complex__target print-analytics">{{labels.print-report}}</span>
 					</a>
 					{{!--<br class="nojs-hidden js-enhance--show"/>
 					<a href="#" class="link-complex">
@@ -47,9 +47,9 @@
 				<div class="lede print-links">
 					{{md summary}}
 				</div>
-				<h2>What's in this compendium?</h2>
+				<h2>{{labels.compendium-whats-in}}</h2>
 				<section class="accordion is-collapsed">
-					<h3 id="sc-{{@index}}" class="accordion__title" aria-controls="content-{{@index}}">Chapters</h3>
+					<h3 id="sc-{{@index}}" class="accordion__title" aria-controls="content-{{@index}}">{{labels.compendium-chapters}}</h3>
 					<div id="content-{{@index}}" class="accordion__content" aria-labelledby="sc-{{@index}}">
 						<ul class="list--neutral">
 							{{#each chapters}}
@@ -65,14 +65,14 @@
 				<section>
 				<!--<section class="accordion is-collapsed">-->
 					<!--<h3 id="sc-{{@index}}" class="accordion__title" aria-controls="content-{{@index}}">Data</h3>-->
-					<h3 class="accordion__title">Data</h3>
+					<h3 class="accordion__title">{{labels.data}}</h3>
 					<!--<div id="content-{{@index}}" class="accordion__content" aria-labelledby="sc-{{@index}}">-->
 					<div class="accordion__content">
 						<ul class="list--neutral">
 							{{#each datasets}}
 							<li>
 								<h4 class="flush"><a href="{{uri}}">{{description.title}}</a></h4>
-               					<p>All the time series data in this compendium.</p>
+               					<p>{{labels.compendium-time-series}}</p>
 							</li>
 							{{/each}}
 						</ul>
@@ -82,7 +82,7 @@
 				<div class="grid-wrap panel--top-pad-large">
 					<div class="grid-col desktop-grid-one-half">
 						<article class="box box--padded sectioned">
-							<h3 class="box__section__header">Methodology</h3>
+							<h3 class="box__section__header">{{labels.methodology}}</h3>
 							<div class="box__content">
 								<ul class="list--neutral">
 									{{#each relatedMethodology}}
@@ -97,12 +97,12 @@
 					<!-- /grid-desktop-one-half -->
 					<div class="grid-col desktop-grid-one-half">
 						<div class="box box--padded sectioned">
-							<h3 class="box__section__header">Contact details</h3>
+							<h3 class="box__section__header">{{labels.contact-details}}</h3>
 							<div class="box__content">
 								<address>
 									{{#if description.contact.name}}{{description.contact.name}}</br>{{/if}}
 		                      		<a href="mailto:{{description.contact.email}}">{{description.contact.email}}</a></br>
-		                      		{{#if description.contact.telephone}}Telephone: {{description.contact.telephone}}{{/if}}
+		                      		{{#if description.contact.telephone}}{{labels.phone}}: {{description.contact.telephone}}{{/if}}
 								</address>
 							</div>
 						</div>
