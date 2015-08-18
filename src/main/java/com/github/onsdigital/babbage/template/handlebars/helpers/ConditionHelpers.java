@@ -17,7 +17,7 @@ public enum ConditionHelpers implements BabbageHandlebarsHelper<Object> {
         @Override
         public CharSequence apply(Object context, Options o) throws IOException {
             //Can not return String value of false, it will not be evaluated as falsy ( null, empty, etc, ) by handlebars java. Instead returning false
-            return HelperUtils.isEqual(o, context, o.param(0)) ? valid() : null;
+            return HelperUtils.isEqual(context, o.param(0)) ? valid() : null;
         }
 
         @Override
@@ -32,7 +32,7 @@ public enum ConditionHelpers implements BabbageHandlebarsHelper<Object> {
 
         @Override
         public CharSequence apply(Object context, Options o) throws IOException {
-            return HelperUtils.isNotEqual(o, context, o.param(0)) ? valid() : null;
+            return HelperUtils.isNotEqual(context, o.param(0)) ? valid() : null;
         }
 
         @Override
@@ -48,7 +48,7 @@ public enum ConditionHelpers implements BabbageHandlebarsHelper<Object> {
 
         @Override
         public CharSequence apply(Object context, Options o) throws IOException {
-            return HelperUtils.isEqual(o, context, o.param(0)) ? o.fn() : o.inverse();
+            return HelperUtils.isEqual(context, o.param(0)) ? o.fn() : o.inverse();
         }
 
 
@@ -64,7 +64,7 @@ public enum ConditionHelpers implements BabbageHandlebarsHelper<Object> {
 
         @Override
         public CharSequence apply(Object context, Options o) throws IOException {
-            return HelperUtils.isNotEqual(o, context, o.param(0)) ? o.fn() : o.inverse();
+            return HelperUtils.isNotEqual(context, o.param(0)) ? o.fn() : o.inverse();
         }
 
         @Override

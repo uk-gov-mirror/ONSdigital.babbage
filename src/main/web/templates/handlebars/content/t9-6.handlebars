@@ -27,7 +27,7 @@
 				<div class="panel panel--separated--top">
 					<ul class="list--neutral">
 					{{#resolveChildren uri}}
-						{{#loop this reverse=true}}
+						{{#loop orderBy="uri"}}
 							{{#if @first}}
 							<li>
 								<h3 class="flush">Latest release</h3>

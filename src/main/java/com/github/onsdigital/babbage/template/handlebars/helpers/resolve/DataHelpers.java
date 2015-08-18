@@ -165,7 +165,42 @@ public enum DataHelpers implements BabbageHandlebarsHelper<String> {
             handlebars.registerHelper(this.name(), this);
         }
 
+    },
+
+    /**
+     * File size helper reads file size from content service
+     */
+    fs {
+
+        @Override
+        public CharSequence apply(String uri, Options options) throws IOException {
+            if (options.isFalsy(uri)) {
+                return null;
+            }
+            try(ContentStream stream = ContentClient.getInstance().getResource(uri)) {
+                return humanReadableByteCount(stream.getSize(), true);
+            } catch (Exception e) {
+                System.err.printf("Failed reading file size from content service, uri: %s cause: %s", uri, e.getMessage());
+                return null;
+            }
+        }
+
+        // Taken from http://stackoverflow.com/questions/3758606/how-to-convert-byte-size-into-human-readable-format-in-java
+        private String humanReadableByteCount(long bytes, boolean si) {
+            int unit = si ? 1000 : 1024;
+            if (bytes < unit) return bytes + " B";
+            int exp = (int) (Math.log(bytes) / Math.log(unit));
+            String pre = (si ? "kMGTPE" : "KMGTPE").charAt(exp-1) + (si ? "" : "i");
+            return String.format("%.1f %sB", bytes / Math.pow(unit, exp), pre);
+        }
+
+        @Override
+        public void register(Handlebars handlebars) {
+            handlebars.registerHelper(this.name(), this);
+        }
+
     };
+
 
     //gets first parameter as uri, throws exception if not valid
     private static void validateUri(String uri) throws IOException {
