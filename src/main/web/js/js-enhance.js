@@ -344,10 +344,11 @@ $(function() {
 
     // Trigger Google Analytic pageview event
     function jsEnhanceTriggerAnalyticsEvent(page) {
-        //console.log(page);
-        ga('send', 'pageview', {
-            'page': page
-        });
+        if (typeof ga != "undefined") {
+            ga('send', 'pageview', {
+                'page': page
+            });
+        }
     }
 
     //Track file downloads in analytics
