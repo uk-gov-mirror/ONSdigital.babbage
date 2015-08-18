@@ -37,7 +37,11 @@
 	<div class="grid-wrap">
 		<div class="grid-col desktop-grid-full-width">
       <h2 class="flush">
-        &lt; Return to <a href="{{parent.uri}}">{{parent.description.title}}</a>
+				{{#each breadcrumb}}
+					{{#if @last}}
+            &lt; Return to <a href="{{uri}}">{{description.title}}</a>
+					{{/if}}
+				{{/each}}
       </h2>
 			<!-- /box -->
 			<div class="lede">
