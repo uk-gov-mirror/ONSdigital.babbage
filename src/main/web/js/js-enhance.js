@@ -183,6 +183,12 @@ $(function() {
 
     function jsEnhanceMarkdownCharts() {
 
+        Highcharts.setOptions({
+            lang: {
+                thousandsSep: ','
+            }
+        });
+
         var chartContainer = $(".markdown-chart");
         if (!chartContainer.length) {
             return;
