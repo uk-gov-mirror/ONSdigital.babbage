@@ -4,16 +4,17 @@ import com.github.jknack.handlebars.Handlebars;
 import com.github.jknack.handlebars.Options;
 import com.github.jknack.handlebars.helper.EachHelper;
 import com.github.onsdigital.babbage.template.handlebars.helpers.base.BabbageHandlebarsHelper;
+import com.github.onsdigital.babbage.template.handlebars.helpers.util.HelperUtils;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
+
+import static java.util.Collections.reverse;
+import static java.util.Collections.sort;
 
 /**
  * Created by bren on 02/07/15.
- *
+ * <p/>
  * Repeat content fixed number of times
  */
 
@@ -29,11 +30,9 @@ public class LoopHelper extends EachHelper implements BabbageHandlebarsHelper<Ob
 
         //Delegate everything other than repeat number to each helper
         if (context instanceof Number == false) {
-            Object reverse = options.hash("reverse");
-            if (Boolean.TRUE.equals(reverse)) {
-                List list = (List) context;
-                Collections.reverse(list);
-            }
+            boolean reverse = Boolean.TRUE.equals(options.hash("reverse"));
+            String field = options.hash("orderBy");
+            sort((List) context, reverse, field);
             return super.apply(context, options);
         }
 
@@ -55,4 +54,51 @@ public class LoopHelper extends EachHelper implements BabbageHandlebarsHelper<Ob
         handlebars.registerHelper(HELPER_NAME, this);
     }
 
+
+    private void sort(List list, boolean reverse, String field) {
+        if (field == null) {
+            if (reverse) {
+                reverse(list);
+            } else {
+                Collections.sort(list);
+            }
+        } else {
+            Collections.sort(list, new MapFieldComparator<>(field, reverse));
+        }
+
+        return;
+    }
+
+    /**
+     * Compares two map fields. If given object is not map it will fail,
+     * not using reflection to get field names. It is sufficient since Babbage deserialise json objects to map for rendering
+     *
+     * @param <Object>
+     */
+    private class MapFieldComparator<Object> implements Comparator {
+
+        boolean reverse;
+        String field;
+
+        private MapFieldComparator(String field, boolean reverse) {
+            this.field = field;
+            this.reverse = reverse;
+        }
+
+        @Override
+        public int compare(java.lang.Object o1, java.lang.Object o2) {
+            Map m1 = (Map) o1;
+            Map m2 = (Map) o2;
+            if (m1 == null) {
+                return 1;
+            }
+            if (m2 == null) {
+                return -1;
+            }
+            return HelperUtils.compare((Comparable) m1.get(field), (Comparable) m2.get(field));
+
+        }
+    }
+
 }
+

@@ -1,4 +1,4 @@
-package com.github.onsdigital.request.handler;
+package com.github.onsdigital.babbage.request.handler;
 
 import com.github.onsdigital.babbage.request.handler.base.RequestHandler;
 import com.github.onsdigital.babbage.request.response.BabbageResponse;

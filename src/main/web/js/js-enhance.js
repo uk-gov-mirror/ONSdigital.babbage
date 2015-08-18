@@ -158,20 +158,20 @@ $(function() {
 
     function jsEnhanceLinechart() {
 
-        var chartContainer = $("[data-chart]");
+        var chartContainer = $(".linechart");
         if (!chartContainer.length) {
             return;
         }
 
-        var location = stripTrailingSlash(window.location.pathname) + "/data";
-        // console.debug("Downloading timseries data from " + location)
-
-        $.getJSON(location, function(timeseries) {
-            // console.log("Successfuly read timseries data");
-            renderLineChart(timeseries);
-
-        }).fail(function(d, textStatus, error) {
-            // console.error("Failed reading timseries, status: " + textStatus + ", error: " + error)
+         chartContainer.each(function() {
+            var $this = $(this);
+            var uri = $this.data('uri');
+            $this.empty();
+            $.getJSON(uri+'data', function(timeseries) {
+                renderLineChart(timeseries);
+            }).fail(function(d, textStatus, error) {
+                // console.error("Failed reading timseries, status: " + textStatus + ", error: " + error)
+            });
         });
     }
 
@@ -202,6 +202,12 @@ $(function() {
     }
 
     function jsEnhanceMarkdownCharts() {
+
+        Highcharts.setOptions({
+            lang: {
+                thousandsSep: ','
+            }
+        });
 
         var chartContainer = $(".markdown-chart");
         if (!chartContainer.length) {
@@ -338,10 +344,11 @@ $(function() {
 
     // Trigger Google Analytic pageview event
     function jsEnhanceTriggerAnalyticsEvent(page) {
-        //console.log(page);
-        ga('send', 'pageview', {
-            'page': page
-        });
+        if (typeof ga != "undefined") {
+            ga('send', 'pageview', {
+                'page': page
+            });
+        }
     }
 
     //Track file downloads in analytics

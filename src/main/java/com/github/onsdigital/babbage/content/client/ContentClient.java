@@ -123,24 +123,6 @@ public class ContentClient {
             throw wrapException(e);
         }
     }
-//
-//    public ContentStream getBreadCrumb(String uri) throws ContentReadException {
-//        System.out.println("getBreadcrumb(): Reading breadcrumb from content server:" + uri);
-//        ArrayList<NameValuePair> queryParameters = new ArrayList<>();
-//        queryParameters.add(new BasicNameValuePair("uri", uri));
-//
-//        CloseableHttpResponse response = null;
-//        try {
-//            response = client.sendGet(getParentsPath(), getHeaders(), queryParameters);
-//            return new ContentStream(response);
-//        } catch (HttpResponseException e) {
-//            IOUtils.closeQuietly(response);
-//            throw wrapException(e);
-//        } catch (IOException e) {
-//            IOUtils.closeQuietly(response);
-//            throw wrapException(e);
-//        }
-//    }
 
     private List<NameValuePair> getParameters(String uri, Map<String, String[]> parametes) {
         List<NameValuePair> nameValuePairs = new ArrayList<>();

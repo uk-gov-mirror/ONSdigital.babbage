@@ -1,6 +1,6 @@
 package com.github.onsdigital.babbage.template.handlebars.helpers.util;
 
-import com.github.jknack.handlebars.Options;
+import com.github.jknack.handlebars.Handlebars.Utils;
 
 import java.math.BigDecimal;
 
@@ -22,8 +22,8 @@ public class HelperUtils {
      * @param o2
      * @return
      */
-    public static boolean isEqual(Options op, Object o1, Object o2) {
-        if (op.isFalsy(o1) || op.isFalsy(o2)) {
+    public static boolean isEqual(Object o1, Object o2) {
+        if (Utils.isEmpty(o1) || Utils.isEmpty(o2)) {
             return false;
         }
         if (o1 instanceof Number && o2 instanceof Number) {
@@ -32,8 +32,24 @@ public class HelperUtils {
         return o1.equals(o2);
     }
 
-    public static boolean isNotEqual(Options op, Object o1, Object o2) {
-        return !isEqual(op, o1, o2);
+
+    public static int compare(Comparable o1, Comparable o2) {
+        if (Utils.isEmpty(o1)) {
+            return 1;
+        }
+        if(Utils.isEmpty(o2)) {
+            return -1;
+        }
+        if (o1 instanceof Number && o2 instanceof Number) {
+            return new BigDecimal(o1.toString()).compareTo(new BigDecimal(o2.toString()));
+        }
+        return o1.compareTo(o2);
+    }
+
+
+
+    public static boolean isNotEqual(Object o1, Object o2) {
+        return !isEqual(o1, o2);
     }
 
 }

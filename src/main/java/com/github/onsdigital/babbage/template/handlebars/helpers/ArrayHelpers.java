@@ -6,17 +6,17 @@ import com.github.onsdigital.babbage.template.handlebars.helpers.base.BabbageHan
 import com.github.onsdigital.babbage.template.handlebars.helpers.util.HelperUtils;
 
 import java.io.IOException;
-import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * Created by bren on 06/07/15.
  */
-public enum ArrayHelpers implements BabbageHandlebarsHelper<Collection> {
+public enum ArrayHelpers implements BabbageHandlebarsHelper<List> {
 
     contains {
         @Override
-        public CharSequence apply(Collection collection, Options options) throws IOException {
+        public CharSequence apply(List collection, Options options) throws IOException {
             Object value = options.param(0);
             if (options.isFalsy(collection)) {
                 return options.inverse();
@@ -24,7 +24,7 @@ public enum ArrayHelpers implements BabbageHandlebarsHelper<Collection> {
 
             for (Iterator iterator = collection.iterator(); iterator.hasNext(); ) {
                 Object next = iterator.next();
-                if (HelperUtils.isEqual(options, next, value)) {
+                if (HelperUtils.isEqual(next, value)) {
                     return options.fn();
                 }
             }
@@ -37,5 +37,7 @@ public enum ArrayHelpers implements BabbageHandlebarsHelper<Collection> {
             handlebars.registerHelper(this.name(), this);
         }
 
-    }
+    };
+
+
 }
