@@ -15,10 +15,10 @@
 					{{#if description.nationalStatistic}}
 				    <img src="/node_modules/ONS-Pattern-Library/dist/img/national-statistics.png" alt="National Statistics logo" />
 				    {{/if}}
-					<span>{{labels.release-contact}} </span><br/><a href="mailto:{{description.contact.email}}">{{#if description.contact.name}}{{description.contact.name}}{{else}}{{description.contact.email}}{{/if}}</a>
+					<span>{{labels.meta-contact}}: </span><br/><a href="mailto:{{description.contact.email}}">{{#if description.contact.name}}{{description.contact.name}}{{else}}{{description.contact.email}}{{/if}}</a>
 				</p>
 				<p class="grid-col tablet-grid-one-quarter divider--border-left">
-					<span>{{labels.release-date}} </span><br/>{{df description.releaseDate}}<br/>
+					<span>{{labels.release-date}}: </span><br/>{{df description.releaseDate}}<br/>
 					{{#if description.latestRelease}}
                       <a class="print-hidden" href="{{previousReleasesUri}}">{{labels.release-prev}}</a>
 					{{else}}
@@ -27,7 +27,7 @@
 				</p>
 				{{#if description.nextRelease}}
 				<p class="grid-col tablet-grid-one-quarter divider--border-left">
-					<span>{{labels.release-next}}</span><br/>{{description.nextRelease}}
+					<span>{{labels.release-next}}:</span><br/>{{description.nextRelease}}
 				</p>
 				{{/if}}
 				<p class="grid-col tablet-grid-one-quarter divider--border-left print-hidden">
