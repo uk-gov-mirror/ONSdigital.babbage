@@ -76,7 +76,9 @@
 						<div class="box__content">
 							<ul class="list--neutral">
 								{{#each relatedDocuments}}
-								<li class="flush--third--bottom"><a href="{{uri}}">{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}</a></li>
+									{{#resolve this.uri filter="title"}}
+										<li class="flush--third--bottom"><a href="{{uri}}">{{title}}{{#if edition}}: {{edition}}{{/if}}</a></li>
+									{{/resolve}}
 								{{/each}}
 							</ul>
 						</div>
@@ -94,7 +96,9 @@
 							<div class="box__content">
 								<ul class="list--neutral">
 									{{#each relatedDatasets}}
-										<li class="flush--third--bottom"><a href="{{uri}}">{{description.title}}</a></li>
+										{{#resolve this.uri filter="title"}}
+										<li class="flush--third--bottom"><a href="{{uri}}">{{title}}</a></li>
+										{{/resolve}}
 									{{/each}}
 								</ul>
 							</div>
