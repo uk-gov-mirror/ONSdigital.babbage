@@ -167,7 +167,7 @@ $(function() {
             var $this = $(this);
             var uri = $this.data('uri');
             $this.empty();
-            $.getJSON(uri+'data', function(timeseries) {
+            $.getJSON(uri+'/data', function(timeseries) {
                 renderLineChart(timeseries);
             }).fail(function(d, textStatus, error) {
                 // console.error("Failed reading timseries, status: " + textStatus + ", error: " + error)
@@ -185,7 +185,7 @@ $(function() {
             var $this = $(this);
             var uri = $this.data('uri');
             $this.empty();
-            $.getJSON(uri+'data?series', function(timeseries) {
+            $.getJSON(uri+'/data?series', function(timeseries) {
                 // console.log("Successfuly read timseries data");
                 renderSparkline(timeseries);
             }).fail(function(d, textStatus, error) {
