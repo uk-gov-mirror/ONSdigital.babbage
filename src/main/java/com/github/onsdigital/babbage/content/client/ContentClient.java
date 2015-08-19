@@ -92,6 +92,10 @@ public class ContentClient {
         return sendGet(getResourcePath(), getParameters(uri, null));
     }
 
+    public ContentStream getFileSize(String uri) throws ContentReadException {
+        return sendGet(getFileSizePath(), getParameters(uri, null));
+    }
+
     public ContentStream getChildren(String uri, Map<String, String[]> queryParameters) throws ContentReadException {
         System.out.println("getChildren(): Reading child tree, uri: " + uri);
         return sendGet(getChildContentPath(), getParameters(uri, queryParameters));
@@ -193,6 +197,16 @@ public class ContentClient {
             return getResourceEndpoint() + "/" + collectionId;
         }
     }
+
+    private String getFileSizePath() {
+        String collectionId = getCollectionId();
+        if (collectionId == null) {
+            return getFileSizeEndpoint();
+        } else {
+            return getFileSizeEndpoint() + "/" + collectionId;
+        }
+    }
+
 
     private String getChildContentPath() {
         String collectionId = getCollectionId();

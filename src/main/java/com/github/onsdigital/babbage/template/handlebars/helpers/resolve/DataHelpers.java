@@ -177,8 +177,9 @@ public enum DataHelpers implements BabbageHandlebarsHelper<String> {
             if (options.isFalsy(uri)) {
                 return null;
             }
-            try(ContentStream stream = ContentClient.getInstance().getResource(uri)) {
-                return humanReadableByteCount(stream.getSize(), true);
+            try(ContentStream stream = ContentClient.getInstance().getFileSize(uri)) {
+                Map<String, Object> size = toMap(stream.getDataStream());
+                return humanReadableByteCount(((Number) size.get("fileSize")).longValue(), true);
             } catch (Exception e) {
                 System.err.printf("Failed reading file size from content service, uri: %s cause: %s", uri, e.getMessage());
                 return null;
@@ -186,7 +187,7 @@ public enum DataHelpers implements BabbageHandlebarsHelper<String> {
         }
 
         // Taken from http://stackoverflow.com/questions/3758606/how-to-convert-byte-size-into-human-readable-format-in-java
-        private String humanReadableByteCount(long bytes, boolean si) {
+        private String humanReadableByteCount(Long bytes, boolean si) {
             int unit = si ? 1000 : 1024;
             if (bytes < unit) return bytes + " B";
             int exp = (int) (Math.log(bytes) / Math.log(unit));
