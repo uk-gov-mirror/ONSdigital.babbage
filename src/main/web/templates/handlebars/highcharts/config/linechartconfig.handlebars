@@ -90,6 +90,9 @@ var linechart = {
         } else {
             this.chart.yAxis.min = 0;
         }
+    },
+    labels: {
+      format: '{value:,f}'
     }
    },
 
@@ -177,7 +180,7 @@ var linechart = {
 
        // series names and values
        $.each(this.points, function(i, val) {
-         content += '<div class="tiptext">' + val.point.series.chart.series[i].name + "<br/><b>Value: " + val.point.series.chart.series[i].options.preUnit + val.y + " " + val.point.series.chart.series[i].options.unit + '</b></div>';
+         content += '<div class="tiptext">' + val.point.series.chart.series[i].name + "<br/><b>Value: " + val.point.series.chart.series[i].options.preUnit + numberWithCommas(val.y) + " " + val.point.series.chart.series[i].options.unit + '</b></div>';
        });
        content += "</div>";
        return content;
@@ -212,9 +215,12 @@ var linechart = {
    }]
  };
 
+function numberWithCommas(number) {
+    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
 
 window.linechart = linechart;
 return linechart;
 
-
+{{!-- Don't add semi-colon at end of closing brackets below - it breaks server-side rendering --}}
  })()
