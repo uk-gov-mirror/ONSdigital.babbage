@@ -87,7 +87,11 @@ output = system.args[2];
 for (var i = system.args.length - 1; i > 2; i=i-2) {
     var cookie = system.args[i-1];
     var value = system.args[i];
-    //Cookies to prevent beta disclaimer show up
+    
+    if(cookie === 'jsEnhanced'){
+        continue;
+    }
+    
     phantom.addCookie({
         'domain': 'localhost',
         'name': cookie,
