@@ -161,8 +161,7 @@ $(function() {
           lang: {
             decimalPoint: '£'
           }
-        });        
-        console.log(Highcharts);
+        });
     }
 
 
