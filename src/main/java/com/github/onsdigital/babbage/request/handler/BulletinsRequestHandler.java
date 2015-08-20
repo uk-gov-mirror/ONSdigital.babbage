@@ -1,6 +1,7 @@
-package com.github.onsdigital.request.handler;
+package com.github.onsdigital.babbage.request.handler;
 
-import com.github.onsdigital.request.handler.base.ListPageBaseRequestHandler;
+import com.github.onsdigital.babbage.request.handler.base.ListPageBaseRequestHandler;
+import com.github.onsdigital.content.page.base.PageType;
 
 /**
  * Render a list page for bulletins under the given URI.
@@ -12,8 +13,8 @@ public class BulletinsRequestHandler extends ListPageBaseRequestHandler {
     }
 
     @Override
-    public String getListType() {
-        return "bulletin";
+    public String[] getListTypes() {
+        return new String[]{PageType.bulletin.toString()};
     }
 
     @Override

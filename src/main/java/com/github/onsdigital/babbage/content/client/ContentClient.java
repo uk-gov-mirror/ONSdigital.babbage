@@ -101,13 +101,20 @@ public class ContentClient {
         return sendGet(getChildContentPath(), getParameters(uri, queryParameters));
     }
 
-
     public ContentStream getChildren(String uri) throws ContentReadException {
         return sendGet(getChildContentPath(), null);
     }
 
     public ContentStream getParents(String uri) throws ContentReadException {
         return sendGet(getParentsPath(), getParameters(uri, null));
+    }
+
+    public ContentStream getList(String uri, Map<String, String[]> queryParameters) throws ContentReadException {
+        return sendGet(getListEndpoint(), getParameters(uri, queryParameters));
+    }
+
+    public ContentStream getSearch(String uri, Map<String, String[]> queryParameters) throws ContentReadException {
+        return sendGet(getSearchEndpoint(), getParameters(uri, queryParameters));
     }
 
     public ContentStream getParents(String uri, Map<String, String[]> queryParameters) throws ContentReadException {

@@ -32,16 +32,16 @@ public class Search {
         BabbageResponse babbageResponse;
         String type = URIUtil.resolveRequestType(request.getRequestURI());
 
-        String uri = "search?" + request.getQueryString();
+//        String uri = "search?" + request.getQueryString();
 
         switch (type) {
             case DATA_REQUEST:
-                try (ContentStream contentStream = ContentClient.getInstance().getContentStream(uri, getQueryParameters(request))) {
+                try (ContentStream contentStream = ContentClient.getInstance().getSearch("", getQueryParameters(request))) {
                     babbageResponse = new BabbageStringResponse(contentStream.getAsString());
                 }
                 break;
             case SEARCH_REQUEST:
-                try (InputStream dataStream = ContentClient.getInstance().getContentStream(uri, getQueryParameters(request)).getDataStream()) {
+                try (InputStream dataStream = ContentClient.getInstance().getSearch("", getQueryParameters(request)).getDataStream()) {
                     String html = TemplateService.getInstance().renderContent(dataStream);
                     babbageResponse = new BabbageStringResponse(html, HTML_MIME);
                 }

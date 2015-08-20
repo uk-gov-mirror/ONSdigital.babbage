@@ -1,15 +1,16 @@
-package com.github.onsdigital.request.handler.base;
+package com.github.onsdigital.babbage.request.handler.base;
 
+import com.github.onsdigital.babbage.content.client.ContentClient;
+import com.github.onsdigital.babbage.request.response.BabbageResponse;
+import com.github.onsdigital.babbage.request.response.BabbageStringResponse;
+import com.github.onsdigital.babbage.template.TemplateService;
 import com.github.onsdigital.content.util.URIUtil;
-import com.github.onsdigital.data.zebedee.ZebedeeClient;
-import com.github.onsdigital.data.zebedee.ZebedeeRequest;
-import com.github.onsdigital.request.response.BabbageResponse;
-import com.github.onsdigital.request.response.BabbageStringResponse;
-import org.apache.commons.io.IOUtils;
-import org.apache.http.client.utils.URIBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.InputStream;
+import java.util.Map;
+
+import static com.github.onsdigital.babbage.util.RequestUtil.getQueryParameters;
 
 /**
  * Render a list page for bulletins under the given URI.
@@ -23,7 +24,7 @@ public abstract class ListPageBaseRequestHandler implements RequestHandler {
      * The type of page to be returned in the list page
      * @return
      */
-    public abstract String getListType();
+    public abstract String[] getListTypes();
 
     /**
      * The template to use when rendering the page.
@@ -41,11 +42,6 @@ public abstract class ListPageBaseRequestHandler implements RequestHandler {
 
     @Override
     public BabbageResponse get(String requestedUri, HttpServletRequest request) throws Exception {
-        return get(requestedUri, request, null);
-    }
-
-    @Override
-    public BabbageResponse get(String requestedUri, HttpServletRequest request, ZebedeeRequest zebedeeRequest) throws Exception {
 
         BabbageResponse babbageResponse;
         String type = URIUtil.resolveRequestType(request.getRequestURI());
@@ -55,17 +51,18 @@ public abstract class ListPageBaseRequestHandler implements RequestHandler {
             requestedUri = URIUtil.removeEndpoint(requestedUri);
         }
 
-        URIBuilder uriBuilder = new URIBuilder("list")
-                .addParameter("type", getListType());
-
+        String uri = "";
         if (useLocalisedUri()) {
-            uriBuilder.addParameter("uri", requestedUri);
+            uri = requestedUri;
         }
 
-        ZebedeeClient zebedeeClient = new ZebedeeClient(zebedeeRequest);
-        InputStream zebedeeResponse =  zebedeeClient.get(uriBuilder.build().toString(), request.getRequestURI(), false);
+        Map<String, String[]> queryParameters = getQueryParameters(request);
+        queryParameters.put("type", getListTypes());
 
-        babbageResponse = new BabbageStringResponse(IOUtils.toString(zebedeeResponse));
+        try (InputStream dataStream = ContentClient.getInstance().getList(uri, queryParameters).getDataStream()) {
+            String html = TemplateService.getInstance().renderContent(dataStream);
+            babbageResponse = new BabbageStringResponse(html, CONTENT_TYPE);
+        }
 
 //        switch (type) {
 //            case DATA_REQUEST:
