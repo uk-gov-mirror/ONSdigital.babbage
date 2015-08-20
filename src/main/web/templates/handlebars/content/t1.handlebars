@@ -1,3 +1,4 @@
+<main id="main" role="main" tabindex="-1">
 <div class="page-header">
     <div class="wrapper">
         <h1 class="page-header__title flush--half--bottom">{{ labels.homepage-welcome }}</h1>
@@ -44,7 +45,7 @@
                 {{/resolve}}
                 <footer class="nav-panel__footer-home-hero">
                 {{#resolve theme.uri filter="title"}}
-                    <a href="{{theme.uri}}">Explore {{theme.description.title}}</a>
+                    <a href="{{theme.uri}}">Explore {{title}}</a>
                 {{/resolve}}
                 </footer>
             </article>
@@ -63,7 +64,7 @@
                 <p>Find out when our statistics are released and sign-up to receive notifications.</p>
             </article>
             <article class="grid-col desktop-grid-one-third nav--block-home-highlighted-content">
-                <h2 class="delta flush"><a href="https://www.gov.uk/government/statistics ">{{labels.homepage-other-stats}}<span class="img-block"><img src="../../img/t1-gov-uk--black.png" alt="" class="no-border"></span></a></h2>
+                <h2 class="delta flush"><a class="hide-icon" href="https://www.gov.uk/government/statistics ">{{labels.homepage-other-stats}}<span class="img-block"><img src="../../img/t1-gov-uk--black.png" alt="" class="no-border"></span></a></h2>
                 <p>Find official statistics produced by other government departments.</p>
             </article>
             <article class="grid-col desktop-grid-one-third nav--block-home-highlighted-content">

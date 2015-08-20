@@ -24,7 +24,7 @@
 					</a>
 				</p>
 			</div>
-			{{#ifany description.surveyName description.frequency description.compilation description.sampleSize description.geographicCoverage}}
+			{{#if_any description.surveyName description.frequency description.compilation description.sampleSize description.geographicCoverage}}
 			<h2 class="gamma">{{labels.qmi-meth-background}}</h2>
 			<div class="grid-wrap mini">
 				{{#if description.surveyName}}
@@ -44,7 +44,7 @@
 				{{/if}}
 				{{#if description.sampleSize}}
 				<p class="grid-col {{#if_all description.surveyName description.frequency description.compilation description.sampleSize description.geographicCoverage}}tablet-grid-one-fifth{{else}}tablet-grid-one-quarter{{/if_all}} {{#if_any description.surveyName description.frequency description.compilation}}divider--border-left{{/if_any}}">
-					<span>{{labels.qmi-sample-size}}: </span><br/>{{description.sampleSize}}
+					<span>{{labels.qmi-sample-size}}: </span><br/><span class="stat__figure-enhance">{{description.sampleSize}}</span>
 				</p>
 				{{/if}}
 				{{#if description.geographicCoverage}}
