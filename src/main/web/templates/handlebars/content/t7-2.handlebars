@@ -25,7 +25,7 @@
 				{{md this}}
 			{{/each}}
 
-			<h2>{{#eq downloads.size 1}}{{labels.urd-download}}{{/eq}} {{#ne downloads.size 1}}{{labels.urd-downloads}}{{/ne}}</h2>
+			<h2>{{#if_eq downloads.size 1}}{{labels.urd-download}}{{/if_eq}} {{#if_ne downloads.size 1}}{{labels.urd-downloads}}{{/if_ne}}</h2>
 			<ul class="list--neutral">
 				{{#each downloads}}
 				<li class="flush--third--bottom">
@@ -39,7 +39,7 @@
 			<article class="box solid box--purple--separated--left">
 				<div class="box__inner border box--padded">
 					<h3 class="box__section__header">
-						{{#eq downloads.size 1}}{{labels.urd-download}}{{/eq}} {{#ne downloads.size 1}}{{labels.urd-downloads}}{{/ne}}
+						{{#if_eq downloads.size 1}}{{labels.urd-download}}{{/if_eq}} {{#if_ne downloads.size 1}}{{labels.urd-downloads}}{{/if_ne}}
 					</h3>
 					<!-- /box__header -->
 					<div class="box__content">

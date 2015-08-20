@@ -10,7 +10,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.github.onsdigital.configuration.Configuration;
+import com.github.onsdigital.babbage.configuration.Configuration;
 import org.junit.Test;
 
 import com.github.onsdigital.search.ScanFileSystem;
@@ -19,7 +19,7 @@ import com.github.onsdigital.search.ScanFileSystem;
  * Exercises scanning the file system
  */
 public class ScanFileSystemTest {
-	private String rootSearch = Configuration.getContentPath();
+	private String rootSearch = Configuration.CONTENT_SERVICE.getContentPath();
 
 	@Test
 	public void testGetFileNames() throws IOException {

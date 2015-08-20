@@ -37,7 +37,11 @@
 	<div class="grid-wrap">
 		<div class="grid-col desktop-grid-full-width">
       <h2 class="flush">
-        &lt; {{labels.compendium-return}} <a href="{{parent.uri}}">{{parent.description.title}}</a>
+				{{#each breadcrumb}}
+					{{#if @last}}
+            &lt; {{labels.compendium-return}} <a href="{{uri}}">{{description.title}}</a>
+					{{/if}}
+				{{/each}}
       </h2>
 			<!-- /box -->
 			<div class="lede">
@@ -47,12 +51,12 @@
 				<span class="stand-out-text">
 					{{#each downloads}}
 						{{#if @last}}
-							{{#eq @index_1 '1'}}
+							{{#if_eq @index_1 '1'}}
 								{{@index_1}}</span> result
-							{{/eq}}
-							{{#ne @index_1 '1'}}
+							{{/if_eq}}
+							{{#if_ne @index_1 '1'}}
 								{{@index_1}}</span> results
-							{{/ne}}
+							{{/if_ne}}
 						{{/if}}
 					{{/each}}
 			</p>
@@ -75,12 +79,12 @@
         <article class="box solid box--green--separated--left">
           <div class="box__inner border box--padded">
             <header class="box__header">
-              <h3>{{labels.dataset-related-data}}</h3>
+              <h3>Related datasets</h3>
             </header>
             <div class="box__content">
               <ul class="list--neutral">
 								{{#each relatedDatasets}}
-                  <li class="flush--third--bottom"><a href="{{rootpath uri}}" title="{{description.title}}">{{description.title}}</a></li>
+                  <li class="flush--third--bottom"><a href="{{absolute uri}}" title="{{description.title}}">{{description.title}}</a></li>
 								{{/each}}
               </ul>
             </div>
@@ -93,7 +97,7 @@
         <article class="box solid box--teal--separated--left">
           <div class="box__inner border box--padded">
             <header class="box__header">
-              <h3>{{labels.dataset-related-a-b}}</h3>
+              <h3>Statistical bulletins and articles that use this time series</h3>
             </header>
             <div class="box__content">
               <ul class="list--neutral">
@@ -101,7 +105,7 @@
                   <li class="flush--third--bottom">
                     <a href="{{uri}}" title="{{description.title}}">{{description.title}}
 											{{#if description.edition}}
-												{{#ne description.edition 'yes'}}: {{description.edition}}{{/ne}}
+												{{#if_ne description.edition 'yes'}}: {{description.edition}}{{/if_ne}}
 											{{/if}}
                     </a>
                   </li>
@@ -121,7 +125,7 @@
 					<!--{{#if relatedMethodology}}-->
 					<article class="box box--padded sectioned">
 						<header class="box__header">
-							<h3>{{labels.methodology}}</h3>
+							<h3>Methodology</h3>
 						</header>
 						<div class="box__content">
 							<ul class="list--neutral">
@@ -139,13 +143,13 @@
 				<div class="grid-col desktop-grid-one-half">
 					<article class="box box--padded sectioned">
 						<header class="box__header">
-							<h3>{{labels.contact-details}}</h3>
+							<h3>Contact details</h3>
 						</header>
 						<div class="box__content">
 							<address>
 								{{#if description.contact.name}}{{description.contact.name}}</br>{{/if}}
 								<a href="mailto:{{description.contact.email}}">{{description.contact.email}}</a></br>
-								{{#if description.contact.telephone}}{{labels.phone}}: {{description.contact.telephone}}{{/if}}
+								{{#if description.contact.telephone}}Telephone: {{description.contact.telephone}}{{/if}}
 							</address>
 						</div>
 					</article>

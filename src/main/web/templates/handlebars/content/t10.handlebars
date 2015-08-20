@@ -105,29 +105,33 @@
 				{{#if statisticsSearchResult.results}}
 				{{#if suggestionBased}}
 				Sorry, there were no results for <strong>'{{searchTerm}}'</strong>.</br>
-				Showing <span class="stand-out-text">{{statisticsSearchResult.numberOfResults}}</span> results for <strong>'{{suggestion}}'</strong> {{#if types}}showing{{#each types}} <strong>{{#eq this 'bulletin'}}statistical bulletins{{/eq}}{{#ne this 'bulletin'}}{{this}}{{/ne}}</strong><span class="icon-cancel"></span>{{/each}}{{/if}}.
+				Showing <span class="stand-out-text">{{statisticsSearchResult.numberOfResults}}</span> results for <strong>'{{suggestion}}'</strong> {{#if types}}showing{{#each types}} <strong>{{#if_eq this 'bulletin'}}statistical bulletins{{/if_eq}}{{#if_ne this 'bulletin'}}{{this}}{{/if_ne}}</strong><span class="icon-cancel"></span>{{/each}}{{/if}}.
 				{{else}}
-				<span class="stand-out-text">{{statisticsSearchResult.numberOfResults}}</span> results for <span class="stand-out-text">'{{searchTerm}}'</span> {{#if types}}showing{{#each types}} <strong>{{#eq this 'bulletin'}}statistical bulletins{{/eq}}{{#ne this 'bulletin'}}{{this}}{{/ne}}</strong><span class="icon-cancel"></span>{{/each}}{{/if}}.
+				<span class="stand-out-text">{{statisticsSearchResult.numberOfResults}}</span> results for <span class="stand-out-text">'{{searchTerm}}'</span> {{#if types}}showing{{#each types}} <strong>{{#if_eq this 'bulletin'}}statistical bulletins{{/if_eq}}{{#if_ne this 'bulletin'}}{{this}}{{/if_ne}}</strong><span class="icon-cancel"></span>{{/each}}{{/if}}.
 				{{/if}}
 				{{else}}
 				Sorry, there were no results for <span class="stand-out-text">'{{searchTerm}}'</span>.
 				{{/if}}
 			</p>
 			{{!-- HEADLINE BOX --}}
-			{{#if headlinePage}}
+			{{#resolve taxonomySearchResult.results.0.uri}}
 			<article class="box box--padded--med sectioned clickable-wrap">
 				<div class="box__content">
 					<div class="grid-wrap">
-						{{#ifany headlinePage.items.0.data.years headlinePage.items.0.data.quarters headlinePage.items.0.data.months}}
+						{{#resolve items.0.uri assign="series" filter="series"}}
 						<div class="grid-col desktop-grid-one-half">
 							<!-- <p class="alpha"> -->
-								<a href="{{headlinePage.uri}}"><img src="{{headlinePage.items.0.data.uri}}/searchchart" alt="{{headlinePage.items.0.data.title}}"></a>
+								<a href="{{../uri}}">
+								<div style="height:180px">
+									{{>partials/highcharts/sparkline}}
+								</div>
+								</a>
 							<!-- </p> -->
 						</div>
-						{{/ifany}}
-						<div class="grid-col {{#ifany headlinePage.items.0.data.years headlinePage.items.0.data.quarters headlinePage.items.0.data.months}}desktop-grid-one-half box--padded--med-vertical{{/ifany}} nav--block-landing flush">
-							<h3><a href="{{headlinePage.uri}}">{{headlinePage.description.title}}</a></h3>
-							{{md headlinePage.description.summary}}
+						{{/resolve}}
+						<div class="grid-col {{#if series}}desktop-grid-one-half box--padded--med-vertical{{/if}} nav--block-landing flush">
+							<h3><a href="{{uri}}">{{description.title}}</a></h3>
+							{{md description.summary}}
 						</div>
 						<!-- /desktop-grid -->
 					</div>
@@ -135,7 +139,7 @@
 				</div>
 				<!-- /box__content -->
 			</article>
-			{{/if}}
+			{{/resolve}}
 			{{!-- end of HEADLINE BOX --}}
 			{{#each statisticsSearchResult.results}}
 			<ul class="list--neutral">
@@ -143,11 +147,11 @@
 					<h3 class="flush inline">
 						<a href="{{uri}}">{{description.title}}
 						{{#if description.edition}}
-							{{#ne description.edition 'yes'}}: {{description.edition}}{{/ne}}
+							{{#if_ne description.edition 'yes'}}: {{description.edition}}{{/if_ne}}
 						{{/if}}
 						</a>
 					</h3>
-					<span class="lozenge">{{#eq type 'bulletin'}}statistical bulletin{{/eq}}{{#ne type 'bulletin'}}{{type}}{{/ne}}</span>
+					<span class="lozenge">{{#if_eq type 'bulletin'}}statistical bulletin{{/if_eq}}{{#if_ne type 'bulletin'}}{{type}}{{/if_ne}}</span>
 					{{#if partOf}}
 					<p class="micro flush">
 						<a href="{{uri}}">[{{description.title}}]</a><span class="icon-search-1"></span>
@@ -161,28 +165,28 @@
 			</ul>
 			{{/each}}
 			{{!-- Paginator --}}
-			{{#ne numberOfPages 1}}
+			{{#if_ne numberOfPages 1}}
 			<nav>
 				<ul class="nav nav--inline-block">
-					{{#ne currentPage startPage}}
+					{{#if_ne currentPage startPage}}
 					<li>
 						<a href="/search?q={{searchTerm}}{{#each types}}&type={{this}}{{/each}}&page={{decrement currentPage}}{{#if includeStatics}}&includeStatics=1{{/if}}{{#if includeAllData}}&includeAllData=1{{/if}}" class="page-link previous">Prev</a>
 					</li>
-					{{/ne}}
+					{{/if_ne}}
 					{{#each pages}}
 					<li>
-						{{#eq this currentPage}}<span>{{this}}</span>{{/eq}}
-						{{#ne this currentPage}}<a href="/search?q={{searchTerm}}{{#each types}}&type={{this}}{{/each}}&page={{this}}{{#if includeStatics}}&includeStatics=1{{/if}}{{#if includeAllData}}&includeAllData=1{{/if}}" class="page-link" >{{this}}</a>{{/ne}}
+						{{#if_eq this currentPage}}<span>{{this}}</span>{{/if_eq}}
+						{{#if_ne this currentPage}}<a href="/search?q={{searchTerm}}{{#each types}}&type={{this}}{{/each}}&page={{this}}{{#if includeStatics}}&includeStatics=1{{/if}}{{#if includeAllData}}&includeAllData=1{{/if}}" class="page-link" >{{this}}</a>{{/if_ne}}
 					</li>
 					{{/each}}
-					{{#ne currentPage endPage}}
+					{{#if_ne currentPage endPage}}
 					<li>
 						<a href="/search?q={{searchTerm}}{{#each types}}&type={{this}}{{/each}}&page={{increment currentPage}}{{#if includeStatics}}&includeStatics=1{{/if}}{{#if includeAllData}}&includeAllData=1{{/if}}" class="page-link next" >Next</a>
 					</li>
-					{{/ne}}
+					{{/if_ne}}
 				</ul>
 			</nav>
-			{{/ne}}
+			{{/if_ne}}
 			{{else}}
 			{{#if searchTerm}}
 			<div>

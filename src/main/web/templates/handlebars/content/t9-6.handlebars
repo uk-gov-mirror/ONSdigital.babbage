@@ -1,3 +1,10 @@
+{{!-- Resolve parents of current uri for and assign to variable breadcrumb for building breadcrumb --}}
+{{resolveParents uri assign="breadcrumb"}}
+{{!-- Resolve navigation fetching children of root uri "/" with depth 2 --}}
+{{resolveChildren "/" depth=2 assign="navigation"}}
+
+{{> partials/header}}
+
 <main id="main" role="main" tabindex="-1">
 	<div class="wrapper panel--top-mar">
 		{{> partials/breadcrumb}}
@@ -19,7 +26,8 @@
 			<div class="grid-col desktop-grid-two-thirds">
 				<div class="panel panel--separated--top">
 					<ul class="list--neutral">
-						{{#each contentSearchResult.results}}
+					{{#resolveChildren uri}}
+						{{#loop orderBy="uri" reverse=true}}
 							{{#if @first}}
 							<li>
 								<h3 class="flush">Latest release</h3>
@@ -27,7 +35,7 @@
 									<a href="{{uri}}">{{description.title}}
 									{{#if description.edition}}
 										
-										{{#ne description.edition 'yes'}}: {{description.edition}}{{/ne}}
+										{{#if_ne description.edition 'yes'}}: {{description.edition}}{{/if_ne}}
 									{{/if}}
 									</a>
 								</h3>
@@ -40,7 +48,7 @@
 								<h3 class="flush">
 									<a href="{{uri}}">{{description.title}}
 									{{#if description.edition}}
-										{{#ne description.edition 'yes'}}: {{description.edition}}{{/ne}}
+										{{#if_ne description.edition 'yes'}}: {{description.edition}}{{/if_ne}}
 									{{/if}}										
 									</a>
 								</h3>
@@ -49,7 +57,8 @@
 								</p>
 							</li>
 							{{/if}}
-						{{/each}}
+						{{/loop}}
+						{{/resolveChildren}}
 					</ul>
 				</div>
 				<!-- /panel -->
@@ -83,3 +92,4 @@
 	</div>
 	<!-- /wrapper -->
 </main>
+{{> partials/footer}}

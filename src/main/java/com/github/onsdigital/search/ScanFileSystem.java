@@ -13,13 +13,13 @@ import java.util.List;
 public class ScanFileSystem {
 
 	/**
-	 * Iterates through the file system from a specified root directory and
+	 * Iterates through the file system from a specified root api and
 	 * stores the file names
 	 * 
 	 * @param fileNames
 	 *            a List to store results in
 	 * @param dir
-	 *            the root directory to start searching from
+	 *            the root api to start searching from
 	 * @return the list with file names
 	 * @throws IOException
 	 *             if any file io operations fail
@@ -54,7 +54,7 @@ public class ScanFileSystem {
 	 * @param files
 	 *            collection to store the files in
 	 * @param dir
-	 *            the root directory to start searching from
+	 *            the root api to start searching from
 	 * @return collection of located files
 	 * @throws IOException
 	 *             if file lookup fails

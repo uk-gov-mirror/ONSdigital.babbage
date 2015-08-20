@@ -21,7 +21,7 @@
 					{{md this}}
 				{{/each}}
 				{{#if downloads}}
-        <h2>{{#eq downloads.size 1}}Download associated with request{{/eq}} {{#ne downloads.size 1}}Downloads associated with request{{/ne}}</h2>
+        <h2>{{#if_eq downloads.size 1}}Download associated with request{{/if_eq}} {{#if_ne downloads.size 1}}Downloads associated with request{{/if_ne}}</h2>
         <ul class="list--neutral">
 					{{#each downloads}}
             <li class="flush--third--bottom">
@@ -38,7 +38,7 @@
             <div class="box solid box--purple--separated--left">
               <div class="box__inner border box--padded">
                 <h3 class="box__section__header">
-									{{#eq downloads.size 1}}Download associated with request{{/eq}} {{#ne downloads.size 1}}Downloads associated with request{{/ne}}
+									{{#if_eq downloads.size 1}}Download associated with request{{/if_eq}} {{#if_ne downloads.size 1}}Downloads associated with request{{/if_ne}}
                 </h3>
                 <!-- /box__header -->
                 <div class="box__content">

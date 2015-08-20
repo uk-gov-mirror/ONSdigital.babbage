@@ -1,0 +1,120 @@
+{{!--This file uses filtered time series data, filter a timseries data using series & description filters--}} 
+(function(){
+
+{{!-- No need to set data, if jsEhanced data will be handled at client side. This is for image rendering on server side --}}
+{{#unless cookies.jsEnhanced}}
+var series = [{{#each series}}{"name":"{{name}}", "y": {{#if y}}{{y}}{{else}}null{{/if}} },{{/each}}]
+{{else}}
+var series = [];
+{{/unless}}
+var description = {{json description}};
+
+var sparkline{{description.cdid}} = {
+	chart: {
+		backgroundColor: null,
+		borderWidth: 0,
+		type: 'area',
+		marginRight:20,
+		marginLeft:20,
+		skipClone: true
+	},
+	title: {
+		text: '{{showChartTitle}}'
+	},
+	subtitle: {
+		text: '',
+		y: 110
+	},
+	credits: {
+		enabled: false
+	},
+	xAxis: {
+		categories: [],
+		labels: {
+			crop: false,
+			style: {
+				'color': '#707070'
+			},
+			formatter: function() {
+				if (this.isFirst) {
+					return this.value;
+				}
+				if (this.isLast) {
+					return this.value;
+				}
+			},
+			step: 1
+		},
+		tickLength: 0,
+		lineColor: '#707070'
+		{{!-- lineWidth: 2 --}}
+	},
+	yAxis: {
+		endOnTick: false,
+		startOnTick: false,
+		labels: {
+			enabled: false
+		},
+		title: {
+			text: null
+		},
+		tickPositions: [0]
+	},
+	legend: {
+		enabled: false
+	},
+	tooltip: {
+		enabled: false
+	},
+	plotOptions: {
+		series: {
+			animation: false,
+			lineWidth: 1,
+			shadow: false,
+			states: {
+				hover: {
+					lineWidth: 1
+				}
+			},
+			marker: {
+				radius: 1,
+				states: {
+					hover: {
+						radius: 1
+					}
+				}
+			},
+			fillOpacity: 0.25,
+			enableMouseTracking: false,
+		},
+		column: {
+			negativeColor: '#910000',
+			borderColor: 'silver'
+		}
+	},
+	exporting: {
+		enabled: false
+	},
+	series: [{
+		name: '',
+		data : series,
+		color: '#007dc3',
+		marker: {
+			symbol: 'circle',
+			states: {
+				hover: {
+					{{!-- fillColor: '#007dc3', --}}
+					radiusPlus: 0,
+					lineWidthPlus: 0
+				}
+			}
+		},
+		dashStyle: 'Solid',
+	}]
+};
+
+window.sparkline{{description.cdid}} = sparkline{{description.cdid}};
+return sparkline{{description.cdid}};
+
+
+ })()

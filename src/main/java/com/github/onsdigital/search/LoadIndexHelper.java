@@ -1,6 +1,6 @@
 package com.github.onsdigital.search;
 
-import com.github.onsdigital.configuration.Configuration;
+import com.github.onsdigital.babbage.configuration.Configuration;
 import com.github.onsdigital.content.page.base.PageType;
 import com.google.gson.*;
 import org.apache.commons.io.FileUtils;
@@ -51,7 +51,7 @@ public class LoadIndexHelper {
      * @throws JsonIOException
      */
     public static Map<String, String> getDocumentMap(String absoluteFilePath) throws JsonIOException, JsonSyntaxException, IOException {
-        String url = absoluteFilePath.substring(absoluteFilePath.indexOf(Configuration.getContentPath()) + Configuration.getContentPath().length());
+        String url = absoluteFilePath.substring(absoluteFilePath.indexOf(Configuration.CONTENT_SERVICE.getContentPath()) + Configuration.CONTENT_SERVICE.getContentPath().length());
         String[] splitPath = url.split(DELIMITTER);
 
         List<String> splitPathAsList = new ArrayList<String>(Arrays.asList(splitPath));

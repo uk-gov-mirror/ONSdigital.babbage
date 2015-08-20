@@ -2,7 +2,7 @@ package com.github.onsdigital.api.data;
 
 import com.github.davidcarboni.restolino.framework.Api;
 import com.github.onsdigital.bean.CdidRequest;
-import com.github.onsdigital.configuration.Configuration;
+import com.github.onsdigital.babbage.configuration.Configuration;
 import com.github.onsdigital.content.page.statistics.data.timeseries.TimeSeries;
 import com.github.onsdigital.content.util.ContentUtil;
 import org.apache.commons.io.FilenameUtils;
@@ -28,7 +28,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Provides the ability to request the json for one or more CDIDs.
- * 
+ *
  * @author david
  *
  */
@@ -81,7 +81,7 @@ static Map<String, TimeSeries> cache = new ConcurrentHashMap<String, TimeSeries>
 
 	/**
 	 * Scans the taxonomy to find the requested TimeSeries.
-	 * 
+	 *
 	 * @param cdids
 	 *            The list of CDIDs to find.
 	 * @return A list of paths for the given CDIDs, if found.
@@ -90,7 +90,7 @@ static Map<String, TimeSeries> cache = new ConcurrentHashMap<String, TimeSeries>
 	private static List<Path> findTimeSeries(final List<String> cdids) throws IOException {
 		final List<Path> result = new ArrayList<>();
 
-		Path taxonomy = FileSystems.getDefault().getPath(Configuration.getContentPath());
+		Path taxonomy = FileSystems.getDefault().getPath(Configuration.CONTENT_SERVICE.getContentPath());
 
 		/**
 		 * Finds json files inside folders that match a cdid value.

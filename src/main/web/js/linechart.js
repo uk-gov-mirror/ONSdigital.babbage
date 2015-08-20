@@ -1,6 +1,6 @@
 //  Ugliest code ever, copy paste stuff from pattern-library and alpha site, hence a bit messy
 
-var linechart = function(timeseries) {
+var renderLineChart = function(timeseries) {
 	var chart = {};
 	chart.years = false;
 	chart.months = false;
@@ -17,7 +17,7 @@ var linechart = function(timeseries) {
 
 	function initialize() {
 		//console.log(table);
-		chart = getLinechartConfig(timeseries);
+		chart = window.linechart;
 		chart.years = isNotEmpty(timeseries.years);
 		chart.months = isNotEmpty(timeseries.months);
 		chart.quarters = isNotEmpty(timeseries.quarters);
@@ -48,6 +48,17 @@ var linechart = function(timeseries) {
 		chartControls.initialize();
 	}
 
+
+	function getLinechartConfig(){
+		var chartConfig;
+		 $.getJSON(timeseries.uri + 'linechartconfig', function(config) {
+            // console.log("Successfuly read timseries data");
+            chartConfig = config; //Global variable
+        }).fail(function(d, textStatus, error) {
+            // console.error("Failed reading timseries, status: " + textStatus + ", error: " + error)
+        });
+        return chartConfig;
+	}
 
 
 	function changeFrequency(frequency) {

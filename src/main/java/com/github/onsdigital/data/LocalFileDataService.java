@@ -1,7 +1,7 @@
 package com.github.onsdigital.data;
 
 import com.github.davidcarboni.ResourceUtils;
-import com.github.onsdigital.configuration.Configuration;
+import com.github.onsdigital.babbage.configuration.Configuration;
 import com.github.onsdigital.content.DirectoryListing;
 import com.github.onsdigital.content.service.ContentNotFoundException;
 import com.github.onsdigital.content.service.ContentService;
@@ -52,7 +52,7 @@ public class LocalFileDataService implements ContentService {
         try {
             String uriPath = cleanPath(uri);
             Path taxonomy = FileSystems.getDefault().getPath(
-                    Configuration.getContentPath());
+                    Configuration.CONTENT_SERVICE.getContentPath());
 
             return ContentUtil.listDirectory(taxonomy.resolve(uriPath));
         } catch (IOException e) {
@@ -99,7 +99,7 @@ public class LocalFileDataService implements ContentService {
         String uriPath = cleanPath(uriString);
         System.out.println("Reading data under uri:" + uriPath);
         Path taxonomy = FileSystems.getDefault().getPath(
-                Configuration.getContentPath());
+                Configuration.CONTENT_SERVICE.getContentPath());
 
         Path data = taxonomy.resolve(uriPath);
 

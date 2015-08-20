@@ -2,39 +2,41 @@
 	<div class="wrapper" >
 		{{> partials/breadcrumb}}
 		<h1 class="page-header__title flush--half--bottom">{{description.title}}</h1>
-			<p>
-				{{description.summary}}
-			</p>
+		<p>
+			{{description.summary}}
+		</p>
 		<!-- /lede -->
-		{{#if statsBulletins}}
+		{{resolve statsBulletins.0.uri filter="description" assign="bulletin"}}
+		{{#if bulletin}}
+		{{resolve items.0.uri assign="data"}}
 		<div class="grid-wrap">
-			{{#ifany items.0.data.years items.0.data.quarters items.0.data.months}}
-				{{> partials/t3/headline-data}}
-			{{/ifany}}
+			{{#if_any data.years data.quarters data.months}}
+			{{> partials/t3/headline-data}}
+			{{/if_any}}
 			<!-- /grid-col -->
-			<div class="grid-col  {{#ifany items.0.data.years items.0.data.quarters items.0.data.months}}tablet-grid-one-half{{/ifany}} headline--box-container panel--mobile-bottom-mar">
+			<div class="grid-col  {{#if_any data.years data.quarters data.months}}tablet-grid-one-half{{/if_any}} headline--box-container panel--mobile-bottom-mar">
 				<div class="box--padded equal-height solid panel--bottom-mar">
 					<h2>{{labels.product-latest-stats-bulletin}}</h2>
 					<header class="box___section">
 						<h3 class="navpanel-list-heading lede box--padded-bottom-small">
-						<a href="{{statsBulletins.0.uri}}">{{statsBulletins.0.description.title}}{{#if statsBulletins.0.description.edition}}: {{statsBulletins.0.description.edition}}{{/if}}</a>
+						<a href="{{statsBulletins.0.uri}}">{{bulletin.description.title}}{{#if bulletin.description.edition}}: {{bulletin.description.edition}}{{/if}}</a>
 						</h3>
 					</header>
 					<h3>{{labels.product-whats-in-bulletin}}</h3>
 					<ul class="list--bullet mini flush--half--top navpanel-list headline--box-container-text">
 						<li>
-							{{statsBulletins.0.description.headline1}}
+							{{bulletin.description.headline1}}
 						</li>
 						<li>
-							{{statsBulletins.0.description.headline2}}
+							{{bulletin.description.headline2}}
 						</li>
 						<li>
-							{{statsBulletins.0.description.headline3}}
+							{{bulletin.description.headline3}}
 						</li>
 					</ul>
 					<p class="text-right"><a href="{{statsBulletins.0.uri}}">{{labels.product-read-bulletin}}</a></p>
 				</div>
-				{{#ifany items.0.data.years items.0.data.quarters items.0.data.months}}
+				{{#if_any data.years data.quarters data.months}}
 				{{else}}
 				{{#if datasets}}
 					<a href="#data" class="btn btn--primary">{{labels.product-view-latest-data}}
@@ -46,72 +48,72 @@
 					{{!-- <span class="icon icon-down-open-big icon--button-inline"></span> --}}
 				</a>
 			</div>
+			{{/if}}
 			<!-- /grid-col -->
 		</div>
 		<!-- /grid-wrap -->
-		{{/if}}
 	</div>
 	<!-- /wrapper -->
 </div>
 <!-- /page-header -->
 <!-- Body sections -->
-{{#ifany items datasets}}
-	<section class="panel wrapper panel--bottom-mar-small">
-		<div class="box box--green box--green--separated--left" >
-			<div class="box__inner border box--padded">
-				{{#if items}}
-				{{> partials/t3/timeseries-list}}
-				{{/if}}
-				{{#if datasets}}
-				{{> partials/t3/dataset-list}}
-				{{/if}}
-			</div>
-			<!-- /box__inner -->
+{{#if_any items datasets}}
+<section class="panel wrapper panel--bottom-mar-small">
+	<div class="box box--green box--green--separated--left" >
+		<div class="box__inner border box--padded">
+			{{#if items}}
+			{{> partials/t3/timeseries-list}}
+			{{/if}}
+			{{#if datasets}}
+			{{> partials/t3/dataset-list}}
+			{{/if}}
 		</div>
-		<!-- /box -->
-	</section>
-	<!-- /panel wrapper -->
-{{/ifany}}
-
+		<!-- /box__inner -->
+	</div>
+	<!-- /box -->
+</section>
+<!-- /panel wrapper -->
+{{/if_any}}
 <!-- Latest statistical bulletins and Related articles-->
-{{#ifany statsBulletins relatedArticles}}
-	<section class="panel wrapper panel--bottom-mar-small">
-		<div class="box box--teal box--teal--separated--left" >
-			<div class="box__inner border box--padded">
-				<!-- Latest statistical bulletins -->
-				{{#if statsBulletins}}
-				{{> partials/t3/stats-bulletins}}
-				{{/if}}
-				<!-- Related articles-->
-				{{#if relatedArticles}}
-				{{> partials/t3/related-articles}}
-				{{/if}}
-			</div>
+{{#if_any statsBulletins relatedArticles}}
+<section class="panel wrapper panel--bottom-mar-small">
+	<div class="box box--teal box--teal--separated--left" >
+		<div class="box__inner border box--padded">
+			<!-- Latest statistical bulletins -->
+			{{#if statsBulletins}}
+			{{> partials/t3/stats-bulletins}}
+			{{/if}}
+			<!-- Related articles-->
+			{{#if relatedArticles}}
+			{{> partials/t3/related-articles}}
+			{{/if}}
 		</div>
-	</section>
-{{/ifany}}
-
+	</div>
+</section>
+{{/if_any}}
 {{#if relatedMethodology}}
-	<section class="panel wrapper panel--bottom-mar-small">
-		<div class="grid-wrap">
-			<div class="grid-col desktop-grid-one-half">
-				<div class="box__inner border box--padded">
-					<h3 class="box__section__header">
-						{{labels.methodology}}
-					</h3>
-					<div class="box__content">
-						<ul class="list--neutral">
-							{{#each relatedMethodology}}
-							<li class="flush--third--bottom"><a href="{{rootpath uri}}">{{description.title}}</a></li>
-							{{/each}}
-						</ul>
-					</div>
+<section class="panel wrapper panel--bottom-mar-small">
+	<div class="grid-wrap">
+		<div class="grid-col desktop-grid-one-half">
+			<div class="box__inner border box--padded">
+				<h3 class="box__section__header">
+				{{labels.methodology}}
+				</h3>
+				<div class="box__content">
+					<ul class="list--neutral">
+						{{#each relatedMethodology}}
+						{{#resolve this.uri filter="title"}}
+						<li class="flush--third--bottom"><a href="{{absolute uri}}">{{description.title}}</a></li>
+						{{/resolve}}
+						{{/each}}
+					</ul>
 				</div>
 			</div>
-			<div class="grid-col desktop-grid-one-half">
-				{{> partials/local-box}}
-			</div>
 		</div>
-	</section>
+		<div class="grid-col desktop-grid-one-half">
+			{{> partials/local-box}}
+		</div>
+	</div>
+</section>
 {{/if}}
 <!--/panel wrapper -->
