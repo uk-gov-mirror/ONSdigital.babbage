@@ -95,7 +95,8 @@ public class LoopHelper extends EachHelper implements BabbageHandlebarsHelper<Ob
             if (m2 == null) {
                 return -1;
             }
-            return HelperUtils.compare((Comparable) m1.get(field), (Comparable) m2.get(field));
+            int result = HelperUtils.compare((Comparable) m1.get(field), (Comparable) m2.get(field));
+            return reverse ? result * -1 : result;
 
         }
     }
