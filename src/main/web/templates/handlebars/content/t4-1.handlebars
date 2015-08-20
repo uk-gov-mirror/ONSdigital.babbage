@@ -149,7 +149,7 @@
 						<h3>Related bulletins</h3>
 						<ul class="list--neutral">
 							{{#each relatedBulletins}}
-							{{#resolve this.uri filter="title"}}
+							{{#resolve this.uri filter="description"}}
 							<li>
 								<h3 class="flush--bottom">
 								<a href="{{uri}}">{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}</a>
