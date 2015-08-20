@@ -1,12 +1,12 @@
 package com.github.onsdigital.babbage.util;
 
+import com.github.onsdigital.babbage.locale.LocaleConfig;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by bren on 10/08/15.
@@ -18,9 +18,11 @@ public class RequestUtil {
      * this ensures all data requests from content service can be authorized both  when data is requested for any purpose on Babbage ( rendering page, sending data back etc. )
      */
     public static void saveRequestContext(HttpServletRequest request) {
-        ThreadContext.addData("cookies",getAllCookies(request));
+        ThreadContext.addData("cookies", getAllCookies(request));
         ThreadContext.addData("parameters", request.getParameterMap());
-
+        Locale locale = resolveLocale(request);
+        ThreadContext.addData("labels", LocaleConfig.getLabels(locale));
+        ThreadContext.addData("lang", locale.getLanguage());
     }
 
     public static void clearContext() {
@@ -51,6 +53,26 @@ public class RequestUtil {
         }
         return cookiesMap;
     }
+
+    /**
+     *
+     * Resolves locale using sub domain name ( e.g. cy.ons.gov.uk )
+     *
+     * @param request
+     * @return language code
+     */
+    private static Locale resolveLocale(HttpServletRequest request) {
+        Enumeration<Locale> locales = request.getLocales();
+        String serverName = request.getServerName();
+        Collection<Locale> supportedLanguages = LocaleConfig.getSupportedLanguages();
+        for (Locale supportedLanguage : supportedLanguages) {
+            if (serverName.startsWith(supportedLanguage.getLanguage() + ".")) {
+                return supportedLanguage;
+            }
+        }
+        return LocaleConfig.getDefaultLocale();
+    }
+
 
     /**
      * Extracts GET parameters from query string

@@ -135,6 +135,13 @@ public class ContentClient {
 
         //uris are requested as get parameter from content service
         nameValuePairs.add(new BasicNameValuePair("uri", uri));
+        nameValuePairs.add(new BasicNameValuePair("lang", (String) ThreadContext.getData("lang")));
+        nameValuePairs.addAll(toNameValuePair(parametes));
+        return nameValuePairs;
+    }
+
+    private List<NameValuePair> toNameValuePair(Map<String, String[]> parametes) {
+        List<NameValuePair> nameValuePairs = new ArrayList<>();
         if (parametes != null) {
             for (Iterator<Map.Entry<String, String[]>> iterator = parametes.entrySet().iterator(); iterator.hasNext(); ) {
                 Map.Entry<String, String[]> entry = iterator.next();
