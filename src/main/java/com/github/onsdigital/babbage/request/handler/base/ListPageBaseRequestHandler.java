@@ -60,7 +60,7 @@ public abstract class ListPageBaseRequestHandler implements RequestHandler {
         queryParameters.put("type", getListTypes());
 
         try (InputStream dataStream = ContentClient.getInstance().getList(uri, queryParameters).getDataStream()) {
-            String html = TemplateService.getInstance().renderContent(dataStream);
+            String html = TemplateService.getInstance().renderTemplate(getTemplateName(), dataStream);
             babbageResponse = new BabbageStringResponse(html, CONTENT_TYPE);
         }
 
