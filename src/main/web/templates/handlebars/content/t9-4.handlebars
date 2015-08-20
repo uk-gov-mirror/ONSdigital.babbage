@@ -1,13 +1,24 @@
+{{!-- Resolve parents of current uri for and assign to variable breadcrumb for building breadcrumb --}}
+{{resolveParents uri assign="breadcrumb"}}
+{{!-- Resolve navigation fetching children of root uri "/" with depth 2 --}}
+{{resolveChildren "/" depth=2 assign="navigation"}}
+
+{{> partials/header}}
+
 <main id="main" role="main" tabindex="-1">
 	<div class="wrapper panel--top-mar">
-		{{> templates/handlebars/partials/breadcrumb}}
+		{{> partials/breadcrumb}}
 		<p class="page-header__title">
 			Statistical bulletins
 		</p>
+		{{#each breadcrumb}}
+		{{#if @last}}
 		<h1 class="page-header__title flush--half--bottom">{{description.title}} statistical bulletins</h1>
+		{{/if}}
+		{{/each}}
 		<p>
-		{{#if contentSearchResult.results}}
-		<span class="stand-out-text">{{contentSearchResult.numberOfResults}}</span> results for <strong>statistical bulletins</strong> released to <strong>{{description.title}}</strong>. You have chosen to expand these results to <strong>include all releases over time</strong><span class="icon icon-cancel" role="presentation"></span>
+		{{#if statisticsSearchResult.results}}
+		<span class="stand-out-text">{{statisticsSearchResult.numberOfResults}}</span> results for <strong>statistical bulletins</strong> released to <strong>{{description.title}}</strong>. You have chosen to expand these results to <strong>include all releases over time</strong><span class="icon icon-cancel" role="presentation"></span>
 		{{else}}
 		Sorry, there are no <strong>statistical bulletins</strong> for <strong>{{description.title}}</strong> articles.
 		{{/if}}
@@ -15,7 +26,7 @@
 	</div>
 	<!-- /wrapper -->
 	<div class="wrapper panel--mar print-links">
-		{{#if contentSearchResult.results}}
+		{{#if statisticsSearchResult.results}}
 		<div class="grid-wrap panel--bottom-mar print-hidden">
 	    	<div class="grid-col desktop-grid-one-quarter desktop-grid-push-three-quarters tablet-grid-full-width">
 	        	<label for="select">Sort by
@@ -70,13 +81,16 @@
 			<!-- /desktop-grid-one-third -->
 			<div class="grid-col desktop-grid-two-thirds">
 				<ul class="list--neutral">
-					{{#each contentSearchResult.results}}
+					{{#each statisticsSearchResult.results}}
 					<li>
-						<h3 class="flush"><a href="{{url}}">{{title}}</a></h3>
+						<h3 class="flush"><a href="{{uri}}">{{description.title}}
+						{{#if description.edition}}
+							{{#if_ne description.edition 'yes'}}: {{description.edition}}{{/if_ne}}
+						{{/if}}</a></h3>
 						<p class="flush description">
-							Released: {{df releaseDate}}
+							Released: {{df description.releaseDate}}
 						</p>
-						{{md summary}}
+						{{md description.summary}}
 					</li>
 					{{/each}}
 				</ul>
@@ -88,3 +102,4 @@
 	</div>
 	<!-- /wrapper panel--mar -->
 </main>
+{{> partials/footer}}
