@@ -209,7 +209,7 @@ public enum DataHelpers implements BabbageHandlebarsHelper<String> {
             throw new IllegalArgumentException("Data Helpers: No uri given for resolving");
         }
         try {
-            URIUtil.validate(uri);
+//            URIUtil.validate(uri);
         } catch (URIUtil.InvalidUriException e) {
             throw new IllegalArgumentException("Invalid uri, can not resolve");
         }
