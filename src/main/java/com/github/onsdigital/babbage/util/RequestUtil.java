@@ -56,17 +56,24 @@ public class RequestUtil {
 
     /**
      *
-     * Resolves locale using sub domain name ( e.g. cy.ons.gov.uk )
+     * Resolves locale using cookie, if cookie not available falls back to sub domain name ( e.g. cy.ons.gov.uk )
      *
      * @param request
      * @return language code
      */
     private static Locale resolveLocale(HttpServletRequest request) {
-        Enumeration<Locale> locales = request.getLocales();
-        String serverName = request.getServerName();
+
+        //Decide language from cookie first, if not there check subdomain
+        String languageSegment = getCookieValue(request, "lang");
+        if (StringUtils.isEmpty(languageSegment)) {
+            languageSegment = request.getServerName();
+        } else {
+            languageSegment += ".";
+        }
+
         Collection<Locale> supportedLanguages = LocaleConfig.getSupportedLanguages();
         for (Locale supportedLanguage : supportedLanguages) {
-            if (serverName.startsWith(supportedLanguage.getLanguage() + ".")) {
+            if (StringUtils.startsWithIgnoreCase(languageSegment,supportedLanguage.getLanguage() + ".")) {
                 return supportedLanguage;
             }
         }
