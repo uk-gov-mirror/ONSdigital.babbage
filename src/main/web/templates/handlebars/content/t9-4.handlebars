@@ -1,13 +1,24 @@
+{{!-- Resolve parents of current uri for and assign to variable breadcrumb for building breadcrumb --}}
+{{resolveParents uri assign="breadcrumb"}}
+{{!-- Resolve navigation fetching children of root uri "/" with depth 2 --}}
+{{resolveChildren "/" depth=2 assign="navigation"}}
+
+{{> partials/header}}
+
 <main id="main" role="main" tabindex="-1">
 	<div class="wrapper panel--top-mar">
-		{{> templates/handlebars/partials/breadcrumb}}
+		{{> partials/breadcrumb}}
 		<p class="page-header__title">
 			Statistical bulletins
 		</p>
+		{{#each breadcrumb}}
+		{{#if @last}}
 		<h1 class="page-header__title flush--half--bottom">{{description.title}} statistical bulletins</h1>
+		{{/if}}
+		{{/each}}
 		<p>
-		{{#if contentSearchResult.results}}
-		<span class="stand-out-text">{{contentSearchResult.numberOfResults}}</span> results for <strong>statistical bulletins</strong> released to <strong>{{description.title}}</strong>. You have chosen to expand these results to <strong>include all releases over time</strong><span class="icon icon-cancel" role="presentation"></span>
+		{{#if statisticsSearchResult.results}}
+		<span class="stand-out-text">{{statisticsSearchResult.numberOfResults}}</span> results for <strong>statistical bulletins</strong> released to <strong>{{description.title}}</strong>. You have chosen to expand these results to <strong>include all releases over time</strong><span class="icon icon-cancel" role="presentation"></span>
 		{{else}}
 		Sorry, there are no <strong>statistical bulletins</strong> for <strong>{{description.title}}</strong> articles.
 		{{/if}}
@@ -15,18 +26,17 @@
 	</div>
 	<!-- /wrapper -->
 	<div class="wrapper panel--mar print-links">
-		{{#if contentSearchResult.results}}
+		{{#if statisticsSearchResult.results}}
 		<div class="grid-wrap panel--bottom-mar print-hidden">
 	    	<div class="grid-col desktop-grid-one-quarter desktop-grid-push-three-quarters tablet-grid-full-width">
-	        	<label for="select">Sort by
-	        		<div class="field">
-						<select class="input " id="select" name="">
-							<option value="1" selected>Relevance</option>
-							<option value="2">Release date</option>
-							<option value="3">Title</option>
-						</select>
-	            	</div>
-	        	</label>
+					<label for="select" class="inline description">Sort by
+							<select class="input inline width-auto" id="select" name="" disabled>
+								<option value="1" selected>Relevance</option>
+								<option value="2">Release date</option>
+								<option value="3">Title</option>
+							</select>
+							<a href="#" class="btn btn--primary btn-tooltip tooltip nojs-hidden" title="This option will not be available on the prototype, however in the future you will be able to sort search results by relevance or release date" aria-label="This option will not be available on the prototype, however in the future you will be able to sort search results by relevance or release date">? </a>
+					</label>
 	        </div>
 	    </div>
 	    <div class="grid-wrap">
@@ -70,16 +80,42 @@
 			<!-- /desktop-grid-one-third -->
 			<div class="grid-col desktop-grid-two-thirds">
 				<ul class="list--neutral">
-					{{#each contentSearchResult.results}}
+					{{#each statisticsSearchResult.results}}
 					<li>
-						<h3 class="flush"><a href="{{url}}">{{title}}</a></h3>
+						<h3 class="flush"><a href="{{uri}}">{{description.title}}
+						{{#if description.edition}}
+							{{#if_ne description.edition 'yes'}}: {{description.edition}}{{/if_ne}}
+						{{/if}}</a></h3>
 						<p class="flush description">
-							Released: {{df releaseDate}}
+							Released: {{df description.releaseDate}}
 						</p>
-						{{md summary}}
+						{{md description.summary}}
 					</li>
 					{{/each}}
 				</ul>
+				{{!-- Paginator --}}
+				{{#if_ne numberOfPages 1}}
+				<nav>
+					<ul class="nav nav--inline-block">
+						{{#if_ne currentPage startPage}}
+						<li>
+							<a href="/{{url}}?page={{decrement currentPage}}" class="page-link previous">Prev</a>
+						</li>
+						{{/if_ne}}
+						{{#each pages}}
+						<li>
+							{{#if_eq this currentPage}}<span>{{this}}</span>{{/if_eq}}
+							{{#if_ne this currentPage}}<a href="/{{url}}?page={{this}}" class="page-link" >{{this}}</a>{{/if_ne}}
+						</li>
+						{{/each}}
+						{{#if_ne currentPage endPage}}
+						<li>
+							<a href="/{{url}}?page={{increment currentPage}}" class="page-link next" >Next</a>
+						</li>
+						{{/if_ne}}
+					</ul>
+				</nav>
+				{{/if_ne}}
 			</div>
 			<!-- /desktop-grid-two-thirds -->
 			{{/if}}
@@ -88,3 +124,4 @@
 	</div>
 	<!-- /wrapper panel--mar -->
 </main>
+{{> partials/footer}}

@@ -11,7 +11,11 @@
 		<p class="page-header__title">
 			Previous releases
 		</p>
+		{{#each breadcrumb}}
+		{{#if @last}}
 		<h1 class="page-header__title flush--half--bottom">{{description.title}} statistical bulletins</h1>
+		{{/if}}
+		{{/each}}
 		{{!--<div class="grid-wrap">--}}
 			{{!--<p class="grid-col desktop-grid-two-thirds">--}}
 				{{!--<strong>Frequency: </strong>{{description.frequency}}--}}
@@ -34,7 +38,7 @@
 								<h3 class="flush stand-out-text">
 									<a href="{{uri}}">{{description.title}}
 									{{#if description.edition}}
-										
+
 										{{#if_ne description.edition 'yes'}}: {{description.edition}}{{/if_ne}}
 									{{/if}}
 									</a>
@@ -49,7 +53,7 @@
 									<a href="{{uri}}">{{description.title}}
 									{{#if description.edition}}
 										{{#if_ne description.edition 'yes'}}: {{description.edition}}{{/if_ne}}
-									{{/if}}										
+									{{/if}}
 									</a>
 								</h3>
 								<p>

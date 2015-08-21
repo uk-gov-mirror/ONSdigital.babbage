@@ -13,6 +13,7 @@ import org.reflections.util.ConfigurationBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -110,10 +111,12 @@ public class RequestDelegator {
             Set<Class<? extends RequestHandler>> requestHandlerClasses = new Reflections(configurationBuilder).getSubTypesOf(RequestHandler.class);
 
             for (Class<? extends RequestHandler> handlerClass : requestHandlerClasses) {
-                String className = handlerClass.getSimpleName();
-                RequestHandler handlerInstance = handlerClass.newInstance();
-                System.out.println("Registering request handler: " + className);
-                handlers.put(handlerInstance.getRequestType(), handlerInstance);
+                if (!Modifier.isAbstract(handlerClass.getModifiers())) {
+                    String className = handlerClass.getSimpleName();
+                    RequestHandler handlerInstance = handlerClass.newInstance();
+                    System.out.println("Registering request handler: " + className);
+                    handlers.put(handlerInstance.getRequestType(), handlerInstance);
+                }
             }
         } catch (Exception e) {
             System.err.println("Failed initializing request handlers");
