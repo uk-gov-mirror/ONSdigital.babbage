@@ -29,7 +29,6 @@ $(function() {
         //The order of these functions being called is important...
         jsEnhanceULNavToSelectNav();
         jsEnhanceClickableDiv();
-        jsEnhanceHighchartsConfig();
         jsEnhanceLinechart();
         jsEnhanceSparkline();
         jsEnhancePrint();
@@ -154,15 +153,6 @@ $(function() {
             $('.nav--block-landing').removeClass('nav--block-landing--remove');
           });
         }
-      }
-
-    function jsEnhanceHighchartsConfig(){
-        Highcharts.setOptions({
-          lang: {
-            decimalPoint: '£'
-          }
-        });        
-        console.log(Highcharts);
     }
 
 
