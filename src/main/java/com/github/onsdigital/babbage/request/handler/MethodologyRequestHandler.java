@@ -19,7 +19,7 @@ public class MethodologyRequestHandler extends ListPageBaseRequestHandler {
 
     @Override
     public String getTemplateName() {
-        return "content/t9-8";
+        return "content/t9-7";
     }
 
     @Override
