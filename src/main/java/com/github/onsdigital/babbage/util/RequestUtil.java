@@ -21,7 +21,7 @@ public class RequestUtil {
      * this ensures all data requests from content service can be authorized both  when data is requested for any purpose on Babbage ( rendering page, sending data back etc. )
      */
     public static void saveRequestContext(HttpServletRequest request) {
-        ThreadContext.addData("cookies",getAllCookies(request));
+        ThreadContext.addData("cookies", getAllCookies(request));
         ThreadContext.addData("parameters", request.getParameterMap());
 
     }
@@ -57,14 +57,17 @@ public class RequestUtil {
 
     /**
      * Extracts GET parameters from query string
-     * <p>
+     * <p/>
      * This method matches parameters to query string, if parameters is in query string it is return in the list of parameters.
-     * <p>
+     * <p/>
      * Note that a post parameters with the same name might also be included. There should not be parameters with same names in both get and post parameters if not wanted to be extracted
      */
     public static Map<String, String[]> getQueryParameters(HttpServletRequest request) throws UnsupportedEncodingException {
         Map<String, String[]> queryParameters = new HashMap<>();
-        String queryString = URLDecoder.decode(request.getQueryString(), StandardCharsets.UTF_8.name());
+        String queryString = request.getQueryString();
+        if (queryString != null) {
+            queryString = URLDecoder.decode(queryString, StandardCharsets.UTF_8.name());
+        }
 
         if (StringUtils.isEmpty(queryString)) {
             return queryParameters;
