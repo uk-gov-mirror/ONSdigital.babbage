@@ -3,7 +3,7 @@
     <div class="wrapper">
         {{> partials/breadcrumb}}
         <p class="page-header__title">
-            Dataset
+            {{labels.dataset}}
         </p>
         <h1 class="page-header__title flush--half--bottom" id="title">{{description.title}}</h1>
         <div class="grid-wrap mini">
@@ -11,22 +11,22 @@
                 {{#if description.nationalStatistic}}
                 <img src="/node_modules/ONS-Pattern-Library/dist/img/national-statistics.png" alt="National Statistics logo">
                 {{/if}}
-                <span>Contact: </span><br/><a href="mailto:{{description.contact.email}}">{{#if
+                <span>{{labels.meta-contact}}: </span><br/><a href="mailto:{{description.contact.email}}">{{#if
             description.contact.name}}{{description.contact.name}}{{else}}{{description.contact.email}}{{/if}}</a>
             <p class="grid-col tablet-grid-one-quarter divider--border-left">
-                <span>Release date: </span><br/>{{df description.releaseDate}}
+                <span>{{labels.release-date}}: </span><br/>{{df description.releaseDate}}
                 </br>
                 {{!--<a class="print-hidden" href="#">previous versions</a>--}}
             </p>
             {{#if description.nextRelease}}
             <p class="grid-col tablet-grid-one-quarter divider--border-left">
-                <span>Next release: </span><br/>{{description.nextRelease}}
+                <span>{{labels.release-next}}: </span><br/>{{description.nextRelease}}
             </p>
             {{/if}}
             {{#if description.datasetId}}
             <p class="grid-col tablet-grid-one-quarter divider--border-left">
-                <span>Dataset id: </span>{{description.datasetId}}
-                <a href="#" class="tooltip nojs-hidden" title="This series ID is a unique random identifier for this individual time series. The digits themselves do not have any specific meaning" aria-label="This series ID is a unique random identifier for this individual time series. The digits themselves do not have any specific meaning">what is this? </a>
+                <span>{{labels.dataset-id}}: </span>{{description.datasetId}}
+                <a href="#" class="tooltip nojs-hidden" title="This series ID is a unique random identifier for this individual time series. The digits themselves do not have any specific meaning" aria-label="This series ID is a unique random identifier for this individual time series. The digits themselves do not have any specific meaning">{{labels.dataset-what-is}}</a>
             </p>
             {{/if}}
         </div>
@@ -110,7 +110,7 @@
             <article class="box solid box--green--separated--left">
                 <div class="box__inner border box--padded">
                     <header class="box__header">
-                        <h3>Related datasets</h3>
+                        <h3>{{labels.dataset-related-data}}</h3>
                     </header>
                     <div class="box__content">
                         <ul class="list--neutral">
@@ -130,7 +130,7 @@
             <article class="box solid box--teal--separated--left">
                 <div class="box__inner border box--padded">
                     <header class="box__header">
-                        <h3>Statistical bulletins and articles that use this time series</h3>
+                        <h3>{{labels.dataset-related-a-b}}</h3>
                     </header>
                     <div class="box__content">
                         <ul class="list--neutral">
@@ -161,7 +161,7 @@
                     <!--{{#if relatedMethodology}}-->
                     <article class="box box--padded sectioned">
                         <header class="box__header">
-                            <h3>Methodology</h3>
+                            <h3>{{labels.methodology}}</h3>
                         </header>
                         <div class="box__content">
                             <ul class="list--neutral">
@@ -181,13 +181,13 @@
                 <div class="grid-col desktop-grid-one-half">
                     <article class="box box--padded sectioned">
                         <header class="box__header">
-                            <h3>Contact details</h3>
+                            <h3>{{labels.contact-us}}</h3>
                         </header>
                         <div class="box__content">
                             <address>
                                 {{#if description.contact.name}}{{description.contact.name}}</br>{{/if}}
                                 <a href="mailto:{{description.contact.email}}">{{description.contact.email}}</a></br>
-                                {{#if description.contact.telephone}}Telephone: {{description.contact.telephone}}{{/if}}
+                                {{#if description.contact.telephone}}{{labels.phone}}: {{description.contact.telephone}}{{/if}}
                             </address>
                         </div>
                     </article>

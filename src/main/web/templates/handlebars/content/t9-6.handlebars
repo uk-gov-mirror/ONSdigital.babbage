@@ -9,7 +9,7 @@
 	<div class="wrapper panel--top-mar">
 		{{> partials/breadcrumb}}
 		<p class="page-header__title">
-			Previous releases
+			{{labels.previous}}
 		</p>
 		{{#each breadcrumb}}
 		{{#if @last}}
@@ -34,7 +34,7 @@
 						{{#loop orderBy="uri" reverse=true}}
 							{{#if @first}}
 							<li>
-								<h3 class="flush">Latest release</h3>
+								<h3 class="flush">{{labels.previous-latest}}</h3>
 								<h3 class="flush stand-out-text">
 									<a href="{{uri}}">{{description.title}}
 									{{#if description.edition}}
@@ -44,7 +44,7 @@
 									</a>
 								</h3>
 								<p class="stand-out-text">
-									Released: {{df description.releaseDate}}
+									{{labels.previous-released}}: {{df description.releaseDate}}
 								</p>
 							</li>
 							{{else}}
@@ -57,7 +57,7 @@
 									</a>
 								</h3>
 								<p>
-									Released: {{df description.releaseDate}}
+									{{labels.previous-released}}: {{df description.releaseDate}}
 								</p>
 							</li>
 							{{/if}}
@@ -79,10 +79,10 @@
 						</header>
 						<div class="box__content">
 							<p>
-								We moved them to <a href="#">The National Archives</a> website, to keep this website as responsive as possible.
+								{{{labels.previous-archived}}}
 							</p>
 							<p>
-								<strong>Please note: </strong>all historical data is still on this website.
+								{{{labels.previous-data}}}
 							</p>
 						</div>
 					</div>
