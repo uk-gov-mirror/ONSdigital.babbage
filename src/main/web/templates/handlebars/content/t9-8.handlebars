@@ -9,19 +9,19 @@
 	<div class="wrapper panel--top-mar">
 		{{> partials/breadcrumb}}
 		<p class="page-header__title">
-			Datasets
+			Publications
 		</p>
 		{{#each breadcrumb}}
 			{{#if @last}}
-				<h1 class="page-header__title flush--half--bottom">{{description.title}} datasets</h1>
+				<h1 class="page-header__title flush--half--bottom">{{description.title}} publications</h1>
 			{{/if}}
 		{{/each}}
 		<p>
 		{{#if statisticsSearchResult.results}}
 		<span class="stand-out-text">
-			{{statisticsSearchResult.numberOfResults}}</span> results for <strong>datasets</strong> related to <strong>{{#each breadcrumb}}{{#if @last}}{{description.title}}{{/if}}{{/each}}</strong>. You have chosen to expand these results to <strong>include all releases over time</strong><span class="icon icon-cancel" role="presentation"></span>
+			{{statisticsSearchResult.numberOfResults}}</span> results for <strong>publications</strong> related to <strong>{{#each breadcrumb}}{{#if @last}}{{description.title}}{{/if}}{{/each}}</strong>. You have chosen to expand these results to <strong>include all releases over time</strong><span class="icon icon-cancel" role="presentation"></span>
 		{{else}}
-		Sorry, there are no <strong>datasets</strong> for <strong>{{#each breadcrumb}}{{#if @last}}{{description.title}}{{/if}}{{/each}}</strong>.
+		Sorry, there are no <strong>publications</strong> for <strong>{{#each breadcrumb}}{{#if @last}}{{description.title}}{{/if}}{{/each}}</strong>.
 		{{/if}}
 		</p>
 	</div>
@@ -123,18 +123,18 @@
 					<ul class="nav nav--inline-block">
 						{{#if_ne currentPage startPage}}
 						<li>
-							<a href="datasets?page={{decrement currentPage}}" class="page-link previous">Prev</a>
+							<a href="publications?page={{decrement currentPage}}" class="page-link previous">Prev</a>
 						</li>
 						{{/if_ne}}
 						{{#each pages}}
 						<li>
 							{{#if_eq this currentPage}}<span>{{this}}</span>{{/if_eq}}
-							{{#if_ne this currentPage}}<a href="datasets?page={{this}}" class="page-link" >{{this}}</a>{{/if_ne}}
+							{{#if_ne this currentPage}}<a href="publications?page={{this}}" class="page-link" >{{this}}</a>{{/if_ne}}
 						</li>
 						{{/each}}
 						{{#if_ne currentPage endPage}}
 						<li>
-							<a href="datasets?page={{increment currentPage}}" class="page-link next" >Next</a>
+							<a href="publications?page={{increment currentPage}}" class="page-link next" >Next</a>
 						</li>
 						{{/if_ne}}
 					</ul>
