@@ -12,15 +12,16 @@
 			Statistical bulletins
 		</p>
 		{{#each breadcrumb}}
-		{{#if @last}}
-		<h1 class="page-header__title flush--half--bottom">{{description.title}} statistical bulletins</h1>
-		{{/if}}
+			{{#if @last}}
+				<h1 class="page-header__title flush--half--bottom">{{description.title}} statistical bulletins</h1>
+			{{/if}}
 		{{/each}}
 		<p>
 		{{#if statisticsSearchResult.results}}
-		<span class="stand-out-text">{{statisticsSearchResult.numberOfResults}}</span> results for <strong>statistical bulletins</strong> released to <strong>{{description.title}}</strong>. You have chosen to expand these results to <strong>include all releases over time</strong><span class="icon icon-cancel" role="presentation"></span>
+		<span class="stand-out-text">
+			{{statisticsSearchResult.numberOfResults}}</span> results for <strong>statistical bulletins</strong> related to <strong>{{#each breadcrumb}}{{#if @last}}{{description.title}}{{/if}}{{/each}}</strong>. You have chosen to expand these results to <strong>include all releases over time</strong><span class="icon icon-cancel" role="presentation"></span>
 		{{else}}
-		Sorry, there are no <strong>statistical bulletins</strong> for <strong>{{description.title}}</strong> articles.
+		Sorry, there are no <strong>statistical bulletins</strong> for <strong>{{#each breadcrumb}}{{#if @last}}{{description.title}}{{/if}}{{/each}}</strong>.
 		{{/if}}
 		</p>
 	</div>
@@ -51,11 +52,14 @@
 							<p>
 			            		You can also expand these results to include the following:
 			                </p>
-			                <input type="checkbox" name="checkbox" value="1" checked>
+			                <input type="checkbox" name="all-releases" value="1" checked>
 			                <label for="checkbox">
 			                    Show all releases over time
 			                </label>
 		    			</div>
+							<div>
+								<button type="submit" class="btn btn--primary btn--small panel--mar-small">Filter</button>
+							</div>
 		        	</form>
 		        </article>
 		        <!-- /box 'refine results -->
@@ -86,7 +90,7 @@
 						{{#if description.edition}}
 							{{#if_ne description.edition 'yes'}}: {{description.edition}}{{/if_ne}}
 						{{/if}}</a></h3>
-						<p class="flush description">
+						<p class="mini flush description">
 							Released: {{df description.releaseDate}}
 						</p>
 						{{md description.summary}}
@@ -99,18 +103,18 @@
 					<ul class="nav nav--inline-block">
 						{{#if_ne currentPage startPage}}
 						<li>
-							<a href="/{{url}}?page={{decrement currentPage}}" class="page-link previous">Prev</a>
+							<a href="bulletins?page={{decrement currentPage}}" class="page-link previous">Prev</a>
 						</li>
 						{{/if_ne}}
 						{{#each pages}}
 						<li>
 							{{#if_eq this currentPage}}<span>{{this}}</span>{{/if_eq}}
-							{{#if_ne this currentPage}}<a href="/{{url}}?page={{this}}" class="page-link" >{{this}}</a>{{/if_ne}}
+							{{#if_ne this currentPage}}<a href="bulletins?page={{this}}" class="page-link" >{{this}}</a>{{/if_ne}}
 						</li>
 						{{/each}}
 						{{#if_ne currentPage endPage}}
 						<li>
-							<a href="/{{url}}?page={{increment currentPage}}" class="page-link next" >Next</a>
+							<a href="bulletins?page={{increment currentPage}}" class="page-link next" >Next</a>
 						</li>
 						{{/if_ne}}
 					</ul>
