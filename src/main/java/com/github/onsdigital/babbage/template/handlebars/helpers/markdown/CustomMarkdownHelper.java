@@ -8,8 +8,6 @@ import com.github.onsdigital.babbage.template.handlebars.helpers.markdown.util.C
 import com.github.onsdigital.babbage.template.handlebars.helpers.markdown.util.TableTagReplacer;
 
 import java.io.IOException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Created by bren on 28/07/15.
@@ -28,14 +26,13 @@ public class CustomMarkdownHelper extends MarkdownHelper implements BabbageHandl
             return "";
         }
         String markdown = context.toString();
+        markdown = super.apply(markdown, options).toString();
         markdown = markdown.replaceAll(SUBSCRIPT_PATTERN, "<sub>$1</sub>");
         markdown = markdown.replaceAll(SUPER_SCRIPT_PATTERN, "<sup>$1</sup>");
         markdown = new ChartTagReplacer().replaceCustomTags(markdown);
         markdown = new TableTagReplacer().replaceCustomTags(markdown);
-        return super.apply(markdown, options);
+        return new Handlebars.SafeString(markdown) ;
     }
-
-
 
     @Override
     public void register(Handlebars handlebars) {
