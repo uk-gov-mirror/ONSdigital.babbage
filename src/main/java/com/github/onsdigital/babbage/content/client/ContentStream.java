@@ -50,6 +50,14 @@ public class ContentStream  implements Closeable {
         return EntityUtils.toString(response.getEntity());
     }
 
+    public int getResponseCode() {
+        return response.getStatusLine().getStatusCode();
+    }
+
+    public String getHeader(String name) {
+        return response.getFirstHeader(name).getValue();
+    }
+
     private ContentType getContentType() {
         return ContentType.getLenient(response.getEntity());
     }

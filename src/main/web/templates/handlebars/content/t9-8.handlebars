@@ -9,19 +9,19 @@
 	<div class="wrapper panel--top-mar">
 		{{> partials/breadcrumb}}
 		<p class="page-header__title">
-			Statistical bulletins
+			Publications
 		</p>
 		{{#each breadcrumb}}
 			{{#if @last}}
-				<h1 class="page-header__title flush--half--bottom">{{description.title}} statistical bulletins</h1>
+				<h1 class="page-header__title flush--half--bottom">{{description.title}} publications</h1>
 			{{/if}}
 		{{/each}}
 		<p>
 		{{#if statisticsSearchResult.results}}
 		<span class="stand-out-text">
-			{{statisticsSearchResult.numberOfResults}}</span> results for <strong>statistical bulletins</strong> related to <strong>{{#each breadcrumb}}{{#if @last}}{{description.title}}{{/if}}{{/each}}</strong>. You have chosen to expand these results to <strong>include all releases over time</strong><span class="icon icon-cancel" role="presentation"></span>
+			{{statisticsSearchResult.numberOfResults}}</span> results for <strong>publications</strong> related to <strong>{{#each breadcrumb}}{{#if @last}}{{description.title}}{{/if}}{{/each}}</strong>. You have chosen to expand these results to <strong>include all releases over time</strong><span class="icon icon-cancel" role="presentation"></span>
 		{{else}}
-		Sorry, there are no <strong>statistical bulletins</strong> for <strong>{{#each breadcrumb}}{{#if @last}}{{description.title}}{{/if}}{{/each}}</strong>.
+		Sorry, there are no <strong>publications</strong> for <strong>{{#each breadcrumb}}{{#if @last}}{{description.title}}{{/if}}{{/each}}</strong>.
 		{{/if}}
 		</p>
 	</div>
@@ -29,7 +29,7 @@
 	<div class="wrapper panel--mar print-links">
 		{{#if statisticsSearchResult.results}}
 		<div class="grid-wrap panel--bottom-mar print-hidden">
-	    	<div class="grid-col desktop-grid-one-quarter desktop-grid-push-three-quarters tablet-grid-full-width">
+				<div class="grid-col desktop-grid-one-quarter desktop-grid-push-three-quarters tablet-grid-full-width">
 					<label for="select" class="inline description">Sort by
 							<select class="input inline width-auto" id="select" name="" disabled>
 								<option value="1" selected>Relevance</option>
@@ -38,31 +38,51 @@
 							</select>
 							<a href="#" class="btn btn--primary btn-tooltip tooltip nojs-hidden" title="This option will not be available on the prototype, however in the future you will be able to sort search results by relevance or release date" aria-label="This option will not be available on the prototype, however in the future you will be able to sort search results by relevance or release date">? </a>
 					</label>
-	        </div>
-	    </div>
-	    <div class="grid-wrap">
-		    <div class="grid-col desktop-grid-one-third">
-		        <article class="box box--padded sectioned print-hidden">
-		        	<form id="filters">
-		            	<div class="panel panel--bottom-pad panel--separated--bottom flush">
-			            	<h3 class="flush float-left">Refine results</h3>
-			                <button type="reset" value="Reset" class="btn btn--primary btn--small btn--thin btn--narrow btn--clear-results float-right">Clear</button>
-		            	</div>
+					</div>
+			</div>
+			<div class="grid-wrap">
+				<div class="grid-col desktop-grid-one-third">
+						<article class="box box--padded sectioned print-hidden">
+							<form id="filters">
+									<div class="panel panel--bottom-pad panel--separated--bottom flush">
+										<h3 class="flush float-left">Refine results</h3>
+											<button type="reset" value="Reset" class="btn btn--primary btn--small btn--thin btn--narrow btn--clear-results float-right">Clear</button>
+									</div>
 						<div class="box__content">
+              <ul class="list--neutral">
+  							<li>
+  								<input type="checkbox" name="type" value="bulletin" {{#contains types 'bulletin'}}checked{{/contains}} >
+  								<label for="checkbox-statsbulletin">
+  									Statistical bulletin
+  								</label>
+  							</li>
+  							<li>
+  								<input type="checkbox" name="type" value="article" {{#contains types 'article'}}checked{{/contains}}>
+  								<label for="checkbox-article">
+  									Article
+  								</label>
+  							</li>
+  							<li>
+  								<input type="checkbox" name="type" value="dataset" {{#contains types 'dataset'}}checked{{/contains}}>
+  								<label for="checkbox-dataset">
+  									Compendia
+  								</label>
+  							</li>
+  						</ul>
 							<p>
-			            		You can also expand these results to include the following:
-			                </p>
-			                <input type="checkbox" name="all-releases" value="1" checked>
-			                <label for="checkbox">
-			                    Show all releases over time
-			                </label>
-		    			</div>
+											You can also expand these results to include the following:
+											</p>
+											<input type="checkbox" name="all-releases" value="1" checked>
+											<label for="checkbox">
+													Show all releases over time
+											</label>
+							</div>
 							<div>
 								<button type="submit" class="btn btn--primary btn--small panel--mar-small">Filter</button>
 							</div>
-		        	</form>
-		        </article>
-		        <!-- /box 'refine results -->
+							</form>
+						</article>
+						<!-- /box 'refine results -->
 				<article class="box box--purple box--purple--separated--left">
 					<div class="box__inner border box--padded">
 						<header class="box__header">
@@ -103,18 +123,18 @@
 					<ul class="nav nav--inline-block">
 						{{#if_ne currentPage startPage}}
 						<li>
-							<a href="bulletins?page={{decrement currentPage}}" class="page-link previous">Prev</a>
+							<a href="publications?page={{decrement currentPage}}" class="page-link previous">Prev</a>
 						</li>
 						{{/if_ne}}
 						{{#each pages}}
 						<li>
 							{{#if_eq this currentPage}}<span>{{this}}</span>{{/if_eq}}
-							{{#if_ne this currentPage}}<a href="bulletins?page={{this}}" class="page-link" >{{this}}</a>{{/if_ne}}
+							{{#if_ne this currentPage}}<a href="publications?page={{this}}" class="page-link" >{{this}}</a>{{/if_ne}}
 						</li>
 						{{/each}}
 						{{#if_ne currentPage endPage}}
 						<li>
-							<a href="bulletins?page={{increment currentPage}}" class="page-link next" >Next</a>
+							<a href="publications?page={{increment currentPage}}" class="page-link next" >Next</a>
 						</li>
 						{{/if_ne}}
 					</ul>
@@ -126,6 +146,6 @@
 		</div>
 		<!-- /grid-wrap -->
 	</div>
-	<!-- /wrapper panel--mar -->
+		<!-- /wrapper panel--mar -->
 </main>
 {{> partials/footer}}

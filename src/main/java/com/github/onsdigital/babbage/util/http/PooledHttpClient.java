@@ -44,6 +44,7 @@ public class PooledHttpClient {
         HOST = resolveHostUri(host);
         this.connectionManager = new PoolingHttpClientConnectionManager();
         this.httpClient = HttpClients.custom()
+                .disableRedirectHandling()
                 .setConnectionManager(connectionManager)
                 .build();
         this.monitorThread = new IdleConnectionMonitorThread(connectionManager);
@@ -167,7 +168,7 @@ public class PooledHttpClient {
     private CloseableHttpResponse validate(CloseableHttpResponse response) throws ClientProtocolException {
         StatusLine statusLine = response.getStatusLine();
         HttpEntity entity = response.getEntity();
-        if (statusLine.getStatusCode() >= 300) {
+        if (statusLine.getStatusCode() > 302) {
             String errorMessage = getErrorMessage(entity);
             throw new HttpResponseException(
                     statusLine.getStatusCode(),

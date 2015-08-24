@@ -6,7 +6,11 @@ import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import java.util.*;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by bren on 10/08/15.
@@ -83,14 +87,17 @@ public class RequestUtil {
 
     /**
      * Extracts GET parameters from query string
-     * <p>
+     * <p/>
      * This method matches parameters to query string, if parameters is in query string it is return in the list of parameters.
-     * <p>
+     * <p/>
      * Note that a post parameters with the same name might also be included. There should not be parameters with same names in both get and post parameters if not wanted to be extracted
      */
-    public static Map<String, String[]> getQueryParameters(HttpServletRequest request) {
+    public static Map<String, String[]> getQueryParameters(HttpServletRequest request) throws UnsupportedEncodingException {
         Map<String, String[]> queryParameters = new HashMap<>();
         String queryString = request.getQueryString();
+        if (queryString != null) {
+            queryString = URLDecoder.decode(queryString, StandardCharsets.UTF_8.name());
+        }
 
         if (StringUtils.isEmpty(queryString)) {
             return queryParameters;
