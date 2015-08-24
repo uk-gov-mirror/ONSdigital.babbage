@@ -4,6 +4,7 @@ import com.github.davidcarboni.restolino.framework.Api;
 import com.github.onsdigital.babbage.content.client.ContentClient;
 import com.github.onsdigital.babbage.content.client.ContentReadException;
 import com.github.onsdigital.babbage.content.client.ContentStream;
+import com.github.onsdigital.babbage.request.response.BabbageRedirectResponse;
 import com.github.onsdigital.babbage.request.response.BabbageResponse;
 import com.github.onsdigital.babbage.request.response.BabbageStringResponse;
 import com.github.onsdigital.babbage.template.TemplateService;
@@ -17,6 +18,8 @@ import javax.ws.rs.GET;
 import javax.ws.rs.core.Context;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 import static com.github.onsdigital.babbage.util.RequestUtil.getQueryParameters;
 
@@ -27,7 +30,7 @@ public class Search {
     private final static String SEARCH_REQUEST = "search";
 
     @GET
-    public Object get(@Context HttpServletRequest request, @Context HttpServletResponse response) throws IOException, ContentNotFoundException, ContentReadException {
+    public Object get(@Context HttpServletRequest request, @Context HttpServletResponse response) throws IOException, ContentNotFoundException, ContentReadException, URISyntaxException {
 
         BabbageResponse babbageResponse;
         String type = URIUtil.resolveRequestType(request.getRequestURI());
@@ -41,9 +44,16 @@ public class Search {
                 }
                 break;
             case SEARCH_REQUEST:
-                try (InputStream dataStream = ContentClient.getInstance().getSearch("", getQueryParameters(request)).getDataStream()) {
-                    String html = TemplateService.getInstance().renderContent(dataStream);
-                    babbageResponse = new BabbageStringResponse(html, HTML_MIME);
+                ContentStream contentStream = ContentClient.getInstance().getSearch("", getQueryParameters(request));
+
+                if (contentStream.getResponseCode() == 301 || contentStream.getResponseCode() == 302) {
+                   babbageResponse = new BabbageRedirectResponse(new URI(contentStream.getHeader("location")).getPath());
+                    contentStream.close();
+                } else {
+                    try (InputStream dataStream = contentStream.getDataStream()) {
+                        String html = TemplateService.getInstance().renderContent(dataStream);
+                        babbageResponse = new BabbageStringResponse(html, HTML_MIME);
+                    }
                 }
                 break;
             default:
