@@ -1,18 +1,25 @@
+{{!-- Resolve parents of current uri for and assign to variable breadcrumb for building breadcrumb --}}
+{{resolveParents uri assign="breadcrumb"}}
+{{!-- Resolve navigation fetching children of root uri "/" with depth 2 --}}
+{{resolveChildren "/" depth=2 assign="navigation"}}
+
+{{> partials/header}}
+
 <main id="main" role="main" tabindex="-1">
 	<div class="wrapper panel--top-mar">
-		{{> templates/handlebars/partials/breadcrumb}}
+		{{> partials/breadcrumb}}
 		<h1 class="page-header__title flush--half--bottom">Methodology</h1>
 		<p>
-			{{#if contentSearchResult.results}}
-			<span class="stand-out-text">{{contentSearchResult.numberOfResults}}</span> results for <strong>{{description.title}}</strong> related to <strong>Inflation and price indices</strong>.
+			{{#if statisticsSearchResult.results}}
+			<span class="stand-out-text">{{statisticsSearchResult.numberOfResults}}</span> results for <strong>methodology</strong> showing {{#contains types 'qmi'}}<strong>Quality and Methodology Information (QMI)</strong>{{/contains}} {{#contains types 'article'}}<strong>articles</strong>{{/contains}} related to <strong>{{#each breadcrumb}}{{#if @last}}{{description.title}}{{/if}}{{/each}}</strong>.
 			{{else}}
-			Sorry, there is no <strong>user request data</strong> for <strong>{{description.title}}</strong>.
+			Sorry, there is no <strong>methodology</strong> for <strong>{{#each breadcrumb}}{{#if @last}}{{description.title}}{{/if}}{{/each}}</strong>.
 			{{/if}}
 		</p>
 	</div>
 	<!-- /wrapper -->
 	<div class="wrapper panel--mar print-links">
-		{{#if contentSearchResult.results}}
+		{{#if statisticsSearchResult.results}}
 		<div class="grid-wrap">
 			<div class="grid-col desktop-grid-one-third">
 				<article class="box box--padded sectioned print-hidden">
@@ -29,13 +36,13 @@
 							<p class="panel panel--separated--bottom">Content types to show</p>
 							<ul class="list--neutral">
 								<li>
-									<input type="checkbox" name="type" value="qmi" checked />
+									<input type="checkbox" name="type" value="qmi" {{#contains types 'qmi'}}checked{{/contains}} />
 									<label for="checkbox-statsbulletin">
 										Quality and Methodology Information (QMI)
 									</label>
 								</li>
 								<li>
-									<input type="checkbox" name="type" value="article" checked />
+									<input type="checkbox" name="type" value="article" {{#contains types 'article'}}checked{{/contains}} />
 									<label for="checkbox-statsbulletin">
 										Article
 									</label>
@@ -45,14 +52,17 @@
 								<label for="select">Topics</label>
 							</div>
 							<div class="field field--spaced">
-								<select class="input input--mini" id="select" name="Topics">
+								<select class="input input--mini" name="topics">
 								<option value="1" selected>All</option>
 								{{#each navigation.nodes}}
-								<option value="{{@index}}">{{title}}</option>
+								<option value="{{slugify title}}">{{title}}</option>
 								{{/each}}
 							</select>
 							</div>
 							<!-- /field drop-down -->
+						</div>
+						<div>
+							<button type="submit" class="btn btn--primary btn--small panel--mar-small">Filter</button>
 						</div>
 					</form>
 					<!-- /box__content -->
@@ -79,30 +89,43 @@
 			<!-- /desktop-grid-one-third -->
 			<div class="grid-col desktop-grid-two-thirds">
 				<ul class="list--neutral">
-					{{#each contentSearchResult.results}}
+					{{#each statisticsSearchResult.results}}
 					<li>
-						<h3 class="flush inline"><a href="{{url}}">{{title}}</a></h3>
-						<span class="lozenge inline">{{#if type}}{{type}}{{/if}}</span>
-						<p class="mini description flush">
-							Released {{df releaseDate}}
+						<h3 class="flush inline"><a href="{{uri}}">{{description.title}}
+						{{#if description.edition}}
+							{{#if_ne description.edition 'yes'}}: {{description.edition}}{{/if_ne}}
+						{{/if}}</a></h3>
+						<span class="lozenge">{{#if_eq type 'qmi'}}QMI{{/if_eq}}{{#if_ne type 'qmi'}}{{type}}{{/if_ne}}</span>
+						<p class="mini flush description">
+							Released: {{df description.releaseDate}}
 						</p>
-						<p>{{description}}</p>
+						{{md description.metaDescription}}
 					</li>
 					{{/each}}
 				</ul>
-				<div class="panel panel--separated--top">
-					<ul class="nav">
+				{{!-- Paginator --}}
+				{{#if_ne numberOfPages 1}}
+				<nav>
+					<ul class="nav nav--inline-block">
+						{{#if_ne currentPage startPage}}
 						<li>
-							<a href="#">1</a>
+							<a href="methodology?page={{decrement currentPage}}" class="page-link previous">Prev</a>
 						</li>
+						{{/if_ne}}
+						{{#each pages}}
 						<li>
-							<a href="#">2</a>
+							{{#if_eq this currentPage}}<span>{{this}}</span>{{/if_eq}}
+							{{#if_ne this currentPage}}<a href="methodology?page={{this}}" class="page-link" >{{this}}</a>{{/if_ne}}
 						</li>
+						{{/each}}
+						{{#if_ne currentPage endPage}}
 						<li>
-							<a href="#">Next &gt;</a>
+							<a href="methodology?page={{increment currentPage}}" class="page-link next" >Next</a>
 						</li>
+						{{/if_ne}}
 					</ul>
-				</div>
+				</nav>
+				{{/if_ne}}
 				<!-- /panel--seperated--top 'pagination' -->
 			</div>
 			<!-- /desktop-grid-two-thirds -->
@@ -112,3 +135,4 @@
 	</div>
 	<!-- /wrapper -->
 </main>
+{{> partials/footer}}
