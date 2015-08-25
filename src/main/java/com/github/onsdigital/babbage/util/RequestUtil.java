@@ -21,7 +21,7 @@ public class RequestUtil {
      * this ensures all data requests from content service can be authorized both  when data is requested for any purpose on Babbage ( rendering page, sending data back etc. )
      */
     public static void saveRequestContext(HttpServletRequest request) {
-        ThreadContext.addData("cookies",getAllCookies(request));
+        ThreadContext.addData("cookies", getAllCookies(request));
         ThreadContext.addData("parameters", request.getParameterMap());
 
     }
@@ -64,6 +64,12 @@ public class RequestUtil {
      */
     public static Map<String, String[]> getQueryParameters(HttpServletRequest request) throws UnsupportedEncodingException {
         Map<String, String[]> queryParameters = new HashMap<>();
+
+        if (request == null || request.getQueryString() == null ||
+                request.getQueryString().length() == 0) {
+            return queryParameters;
+        }
+
         String queryString = URLDecoder.decode(request.getQueryString(), StandardCharsets.UTF_8.name());
 
         if (StringUtils.isEmpty(queryString)) {
