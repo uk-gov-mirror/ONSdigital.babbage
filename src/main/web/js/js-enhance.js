@@ -516,7 +516,7 @@ $(function() {
 
         //Offsets page to make room for sticky nav if arrive on page directly at section
         $(window).load(function(){
-            if (location.hash) {
+            if (location.hash && $('.wrapper--content').length > 0) {
                 var contentStart = $('.wrapper--content').offset().top;
                 var scrollTop = $(window).scrollTop();
 
