@@ -394,7 +394,7 @@ $(function() {
 
     function jsEnhanceAnchorAnalytics(){
         //Trigger analytics pageview on click of any # anchor
-        $("a[href*='#'").click(function(e){
+        $("a[href*='#']").click(function(e){
             var hash = $(this).attr('href');
             var page = window.location.pathname + hash;
             jsEnhanceTriggerAnalyticsEvent(page);
@@ -424,6 +424,7 @@ $(function() {
 
             //insert sticky wrapper
             var tocStickyWrap = $('<div class="toc-sticky-wrap print-hidden"><div class="wrapper">');
+            console.log(tocStickyWrap);
             $(tocStickyWrap).insertAfter($('#toc'));
             $('.toc-sticky-wrap .wrapper').append('<h2 class="flush">Table of contents</h2>');
 
