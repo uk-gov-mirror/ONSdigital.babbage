@@ -9,7 +9,7 @@ import java.nio.file.NoSuchFileException;
 import java.util.List;
 import java.util.Map;
 
-import com.github.onsdigital.configuration.Configuration;
+import com.github.onsdigital.babbage.configuration.Configuration;
 import org.junit.Test;
 
 import com.github.onsdigital.search.LoadIndexHelper;
@@ -17,7 +17,7 @@ import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;
 
 public class LoadIndexHelperTest {
-	private final static String RESOURCE_FILE_PATH = Configuration.getContentPath();
+	private final static String RESOURCE_FILE_PATH = Configuration.CONTENT_SERVICE.getContentPath();
 
 	@Test
 	public void testGetFileNames() throws IOException {

@@ -5,6 +5,7 @@
 			<div class="grid-wrap">
 				<ul class="list--neutral">
 					{{#each statsBulletins}}
+					{{#resolve this.uri filter="description"}}
 					<li class="grid-col desktop-grid-one-third box--padded-vertical nav--block-landing">
 						<h3>
 						<a href="{{uri}}" title="{{description.title}}">
@@ -15,6 +16,7 @@
 							{{description.summary}}
 						</p>
 					</li>
+					{{/resolve}}
 					{{/each}}
 				</ul>
 			</div>
@@ -22,6 +24,6 @@
 		</div>
 		<!-- /grid-wrap -->
 	</div>
-	{{!--<a href="#">View all statistical bulletins</a> --}}
+	<a href="{{uri}}/bulletins">View all statistical bulletins</a>
 	<!-- /grid-wrap -->
 </div>

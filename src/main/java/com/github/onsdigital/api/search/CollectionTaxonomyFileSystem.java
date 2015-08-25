@@ -1,7 +1,7 @@
 package com.github.onsdigital.api.search;
 
 import com.github.davidcarboni.restolino.framework.Api;
-import com.github.onsdigital.configuration.Configuration;
+import com.github.onsdigital.babbage.configuration.Configuration;
 import com.github.onsdigital.search.ScanFileSystem;
 import com.github.onsdigital.search.bean.CollectionSearchResult;
 import com.github.onsdigital.util.TaxonomyDateComparator;
@@ -47,7 +47,7 @@ public class CollectionTaxonomyFileSystem {
 
 	private List<File> getFiles(String query, String type) throws IOException {
 		List<File> files = new ArrayList<File>();
-		String taxonomyRoot = Configuration.getContentPath() + query;
+		String taxonomyRoot = Configuration.CONTENT_SERVICE.getContentPath() + query;
 		final Path rootDir = Paths.get(taxonomyRoot);
 		files = ScanFileSystem.getFiles(files, rootDir, type);
 		return files;

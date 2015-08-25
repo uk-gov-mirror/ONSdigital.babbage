@@ -1,15 +1,9 @@
 package com.github.onsdigital.search;
 
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.elasticsearch.client.Client;
 
-import com.github.davidcarboni.restolino.framework.Startup;
+import java.util.concurrent.*;
 
 /**
  * Starts an {@link EmbeddedElasticSearchServer} when a client requested
@@ -17,13 +11,13 @@ import com.github.davidcarboni.restolino.framework.Startup;
  * @author Bren
  *
  */
-public class ElasticSearchServer implements Startup {
+public class ElasticSearchServer { // implements Startup {
 
 	static ExecutorService pool = Executors.newSingleThreadExecutor();
 
 	static Future<Client> client;
 
-	@Override
+	//@Override
 	public void init() {
 		startEmbeddedServer();
 	}

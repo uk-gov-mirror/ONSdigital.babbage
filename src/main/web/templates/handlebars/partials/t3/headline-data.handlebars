@@ -3,42 +3,46 @@
 		<h2>Latest data</h2>
 		<header class="box___section">
 			<h3 class="navpanel-list-heading lede flush">
-			<a href="{{items.0.data.uri}}">{{items.0.data.description.title}}</a>
+			<a href="{{data.uri}}">{{data.description.title}}</a>
 			</h3>
-			{{#if items.0.data.description.keyNote}}
+			{{#if data.description.keyNote}}
 			<p class="panel--bottom-mar">
-				{{items.0.data.description.keyNote}}
+				{{data.description.keyNote}}
 			</p>
 			{{/if}}
 		</header>
 		<div class="grid-wrap">
 			<div class="grid-col grid-two-thirds">
 				<div class="box box--padded--small headline--stat-centred">
-					<a href="{{items.0.data.uri}}"><img src="{{items.0.data.uri}}/sparkline" alt="{{items.0.data.description.title}}"></a>
+					<a href="{{data.uri}}">
+						<div style="height:180px">
+						{{> partials/highcharts/sparkline data}}
+						</div>
+					</a>
 				</div>
 			</div>
 			<div class="grid-col grid-one-third no-padding">
 				<div class="stat">
 					<div class="stat__figure">
 						<div>
-							{{#if items.0.data.description.preUnit}}
-							<span class="stat__figure__preunit">{{items.0.data.description.preUnit}}</span>
+							{{#if data.description.preUnit}}
+							<span class="stat__figure__preunit">{{data.description.preUnit}}</span>
 							{{/if}}
-							<span class="stat__figure-enhance">{{items.0.data.description.number}}</span>
-							{{#if items.0.data.description.unit}}
-							<span class="stat__figure__unit"> {{items.0.data.description.unit}}</span>
+							<span class="stat__figure-enhance">{{data.description.number}}</span>
+							{{#if data.description.unit}}
+							<span class="stat__figure__unit"> {{data.description.unit}}</span>
 							{{/if}}
 						</div>
 						<div class="stat__description">
-							{{items.0.data.description.date}}
+							{{data.description.date}}
 						</div>
 					</div>
 				</div>
 				<dl class="micro definition-list definition-list--inline">
 					<dt>Last updated:</dt>
-					<dd class="flush flush--third--bottom">{{df items.0.data.description.releaseDate}}</dd>
+					<dd class="flush flush--third--bottom">{{df data.description.releaseDate}}</dd>
 					<dt>Next update:</dt>
-					<dd class="flush flush--third--bottom">{{items.0.data.description.nextRelease}}</dd>
+					<dd class="flush flush--third--bottom">{{data.description.nextRelease}}</dd>
 				</dl>
 			</div>
 			<!-- /grid-col -->
@@ -46,7 +50,7 @@
 		<!-- /grid-wrap -->
 	</div>
 	<!-- /box--padded -->
-	<a href="#data" class="btn btn--primary">view latest data
+	<a href="#timeseries" class="btn btn--primary">view latest data
 		{{!-- <span class="icon icon-down-open-big icon--button-inline"></span>--}}
 	</a>
 </div>

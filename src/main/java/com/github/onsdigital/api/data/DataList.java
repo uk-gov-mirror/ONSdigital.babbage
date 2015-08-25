@@ -14,9 +14,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 /**
- * 
+ *
  * Returns requested data as a single list.
- * 
+ *
  * @author brn
  *
  */
@@ -32,11 +32,11 @@ public class DataList {
 			System.out.println("Data list request recieved" + dataListRequest);
 			response.setCharacterEncoding("UTF8");
 			response.setContentType("application/json");
-			
+
 			ArrayList<String> arrayList = new ArrayList<String>();
 			arrayList.add("/economy/inflationandpriceindices/timeseries/d7g7");
 			arrayList.add("/economy/inflationandpriceindices");
-			
+
 			response.getWriter().write(LocalFileDataService.getInstance().getDataAsString(dataListRequest.uriList).toString());
 		} catch (IOException e) {
 			response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR_500);

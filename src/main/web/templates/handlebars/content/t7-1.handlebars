@@ -24,36 +24,36 @@
 					</a>
 				</p>
 			</div>
-			{{#ifany description.surveyName description.frequency description.compilation description.sampleSize description.geographicCoverage}}
+			{{#if_any description.surveyName description.frequency description.compilation description.sampleSize description.geographicCoverage}}
 			<h2 class="gamma">Methodology background</h2>
 			<div class="grid-wrap mini">
 				{{#if description.surveyName}}
-				<p class="grid-col {{#ifall description.surveyName description.frequency description.compilation description.sampleSize description.geographicCoverage}}tablet-grid-one-fifth{{else}}tablet-grid-one-quarter{{/ifall}} {{#if description.nationalStatistic}}page-header__meta-block-with-img{{/if}}">
+				<p class="grid-col {{#if_all description.surveyName description.frequency description.compilation description.sampleSize description.geographicCoverage}}tablet-grid-one-fifth{{else}}tablet-grid-one-quarter{{/if_all}} {{#if description.nationalStatistic}}page-header__meta-block-with-img{{/if}}">
 					<span>Survey name: </span><br/>{{description.surveyName}}
 				</p>
 				{{/if}}
 				{{#if description.frequency}}
-				<p class="grid-col {{#ifall description.surveyName description.frequency description.compilation description.sampleSize description.geographicCoverage}}tablet-grid-one-fifth{{else}}tablet-grid-one-quarter{{/ifall}} {{#if description.surveyName}}divider--border-left{{/if}}">
+				<p class="grid-col {{#if_all description.surveyName description.frequency description.compilation description.sampleSize description.geographicCoverage}}tablet-grid-one-fifth{{else}}tablet-grid-one-quarter{{/if_all}} {{#if description.surveyName}}divider--border-left{{/if}}">
 					<span>Frequency: </span><br/>{{description.frequency}}
 				</p>
 				{{/if}}
 				{{#if description.compilation}}
-				<p class="grid-col {{#ifall description.surveyName description.frequency description.compilation description.sampleSize description.geographicCoverage}}tablet-grid-one-fifth{{else}}tablet-grid-one-quarter{{/ifall}} {{#ifany description.surveyName description.frequency}}divider--border-left{{/ifany}}">
-					<span>How compiled: </span><br/>{{description.compilation}}
+				<p class="grid-col {{#if_all description.surveyName description.frequency description.compilation description.sampleSize description.geographicCoverage}}tablet-grid-one-fifth{{else}}tablet-grid-one-quarter{{/if_all}} {{#if_any description.surveyName description.frequency}}divider--border-left{{/if_any}}">
+					<span>Data collection: </span><br/>{{description.compilation}}
 				</p>
 				{{/if}}
 				{{#if description.sampleSize}}
-				<p class="grid-col {{#ifall description.surveyName description.frequency description.compilation description.sampleSize description.geographicCoverage}}tablet-grid-one-fifth{{else}}tablet-grid-one-quarter{{/ifall}} {{#ifany description.surveyName description.frequency description.compilation}}divider--border-left{{/ifany}}">
-					<span>Sample size: </span><br/>{{description.sampleSize}}
+				<p class="grid-col {{#if_all description.surveyName description.frequency description.compilation description.sampleSize description.geographicCoverage}}tablet-grid-one-fifth{{else}}tablet-grid-one-quarter{{/if_all}} {{#if_any description.surveyName description.frequency description.compilation}}divider--border-left{{/if_any}}">
+					<span>Sample size: </span><br/><span class="stat__figure-enhance">{{description.sampleSize}}</span>
 				</p>
 				{{/if}}
 				{{#if description.geographicCoverage}}
-				<p class="grid-col {{#ifall description.surveyName description.frequency description.compilation description.sampleSize description.geographicCoverage}}tablet-grid-one-fifth{{else}}tablet-grid-one-quarter{{/ifall}} {{#ifany description.surveyName description.frequency description.compilation description.sampleSize}}divider--border-left{{/ifany}}">
+				<p class="grid-col {{#if_all description.surveyName description.frequency description.compilation description.sampleSize description.geographicCoverage}}tablet-grid-one-fifth{{else}}tablet-grid-one-quarter{{/if_all}} {{#if_any description.surveyName description.frequency description.compilation description.sampleSize}}divider--border-left{{/if_any}}">
 					<span>Graphical coverage: </span><br/>{{description.geographicCoverage}}
 				</p>
 				{{/if}}
 			</div>
-			{{/ifany}}
+			{{/if_any}}
 		</div>
 	</div>
 	<!-- /page-header 'slate' -->
@@ -76,7 +76,9 @@
 						<div class="box__content">
 							<ul class="list--neutral">
 								{{#each relatedDocuments}}
-								<li class="flush--third--bottom"><a href="{{uri}}">{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}</a></li>
+									{{#resolve this.uri filter="title"}}
+										<li class="flush--third--bottom"><a href="{{uri}}">{{title}}{{#if edition}}: {{edition}}{{/if}}</a></li>
+									{{/resolve}}
 								{{/each}}
 							</ul>
 						</div>
@@ -94,7 +96,9 @@
 							<div class="box__content">
 								<ul class="list--neutral">
 									{{#each relatedDatasets}}
-										<li class="flush--third--bottom"><a href="{{uri}}">{{description.title}}</a></li>
+										{{#resolve this.uri filter="title"}}
+										<li class="flush--third--bottom"><a href="{{uri}}">{{title}}</a></li>
+										{{/resolve}}
 									{{/each}}
 								</ul>
 							</div>

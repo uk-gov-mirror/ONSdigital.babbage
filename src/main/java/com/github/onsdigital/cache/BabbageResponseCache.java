@@ -1,7 +1,7 @@
 package com.github.onsdigital.cache;
 
-import com.github.onsdigital.configuration.Configuration;
-import com.github.onsdigital.request.response.BabbageResponse;
+import com.github.onsdigital.babbage.configuration.Configuration;
+import com.github.onsdigital.babbage.request.response.BabbageResponse;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 
@@ -18,7 +18,7 @@ public class BabbageResponseCache {
 
     public BabbageResponseCache(long maxSize) {
         cache = CacheBuilder.newBuilder()
-                .maximumSize(maxSize).expireAfterWrite(Configuration.getGlobalCacheTimeout(), TimeUnit.MINUTES)
+                .maximumSize(maxSize).expireAfterWrite(Configuration.GENERAL.getGlobalCacheTimeout(), TimeUnit.MINUTES)
                 .build();
     }
 

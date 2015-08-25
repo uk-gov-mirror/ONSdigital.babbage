@@ -1,45 +1,49 @@
 <div class="box__section">
 	<header>
-		<h2 class="list--table-header panel--pad">Time series related to {{description.title}}</h2>
+		<h2 id="timeseries" class="list--table-header panel--pad">Time series related to {{description.title}}</h2>
 	</header>
 	<ol class="list--table list--table--complex table--striped-light table-light--sectioned">
 		{{#each items}}
+		{{#resolve this.uri filter="description"}}
 		<li class="list--table__item list--table__body clickable-wrap">
 			<div class="list--table__item__body list--table__item__body--caption">
 				<h3 class="flush--half--bottom">
-				<a href="{{data.uri}}">{{data.description.title}}</a>
+				<a href="{{uri}}">{{description.title}}</a>
 				</h3>
-				{{#if data.description.keyNote}}
+				{{#if description.keyNote}}
 				<p class="list--table__item__description">
-					{{data.description.keyNote}}
+					{{description.keyNote}}
 				</p>
 				{{/if}}
 			</div>
 			<div class="list--table__item__body list--table__item__body--chart">
-				 {{#ifany data.years data.quarters data.months}}
-				<a href="{{data.uri}}"><img class="full-width" src="{{data.uri}}/sparkline" alt="{{data.description.title}}"></a>
-				{{/ifany}}
+				<a href="{{uri}}">
+					<div style="height:160px;width:180px">
+					{{>partials/highcharts/sparkline}}
+					</div>
+				</a>
 			</div>
 			<div class="list--table__item__body">
 				<div class="list--table__item__body list--table__item__body--stat float-left">
 					<div class="stat__figure">
-						{{#if data.description.preUnit}}
-						<span class="stat__figure__preunit">{{data.description.preUnit}}</span>
+						{{#if description.preUnit}}
+						<span class="stat__figure__preunit">{{description.preUnit}}</span>
 						{{/if}}
-						<span class="stat__figure-enhance">{{data.description.number}}</span><span class="stat__figure__unit"> {{data.description.unit}}</span>
-						<div class="stat__description">{{data.description.date}}</div>
+						<span class="stat__figure-enhance">{{description.number}}</span><span class="stat__figure__unit"> {{description.unit}}</span>
+						<div class="stat__description">{{description.date}}</div>
 					</div>
 				</div>
 				<div class="list--table__item__body list--table__item__body--update">
 					<dl class="micro flush--half--vertical">
 						<dt>Last updated:</dt>
-						<dd class="flush flush--third--bottom">{{df data.description.releaseDate}}</dd>
+						<dd class="flush flush--third--bottom">{{df description.releaseDate}}</dd>
 						<dt>Next update:</dt>
-						<dd class="flush flush--third--bottom">{{data.description.nextRelease}}</dd>
+						<dd class="flush flush--third--bottom">{{description.nextRelease}}</dd>
 					</dl>
 				</div>
 			</div>
 		</li>
+		{{/resolve}}
 		<!-- /list-table__item -->
 		{{/each}}
 		{{!--

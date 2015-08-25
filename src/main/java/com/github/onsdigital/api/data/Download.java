@@ -3,7 +3,7 @@ package com.github.onsdigital.api.data;
 import com.github.davidcarboni.restolino.framework.Api;
 import com.github.onsdigital.bean.DateVal;
 import com.github.onsdigital.bean.DownloadRequest;
-import com.github.onsdigital.configuration.Configuration;
+import com.github.onsdigital.babbage.configuration.Configuration;
 import com.github.onsdigital.content.page.statistics.data.timeseries.TimeSeries;
 import com.github.onsdigital.content.partial.TimeseriesValue;
 import com.github.onsdigital.content.util.ContentUtil;
@@ -53,7 +53,7 @@ public class Download {
             DownloadRequest downloadRequest = initializeDownloadRequest(request);
             System.out.println("Download request recieved" + downloadRequest);
             response.setHeader("Content-Disposition", "attachment; filename=\"" + (downloadRequest.fileName != null ? downloadRequest.fileName : "data") + "." + downloadRequest.type + "\"");
-            response.setCharacterEncoding("UTF8");
+            response.setCharacterEncoding("UTF-8");
             response.setContentType("application/" + downloadRequest.type);
             processRequest(response.getOutputStream(), downloadRequest);
         } catch (IOException e) {
@@ -110,11 +110,11 @@ public class Download {
         String to = downloadRequest.to == null ? "" : downloadRequest.to.toString();
         final String fileName = downloadRequest.fileName + "_" + from + "-" + to + "." + downloadRequest.type;
 
-        //If file exists on temp directory read it from temp
+        //If file exists on temp api read it from temp
         Path tempFile = tempDirectory.resolve(fileName);
         if (Files.exists(tempFile)) {
             FileTime lastModifiedTime = Files.getLastModifiedTime(tempFile);
-            if(new Date().getTime() -  (lastModifiedTime.toMillis()) < TimeUnit.MINUTES.toMillis(Configuration.getGlobalCacheTimeout())) {
+            if(new Date().getTime() -  (lastModifiedTime.toMillis()) < TimeUnit.MINUTES.toMillis(Configuration.GENERAL.getGlobalCacheTimeout())) {
                 System.out.println("Find generated file in temp directory:" + fileName);
                 IOUtils.copy(Files.newInputStream(tempFile), output);
                 return;
