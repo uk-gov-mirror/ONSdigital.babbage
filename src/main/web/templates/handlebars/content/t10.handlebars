@@ -28,25 +28,25 @@
 						<p class="panel panel--separated--bottom">Content types to show</p>
 						<ul class="list--neutral">
 							<li>
-								<input type="checkbox" name="type" value="bulletin" {{#contains types 'bulletin'}}checked{{/contains}} >
+								<input type="checkbox" name="type" value="bulletin" id="checkbox-statsbulletin" {{#contains types 'bulletin'}}checked{{/contains}} >
 								<label for="checkbox-statsbulletin">
 									Statistical bulletin
 								</label>
 							</li>
 							<li>
-								<input type="checkbox" name="type" value="article" {{#contains types 'article'}}checked{{/contains}}>
+								<input type="checkbox" name="type" value="article" id="checkbox-article" {{#contains types 'article'}}checked{{/contains}}>
 								<label for="checkbox-article">
 									Article
 								</label>
 							</li>
 							<li>
-								<input type="checkbox" name="type" value="dataset" {{#contains types 'dataset'}}checked{{/contains}}>
+								<input type="checkbox" name="type" value="dataset" id="checkbox-dataset" {{#contains types 'dataset'}}checked{{/contains}}>
 								<label for="checkbox-dataset">
 									Dataset
 								</label>
 							</li>
 							<li>
-								<input type="checkbox" name="type" value="methodology" {{#contains types 'methodology'}}checked{{/contains}} >
+								<input type="checkbox" name="type" value="methodology" id="checkbox-methodology" {{#contains types 'methodology'}}checked{{/contains}} >
 								<label for="checkbox-methodology">
 									Methodology
 								</label>
@@ -60,15 +60,15 @@
 						</ul>
 						<p class="panel--mar-small">You can also expand your search results to include the following:</p>
 						<div class="panel--mar-small">
-							<input type="checkbox" name="includeAllData" value="1" {{#if includeAllData}}checked{{/if}}>
-							<label for="checkbox">
+							<input type="checkbox" name="includeAllData" value="1" id="checkbox-all" {{#if includeAllData}}checked{{/if}}>
+							<label for="checkbox-all">
 								Include{{!-- all --}} individual time series data and data slices </br>
 								{{!-- <span class="micro">(currently max 5 shown by default)</span> --}}
 							</label>
 						</div>
 						<div class="panel--mar-small">
-							<input type="checkbox" name="includeStatics" value="1" {{#if includeStatics}}checked{{/if}}>
-							<label for="checkbox">
+							<input type="checkbox" name="includeStatics" value="1" id="checkbox-static" {{#if includeStatics}}checked{{/if}}>
+							<label for="checkbox-static">
 								Include all other website content </br>
 								<span class="micro">(User requested data, about us, media releases, freedom of information (FOI) requests etc.)</span>
 							</label>
