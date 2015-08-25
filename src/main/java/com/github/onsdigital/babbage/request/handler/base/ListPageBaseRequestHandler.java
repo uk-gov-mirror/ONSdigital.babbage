@@ -43,6 +43,8 @@ public abstract class ListPageBaseRequestHandler implements RequestHandler {
     @Override
     public BabbageResponse get(String requestedUri, HttpServletRequest request) throws Exception {
 
+        System.out.println("List page request from " + this.getClass().getSimpleName() + " for uri: " + requestedUri) ;
+
         BabbageResponse babbageResponse;
         String type = URIUtil.resolveRequestType(request.getRequestURI());
 
