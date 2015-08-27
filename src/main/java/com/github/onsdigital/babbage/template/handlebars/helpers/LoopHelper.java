@@ -103,7 +103,14 @@ public class LoopHelper extends EachHelper implements BabbageHandlebarsHelper<Ob
             Map m1 = (Map) o1;
             Map m2 = (Map) o2;
 
-            int result = HelperUtils.compare(getField(m1, field), getField(m2, field));
+            Comparable val1 = getField(m1, this.field);
+            Comparable val2 = getField(m2, this.field);
+
+            int result = HelperUtils.compare(val1, val2);
+
+            if (val1 == null || val2 == null) {
+                return result;//nulls should always be last, reverse or not
+            }
             return reverse ? result * -1 : result;
 
         }
