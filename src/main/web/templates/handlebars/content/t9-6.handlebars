@@ -31,7 +31,7 @@
 				<div class="panel panel--separated--top">
 					<ul class="list--neutral">
 					{{#resolveChildren uri}}
-						{{#loop orderBy="uri" reverse=true}}
+						{{#loop orderBy="description.releaseDate" reverse=true}}
 							{{#if @first}}
 							<li>
 								<h3 class="flush">{{labels.previous-latest}}</h3>

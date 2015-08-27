@@ -1,7 +1,8 @@
-var renderSparkline = function(data) {
+var renderSparkline = function(data, chartContainer) {
 	var sparklinename = 'sparkline' + data.description.cdid;
 	var chart = window[sparklinename];
-	var chartContainer = $('[data-sparkline-'+data.description.cdid + ']');
+	// var chartContainer = $('[data-sparkline-'+data.description.cdid + ']');
+
 	renderChart();
 
 	function renderChart() {

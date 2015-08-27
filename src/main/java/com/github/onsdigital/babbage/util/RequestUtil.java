@@ -96,10 +96,13 @@ public class RequestUtil {
      */
     public static Map<String, String[]> getQueryParameters(HttpServletRequest request) throws UnsupportedEncodingException {
         Map<String, String[]> queryParameters = new HashMap<>();
-        String queryString = request.getQueryString();
-        if (queryString != null) {
-            queryString = URLDecoder.decode(queryString, StandardCharsets.UTF_8.name());
+
+        if (request == null || request.getQueryString() == null ||
+                request.getQueryString().length() == 0) {
+            return queryParameters;
         }
+
+        String queryString = URLDecoder.decode(request.getQueryString(), StandardCharsets.UTF_8.name());
 
         if (StringUtils.isEmpty(queryString)) {
             return queryParameters;
@@ -115,5 +118,4 @@ public class RequestUtil {
         }
         return queryParameters;
     }
-
 }
