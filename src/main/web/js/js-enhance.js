@@ -187,7 +187,7 @@ $(function() {
             $this.empty();
             $.getJSON(uri+'/data?series', function(timeseries) {
                 // console.log("Successfuly read timseries data");
-                renderSparkline(timeseries);
+                renderSparkline(timeseries, $this);
             }).fail(function(d, textStatus, error) {
                 // console.error("Failed reading timseries, status: " + textStatus + ", error: " + error)
             });
