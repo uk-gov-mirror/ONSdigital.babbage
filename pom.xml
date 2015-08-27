@@ -105,6 +105,12 @@
 			<version>${handlebars-java-version}</version>
         </dependency>
 
+		<!--Handlebars Java markdown uses an older version of pegdown with a peculiar bug, overwriting dependency explicitly-->
+		<dependency>
+			<groupId>org.pegdown</groupId>
+			<artifactId>pegdown</artifactId>
+			<version>1.4.2</version>
+		</dependency>
 
 		<!-- Test -->
 		<dependency>
