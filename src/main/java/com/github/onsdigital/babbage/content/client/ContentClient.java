@@ -117,6 +117,12 @@ public class ContentClient {
         return sendGet(getSearchEndpoint(), getParameters(uri, queryParameters));
     }
 
+    public ContentStream reIndex(String key) throws ContentReadException {
+        List<NameValuePair> keyValue = new ArrayList<>();
+        keyValue.add(new BasicNameValuePair("key", key));
+        return sendPost(getReindexEndpoint(), keyValue);
+    }
+
     public ContentStream getParents(String uri, Map<String, String[]> queryParameters) throws ContentReadException {
         System.out.println("getParents(): Reading parents, uri:" + uri);
         return sendGet(getParentsPath(), getParameters(uri, queryParameters));
@@ -134,6 +140,20 @@ public class ContentClient {
             throw wrapException(e);
         }
     }
+
+    private ContentStream sendPost(String path, List<NameValuePair> postParameters) throws ContentReadException {
+        CloseableHttpResponse response = null;
+        try {
+            return new ContentStream(client.sendPost(path, null, postParameters));
+        } catch (HttpResponseException e) {
+            IOUtils.closeQuietly(response);
+            throw wrapException(e);
+        } catch (IOException e) {
+            IOUtils.closeQuietly(response);
+            throw wrapException(e);
+        }
+    }
+
 
     private List<NameValuePair> getParameters(String uri, Map<String, String[]> parametes) {
         List<NameValuePair> nameValuePairs = new ArrayList<>();
