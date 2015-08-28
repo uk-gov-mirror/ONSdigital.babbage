@@ -73,6 +73,7 @@ public class RequestUtil {
         String languageSegment = getCookieValue(request, "lang");
         if (StringUtils.isEmpty(languageSegment)) {
             languageSegment = request.getServerName();
+            System.out.println("!!!!!!!!!!!!!!!!!!!SERVENAME:" + languageSegment);
         } else {
             languageSegment += ".";
         }
