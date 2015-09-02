@@ -1,10 +1,6 @@
 package com.github.onsdigital.babbage.configuration;
 
-import com.github.davidcarboni.cryptolite.*;
 import org.apache.commons.lang3.StringUtils;
-
-import javax.crypto.SecretKey;
-import java.security.InvalidKeyException;
 
 public class Configuration {
 
@@ -192,31 +188,6 @@ public class Configuration {
 
     private static Integer defaultNumberIfBlank(Integer value, Integer defaultValue) {
         return value == null ? defaultValue : value;
-    }
-
-
-    /**
-     * Use this method to generate new credentials.
-     *
-     * @param args Not used
-     * @throws InvalidKeyException
-     */
-    public static void main(String[] args) throws InvalidKeyException {
-
-        // Encrypt password:
-        String password = "insert password here";
-        String base64 = ByteArray.toBase64String(password.getBytes());
-        String salt = Random.salt();
-        SecretKey key = Keys.newSecretKey();
-        String wrappedKey = new KeyWrapper(password, salt).wrapSecretKey(key);
-
-        // Print out the values you'll need to update above:
-        System.out.println("base64 key password: " + base64);
-        System.out.println("salt: " + salt);
-        System.out.println("Wrapped key: " + wrappedKey);
-
-        // And in the run script:
-        System.out.println("Encrypted password: " + new Crypto().encrypt("tr3degaR", key));
     }
 
 }
