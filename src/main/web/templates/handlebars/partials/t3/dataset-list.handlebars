@@ -1,31 +1,26 @@
-<div class="panel flush">
-	<div class="grid-wrap">
-		<div class="grid-col desktop-grid-full-width">
-			<h2 id="data" class="flush">{{labels.product-datasets-related-to}} {{description.title}}</h2>
-			<div class="grid-wrap">
-				<ul class="list--neutral">
-					{{#each datasets}}
-					{{#resolve (absolute this.uri) filter="description"}}
-					<li class="grid-col desktop-grid-one-third box--padded-vertical nav--block-landing">
-						<h3>
-						<a href="{{absolute uri}}" title="{{description.title}}">
-							{{description.title}}
-						</a>
-						</h3>
-						<p>
-							{{description.summary}}
-						</p>
-					</li>
-					{{/resolve}}
-					{{/each}}
-				</ul>
-			</div>
-			<!-- /grid-col -->
-		</div>
-		<!-- /grid-wrap -->
+<div class="col-wrap">
+	<div class="col">
+		<h3 class="section-subtitle">Datasets</h3>
 	</div>
-	<a href="{{uri}}/datasets">View more datasets</a>
-	<!-- /grid-wrap -->
-	<!-- /grid-col -->
 </div>
-<!-- /box__section -->
+<ul class="tile--series-list-block">
+	{{#each datasets}}
+		<li class="col-wrap tile--series-list-block__item clickable-wrap">
+			{{#resolve (absolute this.uri) filter="description"}}
+			<div class="col col--lg-38">
+				<h4 class="tile--series-list-block__title">
+					<a href="{{absolute uri}}" title="{{description.title}}">
+						{{description.title}}
+					</a>
+				</h4>
+				<p class="tile--series-list-block__content">{{description.summary}}</p>
+			</div>
+			<div class="col col--lg-20">
+				<h4 class="tile--series-list-block__title">Meta</h4>
+				<p class="tile--series-list-block__content">Meta stuffs, maybe?</p>
+			</div>
+			{{/resolve}}
+		</li>
+	{{/each}}
+</ul>
+<a href="{{uri}}/datasets" class="btn btn--full-width">View all datasets related to {{description.title}}</a>

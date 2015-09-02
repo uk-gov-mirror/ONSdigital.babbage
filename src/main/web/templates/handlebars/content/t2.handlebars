@@ -1,41 +1,44 @@
 <main id="main" role="main" tabindex="-1">
-<div class="page-header slate">
+	<div class="page-intro">
+		<div class="wrapper">
+			<div class="col-wrap">
+				<div class="col one">
+					{{> partials/breadcrumb}}
+					<h1 class="page-intro__title">{{description.title}}</h1>
+					<p class="page-intro__content">
+						{{description.summary}}
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
 	<div class="wrapper">
-		{{> partials/breadcrumb}}
-		<h1 class="page-header__title flush--half--bottom">{{description.title}}</h1>
-		<div class="content-reveal lede">
-			<p>
-				{{description.summary}}
-			</p>
+		<nav class="nav-tile-holder">
+			<h2 class="nav-tile-holder__heading">In this section</h2>
+			<ul class="col-wrap col-span--lg-thirds nav-tile-holder__list">
+				{{!-- loop for children nodes --}}
+				{{#each sections}}
+					{{#resolve this.uri}}
+					    {{#if_any items datasets statsBulletins relatedArticles}}
+					    	{{> partials/t2/t2-section}}
+					    {{else}}
+					    	{{#if_eq type 'taxonomy_landing_page'}}
+					    	    {{!-- if child landing page has sections to show --}}
+					    		{{#if sections}}
+					    			{{> partials/t2/t2-section}}
+					    		{{/if}}
+					    	{{/if_eq}}
+					    {{/if_any}}
+					{{/resolve}}
+				{{/each}}
+			</ul>
+		</nav>
+		<div class="col-wrap">
+			<div class="col">
+				{{> partials/local-box}}
+			</div>
 		</div>
+		{{!-- /grid-col --}}
 	</div>
-	<!-- /wrapper -->
-</div>
-<!-- /page-header -->
-<div class="wrapper">
-	<div class="grid-wrap">
-		<ul class="list--neutral flush">
-			{{#each sections}}
-				{{#resolve this.uri}}
-				    {{#if_any items datasets statsBulletins relatedArticles}}
-				    	{{> partials/t2/t2-section}}
-				    {{else}}
-				    	{{#if_eq type 'taxonomy_landing_page'}}
-				    	    {{!-- if child landing page has sections to show --}}
-				    		{{#if sections}} 
-				    			{{> partials/t2/t2-section}}
-				    		{{/if}}
-				    	{{/if_eq}}
-				    {{/if_any}}
-				{{/resolve}}
-			{{/each}}
-		</ul>
-		<div class="grid-col desktop-grid-one-third tablet-grid-one-half clear-left box--padded-vertical">
-			{{> partials/local-box}}
-		</div>
-		<!-- /grid-col -->
-	</div>
-	<!-- /grid-wrap -->
-</div>
-<!-- /wrapper -->
+	{{!-- /wrapper --}}
 </main>

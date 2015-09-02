@@ -1,58 +1,50 @@
-<div class="box__section">
-	<header>
-		<h2 class="list--table-header panel--pad">{{labels.product-timeseries-related-to}} {{description.title}}</h2>
-	</header>
-	<ol class="list--table list--table--complex table--striped-light table-light--sectioned">
-		{{#each items}}
-		{{#resolve this.uri filter="description"}}
-		<li class="list--table__item list--table__body clickable-wrap">
-			<div class="list--table__item__body list--table__item__body--caption">
-				<h3 class="flush--half--bottom">
-				<a href="{{uri}}">{{description.title}}</a>
-				</h3>
-				{{#if description.keyNote}}
-				<p class="list--table__item__description">
-					{{description.keyNote}}
-				</p>
-				{{/if}}
-			</div>
-			<div class="list--table__item__body list--table__item__body--chart">
-				<a href="{{uri}}">
-					<div style="height:160px;width:180px">
-					{{>partials/highcharts/sparkline}}
-					</div>
-				</a>
-			</div>
-			<div class="list--table__item__body">
-				<div class="list--table__item__body list--table__item__body--stat float-left">
-					<div class="stat__figure">
-						{{#if description.preUnit}}
-						<span class="stat__figure__preunit">{{description.preUnit}}</span>
-						{{/if}}
-						<span class="stat__figure-enhance">{{description.number}}</span><span class="stat__figure__unit"> {{description.unit}}</span>
-						<div class="stat__description">{{description.date}}</div>
-					</div>
-				</div>
-				<div class="list--table__item__body list--table__item__body--update">
-					<dl class="micro flush--half--vertical">
-						<dt>{{labels.product-last-updated}}:</dt>
-						<dd class="flush flush--third--bottom">{{df description.releaseDate}}</dd>
-						<dt>{{labels.product-next-update}}:</dt>
-						<dd class="flush flush--third--bottom">{{description.nextRelease}}</dd>
-					</dl>
-				</div>
-			</div>
-		</li>
-		{{/resolve}}
-		<!-- /list-table__item -->
-		{{/each}}
-		{{!--
-		<li class="list--table__item list--table__footer">
-			<div class="table__actions box--inline box__footer--right ">
-				<a href="">{{labels.product-view-all}} 12,000 {{labels.product-timeseries-for}} {{description.title}} <span class="icon-right-open-big"></span> </a>
-			</div>
-		</li>--}}
-	</ol>
-	<!-- /list--table -->
+<div class="col-wrap">
+	<div class="col">
+		<h3 id="timeseries" class="section-subtitle">Time series</h3>
+	</div>
 </div>
-<!-- /box-section -->
+
+<ul class="tile--series-list-block">
+	{{#each items}}
+	{{#resolve this.uri filter="description"}}
+	<li class="col-wrap tile--series-list-block__item clickable-wrap">
+		<div class="col col--md-15 col--lg-21">
+			<h4 class="tile--series-list-block__title">
+				<a href="{{uri}}">{{description.title}}</a>
+			</h4>
+			{{#if description.keyNote}}
+			<p class="tile--series-list-block__content">
+				{{description.keyNote}}
+			</p>
+			{{/if}}
+		</div>
+		<div class="col col--md-15 col--lg-18">
+			<a href="{{uri}}">
+				<div style="height:160px;width:240px">
+				{{>partials/highcharts/sparkline}}
+				</div>
+			</a>
+		</div>
+		<div class="col col--md-13 col--lg-18">
+			<div class="tile--series-list-block__figure-container">
+				{{#if description.preUnit}}
+				<span class="tile--series-list-block__preunit">{{description.preUnit}}</span>
+				{{/if}}
+				<span class="tile--series-list-block__figure">{{description.number}}</span>
+				{{#if description.unit}}
+				<span class="tile--series-list-block__unit"> {{description.unit}}</span>
+				{{/if}}
+				<span class="stat__description">A DATE {{description.date}}</span>
+			</div>
+			<dl>
+				<dt class="tile--series-list-block__definition">{{labels.product-last-updated}}</dt>
+				<dd class="tile--series-list-block__description">{{df description.releaseDate}}</dd>
+				<dt class="tile--series-list-block__definition">{{labels.product-next-update}}</dt>
+				<dd class="tile--series-list-block__description">{{description.nextRelease}}</dd>
+			</dl>
+		</div>
+	</li>
+	{{/resolve}}
+	{{/each}}
+</ul>
+<a href="{{uri}}/datasets" class="btn btn--full-width">All timeseries related to {{description.title}}</a>
