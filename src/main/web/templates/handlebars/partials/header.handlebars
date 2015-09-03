@@ -5,188 +5,196 @@
 <!--[if IE 8]><html class="ie8"><![endif]-->
 <!--[if gt IE 8]><!--><!-->
 <html class="no-js">
-  <!--<![endif]-->
-  <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <title>{{description.title}}</title>
-    <meta charset="utf-8" />
-    <meta content="width=device-width,initial-scale=1.0" name="viewport" />
-    <meta content="on" http-equiv="cleartype" />
-    <meta name="format-detection" content="telephone=no">
-    <!--[if IE]><![endif]-->
-    <!--[if lte IE 8]-->
-{{!-- <link rel="stylesheet" href="/node_modules/ONS-Pattern-Library/dist/css/oldie.min.css"/> --}}
-<![endif]-->
-    <!--[if gt IE 8]><!-->
+	<!--<![endif]-->
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<title>{{description.title}}</title>
+		<meta charset="utf-8" />
+		<meta content="width=device-width,initial-scale=1.0" name="viewport" />
+		<meta content="on" http-equiv="cleartype" />
+		<meta name="format-detection" content="telephone=no">
+		<meta name="theme-color" content="#E5E5E5">
+		<!--[if IE]><![endif]-->
+		<!--[if lte IE 8]>
+		<link rel="stylesheet" href="{{#if_any (eq 'localhost' domain_name) (eq '127.0.0.1' domain_name)}}http://localhost:9000/dist/css/old-ie.css{{else}}/node_modules/sixteens/dist/css/old-ie.css{{/if_any}}"/>
+		<![endif]-->
+	    <!--[if gt IE 8]><!-->
     	<link rel="stylesheet" type="text/css" href="{{#if_any (eq 'localhost' domain_name) (eq '127.0.0.1' domain_name)}}http://localhost:9000/dist/css/main.css{{else}}/node_modules/sixteens/dist/css/main.css{{/if_any}}">
 		{{!-- <link rel="stylesheet" href="/node_modules/ONS-Pattern-Library/dist/css/main.min.css"/> --}}
 		<![endif]-->
+
 		{{!-- <link rel="stylesheet" href="/css/js-enhance.css"/> --}}
 		{{!-- <link rel="stylesheet" href="/css/c3.css"/> --}}
-  	{{!-- <script src="/node_modules/ONS-Pattern-Library/dist/js/header.js"></script> --}}
-  	<!-- Bugherd integration script: http://bugherd.com/documentation/installing-the-sidebar/ -->
-  	<script type='text/javascript'>
-  		var BugHerdConfig = {"feedback":{"hide":true}};
-  	    (function(d, t) {
-  	        var bh = d.createElement(t),
-  	            s = d.getElementsByTagName(t)[0];
-  	        bh.type = 'text/javascript';
-  	        bh.src = '//www.bugherd.com/sidebarv2.js?apikey=cwz4globzxvnj84jsovora';
-  	        s.parentNode.insertBefore(bh, s);
-  	    })(document, 'script');
-  	</script>
-  </head>
-  <body>
-  	{{!-- Skip to main content accessibility link --}}
-  	{{!-- <div class="wrapper">
-		<a class="skiplinks visuallyhidden focusable" href="#main" tabindex="0">
-			Skip to main content
-		</a>
-	</div> --}}
-
-	{{!-- produced for download analytics function --}}
-	{{!-- <div id="pagePath" class="hidden">{{uri}}</div> --}}
-
-	{{!-- Prototype banner --}}
-	<div class="beta-banner">
-		<div class="wrapper">
-			<p class="beta-banner__para">This is a test website, so may be inaccurate or misleading. The official website remains <a href="http://ons.gov.uk/">ons.gov.uk</a></p>
-		</div>
-	</div>
-
-	{{!-- LANGUAGE TOGGLE AND SECONDARY NAV - DESKTOP --}}
-	<header class="wrapper">
-		<div class="header col-wrap">
-			<div class="col col--lg-one-third col--md-one-third">
-				<a href="/">
-					<img class="main-logo" src="/node_modules/ONS-Pattern-Library/dist/img/ons-logo.png" alt="Office for National Statistics">
+	  	{{!-- <script src="/node_modules/ONS-Pattern-Library/dist/js/header.js"></script> --}}
+	  	<!-- Bugherd integration script: http://bugherd.com/documentation/installing-the-sidebar/ -->
+	  	<script type='text/javascript'>
+	  		var BugHerdConfig = {"feedback":{"hide":true}};
+	  	    (function(d, t) {
+	  	        var bh = d.createElement(t),
+	  	            s = d.getElementsByTagName(t)[0];
+	  	        bh.type = 'text/javascript';
+	  	        bh.src = '//www.bugherd.com/sidebarv2.js?apikey=cwz4globzxvnj84jsovora';
+	  	        s.parentNode.insertBefore(bh, s);
+	  	    })(document, 'script');
+	  	</script>
+  	</head>
+  	<body>
+	  	<header>
+		  	{{!-- Skip to main content accessibility link --}}
+		  	{{!-- <div class="wrapper">
+				<a class="skiplinks visuallyhidden focusable" href="#main" tabindex="0">
+					Skip to main content
 				</a>
-			</div>
-			<div class="language col col--lg-two-thirds col--md-two-thirds">
-				<form class="language__form">
-					<label class="language__label" for="lang">Language:</label>
-					<select class="language__select" id="lang" name="lang">
-						<option value="english">English (EN)</option>
-						<option value="cymraeg">Cymraeg (CY)</option>
-					</select>
-				</form>
-			</div>
-			<nav class="secondary-nav col col--lg-two-thirds col--md-two-thirds">
-				<ul class="secondary-nav__list">
-					<li class="secondary-nav__item">
-						<a class="secondary-nav__link" href="/about/releasecalendar">{{labels.release-calendar}}</a>
-					</li>
-					<li class="secondary-nav__item">
-						<a class="secondary-nav__link" href="/methodology">{{labels.methodology}}</a>
-					</li>
-					<li class="secondary-nav__item">
-						<a class="secondary-nav__link" href="/about">{{labels.about}}</a>
-					</li>
-				</ul>
-			</nav>
-		</div>
-	</header>
-	
-	
-	{{!-- MOBILE  --}}
-	{{!-- <div class="wrapper ons-nav print-hidden">
-		<div class="col-wrap">
-			<ul class="col nav nav--controls">
-				<li class="nav--controls__menu">
-					<a href="#nav-primary" id="menu-toggle" aria-controls="nav-primary" class="panel--pad">
-						<span class="nav--controls__text">{{labels.dropdown-menu}}</span>
-					</a> 
-				</li>
-				<li class="nav--controls__search">
-					<a href="#nav-search" id="search-toggle" aria-controls="nav-search" class="panel--pad-small">
-						<span class="nav--controls__text">{{labels.search}}</span>
-					</a>
-				</li>
-			</ul>
-		</div>
-	</div> --}}
+			</div> --}}
 
-	{{!-- MAIN NAV --}}
-	<nav class="primary-nav">
-		<div class="wrapper">
-			<ul class="primary-nav__list">
-				<li class="primary-nav__item"><a class="primary-nav__link col col--md-7 col--lg-9" href="/">{{labels.home}}</a></li>
-				
-				{{!-- loop each top node --}}
-				{{#each navigation}}
-					{{#if_eq this.type "taxonomy_landing_page"}}
-					<li class="primary-nav__item {{#if_any (eq uri breadcrumb.1/uri)  (eq uri ../../uri) }}primary-nav__item--active{{/if_any}}">
-						<a class="primary-nav__link col col--md-8 col--lg-10" href="{{uri}}">{{description.title}}</a>
+			{{!-- produced for download analytics function --}}
+			{{!-- <div id="pagePath" class="hidden">{{uri}}</div> --}}
 
-						<ul class="primary-nav__child-list col col--md-16 col--lg-20">
-						{{!-- loop each child node --}}
-						{{#each children}}
-							<li class="primary-nav__child-item {{#if_any (eq uri breadcrumb.2/uri) (eq uri ../../uri)}}primary-nav__child-item--active{{/if_any}}">
-								<a class="primary-nav__child-link" href="{{uri}}" >{{description.title}}</a>
+			{{!-- Prototype banner --}}
+			<div class="beta-banner">
+				<div class="wrapper">
+					<p class="beta-banner__para">This is a test website, so may be inaccurate or misleading. The official website remains <a href="http://ons.gov.uk/">ons.gov.uk</a></p>
+				</div>
+			</div>
+
+			{{!-- LANGUAGE TOGGLE AND SECONDARY NAV - DESKTOP --}}
+			<div class="wrapper">
+				<div class="header col-wrap">
+					<div class="col col--lg-one-third col--md-one-third">
+						<a href="/">
+							<img class="main-logo" src="/node_modules/ONS-Pattern-Library/dist/img/ons-logo.png" alt="Office for National Statistics">
+						</a>
+					</div>
+					<div class="language col col--lg-two-thirds col--md-two-thirds">
+						<form class="language__form">
+							<label class="language__label" for="lang">Language:</label>
+							<select class="language__select" id="lang" name="lang">
+								<option value="english">English (EN)</option>
+								<option value="cymraeg">Cymraeg (CY)</option>
+							</select>
+						</form>
+					</div>
+					<nav class="secondary-nav col col--lg-two-thirds col--md-two-thirds">
+						<ul class="secondary-nav__list">
+							<li class="secondary-nav__item">
+								<a class="secondary-nav__link" href="/about/releasecalendar">{{labels.release-calendar}}</a>
 							</li>
-						{{/each}} 
+							<li class="secondary-nav__item">
+								<a class="secondary-nav__link" href="/methodology">{{labels.methodology}}</a>
+							</li>
+							<li class="secondary-nav__item">
+								<a class="secondary-nav__link" href="/about">{{labels.about}}</a>
+							</li>
 						</ul>
+					</nav>
+				</div>
+			</div>
+			{{!-- /wrapper --}}
 
-					</li>
-					{{/if_eq}}
-				{{/each}}
+			
+			
+			{{!-- MOBILE  --}}
+			{{!-- <div class="wrapper ons-nav print-hidden">
+				<div class="col-wrap">
+					<ul class="col nav nav--controls">
+						<li class="nav--controls__menu">
+							<a href="#nav-primary" id="menu-toggle" aria-controls="nav-primary" class="panel--pad">
+								<span class="nav--controls__text">{{labels.dropdown-menu}}</span>
+							</a> 
+						</li>
+						<li class="nav--controls__search">
+							<a href="#nav-search" id="search-toggle" aria-controls="nav-search" class="panel--pad-small">
+								<span class="nav--controls__text">{{labels.search}}</span>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div> --}}
 
+			{{!-- MAIN NAV --}}
+			<div class="primary-nav">
+				<nav>
+					<div class="wrapper">
+						<ul class="primary-nav__list">
+							<li class="primary-nav__item"><a class="primary-nav__link col col--md-7 col--lg-9" href="/">{{labels.home}}</a></li>
+							
+							{{!-- loop each top node --}}
+							{{#each navigation}}
+								{{#if_eq this.type "taxonomy_landing_page"}}
+								<li class="primary-nav__item js-expandable {{#if_any (eq uri breadcrumb.1/uri)  (eq uri ../../uri) }}primary-nav__item--active{{/if_any}}">
+									<a class="primary-nav__link col col--md-8 col--lg-10" href="{{uri}}">{{description.title}}</a>
 
-
-
-			{{!-- KEEPING ORIGINAL-ISH NAV FOR REFERENCE --}}
-			{{!-- <ul class="col nav nav--block nav--primary" id="nav-primary">
-				<li class="nav--primary__hide-small-med">
-					<a href="/">Home</a>
-				</li>
-				{{#each navigation}}
-					{{#if_eq this.type "taxonomy_landing_page"}}
-						<li class="col nav__expandable js-expandable {{#if_any (eq uri breadcrumb.1/uri)  (eq uri ../../uri) }}nav--primary__active{{/if_any}}">
-							<a href="{{uri}}">{{description.title}}</a>
-								<ul class="nav--primary__sub js-expandable__content js-nav-hidden">
+									<ul class="primary-nav__child-list col col--md-16 col--lg-20 js-expandable__content">
+									{{!-- loop each child node --}}
 									{{#each children}}
-										<li {{#if_any (eq uri breadcrumb.2/uri) (eq uri ../../uri)}}class="nav--primary__active"{{/if_any}}>
-											<a href="{{uri}}" >{{description.title}}</a>
+										<li class="primary-nav__child-item {{#if_any (eq uri breadcrumb.2/uri) (eq uri ../../uri)}}primary-nav__child-item--active{{/if_any}}">
+											<a class="primary-nav__child-link" href="{{uri}}" >{{description.title}}</a>
 										</li>
 									{{/each}} 
-								</ul>
-						</li>
-					{{/if_eq}}
-				{{/each}} --}}
+									</ul>
 
-				{{!-- SECONDARY NAV - PRIMARY --}}
-				<li class="primary-nav__item {{#if_eq uri '/about/surveys'}}nav--primary__active{{/if_eq}}">
-					<a class="primary-nav__link  col col--md-8 col--lg-10" href="/about/surveys">
-						<span class="icon-comment icon--inline" role="presentation"></span>
-						{{labels.survey-respondents}}
-					</a>
-				</li>
+								</li>
+								{{/if_eq}}
+							{{/each}}
 
-				{{!-- TODO clean up or remove this content from HTML --}}
-				{{!-- <li class="primary-nav__secondary-content">
-					<a href="/about/releasecalendar">{{labels.release-calendar}}</a>
-				</li>
-				<li class="primary-nav__secondary-content">
-					<a href="/methodology">{{labels.methodology}}</a>
-				</li>
-				<li class="primary-nav__secondary-content">
-					<a href="/about">{{labels.about}}</a>
-				</li> --}}
-			</ul>
-		</div>
-	</nav>
 
-	{{!-- SEARCH BAR --}}
-	<div class="search">
-		<div class="wrapper">
-			{{!-- <div class=""> --}}
-				<form class="col-wrap search__form" id="searchBar" action="/search">
-					<label class="search__label col col--md-15 col--lg-19" for="nav-search">Search our website</label>
-					<input type="search" autocomplete="off" class="search__input col col--md-25 col--lg-32" id="nav-search" name="q" value="" placeholder="Search for keyword or time series ID">
-					<button type="submit" class="search__button col--md-7 col--lg-8" id="nav-search-submit">
-					<span>{{labels.search}}</span>
-					</button>
-				</form>
-			{{!-- </div> --}}
-		</div>
-	</div>
+
+
+						{{!-- KEEPING ORIGINAL-ISH NAV FOR REFERENCE --}}
+						{{!-- <ul class="col nav nav--block nav--primary" id="nav-primary">
+							<li class="nav--primary__hide-small-med">
+								<a href="/">Home</a>
+							</li>
+							{{#each navigation}}
+								{{#if_eq this.type "taxonomy_landing_page"}}
+									<li class="col nav__expandable js-expandable {{#if_any (eq uri breadcrumb.1/uri)  (eq uri ../../uri) }}nav--primary__active{{/if_any}}">
+										<a href="{{uri}}">{{description.title}}</a>
+											<ul class="nav--primary__sub js-expandable__content js-nav-hidden">
+												{{#each children}}
+													<li {{#if_any (eq uri breadcrumb.2/uri) (eq uri ../../uri)}}class="nav--primary__active"{{/if_any}}>
+														<a href="{{uri}}" >{{description.title}}</a>
+													</li>
+												{{/each}} 
+											</ul>
+									</li>
+								{{/if_eq}}
+							{{/each}} --}}
+
+							{{!-- SECONDARY NAV - PRIMARY --}}
+							<li class="primary-nav__item {{#if_eq uri '/about/surveys'}}nav--primary__active{{/if_eq}}">
+								<a class="primary-nav__link  col col--md-8 col--lg-10" href="/about/surveys">
+									<span class="icon-comment icon--inline" role="presentation"></span>
+									{{labels.survey-respondents}}
+								</a>
+							</li>
+
+							{{!-- TODO clean up or remove this content from HTML --}}
+							{{!-- <li class="primary-nav__secondary-content">
+								<a href="/about/releasecalendar">{{labels.release-calendar}}</a>
+							</li>
+							<li class="primary-nav__secondary-content">
+								<a href="/methodology">{{labels.methodology}}</a>
+							</li>
+							<li class="primary-nav__secondary-content">
+								<a href="/about">{{labels.about}}</a>
+							</li> --}}
+						</ul>
+					</div>
+				</nav>
+			</div>
+
+			{{!-- SEARCH BAR --}}
+			<div class="search">
+				<div class="wrapper">
+					{{!-- <div class=""> --}}
+						<form class="col-wrap search__form" id="searchBar" action="/search">
+							<label class="search__label col col--md-15 col--lg-19" for="nav-search">Search our website</label>
+							<input type="search" autocomplete="off" class="search__input col col--md-25 col--lg-32" id="nav-search" name="q" value="" placeholder="Search for keyword or time series ID">
+							<button type="submit" class="search__button col--md-7 col--lg-8" id="nav-search-submit">
+							<span>{{labels.search}}</span>
+							</button>
+						</form>
+					{{!-- </div> --}}
+				</div>
+			</div>
+		</header>
