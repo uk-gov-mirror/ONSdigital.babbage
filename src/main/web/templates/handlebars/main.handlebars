@@ -18,6 +18,7 @@ performs type check on content type and decides which template to render  --}}
 {{#if_eq type "compendium_data"}}{{> content/t6-3}}{{/if_eq}}
 {{#if_eq type "reference_tables"}}{{> content/t8-1}}{{/if_eq}}
 {{#if_eq type "dataset"}}{{> content/t8-3}}{{/if_eq}}
+{{#if_eq type "timeseries_dataset"}}{{> content/t8-3}}{{/if_eq}}
 {{#if_eq type "static_landing_page"}}{{> content/t7-4-1}}{{/if_eq}}
 {{#if_eq type "static_page"}}{{> content/t7-5}}{{/if_eq}}
 {{#if_eq type "static_article"}}{{> content/t7-6}}{{/if_eq}}
