@@ -17,13 +17,13 @@
 			<!-- /grid-col -->
 			<div class="grid-col  {{#if_any data.years data.quarters data.months}}tablet-grid-one-half{{/if_any}} headline--box-container panel--mobile-bottom-mar">
 				<div class="box--padded equal-height solid panel--bottom-mar">
-					<h2>Latest statistical bulletin</h2>
+					<h2>{{labels.product-latest-stats-bulletin}}</h2>
 					<header class="box___section">
 						<h3 class="navpanel-list-heading lede box--padded-bottom-small">
 						<a href="{{statsBulletins.0.uri}}">{{bulletin.description.title}}{{#if bulletin.description.edition}}: {{bulletin.description.edition}}{{/if}}</a>
 						</h3>
 					</header>
-					<h3>What's in the bulletin?</h3>
+					<h3>{{labels.product-whats-in-bulletin}}</h3>
 					<ul class="list--bullet mini flush--half--top navpanel-list headline--box-container-text">
 						<li>
 							{{bulletin.description.headline1}}
@@ -35,17 +35,17 @@
 							{{bulletin.description.headline3}}
 						</li>
 					</ul>
-					<p class="text-right"><a href="{{statsBulletins.0.uri}}">Read statistical bulletin</a></p>
+					<p class="text-right"><a href="{{statsBulletins.0.uri}}">{{labels.product-read-bulletin}}</a></p>
 				</div>
 				{{#if_any data.years data.quarters data.months}}
 				{{else}}
 				{{#if datasets}}
-				<a href="#data" class="btn btn--primary">view latest data
-					{{!-- <span class="icon icon-down-open-big icon--button-inline"></span> --}}
-				</a>
+					<a href="#data" class="btn btn--primary">{{labels.product-view-latest-data}}
+						{{!-- <span class="icon icon-down-open-big icon--button-inline"></span> --}}
+					</a>
 				{{/if}}
 				{{/if_any}}
-				<a href="#reports" class="btn btn--primary">view latest reports
+				<a href="#reports" class="btn btn--primary">{{labels.product-view-latest-reports}}
 					{{!-- <span class="icon icon-down-open-big icon--button-inline"></span> --}}
 				</a>
 			</div>
@@ -98,7 +98,7 @@
 		<div class="grid-col desktop-grid-one-half">
 			<div class="box__inner border box--padded">
 				<h3 class="box__section__header">
-				Methodology
+				{{labels.methodology}}
 				</h3>
 				<div class="box__content">
 					<ul class="list--neutral">

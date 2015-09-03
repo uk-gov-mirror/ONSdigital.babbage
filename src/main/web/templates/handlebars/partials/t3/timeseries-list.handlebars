@@ -1,6 +1,6 @@
 <div class="box__section">
 	<header>
-		<h2 id="timeseries" class="list--table-header panel--pad">Time series related to {{description.title}}</h2>
+		<h2 class="list--table-header panel--pad">{{labels.product-timeseries-related-to}} {{description.title}}</h2>
 	</header>
 	<ol class="list--table list--table--complex table--striped-light table-light--sectioned">
 		{{#each items}}
@@ -35,9 +35,9 @@
 				</div>
 				<div class="list--table__item__body list--table__item__body--update">
 					<dl class="micro flush--half--vertical">
-						<dt>Last updated:</dt>
+						<dt>{{labels.product-last-updated}}:</dt>
 						<dd class="flush flush--third--bottom">{{df description.releaseDate}}</dd>
-						<dt>Next update:</dt>
+						<dt>{{labels.product-next-update}}:</dt>
 						<dd class="flush flush--third--bottom">{{description.nextRelease}}</dd>
 					</dl>
 				</div>
@@ -49,7 +49,7 @@
 		{{!--
 		<li class="list--table__item list--table__footer">
 			<div class="table__actions box--inline box__footer--right ">
-				<a href="">View all 12,000 time series for inflation and price indices <span class="icon-right-open-big"></span> </a>
+				<a href="">{{labels.product-view-all}} 12,000 {{labels.product-timeseries-for}} {{description.title}} <span class="icon-right-open-big"></span> </a>
 			</div>
 		</li>--}}
 	</ol>

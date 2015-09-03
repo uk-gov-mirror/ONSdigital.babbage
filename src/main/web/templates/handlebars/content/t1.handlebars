@@ -1,8 +1,9 @@
 <main id="main" role="main" tabindex="-1">
 <div class="page-header">
     <div class="wrapper">
-        <h1 class="page-header__title flush--half--bottom">Welcome to the Office for National Statistics</h1>
-        <p>{{md description.summary}}</p>
+        <h1 class="page-header__title flush--half--bottom">{{ labels.homepage-welcome }}</h1>
+       <p>{{md description.summary}}</p>
+
     </div>
     <!-- / wrapper -->
 </div>
@@ -12,6 +13,7 @@
 <div class="wrapper panel--mar">
     <!-- grid-wrap -->
     {{!-- <h2>Statistical highlights</h2> --}}
+
     <div class="grid-wrap grid-wrap--home-hero panel--separated--bottom">
         <!-- grid-col -->
         {{#each sections}}
@@ -58,29 +60,29 @@
     <div class="panel--top-mar">
         <div class="grid-wrap">
             <article class="grid-col desktop-grid-one-third nav--block-home-highlighted-content">
-                <h2 class="delta flush"><a href="/about/releasecalendar">What’s coming and when? <span class="img-block"><img src="../../img/t1-cal.png" alt=""></span></a></h2>
+                <h2 class="delta flush"><a href="/about/releasecalendar">{{labels.homepage-calendar}}<span class="img-block"><img src="../../img/t1-cal.png" alt=""></span></a></h2>
                 <p>Find out when our statistics are released and sign-up to receive notifications.</p>
             </article>
             <article class="grid-col desktop-grid-one-third nav--block-home-highlighted-content">
-                <h2 class="delta flush"><a class="hide-icon" href="https://www.gov.uk/government/statistics ">Other official statistics <span class="img-block"><img src="../../img/t1-gov-uk--black.png" alt="" class="no-border"></span></a></h2>
+                <h2 class="delta flush"><a class="hide-icon" href="https://www.gov.uk/government/statistics ">{{labels.homepage-other-stats}}<span class="img-block"><img src="../../img/t1-gov-uk--black.png" alt="" class="no-border"></span></a></h2>
                 <p>Find official statistics produced by other government departments.</p>
             </article>
             <article class="grid-col desktop-grid-one-third nav--block-home-highlighted-content">
-                <h2 class="delta flush"><a href="/about/localstatistics">Looking for local statistics? <span class="img-block"><img src="../../img/t1-local.png" alt=""></span></a></h2>
-                <p>A handy guide to let you know where to find local statistics.</p>
+                <h2 class="delta flush"><a href="/about/localstatistics">{{labels.local-stats-header}}<span class="img-block"><img src="../../img/t1-local.png" alt=""></span></a></h2>
+                <p>{{labels.local-stats-text}}</p>
             </article>
             <article class="grid-col desktop-grid-one-half nav--block-home-highlighted-content oldie-clearleft">
-                <h2 class="delta flush"><a href="http://www.ons.gov.uk/ons/guide-method/census/index.html">Census <span class="img-block"><img src="../../img/t1-census.png" alt=""></span></a></h2>
-                <p>Discover how our census statistics help paint a picture of the nation and how we live.</p>
+                <h2 class="delta flush"><a href="http://www.ons.gov.uk/ons/guide-method/census/index.html">{{labels.homepage-census}}<span class="img-block"><img src="../../img/t1-census.png" alt=""></span></a></h2>
+                <p>{{labels.homepage-census-sum}}</p>
             </article>
             <article class="grid-col desktop-grid-one-half nav--block-home-highlighted-content">
-                <h2 class="delta flush"><a href="http://visual.ons.gov.uk ">Visual.ONS <span class="img-block"><img src="../../img/t1-visual-ons.png" alt=""></span></a></h2>
-                <p>Visual.ONS is a website exploring new approaches to making ONS statistics accessible and relevant to a wide public audience.</p>
+                <h2 class="delta flush"><a href="http://visual.ons.gov.uk ">{{labels.homepage-visual}}<span class="img-block"><img src="../../img/t1-visual-ons.png" alt=""></span></a></h2>
+                <p>{{labels.homepage-visual-sum}}</p>
             </article>
+
             <!-- /grid-wrap -->
         </div>
         <!-- /section -->
     </div>
 </div>
 <!-- wrapper -->
-</main>

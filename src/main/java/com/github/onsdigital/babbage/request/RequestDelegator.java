@@ -2,6 +2,8 @@ package com.github.onsdigital.babbage.request;
 
 import com.github.onsdigital.babbage.api.error.ErrorHandler;
 import com.github.onsdigital.babbage.request.handler.base.RequestHandler;
+import com.github.onsdigital.babbage.util.RequestUtil;
+import com.github.onsdigital.babbage.util.ThreadContext;
 import com.github.onsdigital.babbage.util.URIUtil;
 import com.github.onsdigital.cache.BabbageResponseCache;
 import com.github.onsdigital.babbage.configuration.Configuration;
@@ -81,11 +83,12 @@ public class RequestDelegator {
             return handler.get(requestedUri, request);
         }
         try {
+            final String cacheKey = fullUri + "&js=" +  RequestUtil.getCookieValue(request,"jsEnhanced") + "&lang=" + ThreadContext.getData("lang");
             //caching resource with will uri as key
-            return responseCache.get(fullUri, new Callable<BabbageResponse>() {
+            return responseCache.get(cacheKey, new Callable<BabbageResponse>() {
                 @Override
                 public BabbageResponse call() throws Exception {
-                    System.out.println("Cache miss for " + fullUri + " loading ");
+                    System.out.println("Cache miss for " + cacheKey + " loading ");
                     return handler.get(requestedUri, request);
                 }
             });

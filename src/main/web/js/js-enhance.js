@@ -187,7 +187,7 @@ $(function() {
             $this.empty();
             $.getJSON(uri+'/data?series', function(timeseries) {
                 // console.log("Successfuly read timseries data");
-                renderSparkline(timeseries);
+                renderSparkline(timeseries, $this);
             }).fail(function(d, textStatus, error) {
                 // console.error("Failed reading timseries, status: " + textStatus + ", error: " + error)
             });
@@ -394,7 +394,7 @@ $(function() {
 
     function jsEnhanceAnchorAnalytics(){
         //Trigger analytics pageview on click of any # anchor
-        $("a[href*='#'").click(function(e){
+        $("a[href*='#']").click(function(e){
             var hash = $(this).attr('href');
             var page = window.location.pathname + hash;
             jsEnhanceTriggerAnalyticsEvent(page);
@@ -516,7 +516,7 @@ $(function() {
 
         //Offsets page to make room for sticky nav if arrive on page directly at section
         $(window).load(function(){
-            if (location.hash) {
+            if (location.hash && $('.wrapper--content').length > 0) {
                 var contentStart = $('.wrapper--content').offset().top;
                 var scrollTop = $(window).scrollTop();
 

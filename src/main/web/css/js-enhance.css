@@ -320,9 +320,3 @@
 .markdown-chart-container ol {
   margin-bottom: 0;
 }
-
-/*TODO Fix for skiplink being covered by beta banner */
-/*.skiplinks:focus {
-  position: relative;
-  font-size: 14px;
-}
