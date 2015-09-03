@@ -1,11 +1,4 @@
-{{!-- Main handlebars is the main file rendered by handlebars.
-performs type check on content type and decides which template to render  --}}
-{{!-- Resolve parents of current uri for and assign to variable breadcrumb for building breadcrumb --}}
-{{resolveParents uri assign="breadcrumb"}}
-{{!-- Resolve navigation fetching children of root uri "/" with depth 2 --}}
-{{resolveChildren "/" depth=2 assign="navigation"}}
-
-{{> partials/header}}
+{{!-- Main handlebars is the main file rendered by handlebars.performs type check on content type and decides which template to render  --}}{{!-- Resolve parents of current uri for and assign to variable breadcrumb for building breadcrumb --}}{{resolveParents uri assign="breadcrumb"}}{{!-- Resolve navigation fetching children of root uri "/" with depth 2 --}}{{resolveChildren "/" depth=2 assign="navigation"}}{{> partials/header}}
 {{#if_eq type "home_page"}}{{> content/t1}}{{/if_eq}}
 {{#if_eq type "taxonomy_landing_page"}}{{> content/t2}}{{/if_eq}}
 {{#if_eq type "product_page"}}{{> content/t3}}{{/if_eq}}
