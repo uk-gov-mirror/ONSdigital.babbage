@@ -5,7 +5,7 @@
 				<div class="col one">
 					{{> partials/breadcrumb}}
 					<h1 class="page-intro__title">{{description.title}}</h1>
-					<p class="page-intro__content">
+					<p class="page-intro__content col col--md-47 col--lg-48">
 						{{description.summary}}
 					</p>
 				</div>
@@ -13,9 +13,9 @@
 		</div>
 	</div>
 	<div class="wrapper">
-		<nav class="nav-tile-holder">
-			<h2 class="nav-tile-holder__heading">In this section</h2>
-			<ul class="col-wrap col-span--lg-thirds nav-tile-holder__list">
+		<nav class="tiles">
+			<h2>In this section</h2>
+			<ul class="col-wrap col-span--lg-thirds tiles__list">
 				{{!-- loop for children nodes --}}
 				{{#each sections}}
 					{{#resolve this.uri}}
