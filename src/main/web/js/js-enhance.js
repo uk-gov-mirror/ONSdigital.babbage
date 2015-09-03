@@ -28,7 +28,7 @@ $(function() {
 
         //The order of these functions being called is important...
         jsEnhanceULNavToSelectNav();
-        jsEnhanceClickableDiv();
+        //jsEnhanceClickableDiv();
         jsEnhanceLinechart();
         jsEnhanceSparkline();
         jsEnhancePrint();
@@ -89,7 +89,7 @@ $(function() {
             // });
             var newselect = $(document.createElement('select'));
             newselect.attr('class', 'field field--spaced max-width');
-            
+
             // convert to lower case and remove colon from end of string
             labeltext = labeltext.toLowerCase().substring(0, labeltext.length - 1);
 
