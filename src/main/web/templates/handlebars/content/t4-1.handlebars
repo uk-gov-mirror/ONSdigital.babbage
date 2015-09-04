@@ -57,11 +57,10 @@
 			</p>
 
 			{{!-- Next release --}}
-			{{#if description.nextRelease}}
 			<p class="col col--md-11 col--lg-14 meta__item">
-				<span>{{labels.release-next}}: </span><br/>{{description.nextRelease}}
+				<span>{{labels.release-next}}: </span><br/>{{#if description.nextRelease}}{{description.nextRelease}}{{else}}To be announced{{/if}}
 			</p>
-			{{/if}}
+
 
 			{{!-- Print and download --}}
 			<p class="col col--md-11 col--lg-14 print-hidden meta__item">
@@ -77,9 +76,9 @@
 			</p>
 		</div>
 	</div> {{!-- /wrapper --}}
-</div> {{!-- /slate--gallery --}}
+</div> {{!-- /meta-wrap --}}
 
-</div> {{!-- /slate--gallery --}}
+</div> {{!-- /page-intro --}}
 
 
 
@@ -167,14 +166,15 @@
 						{{#if description.contact.telephone}}{{labels.phone}}: {{description.contact.telephone}}{{/if}}
 					</address>
 				</div>{{!-- /col --}}
-	<!-- </div> {{!-- /col-wrap --}} -->
+			</div> {{!-- /col-wrap --}}
 
 {{!-- Bottom links: related bulletins and local stats --}}
 	<div class="col-wrap">
+		{{#if relatedBulletins}}
 		<div class="col col--md-one col--lg-two-thirds">
-			{{#if relatedBulletins}}
-				<h3>{{labels.bulletin-related-bulletins}}</h3>
-				<ul>
+			<div class="tiles__item tiles__item--nav-type flush-col">
+				<h3 class="tiles__title-h3 tiles__title-h3--nav">{{labels.bulletin-related-bulletins}}</h3>
+				<ul class="tiles__content tiles__content--nav">
 					{{#each relatedBulletins}}
 					{{#resolve this.uri filter="description"}}
 						<li>
@@ -186,8 +186,9 @@
 					{{/resolve}}
 					{{/each}}
 					</ul>
-			{{/if}}
+			</div>
 		</div>
+		{{/if}}
 		<div class="col col--md-one col--lg-one-third">
 			{{> partials/local-box}}
 		</div>

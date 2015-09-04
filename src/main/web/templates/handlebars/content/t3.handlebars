@@ -135,22 +135,28 @@
 
 	{{!-- Related methodology --}}
 
-	<section class="wrapper">
-		<div class="col-wrap">
-			<div class="col col--lg-half">
-				<h2>Related methodology</h2>
-				<ul>
-					{{#each relatedMethodology}}
-					{{#resolve this.uri filter="title"}}
-					<li><a href="{{absolute uri}}">{{description.title}}</a></li>
-					{{/resolve}}
-					{{/each}}
-				</ul>
-			</div>
-			<div class="col col--lg-half">
-				{{> partials/local-box}}
-			</div>
-		</div> {{!-- /col-wrap --}}
+
+	<section class="margin-top">
+		<div class="wrapper">
+			<div class="col-wrap">
+				<div class="col col--lg-two-thirds">
+					<div class="tiles__item tiles__item--nav-type flush-col">
+						<h3 class="tiles__title-h3 tiles__title-h3--nav">Related methodology</h3>
+							<ul class="tiles__content tiles__content--nav">
+								{{#each relatedMethodology}}
+								{{#resolve this.uri filter="title"}}
+								<li><a href="{{absolute uri}}">{{description.title}}</a></li>
+								{{/resolve}}
+								{{/each}}
+								<li>a link</li>
+								<li>another link</li>
+							</ul>
+						</div>
+					</div>
+				<div class="col col--lg-one-third">
+					{{> partials/local-box}}
+				</div>
+			</div> {{!-- /col-wrap --}}
+		</div>
 	</section> {{!-- /section.wrapper --}}
-	</div>
 </main>
