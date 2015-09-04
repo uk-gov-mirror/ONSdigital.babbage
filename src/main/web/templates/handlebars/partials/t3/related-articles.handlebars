@@ -1,24 +1,29 @@
 <div class="col-wrap">
 	<div class="col">
-		<h3 class="section-subtitle">Articles</h3>
+		<h3>Articles</h3>
 	</div>
 </div>
-<ul class="tile--list">
-	{{#each relatedArticles}}
-	{{#resolve this.uri filter="description"}}
-	<li class="col-wrap tile--list__item clickable-wrap">
-		<div class="col col--lg-38">
-			<h4 class="tile--list__title">
+<div class="col-wrap">
+	<div class="col col--lg-38">
+
+	<ul class="tiles__list">
+		{{#each relatedArticles}}
+		{{#resolve this.uri filter="description"}}
+		<li class="tiles__item--list-type-simple clickable-wrap flush-col">
+			<h4 class="tiles__title-h4">
 				<a href="{{uri}}" title="{{description.title}}">
 					{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}
 				</a>
 			</h4>
-			<p class="tile--list__content">
+			<p class="tiles__content">
 				{{description._abstract}}
 			</p>
-		</div>
-	</li>
-	{{/resolve}}
-	{{/each}}
+		</li>
+		{{/resolve}}
+		{{/each}}
+	</ul>
 
-	<a href="{{uri}}/articles" class="btn btn--full-width">View all related articles</a>
+		<a href="{{uri}}/articles" class="btn btn--full-width">View all related articles</a>
+
+	</div>
+</div>

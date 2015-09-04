@@ -1,23 +1,23 @@
 <div class="col-wrap">
 	<div class="col">
-		<h3 class="section-subtitle">Datasets</h3>
+		<h3>Datasets</h3>
 	</div>
 </div>
-<ul class="tile--series-list-block">
+<ul class="tiles__list">
 	{{#each datasets}}
-		<li class="col-wrap tile--series-list-block__item clickable-wrap">
+		<li class="col-wrap tiles__item tiles__item--list-type clickable-wrap flush-col">
 			{{#resolve (absolute this.uri) filter="description"}}
 			<div class="col col--lg-38">
-				<h4 class="tile--series-list-block__title">
+				<h4 class="tiles__title-h4">
 					<a href="{{absolute uri}}" title="{{description.title}}">
 						{{description.title}}
 					</a>
 				</h4>
-				<p class="tile--series-list-block__content">{{description.summary}}</p>
+				<p class="tiles__content">{{description.summary}}</p>
 			</div>
 			<div class="col col--lg-20">
-				<h4 class="tile--series-list-block__title">Meta</h4>
-				<p class="tile--series-list-block__content">Meta stuffs, maybe?</p>
+				<h4 class="tiles__title-h4">Meta</h4>
+				<p class="tiles__content">Meta stuffs, maybe?</p>
 			</div>
 			{{/resolve}}
 		</li>

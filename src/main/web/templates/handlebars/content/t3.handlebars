@@ -22,16 +22,17 @@
 					<nav class="nav-secondary nav-secondary--border-right-lg col col--lg-half">
 						<h2 class="nav-secondary__title">On this page:</h2>
 						<ul class="nav-secondary__list">
-							<li class="nav-secondary__item"><a href="#latest">Latest data</a></li>
-							<li class="nav-secondary__item"><a href="#latest">Latest publications</a></li>
-							<li class="nav-secondary__item"><a href="#data">Highlighted data</a></li>
+							{{resolve items.0.uri assign="data"}}
+							{{#if_any data.years data.quarters data.months}}<li class="nav-secondary__item"><a href="#latest-data">Latest data</a></li>{{/if_any}}
+							<li class="nav-secondary__item"><a href="#latest-publication">Latest publications</a></li>
+							{{#if_any items datasets}}<li class="nav-secondary__item"><a href="#data">Highlighted data</a></li>{{/if_any}}
 							<li class="nav-secondary__item"><a href="#publications">Highlighted publications</a></li>
 						</ul>
 					</nav>
 					<nav class="nav-secondary col col--lg-half">
 						<h2 class="nav-secondary__title">Quick links:</h2>
 						<ul class="nav-secondary__list">
-							<li class="nav-secondary__item"><a href="{{uri}}/datasets">All data in this section</a></li>
+							{{#if_any items datasets}}<li class="nav-secondary__item"><a href="{{uri}}/datasets">All data in this section</a></li>{{/if_any}}
 							<li class="nav-secondary__item"><a href="{{uri}}/publications">All publications in this section</a></li>
 						</ul>
 					</nav>
@@ -40,17 +41,19 @@
 		</div> {{!-- /quick-links--}}
 	</div> {{!-- /page-intro --}}
 
-	
+
 
 
 	{{!-- Latest data/publication block --}}
 	<div class="page-content">
 		<section class="slate--alabaster">
 			<div class="wrapper">
+				<div class="tiles">
+				<div class="col-wrap tiles__block">
 				{{resolve statsBulletins.0.uri filter="description" assign="bulletin"}}
 				{{#if bulletin}}
 					{{resolve items.0.uri assign="data"}}
-					<div class="col-wrap">
+					<!-- <div id="latest" class="col col--md-half col--lg-half tiles__item tiles__item--image-type-headline"> -->
 
 						{{!-- Check for data and print partial --}}
 						{{#if_any data.years data.quarters data.months}}
@@ -58,35 +61,35 @@
 								{{> partials/t3/headline-data}}
 							</div>
 						{{/if_any}}
-
+					<!-- </div> -->
 						{{!-- Latest publication block --}}
 						<div class="col {{#if_any data.years data.quarters data.months}}col--md-half col--lg-half{{/if_any}}">
-							<h2 class="section-title">{{labels.product-latest-stats-bulletin}}</h2>
-							<div class="tile--headline-block">
-								<div class="tile--headline-block__image-container">
-									<img src="http://localhost:9000/dist/img/latest-publications.png" alt="" />
-								</div>
-								<h3 class="tile--headline-block__title">
-									<a href="{{statsBulletins.0.uri}}">{{bulletin.description.title}}{{#if bulletin.description.edition}}: {{bulletin.description.edition}}{{/if}}</a>
-								</h3>
-								<h4 class="tile--headline-block__sub-title">{{labels.product-whats-in-bulletin}}</h4>
-								<ul class="tile--headline-block__list">
-									<li class="tile--headline-block__item">
-										{{bulletin.description.headline1}}
-									</li>
-									<li class="tile--headline-block__item">
-										{{bulletin.description.headline2}}
-									</li>
-									<li class="tile--headline-block__item">
-										{{bulletin.description.headline3}}
-									</li>
-								</ul>
-								<a href="{{statsBulletins.0.uri}}" class="tile--headline-block__more">Read this statistical bulletin</a>
+						<h2 id="latest-publication">{{labels.product-latest-stats-bulletin}}</h2>
+						<div class="tiles__item tiles__item--image-type-headline flush-col">
+							<div class="tiles__image tiles__image--headline">
+								<img src="http://localhost:9000/dist/img/latest-publications.png" alt="" />
 							</div>
-						<a href="#publications" class="btn btn--full-width">More statistical bulletins</a>
+							<h3 class="tiles__title-h3">
+								<a href="{{statsBulletins.0.uri}}">{{bulletin.description.title}}{{#if bulletin.description.edition}}: {{bulletin.description.edition}}{{/if}}</a>
+							</h3>
+							<h4 class="tiles__title-h4">{{labels.product-whats-in-bulletin}}</h4>
+							<ul class="tiles__content-list">
+								{{#if bulletin.description.headline1}}
+									<li>{{bulletin.description.headline1}}</li>
+								{{/if}}
+								{{#if bulletin.description.headline2}}
+									<li>{{bulletin.description.headline2}}</li>
+								{{/if}}
+								{{#if bulletin.description.headline3}}
+									<li>{{bulletin.description.headline3}}</li>
+								{{/if}}
+							</ul>
+							<a href="{{statsBulletins.0.uri}}" class="tiles__read-more">Read this statistical bulletin</a>
 					</div>
-				</div>
+					<a href="#publications" class="btn btn--full-width">More statistical bulletins</a>
 			{{/if}}
+		</div>
+		</div>
 		</div>{{!-- /wrapper --}}
 	</section>
 
@@ -96,7 +99,7 @@
 		<div class="wrapper">
 			<div class="col-wrap">
 				<div class="col">
-					<h2 id="data" class="section-title">Data related to {{description.title}}</h2>
+					<h2 id="data">Data related to {{description.title}}</h2>
 				</div>
 			</div>
 			{{#if items}}
@@ -111,11 +114,11 @@
 
 	{{!-- Latest publications --}}
 	{{#if_any statsBulletins relatedArticles}}
-	<section class="slate--alabaster">
+	<section class="{{#if_any items datasets}}slate--alabaster{{else}}slate--iron-light{{/if_any}}">
 		<div class="wrapper">
 			<div class="col-wrap">
 				<div class="col">
-					<h2 id="publications" class="section-title">Publications related to {{description.title}}</h2>
+					<h2 id="publications">Publications related to {{description.title}}</h2>
 				</div>
 			</div>
 			{{!-- Latest statistical bulletins --}}

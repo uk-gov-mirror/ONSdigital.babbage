@@ -1,25 +1,28 @@
 <div class="col-wrap">
 	<div class="col">
-		<h3 class="section-subtitle">Statistical bulletins</h3>
+		<h3>Statistical bulletins</h3>
 	</div>
 </div>
-<ul class="tile--list">
-	{{#each statsBulletins}}
-	{{#resolve this.uri filter="description"}}
-	<li class="col-wrap tile--list__item clickable-wrap">
-		<div class="col col--lg-38">
-			<h4 class="tile--list__title">
-				<a href="{{uri}}" title="{{description.title}}">
-					{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}
-				</a>
-			</h4>
-			<p class="tile--list__content">
-				{{description.summary}}
-			</p>
-		</div>
-	</li>
-	{{/resolve}}
-	{{/each}}
-</ul>
+<div class="col-wrap">
+	<div class="col col--lg-38">
+		<ul class="tiles__list">
+			{{#each statsBulletins}}
+			{{#resolve this.uri filter="description"}}
+			<li class="col-wrap tiles__item--list-type-simple clickable-wrap flush-col">
+				<h4 class="tiles__title-h4">
+					<a href="{{uri}}" title="{{description.title}}">
+						{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}
+					</a>
+				</h4>
+				<p class="tiles__content">
+					{{description.summary}}
+				</p>
+			</li>
+			{{/resolve}}
+			{{/each}}
+		</ul>
 
-<a href="{{uri}}/bulletins" class="btn btn--full-width">View all statistical bulletins</a>
+		<a href="{{uri}}/bulletins" class="btn btn--full-width">View all statistical bulletins</a>
+
+	</div>
+</div>
