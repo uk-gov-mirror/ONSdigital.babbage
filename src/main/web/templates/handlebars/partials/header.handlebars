@@ -92,43 +92,23 @@
 			</div>
 			{{!-- /wrapper --}}
 
-			
-			
-			{{!-- MOBILE  --}}
-			{{!-- <div class="wrapper ons-nav print-hidden">
-				<div class="col-wrap">
-					<ul class="col nav nav--controls">
-						<li class="nav--controls__menu">
-							<a href="#nav-primary" id="menu-toggle" aria-controls="nav-primary" class="panel--pad">
+			{{!-- MAIN NAV --}}
+			<div class="primary-nav">
+				<nav>
+					<ul class="nav--controls">
+						<li class="nav--controls__item">
+							<a href="#nav-primary" id="menu-toggle" aria-controls="nav-primary" class="nav--controls__menu">
 								<span class="nav--controls__text">{{labels.dropdown-menu}}</span>
 							</a> 
 						</li>
-						<li class="nav--controls__search">
-							<a href="#nav-search" id="search-toggle" aria-controls="nav-search" class="panel--pad-small">
+						<li class="nav--controls__item">
+							<a href="#nav-search" id="search-toggle" aria-controls="nav-search" class="nav--controls__search">
 								<span class="nav--controls__text">{{labels.search}}</span>
 							</a>
 						</li>
 					</ul>
-				</div>
-			</div> --}}
-
-			{{!-- MAIN NAV --}}
-			<div class="primary-nav">
-				<nav>
 					<div class="wrapper">
-						{{!-- <ul class="nav--controls">
-							<li class="nav--controls__menu">
-								<a href="#nav-primary" id="menu-toggle" aria-controls="nav-primary" class="panel--pad">
-									<span class="nav--controls__text">{{labels.dropdown-menu}}</span>
-								</a> 
-							</li>
-							<li class="nav--controls__search">
-								<a href="#nav-search" id="search-toggle" aria-controls="nav-search" class="panel--pad-small">
-									<span class="nav--controls__text">{{labels.search}}</span>
-								</a>
-							</li>
-						</ul> --}}
-						<ul class="primary-nav__list" id="nav-primary">
+						<ul class="primary-nav__list nav-main--hidden" id="nav-primary">
 							<li class="primary-nav__item"><a class="primary-nav__link col col--md-7 col--lg-9" href="/">{{labels.home}}</a></li>
 							
 							{{!-- loop each top node --}}
@@ -150,28 +130,6 @@
 								{{/if_eq}}
 							{{/each}}
 
-
-
-
-						{{!-- KEEPING ORIGINAL-ISH NAV FOR REFERENCE --}}
-						{{!-- <ul class="col nav nav--block nav--primary" id="nav-primary">
-							<li class="nav--primary__hide-small-med">
-								<a href="/">Home</a>
-							</li>
-							{{#each navigation}}
-								{{#if_eq this.type "taxonomy_landing_page"}}
-									<li class="col nav__expandable js-expandable {{#if_any (eq uri breadcrumb.1/uri)  (eq uri ../../uri) }}nav--primary__active{{/if_any}}">
-										<a href="{{uri}}">{{description.title}}</a>
-											<ul class="nav--primary__sub js-expandable__content js-nav-hidden">
-												{{#each children}}
-													<li {{#if_any (eq uri breadcrumb.2/uri) (eq uri ../../uri)}}class="nav--primary__active"{{/if_any}}>
-														<a href="{{uri}}" >{{description.title}}</a>
-													</li>
-												{{/each}} 
-											</ul>
-									</li>
-								{{/if_eq}}
-							{{/each}} --}}
 
 							{{!-- SECONDARY NAV - PRIMARY --}}
 							<li class="primary-nav__item {{#if_eq uri '/about/surveys'}}nav--primary__active{{/if_eq}}">
@@ -197,7 +155,7 @@
 			</div>
 
 			{{!-- SEARCH BAR --}}
-			<div class="search">
+			<div class="search nav-search--hidden" id="searchBar">
 				<div class="wrapper">
 					{{!-- <div class=""> --}}
 						<form class="col-wrap search__form" id="searchBar" action="/search">
