@@ -1,4 +1,55 @@
-    <div class="chart-area slate nojs-hidden js-enhance--show" >
+    <div class="timeseries__filters">
+        <h3>Filters</h3>
+        <form>
+            <label>
+                Show data as </br>
+                <input type="radio" name="type" data-chart-controls-type="chart" checked>
+                Chart
+            </label>
+            <label>
+                <input type="radio" name="type" data-chart-controls-type="table">
+                Table
+            </label>
+        </form>
+        <form>
+            Frequency </br>
+            <label>
+                Monthly
+                <input type="radio" name="scale" data-chart-controls-scale="months" value="months" checked>
+            </label>
+            <label>
+                Quarterly
+                <input type="radio" name="scale" data-chart-controls-scale="quarters" value="quarters">
+            </label>
+            <label>
+                Yearly
+                <input type="radio" name="scale" data-chart-controls-scale="years" value="years">
+            </label>
+        </form>
+        <form class="chart-area__controls__time">
+            Time period </br>
+            <label>
+                All
+                <input type="radio" name="range" data-chart-controls-range="all">
+            </label>
+            <label>
+                10yrs
+                <input type="radio" name="range" data-chart-controls-range="10yrs">
+            </label>
+            <label>
+                5yrs
+                <input type="radio" name="range" data-chart-controls-range="5yrs">
+            </label>
+            <label>
+                Custom
+                <input type="radio" name="range" data-chart-controls-range="Custom">
+            </label>
+            {{!-- ADD IN CUSTOM DROPDOWN / INPUT --}}
+        </form>
+    </div>
+
+
+    {{!-- <div class="chart-area slate nojs-hidden js-enhance--show" >
         <div class="chart-area__controls ">
             <div data-chart-controls="" data-chart-controls-for="">
                 <div class="button-bar chart-area__controls__buttons">
@@ -118,9 +169,9 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --}}
         <!-- /chart-area__controls -->
-        <div class="js-enhance--show nojs-hidden chart linechart" data-chart="" data-uri="{{uri}}" ></div>
+        {{!-- <div class="js-enhance--show nojs-hidden chart linechart" data-chart="" data-uri="{{uri}}" ></div>
         <div class="js-enhance--show nojs-hidden"></div>
         <table class="tablesaw" data-table="">
             <thead>
@@ -131,7 +182,7 @@
             </thead>
             <tbody>
             </tbody>
-        </table>
+        </table> --}}
     </div>
     {{#unless cookies.jsEnhanced}}
     <img class="js-enhance--hide" src="{{uri}}/linechartimage" alt="{{description.title}}" width="875" height="400">

@@ -17,8 +17,8 @@
 		</div>
 	</div> {{!-- /wrapper --}}
 
-{{!-- NEED TO ADD LATEST INFO
-<div class="alert">
+
+<!-- <div class="alert">
 	<div class="wrapper">
 		<div class="col-wrap">
 			<div class="col">
@@ -36,7 +36,7 @@
 			</div>
 		</div>
 	</div> {{!-- /wrapper --}}
-</div> {{!-- /slate--ship-gray --}}
+</div> {{!-- /slate--ship-gray --}} -->
 
 <div class="meta-wrap">
 	<div class="wrapper">
@@ -65,15 +65,10 @@
 
 			{{!-- Print and download --}}
 			<p class="col col--md-11 col--lg-14 print-hidden meta__item">
-				<a href="" id="jsEnhancePrint" class="link-complex nojs-hidden js-enhance--show">
-					<span class="icon-print"></span>
-					<span class="link-complex__target print-analytics">{{labels.print-report}}</span>
-				</a>
-				<br class="nojs-hidden js-enhance--show"/>
-				<a href="{{uri}}/pdf" class="link-complex">
-					<span class="icon-download" role="presentation"></span>
-					<span class="link-complex__target">{{labels.dl-pdf}}</span>
-				</a>
+				{{#if description.cdid}}Series ID: {{description.cdid}}
+                <a href="#" class="tooltip nojs-hidden" title="This series ID is a unique random identifier for this individual time series. The digits themselves do not have any specific meaning" aria-label="This series ID is a unique random identifier for this individual time series. The digits themselves do not have any specific meaning">what is this? </a><br/>{{/if}}
+                {{#if description.unit}}Units: {{description.preUnit}} {{description.unit}}<br/>{{/if}}
+                {{seasonalAdjustment}}
 			</p>
 		</div>
 	</div> {{!-- /wrapper --}}
@@ -85,8 +80,20 @@
 {{!-- TODO: Add isdatavailable to timeseries to do this check --}}
 {{#if_any years quarters months}}
 <div class="wrapper">
-    <div class="actionable-header--tight panel--mar-small">
-        <!-- This title will need to be dynamically generated on the server -->
+    <h2>Time series</h2>
+    <div class="col-wrap">
+        <div class="timeseries col col-one">
+
+            {{> partials/highcharts/linechart}}
+
+        </div>
+    </div>
+
+
+
+    {{!-- OLD FOR REFERENCE --}}
+    <!-- <div class="actionable-header--tight panel--mar-small">
+        {{!-- This title will need to be dynamically generated on the server --}}
         <h2 class="actionable-header--tight__title gamma flush--bottom body-type--heavy">Download this entire time series</h2>
         <div class="actionable-header--tight__action actionable-header--tight__action--left">
             <form method="post" action="/chartimage" class="inline">
@@ -110,18 +117,18 @@
                 <input type="hidden" name="fileName" value="{{description.title}}" />
             </form>
         </div>
-    </div>
-    {{> partials/highcharts/linechart}}
-    <div class="chart-area__footer nojs-hidden js-enhance--show" data-chart-custom="">
+    </div> -->
+
+    <!-- <div class="chart-area__footer nojs-hidden js-enhance--show" data-chart-custom="">
         <span class="chart-area__footer__label">Download custom data</span>
         <div class="chart-area__footer__actions">
-            <!-- <form method="post" action="/chartimage" class="inline dlCustomData">
+            {{!-- <form method="post" action="/chartimage" class="inline dlCustomData">
                 <button id="download-custom-image" type="submit" class="btn btn--primary btn--small download-analytics" target="_blank" name="uri" value="{{uri}}">
                 Image
                 {{!-- <span class="icon-download icon--button-inline" role="presentation"></span> --}}
                 </button>
                 <input type="hidden" name="fileName" value="{{description.title}}" />
-            </form> -->
+            </form> --}}
             <form method="post" action="/download" class="inline dlCustomData">
                 <button id="download-custom-csv" type="submit" name="type" value="csv" class="btn btn--primary btn--small download-analytics">
                 .csv
@@ -134,7 +141,7 @@
                 <input type="hidden" name="uri" value="{{uri}}" />
                 <input type="hidden" name="fileName" value="{{description.title}}" />
             </form>
-            <!-- <a class="btn btn--primary btn--small" href="#">
+            {{!-- <a class="btn btn--primary btn--small" href="#">
                 Image
                 <span class="icon-download icon--button-inline" role="presentation"></span>
             </a>
@@ -145,12 +152,13 @@
             <a class="btn btn--primary btn--small" href="#">
                 .xsl
                 <span class="icon-download icon--button-inline" role="presentation"></span>
-            </a> -->
+            </a> --}}
         </div>
-    </div>
+    </div> -->
     <!-- /chart-area -->
+
     <!-- headlinePage.items.0.data.months -->
-    <div class="slate nojs-hidden box box--padded">
+    <!-- <div class="slate nojs-hidden box box--padded">
         {{#if_any relatedData relatedDatasets}}
         <span>Explore other {{#each breadcrumb}}{{#if @last}}{{description.title}}{{/if}}{{/each}} <strong>time series</strong> and <strong>datasets</strong></span>
         <div class="box__inner">
@@ -222,7 +230,7 @@
     </div>
     {{/unless}}
 </div>
-{{/if_any}}
+{{/if_any}} -->
 <div class="wrapper panel--bottom-mar">
     <div class="grid-wrap">
         {{#if section.markdown}}
