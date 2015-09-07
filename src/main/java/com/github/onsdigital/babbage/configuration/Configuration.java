@@ -108,6 +108,7 @@ public class Configuration {
         private static String elasticSearchServer = defaultIfBlank(getValue("ELASTIC_SEARCH_SERVER"), "localhost");
         private static String elasticSearchIndexAlias = defaultIfBlank(getValue("ELASTIC_SEARCH_INDEX_ALIAS"), "ons");
         private static Integer elasticSearchPort = Integer.parseInt(defaultIfBlank(getValue("ELASTIC_SEARCH_PORT"), "9300"));
+        private static String elasticSearchCluster = defaultIfBlank(getValue("ELASTIC_SEARCH_CLUSTER"), "ONSCluster");
         private static String searchAnalyzer = "ons_search_analyzer";
 
         public static String getElasticSearchServer() {
@@ -124,6 +125,10 @@ public class Configuration {
 
         public static String getSearchAnalyzer() {
             return searchAnalyzer;
+        }
+
+        public static String getElasticSearchCluster() {
+            return elasticSearchCluster;
         }
     }
 

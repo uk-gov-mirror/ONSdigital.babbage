@@ -1,16 +1,24 @@
 package com.github.onsdigital.api.search;
 
 import com.github.davidcarboni.restolino.framework.Api;
+import com.github.onsdigital.babbage.api.error.ErrorHandler;
 import com.github.onsdigital.babbage.content.client.ContentClient;
 import com.github.onsdigital.babbage.content.client.ContentReadException;
 import com.github.onsdigital.babbage.content.client.ContentStream;
 import com.github.onsdigital.babbage.request.response.BabbageRedirectResponse;
 import com.github.onsdigital.babbage.request.response.BabbageResponse;
 import com.github.onsdigital.babbage.request.response.BabbageStringResponse;
+import com.github.onsdigital.babbage.search.ONSQueryBuilder;
+import com.github.onsdigital.babbage.search.SearchService;
+import com.github.onsdigital.babbage.search.helpers.SearchResponseHelper;
 import com.github.onsdigital.babbage.template.TemplateService;
+import com.github.onsdigital.babbage.util.json.JsonUtil;
 import com.github.onsdigital.content.service.ContentNotFoundException;
 import com.github.onsdigital.content.util.URIUtil;
 import com.github.onsdigital.error.ResourceNotFoundException;
+import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.common.xcontent.ToXContent;
+import org.elasticsearch.common.xcontent.XContentFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -37,27 +45,19 @@ public class Search {
 
         switch (type) {
             case DATA_REQUEST:
-                try (ContentStream contentStream = ContentClient.getInstance().getSearch("", getQueryParameters(request))) {
-                    babbageResponse = new BabbageStringResponse(contentStream.getAsString());
-                }
+                new BabbageStringResponse(search(request)).apply(response);
                 break;
             case SEARCH_REQUEST:
-                ContentStream contentStream = ContentClient.getInstance().getSearch("", getQueryParameters(request));
-
-                if (contentStream.getResponseCode() == 301 || contentStream.getResponseCode() == 302) {
-                   babbageResponse = new BabbageRedirectResponse(new URI(contentStream.getHeader("location")).getPath());
-                    contentStream.close();
-                } else {
-                    try (InputStream dataStream = contentStream.getDataStream()) {
-                        String html = TemplateService.getInstance().renderContent(dataStream);
-                        babbageResponse = new BabbageStringResponse(html, HTML_MIME);
-                    }
-                }
                 break;
             default:
-                throw new ResourceNotFoundException();
+                ErrorHandler.renderErrorPage(404, response);
         }
-        babbageResponse.apply(response);
         return null;
+    }
+
+
+    private String search(HttpServletRequest request) throws IOException {
+        SearchResponseHelper economy = SearchService.getInstance().search(new ONSQueryBuilder().setHighLightFields(true).setQuery("economy").setUriPrefix("/economy"));
+        return economy.toJson();
     }
 }

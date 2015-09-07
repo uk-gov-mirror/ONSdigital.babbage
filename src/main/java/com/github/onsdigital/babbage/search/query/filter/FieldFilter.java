@@ -1,4 +1,4 @@
-package com.github.onsdigital.babbage.search.builder;
+package com.github.onsdigital.babbage.search.query.filter;
 
 /**
  * Created by bren on 07/09/15.
@@ -8,9 +8,9 @@ package com.github.onsdigital.babbage.search.builder;
  */
 public class FieldFilter {
     private String field;
-    private String value;
+    private Object value;
 
-    public FieldFilter(String field, String value) {
+    public FieldFilter(String field, Object value) {
         this.field = field;
         this.value = value;
     }
@@ -24,7 +24,7 @@ public class FieldFilter {
         this.field = field;
     }
 
-    public String getValue() {
+    public Object getValue() {
         return value;
     }
 

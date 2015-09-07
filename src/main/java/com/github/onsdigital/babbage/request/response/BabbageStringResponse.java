@@ -24,7 +24,7 @@ public class BabbageStringResponse extends BabbageResponse {
         setCharEncoding(charEncoding);
     }
 
-    public void applyData(HttpServletResponse response) throws IOException {
+    protected void applyData(HttpServletResponse response) throws IOException {
         IOUtils.copy(new StringReader(getData()), response.getOutputStream());
     }
 

@@ -4,6 +4,7 @@ import com.github.jknack.handlebars.Handlebars;
 import com.github.jknack.handlebars.Options;
 import com.github.onsdigital.babbage.template.handlebars.helpers.base.BabbageHandlebarsHelper;
 import com.github.onsdigital.babbage.template.handlebars.helpers.util.HelperUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 
@@ -29,7 +30,6 @@ public enum ConditionHelpers implements BabbageHandlebarsHelper<Object> {
 
     //evaluates equality of given parameters
     ne {
-
         @Override
         public CharSequence apply(Object context, Options o) throws IOException {
             return HelperUtils.isNotEqual(context, o.param(0)) ? valid() : null;
@@ -45,7 +45,6 @@ public enum ConditionHelpers implements BabbageHandlebarsHelper<Object> {
 
     //evaluates equality of given parameters
     if_eq {
-
         @Override
         public CharSequence apply(Object context, Options o) throws IOException {
             return HelperUtils.isEqual(context, o.param(0)) ? o.fn() : o.inverse();
@@ -61,7 +60,6 @@ public enum ConditionHelpers implements BabbageHandlebarsHelper<Object> {
 
     //evaluates equality of given parameters
     if_ne {
-
         @Override
         public CharSequence apply(Object context, Options o) throws IOException {
             return HelperUtils.isNotEqual(context, o.param(0)) ? o.fn() : o.inverse();
@@ -122,6 +120,36 @@ public enum ConditionHelpers implements BabbageHandlebarsHelper<Object> {
             handlebars.registerHelper(this.name(), this);
         }
 
+    },
+
+    /*Used together with case helper*/
+    _switch {
+        @Override
+        public CharSequence apply(Object context, Options options) throws IOException {
+            options.context.data("_switchData", context);
+            return options.fn();
+        }
+
+        @Override
+        public void register(Handlebars handlebars) {
+            handlebars.registerHelper("switch", this);
+        }
+    },
+    _case {
+        @Override
+        public CharSequence apply(Object context, Options options) throws IOException {
+            Object switchData = options.context.get("_switchData");
+            if(HelperUtils.isEqual(context, switchData)) {
+                return options.fn();
+            } else {
+                return options.inverse();
+            }
+        }
+
+        @Override
+        public void register(Handlebars handlebars) {
+            handlebars.registerHelper("case", this);
+        }
     };
 
 

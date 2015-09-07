@@ -1,4 +1,4 @@
-package com.github.onsdigital.babbage.search.builder;
+package com.github.onsdigital.babbage.search.query.filter;
 
 /**
  * Created by bren on 07/09/15.
@@ -9,10 +9,10 @@ package com.github.onsdigital.babbage.search.builder;
 public class RangeFilter {
 
     private String field;
-    private String from;
-    private String to;
+    private Object from;
+    private Object to;
 
-    public RangeFilter(String field, String from , String to) {
+    public RangeFilter(String field, Object from , Object to) {
         this.field = field;
         this.from = from;
         this.to = to;
@@ -27,19 +27,19 @@ public class RangeFilter {
         this.field = field;
     }
 
-    public String getFrom() {
+    public Object getFrom() {
         return from;
     }
 
-    public void setFrom(String from) {
+    public void setFrom(Object from) {
         this.from = from;
     }
 
-    public String getTo() {
+    public Object getTo() {
         return to;
     }
 
-    public void setTo(String to) {
+    public void setTo(Object to) {
         this.to = to;
     }
 }

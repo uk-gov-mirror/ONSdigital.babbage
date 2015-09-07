@@ -6,26 +6,27 @@ performs type check on content type and decides which template to render  --}}
 {{resolveChildren "/" depth=2 assign="navigation"}}
 
 {{> partials/header}}
-{{#if_eq type "home_page"}}{{> content/t1}}{{/if_eq}}
-{{#if_eq type "taxonomy_landing_page"}}{{> content/t2}}{{/if_eq}}
-{{#if_eq type "product_page"}}{{> content/t3}}{{/if_eq}}
-{{#if_eq type "bulletin"}}{{> content/t4-1}}{{/if_eq}}
-{{#if_eq type "article"}}{{> content/t4-2}}{{/if_eq}}
-{{#if_eq type "timeseries"}}{{> content/t5-1}}{{/if_eq}}
-{{#if_eq type "data_slice"}}{{> content/t5-2}}{{/if_eq}}
-{{#if_eq type "compendium_landing_page"}}{{> content/t6-1}}{{/if_eq}}
-{{#if_eq type "compendium_chapter"}}{{> content/t6-2}}{{/if_eq}}
-{{#if_eq type "compendium_data"}}{{> content/t6-3}}{{/if_eq}}
-{{#if_eq type "reference_tables"}}{{> content/t8-1}}{{/if_eq}}
-{{#if_eq type "dataset"}}{{> content/t8-3}}{{/if_eq}}
-{{#if_eq type "timeseries_dataset"}}{{> content/t8-3}}{{/if_eq}}
-{{#if_eq type "static_landing_page"}}{{> content/t7-4-1}}{{/if_eq}}
-{{#if_eq type "static_page"}}{{> content/t7-5}}{{/if_eq}}
-{{#if_eq type "static_article"}}{{> content/t7-6}}{{/if_eq}}
-{{#if_eq type "static_methodology"}}{{> content/t7-6}}{{/if_eq}}
-{{#if_eq type "static_qmi"}}{{> content/t7-1}}{{/if_eq}}
-{{#if_eq type "static_adhoc"}}{{> content/t7-2}}{{/if_eq}}
-{{#if_eq type "static_foi"}}{{> content/t7-3}}{{/if_eq}}
-{{#if_eq type "search_results_page"}}{{> content/t10}}{{/if_eq}}
-{{#if_eq type "release"}}{{> content/t16}}{{/if_eq}}
+{{#switch type}}
+{{#case "home_page"}}{{> content/t1}}{{/case}}
+{{#case "taxonomy_landing_page"}}{{> content/t2}}{{/case}}
+{{#case "product_page"}}{{> content/t3}}{{/case}}
+{{#case "bulletin"}}{{> content/t4-1}}{{/case}}
+{{#case "article"}}{{> content/t4-2}}{{/case}}
+{{#case "timeseries"}}{{> content/t5-1}}{{/case}}
+{{#case "data_slice"}}{{> content/t5-2}}{{/case}}
+{{#case "compendium_landing_page"}}{{> content/t6-1}}{{/case}}
+{{#case "compendium_chapter"}}{{> content/t6-2}}{{/case}}
+{{#case "compendium_data"}}{{> content/t6-3}}{{/case}}
+{{#case "reference_tables"}}{{> content/t8-1}}{{/case}}
+{{#case "dataset"}}{{> content/t8-3}}{{/case}}
+{{#case "timeseries_dataset"}}{{> content/t8-3}}{{/case}}
+{{#case "static_landing_page"}}{{> content/t7-4-1}}{{/case}}
+{{#case "static_page"}}{{> content/t7-5}}{{/case}}
+{{#case "static_article"}}{{> content/t7-6}}{{/case}}
+{{#case "static_methodology"}}{{> content/t7-6}}{{/case}}
+{{#case "static_qmi"}}{{> content/t7-1}}{{/case}}
+{{#case "static_adhoc"}}{{> content/t7-2}}{{/case}}
+{{#case "static_foi"}}{{> content/t7-3}}{{/case}}
+{{#case "release"}}{{> content/t16}}{{/case}}
+{{/switch}}
 {{> partials/footer}}

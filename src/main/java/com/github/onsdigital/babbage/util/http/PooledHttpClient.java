@@ -14,6 +14,7 @@ import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.conn.HttpClientConnectionManager;
 import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.util.EntityUtils;
@@ -40,16 +41,27 @@ public class PooledHttpClient {
     private final IdleConnectionMonitorThread monitorThread;
     private final URI HOST;
 
-    public PooledHttpClient(String host) {
+    public PooledHttpClient(String host, ClientConfiguration configuration) {
         HOST = resolveHostUri(host);
         this.connectionManager = new PoolingHttpClientConnectionManager();
-        this.httpClient = HttpClients.custom()
-                .disableRedirectHandling()
-                .setConnectionManager(connectionManager)
+        HttpClientBuilder customClientBuilder = HttpClients.custom();
+        configure(customClientBuilder, configuration);
+        httpClient = customClientBuilder.setConnectionManager(connectionManager)
                 .build();
         this.monitorThread = new IdleConnectionMonitorThread(connectionManager);
         this.monitorThread.start();
         Runtime.getRuntime().addShutdownHook(new ShutdownHook());
+    }
+
+    private void configure(HttpClientBuilder customClientBuilder, ClientConfiguration configuration) {
+        Integer connectionNumber = configuration.getMaxTotalConnection();
+        if (connectionNumber != null) {
+            connectionManager.setMaxTotal(connectionNumber);
+            connectionManager.setDefaultMaxPerRoute(connectionNumber);
+        }
+        if (configuration.isDisableRedirectHandling()) {
+            customClientBuilder.disableRedirectHandling();
+        }
     }
 
     private URI resolveHostUri(String host) {
@@ -122,11 +134,6 @@ public class PooledHttpClient {
         }
     }
 
-    public ClientConfiguration getConfiguration() {
-        return new ClientConfiguration();
-    }
-
-
     public void shutdown() throws IOException {
         System.out.println("Shutting down connection pool to host:" + HOST);
         httpClient.close();
@@ -190,22 +197,6 @@ public class PooledHttpClient {
             e.printStackTrace();
         }
         return null;
-    }
-
-
-    /**
-     * Wrapping client connection manager setters to simplify configuration for single host
-     */
-    public class ClientConfiguration {
-
-        private ClientConfiguration() {
-        }
-
-        public void setMaxConnection(int connectionNumber) {
-            connectionManager.setMaxTotal(connectionNumber);
-            connectionManager.setDefaultMaxPerRoute(connectionNumber);
-        }
-
     }
 
 

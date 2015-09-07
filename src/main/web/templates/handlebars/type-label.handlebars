@@ -1,0 +1,20 @@
+{{#switch type}}
+{{#case "bulletin"}}statistical bulletin{{#if plural}}s{{/if}}{{/case}}
+{{#case "article"}}article{{#if plural}}s{{/if}}{{/case}}
+{{#case "timeseries"}}time series{{/case}}
+{{#case "data_slice"}}data slice{{#if plural}}s{{/if}}{{/case}}
+{{#case "compendium_landing_page"}}{{#if plural}}compendia{{else}}compendium{{/if}}{{/case}}
+{{#case "compendium_chapter"}}compendium chapter{{#if plural}}s{{/if}}{{/case}}
+{{#case "compendium_data"}}compendium data{{/case}}
+{{#case "reference_tables"}}reference table{{#if plural}}s{{/if}}{{/case}}
+{{#case "dataset"}}dataset{{#if plural}}s{{/if}}{{/case}}
+{{#case "timeseries_dataset"}}dataset{{#if plural}}s{{/if}}{{/case}}
+{{#case "static_landing_page"}}???{{/case}}
+{{#case "static_page"}}????{{/case}}
+{{#case "static_article"}}????{{/case}}
+{{#case "static_methodology"}}methodolog{{#if plural}}ies{{else}}y{{/if}}{{/case}}
+{{#case "static_qmi"}}qmi{{#if plural}}s{{/if}}{{/case}}
+{{#case "static_adhoc"}}user request data{{/case}}
+{{#case "static_foi"}}foi{{#if plural}}s{{/if}}{{/case}}
+{{#case "release"}}release{{#if plural}}s{{/if}}{{/case}}
+{{/switch}}
