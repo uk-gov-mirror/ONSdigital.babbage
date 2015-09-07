@@ -2,11 +2,14 @@ package com.github.onsdigital.babbage.configuration;
 
 import org.apache.commons.lang3.StringUtils;
 
+import static org.apache.commons.lang3.StringUtils.defaultIfBlank;
+
 public class Configuration {
 
     /*General Babbage app settings*/
     public static class GENERAL {
         private static final int MAX_VISIBLE_PAGINATOR_LINK = 10;
+        private static final int RESULTS_PER_PAGE = 10;
         private static final int GLOBAL_CACHE_TIMEOUT = 5;
         private static final int GLOBAL_REQUEST_CACHE_SIZE = 1000;
 
@@ -23,6 +26,10 @@ public class Configuration {
             return Integer.parseInt(StringUtils.defaultIfBlank(getValue("GLOBAL_CACHE_SIZE"), String.valueOf(GLOBAL_REQUEST_CACHE_SIZE)));
         }
 
+        public static int getResultsPerPage() {
+            return RESULTS_PER_PAGE;
+        }
+
         public static boolean isCacheEnabled() {
             String babbage_env = StringUtils.defaultIfBlank(getValue("ENABLE_CACHE"), "");
             return "Y".equals(babbage_env);
@@ -32,7 +39,7 @@ public class Configuration {
 
     /*External content server configuration*/
     public static class CONTENT_SERVICE {
-        private static final String SERVER_URL =  StringUtils.removeEnd(StringUtils.defaultIfBlank(getValue("CONTENT_SERVICE_URL"), "http://localhost:8082"), "/");
+        private static final String SERVER_URL = StringUtils.removeEnd(StringUtils.defaultIfBlank(getValue("CONTENT_SERVICE_URL"), "http://localhost:8082"), "/");
         private static final String DATA_ENDPOINT = "/data";
         private static final String CHILDREN_ENDPOINT = "/children";
         private static final String PARENTS_ENDPOINT = "/parents";
@@ -52,19 +59,33 @@ public class Configuration {
             return DATA_ENDPOINT;
         }
 
-        public static String getResourceEndpoint() { return RESOURCE_ENDPOINT; }
+        public static String getResourceEndpoint() {
+            return RESOURCE_ENDPOINT;
+        }
 
-        public static String getFileSizeEndpoint() { return FILE_SIZE_ENDPOINT; }
+        public static String getFileSizeEndpoint() {
+            return FILE_SIZE_ENDPOINT;
+        }
 
-        public static String getChildrenEndpoint() { return CHILDREN_ENDPOINT; }
+        public static String getChildrenEndpoint() {
+            return CHILDREN_ENDPOINT;
+        }
 
-        public static String getParentsEndpoint() {return PARENTS_ENDPOINT; }
+        public static String getParentsEndpoint() {
+            return PARENTS_ENDPOINT;
+        }
 
-        public static String getSearchEndpoint() { return SEARCH_ENDPOINT; }
+        public static String getSearchEndpoint() {
+            return SEARCH_ENDPOINT;
+        }
 
-        public static String getReindexEndpoint() { return REINDEX_ENDPOINT; }
+        public static String getReindexEndpoint() {
+            return REINDEX_ENDPOINT;
+        }
 
-        public static String getListEndpoint() { return LIST_ENDPOINT; }
+        public static String getListEndpoint() {
+            return LIST_ENDPOINT;
+        }
 
         public static int getMaxContentServiceConnection() {
             return MAX_CONTENT_SERVICE_CONNECTION;
@@ -81,26 +102,28 @@ public class Configuration {
             return StringUtils.defaultIfBlank(getValue("CONTENT_DIR"), DEFAULT_CONTENT_DIRECTORY);
         }
 
-
-
     }
-
-
-    //TODO: Delete zebedee configuration , will use content service
-    public static class ZEBEDEE {
-        private static final String DEFAULT_ZEBEDEE_URL = "http://localhost:8082";
-
-        public static String getZebedeeUrl() {
-            return StringUtils.defaultIfBlank(getValue("ZEBEDEE_URL"), DEFAULT_ZEBEDEE_URL);
-        }
-    }
-
 
     public static class ELASTIC_SEARCH {
-        private static final String ELASTIC_SEARCH_URL = StringUtils.defaultIfBlank(getValue("ELASTIC_SEARCH_URL"), "http://localhost:8090");
+        private static String elasticSearchServer = defaultIfBlank(getValue("ELASTIC_SEARCH_SERVER"), "localhost");
+        private static String elasticSearchIndexAlias = defaultIfBlank(getValue("ELASTIC_SEARCH_INDEX_ALIAS"), "ons");
+        private static Integer elasticSearchPort = Integer.parseInt(defaultIfBlank(getValue("ELASTIC_SEARCH_PORT"), "9300"));
+        private static String searchAnalyzer = "ons_search_analyzer";
 
-        public static String getELASTIC_SEARCH_URL() {
-            return ELASTIC_SEARCH_URL;
+        public static String getElasticSearchServer() {
+            return elasticSearchServer;
+        }
+
+        public static String getElasticSearchIndexAlias() {
+            return elasticSearchIndexAlias;
+        }
+
+        public static Integer getElasticSearchPort() {
+            return elasticSearchPort;
+        }
+
+        public static String getSearchAnalyzer() {
+            return searchAnalyzer;
         }
     }
 
@@ -110,7 +133,7 @@ public class Configuration {
         private static final String DEFAULT_HANDLEBARS_DATE_PATTERN = "d MMMM yyyy";
         private static final String TEMPLATES_DIR = StringUtils.defaultIfBlank(getValue("TEMPLATES_DIR"), "src/main/web/templates/handlebars");
         private static final String TEMPLATES_SUFFIX = StringUtils.defaultIfBlank(getValue("TEMPLATES_SUFFIX"), ".handlebars");
-        private static final String MAIN_CONTENT_TEMPLATE_NAME =  "main";
+        private static final String MAIN_CONTENT_TEMPLATE_NAME = "main";
 
         public static String getHandlebarsDatePattern() {
             return DEFAULT_HANDLEBARS_DATE_PATTERN;
@@ -163,7 +186,7 @@ public class Configuration {
     /**
      * Gets a configured value for the given key from either the system
      * properties or an environment variable.
-     * <p/>
+     * <p>
      * Copied from {@link com.github.davidcarboni.restolino.Configuration}.
      *
      * @param key The title of the configuration value.
