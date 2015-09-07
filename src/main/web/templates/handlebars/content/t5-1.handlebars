@@ -38,309 +38,303 @@
 	</div> {{!-- /wrapper --}}
 </div> {{!-- /slate--ship-gray --}} -->
 
-<div class="meta-wrap">
-	<div class="wrapper">
+	<div class="meta-wrap">
+		<div class="wrapper">
 
-		{{!-- Meta info --}}
-		<div class="col-wrap">
+			{{!-- Meta info --}}
+			<div class="col-wrap">
 
-			{{!-- Contact & NS logo--}}
-			<p class="col col--md-14 col--lg-17 meta__item">
-				{{#if description.nationalStatistic}}
-				<img class="meta__image" src="/node_modules/ONS-Pattern-Library/dist/img/national-statistics.png" alt="National Statistics logo" />
-				{{/if}}
-				<span>{{labels.meta-contact}}: </span><br/><a href="mailto:{{description.contact.email}}">{{#if description.contact.name}}{{description.contact.name}}{{else}}{{description.contact.email}}{{/if}}</a>
-			</p>
+				{{!-- Contact & NS logo --}}
+				<p class="col col--md-14 col--lg-17 meta__item">
+					{{#if description.nationalStatistic}}
+					<img class="meta__image" src="/node_modules/ONS-Pattern-Library/dist/img/national-statistics.png" alt="National Statistics logo" />
+					{{/if}}
+					<span>{{labels.meta-contact}}: </span><br/><a href="mailto:{{description.contact.email}}">{{#if description.contact.name}}{{description.contact.name}}{{else}}{{description.contact.email}}{{/if}}</a>
+				</p>
 
-			{{!-- Release date --}}
-			<p class="col col--md-11 col--lg-14 meta__item">
-				<span>{{labels.release-date}}: </span><br/>{{df description.releaseDate}}<br/>
-			</p>
+				{{!-- Release date --}}
+				<p class="col col--md-11 col--lg-14 meta__item">
+					<span>{{labels.release-date}}: </span><br/>{{df description.releaseDate}}<br/>
+				</p>
 
-			{{!-- Next release --}}
-			<p class="col col--md-11 col--lg-14 meta__item">
-				<span>{{labels.release-next}}: </span><br/>{{#if description.nextRelease}}{{description.nextRelease}}{{else}}To be announced{{/if}}
-			</p>
+				{{!-- Next release --}}
+				<p class="col col--md-11 col--lg-14 meta__item">
+					<span>{{labels.release-next}}: </span><br/>{{#if description.nextRelease}}{{description.nextRelease}}{{else}}To be announced{{/if}}
+				</p>
 
 
-			{{!-- Print and download --}}
-			<p class="col col--md-11 col--lg-14 print-hidden meta__item">
-				{{#if description.cdid}}Series ID: {{description.cdid}}
-                <a href="#" class="tooltip nojs-hidden" title="This series ID is a unique random identifier for this individual time series. The digits themselves do not have any specific meaning" aria-label="This series ID is a unique random identifier for this individual time series. The digits themselves do not have any specific meaning">what is this? </a><br/>{{/if}}
-                {{#if description.unit}}Units: {{description.preUnit}} {{description.unit}}<br/>{{/if}}
-                {{seasonalAdjustment}}
-			</p>
-		</div>
-	</div> {{!-- /wrapper --}}
-</div> {{!-- /meta-wrap --}}
-
+				{{!-- Print and download --}}
+				<p class="col col--md-11 col--lg-14 print-hidden meta__item">
+					{{#if description.cdid}}Series ID: {{description.cdid}}
+	                <a href="#" class="tooltip nojs-hidden" title="This series ID is a unique random identifier for this individual time series. The digits themselves do not have any specific meaning" aria-label="This series ID is a unique random identifier for this individual time series. The digits themselves do not have any specific meaning">what is this? </a><br/>{{/if}}
+	                {{#if description.unit}}Units: {{description.preUnit}} {{description.unit}}<br/>{{/if}}
+	                {{seasonalAdjustment}}
+				</p>
+			</div>
+		</div> {{!-- /wrapper --}}
+	</div> {{!-- /meta-wrap --}}
 </div> {{!-- /page-intro --}}
 
 {{!-- Hide chart section if no data to draw the chart with --}}
 {{!-- TODO: Add isdatavailable to timeseries to do this check --}}
-{{#if_any years quarters months}}
-<div class="wrapper">
-    <h2>Time series</h2>
-    <div class="col-wrap">
-        <div class="timeseries col col-one">
+<div class="page-content">
+	{{#if_any years quarters months}}
+	<div class="wrapper">
+	    <h2>Time series</h2>
+	    <div class="col-wrap">
+	        <div class="col col--lg-one tiles__item">
 
-            {{> partials/highcharts/linechart}}
+	            {{> partials/highcharts/linechart}}
 
-        </div>
-    </div>
+				{{!-- Chart footer --}}
+				<div class="tiles__content">
+					<!-- <div class="chart-area__footer nojs-hidden js-enhance--show" data-chart-custom=""> -->
+			        	<span class="chart-area__footer__label">Download custom data</span>
+			        	<div class="chart-area__footer__actions">
+				            <form method="post" action="/chartimage" class="inline dlCustomData">
+				                <button id="download-custom-image" type="submit" class="btn btn--primary btn--small download-analytics" target="_blank" name="uri" value="{{uri}}">
+				                Image
+				                </button>
+				                <input type="hidden" name="fileName" value="{{description.title}}" />
+				            </form>
+				            <form method="post" action="/download" class="inline dlCustomData">
+				                <button id="download-custom-csv" type="submit" name="type" value="csv" class="btn btn--primary btn--small download-analytics">
+				                .csv
+				                </button>
+				                <button id="download-custom-excel" type="submit" name="type" value="xlsx" class="btn btn--primary btn--small download-analytics" href="#">
+				                .xlsx
+				                </button>
+				                <input type="hidden" name="uri" value="{{uri}}" />
+				                <input type="hidden" name="fileName" value="{{description.title}}" />
+				            </form>
+			        	</div>
+		    		<!-- </div> -->
+				</div> {{!-- /tiles__content --}}
+	        </div> {{!-- /col --}}
+	    </div> {{!-- /col-wrap --}}
 
 
 
-    {{!-- OLD FOR REFERENCE --}}
-    <!-- <div class="actionable-header--tight panel--mar-small">
-        {{!-- This title will need to be dynamically generated on the server --}}
-        <h2 class="actionable-header--tight__title gamma flush--bottom body-type--heavy">Download this entire time series</h2>
-        <div class="actionable-header--tight__action actionable-header--tight__action--left">
-            <form method="post" action="/chartimage" class="inline">
-                <button type="submit" class="btn btn--primary btn--small download-analytics" target="_blank" name="uri" value="{{uri}}">
-                image
-                {{!--<span class="icon-download icon--button-inline" role="presentation"></span>--}}
-                </button>
-                <input type="hidden" name="fileName" value="{{description.title}}" />
-                <input type="hidden" name="download" value="true" />
-            </form>
-            <form method="post" action="/download" class="inline">
-                <button type="submit" name="type" value="csv" class="btn btn--primary btn--small download-analytics">
-                .csv
-                {{!--<span class="icon-download icon--button-inline" role="presentation"></span>--}}
-                </button>
-                <button type="submit" name="type" value="xlsx" class="btn btn--primary btn--small download-analytics" href="#">
-                .xlsx
-                {{!--<span class="icon-download icon--button-inline" role="presentation"></span>--}}
-                </button>
-                <input type="hidden" name="uri" value="{{uri}}" />
-                <input type="hidden" name="fileName" value="{{description.title}}" />
-            </form>
-        </div>
-    </div> -->
+	    {{!-- OLD FOR REFERENCE --}}
+	    <!-- <div class="actionable-header--tight panel--mar-small">
+	        {{!-- This title will need to be dynamically generated on the server --}}
+	        <h2 class="actionable-header--tight__title gamma flush--bottom body-type--heavy">Download this entire time series</h2>
+	        <div class="actionable-header--tight__action actionable-header--tight__action--left">
+	            <form method="post" action="/chartimage" class="inline">
+	                <button type="submit" class="btn btn--primary btn--small download-analytics" target="_blank" name="uri" value="{{uri}}">
+	                image
+	                {{!--<span class="icon-download icon--button-inline" role="presentation"></span>--}}
+	                </button>
+	                <input type="hidden" name="fileName" value="{{description.title}}" />
+	                <input type="hidden" name="download" value="true" />
+	            </form>
+	            <form method="post" action="/download" class="inline">
+	                <button type="submit" name="type" value="csv" class="btn btn--primary btn--small download-analytics">
+	                .csv
+	                {{!--<span class="icon-download icon--button-inline" role="presentation"></span>--}}
+	                </button>
+	                <button type="submit" name="type" value="xlsx" class="btn btn--primary btn--small download-analytics" href="#">
+	                .xlsx
+	                {{!--<span class="icon-download icon--button-inline" role="presentation"></span>--}}
+	                </button>
+	                <input type="hidden" name="uri" value="{{uri}}" />
+	                <input type="hidden" name="fileName" value="{{description.title}}" />
+	            </form>
+	        </div>
+	    </div> -->
 
-    <!-- <div class="chart-area__footer nojs-hidden js-enhance--show" data-chart-custom="">
-        <span class="chart-area__footer__label">Download custom data</span>
-        <div class="chart-area__footer__actions">
-            {{!-- <form method="post" action="/chartimage" class="inline dlCustomData">
-                <button id="download-custom-image" type="submit" class="btn btn--primary btn--small download-analytics" target="_blank" name="uri" value="{{uri}}">
-                Image
-                {{!-- <span class="icon-download icon--button-inline" role="presentation"></span> --}}
-                </button>
-                <input type="hidden" name="fileName" value="{{description.title}}" />
-            </form> --}}
-            <form method="post" action="/download" class="inline dlCustomData">
-                <button id="download-custom-csv" type="submit" name="type" value="csv" class="btn btn--primary btn--small download-analytics">
-                .csv
-                {{!-- <span class="icon-download icon--button-inline" role="presentation"></span> --}}
-                </button>
-                <button id="download-custom-excel" type="submit" name="type" value="xlsx" class="btn btn--primary btn--small download-analytics" href="#">
-                .xlsx
-                {{!-- <span class="icon-download icon--button-inline" role="presentation"></span> --}}
-                </button>
-                <input type="hidden" name="uri" value="{{uri}}" />
-                <input type="hidden" name="fileName" value="{{description.title}}" />
-            </form>
-            {{!-- <a class="btn btn--primary btn--small" href="#">
-                Image
-                <span class="icon-download icon--button-inline" role="presentation"></span>
-            </a>
-            <a class="btn btn--primary btn--small" href="#">
-                .csv
-                <span class="icon-download icon--button-inline" role="presentation"></span>
-            </a>
-            <a class="btn btn--primary btn--small" href="#">
-                .xsl
-                <span class="icon-download icon--button-inline" role="presentation"></span>
-            </a> --}}
-        </div>
-    </div> -->
-    <!-- /chart-area -->
+	    <!-- <div class="chart-area__footer nojs-hidden js-enhance--show" data-chart-custom="">
+	        <span class="chart-area__footer__label">Download custom data</span>
+	        <div class="chart-area__footer__actions">
+	            {{!-- <form method="post" action="/chartimage" class="inline dlCustomData">
+	                <button id="download-custom-image" type="submit" class="btn btn--primary btn--small download-analytics" target="_blank" name="uri" value="{{uri}}">
+	                Image
+	                {{!-- <span class="icon-download icon--button-inline" role="presentation"></span> --}}
+	                </button>
+	                <input type="hidden" name="fileName" value="{{description.title}}" />
+	            </form> --}}
+	            <form method="post" action="/download" class="inline dlCustomData">
+	                <button id="download-custom-csv" type="submit" name="type" value="csv" class="btn btn--primary btn--small download-analytics">
+	                .csv
+	                {{!-- <span class="icon-download icon--button-inline" role="presentation"></span> --}}
+	                </button>
+	                <button id="download-custom-excel" type="submit" name="type" value="xlsx" class="btn btn--primary btn--small download-analytics" href="#">
+	                .xlsx
+	                {{!-- <span class="icon-download icon--button-inline" role="presentation"></span> --}}
+	                </button>
+	                <input type="hidden" name="uri" value="{{uri}}" />
+	                <input type="hidden" name="fileName" value="{{description.title}}" />
+	            </form>
+	            {{!-- <a class="btn btn--primary btn--small" href="#">
+	                Image
+	                <span class="icon-download icon--button-inline" role="presentation"></span>
+	            </a>
+	            <a class="btn btn--primary btn--small" href="#">
+	                .csv
+	                <span class="icon-download icon--button-inline" role="presentation"></span>
+	            </a>
+	            <a class="btn btn--primary btn--small" href="#">
+	                .xsl
+	                <span class="icon-download icon--button-inline" role="presentation"></span>
+	            </a> --}}
+	        </div>
+	    </div> -->
+	    <!-- /chart-area -->
 
-    <!-- headlinePage.items.0.data.months -->
-    <!-- <div class="slate nojs-hidden box box--padded">
-        {{#if_any relatedData relatedDatasets}}
-        <span>Explore other {{#each breadcrumb}}{{#if @last}}{{description.title}}{{/if}}{{/each}} <strong>time series</strong> and <strong>datasets</strong></span>
-        <div class="box__inner">
-            <div class="grid-wrap">
-                {{#if relatedData}}
-                <div class="grid-col desktop-grid-one-half ">
-                    <div class="js-enhance--ul-to-select">
-                        <p>Related time series:</p>
-                        <ul>
-                            {{#each relatedData}}
-                            {{#resolve this.uri filter="description"}}
-                            <li><a href="{{uri}}">{{#if description.cdid}}{{description.cdid}}: {{/if}}{{description.title}}</a></li>
-                            {{/resolve}}
-                            {{/each}}
-                        </ul>
-                    </div>
-                    {{!-- <a href="#!/previous">view all time series</a> --}}
-                </div>
-                {{/if}}
-                {{#if relatedDatasets}}
-                <div class="grid-col desktop-grid-one-half ">
-                    <div class="js-enhance--ul-to-select">
-                        <p>Related datasets:</p>
-                        <ul>
-                            {{#each relatedDatasets}}
-                            {{#resolve this.uri filter="description"}}
-                            <li><a href="{{uri}}">{{#if description.datasetId}}{{description.datasetId}}: {{/if}}{{description.title}}</a></li>
-                            {{/resolve}}
-                            {{/each}}
-                        </ul>
-                    </div>
-                    {{!-- <a href="#!/previous">view all datasets</a> --}}
-                </div>
-                {{/if}}
-            </div>
-        </div>
-        {{/if_any}}
-    </div>
-    {{#unless cookies.jsEnhanced}}
-    <div class="panel--bottom-mar js-enhance--hide">
-        <table class="tablesaw">
-            <thead>
-                <tr>
-                    <th>Period</th>
-                    <th>Value</th>
-                </tr>
-            </thead>
-            <tbody>
-                {{#each years}}
-                <tr>
-                    <td>{{date}}</td>
-                    <td>{{value}}</td>
-                </tr>
-                {{/each}}
-                {{#each quarters}}
-                <tr>
-                    <td>{{date}}</td>
-                    <td>{{value}}</td>
-                </tr>
-                {{/each}}
-                {{#each months}}
-                <tr>
-                    <td>{{date}}</td>
-                    <td>{{value}}</td>
-                </tr>
-                {{/each}}
-            </tbody>
-        </table>
-    </div>
-    {{/unless}}
-</div>
-{{/if_any}} -->
-<div class="wrapper panel--bottom-mar">
-    <div class="grid-wrap">
-        {{#if section.markdown}}
-        <div class="grid-col desktop-grid-two-thirds tablet-grid-full-width">
-            <article class="box border-horizontal-single content-section">
-                <!-- <header class="box__header">
-                    <h2 id="Summary">Summary</h2>
-                </header> -->
-                <!-- /box__header -->
-                <div class="box__content">
-                    <div>
-                        <p>
-                            {{section.markdown}}
-                        </p>
-                    </div>
-                </div>
-            </article>
-            <article class="box border-horizontal-single content-section">
-                <!-- /box__header -->
-                <div class="box__content">
-                    <div>
-                        <p class="page-header__title">Important notes and usage information</p>
-                        {{#each notes}}
-                        <p>
-                            {{this}}
-                        </p>
-                        {{/each}}
-                    </div>
-                </div>
-            </article>
-        </div>
-        {{/if}}
-        <!-- Sidebar -->
-        <div class="grid-col desktop-grid-one-third">
-            <!-- article__content -->
-            {{#if relatedDocuments}}
-            <article class="box box--teal--separated--left">
-                <div class="box__inner border box--padded">
-                    <header class="">
-                        <div class="grid-wrap">
-                            <div class="grid-col desktop-grid-five-sixths">
-                                <h3>Statistical bulletins and
-                                articles that use this time
-                                series
-                                </h3>
-                            </div>
-                        </div>
-                    </header>
-                    <div class="box__content">
-                        <div>
-                            {{#each relatedDocuments}}
-                            {{#resolve this.uri filter="title"}}
-                            <p><a href="{{uri}}">{{title}}
-                                {{#if edition}}
-                                {{#if_ne edition 'yes'}}: {{edition}}{{/if_ne}}
-                            {{/if}}</a></p>
-                            {{/resolve}}
-                            {{/each}}
-                        </div>
-                    </div>
-                </div>
-            </article>
-            {{/if}}
-            <!-- /article__content -->
-            <div class="box box--teal--separated--left">
-                {{> partials/local-box}}
-            </div>
-        </div>
-        <div class="grid-col desktop-grid-full-width">
-            <div class="grid-wrap">
-                {{#if relatedMethodology}}
-                <div class="grid-col desktop-grid-one-half">
-                    <article class="box box--padded sectioned">
-                        <header class="box__header">
-                            <h3>Methodology</h3>
-                        </header>
-                        <div class="box__content">
-                            <ul class="list--neutral">
-                                {{#each relatedMethodology}}
-                                {{#resolve this.uri filter="title"}}
-                                <li class="flush--third--bottom">
-                                    <a href="{{uri}}" title="{{title}}">{{title}}</a>
-                                </li>
-                                {{/resolve}}
-                                {{/each}}
-                            </ul>
-                        </div>
-                    </article>
-                </div>
-                {{/if}}
-                <!-- /grid-desktop-one-half -->
-                {{#if description.contact.name}}
-                <div class="col col--lg-half">
-                  <div class="tiles__item tiles__item--nav-type">
-                    <h3 class="tiles__title-h3 tiles__title-h3--nav">
-                    {{labels.bulletin-contact}}
-                    </h3>
-                    <address class="tiles__content--nav">
-                      {{#if description.contact.name}}{{description.contact.name}}<br/>{{/if}}
-                      <a href="mailto:{{description.contact.email}}">{{description.contact.email}}</a></br>
-                      {{#if description.contact.telephone}}{{labels.phone}}: {{description.contact.telephone}}{{/if}}
-                    </address>
-                  </div>{{!-- /col --}}
-                </div>
-                {{/if}}
-                <!-- /grid-desktop-one-half -->
-            </div>
-            <!-- /grid-wrap -->
-        </div>
-        <!--/grid-col desktop-grid-full-width -->
-    </div>
+	    <!-- headlinePage.items.0.data.months -->
+	    <!-- <div class="slate nojs-hidden box box--padded">
+	        {{#if_any relatedData relatedDatasets}}
+	        <span>Explore other {{#each breadcrumb}}{{#if @last}}{{description.title}}{{/if}}{{/each}} <strong>time series</strong> and <strong>datasets</strong></span>
+	        <div class="box__inner">
+	            <div class="grid-wrap">
+	                {{#if relatedData}}
+	                <div class="grid-col desktop-grid-one-half ">
+	                    <div class="js-enhance--ul-to-select">
+	                        <p>Related time series:</p>
+	                        <ul>
+	                            {{#each relatedData}}
+	                            {{#resolve this.uri filter="description"}}
+	                            <li><a href="{{uri}}">{{#if description.cdid}}{{description.cdid}}: {{/if}}{{description.title}}</a></li>
+	                            {{/resolve}}
+	                            {{/each}}
+	                        </ul>
+	                    </div>
+	                    {{!-- <a href="#!/previous">view all time series</a> --}}
+	                </div>
+	                {{/if}}
+	                {{#if relatedDatasets}}
+	                <div class="grid-col desktop-grid-one-half ">
+	                    <div class="js-enhance--ul-to-select">
+	                        <p>Related datasets:</p>
+	                        <ul>
+	                            {{#each relatedDatasets}}
+	                            {{#resolve this.uri filter="description"}}
+	                            <li><a href="{{uri}}">{{#if description.datasetId}}{{description.datasetId}}: {{/if}}{{description.title}}</a></li>
+	                            {{/resolve}}
+	                            {{/each}}
+	                        </ul>
+	                    </div>
+	                    {{!-- <a href="#!/previous">view all datasets</a> --}}
+	                </div>
+	                {{/if}}
+	            </div>
+	        </div>
+	        {{/if_any}}
+	    </div>
+	    {{#unless cookies.jsEnhanced}}
+	    <div class="panel--bottom-mar js-enhance--hide">
+	        <table class="tablesaw">
+	            <thead>
+	                <tr>
+	                    <th>Period</th>
+	                    <th>Value</th>
+	                </tr>
+	            </thead>
+	            <tbody>
+	                {{#each years}}
+	                <tr>
+	                    <td>{{date}}</td>
+	                    <td>{{value}}</td>
+	                </tr>
+	                {{/each}}
+	                {{#each quarters}}
+	                <tr>
+	                    <td>{{date}}</td>
+	                    <td>{{value}}</td>
+	                </tr>
+	                {{/each}}
+	                {{#each months}}
+	                <tr>
+	                    <td>{{date}}</td>
+	                    <td>{{value}}</td>
+	                </tr>
+	                {{/each}}
+	            </tbody>
+	        </table>
+	    </div>
+	    {{/unless}}
+	</div>
+	{{/if_any}} -->
+
+		{{!-- Info & notes, contact sidebar--}}
+		{{#if_any section.markdown notes}}
+	    <div class="col-wrap margin-bottom">
+			<div class="col col--lg-two-thirds">
+	            {{md section.markdown}}
+				<h3>Lorem Ipsum</h3>
+				<p>
+					Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
+				</p>
+	            <h3>Important notes and usage information</h3>
+	            {{#each notes}}
+	                {{md markdown}}
+	            {{/each}}
+				<p>It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+	        </div>
+			{{#if description.contact.name}}
+			<div class="col col--lg-one-third">
+				<div class="tiles__item tiles__item--nav-type flush-col">
+					<h3 class="tiles__title-h3 tiles__title-h3--nav">
+					{{labels.bulletin-contact}}
+					</h3>
+					<address class="tiles__content--nav">
+						{{#if description.contact.name}}{{description.contact.name}}<br/>{{/if}}
+						<a href="mailto:{{description.contact.email}}">{{description.contact.email}}</a></br>
+						{{#if description.contact.telephone}}{{labels.phone}}: {{description.contact.telephone}}{{/if}}
+					</address>
+				</div>{{!-- /tiles__item --}}
+			</div>
+			{{/if}}
+		</div>
+		{{/if_any}}
+
+		{{!-- Related link and local box --}}
+		<div class="col-wrap">
+		{{#if_any relatedDocuments relatedData relatedDatasets relatedMethodology}}
+			<div class="col col--lg-two-thirds tiles__item tiles__item--nav-type">
+				<h3 class="tiles__title-h3 tiles__title-h3--nav">Related</h3>
+				<div class="tiles__content tiles__content--nav">
+					{{#if_any relatedData relatedDatasets}}
+					<h4>Data</h4>
+					<ul class="list--neutral">
+						{{#each relatedData}}
+						{{#resolve this.uri filter="description"}}
+						<li class="flush"><a href="{{uri}}">{{#if description.cdid}}{{description.cdid}}: {{/if}}{{description.title}}</a></li>
+						{{/resolve}}
+						{{/each}}
+						{{#each relatedDatasets}}
+						{{#resolve this.uri filter="description"}}
+						<li class="flush"><a href="{{uri}}">{{#if description.datasetId}}{{description.datasetId}}: {{/if}}{{description.title}}</a></li>
+						{{/resolve}}
+						{{/each}}
+					</ul>
+					{{/if_any}}
+					{{#if relatedDocuments}}
+					<h4>Statistical bulletins and articles</h4>
+					<ul class="list--neutral">
+						{{#each relatedDocuments}}
+			            {{#resolve this.uri filter="title"}}
+			            <li class="flush"><a href="{{uri}}">{{title}}{{#if edition}}{{#if_ne edition 'yes'}}: {{edition}}{{/if_ne}}{{/if}}</a></li>
+			            {{/resolve}}
+			            {{/each}}
+					</ul>
+			        {{/if}}
+					{{#if relatedMethodology}}
+	                <h4>Methodology</h4>
+	                <ul class="list--neutral">
+	                    {{#each relatedMethodology}}
+	                    {{#resolve this.uri filter="title"}}
+	                    <li class="flush"><a href="{{uri}}" title="{{title}}">{{title}}</a></li>
+	                    {{/resolve}}
+	                    {{/each}}
+	                </ul>
+	                {{/if}}
+				</div>
+			</div>
+		{{/if_any}}
+	    <div class="col col--lg-one-third">
+	        {{> partials/local-box}}
+	    </div>
+	</div>
 </div>
 </main>
