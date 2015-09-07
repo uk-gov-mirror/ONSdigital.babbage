@@ -1,4 +1,4 @@
-package com.github.onsdigital.babbage.request.handler;
+package com.github.onsdigital.babbage.request.handler.list;
 
 import com.github.onsdigital.babbage.request.handler.base.ListPageBaseRequestHandler;
 import com.github.onsdigital.content.page.base.PageType;
@@ -6,20 +6,15 @@ import com.github.onsdigital.content.page.base.PageType;
 /**
  * Render a list page for bulletins under the given URI.
  */
-public class PublicationsRequestHandler extends ListPageBaseRequestHandler {
+public class TopicSpecificMethodologyRequestHandler extends ListPageBaseRequestHandler {
     @Override
     public String getRequestType() {
-        return "publications";
+        return "topicspecificmethodology";
     }
 
     @Override
     public String[] getListTypes() {
-        return new String[]{PageType.article.toString(),PageType.bulletin.toString(),PageType.compendium_landing_page.toString()};
-    }
-
-    @Override
-    public String getTemplateName() {
-        return "content/t9-8";
+        return new String[]{PageType.article.toString(),PageType.static_qmi.toString()};
     }
 
     @Override

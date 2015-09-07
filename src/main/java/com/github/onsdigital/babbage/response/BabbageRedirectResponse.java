@@ -1,4 +1,4 @@
-package com.github.onsdigital.babbage.request.response;
+package com.github.onsdigital.babbage.response;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;

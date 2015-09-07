@@ -120,36 +120,6 @@ public enum ConditionHelpers implements BabbageHandlebarsHelper<Object> {
             handlebars.registerHelper(this.name(), this);
         }
 
-    },
-
-    /*Used together with case helper*/
-    _switch {
-        @Override
-        public CharSequence apply(Object context, Options options) throws IOException {
-            options.context.data("_switchData", context);
-            return options.fn();
-        }
-
-        @Override
-        public void register(Handlebars handlebars) {
-            handlebars.registerHelper("switch", this);
-        }
-    },
-    _case {
-        @Override
-        public CharSequence apply(Object context, Options options) throws IOException {
-            Object switchData = options.context.get("_switchData");
-            if(HelperUtils.isEqual(context, switchData)) {
-                return options.fn();
-            } else {
-                return options.inverse();
-            }
-        }
-
-        @Override
-        public void register(Handlebars handlebars) {
-            handlebars.registerHelper("case", this);
-        }
     };
 
 

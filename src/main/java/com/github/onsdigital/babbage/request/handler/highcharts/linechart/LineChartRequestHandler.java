@@ -1,11 +1,10 @@
 package com.github.onsdigital.babbage.request.handler.highcharts.linechart;
 
 import com.github.onsdigital.babbage.content.client.ContentClient;
-import com.github.onsdigital.babbage.content.client.ContentFilter;
 import com.github.onsdigital.babbage.content.client.ContentStream;
 import com.github.onsdigital.babbage.request.handler.base.RequestHandler;
-import com.github.onsdigital.babbage.request.response.BabbageResponse;
-import com.github.onsdigital.babbage.request.response.BabbageStringResponse;
+import com.github.onsdigital.babbage.response.BabbageResponse;
+import com.github.onsdigital.babbage.response.BabbageStringResponse;
 import com.github.onsdigital.babbage.template.TemplateService;
 
 import javax.servlet.http.HttpServletRequest;
