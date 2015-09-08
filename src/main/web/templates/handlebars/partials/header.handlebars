@@ -24,7 +24,7 @@
 		{{!-- <link rel="stylesheet" href="/node_modules/ONS-Pattern-Library/dist/css/main.min.css"/> --}}
 		<![endif]-->
 
-		{{!-- <link rel="stylesheet" href="/css/js-enhance.css"/> --}}
+		<link rel="stylesheet" href="/css/js-enhance.css"/>
 		{{!-- <link rel="stylesheet" href="/css/c3.css"/> --}}
 	  	{{!-- <script src="/node_modules/ONS-Pattern-Library/dist/js/header.js"></script> --}}
 	  	<!-- Bugherd integration script: http://bugherd.com/documentation/installing-the-sidebar/ -->
@@ -40,6 +40,7 @@
 	  	</script>
   	</head>
   	<body>
+  		<script type="text/javascript" src="/js/js-enhance-loading.js"></script>
 	  	<header>
 		  	{{!-- Skip to main content accessibility link --}}
 		  	{{!-- <div class="wrapper">
@@ -66,7 +67,7 @@
 							<img class="main-logo" src="/node_modules/ONS-Pattern-Library/dist/img/ons-logo.png" alt="Office for National Statistics">
 						</a>
 					</div>
-					<div class="language col col--lg-two-thirds col--md-two-thirds">
+					<div class="language col col--lg-two-thirds col--md-two-thirds print--hide">
 						<form class="language__form">
 							<label class="language__label" for="lang">Language:</label>
 							<select class="language__select" id="lang" name="lang">
@@ -77,7 +78,7 @@
 							<input type="submit" value="Submit">
 						</form>
 					</div>
-					<nav class="secondary-nav col col--lg-two-thirds col--md-two-thirds">
+					<nav class="secondary-nav col col--lg-two-thirds col--md-two-thirds print--hide">
 						<ul class="secondary-nav__list">
 							<li class="secondary-nav__item">
 								<a class="secondary-nav__link" href="/about/releasecalendar">{{labels.release-calendar}}</a>
@@ -95,7 +96,7 @@
 			{{!-- /wrapper --}}
 
 			{{!-- MAIN NAV --}}
-			<div class="primary-nav">
+			<div class="primary-nav print--hide">
 				<nav>
 					<ul class="nav--controls">
 						<li class="nav--controls__item">
