@@ -142,14 +142,14 @@
 				<div class="col col--lg-two-thirds">
 					<div class="tiles__item tiles__item--nav-type flush-col">
 						<h3 class="tiles__title-h3 tiles__title-h3--nav">Related methodology</h3>
-							<ul class="tiles__content tiles__content--nav">
+							<ul class="tiles__content tiles__content--nav list--neutral">
 								{{#each relatedMethodology}}
 								{{#resolve this.uri filter="title"}}
-								<li><a href="{{absolute uri}}">{{description.title}}</a></li>
+								<li class="flush-top"><a href="{{absolute uri}}">{{description.title}}</a></li>
 								{{/resolve}}
 								{{/each}}
-								<li>a link</li>
-								<li>another link</li>
+								<li class="flush-top">a link</li>
+								<li class="flush-top">another link</li>
 							</ul>
 						</div>
 					</div>
