@@ -2,6 +2,8 @@ package com.github.onsdigital.babbage.search;
 
 import com.github.onsdigital.babbage.search.helpers.CountResponseHelper;
 import com.github.onsdigital.babbage.search.helpers.SearchResponseHelper;
+import com.github.onsdigital.babbage.search.query.Type;
+import org.apache.commons.lang3.ArrayUtils;
 import org.elasticsearch.action.count.CountRequestBuilder;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.client.Client;
@@ -40,6 +42,10 @@ public class SearchService {
     public SearchResponseHelper search(ONSQueryBuilder queryBuilder) throws IOException {
         SearchRequestBuilder searchRequestBuilder = client.prepareSearch(getElasticSearchIndexAlias()).setQuery(queryBuilder.build());
         searchRequestBuilder.setFrom(queryBuilder.getFrom()).setSize(queryBuilder.getSize());
+        String[] types = getTypes(queryBuilder);
+        if (types != null) {
+            searchRequestBuilder.setTypes(types);
+        }
         if (queryBuilder.isHighLightFields()) {
             setHighlights(searchRequestBuilder);
         }
@@ -58,6 +64,10 @@ public class SearchService {
 
     public CountResponseHelper count(ONSQueryBuilder queryBuilder) {
         CountRequestBuilder countRequestBuilder = client.prepareCount(getElasticSearchIndexAlias()).setQuery(queryBuilder.build());
+        String[] types = getTypes(queryBuilder);
+        if (types != null) {
+            countRequestBuilder.setTypes(types);
+        }
         return new CountResponseHelper(countRequestBuilder.get());
     }
 
@@ -67,12 +77,27 @@ public class SearchService {
         }
     }
 
+    private String[] getTypes(ONSQueryBuilder onsQueryBuilder) {
+        Type[] types = onsQueryBuilder.getTypes();
+        String[] queryTypes = new String[0];
+        if (types != null) {
+            for (Type type : types) {
+                queryTypes = ArrayUtils.add(queryTypes, type.getType());
+            }
+        }
+        if (queryTypes.length > 0) {
+            return queryTypes;
+        }
+        return null;
+    }
+
     private static class ShutDownNodeThread extends Thread {
         private Client client;
 
         public ShutDownNodeThread(Client client) {
             this.client = client;
         }
+
         @Override
         public void run() {
             client.close();

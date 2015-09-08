@@ -167,7 +167,7 @@ public class ONSQueryBuilder {
     }
 
     public ONSQueryBuilder addSort(String fieldName, SortOrder sortOrder) {
-        FieldSortBuilder sortBuilder = new FieldSortBuilder(fieldName);
+        FieldSortBuilder sortBuilder = new FieldSortBuilder(fieldName).ignoreUnmapped(true);
         if (sortOrder != null) {
             sortBuilder.order(org.elasticsearch.search.sort.SortOrder.valueOf(sortOrder.name()));
         }

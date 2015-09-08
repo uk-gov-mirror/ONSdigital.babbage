@@ -13,7 +13,7 @@ public class PublicationsRequestHandler extends ListPageBaseRequestHandler {
     }
 
     @Override
-    public String[] getListTypes() {
+    public String[] getAllowedTypes() {
         return new String[]{PageType.article.toString(),PageType.bulletin.toString(),PageType.compendium_landing_page.toString()};
     }
 

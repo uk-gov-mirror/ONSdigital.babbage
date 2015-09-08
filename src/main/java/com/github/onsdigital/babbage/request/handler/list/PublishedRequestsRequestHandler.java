@@ -13,7 +13,7 @@ public class PublishedRequestsRequestHandler extends ListPageBaseRequestHandler 
     }
 
     @Override
-    public String[] getListTypes() {
+    public String[] getAllowedTypes() {
         return new String[]{PageType.static_foi.toString()};
     }
 

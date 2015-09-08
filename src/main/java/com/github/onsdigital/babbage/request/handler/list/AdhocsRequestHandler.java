@@ -13,7 +13,7 @@ public class AdhocsRequestHandler extends ListPageBaseRequestHandler {
     }
 
     @Override
-    public String[] getListTypes() {
+    public String[] getAllowedTypes() {
         return new String[]{PageType.static_adhoc.toString()};
     }
 

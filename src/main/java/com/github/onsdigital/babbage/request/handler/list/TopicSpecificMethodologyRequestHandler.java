@@ -13,12 +13,12 @@ public class TopicSpecificMethodologyRequestHandler extends ListPageBaseRequestH
     }
 
     @Override
-    public String[] getListTypes() {
-        return new String[]{PageType.article.toString(),PageType.static_qmi.toString()};
+    public String[] getAllowedTypes() {
+        return new String[]{PageType.static_methodology.toString(),PageType.static_qmi.toString()};
     }
 
     @Override
     public boolean useLocalisedUri() {
-        return true;
+        return false;
     }
 }

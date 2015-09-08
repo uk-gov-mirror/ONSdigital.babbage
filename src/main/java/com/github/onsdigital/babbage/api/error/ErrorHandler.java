@@ -17,7 +17,7 @@ import java.io.StringReader;
 
 /**
  * Created by bren on 28/05/15.
- * <p/>
+ * <p>
  * Handles exceptions and returns appropriate response to the client.
  */
 public class ErrorHandler implements ServerError {
@@ -46,6 +46,8 @@ public class ErrorHandler implements ServerError {
         //todo: get rid of this exception type, all content should be read from content server
         else if (t instanceof ResourceNotFoundException) {
             renderErrorPage(404, response);
+        } else {
+            renderErrorPage(500, response);
         }
     }
 

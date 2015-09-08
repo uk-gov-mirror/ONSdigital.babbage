@@ -11,6 +11,8 @@ public class SearchResult {
 
     private long numberOfResults;
     private long took;
+    private int currentPage;
+    private int numberOfPages;
     private List<Map<String, Object>> results = new ArrayList<>();
     public long getNumberOfResults() {
         return numberOfResults;
@@ -38,5 +40,21 @@ public class SearchResult {
 
     public void setTook(long took) {
         this.took = took;
+    }
+
+    public int getCurrentPage() {
+        return currentPage;
+    }
+
+    public void setCurrentPage(int currentPage) {
+        this.currentPage = currentPage;
+    }
+
+    public int getNumberOfPages() {
+        return numberOfPages;
+    }
+
+    public void setNumberOfPages(int numberOfPages) {
+        this.numberOfPages = numberOfPages;
     }
 }

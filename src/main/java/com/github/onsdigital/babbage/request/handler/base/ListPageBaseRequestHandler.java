@@ -1,14 +1,19 @@
 package com.github.onsdigital.babbage.request.handler.base;
 
+import com.github.onsdigital.babbage.request.handler.list.helper.ListSearchHelper;
 import com.github.onsdigital.babbage.response.BabbageResponse;
 import com.github.onsdigital.babbage.response.BabbageStringResponse;
+import com.github.onsdigital.babbage.search.helpers.SearchResponseHelper;
 import com.github.onsdigital.babbage.template.TemplateService;
 import com.github.onsdigital.babbage.util.json.JsonUtil;
 import com.github.onsdigital.content.util.URIUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.Set;
 
 /**
  * Render a list page for bulletins under the given URI.
@@ -22,7 +27,7 @@ public abstract class ListPageBaseRequestHandler implements RequestHandler {
      *
      * @return
      */
-    public abstract String[] getListTypes();
+    public abstract String[] getAllowedTypes();
 
     /**
      * Return true if the list page is localised to a uri.
@@ -47,14 +52,19 @@ public abstract class ListPageBaseRequestHandler implements RequestHandler {
         }
 
         LinkedHashMap<String, Object> listData = new LinkedHashMap<>();
-        listData.put("uri", requestedUri);
+        listData.put("uri", request.getRequestURI());//set full uri in the context
         listData.put("type", type);
-        String html = TemplateService.getInstance().renderListPage(type, getData(uri), JsonUtil.toJson(listData));
+        String html = TemplateService.getInstance().renderListPage(type, list(uri, request), JsonUtil.toJson(listData));
         babbageResponse = new BabbageStringResponse(html, CONTENT_TYPE);
         return babbageResponse;
     }
 
-    public String getData(String uri) throws IOException {
-        return "";
+    protected String list(String uri, HttpServletRequest request) throws IOException {
+        SearchResponseHelper helper = new ListSearchHelper().list(uri, getTypeSet(), request);
+        return helper.toJson();
+    }
+
+    private Set<String> getTypeSet() {
+        return new HashSet<>(Arrays.asList(getAllowedTypes()));
     }
 }
