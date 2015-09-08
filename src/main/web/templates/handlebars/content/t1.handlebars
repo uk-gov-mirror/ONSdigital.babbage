@@ -1,11 +1,21 @@
 <main id="main" role="main" tabindex="-1">
-<div class="page-header">
+<div class="page-intro">
     <div class="wrapper">
-        <h1 class="page-header__title flush--half--bottom">{{ labels.homepage-welcome }}</h1>
-       <p>{{md description.summary}}</p>
+        <div class="col-wrap">
+            <div class="col">
+                {{!-- Title & summary --}}
+                {{!-- <h1 class="page-intro__title page-intro__title--home col col--md-47 col--lg-36">{{labels.homepage-welcome}}</h1>
+                <div class="page-intro__content page-intro__content--home-big col col--md-47 col--lg-48">{{md description.summary}}</div> --}}
+                <h1 class="page-intro__title page-intro__title--home col col--md-47 col--lg-34"><span class="page-intro__title page-intro__title--home-big">
+                    Welcome to </span>The Office for National Stastics
+                </h1>
+                <p class="page-intro__content page-intro__content--home-big col col--md-47 col--lg-34">
+                    The UK's largest independent producer of official statistics and the recognised national statistical institute of the UK.
+                </p>
 
-    </div>
-    <!-- / wrapper -->
+            </div> {{!-- /col --}}
+        </div> {{!-- /col-wrap --}}
+    </div> {{!-- /wrapper --}}
 </div>
 <!-- panel -->
 
