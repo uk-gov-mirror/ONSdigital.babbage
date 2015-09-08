@@ -1,0 +1,136 @@
+<!--[if IE]><![endif]-->
+<!DOCTYPE html>
+<!--[if lt IE 7]><html class="no-js lt-ie8 lt-ie7"><![endif]-->
+<!--[if IE 7]><html class="no-js lt-ie8 ie7"><![endif]-->
+<!--[if IE 8]><html class="ie8"><![endif]-->
+<!--[if gt IE 8]><!--><!-->
+<html class="no-js">
+  <!--<![endif]-->
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>{{description.title}}</title>
+    <meta charset="utf-8" />
+    <meta content="width=device-width,initial-scale=1.0" name="viewport" />
+    <meta content="on" http-equiv="cleartype" />
+    <meta name="format-detection" content="telephone=no">
+    <!--[if IE]><![endif]-->
+    <!--[if lte IE 8]>
+<link rel="stylesheet" href="/node_modules/ONS-Pattern-Library/dist/css/oldie.min.css"/>
+<![endif]-->
+    <!--[if gt IE 8]><!-->
+		<link rel="stylesheet" href="/node_modules/ONS-Pattern-Library/dist/css/main.min.css"/>
+		<![endif]-->
+		<link rel="stylesheet" href="/css/js-enhance.css"/>
+		<link rel="stylesheet" href="/css/c3.css"/>
+  	<script src="/node_modules/ONS-Pattern-Library/dist/js/header.js"></script>
+  	<!-- Bugherd integration script: http://bugherd.com/documentation/installing-the-sidebar/ -->
+  	<script type='text/javascript'>
+  		var BugHerdConfig = {"feedback":{"hide":true}};
+  	    (function(d, t) {
+  	        var bh = d.createElement(t),
+  	            s = d.getElementsByTagName(t)[0];
+  	        bh.type = 'text/javascript';
+  	        bh.src = '//www.bugherd.com/sidebarv2.js?apikey=cwz4globzxvnj84jsovora';
+  	        s.parentNode.insertBefore(bh, s);
+  	    })(document, 'script');
+  	</script>
+  </head>
+  <body class="">
+  	<!-- <script type="text/javascript" src="/js/js-enhance-loading.js"></script> -->
+	<div class="wrapper">
+		<a class="skiplinks visuallyhidden focusable" href="#main" tabindex="0">
+			Skip to main content
+		</a>
+	</div
+	<!-- for download analytics function -->
+	<div id="pagePath" class="hidden">{{uri}}</div>
+
+	<!-- Prototype banner -->
+	<div class="prototype-banner">
+		<div class="wrapper">
+			<p class="flush mini">This is a test website, so may be inaccurate or misleading. The official website remains <a href="http://ons.gov.uk/">ons.gov.uk</a></p>
+		</div>
+	</div>
+
+	<!-- Pattern library page header -->
+	<header class="global-header">
+		<div class="global-header__wrapper">
+			<a class="main-logo" href="/">
+				<img src="/node_modules/ONS-Pattern-Library/dist/img/ons-logo.png" alt="Office for National Statistics">
+			</a>
+			<ul class="nav globaltop-nav">
+				<li>
+					<a href="/about/releasecalendar">{{labels.release-calendar}}</a>
+				</li>
+				<li>
+					<a href="/methodology">{{labels.methodology}}</a>
+				</li>
+				<li>
+					<a href="/about">{{labels.about}}</a>
+				</li>
+			</ul>
+		</div>
+	</header>
+	<nav class="ons-nav print-hidden">
+		<ul class="nav nav--controls">
+			<li class="nav--controls__menu">
+				<a href="#nav-primary" id="menu-toggle" aria-controls="nav-primary" class="panel--pad">
+					{{!-- <span class="nav--controls__icon icon-menu icon--inline icon--large" role="presentation"></span> --}}
+					<span class="nav--controls__text">{{labels.dropdown-menu}}</span>
+				</a> 
+			</li>
+			<li class="nav--controls__search">
+				<a href="#nav-search" id="search-toggle" aria-controls="nav-search" class="panel--pad-small">
+					{{!-- <span class="nav--controls__icon icon-search-1 icon--inline icon--large" role="presentation"></span> --}}
+					<span class="nav--controls__text">{{labels.search}}</span>
+				</a>
+			</li>
+		</ul>
+		<ul class="nav nav--block nav--primary" id="nav-primary">
+			<li class="nav--primary__hide-small-med">
+				<a href="/">{{labels.home}}</a>
+			</li>
+			{{#each navigation}}
+			{{#if_eq this.type "taxonomy_landing_page"}}
+				<li class="nav__expandable js-expandable {{#if_any (eq uri breadcrumb.1/uri)  (eq uri ../../uri) }}nav--primary__active{{/if_any}}">
+					<a href="{{uri}}">{{description.title}}</a>
+						<ul class="nav--primary__sub js-expandable__content js-nav-hidden">
+							{{#each children}}
+								<li {{#if_any (eq uri breadcrumb.2/uri) (eq uri ../../uri)}}class="nav--primary__active"{{/if_any}}>
+									<a href="{{uri}}" >{{description.title}}</a>
+								</li>
+							{{/each}} {{!-- /each to find 2nd level nodes --}}
+						</ul>
+				</li>
+			{{/if_eq}}
+			{{/each}} {{!-- /each to find 1st level nodes --}}
+			<li class="nav--primary__respondents {{#if_eq uri '/about/surveys'}}nav--primary__active{{/if_eq}}">
+				<a href="/about/surveys">
+					<span class="icon-comment icon--inline" role="presentation"></span>
+					{{labels.survey-respondents}}
+				</a>
+			</li>
+			<li class="nav--primary__secondary-content">
+				<a href="/about/releasecalendar">{{labels.release-calendar}}</a>
+			</li>
+			<li class="nav--primary__secondary-content">
+				<a href="/methodology">{{labels.methodology}}</a>
+			</li>
+			<li class="nav--primary__secondary-content">
+				<a href="/about">{{labels.about}}</a>
+			</li>
+		</ul> <!-- /nav-primary -->
+
+		<div class="slate--grey search-wrapper">
+			<form class="nav-search nav-search--hidden" id="searchBar" action="/search">
+				<div class="nav-search__container">
+					<label class="visuallyhidden" for="nav-search">{{labels.search-placeholder}}</label>
+					<input type="search" autocomplete="off" class="nav-search__field" id="nav-search" name="q" value="" placeholder="{{labels.search-placeholder}}">
+				</div>
+				<button type="submit" class="btn btn--primary btn--nav-search" id="nav-search-submit">
+				<span class="icon-search-1" role="presentation"></span>
+				<span class="visuallyhidden">{{labels.search}}</span>
+				</button>
+			</form>
+		</div>
+	</nav>
