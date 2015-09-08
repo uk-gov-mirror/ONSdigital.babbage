@@ -1,14 +1,9 @@
 <main id="main" role="main" tabindex="-1">
 <div class="wrapper panel--top-mar">
-	{{> partials/list-page-breadcrumb label="Data"}}
+	{{> partials/list-page-breadcrumb label="Published requests"}}
 	<p class="page-header__title">
-		Data
+		Published requests
 	</p>
-	{{#each breadcrumb}}
-	{{#if @last}}
-	<h1 class="page-header__title flush--half--bottom">{{description.title}}</h1>
-	{{/if}}
-	{{/each}}
 	
 </div>
 <!-- /wrapper -->
@@ -42,56 +37,7 @@
 							<label class="visuallyhidden" for="input-keywords">Keywords</label>
 							<input type="search" autocomplete="off" id="input-keywords" name="keywords" value="" placeholder="Keywords">
 						</div>
-						<div class="panel panel--bottom-pad panel--separated--bottom flush">
-							<span class="flush float-left">Data format</span>
-						</div>
-						<div class="box__content">
-							<ul class="list--neutral">
-								<li>
-									<input id="checkbox-timeseries" type="checkbox" name="type" value="timeseries" {{#contains parameters.type 'timeseries'}}checked{{/contains}} >
-									<label for="checkbox-timeseries">
-										Single time series
-									</label>
-								</li>
-								<li>
-									<input id="checkbox-dataset" type="checkbox" name="type" value="dataset" {{#contains parameters.type 'dataset'}}checked{{/contains}}>
-									<label for="checkbox-dataset">
-										Large dataset
-									</label>
-								</li>
-							</ul>
-						</div>
-						<div class="panel panel--bottom-pad panel--separated--bottom flush">
-							<span class="flush float-left">Keywords</span>
-						</div>
-						<div class="box__content">
-							<ul class="list--neutral">
-								<li>
-									<input id="checkbox-sa" type="checkbox" name="keywords" value="Seasonally adjusted" {{#contains parameters.keywords 'Seasonally adjusted'}}checked{{/contains}} >
-									<label for="checkbox-sa">
-										Seasonally adjusted (SA)
-									</label>
-								</li>
-								<li>
-									<input id="checkbox-nsa" type="checkbox" name="keywords" value="Non seasonally adjusted" {{#contains parameters.keywords 'Non seasonally adjusted'}}checked{{/contains}}>
-									<label for="checkbox-nsa">
-										Non seasonally adjusted (NSA)
-									</label>
-								</li>
-								<li>
-									<input id="checkbox-gender" type="checkbox" name="keywords" value="By gender" {{#contains parameters.keywords 'By gender'}}checked{{/contains}}>
-									<label for="checkbox-gender">
-										By gender
-									</label>
-								</li>
-								<li>
-									<input id="checkbox-age" type="checkbox" name="keywords" value="By age" {{#contains parameters.keywords 'By age'}}checked{{/contains}}>
-									<label for="checkbox-age">
-										By age
-									</label>
-								</li>
-							</ul>
-						</div>
+						
 						<div class="panel panel--bottom-pad panel--separated--bottom flush">
 							<span class="flush float-left">Release date</span>
 						</div>
@@ -112,6 +58,7 @@
 						</div>
 						<div class="box__content">
 							<select class="input inline width-auto" id="select-topic" name="topic">
+								<option value="" >Select topic</option>
 								{{#each navigation}}
 								{{#if_eq this.type "taxonomy_landing_page"}}
 								<option value="{{this.uri}}" {{#if_eq parameters.topic.0 this.uri}}selected{{/if_eq}}>{{this.description.title}}</option>
@@ -162,7 +109,7 @@
 					{{/if}}
 					
 					{{else}}
-					Sorry, there are no <strong>publications</strong> for <strong>{{#each breadcrumb}}{{#if @last}}{{description.title}}{{/if}}{{/each}}</strong>.
+					Sorry, there are no <strong>published requests</strong>.
 					{{/if}}
 				</p>
 				<ul class="list--neutral">

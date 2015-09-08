@@ -1,0 +1,8 @@
+<label for="select" class="inline description">Sort by
+	<select class="input inline width-auto" id="select" name="sortBy">
+		<option value="" {{#if_eq parameters.sortBy.0 ""}}selected{{/if_eq}}>Relevance</option>
+		<option value="releaseDate" {{#if_eq parameters.sortBy.0 "releaseDate"}}selected{{/if_eq}} >Release date</option>
+		<option value="description.title.raw" {{#if_eq parameters.sortBy.0 "description.title.raw"}}selected{{/if_eq}}>Title</option>
+	</select>
+	<button type="submit" class="btn btn--primary btn--small panel--mar-small">Sort</button>
+</label>

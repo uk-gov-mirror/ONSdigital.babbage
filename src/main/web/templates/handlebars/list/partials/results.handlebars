@@ -1,0 +1,16 @@
+<ul class="list--neutral">
+	{{#each results}}
+	<li>
+		<h3 class="flush"><a href="{{uri}}">{{description.title}}
+			{{#if description.edition}}
+			{{#if_ne description.edition 'yes'}}: {{description.edition}}{{/if_ne}}
+		{{/if}}</a></h3>
+		<span class="lozenge">{{> type-label type=this.type}}</span>
+		<p class="mini flush description">
+			Released: {{df description.releaseDate}}  {{#if description.reference}}Ref: {{description.reference}}{{/if}}
+		</p>
+		{{md description.summary}}
+	</li>
+	{{/each}}
+</ul>
+{{> list/partials/paginator}}

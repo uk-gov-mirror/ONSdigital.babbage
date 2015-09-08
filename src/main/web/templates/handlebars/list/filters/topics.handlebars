@@ -1,0 +1,16 @@
+<div class="panel panel--bottom-pad panel--separated--bottom flush">
+	<span class="flush float-left">Topics</span>
+</div>
+<div class="box__content">
+	<select class="input inline width-auto" id="select-topic" name="topic">
+		<option value="" >Select topic</option>
+		{{#each navigation}}
+		{{#if_eq this.type "taxonomy_landing_page"}}
+		<option value="{{this.uri}}" {{#if_eq parameters.topic.0 this.uri}}selected{{/if_eq}}>{{this.description.title}}</option>
+		{{#each children}}
+		<option value="{{this.uri}}" {{#if_eq parameters.topic.0 this.uri}}selected{{/if_eq}}>{{this.description.title}}</option>
+		{{/each}} {{!-- /each to find 2nd level nodes --}}
+		{{/if_eq}}
+		{{/each}}
+	</select>
+</div>
