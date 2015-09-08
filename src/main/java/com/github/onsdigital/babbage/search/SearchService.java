@@ -41,7 +41,10 @@ public class SearchService {
 
     public SearchResponseHelper search(ONSQueryBuilder queryBuilder) throws IOException {
         SearchRequestBuilder searchRequestBuilder = client.prepareSearch(getElasticSearchIndexAlias()).setQuery(queryBuilder.build());
-        searchRequestBuilder.setFrom(queryBuilder.getFrom()).setSize(queryBuilder.getSize());
+
+        if (queryBuilder.getFrom() != null) {
+            searchRequestBuilder.setFrom(queryBuilder.getFrom()).setSize(queryBuilder.getSize());
+        }
         String[] types = getTypes(queryBuilder);
         if (types != null) {
             searchRequestBuilder.setTypes(types);

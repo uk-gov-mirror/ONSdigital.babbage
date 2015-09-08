@@ -1,64 +1,133 @@
-{{!-- Resolve parents of current uri for and assign to variable breadcrumb for building breadcrumb --}}
-{{resolveParents uri assign="breadcrumb"}}
-{{!-- Resolve navigation fetching children of root uri "/" with depth 2 --}}
-{{resolveChildren "/" depth=2 assign="navigation"}}
-
-{{> partials/header}}
 <main id="main" role="main" tabindex="-1">
-	<div class="wrapper panel--top-mar">
-		{{> partials/breadcrumb}}
-		<h1 class="page-header__title flush--half--bottom">Freedom of Information (FOI) disclosure log</h1>
-		<p>
-			{{#if statisticsSearchResult.results}}
-			<span class="stand-out-text">{{statisticsSearchResult.numberOfResults}}</span> results for <strong>freedom of information requests</strong> related to <strong>{{#each breadcrumb}}{{#if @last}}{{description.title}}{{/if}}{{/each}}</strong>.
-			{{else}}
-			Sorry, there is no <strong>freedom of information requests</strong> for <strong>{{#each breadcrumb}}{{#if @last}}{{description.title}}{{/if}}{{/each}}</strong>.
-			{{/if}}
-		</p>
-	</div>
-	<!-- /wrapper -->
-	<div class="wrapper panel--mar print-links">
-		{{#if contentSearchResult.results}}
-		<!-- /grid-wrap -->
+<div class="wrapper panel--top-mar">
+	{{> partials/list-page-breadcrumb label="Data"}}
+	<p class="page-header__title">
+		Data
+	</p>
+	{{#each breadcrumb}}
+	{{#if @last}}
+	<h1 class="page-header__title flush--half--bottom">{{description.title}}</h1>
+	{{/if}}
+	{{/each}}
+	
+</div>
+<!-- /wrapper -->
+<div class="wrapper panel--mar print-links">
+	<form id="filters">
+		<div class="grid-wrap panel--bottom-mar print-hidden">
+			<div class="grid-col desktop-grid-one-quarter desktop-grid-push-three-quarters tablet-grid-full-width">
+				<label for="select" class="inline description">Sort by
+					<select class="input inline width-auto" id="select" name="sortBy">
+						<option value="" {{#if_eq parameters.sortBy.0 ""}}selected{{/if_eq}}>Relevance</option>
+						<option value="releaseDate" {{#if_eq parameters.sortBy.0 "releaseDate"}}selected{{/if_eq}} >Release date</option>
+						<option value="description.title.raw" {{#if_eq parameters.sortBy.0 "description.title.raw"}}selected{{/if_eq}}>Title</option>
+					</select>
+					<button type="submit" class="btn btn--primary btn--small panel--mar-small">Sort</button>
+				</label>
+			</div>
+		</div>
 		<div class="grid-wrap">
 			<div class="grid-col desktop-grid-one-third">
 				<article class="box box--padded sectioned print-hidden">
-					<form id="filters">
+					<div class="panel panel--bottom-pad panel--separated--bottom flush">
+						<h3 class="flush float-left">Refine results</h3>
+						<a href="./datalist" value="Reset" class="btn btn--primary btn--small btn--thin btn--narrow btn--clear-results float-right">{{labels.search-refine-clear}}</a>
+					</div>
+					<div class="box__content">
 						<div class="panel panel--bottom-pad panel--separated--bottom flush">
-							<h3 class="flush float-left">Refine results</h3>
-							<button type="reset" value="Reset" class="btn btn--primary btn--small btn--thin btn--narrow btn--clear-results float-right">Clear</button>
+							<span class="flush float-left">Contains</span>
+						</div>
+						
+						<div class="box__content">
+							<label class="visuallyhidden" for="input-keywords">Keywords</label>
+							<input type="search" autocomplete="off" id="input-keywords" name="keywords" value="" placeholder="Keywords">
+						</div>
+						<div class="panel panel--bottom-pad panel--separated--bottom flush">
+							<span class="flush float-left">Data format</span>
 						</div>
 						<div class="box__content">
-							<label class="field flush field--spaced field--text">
-								<span class="panel panel--separated--bottom block">Contains</span>
-								<input class="input input--med" type="text" placeholder="Keywords">
-							</label>
-							<p class="panel panel--separated--bottom field--text">Release date</p>
-							<label class="field field--spaced field--text">
-								<span class="flush">Published after</span>
-								<input class="input input--med" type="text" placeholder="eg 01/01/2015">
-							</label>
-							<label class="field field--spaced field--text">
-								<p class="flush">Published before</p>
-								<input class="input input--med" type="text" placeholder="eg 01/02/2015">
-							</label>
-							<div class="panel panel--separated--bottom">
-								<label for="select">Topics</label>
-							</div>
-							<div class="field field--spaced">
-								<select class="input input--mini" id="select" name="Topics">
-								<option value="1" selected>All</option>
-								{{#each navigation.nodes}}
-								<option value="{{slugify title}}">{{title}}</option>
+							<ul class="list--neutral">
+								<li>
+									<input id="checkbox-timeseries" type="checkbox" name="type" value="timeseries" {{#contains parameters.type 'timeseries'}}checked{{/contains}} >
+									<label for="checkbox-timeseries">
+										Single time series
+									</label>
+								</li>
+								<li>
+									<input id="checkbox-dataset" type="checkbox" name="type" value="dataset" {{#contains parameters.type 'dataset'}}checked{{/contains}}>
+									<label for="checkbox-dataset">
+										Large dataset
+									</label>
+								</li>
+							</ul>
+						</div>
+						<div class="panel panel--bottom-pad panel--separated--bottom flush">
+							<span class="flush float-left">Keywords</span>
+						</div>
+						<div class="box__content">
+							<ul class="list--neutral">
+								<li>
+									<input id="checkbox-sa" type="checkbox" name="keywords" value="Seasonally adjusted" {{#contains parameters.keywords 'Seasonally adjusted'}}checked{{/contains}} >
+									<label for="checkbox-sa">
+										Seasonally adjusted (SA)
+									</label>
+								</li>
+								<li>
+									<input id="checkbox-nsa" type="checkbox" name="keywords" value="Non seasonally adjusted" {{#contains parameters.keywords 'Non seasonally adjusted'}}checked{{/contains}}>
+									<label for="checkbox-nsa">
+										Non seasonally adjusted (NSA)
+									</label>
+								</li>
+								<li>
+									<input id="checkbox-gender" type="checkbox" name="keywords" value="By gender" {{#contains parameters.keywords 'By gender'}}checked{{/contains}}>
+									<label for="checkbox-gender">
+										By gender
+									</label>
+								</li>
+								<li>
+									<input id="checkbox-age" type="checkbox" name="keywords" value="By age" {{#contains parameters.keywords 'By age'}}checked{{/contains}}>
+									<label for="checkbox-age">
+										By age
+									</label>
+								</li>
+							</ul>
+						</div>
+						<div class="panel panel--bottom-pad panel--separated--bottom flush">
+							<span class="flush float-left">Release date</span>
+						</div>
+						<div class="box__content">
+							<ul class="list--neutral">
+								<li>
+									<label for="input-start-date">Published after</label>
+									<input type="date" autocomplete="off" id="input-start-date" name="startDate" value="{{parameters.keywords.startDate}}" placeholder="e.g. 01/01/2015" validate>
+								</li>
+								<li>
+									<label for="input-end-date">Published before</label>
+									<input type="date" autocomplete="off" id="input-end-date" name="endDate" value="{{parameters.keywords.endDate}}" placeholder="e.g. 01/02/2015" validate>
+								</li>
+							</ul>
+						</div>
+						<div class="panel panel--bottom-pad panel--separated--bottom flush">
+							<span class="flush float-left">Topics</span>
+						</div>
+						<div class="box__content">
+							<select class="input inline width-auto" id="select-topic" name="topic">
+								{{#each navigation}}
+								{{#if_eq this.type "taxonomy_landing_page"}}
+								<option value="{{this.uri}}" {{#if_eq parameters.topic.0 this.uri}}selected{{/if_eq}}>{{this.description.title}}</option>
+								{{#each children}}
+								<option value="{{this.uri}}" {{#if_eq parameters.topic.0 this.uri}}selected{{/if_eq}}>{{this.description.title}}</option>
+								{{/each}} {{!-- /each to find 2nd level nodes --}}
+								{{/if_eq}}
 								{{/each}}
 							</select>
-							</div>
-							<!-- /field drop-down -->
 						</div>
-					</form>
-					<!-- /box__content -->
+					</div>
+					<div>
+						<button type="submit" class="btn btn--primary btn--small panel--mar-small">Filter</button>
+					</div>
 				</article>
-				<!-- /box 'refine results' -->
+				<!-- /box 'refine results -->
 				<article class="box box--purple box--purple--separated--left">
 					<div class="box__inner border box--padded">
 						<header class="box__header">
@@ -79,45 +148,44 @@
 			</div>
 			<!-- /desktop-grid-one-third -->
 			<div class="grid-col desktop-grid-two-thirds">
+				<p>
+					{{#if results}}
+					<span class="stand-out-text">
+					{{numberOfResults}}</span> results
+					{{#if parameters.type}}
+					for <strong>{{#each parameters.type}}{{> type-label type=this plural=true}}<span class="icon icon-cancel js-enhance--show" role="presentation"></span>,{{/each}}</strong>
+					{{/if}}
+					related to
+					<strong>{{#each breadcrumb}}{{#if @last}}{{description.title}}{{/if}}{{/each}}</strong>.
+					{{#if parameters.all-releases}}
+					You have chosen to expand these results to <strong>include all releases over time</strong><span class="icon icon-cancel js-enhance--show" role="presentation"></span>
+					{{/if}}
+					
+					{{else}}
+					Sorry, there are no <strong>publications</strong> for <strong>{{#each breadcrumb}}{{#if @last}}{{description.title}}{{/if}}{{/each}}</strong>.
+					{{/if}}
+				</p>
 				<ul class="list--neutral">
-					{{#each statisticsSearchResult.results}}
+					{{#each results}}
 					<li>
-						<h3 class="flush"><a href="{{uri}}">{{description.title}}</a></h3>
-						<p class="mini flush description inline">
+						<h3 class="flush"><a href="{{uri}}">{{description.title}}
+							{{#if description.edition}}
+							{{#if_ne description.edition 'yes'}}: {{description.edition}}{{/if_ne}}
+						{{/if}}</a></h3>
+						<span class="lozenge">{{> type-label type=this.type}}</span>
+						<p class="mini flush description">
 							Released: {{df description.releaseDate}}
 						</p>
-						{{md description.metaDescription}}
+						{{md description.summary}}
 					</li>
 					{{/each}}
 				</ul>
-				{{!-- Paginator --}}
-				{{#if_ne numberOfPages 1}}
-				<nav>
-					<ul class="nav nav--inline-block">
-						{{#if_ne currentPage startPage}}
-						<li>
-							<a href="fois?page={{decrement currentPage}}" class="page-link previous">Prev</a>
-						</li>
-						{{/if_ne}}
-						{{#each pages}}
-						<li>
-							{{#if_eq this currentPage}}<span>{{this}}</span>{{/if_eq}}
-							{{#if_ne this currentPage}}<a href="fois?page={{this}}" class="page-link" >{{this}}</a>{{/if_ne}}
-						</li>
-						{{/each}}
-						{{#if_ne currentPage endPage}}
-						<li>
-							<a href="fois?page={{increment currentPage}}" class="page-link next" >Next</a>
-						</li>
-						{{/if_ne}}
-					</ul>
-				</nav>
-				{{/if_ne}}
+				{{> partials/paginator}}
 			</div>
 			<!-- /desktop-grid-two-thirds -->
-			{{/if}}
 		</div>
 		<!-- /grid-wrap -->
-	</div>
-	<!-- /wrapper -->
+	</form>
+</div>
+<!-- /wrapper panel--mar -->
 </main>

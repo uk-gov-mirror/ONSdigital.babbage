@@ -12,9 +12,11 @@ import org.elasticsearch.search.SearchHits;
 public class SearchResponseHelper {
 
     SearchResponse response;
+    SearchResult result;
 
     public SearchResponseHelper(SearchResponse response) {
         this.response = response;
+        this.result = buildResult();
     }
 
     public long getNumberOfResults() {
@@ -22,6 +24,10 @@ public class SearchResponseHelper {
     }
 
     public SearchResult getResult() {
+        return this.result;
+    }
+
+    private SearchResult buildResult() {
         SearchResult searchResult = new SearchResult();
         searchResult.setNumberOfResults(getNumberOfResults());
         searchResult.setTook(response.getTookInMillis());
@@ -37,7 +43,6 @@ public class SearchResponseHelper {
     public String toJson() {
         return JsonUtil.toJson(getResult());
     }
-
 
 
 }

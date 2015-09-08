@@ -23,7 +23,6 @@ public class ONSQueryBuilder {
     static final String ALL_FIELDS = "_all";
     static final String HIGHLIGHTER_PRE_TAG = "<strong>";
     static final String HIGHLIGHTER_POST_TAG = "</strong>";
-    private static final int SIZE = Configuration.GENERAL.getResultsPerPage();
 
     private Type[] types;
     private String uriPrefix;
@@ -32,9 +31,8 @@ public class ONSQueryBuilder {
     private List<RangeFilter> rangeFilters = new ArrayList<>();
     private boolean highLightFields;
     private List<SortBuilder> sorts = new ArrayList<>();
-
-
-    int page = 1;
+    private Integer page;
+    private Integer size;
 
     public ONSQueryBuilder(Type... types) {
         this.types = types;
@@ -85,7 +83,7 @@ public class ONSQueryBuilder {
         return this;
     }
 
-    public int getPage() {
+    public Integer getPage() {
         return page;
     }
 
@@ -149,12 +147,19 @@ public class ONSQueryBuilder {
 
     }
 
-    int getSize() {
-        return SIZE;
+    public Integer getSize() {
+        return size;
     }
 
-    int getFrom() {
-        return SIZE * (getPage() - 1);
+    public void setSize(int size) {
+        this.size = size;
+    }
+
+    public Integer getFrom() {
+        if (page == null || size == null) {
+            return null;
+        }
+        return getSize() * (getPage() - 1);
     }
 
     public boolean isHighLightFields() {

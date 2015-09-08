@@ -1,5 +1,6 @@
 package com.github.onsdigital.babbage.request.handler.list.helper;
 
+import com.github.onsdigital.babbage.configuration.Configuration;
 import com.github.onsdigital.babbage.search.ONSQueryBuilder;
 import com.github.onsdigital.babbage.search.SearchService;
 import com.github.onsdigital.babbage.search.helpers.SearchResponseHelper;
@@ -17,29 +18,37 @@ import java.util.Set;
  */
 public class ListSearchHelper {
 
-    public SearchResponseHelper list(String uriPrefix, Set<String> allowedTypes, HttpServletRequest request) throws IOException {
-        ONSQueryBuilder onsQueryBuilder = buildQuery(uriPrefix, allowedTypes, request);
+    public SearchResponseHelper list(String uriPrefix, int page , Set<String> allowedTypes, HttpServletRequest request) throws IOException {
+        ONSQueryBuilder onsQueryBuilder = buildQuery(uriPrefix, page, allowedTypes, request);
         SearchResponseHelper searchResponse = SearchService.getInstance().search(onsQueryBuilder);
         return searchResponse;
     }
 
-    private ONSQueryBuilder buildQuery(String uriPrefix, Set<String> allowedTypes, HttpServletRequest request) {
+    private ONSQueryBuilder buildQuery(String uriPrefix, int page, Set<String> allowedTypes, HttpServletRequest request) {
         Type[] types = extractTypes(allowedTypes, request);
-        int page = extractPage(request);
         String sortField = request.getParameter("sortBy");
 
         ONSQueryBuilder onsQueryBuilder = new ONSQueryBuilder();
 
         onsQueryBuilder.setTypes(types);
         onsQueryBuilder.setPage(page);
+        onsQueryBuilder.setSize(Configuration.GENERAL.getResultsPerPage());
         if (StringUtils.isNotEmpty(uriPrefix)) {
             onsQueryBuilder.setUriPrefix(uriPrefix);
         }
         if (StringUtils.isNotEmpty(sortField)) {
-            onsQueryBuilder.addSort(sortField.trim(), SortOrder.DESC);
+            onsQueryBuilder.addSort(sortField.trim(), getSortOrder(sortField));
         }
 
         return onsQueryBuilder;
+    }
+
+    private SortOrder getSortOrder(String sortBy) {
+        if ("releaseDate".equals(sortBy)) {
+            return SortOrder.DESC;
+        } else {
+            return SortOrder.ASC;
+        }
     }
 
     private Type[] extractTypes(Set<String> allowedTypes, HttpServletRequest request) {
@@ -64,29 +73,6 @@ public class ListSearchHelper {
         }
         return typesToQuery;
 
-    }
-
-    /**
-     * Extract the page number from a request - for paged results.
-     *
-     * @param request
-     * @return
-     */
-    private int extractPage(HttpServletRequest request) {
-        String page = request.getParameter("page");
-
-        if (StringUtils.isEmpty(page)) {
-            return 1;
-        }
-        if (StringUtils.isNumeric(page)) {
-            int pageNumber = Integer.parseInt(page);
-            if (pageNumber < 1) {
-                return 1;
-            }
-            return pageNumber;
-        } else {
-            return 1;
-        }
     }
 
 }

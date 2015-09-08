@@ -9,7 +9,7 @@ import com.github.onsdigital.content.page.base.PageType;
 public class AdhocsRequestHandler extends ListPageBaseRequestHandler {
     @Override
     public String getRequestType() {
-        return "userrequested";
+        return "adhoc";
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.github.onsdigital.error;
+package com.github.onsdigital.babbage.error;
 
 /**
  * Created by bren on 29/05/15.

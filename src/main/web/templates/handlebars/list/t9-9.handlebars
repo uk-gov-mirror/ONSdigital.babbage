@@ -1,12 +1,12 @@
 <main id="main" role="main" tabindex="-1">
 <div class="wrapper panel--top-mar">
-	{{> partials/list-page-breadcrumb label="Publications"}}
+	{{> partials/list-page-breadcrumb label="Data"}}
 	<p class="page-header__title">
-		Publications
+		Data
 	</p>
 	{{#each breadcrumb}}
 	{{#if @last}}
-	<h1 class="page-header__title flush--half--bottom">{{description.title}} publications</h1>
+	<h1 class="page-header__title flush--half--bottom">{{description.title}}</h1>
 	{{/if}}
 	{{/each}}
 	
@@ -31,7 +31,7 @@
 				<article class="box box--padded sectioned print-hidden">
 					<div class="panel panel--bottom-pad panel--separated--bottom flush">
 						<h3 class="flush float-left">Refine results</h3>
-						<a href="./publications" value="Reset" class="btn btn--primary btn--small btn--thin btn--narrow btn--clear-results float-right">{{labels.search-refine-clear}}</a>
+						<a href="./datalist" value="Reset" class="btn btn--primary btn--small btn--thin btn--narrow btn--clear-results float-right">{{labels.search-refine-clear}}</a>
 					</div>
 					<div class="box__content">
 						<div class="panel panel--bottom-pad panel--separated--bottom flush">
@@ -43,39 +43,69 @@
 							<input type="search" autocomplete="off" id="input-keywords" name="keywords" value="" placeholder="Keywords">
 						</div>
 						<div class="panel panel--bottom-pad panel--separated--bottom flush">
-							<span class="flush float-left">Content types to show</span>
+							<span class="flush float-left">Data format</span>
 						</div>
 						<div class="box__content">
 							<ul class="list--neutral">
 								<li>
-									<input id="checkbox-statsbulletin" type="checkbox" name="type" value="bulletin" {{#contains parameters.type 'bulletin'}}checked{{/contains}} >
-									<label for="checkbox-statsbulletin">
-										Statistical bulletin
+									<input id="checkbox-timeseries" type="checkbox" name="type" value="timeseries" {{#contains parameters.type 'timeseries'}}checked{{/contains}} >
+									<label for="checkbox-timeseries">
+										Single time series
 									</label>
 								</li>
 								<li>
-									<input id="checkbox-article" type="checkbox" name="type" value="article" {{#contains parameters.type 'article'}}checked{{/contains}}>
-									<label for="checkbox-article">
-										Article
-									</label>
-								</li>
-								<li>
-									<input id="checkbox-compendia" type="checkbox" name="type" value="dataset" {{#contains parameters.type 'compendium_landing_page'}}checked{{/contains}}>
-									<label for="checkbox-compendia">
-										Compendia
+									<input id="checkbox-dataset" type="checkbox" name="type" value="dataset" {{#contains parameters.type 'dataset'}}checked{{/contains}}>
+									<label for="checkbox-dataset">
+										Large dataset
 									</label>
 								</li>
 							</ul>
 						</div>
 						<div class="panel panel--bottom-pad panel--separated--bottom flush">
-							<span class="flush float-left">Previous releases</span>
+							<span class="flush float-left">Keywords</span>
 						</div>
 						<div class="box__content">
-							<input type="checkbox" name="all-releases" value="1" {{#if parameters.all-releases 1}}checked{{/if}}>
-							<label for="checkbox">
-								Show all releases over time (only showing latest one of each by default)
-							</label>
-							
+							<ul class="list--neutral">
+								<li>
+									<input id="checkbox-sa" type="checkbox" name="keywords" value="Seasonally adjusted" {{#contains parameters.keywords 'Seasonally adjusted'}}checked{{/contains}} >
+									<label for="checkbox-sa">
+										Seasonally adjusted (SA)
+									</label>
+								</li>
+								<li>
+									<input id="checkbox-nsa" type="checkbox" name="keywords" value="Non seasonally adjusted" {{#contains parameters.keywords 'Non seasonally adjusted'}}checked{{/contains}}>
+									<label for="checkbox-nsa">
+										Non seasonally adjusted (NSA)
+									</label>
+								</li>
+								<li>
+									<input id="checkbox-gender" type="checkbox" name="keywords" value="By gender" {{#contains parameters.keywords 'By gender'}}checked{{/contains}}>
+									<label for="checkbox-gender">
+										By gender
+									</label>
+								</li>
+								<li>
+									<input id="checkbox-age" type="checkbox" name="keywords" value="By age" {{#contains parameters.keywords 'By age'}}checked{{/contains}}>
+									<label for="checkbox-age">
+										By age
+									</label>
+								</li>
+							</ul>
+						</div>
+						<div class="panel panel--bottom-pad panel--separated--bottom flush">
+							<span class="flush float-left">Release date</span>
+						</div>
+						<div class="box__content">
+							<ul class="list--neutral">
+								<li>
+									<label for="input-start-date">Published after</label>
+									<input type="date" autocomplete="off" id="input-start-date" name="startDate" value="{{parameters.keywords.startDate}}" placeholder="e.g. 01/01/2015" validate>
+								</li>
+								<li>
+									<label for="input-end-date">Published before</label>
+									<input type="date" autocomplete="off" id="input-end-date" name="endDate" value="{{parameters.keywords.endDate}}" placeholder="e.g. 01/02/2015" validate>
+								</li>
+							</ul>
 						</div>
 					</div>
 					<div>
@@ -117,7 +147,7 @@
 					{{/if}}
 					
 					{{else}}
-					Sorry, there are no <strong>publications</strong> for <strong>{{#each breadcrumb}}{{#if @last}}{{description.title}}{{/if}}{{/each}}</strong>.
+					Sorry, there are no <strong>data</strong> for <strong>{{#each breadcrumb}}{{#if @last}}{{description.title}}{{/if}}{{/each}}</strong>.
 					{{/if}}
 				</p>
 				<ul class="list--neutral">

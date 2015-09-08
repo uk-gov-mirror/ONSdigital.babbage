@@ -1,0 +1,26 @@
+{{!-- Paginator --}}
+{{#if paginator}}
+<nav>
+	<ul class="nav nav--inline-block">
+		{{#if_ne paginator.currentPage paginator.start}}
+		<li>
+			<button type="submit" name="page" value="{{decrement paginator.currentPage}}" class="page-link" >Prev</button>
+		</li>
+		{{/if_ne}}
+		{{#each paginator.pages}}
+		<li>
+			{{#if_eq this paginator.currentPage}}
+			<span>{{this}}</span>
+			{{else}}
+			<button type="submit" name="page" value="{{this}}" class="page-link" >{{this}}</button>
+			{{/if_eq}}
+		</li>
+		{{/each}}
+		{{#if_ne paginator.currentPage paginator.end}}
+		<li>
+			<button type="submit" name="page" value="{{increment paginator.currentPage}}" class="page-link" >Next</button>
+		</li>
+		{{/if_ne}}
+	</ul>
+</nav>
+{{/if}}
