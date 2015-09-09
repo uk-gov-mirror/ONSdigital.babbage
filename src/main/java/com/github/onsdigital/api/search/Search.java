@@ -1,63 +1,120 @@
 package com.github.onsdigital.api.search;
 
 import com.github.davidcarboni.restolino.framework.Api;
-import com.github.onsdigital.babbage.content.client.ContentClient;
 import com.github.onsdigital.babbage.content.client.ContentReadException;
-import com.github.onsdigital.babbage.content.client.ContentStream;
-import com.github.onsdigital.babbage.request.response.BabbageRedirectResponse;
-import com.github.onsdigital.babbage.request.response.BabbageResponse;
-import com.github.onsdigital.babbage.request.response.BabbageStringResponse;
+import com.github.onsdigital.babbage.content.model.ContentType;
+import com.github.onsdigital.babbage.paginator.Paginator;
+import com.github.onsdigital.babbage.response.BabbageResponse;
+import com.github.onsdigital.babbage.response.BabbageStringResponse;
+import com.github.onsdigital.babbage.search.ONSQueryBuilder;
+import com.github.onsdigital.babbage.search.SearchService;
+import com.github.onsdigital.babbage.search.helpers.FilterFields;
+import com.github.onsdigital.babbage.search.helpers.SearchFields;
+import com.github.onsdigital.babbage.search.helpers.SearchRequestHelper;
+import com.github.onsdigital.babbage.search.helpers.SearchResponseHelper;
 import com.github.onsdigital.babbage.template.TemplateService;
+import com.github.onsdigital.babbage.util.json.JsonUtil;
 import com.github.onsdigital.content.service.ContentNotFoundException;
 import com.github.onsdigital.content.util.URIUtil;
-import com.github.onsdigital.error.ResourceNotFoundException;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.GET;
 import javax.ws.rs.core.Context;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URI;
 import java.net.URISyntaxException;
-
-import static com.github.onsdigital.babbage.util.RequestUtil.getQueryParameters;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 @Api
 public class Search {
-    private final static String HTML_MIME = "text/html";
-    private final static String DATA_REQUEST = "data";
-    private final static String SEARCH_REQUEST = "search";
+
+    public static final String CONTENT_TYPE = "text/html";
 
     @GET
     public Object get(@Context HttpServletRequest request, @Context HttpServletResponse response) throws IOException, ContentNotFoundException, ContentReadException, URISyntaxException {
 
-        BabbageResponse babbageResponse;
         String type = URIUtil.resolveRequestType(request.getRequestURI());
-
-        switch (type) {
-            case DATA_REQUEST:
-                try (ContentStream contentStream = ContentClient.getInstance().getSearch("", getQueryParameters(request))) {
-                    babbageResponse = new BabbageStringResponse(contentStream.getAsString());
-                }
-                break;
-            case SEARCH_REQUEST:
-                ContentStream contentStream = ContentClient.getInstance().getSearch("", getQueryParameters(request));
-
-                if (contentStream.getResponseCode() == 301 || contentStream.getResponseCode() == 302) {
-                   babbageResponse = new BabbageRedirectResponse(new URI(contentStream.getHeader("location")).getPath());
-                    contentStream.close();
-                } else {
-                    try (InputStream dataStream = contentStream.getDataStream()) {
-                        String html = TemplateService.getInstance().renderContent(dataStream);
-                        babbageResponse = new BabbageStringResponse(html, HTML_MIME);
-                    }
-                }
-                break;
-            default:
-                throw new ResourceNotFoundException();
+        String query = extractQuery(request);
+        if (query == null) {
+            renderEmptyPage(response, type);
+        } else {
+            search(request, response, query, type);
         }
+        return null;
+
+    }
+
+    private void renderEmptyPage(HttpServletResponse response, String type) throws IOException {
+        LinkedHashMap<String, Object> searchData = new LinkedHashMap<>();
+        searchData.put("type", type);
+        String html = TemplateService.getInstance().renderListPage(type, JsonUtil.toJson(searchData));
+        BabbageResponse babbageResponse = new BabbageStringResponse(html, CONTENT_TYPE);
         babbageResponse.apply(response);
+    }
+
+    private void search(HttpServletRequest request, HttpServletResponse response, String query, String type) throws IOException {
+
+        String uri = searchTimeSeries(query);
+        if (uri != null) {
+            response.sendRedirect(uri);
+            return;
+        }
+
+        ONSQueryBuilder featuredResultQuery = buildFeaturedResultQuery(query);
+        SearchRequestHelper searchHelper = getSearchHelper(request, query);
+        ONSQueryBuilder searchQuery = searchHelper.buildQuery();
+
+        List<SearchResponseHelper> responseHelpers = SearchService.getInstance().multipleSearch(featuredResultQuery, searchQuery);
+        Iterator<SearchResponseHelper> iterator = responseHelpers.iterator();
+        SearchResponseHelper featuredResponseHelper = iterator.next();
+        SearchResponseHelper searchResponseHelper = iterator.next();
+
+        Paginator.assertPage(searchHelper.getPage(), searchResponseHelper);
+
+        LinkedHashMap<String, Object> searchData = new LinkedHashMap<>();
+        searchData.put("type", type);
+        searchData.put("paginator", Paginator.getPaginator(searchHelper.getPage(), searchResponseHelper));
+        searchData.put("featuredResult", featuredResponseHelper.getResult());
+        String html = TemplateService.getInstance().renderListPage(type, searchResponseHelper.toJson(), JsonUtil.toJson(searchData));
+        BabbageResponse babbageResponse = new BabbageStringResponse(html, CONTENT_TYPE);
+        babbageResponse.apply(response);
+    }
+
+    private String searchTimeSeries(String query) throws IOException {
+        ONSQueryBuilder onsQueryBuilder = new ONSQueryBuilder(ContentType.timeseries.name()).
+                addFilter(FilterFields.cdid.name(), query.toLowerCase()).setSize(1);
+        SearchResponseHelper searchResponseHelper = SearchService.getInstance().search(onsQueryBuilder);
+        if (searchResponseHelper.getNumberOfResults() > 0) {
+            Map<String, Object> timeSeries = searchResponseHelper.getResult().getResults().iterator().next();
+            return (String) timeSeries.get(FilterFields.uri.name());
+        }
         return null;
     }
+
+    private ONSQueryBuilder buildFeaturedResultQuery(String query) throws IOException {
+        return new ONSQueryBuilder(ContentType.product_page.name()).setSize(1).setQuery(query).setFields(SearchFields.getAllSearchFields());
+    }
+
+    private SearchRequestHelper getSearchHelper(HttpServletRequest request, String query) throws IOException {
+        SearchRequestHelper searchRequestHelper = new SearchRequestHelper(request, null, null);
+        return searchRequestHelper;
+    }
+
+    private String extractQuery(HttpServletRequest request) {
+        String query = request.getParameter("q");
+
+        if (StringUtils.isEmpty(query)) {
+            return null;
+        }
+        if (query.length() > 200) {
+            throw new RuntimeException("Search query contains too many characters");
+        }
+        String sanitizedQuery = query.replaceAll("[^a-zA-Z0-9 ]+", "");
+        return sanitizedQuery;
+    }
+
 }

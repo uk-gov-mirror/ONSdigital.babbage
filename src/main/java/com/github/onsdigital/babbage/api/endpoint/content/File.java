@@ -4,9 +4,8 @@ import com.github.davidcarboni.restolino.framework.Api;
 import com.github.onsdigital.babbage.api.error.ErrorHandler;
 import com.github.onsdigital.babbage.content.client.ContentClient;
 import com.github.onsdigital.babbage.content.client.ContentStream;
-import com.github.onsdigital.babbage.util.RequestUtil;
 import com.github.onsdigital.content.service.ContentNotFoundException;
-import com.github.onsdigital.babbage.request.response.BabbageBinaryResponse;
+import com.github.onsdigital.babbage.response.BabbageBinaryResponse;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

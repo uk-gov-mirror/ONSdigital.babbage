@@ -1,6 +1,7 @@
 package com.github.onsdigital.babbage.content.client;
 
 import com.github.onsdigital.babbage.util.ThreadContext;
+import com.github.onsdigital.babbage.util.http.ClientConfiguration;
 import com.github.onsdigital.babbage.util.http.PooledHttpClient;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.ArrayUtils;
@@ -42,12 +43,18 @@ public class ContentClient {
                 if (instance == null) {
                     instance = new ContentClient();
                     System.out.println("Initializing content service http client");
-                    client = new PooledHttpClient(getServerUrl());
-                    client.getConfiguration().setMaxConnection(getMaxContentServiceConnection());
+                    client = new PooledHttpClient(getServerUrl(), createConfiguration());
                 }
             }
         }
         return instance;
+    }
+
+    private static ClientConfiguration createConfiguration() {
+        ClientConfiguration configuration = new ClientConfiguration();
+        configuration.setMaxTotalConnection(getMaxContentServiceConnection());
+        configuration.setDisableRedirectHandling(true);
+        return configuration;
     }
 
 

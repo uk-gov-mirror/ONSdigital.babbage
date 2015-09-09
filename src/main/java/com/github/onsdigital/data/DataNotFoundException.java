@@ -1,6 +1,6 @@
 package com.github.onsdigital.data;
 
-import com.github.onsdigital.error.ResourceNotFoundException;
+import com.github.onsdigital.babbage.error.ResourceNotFoundException;
 
 /**
  * Created by bren on 28/05/15.

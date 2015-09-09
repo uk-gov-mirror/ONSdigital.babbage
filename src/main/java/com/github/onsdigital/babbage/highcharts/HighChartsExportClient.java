@@ -1,6 +1,7 @@
 package com.github.onsdigital.babbage.highcharts;
 
 import com.github.onsdigital.babbage.configuration.Configuration;
+import com.github.onsdigital.babbage.util.http.ClientConfiguration;
 import com.github.onsdigital.babbage.util.http.PooledHttpClient;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -32,12 +33,18 @@ public class HighChartsExportClient {
                 if (instance == null) {
                     instance = new HighChartsExportClient();
                     System.out.println("Initializing Highcharts export server client connection pool");
-                    client = new PooledHttpClient(Configuration.HIGHCHARTS.getExportSeverUrl());
-                    client.getConfiguration().setMaxConnection(Configuration.HIGHCHARTS.getMaxHighchartsServerConnection());
+                    client = new PooledHttpClient(Configuration.HIGHCHARTS.getExportSeverUrl(),createConfiguration());
                 }
             }
         }
         return instance;
+    }
+
+
+    private static ClientConfiguration createConfiguration() {
+        ClientConfiguration configuration = new ClientConfiguration();
+        configuration.setMaxTotalConnection(Configuration.HIGHCHARTS.getMaxHighchartsServerConnection());
+        return configuration;
     }
 
     public InputStream getImage(String chartConfig) throws IOException {

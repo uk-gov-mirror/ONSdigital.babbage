@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
 
+import static com.github.onsdigital.babbage.configuration.Configuration.HANDLEBARS.getMainContentTemplateName;
+import static com.github.onsdigital.babbage.configuration.Configuration.HANDLEBARS.getMainListPageTemplateName;
 import static com.github.onsdigital.babbage.util.json.JsonUtil.toMap;
 
 /**
@@ -37,7 +39,7 @@ public class TemplateService {
      * @throws IOException
      */
     public String renderContent(String... data) throws IOException {
-        return renderer.renderContent(toMapArray(data));
+        return renderer.render(getMainContentTemplateName(), toMapArray(data));
     }
 
     /**
@@ -48,7 +50,33 @@ public class TemplateService {
      * @throws IOException
      */
     public String renderContent(InputStream... stream) throws IOException {
-        return renderer.renderContent(toMapArray(stream));
+        return renderer.render(getMainContentTemplateName(), toMapArray(stream));
+    }
+
+
+    /**
+     * Renders list page using main list page template
+     *
+     * @param type
+     * @param data
+     * @return
+     * @throws IOException
+     */
+    public String renderListPage(String type, String... data) throws IOException {
+        return renderer.render(getMainListPageTemplateName(), toMapArray(data));
+    }
+
+
+    /**
+     * Renders list page using main list page template
+     *
+     * @param type
+     * @param stream
+     * @return
+     * @throws IOException
+     */
+    public String renderListPage(String type, InputStream... stream) throws IOException {
+        return renderer.render(getMainListPageTemplateName(), toMapArray(stream));
     }
 
     /**

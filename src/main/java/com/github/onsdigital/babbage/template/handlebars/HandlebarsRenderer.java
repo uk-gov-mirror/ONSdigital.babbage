@@ -40,17 +40,6 @@ public class HandlebarsRenderer {
         registerHelpers();
     }
 
-    /**
-     * Renders content using main handlebars template, array of data is combined into a single context
-     *
-     * @param data array of data
-     * @return
-     * @throws IOException
-     */
-    public String renderContent(Map<String, Object>... data) throws IOException {
-        return render(getMainContentTemplateName(), data);
-    }
-
 
     /**
      * Renders content with given template name, array of data is combined to a single context
