@@ -3,9 +3,12 @@ package com.github.onsdigital.babbage.template.handlebars.helpers;
 import com.github.jknack.handlebars.Handlebars;
 import com.github.jknack.handlebars.Options;
 import com.github.onsdigital.babbage.template.handlebars.helpers.base.BabbageHandlebarsHelper;
+import com.github.onsdigital.babbage.template.handlebars.helpers.util.HelperUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
+
+import static com.github.onsdigital.babbage.template.handlebars.helpers.util.HelperUtils.toNumber;
 
 /**
  * Created by bren on 02/07/15.
@@ -15,7 +18,7 @@ public enum MathHelpers implements BabbageHandlebarsHelper<Object> {
     increment {
         @Override
         public CharSequence apply(Object context, Options options) throws IOException {
-            Double num = toDouble(context);
+            Double num = toNumber(context);
             if (num == null) {
                 return null;
             }
@@ -32,7 +35,7 @@ public enum MathHelpers implements BabbageHandlebarsHelper<Object> {
     decrement {
         @Override
         public CharSequence apply(Object context, Options options) throws IOException {
-            Double num = toDouble(context);
+            Double num = toNumber(context);
             if (num == null) {
                 return null;
             }
@@ -50,8 +53,8 @@ public enum MathHelpers implements BabbageHandlebarsHelper<Object> {
     add {
         @Override
         public CharSequence apply(Object context, Options options) throws IOException {
-            Double num1 = toDouble(context);
-            Double num2 = toDouble(options.param(0));
+            Double num1 = toNumber(context);
+            Double num2 = toNumber(options.param(0));
             if (num1 == null || num2 == null) {
                 return null;
             }
@@ -65,24 +68,4 @@ public enum MathHelpers implements BabbageHandlebarsHelper<Object> {
             handlebars.registerHelper(this.name(), this);
         }
     };
-
-    private static Double toDouble(Object object) {
-        if (Handlebars.Utils.isEmpty(object)) {
-            return null;
-        }
-        if (object instanceof Number) {
-            return ((Number) object).doubleValue();
-        } else if (object instanceof String) {
-            String numberString = (String) object;
-            if (StringUtils.isNotEmpty(numberString)) {
-                try {
-                    return Double.valueOf(numberString);
-                } catch (NumberFormatException e) {
-                    System.err.println(object + " is not a number!!");
-                    return null;
-                }
-            }
-        }
-        return null;
-    }
 }

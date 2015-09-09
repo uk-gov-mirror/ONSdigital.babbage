@@ -4,6 +4,7 @@ import com.github.jknack.handlebars.Handlebars;
 import com.github.jknack.handlebars.Options;
 import com.github.onsdigital.babbage.configuration.Configuration;
 import com.github.onsdigital.babbage.template.handlebars.helpers.base.BabbageHandlebarsHelper;
+import com.github.onsdigital.babbage.template.handlebars.helpers.util.HelperUtils;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
@@ -28,7 +29,7 @@ public class NumberFormatHelper implements BabbageHandlebarsHelper<Object> {
         }
         String pattern = resolvePattern(options.params);
         NumberFormat numberFormat = pattern == null ? new DecimalFormat() : new DecimalFormat(pattern);
-        return new Handlebars.SafeString(numberFormat.format(context));
+        return new Handlebars.SafeString(numberFormat.format(HelperUtils.toNumber(context)));
     }
 
     private String resolvePattern(Object[] params) {
