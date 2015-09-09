@@ -57,9 +57,11 @@
 			</p>
 
 			{{!-- Next release --}}
+			{{#if description.nextRelease}}
 			<p class="col col--md-11 col--lg-14 meta__item">
-				<span>{{labels.release-next}}: </span><br/>{{#if description.nextRelease}}{{description.nextRelease}}{{else}}To be announced{{/if}}
+				<span>{{labels.release-next}}: </span><br/>{{description.nextRelease}}
 			</p>
+			{{/if}}
 
 
 			{{!-- Print and download --}}
