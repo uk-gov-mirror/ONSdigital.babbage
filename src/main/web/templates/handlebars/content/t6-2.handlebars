@@ -132,10 +132,10 @@
 			{{/each}}
 			<!-- Accordion -->
 			{{#if accordion}}
-			<div class="panel--mar">
+			<div>
 				{{#each accordion}}
 				<section id="{{slugify title}}" class="accordion is-collapsed section__content--markdown">
-					<h2 class="accordion__title" aria-controls="content-{{@index}}">{{title}}</h2>
+					<h2 class="accordion__title" aria-controls="content-{{@index}}"><span class="section__content-number">{{nf (add sections.size @index_1)}}.</span>{{title}}<span class="accordion__icon">down arrow</span></h2>
 					<div class="accordion__content panel--bottom-mar-small" aria-labelledby="sc-{{@index}}">
 						{{md markdown}}
 						<a class="print-hidden jsEnhanceAnimateScroll" href="#toc" title="{{labels.back-to-toc}}" class="">{{labels.back-to-toc}}</a>
