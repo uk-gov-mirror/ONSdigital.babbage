@@ -142,7 +142,10 @@
                     </div>
                 {{/if}}
 
-                {{> partials/local-box}}
+                {{!-- At the moment local box has no margin so extra div required --}}
+                <div class="margin-left"> 
+                    {{> partials/local-box}}
+                </div>
 
             </div>
         </div>

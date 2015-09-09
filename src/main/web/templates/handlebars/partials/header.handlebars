@@ -58,7 +58,7 @@
 			</div> --}}
 
 			{{!-- produced for download analytics function --}}
-			{{!-- <div id="pagePath" class="hidden">{{uri}}</div> --}}
+			<div id="pagePath" class="hide">{{uri}}</div>
 
 			{{!-- Prototype banner --}}
 			<div class="beta-banner">
@@ -76,15 +76,17 @@
 						</a>
 					</div>
 					<div class="language col col--lg-two-thirds col--md-two-thirds print--hide">
-						<form class="language__form">
+						{{!-- Need space to keep secondary links from vertically aligning at top --}}
+						&nbsp;
+						{{!-- <form class="language__form">
 							<label class="language__label" for="lang">Language:</label>
 							<select class="language__select" id="lang" name="lang">
 								<option value="{{domain}}/{{uri}}">English (EN)</option>
 								<option value="cy.{{domain}}/{{uri}}">Cymraeg (CY)</option>
 							</select>
-							{{!--TODO enhance input so auto-submits on select --}}
+							TODO enhance input so auto-submits on select
 							<input type="submit" value="Submit">
-						</form>
+						</form> --}}
 					</div>
 					<nav class="secondary-nav col col--lg-two-thirds col--md-two-thirds print--hide">
 						<ul class="secondary-nav__list">
@@ -151,15 +153,15 @@
 							</li>
 
 							{{!-- TODO clean up or remove this content from HTML --}}
-							{{!-- <li class="primary-nav__secondary-content">
-								<a href="/about/releasecalendar">{{labels.release-calendar}}</a>
+							<li class="primary-nav--secondary__item">
+								<a class="primary-nav--secondary__link" href="/about/releasecalendar">{{labels.release-calendar}}</a>
 							</li>
-							<li class="primary-nav__secondary-content">
-								<a href="/methodology">{{labels.methodology}}</a>
+							<li class="primary-nav--secondary__item">
+								<a class="primary-nav--secondary__link" href="/methodology">{{labels.methodology}}</a>
 							</li>
-							<li class="primary-nav__secondary-content">
-								<a href="/about">{{labels.about}}</a>
-							</li> --}}
+							<li class="primary-nav--secondary__item">
+								<a class="primary-nav--secondary__link" href="/about">{{labels.about}}</a>
+							</li>
 						</ul>
 					</div>
 				</nav>
