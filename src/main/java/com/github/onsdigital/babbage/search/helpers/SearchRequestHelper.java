@@ -81,8 +81,12 @@ public class SearchRequestHelper {
 
     private String[] extractTypes(String[] allowedTypes, HttpServletRequest request) {
         String[] types = request.getParameterValues("type");
-        if (types == null || types.length == 0 || allowedTypes == null) {
+        if (types == null || types.length == 0) {
             return allowedTypes;
+        }
+
+        if (allowedTypes == null) {
+            return types;
         }
 
         Set<String> allowedTypeSet = toSet(allowedTypes);

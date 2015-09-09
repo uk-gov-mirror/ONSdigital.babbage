@@ -22,37 +22,37 @@
 						<p class="panel panel--separated--bottom">{{labels.search-refine-types}}</p>
 						<ul class="list--neutral">
 							<li>
-								<input type="checkbox" name="type" value="bulletin" {{#contains types 'bulletin'}}checked{{/contains}} >
+								<input type="checkbox" name="type" value="bulletin" {{#contains parameters.type 'bulletin'}}checked{{/contains}} >
 								<label for="checkbox-statsbulletin">
 									{{labels.bulletin}}
 								</label>
 							</li>
 							<li>
-								<input type="checkbox" name="type" value="article" {{#contains types 'article'}}checked{{/contains}}>
+								<input type="checkbox" name="type" value="article" {{#contains parameters.type 'article'}}checked{{/contains}}>
 								<label for="checkbox-article">
 									{{labels.article}}
 								</label>
 							</li>
 							<li>
-								<input type="checkbox" name="type" value="comendium_landing_page" {{#contains types 'comendium_landing_page'}}checked{{/contains}}>
+								<input type="checkbox" name="type" value="comendium_landing_page" {{#contains parameters.type 'comendium_landing_page'}}checked{{/contains}}>
 								<label for="checkbox-compendia">
 									Compendia
 								</label>
 							</li>
 							<li>
-								<input type="checkbox" name="type" value="timeseries" {{#contains types 'timeseries'}}checked{{/contains}}>
+								<input type="checkbox" name="type" value="timeseries" {{#contains parameters.type 'timeseries'}}checked{{/contains}}>
 								<label for="checkbox-timeseries">
 									Time series
 								</label>
 							</li>
 							<li>
-								<input type="checkbox" name="type" value="dataset" {{#contains types 'dataset'}}checked{{/contains}}>
+								<input type="checkbox" name="type" value="dataset" {{#contains parameters.type 'dataset'}}checked{{/contains}}>
 								<label for="checkbox-dataset">
 									{{labels.dataset}}
 								</label>
 							</li>
 							<li>
-								<input type="checkbox" name="type" value="methodology" {{#contains types 'methodology'}}checked{{/contains}} >
+								<input type="checkbox" name="type" value="methodology" {{#contains parameters.type 'methodology'}}checked{{/contains}} >
 								<label for="checkbox-methodology">
 									{{labels.methodology}}
 								</label>
