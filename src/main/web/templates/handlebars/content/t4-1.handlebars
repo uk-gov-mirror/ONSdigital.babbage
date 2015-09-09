@@ -23,11 +23,9 @@
 				{{/if_eq}}
 				{{/resolve}}
 			</p>
-			{{#if description.nextRelease}}
 			<p class="grid-col tablet-grid-one-quarter divider--border-left">
-				<span>{{labels.release-next}}: </span><br/>{{description.nextRelease}}
+				<span>{{labels.release-next}}: </span><br/>{{#if description.nextRelease}}{{description.nextRelease}}{{else}}To be announced{{/if}}
 			</p>
-			{{/if}}
 			<p class="grid-col tablet-grid-one-quarter divider--border-left print-hidden">
 				<a href="" id="jsEnhancePrint" class="link-complex nojs-hidden js-enhance--show">
 					<span class="icon-print"></span>
