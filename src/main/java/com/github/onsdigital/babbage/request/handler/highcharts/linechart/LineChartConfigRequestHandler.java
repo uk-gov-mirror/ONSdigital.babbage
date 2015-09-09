@@ -6,8 +6,8 @@ import com.github.onsdigital.babbage.content.client.ContentReadException;
 import com.github.onsdigital.babbage.content.client.ContentStream;
 import com.github.onsdigital.babbage.request.handler.base.RequestHandler;
 import com.github.onsdigital.babbage.template.TemplateService;
-import com.github.onsdigital.babbage.request.response.BabbageResponse;
-import com.github.onsdigital.babbage.request.response.BabbageStringResponse;
+import com.github.onsdigital.babbage.response.BabbageResponse;
+import com.github.onsdigital.babbage.response.BabbageStringResponse;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;

@@ -1,0 +1,16 @@
+{{!-- Main handlebars is the main file rendered by handlebars.
+performs type check on content type and decides which template to render  --}}
+{{!-- Resolve parents of current uri for and assign to variable breadcrumb for building breadcrumb --}}
+{{resolveParents uri assign="breadcrumb"}}
+{{!-- Resolve navigation fetching children of root uri "/" with depth 2 --}}
+{{resolveChildren "/" depth=2 assign="navigation"}}
+
+{{> partials/header-old}}
+{{#if_eq type "adhoc"}}{{> list/t9-1}}{{/if_eq}}
+{{#if_eq type "publishedrequests"}}{{> list/t9-2}}{{/if_eq}}
+{{#if_eq type "previousreleases"}}{{> list/t9-6}}{{/if_eq}}
+{{#if_eq type "topicspecificmethodology"}}{{> list/t9-7}}{{/if_eq}}
+{{#if_eq type "publications"}}{{> list/t9-8}}{{/if_eq}}
+{{#if_eq type "datalist"}}{{> list/t9-9}}{{/if_eq}}
+{{#if_eq type "search"}}{{> list/t10}}{{/if_eq}}
+{{> partials/footer}}
