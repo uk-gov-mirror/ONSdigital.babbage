@@ -1,13 +1,11 @@
 package com.github.onsdigital.babbage.request.handler.list;
 
+import com.github.onsdigital.babbage.content.model.ContentType;
 import com.github.onsdigital.babbage.request.handler.base.ListPageBaseRequestHandler;
-import com.github.onsdigital.babbage.search.ONSQueryBuilder;
-import com.github.onsdigital.babbage.search.SearchService;
+import com.github.onsdigital.babbage.search.helpers.FilterFields;
+import com.github.onsdigital.babbage.search.helpers.SearchRequestHelper;
 import com.github.onsdigital.babbage.search.helpers.SearchResponseHelper;
-import com.github.onsdigital.babbage.search.query.SortOrder;
-import com.github.onsdigital.content.page.base.PageType;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 /**
@@ -19,7 +17,7 @@ public class PreviousReleasesRequestHandler extends ListPageBaseRequestHandler {
 
     @Override
     public String[] getAllowedTypes() {
-        return new String[]{PageType.article.toString(), PageType.bulletin.toString(), PageType.compendium_landing_page.toString()};
+        return new String[]{ContentType.article.toString(), ContentType.bulletin.toString(), ContentType.compendium_landing_page.toString()};
     }
 
     @Override
@@ -27,23 +25,14 @@ public class PreviousReleasesRequestHandler extends ListPageBaseRequestHandler {
         return true;
     }
 
-
-    @Override
-    protected SearchResponseHelper list(String uri, int page, HttpServletRequest request) throws IOException {
-        ONSQueryBuilder queryBuilder = new ONSQueryBuilder()
-                .setUriPrefix(uri)
-                .addSort("releaseDate", SortOrder.DESC);
-        SearchResponseHelper searchResponseHelper = SearchService.getInstance().search(queryBuilder);
-        return searchResponseHelper;
-    }
-
-    @Override
-    protected boolean isPaginated() {
-        return false;
-    }
-
     @Override
     public String getRequestType() {
         return REQUEST_TYPE;
+    }
+
+    @Override
+    protected SearchResponseHelper doSearch(SearchRequestHelper searchRequestHelper) throws IOException {
+        searchRequestHelper.setSortField(FilterFields.releaseDate.name());
+        return super.doSearch(searchRequestHelper);
     }
 }

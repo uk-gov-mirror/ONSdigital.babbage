@@ -1,8 +1,6 @@
 package com.github.onsdigital.babbage.search;
 
-import com.github.onsdigital.babbage.configuration.Configuration;
 import com.github.onsdigital.babbage.search.query.SortOrder;
-import com.github.onsdigital.babbage.search.query.Type;
 import com.github.onsdigital.babbage.search.query.filter.FieldFilter;
 import com.github.onsdigital.babbage.search.query.filter.RangeFilter;
 import org.apache.commons.lang3.StringUtils;
@@ -19,12 +17,11 @@ import static org.apache.commons.lang3.StringUtils.isNotEmpty;
  * Created by bren on 07/09/15.
  */
 public class ONSQueryBuilder {
-
-    static final String ALL_FIELDS = "_all";
     static final String HIGHLIGHTER_PRE_TAG = "<strong>";
     static final String HIGHLIGHTER_POST_TAG = "</strong>";
 
-    private Type[] types;
+    private String[] types;
+    private String[] fields;
     private String uriPrefix;
     private String query;
     private List<FieldFilter> fieldFilters = new ArrayList<>();
@@ -34,16 +31,25 @@ public class ONSQueryBuilder {
     private Integer page;
     private Integer size;
 
-    public ONSQueryBuilder(Type... types) {
+    public ONSQueryBuilder(String... types) {
         this.types = types;
     }
 
-    public Type[] getTypes() {
+    public String[] getTypes() {
         return types;
     }
 
-    public ONSQueryBuilder setTypes(Type... types) {
+    public ONSQueryBuilder setTypes(String... types) {
         this.types = types;
+        return this;
+    }
+
+    public String[] getFields() {
+        return fields;
+    }
+
+    public ONSQueryBuilder setFields(String[] fields) {
+        this.fields = fields;
         return this;
     }
 
@@ -104,7 +110,7 @@ public class ONSQueryBuilder {
         if (StringUtils.isEmpty(getQuery())) {
             return null;
         }
-        return new MatchQueryBuilder(ALL_FIELDS, getQuery()).analyzer(Configuration.ELASTIC_SEARCH.getSearchAnalyzer());
+        return new MultiMatchQueryBuilder(getQuery(), getFields());
     }
 
 
@@ -151,8 +157,9 @@ public class ONSQueryBuilder {
         return size;
     }
 
-    public void setSize(int size) {
+    public ONSQueryBuilder setSize(int size) {
         this.size = size;
+        return this;
     }
 
     public Integer getFrom() {
@@ -183,4 +190,5 @@ public class ONSQueryBuilder {
     List<SortBuilder> getSorts() {
         return sorts;
     }
+
 }

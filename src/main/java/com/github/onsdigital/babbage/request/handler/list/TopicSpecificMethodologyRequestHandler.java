@@ -1,7 +1,7 @@
 package com.github.onsdigital.babbage.request.handler.list;
 
+import com.github.onsdigital.babbage.content.model.ContentType;
 import com.github.onsdigital.babbage.request.handler.base.ListPageBaseRequestHandler;
-import com.github.onsdigital.content.page.base.PageType;
 
 /**
  * Render a list page for bulletins under the given URI.
@@ -14,7 +14,7 @@ public class TopicSpecificMethodologyRequestHandler extends ListPageBaseRequestH
 
     @Override
     public String[] getAllowedTypes() {
-        return new String[]{PageType.static_methodology.toString(),PageType.static_qmi.toString()};
+        return new String[]{ContentType.static_methodology.toString(),ContentType.static_qmi.toString()};
     }
 
     @Override

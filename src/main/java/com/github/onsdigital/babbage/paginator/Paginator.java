@@ -1,11 +1,18 @@
 package com.github.onsdigital.babbage.paginator;
 
+import com.github.onsdigital.babbage.configuration.Configuration;
+import com.github.onsdigital.babbage.error.ResourceNotFoundException;
+import com.github.onsdigital.babbage.search.helpers.SearchResponseHelper;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.github.onsdigital.babbage.configuration.Configuration.GENERAL.getMaxVisiblePaginatorLink;
+import static com.github.onsdigital.babbage.configuration.Configuration.GENERAL.getResultsPerPage;
+
 /**
  * Created by bren on 08/09/15.
- *
+ * <p>
  * Paginator model to be included in search and list data results for server side rendering
  */
 public class Paginator {
@@ -24,7 +31,7 @@ public class Paginator {
         this.pages = getPageList(start, end);
     }
 
-    private long calculateNumberOfPages(long numberOfResults, int resultsPerPage ) {
+    private long calculateNumberOfPages(long numberOfResults, int resultsPerPage) {
         return (long) Math.ceil((double) numberOfResults / resultsPerPage);
     }
 
@@ -58,6 +65,19 @@ public class Paginator {
         return pageList;
     }
 
+    public static Paginator getPaginator(long page, SearchResponseHelper responseHelper) {
+        Paginator paginator = new Paginator(responseHelper.getNumberOfResults(), getMaxVisiblePaginatorLink(), page, getResultsPerPage());
+        if (paginator.getNumberOfPages() > 1) {
+            return paginator;
+        }
+        return null;
+    }
+
+    public static void assertPage(int page, SearchResponseHelper responseHelper) {
+        if (page != 1 && responseHelper.getResult().getResults().size() == 0) {
+            throw new ResourceNotFoundException("Non-existing page request");
+        }
+    }
 
     public List<Long> getPages() {
         return pages;

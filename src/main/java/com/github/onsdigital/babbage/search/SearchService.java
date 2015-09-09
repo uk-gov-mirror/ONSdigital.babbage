@@ -2,9 +2,10 @@ package com.github.onsdigital.babbage.search;
 
 import com.github.onsdigital.babbage.search.helpers.CountResponseHelper;
 import com.github.onsdigital.babbage.search.helpers.SearchResponseHelper;
-import com.github.onsdigital.babbage.search.query.Type;
-import org.apache.commons.lang3.ArrayUtils;
+import org.elasticsearch.ElasticsearchException;
 import org.elasticsearch.action.count.CountRequestBuilder;
+import org.elasticsearch.action.search.MultiSearchRequestBuilder;
+import org.elasticsearch.action.search.MultiSearchResponse;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.transport.TransportClient;
@@ -15,6 +16,7 @@ import org.elasticsearch.search.sort.ScoreSortBuilder;
 import org.elasticsearch.search.sort.SortBuilder;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.github.onsdigital.babbage.configuration.Configuration.ELASTIC_SEARCH.*;
@@ -40,26 +42,49 @@ public class SearchService {
     }
 
     public SearchResponseHelper search(ONSQueryBuilder queryBuilder) throws IOException {
+        SearchRequestBuilder searchRequestBuilder = buildSearch(queryBuilder);
+        return new SearchResponseHelper(searchRequestBuilder.get());
+    }
+
+    public List<SearchResponseHelper> multipleSearch(ONSQueryBuilder... queryBuilders) throws IOException {
+        List<SearchResponseHelper> helpers = new ArrayList<>();
+        MultiSearchRequestBuilder multiSearchRequestBuilder = client.prepareMultiSearch();
+        for (ONSQueryBuilder queryBuilder : queryBuilders) {
+            multiSearchRequestBuilder.add(buildSearch(queryBuilder));
+        }
+        MultiSearchResponse response = multiSearchRequestBuilder.get();
+        for (MultiSearchResponse.Item item : response.getResponses()) {
+            if (item.isFailure()) {
+                throw new ElasticsearchException(item.getFailureMessage());
+            }
+            helpers.add(new SearchResponseHelper(item.getResponse()));
+        }
+        return helpers;
+    }
+
+    private SearchRequestBuilder buildSearch(ONSQueryBuilder queryBuilder) {
         SearchRequestBuilder searchRequestBuilder = client.prepareSearch(getElasticSearchIndexAlias()).setQuery(queryBuilder.build());
 
         if (queryBuilder.getFrom() != null) {
             searchRequestBuilder.setFrom(queryBuilder.getFrom()).setSize(queryBuilder.getSize());
         }
-        String[] types = getTypes(queryBuilder);
+        String[] types = queryBuilder.getTypes();
         if (types != null) {
             searchRequestBuilder.setTypes(types);
         }
         if (queryBuilder.isHighLightFields()) {
-            setHighlights(searchRequestBuilder);
+            setHighlights(searchRequestBuilder,queryBuilder.getFields());
         }
         addSorts(queryBuilder.getSorts(), searchRequestBuilder);
         searchRequestBuilder.addSort(new ScoreSortBuilder()); //sort by score last
         System.out.println("Searching with query:\n" + searchRequestBuilder.internalBuilder());
-        return new SearchResponseHelper(searchRequestBuilder.get());
+        return searchRequestBuilder;
     }
 
-    private void setHighlights(SearchRequestBuilder searchRequestBuilder) {
-        searchRequestBuilder.addHighlightedField(ONSQueryBuilder.ALL_FIELDS);
+    private void setHighlights(SearchRequestBuilder searchRequestBuilder, String... fields) {
+        for (String field : fields) {
+            searchRequestBuilder.addHighlightedField(field);
+        }
         searchRequestBuilder.setHighlighterPreTags(ONSQueryBuilder.HIGHLIGHTER_PRE_TAG);
         searchRequestBuilder.setHighlighterPostTags(ONSQueryBuilder.HIGHLIGHTER_POST_TAG);
         searchRequestBuilder.setHighlighterForceSource(true);
@@ -67,7 +92,7 @@ public class SearchService {
 
     public CountResponseHelper count(ONSQueryBuilder queryBuilder) {
         CountRequestBuilder countRequestBuilder = client.prepareCount(getElasticSearchIndexAlias()).setQuery(queryBuilder.build());
-        String[] types = getTypes(queryBuilder);
+        String[] types = queryBuilder.getTypes();
         if (types != null) {
             countRequestBuilder.setTypes(types);
         }
@@ -78,20 +103,6 @@ public class SearchService {
         for (SortBuilder sort : sorts) {
             searchRequestBuilder.addSort(sort);
         }
-    }
-
-    private String[] getTypes(ONSQueryBuilder onsQueryBuilder) {
-        Type[] types = onsQueryBuilder.getTypes();
-        String[] queryTypes = new String[0];
-        if (types != null) {
-            for (Type type : types) {
-                queryTypes = ArrayUtils.add(queryTypes, type.getType());
-            }
-        }
-        if (queryTypes.length > 0) {
-            return queryTypes;
-        }
-        return null;
     }
 
     private static class ShutDownNodeThread extends Thread {

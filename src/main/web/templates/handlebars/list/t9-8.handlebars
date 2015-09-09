@@ -1,6 +1,6 @@
 <main id="main" role="main" tabindex="-1">
 <div class="wrapper panel--top-mar">
-	{{> partials/list-page-breadcrumb label="Publications"}}
+	{{> list/partials/list-page-breadcrumb label="Publications"}}
 	<p class="page-header__title">
 		Publications
 	</p>
@@ -16,14 +16,7 @@
 	<form id="filters">
 		<div class="grid-wrap panel--bottom-mar print-hidden">
 			<div class="grid-col desktop-grid-one-quarter desktop-grid-push-three-quarters tablet-grid-full-width">
-				<label for="select" class="inline description">Sort by
-					<select class="input inline width-auto" id="select" name="sortBy">
-						<option value="" {{#if_eq parameters.sortBy.0 ""}}selected{{/if_eq}}>Relevance</option>
-						<option value="releaseDate" {{#if_eq parameters.sortBy.0 "releaseDate"}}selected{{/if_eq}} >Release date</option>
-						<option value="description.title.raw" {{#if_eq parameters.sortBy.0 "description.title.raw"}}selected{{/if_eq}}>Title</option>
-					</select>
-					<button type="submit" class="btn btn--primary btn--small panel--mar-small">Sort</button>
-				</label>
+				{{> list/filters/sort}}
 			</div>
 		</div>
 		<div class="grid-wrap">
@@ -34,14 +27,7 @@
 						<a href="./publications" value="Reset" class="btn btn--primary btn--small btn--thin btn--narrow btn--clear-results float-right">{{labels.search-refine-clear}}</a>
 					</div>
 					<div class="box__content">
-						<div class="panel panel--bottom-pad panel--separated--bottom flush">
-							<span class="flush float-left">Contains</span>
-						</div>
-						
-						<div class="box__content">
-							<label class="visuallyhidden" for="input-keywords">Keywords</label>
-							<input type="search" autocomplete="off" id="input-keywords" name="keywords" value="" placeholder="Keywords">
-						</div>
+						{{> list/filters/keywords}}
 						<div class="panel panel--bottom-pad panel--separated--bottom flush">
 							<span class="flush float-left">Content types to show</span>
 						</div>
@@ -60,82 +46,26 @@
 									</label>
 								</li>
 								<li>
-									<input id="checkbox-compendia" type="checkbox" name="type" value="dataset" {{#contains parameters.type 'compendium_landing_page'}}checked{{/contains}}>
+									<input id="checkbox-compendia" type="checkbox" name="type" value="compendium_landing_page" {{#contains parameters.type 'compendium_landing_page'}}checked{{/contains}}>
 									<label for="checkbox-compendia">
 										Compendia
 									</label>
 								</li>
 							</ul>
 						</div>
-						<div class="panel panel--bottom-pad panel--separated--bottom flush">
-							<span class="flush float-left">Previous releases</span>
-						</div>
-						<div class="box__content">
-							<input type="checkbox" name="all-releases" value="1" {{#if parameters.all-releases 1}}checked{{/if}}>
-							<label for="checkbox">
-								Show all releases over time (only showing latest one of each by default)
-							</label>
-							
-						</div>
+						{{> list/filters/all-releases}}
 					</div>
 					<div>
 						<button type="submit" class="btn btn--primary btn--small panel--mar-small">Filter</button>
 					</div>
 				</article>
-				<!-- /box 'refine results -->
-				<article class="box box--purple box--purple--separated--left">
-					<div class="box__inner border box--padded">
-						<header class="box__header">
-							<h3 class="gamma">Need an earlier release?</h3>
-						</header>
-						<div class="box__content">
-							<p>
-								We moved them to <a href="#">The National Archives</a> website, to keep this website as responsive as possible.
-							</p>
-							<p>
-								<strong>Please note: </strong>all historical data is still on this website.
-							</p>
-						</div>
-					</div>
-					<!-- /box__inner -->
-				</article>
-				<!-- /box -->
+				{{> partials/archives-box}}
 			</div>
 			<!-- /desktop-grid-one-third -->
 			<div class="grid-col desktop-grid-two-thirds">
-				<p>
-					{{#if results}}
-					<span class="stand-out-text">
-					{{numberOfResults}}</span> results
-					{{#if parameters.type}}
-					for <strong>{{#each parameters.type}}{{> type-label type=this plural=true}}<span class="icon icon-cancel js-enhance--show" role="presentation"></span>,{{/each}}</strong>
-					{{/if}}
-					related to
-					<strong>{{#each breadcrumb}}{{#if @last}}{{description.title}}{{/if}}{{/each}}</strong>.
-					{{#if parameters.all-releases}}
-					You have chosen to expand these results to <strong>include all releases over time</strong><span class="icon icon-cancel js-enhance--show" role="presentation"></span>
-					{{/if}}
-					
-					{{else}}
-					Sorry, there are no <strong>publications</strong> for <strong>{{#each breadcrumb}}{{#if @last}}{{description.title}}{{/if}}{{/each}}</strong>.
-					{{/if}}
-				</p>
-				<ul class="list--neutral">
-					{{#each results}}
-					<li>
-						<h3 class="flush"><a href="{{uri}}">{{description.title}}
-							{{#if description.edition}}
-							{{#if_ne description.edition 'yes'}}: {{description.edition}}{{/if_ne}}
-						{{/if}}</a></h3>
-						<span class="lozenge">{{> type-label type=this.type}}</span>
-						<p class="mini flush description">
-							Released: {{df description.releaseDate}}
-						</p>
-						{{md description.summary}}
-					</li>
-					{{/each}}
-				</ul>
-				{{> partials/paginator}}
+				{{> list/partials/results-text}}
+				{{> list/partials/results}}
+				{{> list/partials/paginator}}
 			</div>
 			<!-- /desktop-grid-two-thirds -->
 		</div>
