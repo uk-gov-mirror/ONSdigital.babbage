@@ -8,6 +8,8 @@ package com.github.onsdigital.babbage.search.helpers;
 public enum SearchFields {
     title,
     edition,
+    summary,
+    metaDescription,
     keywords;
 
     public static String[] getAllSearchFields() {

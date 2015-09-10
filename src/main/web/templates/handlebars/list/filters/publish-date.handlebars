@@ -1,15 +1,46 @@
-<div class="panel panel--bottom-pad panel--separated--bottom flush">
+{{!-- <div class="panel panel--bottom-pad panel--separated--bottom flush">
 	<span class="flush float-left">Release date</span>
 </div>
 <div class="box__content">
 	<ul class="list--neutral">
 		<li>
-			<label for="input-start-date">Published after</label>
-			<input type="date" autocomplete="off" id="input-start-date" name="startDate" value="{{parameters.keywords.startDate}}" placeholder="e.g. 01/01/2015" validate>
+			<div>
+				<label for="input-start-date">Published after</label>
+			</div>
+			<select id="input-start-date" name="ds">
+				<option value="">Day</option>
+				{{#loop 31}}
+				<option value="{{@index_1}}" {{#if_eq parameters.ds.0 @index_1}}selected{{/if_eq}} >{{@index_1}}</option>
+				{{/loop}}
+			</select>
+			<select name="ms">
+				<option value="">Month</option>
+				<option value="1" {{#if_eq parameters.ms.0 1}}selected{{/if_eq}} >01</option>
+				<option value="2" {{#if_eq parameters.ms.0 2}}selected{{/if_eq}}>02</option>
+				<option value="3" {{#if_eq parameters.ms.0 3}}selected{{/if_eq}}>03</option>
+				<option value="4" {{#if_eq parameters.ms.0 4}}selected{{/if_eq}}>04</option>
+				<option value="5" {{#if_eq parameters.ms.0 5}}selected{{/if_eq}}>05</option>
+				<option value="6" {{#if_eq parameters.ms.0 6}}selected{{/if_eq}}>06</option>
+				<option value="7" {{#if_eq parameters.ms.0 7}}selected{{/if_eq}}>07</option>
+				<option value="8" {{#if_eq parameters.ms.0 8}}selected{{/if_eq}}>08</option>
+				<option value="9" {{#if_eq parameters.ms.0 9}}selected{{/if_eq}}>09</option>
+				<option value="10" {{#if_eq parameters.ms.0 10}}selected{{/if_eq}}>10</option>
+				<option value="11" {{#if_eq parameters.ms.0 11}}selected{{/if_eq}}>11</option>
+				<option value="12" {{#if_eq parameters.ms.0 12}}selected{{/if_eq}}>12</option>
+			</select>
+			<select name="ys">
+				{{#loop 31}}
+				<option value="{{@index_1}}" {{#if_eq parameters.ds.0 @index_1}}selected{{/if_eq}} >{{@index_1}}</option>
+				{{/loop}}
+			</select>
+			<select class="input inline width-auto" id="select-day-start" name="day">
+				<option value="" >day</option>
+				
+			</select>
 		</li>
 		<li>
 			<label for="input-end-date">Published before</label>
 			<input type="date" autocomplete="off" id="input-end-date" name="endDate" value="{{parameters.keywords.endDate}}" placeholder="e.g. 01/02/2015" validate>
 		</li>
 	</ul>
-</div>
+</div> --}}

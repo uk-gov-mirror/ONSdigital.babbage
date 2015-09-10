@@ -2,6 +2,7 @@
 	<h3 class="page-header__title">{{labels.search}}</h3>
 </div>
 <!-- /wrapper -->
+{{#if parameters.q.0}}
 <div class="wrapper panel--mar print-links">
 	<form id="fitlers" action="/search">
 		<input type="hidden" name="q" value="{{parameters.q.0}}">
@@ -16,7 +17,7 @@
 				<article class="box box--padded sectioned print-hidden">
 					<div class="panel panel--bottom-pad panel--separated--bottom flush">
 						<h3 class="flush float-left">Refine results</h3>
-						<a href="/search?q={{searchTerm}}" value="Reset" class="btn btn--primary btn--small btn--thin btn--narrow btn--clear-results float-right">{{labels.search-refine-clear}}</a>
+						<a href="/search?q={{parameters.q.0}}" value="Reset" class="btn btn--primary btn--small btn--thin btn--narrow btn--clear-results float-right">{{labels.search-refine-clear}}</a>
 					</div>
 					<div class="box__content">
 						<p class="panel panel--separated--bottom">{{labels.search-refine-types}}</p>
@@ -34,7 +35,7 @@
 								</label>
 							</li>
 							<li>
-								<input type="checkbox" name="type" value="comendium_landing_page" {{#contains parameters.type 'comendium_landing_page'}}checked{{/contains}}>
+								<input type="checkbox" name="type" value="compendium_landing_page" {{#contains parameters.type 'compendium_landing_page'}}checked{{/contains}}>
 								<label for="checkbox-compendia">
 									Compendia
 								</label>
@@ -52,7 +53,8 @@
 								</label>
 							</li>
 							<li>
-								<input type="checkbox" name="type" value="methodology" {{#contains parameters.type 'methodology'}}checked{{/contains}} >
+								<input type="checkbox" name="methodology" value="1" {{#if parameters.methodology.0}}checked{{/if}} >
+
 								<label for="checkbox-methodology">
 									{{labels.methodology}}
 								</label>
@@ -60,7 +62,7 @@
 						</ul>
 						<p class="panel--mar-small">{{labels.search-expand}}:</p>
 						<div class="panel--mar-small">
-							<input type="checkbox" name="includeStatics" value="1" {{#if includeStatics}}checked{{/if}}>
+							<input type="checkbox" name="includeStatics" value="1" {{#if parameters.includeStatics.0}}checked{{/if}}>
 							<label for="checkbox">
 								{{labels.search-expand-all}}</br>
 								<span class="micro">({{labels.search-expand-types}})</span>
@@ -68,7 +70,7 @@
 						</div>
 					</div>
 					<div>
-						<button type="submit" name="q" value="{{searchTerm}}" class="btn btn--primary btn--small panel--mar-small">{{labels.search-filter}}</button>
+						<button type="submit" class="btn btn--primary btn--small panel--mar-small">{{labels.search-filter}}</button>
 					</div>
 					<!-- /box__content -->
 				</article>
@@ -140,18 +142,15 @@
 				{{> list/partials/results}}
 				{{> list/partials/paginator}}
 				{{else}}
-				{{#if searchTerm}}
+				{{#if parameters.q}}
 				<div>
-					{{labels.search-no-results}} <strong>‘{{searchTerm}}’</strong></br></br>
+					{{labels.search-no-results}} <strong>‘{{parameters.q.0}}’</strong></br></br>
 					<strong>{{labels.search-try-other}}:</strong>
 					<ul>
 						<li>{{labels.search-diff-words}}</li>
 						<li>{{labels.search-remove-filters}}</li>
-						{{#unless includeAllData}}
-						<li><a href="/search?q={{searchTerm}}{{#each types}}&type={{this}}{{/each}}&page={{currentPage}}{{#if includeStatics}}&includeStatics=1{{/if}}&includeAllData=1">{{labels.search-expand-data}}</a></li>
-						{{/unless}}
-						{{#unless includeStatics}}
-						<li><a href="/search?q={{searchTerm}}{{#each types}}&type={{this}}{{/each}}&page={{currentPage}}{{#if includeAllData}}&includeAllData=1{{/if}}&includeStatics=1">{{labels.search-expand-all}}</a></li>
+						{{#unless parameters.includeStatics}}
+						<li><a href="/search?q={{parameters.q.0}}{{#each parameters.type}}&type={{this}}{{/each}}{{#if parameters.methodology.0}}&methodology=1{{/if}}&includeStatics=1">{{labels.search-expand-all}}</a></li>
 						{{/unless}}
 					</ul>
 				</div>
@@ -163,4 +162,6 @@
 		<!-- /grid-wrap -->
 	</form>
 </div>
+{{else}}
+{{/if}}
 <!-- /wrapper -->
