@@ -22,15 +22,13 @@
 		<div class="col-wrap">
 			<div class="col">
 
-				{{!-- Latest info --}}
-				{{#resolve (concat (parentPath uri) "/latest") filter="title"}}
-				{{#if_eq uri ../uri}}
+				{{#if description.latestRelease}}
 				<p class="alert__content">This is the latest release</p> <a class="btn print--hide" href="{{parentPath uri}}/previousReleases">view previous releases</a>
-
 				{{else}}
+				{{#resolve (concat (parentPath uri) "/latest") filter="title"}}
 				<p class="alert__content">This is not the latest release</p> <a class="btn print--hide" href="{{uri}}">view latest release</a>
-				{{/if_eq}}
 				{{/resolve}}
+				{{/if}}
 
 			</div>
 		</div>
