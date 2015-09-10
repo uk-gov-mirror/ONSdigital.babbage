@@ -31,8 +31,6 @@ public class SearchService {
 
     private SearchService() {
 
-        System.out.println("!!!!!!!!!!!!!Connection:" + getElasticSearchCluster() + getElasticSearchServer() + getElasticSearchServer());
-
         Settings settings = ImmutableSettings.settingsBuilder()
                 .put("cluster.name", getElasticSearchCluster()).build();
 
