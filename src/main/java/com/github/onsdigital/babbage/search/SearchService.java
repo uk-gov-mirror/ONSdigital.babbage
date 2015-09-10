@@ -85,6 +85,9 @@ public class SearchService {
     }
 
     private void setHighlights(SearchRequestBuilder searchRequestBuilder, String... fields) {
+        if (fields == null) {
+            return;
+        }
         for (String field : fields) {
             searchRequestBuilder.addHighlightedField(field);
         }

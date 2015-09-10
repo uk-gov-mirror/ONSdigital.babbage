@@ -16,6 +16,7 @@ import com.github.onsdigital.babbage.template.TemplateService;
 import com.github.onsdigital.babbage.util.json.JsonUtil;
 import com.github.onsdigital.content.service.ContentNotFoundException;
 import com.github.onsdigital.content.util.URIUtil;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -65,7 +66,7 @@ public class Search {
         }
 
         ONSQueryBuilder featuredResultQuery = buildFeaturedResultQuery(query);
-        SearchRequestHelper searchHelper = getSearchHelper(request, query);
+        SearchRequestHelper searchHelper = getSearchHelper(request);
         ONSQueryBuilder searchQuery = searchHelper.buildQuery();
 
         List<SearchResponseHelper> responseHelpers = SearchService.getInstance().multipleSearch(featuredResultQuery, searchQuery);
@@ -99,8 +100,26 @@ public class Search {
         return new ONSQueryBuilder(ContentType.product_page.name()).setSize(1).setQuery(query).setFields(SearchFields.getAllSearchFields());
     }
 
-    private SearchRequestHelper getSearchHelper(HttpServletRequest request, String query) throws IOException {
-        SearchRequestHelper searchRequestHelper = new SearchRequestHelper(request, null, null);
+    private SearchRequestHelper getSearchHelper(HttpServletRequest request) throws IOException {
+        String[] submittedTypes = request.getParameterValues("type");
+        String includeStatics = request.getParameter("includeStatics");
+        String methodology = request.getParameter("methodology");
+        SearchRequestHelper searchRequestHelper = new SearchRequestHelper(request, null, ContentType.getSearchableTypes());
+
+        if (submittedTypes == null && methodology != null) {
+            //clear types if methodology is set, todo: do not use serach request helper for search or create a common base for search and list
+            searchRequestHelper.setTypes(null);
+        }
+
+        String[] types = new String[0];
+        if (StringUtils.isNotEmpty(includeStatics)) {
+            types = new String[]{ContentType.static_adhoc.name(), ContentType.static_article.name(), ContentType.static_foi.name(), ContentType.static_page.name()};
+        }
+        if (StringUtils.isNotEmpty(methodology)) {
+            types =ArrayUtils.addAll(types, ContentType.static_methodology.name(), ContentType.static_qmi.name());
+        }
+        types = ArrayUtils.addAll(types, searchRequestHelper.getTypes());
+        searchRequestHelper.setTypes(types);
         return searchRequestHelper;
     }
 
@@ -115,6 +134,10 @@ public class Search {
         }
         String sanitizedQuery = query.replaceAll("[^a-zA-Z0-9 ]+", "");
         return sanitizedQuery;
+    }
+
+    private void getAllowedTypes() {
+
     }
 
 }

@@ -3,13 +3,11 @@ package com.github.onsdigital.babbage.search.helpers;
 import com.github.onsdigital.babbage.configuration.Configuration;
 import com.github.onsdigital.babbage.error.ResourceNotFoundException;
 import com.github.onsdigital.babbage.search.ONSQueryBuilder;
-import com.github.onsdigital.babbage.search.SearchService;
 import com.github.onsdigital.babbage.search.query.SortOrder;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -43,8 +41,8 @@ public class SearchRequestHelper {
         this.sortField = request.getParameter("sortBy");
         this.query = request.getParameter("q");
         this.keywordsQuery = extractKeywordsQuery(request);
-        this.startDate = extractStartDate(request);
-        this.endDate = extractEndDate(request);
+//        this.startDate = extractStartDate(request);
+//        this.endDate = extractEndDate(request);
     }
 
     public ONSQueryBuilder buildQuery() {
@@ -55,7 +53,8 @@ public class SearchRequestHelper {
                 .setTypes(types)
                 .setFields(getFields())
                 .setPage(page)
-                .setSize(size);
+                .setSize(size)
+                .setHighLightFields(true);
         if (query != null) {
             onsQueryBuilder.setQuery(query);
         } else if (keywordsQuery != null) {
@@ -137,6 +136,7 @@ public class SearchRequestHelper {
 
     private String extractKeywordsQuery(HttpServletRequest request) {
         String[] keywords = request.getParameterValues("keywords");
+
         if (keywords == null || keywords.length < 1) {
             return null;
         }
@@ -163,24 +163,10 @@ public class SearchRequestHelper {
         }
     }
 
-    private Date extractStartDate(HttpServletRequest request) {
-        String dayStart = request.getParameter("ds");
-        String monthStart = request.getParameter("ms");
-        String yearStart = request.getParameter("ys");
-        return parseDate(dayStart, monthStart, yearStart);
-    }
-
-    private Date extractEndDate(HttpServletRequest request) {
-        String dayEnd = request.getParameter("de");
-        String monthEnd = request.getParameter("me");
-        String yearEnd = request.getParameter("ye");
-        return parseDate(dayEnd, monthEnd, yearEnd);
-    }
-
     private Date parseDate(String dayStart, String monthStart, String yearStart) {
         if (isNotEmpty(dayStart) && isNotEmpty(monthStart) && isNotEmpty(yearStart)) {
             try {
-                return new SimpleDateFormat("ddMMyyyy").parse(dayStart + monthStart + yearStart);
+                return new SimpleDateFormat("dMyyyy").parse(dayStart + monthStart + yearStart);
             } catch (ParseException e) {
                 throw new RuntimeException("Parsing start date for filter failed!", e);
             }
