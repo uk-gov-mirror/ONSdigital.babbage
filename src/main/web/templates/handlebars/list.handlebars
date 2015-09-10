@@ -5,7 +5,11 @@ performs type check on content type and decides which template to render  --}}
 {{!-- Resolve navigation fetching children of root uri "/" with depth 2 --}}
 {{resolveChildren "/" depth=2 assign="navigation"}}
 
-{{> partials/header-old}}
+{{#if_any (eq type "search")}}
+	{{> partials/header}}
+{{else}}
+	{{> partials/header-old}}
+{{/if_any}}
 {{#if_eq type "adhoc"}}{{> list/t9-1}}{{/if_eq}}
 {{#if_eq type "publishedrequests"}}{{> list/t9-2}}{{/if_eq}}
 {{#if_eq type "previousreleases"}}{{> list/t9-6}}{{/if_eq}}
@@ -13,4 +17,8 @@ performs type check on content type and decides which template to render  --}}
 {{#if_eq type "publications"}}{{> list/t9-8}}{{/if_eq}}
 {{#if_eq type "datalist"}}{{> list/t9-9}}{{/if_eq}}
 {{#if_eq type "search"}}{{> list/t10}}{{/if_eq}}
-{{> partials/footer-old}}
+{{#if_any (eq type "search")}}
+	{{> partials/footer}}
+{{else}}
+	{{> partials/footer-old}}
+{{/if_any}}

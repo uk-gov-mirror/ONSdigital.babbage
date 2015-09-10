@@ -1,167 +1,123 @@
-<div class="wrapper panel--top-mar">
-	<h3 class="page-header__title">{{labels.search}}</h3>
-</div>
-<!-- /wrapper -->
-{{#if parameters.q.0}}
-<div class="wrapper panel--mar print-links">
-	<form id="fitlers" action="/search">
-		<input type="hidden" name="q" value="{{parameters.q.0}}">
-		<div class="grid-wrap panel--bottom-mar print-hidden">
-			<div class="grid-col desktop-grid-one-quarter desktop-grid-push-three-quarters tablet-grid-full-width">
-				{{> list/filters/sort}}
-			</div>
-		</div>
-		<!-- /grid-wrap -->
-		<div class="grid-wrap">
-			<div class="grid-col desktop-grid-one-third">
-				<article class="box box--padded sectioned print-hidden">
-					<div class="panel panel--bottom-pad panel--separated--bottom flush">
-						<h3 class="flush float-left">Refine results</h3>
-						<a href="/search?q={{parameters.q.0}}" value="Reset" class="btn btn--primary btn--small btn--thin btn--narrow btn--clear-results float-right">{{labels.search-refine-clear}}</a>
-					</div>
-					<div class="box__content">
-						<p class="panel panel--separated--bottom">{{labels.search-refine-types}}</p>
-						<ul class="list--neutral">
-							<li>
-								<input type="checkbox" name="type" value="bulletin" {{#contains parameters.type 'bulletin'}}checked{{/contains}} >
-								<label for="checkbox-statsbulletin">
-									{{labels.bulletin}}
-								</label>
-							</li>
-							<li>
-								<input type="checkbox" name="type" value="article" {{#contains parameters.type 'article'}}checked{{/contains}}>
-								<label for="checkbox-article">
-									{{labels.article}}
-								</label>
-							</li>
-							<li>
-								<input type="checkbox" name="type" value="compendium_landing_page" {{#contains parameters.type 'compendium_landing_page'}}checked{{/contains}}>
-								<label for="checkbox-compendia">
-									Compendia
-								</label>
-							</li>
-							<li>
-								<input type="checkbox" name="type" value="timeseries" {{#contains parameters.type 'timeseries'}}checked{{/contains}}>
-								<label for="checkbox-timeseries">
-									Time series
-								</label>
-							</li>
-							<li>
-								<input type="checkbox" name="type" value="dataset" {{#contains parameters.type 'dataset'}}checked{{/contains}}>
-								<label for="checkbox-dataset">
-									{{labels.dataset}}
-								</label>
-							</li>
-							<li>
-								<input type="checkbox" name="methodology" value="1" {{#if parameters.methodology.0}}checked{{/if}} >
+<main id="main" role="main" tabindex="-1">
+	{{!-- {{#if parameters.q.0}} --}}
 
-								<label for="checkbox-methodology">
-									{{labels.methodology}}
-								</label>
-							</li>
-						</ul>
-						<p class="panel--mar-small">{{labels.search-expand}}:</p>
-						<div class="panel--mar-small">
-							<input type="checkbox" name="includeStatics" value="1" {{#if parameters.includeStatics.0}}checked{{/if}}>
-							<label for="checkbox">
-								{{labels.search-expand-all}}</br>
-								<span class="micro">({{labels.search-expand-types}})</span>
-							</label>
-						</div>
-					</div>
-					<div>
-						<button type="submit" class="btn btn--primary btn--small panel--mar-small">{{labels.search-filter}}</button>
-					</div>
-					<!-- /box__content -->
-				</article>
-			</div>
-			<!-- /grid-desktop-one-third -->
-			<div class="grid-col desktop-grid-two-thirds">
-				{{#if results}}
-				<p class="flush--half--bottom">
-					{{#if results}}
-					{{#if suggestionBased}}
-					{{labels.search-no-results}} <strong>'{{parameters.q.0}}'</strong>.
-					</br> {{labels.search-showing-lrg}} <span class="stand-out-text">{{numberOfResults}}</span> {{labels.search-result}} <strong>'{{suggestion}}'</strong>
-					{{#if types}}
-					{{labels.search-showing-sml}}
-					{{#each types}} <strong>
-					{{#if_eq this 'bulletin'}}statistical bulletin
-					{{/if_eq}}
-					{{#if_ne this 'bulletin'}}{{this}}{{/if_ne}}</strong>
-					<span class="icon-cancel"></span>
-					{{/each}}
-					{{/if}}.
-					{{else}}
-					<span class="stand-out-text">{{numberOfResults}}</span> {{labels.search-result}}
-					<span class="stand-out-text">'{{parameters.q.0}}'</span>
-					{{#if parameters.type}}
-					{{labels.search-showing-sml}}
-					{{#each parameters.type}}
-					<strong>
-					{{#if_eq this 'bulletin'}}statistical bulletins
-					{{/if_eq}}
-					{{#if_ne this 'bulletin'}}{{this}}{{/if_ne}}
-					</strong>
-					<span class="icon-cancel"></span>
-					{{/each}}
-					{{/if}}.
-					{{/if}}
-					{{else}}
-					{{labels.search-no-results}} <span class="stand-out-text">'{{parameters.q.0}}'</span>.
-					{{/if}}
-				</p>
-				{{!-- HEADLINE BOX --}}
-				{{#resolve featuredResult.results.0.uri}}
-				<article class="box box--padded--med sectioned clickable-wrap">
-					<div class="box__content">
-						<div class="grid-wrap">
-							{{#resolve items.0.uri assign="series" filter="series"}}
-							<div class="grid-col desktop-grid-one-half">
-								<!-- <p class="alpha"> -->
-								<a href="{{../uri}}">
-									<div style="height:180px">
-										{{>partials/highcharts/sparkline}}
-									</div>
-								</a>
-								<!-- </p> -->
-							</div>
-							{{/resolve}}
-							<div class="grid-col {{#if series}}desktop-grid-one-half box--padded--med-vertical{{/if}} nav--block-landing flush">
-								<h3><a href="{{uri}}">{{description.title}}</a></h3>
-								{{md description.summary}}
-							</div>
-							<!-- /desktop-grid -->
-						</div>
-						<!-- /grid-wrap -->
-					</div>
-					<!-- /box__content -->
-				</article>
-				{{/resolve}}
-				{{!-- end of HEADLINE BOX --}}
-				{{> list/partials/results}}
-				{{> list/partials/paginator}}
-				{{else}}
-				{{#if parameters.q}}
-				<div>
-					{{labels.search-no-results}} <strong>‘{{parameters.q.0}}’</strong></br></br>
-					<strong>{{labels.search-try-other}}:</strong>
-					<ul>
-						<li>{{labels.search-diff-words}}</li>
-						<li>{{labels.search-remove-filters}}</li>
-						{{#unless parameters.includeStatics}}
-						<li><a href="/search?q={{parameters.q.0}}{{#each parameters.type}}&type={{this}}{{/each}}{{#if parameters.methodology.0}}&methodology=1{{/if}}&includeStatics=1">{{labels.search-expand-all}}</a></li>
-						{{/unless}}
-					</ul>
+	{{results}}
+
+	<div class="page-content">
+		<div class="wrapper">
+			<div class="">
+
+				{{!-- FILTERS --}}
+				<div class="col col--lg-17">
+					<form>
+						<h2 class="float-left flush">Refine results</h2>
+						<a href="/search?q={{parameters.q.0}}" value="Reset" class="btn btn--thin float-right">{{labels.search-refine-clear}}</a>
+					</form>
 				</div>
+
+				{{!-- RESULTS --}}
+				<div class="col col--lg-42">
+					{{#if results}}
+
+					{{!-- NUMBER OF RESULTS --}}
+					<p>
+						{{#if results}}
+
+							{{#if suggestionBased}}
+								{{labels.search-no-results}} '{{parameters.q.0}}'.
+								</br> 
+								{{labels.search-showing-lrg}} {{numberOfResults}} {{labels.search-result}} '{{suggestion}}'
+
+								{{#if types}}
+									{{labels.search-showing-sml}}
+									{{#each types}}
+										{{#if_eq this 'bulletin'}}
+											statistical bulletin
+										{{/if_eq}}
+										{{#if_ne this 'bulletin'}}
+											{{this}}
+										{{/if_ne}}
+									{{/each}}
+								{{/if}}. {{!-- /if types --}}
+
+							{{else}}
+
+								{{numberOfResults}} {{labels.search-result}} '{{parameters.q.0}}'
+
+								{{#if parameters.type}}
+									{{labels.search-showing-sml}}
+									{{#each parameters.type}}
+										{{#if_eq this 'bulletin'}}
+											statistical bulletins
+										{{/if_eq}}
+										{{#if_ne this 'bulletin'}}
+											{{this}}
+										{{/if_ne}}
+									{{/each}}
+								{{/if}}. {{!-- /if parameters.type --}}
+
+							{{/if}} {{!-- /if suggestionBased --}}
+
+						{{else}}
+							{{labels.search-no-results}} '{{parameters.q.0}}'.
+						{{/if}} {{!-- /if results --}}
+					</p>
+
+					{{!-- HEADLINE RESULTS --}}
+					{{#resolve featuredResult.results.0.uri}}
+					<div class="tiles">
+						<div class="tiles__item tiles__content">
+							{{!-- Sparkline --}}
+							<div class="col col--lg-20">
+								{{#resolve items.0.uri assign="series" filter="series"}}
+									<a href="{{../uri}}">
+										<div style="height: 248px;">
+											{{>partials/highcharts/sparkline}}
+										</div>
+									</a>
+								{{/resolve}}
+							</div>
+							{{!-- Summary --}}
+							{{#if series}}
+							<div class="col col--lg-20 tiles__item--nav-type-fixed padding-left">
+							{{else}}
+							<div class="col col--lg-42">
+							{{/if}}
+								<h2><a href="{{uri}}">{{description.title}}</a></h2>
+								<p>{{description.summary}}</p>
+							</div>
+						</div>
+					</div>
+					{{/resolve}}
+
+					{{!-- MAIN RESULTS --}}
+					{{> list/partials/results}}
+					{{> list/partials/paginator}}
+				</div>
+
+
+				{{!-- NO RESULTS --}}
+				{{else}}
+
+					{{#if parameters.q}}
+						<div class="col col--lg-42">
+							{{labels.search-no-results}} ‘{{parameters.q.0}}’ </br>
+							{{labels.search-try-other}}:
+							<ul>
+								<li>{{labels.search-diff-words}}</li>
+								<li>{{labels.search-remove-filters}}</li>
+								{{#unless parameters.includeStatics}}
+								<li><a href="/search?q={{parameters.q.0}}{{#each parameters.type}}&type={{this}}{{/each}}{{#if parameters.methodology.0}}&methodology=1{{/if}}&includeStatics=1">{{labels.search-expand-all}}</a></li>
+								{{/unless}}
+							</ul>
+						</div>
+					{{/if}}
+
 				{{/if}}
-				{{/if}}
+
 			</div>
-			<!-- /desktop-grid-two-thirds -->
 		</div>
-		<!-- /grid-wrap -->
-	</form>
-</div>
-{{else}}
-{{/if}}
-<!-- /wrapper -->
+	</div>
+
+	{{!-- {{/if}} --}}
+</main>
