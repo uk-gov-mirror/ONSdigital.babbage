@@ -254,18 +254,24 @@ $(function() {
         $('#jsEnhancePrintCompendium').click(function(e) {
             addLoadingOverlay();
 
-            //TODO GET THIS WORKING ON NEW PL
+            $('.chapter').each(function(index) {
+                // Synchronously adds div with id to get around Ajax working asynchronously
+                $('main').append("<div id='compendium-print" + index + "'></div>")
 
-            $('.chapter').each(function() {
                 var url = $(this).attr('href');
 
-                var getContent = ('.page-content');
+                // Set what content from each page we want to retrieve for printing
+                var childIntro = ('.page-intro');
+                var childContent = ('.page-content');
 
-                $('<section>').load(url, function() {
-                    $('.page-content').append("<div class='print__break-after'>" + $(this).find(getContent).html() + "</div>");
-                });
+                $.get(url, function(data){
+                    $(data).find(childIntro).addClass('print--break-before').appendTo('#compendium-print' + index);
+                    $(data).find(childContent).appendTo('#compendium-print' + index);
+                })
+
 
                 e.preventDefault();
+
             });
 
             $(document).ajaxStop(function() {

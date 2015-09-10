@@ -1,0 +1,37 @@
+{{!-- home figure --}}
+<article class="">
+    
+    <div class="">
+        {{#resolve this.theme.uri filter="title"}}
+        {{!-- <h2 class="tiles__title-h2"><a href="{{uri}}">{{title}}</a></h2> --}}
+        {{!-- <h2 class="tiles__title-h2">{{title}}</h2> --}}
+        {{/resolve}}
+        
+        {{#resolve this.statistics.uri filter="description"}}
+        <dl class="tiles__content">
+            <dt class="tiles__title-dt">
+            <a href="{{uri}}">{{description.title}}</a>
+            </dt>
+            <!-- change to dd's -->
+            <dd>
+            <span class="stat__figure--home block">
+                {{description.preUnit}} <span class="stat__figure-enhance">{{description.number}}</span> {{description.unit}}
+            </span>
+            <span class="stat__description block">
+                {{description.date}}
+            </span>
+            <a class="js-enhance--hide" href="{{statistics.uri}}">More info</a>
+            <div class="sparkline-holder">
+            {{> partials/highcharts/sparkline}}
+            </div>
+            </dd>
+        </dl>
+        {{/resolve}}
+    </div>
+    
+    {{!-- <footer class="nav-panel__footer-home-hero">
+    {{#resolve sections.0.theme.uri filter="title"}}
+        <a href="{{theme.uri}}">Explore {{title}}</a>
+    {{/resolve}}
+    </footer> --}}
+</article>

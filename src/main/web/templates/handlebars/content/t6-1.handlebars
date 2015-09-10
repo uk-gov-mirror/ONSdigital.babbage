@@ -65,15 +65,13 @@
 
 					{{!-- Print and download --}}
 					<p class="col col--md-11 col--lg-14 print--hide meta__item">
-						<a href="" id="jsEnhancePrintCompendium" class="link-complex nojs-hidden js-enhance--show">
-							<span class="icon-print"></span>
-							<span class="link-complex__target print-analytics">{{labels.print-report}}</span>
+						<a href="" id="jsEnhancePrintCompendium" class="nojs-hidden js-enhance--show">
+							{{labels.print-report}}
 						</a>
-						<br class="nojs-hidden js-enhance--show"/>
+						{{!-- <br class="nojs-hidden js-enhance--show"/>
 						<a href="{{uri}}/pdf" class="link-complex">
-							<span class="icon-download" role="presentation"></span>
-							<span class="link-complex__target">{{labels.dl-pdf}}</span>
-						</a>
+							{{labels.dl-pdf}}
+						</a> --}}
 					</p>
 				</div>
 			</div> {{!-- /wrapper --}}
@@ -81,7 +79,7 @@
 	</div> {{!-- /page-intro --}}
 
 	<div class="wrapper">
-		<div class="col-wrap">
+		<div class="col-wrap print--avoid-break">
 			<h2 class="margin-bottom col col--lg-one">{{labels.compendium-whats-in}}</h2>
 
 			{{!-- Chapters --}}
@@ -154,4 +152,5 @@
 			</div>
 		</div>
 	</div>
+	<div id="print-here"></div>
 </main>
