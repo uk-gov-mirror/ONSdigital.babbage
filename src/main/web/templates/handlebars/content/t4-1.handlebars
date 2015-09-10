@@ -25,10 +25,10 @@
 				{{!-- Latest info --}}
 				{{#resolve (concat (parentPath uri) "/latest") filter="title"}}
 				{{#if_eq uri ../uri}}
-				<p class="alert__content">This is the latest release</p> <a class="btn print-hidden" href="{{parentPath uri}}/previousReleases">view previous releases</a>
+				<p class="alert__content">This is the latest release</p> <a class="btn print--hide" href="{{parentPath uri}}/previousReleases">view previous releases</a>
 
 				{{else}}
-				<p class="alert__content">This is not the latest release</p> <a class="btn print-hidden" href="{{uri}}">view latest release</a>
+				<p class="alert__content">This is not the latest release</p> <a class="btn print--hide" href="{{uri}}">view latest release</a>
 				{{/if_eq}}
 				{{/resolve}}
 
@@ -63,15 +63,13 @@
 
 
 			{{!-- Print and download --}}
-			<p class="col col--md-11 col--lg-14 print-hidden meta__item">
+			<p class="col col--md-11 col--lg-14 print--hide meta__item">
 				<a href="" id="jsEnhancePrint" class="link-complex nojs-hidden js-enhance--show">
-					<span class="icon-print"></span>
-					<span class="link-complex__target print-analytics">{{labels.print-report}}</span>
+					{{labels.print-report}}
 				</a>
 				<br class="nojs-hidden js-enhance--show"/>
 				<a href="{{uri}}/pdf" class="link-complex">
-					<span class="icon-download" role="presentation"></span>
-					<span class="link-complex__target">{{labels.dl-pdf}}</span>
+					{{labels.dl-pdf}}
 				</a>
 			</p>
 		</div>
@@ -82,11 +80,11 @@
 
 
 
-{{!-- TBLE OF CONTENTS --}}
+{{!-- TABLE OF CONTENTS --}}
 <div class="page-content">
 <div class="wrapper">
 	<div class="col-wrap">
-		<div class="col table-of-contents">
+		<div class="col table-of-contents print--avoid-break">
 			<h2 class="table-of-contents__title">{{labels.toc}}</h2>
 			<ol id="toc" class="table-of-contents__list">
 				{{#each sections}}
@@ -119,7 +117,7 @@
 						<h2><span class="section__content-number">{{@index_1}}.</span> {{title}}</h2>
 					</header>
 					{{md markdown}}
-					<a class="print-hidden jsEnhanceAnimateScroll" href="#toc" title="{{labels.back-to-toc}}">{{labels.back-to-toc}}</a>
+					<a class="print--hide jsEnhanceAnimateScroll" href="#toc" title="{{labels.back-to-toc}}">{{labels.back-to-toc}}</a>
 				</section>
 				{{/each}}
 				<!-- Accordion -->
@@ -130,7 +128,7 @@
 						<h2 class="accordion__title" aria-controls="content-{{@index}}"><span class="section__content-number">{{nf (add sections.size @index_1)}}.</span>{{title}}</h2>
 						<div class="accordion__content panel--bottom-mar-small" aria-labelledby="sc-{{@index}}">
 							{{md markdown}}
-							<a class="print-hidden jsEnhanceAnimateScroll" href="#toc" title="{{labels.back-to-toc}}" class="">{{labels.back-to-toc}}</a>
+							<a class="print--hide jsEnhanceAnimateScroll" href="#toc" title="{{labels.back-to-toc}}" class="">{{labels.back-to-toc}}</a>
 						</div>
 					</section>
 					{{/each}}
