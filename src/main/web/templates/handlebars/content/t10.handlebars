@@ -1,5 +1,5 @@
 <div class="wrapper panel--top-mar">
-	<h3 class="page-header__title">Search results</h3>
+	<h3 class="page-header__title">{{labels.search}}</h3>
 </div>
 <!-- /wrapper -->
 <div class="wrapper panel--mar print-links">
@@ -22,33 +22,33 @@
 				<form id="fitlers" action="/search">
 					<div class="panel panel--bottom-pad panel--separated--bottom flush">
 						<h3 class="flush float-left">Refine results</h3>
-						<a href="/search?q={{searchTerm}}" value="Reset" class="btn btn--primary btn--small btn--thin btn--narrow btn--clear-results float-right">Clear</a>
+						<a href="/search?q={{searchTerm}}" value="Reset" class="btn btn--primary btn--small btn--thin btn--narrow btn--clear-results float-right">{{labels.search-refine-clear}}</a>
 					</div>
 					<div class="box__content">
-						<p class="panel panel--separated--bottom">Content types to show</p>
+						<p class="panel panel--separated--bottom">{{labels.search-refine-types}}</p>
 						<ul class="list--neutral">
 							<li>
 								<input type="checkbox" name="type" value="bulletin" {{#contains types 'bulletin'}}checked{{/contains}} >
 								<label for="checkbox-statsbulletin">
-									Statistical bulletin
+									{{labels.bulletin}}
 								</label>
 							</li>
 							<li>
 								<input type="checkbox" name="type" value="article" {{#contains types 'article'}}checked{{/contains}}>
 								<label for="checkbox-article">
-									Article
+									{{labels.article}}
 								</label>
 							</li>
 							<li>
 								<input type="checkbox" name="type" value="dataset" {{#contains types 'dataset'}}checked{{/contains}}>
 								<label for="checkbox-dataset">
-									Dataset
+									{{labels.dataset}}
 								</label>
 							</li>
 							<li>
 								<input type="checkbox" name="type" value="methodology" {{#contains types 'methodology'}}checked{{/contains}} >
 								<label for="checkbox-methodology">
-									Methodology
+									{{labels.methodology}}
 								</label>
 							</li>
 							{{!-- <li>
@@ -58,24 +58,24 @@
 								</label>
 							</li> --}}
 						</ul>
-						<p class="panel--mar-small">You can also expand your search results to include the following:</p>
+						<p class="panel--mar-small">{{labels.search-expand}}:</p>
 						<div class="panel--mar-small">
 							<input type="checkbox" name="includeAllData" value="1" {{#if includeAllData}}checked{{/if}}>
 							<label for="checkbox">
-								Include{{!-- all --}} individual time series data and data slices </br>
+								{{labels.search-expand-data}}</br>
 								{{!-- <span class="micro">(currently max 5 shown by default)</span> --}}
 							</label>
 						</div>
 						<div class="panel--mar-small">
 							<input type="checkbox" name="includeStatics" value="1" {{#if includeStatics}}checked{{/if}}>
 							<label for="checkbox">
-								Include all other website content </br>
-								<span class="micro">(User requested data, about us, media releases, freedom of information (FOI) requests etc.)</span>
+								{{labels.search-expand-all}}</br>
+								<span class="micro">({{labels.search-expand-types}})</span>
 							</label>
 						</div>
 					</div>
 					<div>
-						<button type="submit" name="q" value="{{searchTerm}}" class="btn btn--primary btn--small panel--mar-small">Filter</button>
+						<button type="submit" name="q" value="{{searchTerm}}" class="btn btn--primary btn--small panel--mar-small">{{labels.search-filter}}</button>
 					</div>
 					<!-- /box__content -->
 				</form>
@@ -103,14 +103,35 @@
 			{{#if statisticsSearchResult.results}}
 			<p class="flush--half--bottom">
 				{{#if statisticsSearchResult.results}}
-				{{#if suggestionBased}}
-				Sorry, there were no results for <strong>'{{searchTerm}}'</strong>.</br>
-				Showing <span class="stand-out-text">{{statisticsSearchResult.numberOfResults}}</span> results for <strong>'{{suggestion}}'</strong> {{#if types}}showing{{#each types}} <strong>{{#if_eq this 'bulletin'}}statistical bulletins{{/if_eq}}{{#if_ne this 'bulletin'}}{{this}}{{/if_ne}}</strong><span class="icon-cancel"></span>{{/each}}{{/if}}.
+					{{#if suggestionBased}}
+						{{labels.search-no-results}} <strong>'{{searchTerm}}'</strong>.
+						</br> {{labels.search-showing-lrg}} <span class="stand-out-text">{{statisticsSearchResult.numberOfResults}}</span> {{labels.search-result}} <strong>'{{suggestion}}'</strong> 
+					{{#if types}}
+						{{labels.search-showing-sml}}
+						{{#each types}} <strong>
+							{{#if_eq this 'bulletin'}}statistical bulletin
+							{{/if_eq}}
+							{{#if_ne this 'bulletin'}}{{this}}{{/if_ne}}</strong>
+							<span class="icon-cancel"></span>
+						{{/each}}
+					{{/if}}.
 				{{else}}
-				<span class="stand-out-text">{{statisticsSearchResult.numberOfResults}}</span> results for <span class="stand-out-text">'{{searchTerm}}'</span> {{#if types}}showing{{#each types}} <strong>{{#if_eq this 'bulletin'}}statistical bulletins{{/if_eq}}{{#if_ne this 'bulletin'}}{{this}}{{/if_ne}}</strong><span class="icon-cancel"></span>{{/each}}{{/if}}.
-				{{/if}}
+				<span class="stand-out-text">{{statisticsSearchResult.numberOfResults}}</span> {{labels.search-result}} 
+				<span class="stand-out-text">'{{searchTerm}}'</span>
+					{{#if types}}
+						{{labels.search-showing-sml}}
+							{{#each types}} 
+								<strong>
+									{{#if_eq this 'bulletin'}}statistical bulletins
+									{{/if_eq}}
+									{{#if_ne this 'bulletin'}}{{this}}{{/if_ne}}
+								</strong>
+								<span class="icon-cancel"></span>
+							{{/each}}
+						{{/if}}.
+					{{/if}}
 				{{else}}
-				Sorry, there were no results for <span class="stand-out-text">'{{searchTerm}}'</span>.
+				{{labels.search-no-results}} <span class="stand-out-text">'{{searchTerm}}'</span>.
 				{{/if}}
 			</p>
 			{{!-- HEADLINE BOX --}}
@@ -158,7 +179,7 @@
 					</p>
 					{{/if}}
 					<p class="mini description flush">
-						Released {{df description.releaseDate}}
+						{{labels.released}} {{df description.releaseDate}}
 					</p>
 					{{md description.summary}}
 				</li>
@@ -181,7 +202,7 @@
 					{{/each}}
 					{{#if_ne currentPage endPage}}
 					<li>
-						<a href="/search?q={{searchTerm}}{{#each types}}&type={{this}}{{/each}}&page={{increment currentPage}}{{#if includeStatics}}&includeStatics=1{{/if}}{{#if includeAllData}}&includeAllData=1{{/if}}" class="page-link next" >Next</a>
+						<a href="/search?q={{searchTerm}}{{#each types}}&type={{this}}{{/each}}&page={{increment currentPage}}{{#if includeStatics}}&includeStatics=1{{/if}}{{#if includeAllData}}&includeAllData=1{{/if}}" class="page-link next" >{{labels.search-next}}</a>
 					</li>
 					{{/if_ne}}
 				</ul>
@@ -190,16 +211,16 @@
 			{{else}}
 			{{#if searchTerm}}
 			<div>
-				Sorry, no results were found for <strong>‘{{searchTerm}}’</strong></br></br>
-				<strong>You could try one of the following:</strong>
+				{{labels.search-no-results}} <strong>‘{{searchTerm}}’</strong></br></br>
+				<strong>{{labels.search-try-other}}:</strong>
 				<ul>
-					<li>search again using different words</li>
-					<li>remove any filters selected</li>
+					<li>{{labels.search-diff-words}}</li>
+					<li>{{labels.search-remove-filters}}</li>
 					{{#unless includeAllData}}
-					<li><a href="/search?q={{searchTerm}}{{#each types}}&type={{this}}{{/each}}&page={{currentPage}}{{#if includeStatics}}&includeStatics=1{{/if}}&includeAllData=1">include individual time series data and data slices</a></li>
+					<li><a href="/search?q={{searchTerm}}{{#each types}}&type={{this}}{{/each}}&page={{currentPage}}{{#if includeStatics}}&includeStatics=1{{/if}}&includeAllData=1">{{labels.search-expand-data}}</a></li>
 					{{/unless}}
 					{{#unless includeStatics}}
-					<li><a href="/search?q={{searchTerm}}{{#each types}}&type={{this}}{{/each}}&page={{currentPage}}{{#if includeAllData}}&includeAllData=1{{/if}}&includeStatics=1">include all other website content</a></li>
+					<li><a href="/search?q={{searchTerm}}{{#each types}}&type={{this}}{{/each}}&page={{currentPage}}{{#if includeAllData}}&includeAllData=1{{/if}}&includeStatics=1">{{labels.search-expand-all}}</a></li>
 					{{/unless}}
 				</ul>
 			</div>

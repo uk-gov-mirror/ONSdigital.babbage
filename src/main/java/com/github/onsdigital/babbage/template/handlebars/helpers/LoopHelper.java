@@ -5,17 +5,17 @@ import com.github.jknack.handlebars.Options;
 import com.github.jknack.handlebars.helper.EachHelper;
 import com.github.onsdigital.babbage.template.handlebars.helpers.base.BabbageHandlebarsHelper;
 import com.github.onsdigital.babbage.template.handlebars.helpers.util.HelperUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.util.*;
 
 import static java.util.Collections.reverse;
-import static java.util.Collections.sort;
 
 /**
  * Created by bren on 02/07/15.
  * <p/>
- * Repeat content fixed number of times
+ * Repeat content fixed number of times, or array sorted by a field or in reverse order
  */
 
 public class LoopHelper extends EachHelper implements BabbageHandlebarsHelper<Object> {
@@ -80,6 +80,12 @@ public class LoopHelper extends EachHelper implements BabbageHandlebarsHelper<Ob
         boolean reverse;
         String field;
 
+        /**
+         * Field can be in dot notation e.g. description.releaseDate
+         *
+         * @param field
+         * @param reverse
+         */
         private MapFieldComparator(String field, boolean reverse) {
             this.field = field;
             this.reverse = reverse;
@@ -87,16 +93,44 @@ public class LoopHelper extends EachHelper implements BabbageHandlebarsHelper<Ob
 
         @Override
         public int compare(java.lang.Object o1, java.lang.Object o2) {
-            Map m1 = (Map) o1;
-            Map m2 = (Map) o2;
-            if (m1 == null) {
+            if (o1 == null) {
                 return 1;
             }
-            if (m2 == null) {
+            if (o2 == null) {
                 return -1;
             }
-            int result = HelperUtils.compare((Comparable) m1.get(field), (Comparable) m2.get(field));
+
+            Map m1 = (Map) o1;
+            Map m2 = (Map) o2;
+
+            Comparable val1 = getField(m1, this.field);
+            Comparable val2 = getField(m2, this.field);
+
+            int result = HelperUtils.compare(val1, val2);
+
+            if (val1 == null || val2 == null) {
+                return result;//nulls should always be last, reverse or not
+            }
             return reverse ? result * -1 : result;
+
+        }
+
+
+        private Comparable getField(Map m, String field) {
+            if (StringUtils.isEmpty(field)) {
+                return null;
+            }
+
+            int i = field.indexOf(".");
+            if (i < 0) {
+                Comparable comparable = (Comparable) m.get(field);
+                System.out.println(field + ":" + comparable);
+                return comparable;
+            } else {
+                String firstField = field.substring(0, i);
+                System.out.println(firstField +  ":");
+                return getField((Map) m.get(firstField), field.substring(i + 1));
+            }
 
         }
     }

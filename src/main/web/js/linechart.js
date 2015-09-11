@@ -30,9 +30,10 @@ var renderLineChart = function(timeseries) {
 			// return; // No data to render chart with
 		}
 
-		if (chart.months) {
-			timeseries.months = formatData(timeseries.months);
-			frequency = 'months';
+		// Order affects which frequency is selected by default on-load
+		if (chart.years) {
+			timeseries.years = formatData(timeseries.years)
+			frequency = 'years';
 		}
 
 		if (chart.quarters) {
@@ -40,10 +41,11 @@ var renderLineChart = function(timeseries) {
 			frequency = 'quarters';
 		}
 
-		if (chart.years) {
-			timeseries.years = formatData(timeseries.years)
-			frequency = 'years';
+		if (chart.months) {
+			timeseries.months = formatData(timeseries.months);
+			frequency = 'months';
 		}
+
 		changeFrequency(frequency);
 		chartControls.initialize();
 	}

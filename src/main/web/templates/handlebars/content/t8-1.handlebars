@@ -18,11 +18,9 @@
 				</br>
 				{{!--<a class="print-hidden" href="#">previous versions</a>--}}
 			</p>
-			{{#if description.nextRelease}}
 			<p class="grid-col tablet-grid-one-quarter divider--border-left">
-				<span>Next release: </span><br/>{{description.nextRelease}}
+				<span>{{labels.release-next}}: </span><br/>{{#if description.nextRelease}}{{description.nextRelease}}{{else}}To be announced{{/if}}
 			</p>
-			{{/if}}
 			{{#if description.datasetId}}
 			<p class="grid-col tablet-grid-one-quarter divider--border-left">
 					<span>Dataset id: </span>{{description.datasetId}}

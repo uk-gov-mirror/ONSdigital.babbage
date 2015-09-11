@@ -1,5 +1,6 @@
 package com.github.onsdigital.babbage.util;
 
+import com.github.onsdigital.babbage.locale.LocaleConfig;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -8,7 +9,9 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -23,7 +26,9 @@ public class RequestUtil {
     public static void saveRequestContext(HttpServletRequest request) {
         ThreadContext.addData("cookies", getAllCookies(request));
         ThreadContext.addData("parameters", request.getParameterMap());
-
+        Locale locale = resolveLocale(request);
+        ThreadContext.addData("labels", LocaleConfig.getLabels(locale));
+        ThreadContext.addData("lang", locale.getLanguage());
     }
 
     public static void clearContext() {
@@ -56,6 +61,33 @@ public class RequestUtil {
     }
 
     /**
+     *
+     * Resolves locale using cookie, if cookie not available falls back to sub domain name ( e.g. cy.ons.gov.uk )
+     *
+     * @param request
+     * @return language code
+     */
+    private static Locale resolveLocale(HttpServletRequest request) {
+
+        //Decide language from cookie first, if not there check subdomain
+        String languageSegment = getCookieValue(request, "lang");
+        if (StringUtils.isEmpty(languageSegment)) {
+            languageSegment = request.getServerName();
+        } else {
+            languageSegment += ".";
+        }
+
+        Collection<Locale> supportedLanguages = LocaleConfig.getSupportedLanguages();
+        for (Locale supportedLanguage : supportedLanguages) {
+            if (StringUtils.startsWithIgnoreCase(languageSegment,supportedLanguage.getLanguage() + ".")) {
+                return supportedLanguage;
+            }
+        }
+        return LocaleConfig.getDefaultLocale();
+    }
+
+
+    /**
      * Extracts GET parameters from query string
      * <p/>
      * This method matches parameters to query string, if parameters is in query string it is return in the list of parameters.
@@ -64,10 +96,13 @@ public class RequestUtil {
      */
     public static Map<String, String[]> getQueryParameters(HttpServletRequest request) throws UnsupportedEncodingException {
         Map<String, String[]> queryParameters = new HashMap<>();
-        String queryString = request.getQueryString();
-        if (queryString != null) {
-            queryString = URLDecoder.decode(queryString, StandardCharsets.UTF_8.name());
+
+        if (request == null || request.getQueryString() == null ||
+                request.getQueryString().length() == 0) {
+            return queryParameters;
         }
+
+        String queryString = URLDecoder.decode(request.getQueryString(), StandardCharsets.UTF_8.name());
 
         if (StringUtils.isEmpty(queryString)) {
             return queryParameters;
@@ -83,5 +118,4 @@ public class RequestUtil {
         }
         return queryParameters;
     }
-
 }

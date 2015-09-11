@@ -3,12 +3,12 @@
 		<div class="wrapper">
 			{{> partials/breadcrumb}}
 			<p class="page-header__title">
-				Freedom of information (FOI)
+				{{labels.foi}}
 			</p>
 			<h1 class="page-header__title flush--half--bottom">{{description.title}}</h1>
 			<div class="grid-wrap">
 				<p class="grid-col tablet-grid-one-quarter">
-					<span>Release date: </span><br/>{{df description.releaseDate}}
+					<span>{{labels.release-date}}: </span><br/>{{df description.releaseDate}}
 				</p>
 			</div>
 		</div>
@@ -23,31 +23,31 @@
 				{{#if downloads}}
         <h2>{{#if_eq downloads.size 1}}Download associated with request{{/if_eq}} {{#if_ne downloads.size 1}}Downloads associated with request{{/if_ne}}</h2>
         <ul class="list--neutral">
-					{{#each downloads}}
+			{{#each downloads}}
             <li class="flush--third--bottom">
               <a href="/file?uri={{file}}" title="{{title}}">{{title}}</a>
             </li>
-					{{/each}}
+			{{/each}}
         </ul>
 				{{/if}}
 			</article>
 			<!-- /desktop-grid-two-thirds -->
 			<div class="grid-col desktop-grid-one-third">
         <article>
-					<!--{{#if downloads}}-->
+			<!--{{#if downloads}}-->
             <div class="box solid box--purple--separated--left">
               <div class="box__inner border box--padded">
                 <h3 class="box__section__header">
-									{{#if_eq downloads.size 1}}Download associated with request{{/if_eq}} {{#if_ne downloads.size 1}}Downloads associated with request{{/if_ne}}
+					{{#if_eq downloads.size 1}}Download associated with request{{/if_eq}} {{#if_ne downloads.size 1}}Downloads associated with request{{/if_ne}}
                 </h3>
                 <!-- /box__header -->
                 <div class="box__content">
                   <ul class="list--neutral">
-										{{#each downloads}}
-                      <li class="flush--third--bottom">
-                        <a href="/file?uri={{file}}" title="{{title}}">{{title}}</a>
-                      </li>
-										{{/each}}
+						{{#each downloads}}
+                      	<li class="flush--third--bottom">
+                        	<a href="/file?uri={{file}}" title="{{title}}">{{title}}</a>
+                      	</li>
+						{{/each}}
                   </ul>
                 </div>
                 <!-- /box__content -->
@@ -61,7 +61,7 @@
 					<div class="box solid box--purple--separated--left">
 						<div class="box__inner border box--padded">
 							<h3 class="box__section__header">
-								Making an FOI request
+								{{labels.foi-request}}
 							</h3>
 							<!-- /box__header -->
 							<div class="box__content">

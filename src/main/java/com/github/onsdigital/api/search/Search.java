@@ -35,8 +35,6 @@ public class Search {
         BabbageResponse babbageResponse;
         String type = URIUtil.resolveRequestType(request.getRequestURI());
 
-//        String uri = "search?" + request.getQueryString();
-
         switch (type) {
             case DATA_REQUEST:
                 try (ContentStream contentStream = ContentClient.getInstance().getSearch("", getQueryParameters(request))) {

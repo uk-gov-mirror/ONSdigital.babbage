@@ -3,7 +3,7 @@
 		<div class="wrapper">
 		{{> partials/breadcrumb}}
 			<p class="page-header__title">
-				Quality and methodology information
+				{{labels.qmi}}
 			</p>
 			<h1 class="page-header__title flush--half--bottom">{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}</h1>
 			<div class="grid-wrap mini">
@@ -11,45 +11,45 @@
 					{{#if description.nationalStatistic}}
             <img src="/node_modules/ONS-Pattern-Library/ui/img/national-statistics.png" alt="National Statistics logo" />
 					{{/if}}
-					<span>Contact: </span></br>
+					<span>{{labels.meta-contact}}: </span></br>
 					<a href="mailto:{{description.contact.email}}">{{#if description.contact.name}}{{description.contact.name}}{{else}}{{description.contact.email}}{{/if}}</a>
 				</p>
 				<p class="grid-col tablet-grid-one-quarter divider--border-left">
-					<span>Last revised: </span><br/>{{df description.lastRevised}}
+					<span>{{labels.qmi-last-revised}}: </span><br/>{{df description.lastRevised}}
 				</p>
 				<p class="grid-col tablet-grid-one-half divider--border-left">
 					<a class="link-complex" href="/pdf">
 						<span class="icon icon-download"></span>
-						<span class="link-complex__target">Download PDF</span>
+						<span class="link-complex__target">{{labels.dl-pdf}}</span>
 					</a>
 				</p>
 			</div>
 			{{#if_any description.surveyName description.frequency description.compilation description.sampleSize description.geographicCoverage}}
-			<h2 class="gamma">Methodology background</h2>
+			<h2 class="gamma">{{labels.qmi-meth-background}}</h2>
 			<div class="grid-wrap mini">
 				{{#if description.surveyName}}
 				<p class="grid-col {{#if_all description.surveyName description.frequency description.compilation description.sampleSize description.geographicCoverage}}tablet-grid-one-fifth{{else}}tablet-grid-one-quarter{{/if_all}} {{#if description.nationalStatistic}}page-header__meta-block-with-img{{/if}}">
-					<span>Survey name: </span><br/>{{description.surveyName}}
+					<span>{{labels.qmi-survey-name}}: </span><br/>{{description.surveyName}}
 				</p>
 				{{/if}}
 				{{#if description.frequency}}
 				<p class="grid-col {{#if_all description.surveyName description.frequency description.compilation description.sampleSize description.geographicCoverage}}tablet-grid-one-fifth{{else}}tablet-grid-one-quarter{{/if_all}} {{#if description.surveyName}}divider--border-left{{/if}}">
-					<span>Frequency: </span><br/>{{description.frequency}}
+					<span>{{labels.qmi-frequency}}: </span><br/>{{description.frequency}}
 				</p>
 				{{/if}}
 				{{#if description.compilation}}
 				<p class="grid-col {{#if_all description.surveyName description.frequency description.compilation description.sampleSize description.geographicCoverage}}tablet-grid-one-fifth{{else}}tablet-grid-one-quarter{{/if_all}} {{#if_any description.surveyName description.frequency}}divider--border-left{{/if_any}}">
-					<span>Data collection: </span><br/>{{description.compilation}}
+					<span>{{labels.qmi-compiled}}: </span><br/>{{description.compilation}}
 				</p>
 				{{/if}}
 				{{#if description.sampleSize}}
 				<p class="grid-col {{#if_all description.surveyName description.frequency description.compilation description.sampleSize description.geographicCoverage}}tablet-grid-one-fifth{{else}}tablet-grid-one-quarter{{/if_all}} {{#if_any description.surveyName description.frequency description.compilation}}divider--border-left{{/if_any}}">
-					<span>Sample size: </span><br/><span class="stat__figure-enhance">{{description.sampleSize}}</span>
+					<span>{{labels.qmi-sample-size}}: </span><br/><span class="stat__figure-enhance">{{description.sampleSize}}</span>
 				</p>
 				{{/if}}
 				{{#if description.geographicCoverage}}
 				<p class="grid-col {{#if_all description.surveyName description.frequency description.compilation description.sampleSize description.geographicCoverage}}tablet-grid-one-fifth{{else}}tablet-grid-one-quarter{{/if_all}} {{#if_any description.surveyName description.frequency description.compilation description.sampleSize}}divider--border-left{{/if_any}}">
-					<span>Graphical coverage: </span><br/>{{description.geographicCoverage}}
+					<span>{{labels.qmi-geog}}: </span><br/>{{description.geographicCoverage}}
 				</p>
 				{{/if}}
 			</div>
@@ -70,7 +70,7 @@
 				<article class="box solid box--teal--separated--left">
 					<div class="box__inner border box--padded">
 						<h3 class="box__section__header">
-							Documents using this methodology
+							{{labels.qmi-docs-using}}
 						</h3>
 						<!-- /box__header -->
 						<div class="box__content">
@@ -91,7 +91,7 @@
 					<article class="box box--green box--green--separated--left">
 						<div class="box__inner border box--padded">
 							<h3 class="box__section__header">
-								Data using this methodology
+								{{labels.qmi-data-using}}
 							</h3>
 							<div class="box__content">
 								<ul class="list--neutral">
@@ -108,14 +108,14 @@
 				<!-- /box -->
 				<div class="box box--padded sectioned">
 					<h3 class="box__section__header">
-						Contact details for this methodology
+						{{labels.qmi-contact}}
 					</h3>
 					<!-- /box__header -->
 					<div class="box__content">
 						<address>
 							{{#if description.contact.name}}{{description.contact.name}}<br/>{{/if}}
 		                    <a href="mailto:{{description.contact.email}}">{{description.contact.email}}</a><br/>
-		                    {{#if description.contact.telephone}}Telephone: {{description.contact.telephone}}{{/if}}
+		                    {{#if description.contact.telephone}}{{labels.phone}}: {{description.contact.telephone}}{{/if}}
 						</address>
 					</div>
 					<!-- /box__content -->
@@ -130,7 +130,7 @@
 				<div class="box solid box--purple--separated--left">
 					<div class="box__inner border box--padded">
 						<h3 class="box__section__header">
-							Download this methodology
+							{{labels.qmi-download}}
 						</h3>
 						<!-- /box__header -->
 						<div class="box__content">
