@@ -1,5 +1,6 @@
 <main id="main" role="main" tabindex="-1">
 	{{!-- {{#if parameters.q.0}} --}}
+	<h1 class="visuallyhidden">Search results</h1>
 
 	<div class="page-content">
 		<div class="wrapper">
@@ -18,7 +19,7 @@
 					{{#if results}}
 
 					{{!-- NUMBER OF RESULTS --}}
-					<p>
+					<p class="col col--lg-28">
 						{{#if results}}
 
 							{{#if suggestionBased}}
@@ -61,10 +62,15 @@
 						{{/if}} {{!-- /if results --}}
 					</p>
 
+					<form class="col col--lg-14">
+						<input type="hidden" name="q" value="{{parameters.q.0}}">
+						{{> list/filters/sort}}
+					</form>
+
 					{{!-- HEADLINE RESULTS --}}
 					{{#resolve featuredResult.results.0.uri}}
 					<div class="tiles">
-						<div class="tiles__item tiles__content">
+						<div class="tiles__item tiles__content clear-left">
 							{{!-- Sparkline --}}
 							<div class="col col--lg-20">
 								{{#resolve items.0.uri assign="series" filter="series"}}
