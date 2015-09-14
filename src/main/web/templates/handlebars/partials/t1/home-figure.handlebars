@@ -14,10 +14,11 @@
             </dt>
             <!-- change to dd's -->
             <dd>
-            <span class="stat__figure--home block">
-                {{description.preUnit}} <span class="stat__figure-enhance">{{description.number}}</span> {{description.unit}}
+                <span class="tiles__preunit--home">{{description.preUnit}}</span> 
+                <span class="tiles__figure--home">{{description.number}}</span> 
+                <span class="tiles__unit--home">{{description.unit}}</span>
             </span>
-            <span class="stat__description block">
+            <span class="tiles__date--home">
                 {{description.date}}
             </span>
             <a class="js-enhance--hide" href="{{statistics.uri}}">More info</a>
