@@ -106,55 +106,55 @@
 				</label>
 				<button type="submit" class="btn btn--block margin-top">{{labels.search-filter}}</button>
 			</div>
-		</form>
-		{{!-- RESULTS --}}
-		<div class="results col col--md-34 col--lg-40 margin-left">
-			{{#if results}}
-			{{!-- HEADLINE RESULTS --}}
-			{{#resolve featuredResult.results.0.uri}}
-			<div class="slate--iron-light col--md-36 col--lg-40 clear-left" style="height: 248px;">
-				{{!-- Sparkline --}}
-				<div class="col col--md-17 col--lg-20">
-					{{#resolve items.0.uri assign="series" filter="series"}}
-					<a href="{{../uri}}">
-						<div style="height: 248px;">
-							{{>partials/highcharts/sparkline}}
-						</div>
-					</a>
-					{{/resolve}}
-				</div>
-				{{!-- Summary --}}
-				{{#if series}}
-				<div class="col col--md-17 col--lg-20 tiles__item--nav-type-fixed padding-left padding-right">
-					{{else}}
-					<div class="col col--md-34 col--lg-42">
-						{{/if}}
-						<h2><a href="{{uri}}">{{description.title}}</a></h2>
-						<p>{{description.summary}}</p>
+			{{!-- RESULTS --}}
+			<div class="results col col--md-34 col--lg-40 margin-left">
+				{{#if results}}
+				{{!-- HEADLINE RESULTS --}}
+				{{#resolve featuredResult.results.0.uri}}
+				<div class="slate--iron-light col--md-36 col--lg-40 clear-left" style="height: 248px;">
+					{{!-- Sparkline --}}
+					<div class="col col--md-17 col--lg-20">
+						{{#resolve items.0.uri assign="series" filter="series"}}
+						<a href="{{../uri}}">
+							<div style="height: 248px;">
+								{{>partials/highcharts/sparkline}}
+							</div>
+						</a>
+						{{/resolve}}
 					</div>
+					{{!-- Summary --}}
+					{{#if series}}
+					<div class="col col--md-17 col--lg-20 tiles__item--nav-type-fixed padding-left padding-right">
+						{{else}}
+						<div class="col col--md-34 col--lg-42">
+							{{/if}}
+							<h2><a href="{{uri}}">{{description.title}}</a></h2>
+							<p>{{description.summary}}</p>
+						</div>
+					</div>
+					{{/resolve}}
+					{{!-- MAIN RESULTS --}}
+					{{> list/partials/results}}
+					{{> list/partials/paginator}}
 				</div>
-				{{/resolve}}
-				{{!-- MAIN RESULTS --}}
-				{{> list/partials/results}}
-				{{> list/partials/paginator}}
+				{{!-- NO RESULTS --}}
+				{{else}}
+				{{#if parameters.q}}
+				<div class="col col--lg-42">
+					{{labels.search-no-results}} ‘{{parameters.q.0}}’ </br>
+					{{labels.search-try-other}}:
+					<ul>
+						<li>{{labels.search-diff-words}}</li>
+						<li>{{labels.search-remove-filters}}</li>
+						{{#unless parameters.includeStatics}}
+						<li><a href="/search?q={{parameters.q.0}}{{#each parameters.type}}&type={{this}}{{/each}}{{#if parameters.methodology.0}}&methodology=1{{/if}}&includeStatics=1">{{labels.search-expand-all}}</a></li>
+						{{/unless}}
+					</ul>
+				</div>
+				{{/if}}
+				{{/if}}
 			</div>
-			{{!-- NO RESULTS --}}
-			{{else}}
-			{{#if parameters.q}}
-			<div class="col col--lg-42">
-				{{labels.search-no-results}} ‘{{parameters.q.0}}’ </br>
-				{{labels.search-try-other}}:
-				<ul>
-					<li>{{labels.search-diff-words}}</li>
-					<li>{{labels.search-remove-filters}}</li>
-					{{#unless parameters.includeStatics}}
-					<li><a href="/search?q={{parameters.q.0}}{{#each parameters.type}}&type={{this}}{{/each}}{{#if parameters.methodology.0}}&methodology=1{{/if}}&includeStatics=1">{{labels.search-expand-all}}</a></li>
-					{{/unless}}
-				</ul>
-			</div>
-			{{/if}}
-			{{/if}}
-		</div>
+		</form>
 	</div>
 	{{!-- {{/if}} --}}
 	</main>
