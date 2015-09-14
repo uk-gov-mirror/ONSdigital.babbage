@@ -4,13 +4,13 @@
 {{!-- {{json this}} --}}
 <div class="page-content">
 	<div class="wrapper">
-		<form class="search__form">
+		<form>
 			<input class="sort__input" type="hidden" name="q" value="{{parameters.q.0}}">
 			{{!-- NUMBER OF RESULTS --}}
-			<div class="col-wrap">
-				<div class="col col--one margin-top">
-					{{#if results}}
-					<p class="padding-left inline">
+			<div class="col-wrap margin-bottom">
+				{{#if results}}
+					<div class="col col--md-37 col--lg-46 margin-left">
+					<h2>
 						{{#if suggestionBased}}
 						{{labels.search-no-results}} '{{parameters.q.0}}'.
 						</br>
@@ -40,83 +40,87 @@
 						{{/each}}
 						{{/if}}. {{!-- /if parameters.type --}}
 						{{/if}} {{!-- /if suggestionBased --}}
-					</p>
-					<div class="sort float-right">
-						{{> list/filters/sort}}
+					</h2>
 					</div>
-					{{else}}
-					<p>
-						{{labels.search-no-results}} '{{parameters.q.0}}'.
-					</p>
-					{{/if}} {{!-- /if results --}}
-				</div>
+					<div class="col col--md-10 col--lg-13">
+					{{> list/filters/sort}}
+					</div>
+				{{else}}
+					<div class="col">
+						<p>
+							{{labels.search-no-results}} '{{parameters.q.0}}'.
+						</p>
+					</div>
+				{{/if}} {{!-- /if results --}}
 			</div>
 			{{!-- FILTERS --}}
-			<div class="search-filter slate--iron-light col col--md-12 col--lg-18">
-				<div class="col col--md-10 col--lg-10">
-					<h2 class="flush">Refine results</h2>
+			<div class="col col--md-12 col--lg-18">
+				<div class="col col--md-10 col--lg-12">
+					<h2 class="tiles__title-h2 tiles__title-h2--nav">Refine results</h2>
 				</div>
-				<div class="col col--md-10 col--lg-6">
-					<a href="/search?q={{parameters.q.0}}" value="Reset" class="search-filter__button--clear btn btn--thin">{{labels.search-refine-clear}}</a>
+				<div class="col col--md-6 col--lg-6 tiles__title-h2 tiles__title-h2--nav">
+					<a href="/search?q={{parameters.q.0}}" value="Reset" class="btn btn--thin btn--narrow btn--small">{{labels.search-refine-clear}}</a>
 				</div>
-				<h3 class="clear-left">{{labels.search-refine-types}}</h3>
-				<ul class="list--neutral">
-					<li>
-						<input type="checkbox" name="type" value="bulletin" id="checkbox-statsbulletin" {{#contains parameters.type 'bulletin'}}checked{{/contains}} >
-						<label for="checkbox-statsbulletin">
-							{{labels.bulletin}}
-						</label>
-					</li>
-					<li>
-						<input type="checkbox" name="type" value="article" id="checkbox-article" {{#contains parameters.type 'article'}}checked{{/contains}}>
-						<label for="checkbox-article">
-							{{labels.article}}
-						</label>
-					</li>
-					<li>
-						<input type="checkbox" name="type" value="compendium_landing_page" id="checkbox-compendia" {{#contains parameters.type 'compendium_landing_page'}}checked{{/contains}}>
-						<label for="checkbox-compendia">
-							Compendia
-						</label>
-					</li>
-					<li>
-						<input type="checkbox" name="type" value="timeseries" id="checkbox-timeseries" {{#contains parameters.type 'timeseries'}}checked{{/contains}}>
-						<label for="checkbox-timeseries">
-							Time series
-						</label>
-					</li>
-					<li>
-						<input type="checkbox" name="type" value="dataset" id="checkbox-dataset" {{#contains parameters.type 'dataset'}}checked{{/contains}}>
-						<label for="checkbox-dataset">
-							{{labels.dataset}}
-						</label>
-					</li>
-					<li>
-						<input type="checkbox" name="methodology" value="1" id="checkbox-methodology" {{#if parameters.methodology.0}}checked{{/if}} >
-						<label for="checkbox-methodology">
-							{{labels.methodology}}
-						</label>
-					</li>
-				</ul>
-				<p class="flush-bottom">{{labels.search-expand}}:</p>
-				<input type="checkbox" name="includeStatics" value="1" id="checkbox-all-content" {{#if parameters.includeStatics.0}}checked{{/if}}>
-				<label for="checkbox-all-content">
-					{{labels.search-expand-all}}</br>
-					({{labels.search-expand-types}})
-				</label>
-				<button type="submit" class="btn btn--block margin-top">{{labels.search-filter}}</button>
+				<div class="tiles__content tiles__content--nav">
+					<h3>{{labels.search-refine-types}}</h3>
+					<ul class="list--neutral">
+						<li>
+							<input type="checkbox" name="type" value="bulletin" id="checkbox-statsbulletin" {{#contains parameters.type 'bulletin'}}checked{{/contains}} >
+							<label for="checkbox-statsbulletin">
+								{{labels.bulletin}}
+							</label>
+						</li>
+						<li>
+							<input type="checkbox" name="type" value="article" id="checkbox-article" {{#contains parameters.type 'article'}}checked{{/contains}}>
+							<label for="checkbox-article">
+								{{labels.article}}
+							</label>
+						</li>
+						<li>
+							<input type="checkbox" name="type" value="compendium_landing_page" id="checkbox-compendia" {{#contains parameters.type 'compendium_landing_page'}}checked{{/contains}}>
+							<label for="checkbox-compendia">
+								Compendia
+							</label>
+						</li>
+						<li>
+							<input type="checkbox" name="type" value="timeseries" id="checkbox-timeseries" {{#contains parameters.type 'timeseries'}}checked{{/contains}}>
+							<label for="checkbox-timeseries">
+								Time series
+							</label>
+						</li>
+						<li>
+							<input type="checkbox" name="type" value="dataset" id="checkbox-dataset" {{#contains parameters.type 'dataset'}}checked{{/contains}}>
+							<label for="checkbox-dataset">
+								{{labels.dataset}}
+							</label>
+						</li>
+						<li>
+							<input type="checkbox" name="methodology" value="1" id="checkbox-methodology" {{#if parameters.methodology.0}}checked{{/if}} >
+							<label for="checkbox-methodology">
+								{{labels.methodology}}
+							</label>
+						</li>
+					</ul>
+					<p class="flush-bottom">{{labels.search-expand}}:</p>
+					<input type="checkbox" name="includeStatics" value="1" id="checkbox-all-content" {{#if parameters.includeStatics.0}}checked{{/if}}>
+					<label for="checkbox-all-content">
+						{{labels.search-expand-all}}</br>
+						({{labels.search-expand-types}})
+					</label>
+					<button type="submit" class="btn btn--block btn--thick margin-top">{{labels.search-filter}}</button>
+				</div>
 			</div>
 			{{!-- RESULTS --}}
 			<div class="results col col--md-34 col--lg-40 margin-left">
 				{{#if results}}
 				{{!-- HEADLINE RESULTS --}}
 				{{#resolve featuredResult.results.0.uri}}
-				<div class="slate--iron-light col--md-36 col--lg-40 clear-left" style="height: 248px;">
+				<div class="col col--md-36 col--lg-40 tiles__item flush-col">
 					{{!-- Sparkline --}}
 					<div class="col col--md-17 col--lg-20">
 						{{#resolve items.0.uri assign="series" filter="series"}}
 						<a href="{{../uri}}">
-							<div style="height: 248px;">
+							<div class="tiles__image--search-sparkline">
 								{{>partials/highcharts/sparkline}}
 							</div>
 						</a>
@@ -124,13 +128,13 @@
 					</div>
 					{{!-- Summary --}}
 					{{#if series}}
-					<div class="col col--md-17 col--lg-20 tiles__item--nav-type-fixed padding-left padding-right">
-						{{else}}
-						<div class="col col--md-34 col--lg-42">
-							{{/if}}
-							<h2><a href="{{uri}}">{{description.title}}</a></h2>
-							<p>{{description.summary}}</p>
-						</div>
+						<div class="col col--md-17 col--lg-20 tiles__item--nav-type-fixed">
+					{{else}}
+						<div class="col col--md-34 col--lg-42 tiles__item--nav-type-fixed">
+					{{/if}}
+					<h2 class="tiles__title-h2 tiles__title-h2--nav"><a href="{{uri}}">{{description.title}}</a></h2>
+					<p class="tiles__content tiles__content--nav">{{description.summary}}</p>
+					</div>
 					</div>
 					{{/resolve}}
 					{{!-- MAIN RESULTS --}}
