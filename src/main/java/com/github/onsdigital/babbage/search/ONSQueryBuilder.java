@@ -1,7 +1,9 @@
 package com.github.onsdigital.babbage.search;
 
+import com.github.onsdigital.babbage.search.helpers.Fields;
+import com.github.onsdigital.babbage.search.helpers.SearchFields;
 import com.github.onsdigital.babbage.search.query.SortOrder;
-import com.github.onsdigital.babbage.search.query.filter.FieldFilter;
+import com.github.onsdigital.babbage.search.query.filter.Filter;
 import com.github.onsdigital.babbage.search.query.filter.RangeFilter;
 import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.index.query.*;
@@ -21,10 +23,10 @@ public class ONSQueryBuilder {
     static final String HIGHLIGHTER_POST_TAG = "</strong>";
 
     private String[] types;
-    private String[] fields;
+    private SearchFields[] fields;
     private String uriPrefix;
     private String query;
-    private List<FieldFilter> fieldFilters = new ArrayList<>();
+    private List<Filter> filters = new ArrayList<>();
     private List<RangeFilter> rangeFilters = new ArrayList<>();
     private boolean highLightFields;
     private List<SortBuilder> sorts = new ArrayList<>();
@@ -44,11 +46,27 @@ public class ONSQueryBuilder {
         return this;
     }
 
-    public String[] getFields() {
+    public SearchFields[] getFields() {
         return fields;
     }
 
-    public ONSQueryBuilder setFields(String[] fields) {
+    public String[] getFieldNames() {
+        String[] fieldNames = new String[fields.length];
+        for (int i = 0; i < fields.length; i++) {
+            fieldNames[i] = fields[i].name();
+        }
+        return fieldNames;
+    }
+
+    public String[] getBoostedFieldNames() {
+        String[] fieldNames = new String[fields.length];
+        for (int i = 0; i < fields.length; i++) {
+            fieldNames[i] = fields[i].name() +  "^" +fields[i].getBoostFactor();
+        }
+        return fieldNames;
+    }
+
+    public ONSQueryBuilder setFields(SearchFields... fields) {
         this.fields = fields;
         return this;
     }
@@ -71,12 +89,17 @@ public class ONSQueryBuilder {
         return this;
     }
 
-    public List<FieldFilter> getFieldFilters() {
-        return fieldFilters;
+    public List<Filter> getFilters() {
+        return filters;
     }
 
-    public ONSQueryBuilder addFilter(String field, String value) {
-        fieldFilters.add(new FieldFilter(field, value));
+    public ONSQueryBuilder addFilter(String field, Object... values) {
+        filters.add(new Filter(Filter.FilterType.TERM, field, values));
+        return this;
+    }
+
+    public ONSQueryBuilder addFilter(Filter.FilterType filterType, String field, Object... values) {
+        filters.add(new Filter(filterType, field, values));
         return this;
     }
 
@@ -84,7 +107,7 @@ public class ONSQueryBuilder {
         return rangeFilters;
     }
 
-    public ONSQueryBuilder addRangeFilter(String field, String from, String to) {
+    public ONSQueryBuilder addRangeFilter(String field, Object from, Object to) {
         rangeFilters.add(new RangeFilter(field, from, to));
         return this;
     }
@@ -110,7 +133,7 @@ public class ONSQueryBuilder {
         if (StringUtils.isEmpty(getQuery())) {
             return null;
         }
-        return new MultiMatchQueryBuilder(getQuery(), getFields());
+        return new MultiMatchQueryBuilder(getQuery(), getBoostedFieldNames());
     }
 
 
@@ -129,13 +152,13 @@ public class ONSQueryBuilder {
     }
 
     private void buildFieldFilters(AndFilterBuilder andFilterBuilder) {
-        List<FieldFilter> fieldFilters = getFieldFilters();
-        if (fieldFilters.isEmpty()) {
+        List<Filter> filters = getFilters();
+        if (filters.isEmpty()) {
             return;
         }
-        for (int i = 0; i < fieldFilters.size(); i++) {
-            FieldFilter fieldFilter = fieldFilters.get(i);
-            FilterBuilder termFilterBuilder = FilterBuilders.termFilter(fieldFilter.getField(), fieldFilter.getValue());
+        for (int i = 0; i < filters.size(); i++) {
+            Filter filter = filters.get(i);
+            FilterBuilder termFilterBuilder = FilterBuilders.termFilter(filter.getField(), filter.getValues());
             andFilterBuilder.add(termFilterBuilder);
         }
     }
@@ -178,8 +201,8 @@ public class ONSQueryBuilder {
         return this;
     }
 
-    public ONSQueryBuilder addSort(String fieldName, SortOrder sortOrder) {
-        FieldSortBuilder sortBuilder = new FieldSortBuilder(fieldName).ignoreUnmapped(true);
+    public ONSQueryBuilder addSort(Fields field, SortOrder sortOrder) {
+        FieldSortBuilder sortBuilder = new FieldSortBuilder(field.name()).ignoreUnmapped(true);
         if (sortOrder != null) {
             sortBuilder.order(org.elasticsearch.search.sort.SortOrder.valueOf(sortOrder.name()));
         }

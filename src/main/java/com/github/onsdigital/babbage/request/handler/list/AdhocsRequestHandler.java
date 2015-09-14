@@ -7,14 +7,18 @@ import com.github.onsdigital.babbage.request.handler.base.ListPageBaseRequestHan
  * Render a list page for bulletins under the given URI.
  */
 public class AdhocsRequestHandler extends ListPageBaseRequestHandler {
+
+    private final static String REQEUST_TYPE = "adhoc";
+    private final static String[] ALLOWED_TYPES = new String[]{ContentType.static_adhoc.toString()};
+
     @Override
     public String getRequestType() {
-        return "adhoc";
+        return REQEUST_TYPE;
     }
 
     @Override
     public String[] getAllowedTypes() {
-        return new String[]{ContentType.static_adhoc.toString()};
+        return ALLOWED_TYPES;
     }
 
     @Override

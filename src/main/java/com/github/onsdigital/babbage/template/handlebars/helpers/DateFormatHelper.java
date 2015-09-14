@@ -2,8 +2,8 @@ package com.github.onsdigital.babbage.template.handlebars.helpers;
 
 import com.github.jknack.handlebars.Handlebars;
 import com.github.jknack.handlebars.Options;
-import com.github.onsdigital.babbage.template.handlebars.helpers.base.BabbageHandlebarsHelper;
 import com.github.onsdigital.babbage.configuration.Configuration;
+import com.github.onsdigital.babbage.template.handlebars.helpers.base.BabbageHandlebarsHelper;
 import org.apache.commons.lang3.time.FastDateFormat;
 
 import java.io.IOException;
@@ -27,8 +27,8 @@ public class DateFormatHelper implements BabbageHandlebarsHelper<String> {
             return "";
         }
         try {
-            Date parsedDate = new SimpleDateFormat(Configuration.CONTENT_SERVICE.getDefaultContentDatePattern()).parse(date.toString());
-            String pattern = resolvePattern(options.params);
+            Date parsedDate = new SimpleDateFormat(resolveInputFormat(options)).parse(date.toString());
+            String pattern = resolvePattern(options);
             return FastDateFormat.getInstance(pattern, timeZone).format(parsedDate);
         } catch (Exception e) {
             System.out.println("Failed fomatting date : " + date);
@@ -36,12 +36,12 @@ public class DateFormatHelper implements BabbageHandlebarsHelper<String> {
         }
     }
 
-    private String resolvePattern(Object[] params) {
-        if (params == null || params.length == 0) {
-            return Configuration.HANDLEBARS.getHandlebarsDatePattern();
-        }
+    private String resolvePattern(Options options) {
+        return options.hash("outputFormat", Configuration.HANDLEBARS.getHandlebarsDatePattern());
+    }
 
-        return (String) params[0];
+    private String resolveInputFormat(Options options) {
+     return  options.hash("inputFormat",Configuration.CONTENT_SERVICE.getDefaultContentDatePattern());
     }
 
     @Override

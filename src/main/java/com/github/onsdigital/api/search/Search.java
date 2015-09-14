@@ -8,7 +8,7 @@ import com.github.onsdigital.babbage.response.BabbageResponse;
 import com.github.onsdigital.babbage.response.BabbageStringResponse;
 import com.github.onsdigital.babbage.search.ONSQueryBuilder;
 import com.github.onsdigital.babbage.search.SearchService;
-import com.github.onsdigital.babbage.search.helpers.FilterFields;
+import com.github.onsdigital.babbage.search.helpers.Fields;
 import com.github.onsdigital.babbage.search.helpers.SearchFields;
 import com.github.onsdigital.babbage.search.helpers.SearchRequestHelper;
 import com.github.onsdigital.babbage.search.helpers.SearchResponseHelper;
@@ -34,6 +34,19 @@ import java.util.Map;
 public class Search {
 
     public static final String CONTENT_TYPE = "text/html";
+    private final static String[] ALLOWED_TYPES = new String[]{
+            ContentType.bulletin.toString(),
+            ContentType.timeseries.toString(),
+            ContentType.data_slice.toString(),
+            ContentType.compendium_landing_page.toString(),
+            ContentType.static_article.toString(),
+            ContentType.static_methodology.toString(),
+            ContentType.static_qmi.toString(),
+            ContentType.dataset.toString(),
+            ContentType.timeseries_dataset.toString(),
+            ContentType.reference_tables.toString()
+    };
+    private final String[] STATIC_TYPES = new String[]{ContentType.static_adhoc.name(), ContentType.static_article.name(), ContentType.static_foi.name(), ContentType.static_page.name()};
 
     @GET
     public Object get(@Context HttpServletRequest request, @Context HttpServletResponse response) throws IOException, ContentNotFoundException, ContentReadException, URISyntaxException {
@@ -69,7 +82,7 @@ public class Search {
         SearchRequestHelper searchHelper = getSearchHelper(request);
         ONSQueryBuilder searchQuery = searchHelper.buildQuery();
 
-        List<SearchResponseHelper> responseHelpers = SearchService.getInstance().multipleSearch(featuredResultQuery, searchQuery);
+        List<SearchResponseHelper> responseHelpers = SearchService.getInstance().searchMultiple(featuredResultQuery, searchQuery);
         Iterator<SearchResponseHelper> iterator = responseHelpers.iterator();
         SearchResponseHelper featuredResponseHelper = iterator.next();
         SearchResponseHelper searchResponseHelper = iterator.next();
@@ -86,25 +99,31 @@ public class Search {
     }
 
     private String searchTimeSeries(String query) throws IOException {
-        ONSQueryBuilder onsQueryBuilder = new ONSQueryBuilder(ContentType.timeseries.name()).
-                addFilter(FilterFields.cdid.name(), query.toLowerCase()).setSize(1);
+        ONSQueryBuilder onsQueryBuilder = new ONSQueryBuilder(ContentType.timeseries.name())
+                .addFilter(Fields.cdid.name(), query.toLowerCase()).
+                        setSize(1);
         SearchResponseHelper searchResponseHelper = SearchService.getInstance().search(onsQueryBuilder);
         if (searchResponseHelper.getNumberOfResults() > 0) {
             Map<String, Object> timeSeries = searchResponseHelper.getResult().getResults().iterator().next();
-            return (String) timeSeries.get(FilterFields.uri.name());
+            return (String) timeSeries.get(Fields.uri.name());
         }
         return null;
     }
 
     private ONSQueryBuilder buildFeaturedResultQuery(String query) throws IOException {
-        return new ONSQueryBuilder(ContentType.product_page.name()).setSize(1).setQuery(query).setFields(SearchFields.getAllSearchFields());
+        return new ONSQueryBuilder(ContentType.product_page.name())
+                .setSize(1)
+                .setQuery(query)
+                .setFields(SearchFields.values())
+                .setHighLightFields(true);
     }
 
     private SearchRequestHelper getSearchHelper(HttpServletRequest request) throws IOException {
         String[] submittedTypes = request.getParameterValues("type");
         String includeStatics = request.getParameter("includeStatics");
         String methodology = request.getParameter("methodology");
-        SearchRequestHelper searchRequestHelper = new SearchRequestHelper(request, null, ContentType.getSearchableTypes());
+        SearchRequestHelper searchRequestHelper = new SearchRequestHelper(request, null, ALLOWED_TYPES);
+        searchRequestHelper.setIncludeHistoricalData(true);
 
         if (submittedTypes == null && methodology != null) {
             //clear types if methodology is set, todo: do not use serach request helper for search or create a common base for search and list
@@ -113,10 +132,10 @@ public class Search {
 
         String[] types = new String[0];
         if (StringUtils.isNotEmpty(includeStatics)) {
-            types = new String[]{ContentType.static_adhoc.name(), ContentType.static_article.name(), ContentType.static_foi.name(), ContentType.static_page.name()};
+            types = STATIC_TYPES;
         }
         if (StringUtils.isNotEmpty(methodology)) {
-            types =ArrayUtils.addAll(types, ContentType.static_methodology.name(), ContentType.static_qmi.name());
+            types = ArrayUtils.addAll(types, ContentType.static_methodology.name(), ContentType.static_qmi.name());
         }
         types = ArrayUtils.addAll(types, searchRequestHelper.getTypes());
         searchRequestHelper.setTypes(types);
@@ -135,9 +154,4 @@ public class Search {
         String sanitizedQuery = query.replaceAll("[^a-zA-Z0-9 ]+", "");
         return sanitizedQuery;
     }
-
-    private void getAllowedTypes() {
-
-    }
-
 }

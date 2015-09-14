@@ -6,18 +6,25 @@ package com.github.onsdigital.babbage.search.helpers;
  * Searchable field names
  */
 public enum SearchFields {
-    title,
-    edition,
+    title(100),
+    edition(50),
     summary,
     metaDescription,
-    keywords;
+    keywords,
+    type;
 
-    public static String[] getAllSearchFields() {
-        SearchFields[] values = SearchFields.values();
-        String[] fields = new String[values.length];
-        for (int i = 0; i < values.length; i++) {
-            fields[i] = values[i].name();
-        }
-        return fields;
+    private double boostFactor = 1;
+
+    SearchFields(double boostFactors) {
+        this.boostFactor = boostFactors;
     }
+
+    SearchFields() {
+
+    }
+
+    public double getBoostFactor() {
+        return boostFactor;
+    }
+
 }

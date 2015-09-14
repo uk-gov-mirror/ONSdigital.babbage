@@ -3,7 +3,7 @@ package com.github.onsdigital.babbage.search.helpers;
 import com.github.onsdigital.babbage.configuration.Configuration;
 import com.github.onsdigital.babbage.error.ResourceNotFoundException;
 import com.github.onsdigital.babbage.search.ONSQueryBuilder;
-import com.github.onsdigital.babbage.search.query.SortOrder;
+import com.github.onsdigital.babbage.search.query.filter.Filter;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -26,11 +26,12 @@ public class SearchRequestHelper {
     private String[] types;
     private Integer page;
     private Integer size;
-    private String sortField;
+    private SortBy sortBy;
     private String query;
-    private String keywordsQuery;
-    private Date startDate;
-    private Date endDate;
+    private String[] keywords;
+    private Date fromDate;
+    private Date toDate;
+    private boolean includeHistoricalData;
 
 
     public SearchRequestHelper(HttpServletRequest request, String topicUri, String[] allowedTypes) {
@@ -38,11 +39,15 @@ public class SearchRequestHelper {
         this.types = extractTypes(allowedTypes, request);
         this.page = extractPage(request);
         this.size = Configuration.GENERAL.getResultsPerPage();
-        this.sortField = request.getParameter("sortBy");
+        this.sortBy = extractSortBy(request.getParameter("sortBy"));
+        if (sortBy == null) {
+            sortBy = SortBy.RELEVANCE;
+        }
         this.query = request.getParameter("q");
-        this.keywordsQuery = extractKeywordsQuery(request);
-//        this.startDate = extractStartDate(request);
-//        this.endDate = extractEndDate(request);
+        this.keywords = request.getParameterValues("keywords");
+        this.includeHistoricalData = request.getParameter("allReleases") != null;
+        this.fromDate = parseDate(request.getParameter("fromDate"));
+        this.toDate = parseDate(request.getParameter("toDate"));
     }
 
     public ONSQueryBuilder buildQuery() {
@@ -51,31 +56,49 @@ public class SearchRequestHelper {
 
         onsQueryBuilder
                 .setTypes(types)
-                .setFields(getFields())
+                .setFields(SearchFields.values())
                 .setPage(page)
                 .setSize(size)
-                .setHighLightFields(true);
+                .setHighLightFields(true)
+                .addRangeFilter(Fields.releaseDate.name(), fromDate, toDate);
         if (query != null) {
             onsQueryBuilder.setQuery(query);
-        } else if (keywordsQuery != null) {
-            onsQueryBuilder.setQuery(keywordsQuery);
         }
+        if (keywords != null) {
+            for (String keyword : keywords) {
+                if (StringUtils.isNotEmpty(keyword)) {
+                    onsQueryBuilder.addFilter(Filter.FilterType.TERM, keyword, Fields.keywords_raw, keyword.trim());
+                }
+            }
+        }
+
         if (isNotEmpty(uriPrefix)) {
             onsQueryBuilder.setUriPrefix(uriPrefix);
         }
-        if (isNotEmpty(sortField)) {
-            onsQueryBuilder.addSort(sortField.trim(), getSortOrder(sortField));
+
+        if (!includeHistoricalData) {
+            onsQueryBuilder.addFilter(Fields.latestRelease.name(), true);
+        }
+        if (sortBy != null) {
+            for (Fields sortField : sortBy.getSortFields()) {
+                onsQueryBuilder.addSort(sortField, sortField.getSortOrder());
+            }
         }
 
         return onsQueryBuilder;
     }
 
-    private SortOrder getSortOrder(String sortBy) {
-        if (FilterFields.releaseDate.name().equals(sortBy)) {
-            return SortOrder.DESC;
-        } else {
-            return SortOrder.ASC;
+    private SortBy extractSortBy(String sortBy) {
+        if (StringUtils.isEmpty(sortBy)) {
+            return null;
         }
+        try {
+            return SortBy.valueOf(sortBy.toUpperCase());
+        } catch (IllegalArgumentException e) {
+//            given sortBy parameter is not available, ignore
+            return null;
+        }
+
     }
 
     private String[] extractTypes(String[] allowedTypes, HttpServletRequest request) {
@@ -133,42 +156,12 @@ public class SearchRequestHelper {
         }
     }
 
-
-    private String extractKeywordsQuery(HttpServletRequest request) {
-        String[] keywords = request.getParameterValues("keywords");
-
-        if (keywords == null || keywords.length < 1) {
-            return null;
-        }
-
-        String query = "";
-        int i;
-        for (i = 0; i < keywords.length - 1; i++) {
-            String keyword = keywords[i];
-            query += keyword + ",";
-        }
-        query += keywords[i];
-
-        return query;
-    }
-
-
-    private String[] getFields() {
-        if (isNotEmpty(query)) {
-            return SearchFields.getAllSearchFields();
-        } else if (isNotEmpty(keywordsQuery)) {
-            return new String[]{SearchFields.keywords.name()};
-        } else {
-            return null;
-        }
-    }
-
-    private Date parseDate(String dayStart, String monthStart, String yearStart) {
-        if (isNotEmpty(dayStart) && isNotEmpty(monthStart) && isNotEmpty(yearStart)) {
+    private Date parseDate(String date) {
+        if (isNotEmpty(date)) {
+            date = date.trim();
             try {
-                return new SimpleDateFormat("dMyyyy").parse(dayStart + monthStart + yearStart);
+                return new SimpleDateFormat("dd/MM/yyyy").parse(date);
             } catch (ParseException e) {
-                throw new RuntimeException("Parsing start date for filter failed!", e);
             }
         }
         return null;
@@ -206,12 +199,12 @@ public class SearchRequestHelper {
         this.size = size;
     }
 
-    public String getSortField() {
-        return sortField;
+    public SortBy getSortBy() {
+        return sortBy;
     }
 
-    public void setSortField(String sortField) {
-        this.sortField = sortField;
+    public void setSortBy(SortBy sortBy) {
+        this.sortBy = sortBy;
     }
 
     public String getQuery() {
@@ -222,27 +215,35 @@ public class SearchRequestHelper {
         this.query = query;
     }
 
-    public String getKeywordsQuery() {
-        return keywordsQuery;
+    public String[] getKeywords() {
+        return keywords;
     }
 
-    public void setKeywordsQuery(String keywordsQuery) {
-        this.keywordsQuery = keywordsQuery;
+    public void setKeywordsQuery(String... keywords) {
+        this.keywords = keywords;
     }
 
-    public Date getStartDate() {
-        return startDate;
+    public Date getFromDate() {
+        return fromDate;
     }
 
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
+    public void setFromDate(Date fromDate) {
+        this.fromDate = fromDate;
     }
 
-    public Date getEndDate() {
-        return endDate;
+    public Date getToDate() {
+        return toDate;
     }
 
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
+    public void setToDate(Date toDate) {
+        this.toDate = toDate;
+    }
+
+    public boolean isIncludeHistoricalData() {
+        return includeHistoricalData;
+    }
+
+    public void setIncludeHistoricalData(boolean includeHistoricalData) {
+        this.includeHistoricalData = includeHistoricalData;
     }
 }

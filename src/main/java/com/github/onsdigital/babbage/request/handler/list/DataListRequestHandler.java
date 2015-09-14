@@ -7,14 +7,18 @@ import com.github.onsdigital.babbage.request.handler.base.ListPageBaseRequestHan
  * Render a list page for bulletins under the given URI.
  */
 public class DataListRequestHandler extends ListPageBaseRequestHandler {
+
+    private final static String REQEUST_TYPE = "datalist";
+    private final static String[] ALLOWED_TYPES = new String[]{ContentType.dataset.toString(), ContentType.timeseries.toString()};
+
     @Override
     public String getRequestType() {
-        return "datalist";
+        return REQEUST_TYPE;
     }
 
     @Override
     public String[] getAllowedTypes() {
-        return new String[]{ContentType.dataset.toString(), ContentType.timeseries.toString()};
+        return ALLOWED_TYPES;
     }
 
     @Override

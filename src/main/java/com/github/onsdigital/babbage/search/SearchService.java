@@ -47,7 +47,7 @@ public class SearchService {
         return new SearchResponseHelper(searchRequestBuilder.get());
     }
 
-    public List<SearchResponseHelper> multipleSearch(ONSQueryBuilder... queryBuilders) throws IOException {
+    public List<SearchResponseHelper> searchMultiple(ONSQueryBuilder... queryBuilders) throws IOException {
         List<SearchResponseHelper> helpers = new ArrayList<>();
         MultiSearchRequestBuilder multiSearchRequestBuilder = client.prepareMultiSearch();
         for (ONSQueryBuilder queryBuilder : queryBuilders) {
@@ -74,10 +74,9 @@ public class SearchService {
             searchRequestBuilder.setTypes(types);
         }
         if (queryBuilder.isHighLightFields()) {
-            setHighlights(searchRequestBuilder,queryBuilder.getFields());
+            setHighlights(searchRequestBuilder,queryBuilder.getFieldNames());
         }
         addSorts(queryBuilder.getSorts(), searchRequestBuilder);
-        searchRequestBuilder.addSort(new ScoreSortBuilder()); //sort by score last
         System.out.println("Searching with query:\n" + searchRequestBuilder.internalBuilder());
         return searchRequestBuilder;
     }
@@ -87,11 +86,10 @@ public class SearchService {
             return;
         }
         for (String field : fields) {
-            searchRequestBuilder.addHighlightedField(field);
+            searchRequestBuilder.addHighlightedField(field,0,0);
         }
         searchRequestBuilder.setHighlighterPreTags(ONSQueryBuilder.HIGHLIGHTER_PRE_TAG);
         searchRequestBuilder.setHighlighterPostTags(ONSQueryBuilder.HIGHLIGHTER_POST_TAG);
-        searchRequestBuilder.setHighlighterForceSource(true);
     }
 
     public CountResponseHelper count(ONSQueryBuilder queryBuilder) {

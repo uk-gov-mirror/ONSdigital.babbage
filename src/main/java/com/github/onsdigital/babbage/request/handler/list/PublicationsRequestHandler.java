@@ -7,14 +7,18 @@ import com.github.onsdigital.babbage.request.handler.base.ListPageBaseRequestHan
  * Render a list page for bulletins under the given URI.
  */
 public class PublicationsRequestHandler extends ListPageBaseRequestHandler {
+
+    private final static String[] ALLOWED_TYPES = new String[]{ContentType.article.toString(), ContentType.bulletin.toString(), ContentType.compendium_landing_page.toString()};
+    private final static String REQEUST_TYPE = "publications";
+
     @Override
     public String getRequestType() {
-        return "publications";
+        return REQEUST_TYPE;
     }
 
     @Override
     public String[] getAllowedTypes() {
-        return new String[]{ContentType.article.toString(),ContentType.bulletin.toString(),ContentType.compendium_landing_page.toString()};
+        return ALLOWED_TYPES;
     }
 
     @Override
