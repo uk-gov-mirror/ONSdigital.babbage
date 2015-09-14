@@ -4,6 +4,7 @@ import com.github.davidcarboni.restolino.framework.Api;
 import com.github.onsdigital.babbage.content.client.ContentClient;
 import com.github.onsdigital.babbage.content.client.ContentReadException;
 import com.github.onsdigital.babbage.content.client.ContentStream;
+import com.github.onsdigital.babbage.util.RequestUtil;
 import org.apache.commons.io.IOUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,7 +23,8 @@ public class Reindex {
     @POST
     public void reIndex(@Context HttpServletRequest request, @Context HttpServletResponse response) throws IOException {
         String key = request.getParameter("key");
-        try (ContentStream stream = ContentClient.getInstance().reIndex(key)) {
+        String uri = request.getParameter("uri");
+        try (ContentStream stream = ContentClient.getInstance().reIndex(key, uri )) {
             IOUtils.copy(stream.getDataStream(), response.getOutputStream());
         } catch (ContentReadException ex) {
             HashMap<Object, Object> errorResponse = new HashMap<>();

@@ -124,10 +124,11 @@ public class ContentClient {
         return sendGet(getSearchEndpoint(), getParameters(uri, queryParameters));
     }
 
-    public ContentStream reIndex(String key) throws ContentReadException {
-        List<NameValuePair> keyValue = new ArrayList<>();
-        keyValue.add(new BasicNameValuePair("key", key));
-        return sendPost(getReindexEndpoint(), keyValue);
+    public ContentStream reIndex(String key, String uri) throws ContentReadException {
+        List<NameValuePair> parameters = new ArrayList<>();
+        parameters.add(new BasicNameValuePair("key", key));
+        parameters.add(new BasicNameValuePair("uri", uri));
+        return sendPost(getReindexEndpoint(), parameters);
     }
 
     public ContentStream getParents(String uri, Map<String, String[]> queryParameters) throws ContentReadException {
