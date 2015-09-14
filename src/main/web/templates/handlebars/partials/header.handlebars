@@ -177,7 +177,7 @@
 					{{!-- <div class=""> --}}
 						<form class="col-wrap search__form" id="searchBar" action="/search">
 							<label class="search__label col col--md-15 col--lg-19" for="nav-search">Search our website</label>
-							<input type="search" autocomplete="off" class="search__input col col--md-25 col--lg-32" id="nav-search" name="q" value="" placeholder="Search for keyword or time series ID">
+							<input type="search" autocomplete="off" class="search__input col col--md-25 col--lg-32" id="nav-search" name="q" value="{{parameters.q.0}}" placeholder="Search for keyword or time series ID">
 							<button type="submit" class="search__button col--md-7 col--lg-8" id="nav-search-submit">
 							<span>{{labels.search}}</span>
 							</button>
