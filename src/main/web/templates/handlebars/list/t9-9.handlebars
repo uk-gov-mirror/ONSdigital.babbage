@@ -1,55 +1,56 @@
 <main id="main" role="main" tabindex="-1">
-<div class="wrapper panel--top-mar">
-	{{> list/partials/list-page-breadcrumb label="Data"}}
-	<p class="page-header__title">
-		Data
-	</p>
-	{{#each breadcrumb}}
-	{{#if @last}}
-	<h1 class="page-header__title flush--half--bottom">{{description.title}}</h1>
-	{{/if}}
-	{{/each}}
-	
-</div>
-<!-- /wrapper -->
-<div class="wrapper panel--mar print-links">
-	<form id="filters">
-		<div class="grid-wrap panel--bottom-mar print-hidden">
-			<div class="grid-col desktop-grid-one-quarter desktop-grid-push-three-quarters tablet-grid-full-width">
-				{{> list/filters/sort}}
+	<div class="page-intro">
+		<div class="wrapper">
+			<div class="col-wrap">
+				<div class="col one">
+					{{> list/partials/list-page-breadcrumb label="Publications"}}
+					{{#each breadcrumb}}
+						{{#if @last}}
+							<h1 class="page-intro__title">{{description.title}} data</h1>
+						{{/if}}
+					{{/each}}
+				</div>
 			</div>
 		</div>
-		<div class="grid-wrap">
-			<div class="grid-col desktop-grid-one-third">
-				<article class="box box--padded sectioned print-hidden">
-					<div class="panel panel--bottom-pad panel--separated--bottom flush">
-						<h3 class="flush float-left">Refine results</h3>
-						<a href="./datalist" value="Reset" class="btn btn--primary btn--small btn--thin btn--narrow btn--clear-results float-right">{{labels.search-refine-clear}}</a>
+	</div>
+	{{!-- /page-intro --}}
+<!-- /wrapper -->
+	<div class="wrapper print-links">
+		<form id="filters">
+    		<div class="col-wrap print-hidden">
+                <div class="col col--md-37 col--lg-46 margin-left">
+                    &nbsp;
+                </div>
+    			<div class="col col--md-10 col--lg-13">
+    				{{> list/filters/sort}}
+    			</div>
+    		</div>
+			<div class="col col--md-12 col--lg-18 margin-bottom">
+				<div class="tiles__item tiles__item--nav-type flush-col print--hide">
+					<div class="col col--md-10 col--lg-12">
+						<h3 class="tiles__title-h3 tiles__title-h3--nav">Refine results</h3>
 					</div>
-					<div class="box__content">
+					<div class="col col--md-6 col--lg-6 tiles__title-h3 tiles__title-h3--nav">
+						<a href="/search?q={{parameters.q.0}}" value="Reset" class="btn btn--thin btn--narrow btn--small">{{labels.search-refine-clear}}</a>
+					</div>
+					<div class="tiles__content tiles__content--nav">
 						{{> list/filters/keywords}}
-						<div class="panel panel--bottom-pad panel--separated--bottom flush">
-							<span class="flush float-left">Data format</span>
-						</div>
-						<div class="box__content">
-							<ul class="list--neutral">
-								<li>
-									<input id="checkbox-timeseries" type="checkbox" name="type" value="timeseries" {{#contains parameters.type 'timeseries'}}checked{{/contains}} >
-									<label for="checkbox-timeseries">
-										Single time series
-									</label>
-								</li>
-								<li>
-									<input id="checkbox-dataset" type="checkbox" name="type" value="dataset" {{#contains parameters.type 'dataset'}}checked{{/contains}}>
-									<label for="checkbox-dataset">
-										Large dataset
-									</label>
-								</li>
-							</ul>
-						</div>
-						<div class="panel panel--bottom-pad panel--separated--bottom flush">
-							<span class="flush float-left">Keywords</span>
-						</div>
+						<h4 class="flush-bottom">Data format</h4>
+						<ul class="list--neutral">
+							<li>
+								<input id="checkbox-timeseries" type="checkbox" name="type" value="timeseries" {{#contains parameters.type 'timeseries'}}checked{{/contains}} >
+								<label for="checkbox-timeseries">
+									Single time series
+								</label>
+							</li>
+							<li>
+								<input id="checkbox-dataset" type="checkbox" name="type" value="dataset" {{#contains parameters.type 'dataset'}}checked{{/contains}}>
+								<label for="checkbox-dataset">
+									Large dataset
+								</label>
+							</li>
+						</ul>
+						<h4 class="flush-bottom">Keywords</h4>
 						<div class="box__content">
 							<ul class="list--neutral">
 								<li>
@@ -79,24 +80,23 @@
 							</ul>
 						</div>
 						{{> list/filters/publish-date}}
+						<button type="submit" class="btn btn--block btn--thick margin-top">{{labels.search-filter}}</button>
+						</div>
 					</div>
-					<div>
-						<button type="submit" class="btn btn--primary btn--small panel--mar-small">Filter</button>
-					</div>
-				</article>
-				{{> partials/archives-box}}
-				<!-- /box -->
+					{{> partials/archives-box}}
+					<!-- /box -->
+				</div>
+				<!-- /desktop-grid-one-third -->
+				<div class="results col col--md-34 col--lg-40 margin-left">
+					{{> list/partials/results-text}}
+					{{> list/partials/results}}
+					{{> list/partials/paginator}}
+				</div>
+				<!-- /desktop-grid-two-thirds -->
 			</div>
-			<!-- /desktop-grid-one-third -->
-			<div class="grid-col desktop-grid-two-thirds">
-				{{> list/partials/results-text}}
-				{{> list/partials/results}}				
-				{{> list/partials/paginator}}
-			</div>
-			<!-- /desktop-grid-two-thirds -->
-		</div>
-		<!-- /grid-wrap -->
-	</form>
-</div>
+			<!-- /grid-wrap -->
+		</form>
+
+	</div>
 <!-- /wrapper panel--mar -->
 </main>
