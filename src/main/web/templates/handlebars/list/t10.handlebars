@@ -7,10 +7,10 @@
 		<form>
 			<input class="sort__input" type="hidden" name="q" value="{{parameters.q.0}}">
 			{{!-- NUMBER OF RESULTS --}}
-			<div class="col-wrap">
-				<div class="col col--one margin-top">
-					{{#if results}}
-					<p class="inline">
+			<div class="col-wrap margin-bottom">
+				{{#if results}}
+					<div class="col col--md-37 col--lg-46 margin-left">
+					<h2>
 						{{#if suggestionBased}}
 						{{labels.search-no-results}} '{{parameters.q.0}}'.
 						</br>
@@ -40,16 +40,18 @@
 						{{/each}}
 						{{/if}}. {{!-- /if parameters.type --}}
 						{{/if}} {{!-- /if suggestionBased --}}
-					</p>
-					<div class="sort float-right">
-						{{> list/filters/sort}}
+					</h2>
 					</div>
-					{{else}}
-					<p>
-						{{labels.search-no-results}} '{{parameters.q.0}}'.
-					</p>
-					{{/if}} {{!-- /if results --}}
-				</div>
+					<div class="col col--md-10 col--lg-13">
+					{{> list/filters/sort}}
+					</div>
+				{{else}}
+					<div class="col">
+						<p>
+							{{labels.search-no-results}} '{{parameters.q.0}}'.
+						</p>
+					</div>
+				{{/if}} {{!-- /if results --}}
 			</div>
 			{{!-- FILTERS --}}
 			<div class="col col--md-12 col--lg-18">
@@ -113,12 +115,12 @@
 				{{#if results}}
 				{{!-- HEADLINE RESULTS --}}
 				{{#resolve featuredResult.results.0.uri}}
-				<div class="slate--iron-light col--md-36 col--lg-40 clear-left" style="height: 248px;">
+				<div class="col col--md-36 col--lg-40 tiles__item flush-col">
 					{{!-- Sparkline --}}
 					<div class="col col--md-17 col--lg-20">
 						{{#resolve items.0.uri assign="series" filter="series"}}
 						<a href="{{../uri}}">
-							<div style="height: 248px;">
+							<div class="tiles__image--search-sparkline">
 								{{>partials/highcharts/sparkline}}
 							</div>
 						</a>
@@ -126,13 +128,13 @@
 					</div>
 					{{!-- Summary --}}
 					{{#if series}}
-					<div class="col col--md-17 col--lg-20 tiles__item--nav-type-fixed padding-left padding-right">
-						{{else}}
-						<div class="col col--md-34 col--lg-42">
-							{{/if}}
-							<h2><a href="{{uri}}">{{description.title}}</a></h2>
-							<p>{{description.summary}}</p>
-						</div>
+						<div class="col col--md-17 col--lg-20 tiles__item--nav-type-fixed">
+					{{else}}
+						<div class="col col--md-34 col--lg-42 tiles__item--nav-type-fixed">
+					{{/if}}
+					<h2 class="tiles__title-h2 tiles__title-h2--nav"><a href="{{uri}}">{{description.title}}</a></h2>
+					<p class="tiles__content tiles__content--nav">{{description.summary}}</p>
+					</div>
 					</div>
 					{{/resolve}}
 					{{!-- MAIN RESULTS --}}

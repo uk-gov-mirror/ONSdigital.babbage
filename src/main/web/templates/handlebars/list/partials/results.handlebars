@@ -1,11 +1,11 @@
 <ul class="list--neutral">
 	{{#each results}}
-	<li class="margin-bottom--double">
+	<li class="search--result-item margin-bottom--double">
 		<h3 class="inline-block"><a href="{{uri}}">{{description.title}}
 			{{#if description.edition}}
 			{{#if_ne description.edition 'yes'}}: {{description.edition}}{{/if_ne}}
 		{{/if}}</a></h3>
-		<span class="lozenge">{{> type-label type=this.type}}</span>
+		<span class="lozenge margin-left--half">{{> type-label type=this.type}}</span>
 		{{#if partOf}}
 		<p>
 			<a href="{{uri}}">[{{description.title}}]</a><span class="icon-search-1"></span>
