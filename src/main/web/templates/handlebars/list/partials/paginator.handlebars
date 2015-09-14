@@ -1,7 +1,7 @@
 {{!-- Paginator --}}
 {{#if paginator}}
 <nav>
-	<ul class="nav nav--inline-block">
+	<ul>
 		{{#if_ne paginator.currentPage paginator.start}}
 		<li>
 			<button type="submit" name="page" value="{{decrement paginator.currentPage}}" class="page-link" >Prev</button>
