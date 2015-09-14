@@ -1,7 +1,7 @@
 <ul class="list--neutral">
 	{{#each results}}
-	<li>
-		<h3 class="inline"><a href="{{uri}}">{{description.title}}
+	<li class="margin-bottom--double">
+		<h3 class="inline-block"><a href="{{uri}}">{{description.title}}
 			{{#if description.edition}}
 			{{#if_ne description.edition 'yes'}}: {{description.edition}}{{/if_ne}}
 		{{/if}}</a></h3>
