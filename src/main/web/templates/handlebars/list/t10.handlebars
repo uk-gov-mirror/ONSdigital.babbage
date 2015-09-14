@@ -21,6 +21,9 @@
 						{{#if_eq this 'bulletin'}}
 						statistical bulletin
 						{{/if_eq}}
+						{{#if_eq this 'compendium_landing_page'}}
+						compendia
+						{{/if_eq}}
 						{{#if_ne this 'bulletin'}}
 						{{this}}
 						{{/if_ne}}
@@ -54,15 +57,15 @@
 				{{/if}} {{!-- /if results --}}
 			</div>
 			{{!-- FILTERS --}}
-			<div class="col col--md-12 col--lg-18">
+			<div class="col col--md-12 col--lg-18 margin-bottom">
 				<div class="col col--md-10 col--lg-12">
-					<h2 class="tiles__title-h2 tiles__title-h2--nav">Refine results</h2>
+					<h3 class="tiles__title-h3 tiles__title-h3--nav">Refine results</h3>
 				</div>
-				<div class="col col--md-6 col--lg-6 tiles__title-h2 tiles__title-h2--nav">
+				<div class="col col--md-6 col--lg-6 tiles__title-h3 tiles__title-h3--nav">
 					<a href="/search?q={{parameters.q.0}}" value="Reset" class="btn btn--thin btn--narrow btn--small">{{labels.search-refine-clear}}</a>
 				</div>
 				<div class="tiles__content tiles__content--nav">
-					<h3>{{labels.search-refine-types}}</h3>
+					<h4>{{labels.search-refine-types}}</h4>
 					<ul class="list--neutral">
 						<li>
 							<input type="checkbox" name="type" value="bulletin" id="checkbox-statsbulletin" {{#contains parameters.type 'bulletin'}}checked{{/contains}} >
@@ -132,7 +135,7 @@
 					{{else}}
 						<div class="col col--md-34 col--lg-42 tiles__item--nav-type-fixed">
 					{{/if}}
-					<h2 class="tiles__title-h2 tiles__title-h2--nav"><a href="{{uri}}">{{description.title}}</a></h2>
+					<h3 class="tiles__title-h3 tiles__title-h3--nav"><a href="{{uri}}">{{description.title}}</a></h3>
 					<p class="tiles__content tiles__content--nav">{{description.summary}}</p>
 					</div>
 					</div>
