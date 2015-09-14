@@ -1,26 +1,26 @@
 <main id="main" role="main" tabindex="-1">
-<div class="wrapper panel--top-mar">
-	{{> list/partials/list-page-breadcrumb label=labels.previous}}
-	<p class="page-header__title">
-		{{labels.previous}}
-	</p>
-	<h1 class="page-header__title flush--half--bottom">{{results.0.description.title}} {{> type-label type=results.0.type plural=true}}</h1>
-	<div class="grid-wrap">
-		<p class="grid-col desktop-grid-two-thirds">
-			<strong>Frequency: </strong>{{results.0.description.frequency}}
-		</p>
+    <div class="page-intro">
+		<div class="wrapper">
+			<div class="col-wrap">
+				<div class="col one">
+					{{> list/partials/list-page-breadcrumb label=labels.previous}}
+					<h1 class="page-intro__title">{{results.0.description.title}} {{> type-label type=results.0.type plural=true}}</h1>
+                    <p class="page-intro__content col col--md-47 col--lg-48">
+						{{results.0.description.summary}}
+					</p>
+				</div>
+			</div>
+		</div>
 	</div>
-	<div class="grid-wrap">
-		<p class="grid-col desktop-grid-two-thirds print-links">
-			{{results.0.description.summary}}
-		</p>
-	</div>
-	<div class="grid-wrap print-links">
-		<div class="grid-col desktop-grid-two-thirds">
-			<div class="panel panel--separated--top">
-				<ul class="list--neutral">
+    <div class="wrapper">
+        <div class="col-wrap">
+            <div class="col col--md-two-thirds col--lg-two-thids">
+        		<p>
+        			<strong>Frequency: </strong>{{results.0.description.frequency}}
+        		</p>
+                <ul class="list--neutral">
 					{{#each results}}
-					<li>
+					<li {{#if @first}}class="margin-bottom--double"{{/if}}>
 					{{#if @first}}
 						<h3 class="flush">{{labels.previous-latest}}</h3>
 						<h3 class="flush stand-out-text">
@@ -33,19 +33,15 @@
 							{{/if}}
 						</a>
 						</h3>
-						<p {{#if @first}}class="stand-out-text"{{/if}}>
+						<p class="flush {{#if @first}}stand-out-text{{/if}}">
 							{{labels.released}}: {{df description.releaseDate}}
 						</p>
 					</li>
 					{{/each}}
 				</ul>
 				{{> list/partials/paginator}}
-			</div>
-			<!-- /panel -->
-		</div>
-		<!-- /desktop-grid-two-thirds -->
-	</div>
+            </div>
+        </div>
 	{{> partials/archives-box}}
-</div>
-<!-- /wrapper -->
+    </div>
 </main>
