@@ -27,7 +27,11 @@ public abstract class ListPageBaseRequestHandler implements RequestHandler {
      *
      * @return
      */
-    public abstract String[] getAllowedTypes();
+    protected abstract String[] getAllowedTypes();
+
+    protected boolean isFilterLatest(HttpServletRequest request) {
+        return false;
+    }
 
     /**
      * Return true if the list page is localised to a uri.
@@ -54,6 +58,10 @@ public abstract class ListPageBaseRequestHandler implements RequestHandler {
         }
 
         SearchRequestHelper searchRequestHelper = new SearchRequestHelper(request, uri, getAllowedTypes());
+        if (isFilterLatest(request)) {
+            searchRequestHelper.setFilterLatest(true);
+        }
+
         SearchResponseHelper responseHelper = doSearch(searchRequestHelper);
 
         Paginator.assertPage(searchRequestHelper.getPage(), responseHelper);

@@ -3,6 +3,8 @@ package com.github.onsdigital.babbage.request.handler.list;
 import com.github.onsdigital.babbage.content.model.ContentType;
 import com.github.onsdigital.babbage.request.handler.base.ListPageBaseRequestHandler;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * Render a list page for bulletins under the given URI.
  */
@@ -19,6 +21,12 @@ public class PublicationsRequestHandler extends ListPageBaseRequestHandler {
     @Override
     public String[] getAllowedTypes() {
         return ALLOWED_TYPES;
+    }
+
+    @Override
+    protected boolean isFilterLatest(HttpServletRequest request) {
+        //filter if not wanted to be included specifically
+        return request.getParameter("allReleases") == null;
     }
 
     @Override

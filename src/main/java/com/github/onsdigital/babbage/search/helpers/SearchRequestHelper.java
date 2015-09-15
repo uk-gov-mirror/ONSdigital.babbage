@@ -31,7 +31,7 @@ public class SearchRequestHelper {
     private String[] keywords;
     private Date fromDate;
     private Date toDate;
-    private boolean includeHistoricalData;
+    private boolean filterLatest;
 
 
     public SearchRequestHelper(HttpServletRequest request, String topicUri, String[] allowedTypes) {
@@ -45,7 +45,6 @@ public class SearchRequestHelper {
         }
         this.query = request.getParameter("q");
         this.keywords = request.getParameterValues("keywords");
-        this.includeHistoricalData = request.getParameter("allReleases") != null;
         this.fromDate = parseDate(request.getParameter("fromDate"));
         this.toDate = parseDate(request.getParameter("toDate"));
     }
@@ -76,7 +75,7 @@ public class SearchRequestHelper {
             onsQueryBuilder.setUriPrefix(uriPrefix);
         }
 
-        if (!includeHistoricalData) {
+        if (filterLatest) {
             onsQueryBuilder.addFilter(Fields.latestRelease.name(), true);
         }
         if (sortBy != null) {
@@ -239,11 +238,11 @@ public class SearchRequestHelper {
         this.toDate = toDate;
     }
 
-    public boolean isIncludeHistoricalData() {
-        return includeHistoricalData;
+    public boolean isFilterLatest() {
+        return filterLatest;
     }
 
-    public void setIncludeHistoricalData(boolean includeHistoricalData) {
-        this.includeHistoricalData = includeHistoricalData;
+    public void setFilterLatest(boolean filterLatest) {
+        this.filterLatest = filterLatest;
     }
 }
