@@ -1,51 +1,49 @@
 <main id="main" role="main" tabindex="-1">
-<div class="wrapper panel--top-mar">
-	{{> list/partials/list-page-breadcrumb label="User requested data"}}
-	<p class="page-header__title">
-		User requested data
-	</p>
-	{{#each breadcrumb}}
-	{{#if @last}}
-	<h1 class="page-header__title flush--half--bottom">{{description.title}}</h1>
-	{{/if}}
-	{{/each}}
-	
-</div>
-<!-- /wrapper -->
-<div class="wrapper panel--mar print-links">
-	<form id="filters">
-		<div class="grid-wrap panel--bottom-mar print-hidden">
-			<div class="grid-col desktop-grid-one-quarter desktop-grid-push-three-quarters tablet-grid-full-width">
-				{{> list/filters/sort}}
+	<div class="page-intro">
+		<div class="wrapper">
+			<div class="col-wrap">
+				<div class="col one">
+					{{> list/partials/list-page-breadcrumb label="User requested data"}}
+					{{#each breadcrumb}}
+						{{#if @last}}
+							<h1 class="page-intro__title margin-bottom--double">{{description.title}} user requested data</h1>
+						{{/if}}
+					{{/each}}
+				</div>
 			</div>
 		</div>
-		<div class="grid-wrap">
-			<div class="grid-col desktop-grid-one-third">
-				<article class="box box--padded sectioned print-hidden">
-					<div class="panel panel--bottom-pad panel--separated--bottom flush">
-						<h3 class="flush float-left">Refine results</h3>
-						<a href="./datalist" value="Reset" class="btn btn--primary btn--small btn--thin btn--narrow btn--clear-results float-right">{{labels.search-refine-clear}}</a>
+	</div>
+
+	<div class="wrapper print-links">
+    	<form id="filters">
+    		<div class="col-wrap print-hidden">
+                <div class="col col--md-37 col--lg-46 margin-left">
+                    &nbsp;
+                </div>
+    			<div class="col col--md-10 col--lg-13">
+    				{{> list/filters/sort}}
+    			</div>
+    		</div>
+			<div class="col col--md-12 col--lg-18 margin-bottom">
+				<div class="tiles__item tiles__item--nav-type flush-col print--hide">
+					<div class="tiles__title-h3 tiles__title-h3--nav">
+						<h3 class="inline">Refine results</h3>
+							<a href="./adhoc" value="Reset" class="btn btn--thin btn--narrow btn--small float-right">{{labels.search-refine-clear}}</a>
 					</div>
-					<div class="box__content">
-						{{> list/filters/keywords}}
-						{{> list/filters/publish-date}}
+					<div class="tiles__content tiles__content--nav">
+							{{> list/filters/keywords}}
+							{{> list/filters/publish-date}}
+
+							<button type="submit" class="btn btn--block btn--thick margin-top">Filter</button>
 					</div>
-					<div>
-						<button type="submit" class="btn btn--primary btn--small panel--mar-small">Filter</button>
-					</div>
-				</article>
+				</div>
 				{{> partials/archives-box}}
 			</div>
-			<!-- /desktop-grid-one-third -->
-			<div class="grid-col desktop-grid-two-thirds">
+			<div class="results col col--md-34 col--lg-40 margin-left">
 				{{> list/partials/results-text}}
 				{{> list/partials/results}}
 				{{> list/partials/paginator}}
 			</div>
-			<!-- /desktop-grid-two-thirds -->
-		</div>
-		<!-- /grid-wrap -->
-	</form>
-</div>
-<!-- /wrapper panel--mar -->
+		</form>
+	</div>
 </main>
