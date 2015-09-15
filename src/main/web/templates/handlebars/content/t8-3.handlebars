@@ -63,34 +63,12 @@
             <div class="col col--lg-two-thirds col--md-two-thirds">
                 <ul class="tiles__list">
                     {{#each downloads}}
+                    {{#if file}}
                         <li class="tiles__item--list-type-simple flush-col">
                             {{!-- <div class="">
-                                {{#if cdids}}
-                                    {{labels.dataset-latest}}
-                                {{else}}
-                                    {{title}}
-                                {{/if}}
+                            {{#if_eq type 'timeseries_dataset'}}{{labels.dataset-latest}}{{else}}{{title}}{{/if_eq}}
                             </div> --}}
-                            {{#if cdids}}
-                                {{!-- generate xls or csv using given cdid list --}}
-                                    <form method="post" action="/download" enctype='application/json'>
-                                        <div class="col--lg-10">
-                                            <label class="label inline">{{labels.dataset-latest}}</label>
-                                        </div>
-                                        <button title="Download {{title}} data in xlsx format" name="type" value="xlsx" type="submit"
-                                        class="btn download-analytics">
-                                        xlsx
-                                        </button>
-                                        <button title="Download {{title}} data in csv format" name="type" value="csv" type="submit"
-                                        class="btn download-analytics">
-                                        csv
-                                        </button>
-                                        <input type="hidden" name="fileName" value="{{description.title}}"/>
-                                        {{#each cdids}}
-                                        <input type="hidden" name="cdid" value="{{this}}"/>
-                                        {{/each}}
-                                    </form>
-                                    {{else}}
+                           
                                     <form method="get" action="/file">
                                         <!-- link to given uris of given files-->
                                         <div class="col col--md-15 col--lg-23 margin-top--half">
@@ -101,8 +79,8 @@
                                         </button>
                                         <input  type="hidden" name="uri" value="{{file}}"/>
                                     </form>
-                            {{/if}}
                         </li>
+                    {{/if}}
                     {{/each}}
                 </ul>
             </div>
