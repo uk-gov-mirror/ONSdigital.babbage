@@ -47,33 +47,15 @@
                 <h3>{{labels.dataset-downloads}}</h3>
                 <ul class="list--neutral">
                     {{#each downloads}}
+                    {{#if file}}
                     <li>
                         <article class="box box--padded--med solid">
                             <div class="box--content">
                                 <div class="grid-wrap">
                                     <div class="grid-col tablet-grid-one-quarter">
-                                        {{#if cdids}}{{labels.dataset-latest}}{{else}}{{title}}{{/if}}
+                                        {{#if_eq type 'timeseries_dataset'}}{{labels.dataset-latest}}{{else}}{{title}}{{/if_eq}}
                                     </div>
                                     <div class="grid-col tablet-grid-three-quarters">
-                                        {{#if cdids}}
-                                        <!-- generate xls or csv using given cdid list -->
-                                        <form method="post" action="/download" enctype='application/json'>
-                                            <button title="Download {{title}} data in xlsx format" name="type" value="xlsx" type="submit"
-                                            class="btn btn--primary btn--small btn--thin download-analytics">
-                                            xlsx
-                                            <span class="icon icon-download" role="presentation"></span>
-                                            </button>
-                                            <button title="Download {{title}} data in csv format" name="type" value="csv" type="submit"
-                                            class="btn btn--primary btn--small btn--thin download-analytics">
-                                            csv
-                                            <span class="icon icon-download" role="presentation"></span>
-                                            </button>
-                                            <input type="hidden" name="fileName" value="{{description.title}}"/>
-                                            {{#each cdids}}
-                                            <input type="hidden" name="cdid" value="{{this}}"/>
-                                            {{/each}}
-                                        </form>
-                                        {{else}}
                                         <form method="get" action="/file">
                                             <!-- link to given uris of given files-->
                                             <button type="submit" title="Latest version" class="btn btn--primary btn--block btn--thin download-analytics">
@@ -82,7 +64,7 @@
                                             </button>
                                             <input  type="hidden" name="uri" value="{{file}}"/>
                                         </form>
-                                        {{/if}}
+
                                     </div>
                                 </div>
                                 <!-- /grid-wrap -->
@@ -91,6 +73,7 @@
                         </article>
                         <!-- /box -->
                     </li>
+                    {{/if}}
                     {{/each}}
                 </ul>
             </div>
