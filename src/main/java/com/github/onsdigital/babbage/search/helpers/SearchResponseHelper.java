@@ -1,8 +1,6 @@
 package com.github.onsdigital.babbage.search.helpers;
 
-import com.github.onsdigital.babbage.configuration.Configuration;
 import com.github.onsdigital.babbage.search.SearchResult;
-import com.github.onsdigital.babbage.util.json.JsonUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.common.text.Text;

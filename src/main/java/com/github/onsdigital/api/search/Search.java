@@ -35,16 +35,16 @@ public class Search {
 
     public static final String CONTENT_TYPE = "text/html";
     private final static String[] ALLOWED_TYPES = new String[]{
-            ContentType.bulletin.toString(),
-            ContentType.timeseries.toString(),
-            ContentType.data_slice.toString(),
-            ContentType.compendium_landing_page.toString(),
-            ContentType.static_article.toString(),
-            ContentType.static_methodology.toString(),
-            ContentType.static_qmi.toString(),
-            ContentType.dataset.toString(),
-            ContentType.timeseries_dataset.toString(),
-            ContentType.reference_tables.toString()
+            ContentType.bulletin.name(),
+//            ContentType.timeseries.name(),
+            ContentType.data_slice.name(),
+            ContentType.compendium_landing_page.name(),
+            ContentType.static_article.name(),
+            ContentType.static_methodology.name(),
+            ContentType.static_qmi.name(),
+            ContentType.dataset.name(),
+            ContentType.timeseries_dataset.name(),
+            ContentType.reference_tables.name()
     };
     private final String[] STATIC_TYPES = new String[]{ContentType.static_adhoc.name(), ContentType.static_article.name(), ContentType.static_foi.name(), ContentType.static_page.name()};
 
