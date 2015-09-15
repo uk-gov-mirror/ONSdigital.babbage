@@ -5,9 +5,10 @@ import com.github.onsdigital.babbage.content.client.ContentFilter;
 import com.github.onsdigital.babbage.content.client.ContentReadException;
 import com.github.onsdigital.babbage.content.client.ContentStream;
 import com.github.onsdigital.babbage.request.handler.base.RequestHandler;
-import com.github.onsdigital.babbage.template.TemplateService;
 import com.github.onsdigital.babbage.response.BabbageResponse;
 import com.github.onsdigital.babbage.response.BabbageStringResponse;
+import com.github.onsdigital.babbage.template.TemplateService;
+import com.github.onsdigital.babbage.util.json.JsonUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -29,7 +30,7 @@ public class LineChartConfigRequestHandler implements RequestHandler {
         try (ContentStream series = ContentClient.getInstance().getContentStream(requestedUri, ContentClient.filter(ContentFilter.SERIES));
              ContentStream description = ContentClient.getInstance().getContentStream(requestedUri, ContentClient.filter(ContentFilter.DESCRIPTION))
         ) {
-            String config = TemplateService.getInstance().renderTemplate("highcharts/config/linechartconfig", series.getDataStream(), description.getDataStream());
+            String config = TemplateService.getInstance().renderTemplate("highcharts/config/linechartconfig", series.getDataStream(), JsonUtil.toMap(description.getDataStream()));
             return config;
         }
 

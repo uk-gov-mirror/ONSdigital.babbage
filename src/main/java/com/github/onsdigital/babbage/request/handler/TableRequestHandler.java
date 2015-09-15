@@ -30,9 +30,8 @@ public class TableRequestHandler implements RequestHandler {
 
             LinkedHashMap<String, Object> htmlEntry = new LinkedHashMap<>();
             htmlEntry.put("html", html.getAsString());
-            String htmlJson = JsonUtil.toJson(htmlEntry);
             String jsonString = json.getAsString();
-            String result = TemplateService.getInstance().renderTemplate("table", jsonString, htmlJson);
+            String result = TemplateService.getInstance().renderTemplate("table", jsonString, htmlEntry);
             return new BabbageStringResponse(result, MediaType.TEXT_HTML);
         }
     }

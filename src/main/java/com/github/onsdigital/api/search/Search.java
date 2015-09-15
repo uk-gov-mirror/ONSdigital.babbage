@@ -13,7 +13,6 @@ import com.github.onsdigital.babbage.search.helpers.SearchFields;
 import com.github.onsdigital.babbage.search.helpers.SearchRequestHelper;
 import com.github.onsdigital.babbage.search.helpers.SearchResponseHelper;
 import com.github.onsdigital.babbage.template.TemplateService;
-import com.github.onsdigital.babbage.util.json.JsonUtil;
 import com.github.onsdigital.content.service.ContentNotFoundException;
 import com.github.onsdigital.content.util.URIUtil;
 import org.apache.commons.lang3.ArrayUtils;
@@ -65,7 +64,7 @@ public class Search {
     private void renderEmptyPage(HttpServletResponse response, String type) throws IOException {
         LinkedHashMap<String, Object> searchData = new LinkedHashMap<>();
         searchData.put("type", type);
-        String html = TemplateService.getInstance().renderListPage(type, JsonUtil.toJson(searchData));
+        String html = TemplateService.getInstance().renderListPage(searchData);
         BabbageResponse babbageResponse = new BabbageStringResponse(html, CONTENT_TYPE);
         babbageResponse.apply(response);
     }
@@ -93,7 +92,7 @@ public class Search {
         searchData.put("type", type);
         searchData.put("paginator", Paginator.getPaginator(searchHelper.getPage(), searchResponseHelper));
         searchData.put("featuredResult", featuredResponseHelper.getResult());
-        String html = TemplateService.getInstance().renderListPage(type, JsonUtil.toJson(searchResponseHelper.getResult()), JsonUtil.toJson(searchData));
+        String html = TemplateService.getInstance().renderListPage(searchResponseHelper.getResult(), searchData);
         BabbageResponse babbageResponse = new BabbageStringResponse(html, CONTENT_TYPE);
         babbageResponse.apply(response);
     }

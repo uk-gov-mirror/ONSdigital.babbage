@@ -7,7 +7,6 @@ import com.github.onsdigital.babbage.search.SearchService;
 import com.github.onsdigital.babbage.search.helpers.SearchRequestHelper;
 import com.github.onsdigital.babbage.search.helpers.SearchResponseHelper;
 import com.github.onsdigital.babbage.template.TemplateService;
-import com.github.onsdigital.babbage.util.json.JsonUtil;
 import com.github.onsdigital.content.util.URIUtil;
 
 import javax.servlet.http.HttpServletRequest;
@@ -46,7 +45,7 @@ public abstract class ListPageBaseRequestHandler implements RequestHandler {
 
         BabbageResponse babbageResponse;
         String type = URIUtil.resolveRequestType(request.getRequestURI());
-        String uri = "";
+        String uri;
         if (useLocalisedUri()) {
             uri = requestedUri;
         } else {
@@ -57,14 +56,14 @@ public abstract class ListPageBaseRequestHandler implements RequestHandler {
         SearchRequestHelper searchRequestHelper = new SearchRequestHelper(request, uri, getAllowedTypes());
         SearchResponseHelper responseHelper = doSearch(searchRequestHelper);
 
-        Paginator.assertPage(searchRequestHelper.getPage(),responseHelper);
+        Paginator.assertPage(searchRequestHelper.getPage(), responseHelper);
 
         LinkedHashMap<String, Object> listData = new LinkedHashMap<>();
         listData.put("paginator", Paginator.getPaginator(searchRequestHelper.getPage(), responseHelper));
         listData.put("uri", request.getRequestURI());//set full uri in the context
         listData.put("type", type);
 
-        String html = TemplateService.getInstance().renderListPage(type, JsonUtil.toJson(responseHelper.getResult()), JsonUtil.toJson(listData));
+        String html = TemplateService.getInstance().renderListPage(responseHelper.getResult(), listData);
         babbageResponse = new BabbageStringResponse(html, CONTENT_TYPE);
         return babbageResponse;
     }
