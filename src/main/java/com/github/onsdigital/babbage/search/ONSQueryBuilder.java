@@ -61,7 +61,7 @@ public class ONSQueryBuilder {
     public String[] getBoostedFieldNames() {
         String[] fieldNames = new String[fields.length];
         for (int i = 0; i < fields.length; i++) {
-            fieldNames[i] = fields[i].name() +  "^" +fields[i].getBoostFactor();
+            fieldNames[i] = fields[i].name() + "^" + fields[i].getBoostFactor();
         }
         return fieldNames;
     }
@@ -169,8 +169,17 @@ public class ONSQueryBuilder {
             return;
         }
         for (int i = 0; i < rangeFilters.size(); i++) {
-            RangeFilter fieldFilter = rangeFilters.get(i);
-            FilterBuilder rangeFilterBuilder = FilterBuilders.rangeFilter(fieldFilter.getField()).from(fieldFilter.getFrom()).to(fieldFilter.getTo());
+            RangeFilter rangeFilter = rangeFilters.get(i);
+            if (rangeFilter.getFrom() == null && rangeFilter.getTo() == null) {
+                continue;
+            }
+            RangeFilterBuilder rangeFilterBuilder = FilterBuilders.rangeFilter(rangeFilter.getField());
+            if (rangeFilter.getFrom() != null) {
+                rangeFilterBuilder.from(rangeFilter.getFrom());
+            }
+            if (rangeFilter.getTo() != null) {
+                rangeFilterBuilder.to(rangeFilter.getTo());
+            }
             andFilterBuilder.add(rangeFilterBuilder);
         }
 

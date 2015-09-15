@@ -122,7 +122,6 @@ public class Search {
         String includeStatics = request.getParameter("includeStatics");
         String methodology = request.getParameter("methodology");
         SearchRequestHelper searchRequestHelper = new SearchRequestHelper(request, null, ALLOWED_TYPES);
-        searchRequestHelper.setFilterLatest(true);
 
         if (submittedTypes == null && methodology != null) {
             //clear types if methodology is set, todo: do not use serach request helper for search or create a common base for search and list
