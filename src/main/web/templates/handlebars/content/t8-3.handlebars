@@ -75,9 +75,9 @@
                                             <label class="label inline">{{title}}</label>
                                         </div>
                                         <button type="submit" title="Latest version" class="btn btn--wide btn--thick download-analytics">
-                                        {{fe file}} ({{fs file}})
+                                        {{fe (lowercase file)}} ({{fs (lowercase file)}})
                                         </button>
-                                        <input  type="hidden" name="uri" value="{{file}}"/>
+                                        <input  type="hidden" name="uri" value="{{(lowercase file)}}"/>
                                     </form>
                         </li>
                     {{/if}}
