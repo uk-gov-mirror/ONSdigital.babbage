@@ -425,7 +425,7 @@ $(function() {
 
 
             //insert sticky wrapper
-            var tocStickyWrap = $('<div class="table-of-contents--sticky__wrap print-hidden"><div class="wrapper">');
+            var tocStickyWrap = $('<div class="table-of-contents--sticky__wrap print--hide"><div class="wrapper">');
             $(tocStickyWrap).insertAfter($('#toc'));
             $('.table-of-contents--sticky__wrap .wrapper').append('<h2 class="table-of-contents--sticky__heading">Table of contents</h2>');
 
