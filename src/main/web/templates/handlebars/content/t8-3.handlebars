@@ -65,14 +65,10 @@
                     {{#each downloads}}
                     {{#if file}}
                         <li class="tiles__item--list-type-simple flush-col">
-                            {{!-- <div class="">
-                            {{#if_eq type 'timeseries_dataset'}}{{labels.dataset-latest}}{{else}}{{title}}{{/if_eq}}
-                            </div> --}}
-                           
                                     <form method="get" action="/file">
                                         <!-- link to given uris of given files-->
                                         <div class="col col--md-15 col--lg-23 margin-top--half">
-                                            <label class="label inline">{{title}}</label>
+                                            <label class="label inline">{{#if_eq type 'timeseries_dataset'}}{{labels.dataset-latest}}{{else}}{{title}}{{/if_eq}}</label>
                                         </div>
                                         <button type="submit" title="Latest version" class="btn btn--wide btn--thick download-analytics">
                                         {{fe (lowercase file)}} ({{fs (lowercase file)}})
