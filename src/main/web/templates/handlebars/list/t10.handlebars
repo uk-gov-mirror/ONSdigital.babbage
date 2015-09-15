@@ -24,7 +24,7 @@
 						{{#if_eq this 'compendium_landing_page'}}
 						compendia
 						{{/if_eq}}
-						{{#if_ne this 'bulletin'}}
+						{{#if_ne this 'bulletin' 'compendium_landing_page'}}
 						{{this}}
 						{{/if_ne}}
 						{{/each}}
@@ -50,9 +50,9 @@
 					</div>
 				{{else}}
 					<div class="col">
-						<p>
+						<h2>
 							{{labels.search-no-results}} '{{parameters.q.0}}'.
-						</p>
+						</h2>
 					</div>
 				{{/if}} {{!-- /if results --}}
 			</div>
