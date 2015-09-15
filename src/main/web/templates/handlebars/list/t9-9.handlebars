@@ -3,7 +3,7 @@
 		<div class="wrapper">
 			<div class="col-wrap">
 				<div class="col one">
-					{{> list/partials/list-page-breadcrumb label="Publications"}}
+					{{> list/partials/list-page-breadcrumb label="Data"}}
 					{{#each breadcrumb}}
 						{{#if @last}}
 							<h1 class="page-intro__title">{{description.title}} data</h1>
@@ -31,7 +31,7 @@
 						<h3 class="tiles__title-h3 tiles__title-h3--nav">Refine results</h3>
 					</div>
 					<div class="col col--md-6 col--lg-6 tiles__title-h3 tiles__title-h3--nav">
-						<a href="/search?q={{parameters.q.0}}" value="Reset" class="btn btn--thin btn--narrow btn--small">{{labels.search-refine-clear}}</a>
+						<a href="./datalist" value="Reset" class="btn btn--thin btn--narrow btn--small">{{labels.search-refine-clear}}</a>
 					</div>
 					<div class="tiles__content tiles__content--nav">
 						{{> list/filters/keywords}}
