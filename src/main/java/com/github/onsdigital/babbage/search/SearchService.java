@@ -7,6 +7,7 @@ import org.elasticsearch.action.count.CountRequestBuilder;
 import org.elasticsearch.action.search.MultiSearchRequestBuilder;
 import org.elasticsearch.action.search.MultiSearchResponse;
 import org.elasticsearch.action.search.SearchRequestBuilder;
+import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.ImmutableSettings;
@@ -64,7 +65,7 @@ public class SearchService {
     }
 
     private SearchRequestBuilder buildSearch(ONSQueryBuilder queryBuilder) {
-        SearchRequestBuilder searchRequestBuilder = client.prepareSearch(getElasticSearchIndexAlias()).setQuery(queryBuilder.build());
+        SearchRequestBuilder searchRequestBuilder = client.prepareSearch(getElasticSearchIndexAlias()).setQuery(queryBuilder.build()).setSearchType(SearchType.QUERY_THEN_FETCH);
 
         if (queryBuilder.getFrom() != null) {
             searchRequestBuilder.setFrom(queryBuilder.getFrom()).setSize(queryBuilder.getSize());

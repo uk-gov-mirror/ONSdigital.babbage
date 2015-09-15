@@ -64,7 +64,7 @@ public abstract class ListPageBaseRequestHandler implements RequestHandler {
         listData.put("uri", request.getRequestURI());//set full uri in the context
         listData.put("type", type);
 
-        String html = TemplateService.getInstance().renderListPage(type, responseHelper.toJson(), JsonUtil.toJson(listData));
+        String html = TemplateService.getInstance().renderListPage(type, JsonUtil.toJson(responseHelper.getResult()), JsonUtil.toJson(listData));
         babbageResponse = new BabbageStringResponse(html, CONTENT_TYPE);
         return babbageResponse;
     }

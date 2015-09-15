@@ -93,7 +93,7 @@ public class Search {
         searchData.put("type", type);
         searchData.put("paginator", Paginator.getPaginator(searchHelper.getPage(), searchResponseHelper));
         searchData.put("featuredResult", featuredResponseHelper.getResult());
-        String html = TemplateService.getInstance().renderListPage(type, searchResponseHelper.toJson(), JsonUtil.toJson(searchData));
+        String html = TemplateService.getInstance().renderListPage(type, JsonUtil.toJson(searchResponseHelper.getResult()), JsonUtil.toJson(searchData));
         BabbageResponse babbageResponse = new BabbageStringResponse(html, CONTENT_TYPE);
         babbageResponse.apply(response);
     }

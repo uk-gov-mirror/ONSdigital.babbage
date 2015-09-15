@@ -27,7 +27,6 @@ public class Reindex {
         try (ContentStream stream = ContentClient.getInstance().reIndex(key, uri )) {
             IOUtils.copy(stream.getDataStream(), response.getOutputStream());
         } catch (ContentReadException ex) {
-            HashMap<Object, Object> errorResponse = new HashMap<>();
             response.setStatus(ex.getStatusCode());
             IOUtils.copy(new StringReader(ex.getCause().getMessage()), response.getOutputStream());
         }

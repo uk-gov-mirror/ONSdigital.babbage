@@ -1,23 +1,23 @@
 <ul class="list--neutral">
 	{{#each results}}
 	<li class="search--result-item margin-bottom--double">
-		<h3 class="inline-block"><a href="{{uri}}">{{description.title}}
+		<h3 class="inline-block"><a href="{{uri}}">{{{description.title}}}
 			{{#if description.edition}}
-			{{#if_ne description.edition 'yes'}}: {{description.edition}}{{/if_ne}}
+			{{#if_all (ne description.edition 'yes') (ne description.edition '<strong>yes</strong>')}}: {{{description.edition}}}{{/if_all}}
 		{{/if}}</a></h3>
 		<span class="lozenge margin-left--half">{{> type-label type=this.type}}</span>
 		{{#if partOf}}
 		<p>
-			<a href="{{uri}}">[{{description.title}}]</a><span class="icon-search-1"></span>
+			<a href="{{uri}}">{{{description.title}}}</a><span class="icon-search-1"></span>
 		</p>
 		{{/if}}
 		<p class="flush">
-			Released: {{df description.releaseDate}} {{#if description.reference}}Ref: {{description.reference}}{{/if}}
+			Released: {{df description.releaseDate}} {{#if description.reference}}Ref: {{{description.reference}}}{{/if}}
 		</p>
 		{{md description.summary}}
 		{{#if description.keywords}}
 		<p class="flush">
-		  Keywords: {{#each description.keywords}}{{this}}  {{/each}}
+		  Keywords: {{#each description.keywords}}{{{this}}}  {{/each}}
 		</p>
 		{{/if}}
 	</li>
