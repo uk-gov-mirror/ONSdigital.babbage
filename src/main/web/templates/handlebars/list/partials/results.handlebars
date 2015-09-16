@@ -1,4 +1,20 @@
 <ul class="list--neutral">
+{{!-- 	{{#if_all featuredResult parameters.timeseries}}
+	<li class="search--result-item margin-bottom--double">
+		<h3 class="inline-block"><a href="/datalist?type=timeseries&query={{parameters.q.0}}">{{{featuredResult.results.0.description.title}}} time series collection
+			{{#if featuredResult.results.0.description.edition}}
+			{{#if_all (ne featuredResult.results.0.description.edition 'yes') (ne featuredResult.results.0.description.edition '<strong>yes</strong>')}}: {{{featuredResult.results.0.description.edition}}}{{/if_all}}
+		{{/if}}</a></h3>
+		<span class="lozenge margin-left--half">time series</span>
+		<p>Contains all single time series covering {{{featuredResult.results.0.description.title}}}</p>
+		{{#if featuredResult.results.0.description.keywords}}
+		<p class="flush">
+			Keywords: {{#each featuredResult.results.0.description.keywords}}{{{this}}}  {{/each}}
+		</p>
+		{{/if}}
+	</li>
+	{{/if_all}} --}}
+
 	{{#each results}}
 	<li class="search--result-item margin-bottom--double">
 		<h3 class="inline-block"><a href="{{uri}}">{{{description.title}}}
@@ -17,7 +33,7 @@
 		{{md description.summary}}
 		{{#if description.keywords}}
 		<p class="flush">
-		  Keywords: {{#each description.keywords}}{{{this}}}  {{/each}}
+			Keywords: {{#each description.keywords}}{{{this}}}  {{/each}}
 		</p>
 		{{/if}}
 	</li>
