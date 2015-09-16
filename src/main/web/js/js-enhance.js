@@ -28,7 +28,7 @@ $(function() {
 
         //The order of these functions being called is important...
         jsEnhanceULNavToSelectNav();
-        jsEnhanceClickableDiv();
+        //jsEnhanceClickableDiv();
         jsEnhanceLinechart();
         jsEnhanceSparkline();
         jsEnhancePrint();
@@ -89,7 +89,7 @@ $(function() {
             // });
             var newselect = $(document.createElement('select'));
             newselect.attr('class', 'field field--spaced max-width');
-            
+
             // convert to lower case and remove colon from end of string
             labeltext = labeltext.toLowerCase().substring(0, labeltext.length - 1);
 
@@ -254,22 +254,24 @@ $(function() {
         $('#jsEnhancePrintCompendium').click(function(e) {
             addLoadingOverlay();
 
-            // TODO Will get function to add in div, so no empty divs on page at load
-            //$("<div class='print-content'></div>").insertAfter('.desktop-grid-full-width');
+            $('.chapter').each(function(index) {
+                // Synchronously adds div with id to get around Ajax working asynchronously
+                $('main').append("<div id='compendium-print" + index + "'></div>")
 
-            // TODO Remove existing page content from print
-            // $(".wrapper").remove();
-
-            $('.chapter').each(function() {
                 var url = $(this).attr('href');
 
-                var getContent = ('main');
+                // Set what content from each page we want to retrieve for printing
+                var childIntro = ('.page-intro');
+                var childContent = ('.page-content');
 
-                $('<section>').load(url, function() {
-                    $('.print-content').append("<div class='print__break-after'>" + $(this).find(getContent).html() + "</div>");
-                });
+                $.get(url, function(data){
+                    $(data).find(childIntro).addClass('print--break-before').appendTo('#compendium-print' + index);
+                    $(data).find(childContent).appendTo('#compendium-print' + index);
+                })
+
 
                 e.preventDefault();
+
             });
 
             $(document).ajaxStop(function() {
@@ -416,20 +418,20 @@ $(function() {
 
 
     function jsEnhanceTableOfContents() {
-        if($('body').contents().find('*').hasClass('wrapper--content')) {
+        if($('body').contents().find('*').hasClass('page-content__main-content')) {
 
-            //remove html and bodyu height 100% to allow jquery scroll functions to work properly
+            //remove html and body height 100% to allow jquery scroll functions to work properly
             $('html, body').css('height', 'auto');
 
 
             //insert sticky wrapper
-            var tocStickyWrap = $('<div class="toc-sticky-wrap print-hidden"><div class="wrapper">');
+            var tocStickyWrap = $('<div class="table-of-contents--sticky__wrap print--hide"><div class="wrapper">');
             $(tocStickyWrap).insertAfter($('#toc'));
-            $('.toc-sticky-wrap .wrapper').append('<h2 class="flush">Table of contents</h2>');
+            $('.table-of-contents--sticky__wrap .wrapper').append('<h2 class="table-of-contents--sticky__heading">Table of contents</h2>');
 
 
-            //cerate select list of sections
-            var tocSelectList = $('<select class="toc-select-list ">');
+            //create select list of sections
+            var tocSelectList = $('<select class="table-of-contents--sticky__select ">');
 
             $(tocSelectList).append($('<option/>', {
                     value: '',
@@ -448,9 +450,9 @@ $(function() {
 
 
             //add toc select to sticky wrapper
-            $('.toc-sticky-wrap .wrapper').append(tocSelectList);
+            $('.table-of-contents--sticky__wrap .wrapper').append(tocSelectList);
 
-            $('.toc-select-list').change(function() {
+            $('.table-of-contents--sticky__select').change(function() {
                 var location = $(this).find('option:selected').val();
                 if (location) {
                     // expands section if accordion
@@ -462,7 +464,7 @@ $(function() {
                     var functionTrigger = true;
 
                     //animates scroll and offsets page to counteract sticky nav
-                    $('html, body').animate({ scrollTop: $(location).offset().top - 60}, 1000, function(){
+                    $('html, body').animate({ scrollTop: $(location).offset().top - 105}, 1000, function(){
                         //stops function running twice - once for 'html' and another for 'body'
                         if(functionTrigger) {
                             //adds location hash to url without causing page to jump to it - credit to http://lea.verou.me/2011/05/change-url-hash-without-page-jump/
@@ -488,19 +490,19 @@ $(function() {
 
             // sticky toc function that evaluates scroll position and activates the sticky toc as appropriate
             function stickyTOC() {
-                var contentStart = $('.wrapper--content').offset().top;
+                var contentStart = $('.page-content__main-content').offset().top;
                 var scrollTop = $(window).scrollTop();
                 // console.log(scrollTop);
                 if (scrollTop > contentStart) {
                     $('#toc').addClass('table-of-contents-ordered-list-hide');
                     // $('#toc').removeClass('table-of-contents-ordered-list');
-                    $('.wrapper--content').css('padding-top','7.2rem');
-                    $('.toc-sticky-wrap').show();
+                    $('.page-content__main-content').css('padding-top','96px');
+                    $('.table-of-contents--sticky__wrap').show();
                 } else {
                     // $('#toc').addClass('table-of-contents-ordered-list');
                     $('#toc').removeClass('table-of-contents-ordered-list-hide');
-                    $('.wrapper--content').css('padding-top','0');
-                    $('.toc-sticky-wrap').hide();
+                    $('.page-content__main-content').css('padding-top','0');
+                    $('.table-of-contents--sticky__wrap').hide();
                 }
             }
 
@@ -516,8 +518,8 @@ $(function() {
 
         //Offsets page to make room for sticky nav if arrive on page directly at section
         $(window).load(function(){
-            if (location.hash && $('.wrapper--content').length > 0) {
-                var contentStart = $('.wrapper--content').offset().top;
+            if (location.hash && $('.page-content__main-content').length > 0) {
+                var contentStart = $('.page-content__main-content').offset().top;
                 var scrollTop = $(window).scrollTop();
 
                 if (scrollTop > contentStart) {

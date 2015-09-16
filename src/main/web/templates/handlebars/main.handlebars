@@ -1,11 +1,11 @@
-{{!-- Main handlebars is the main file rendered by handlebars.
-performs type check on content type and decides which template to render  --}}
-{{!-- Resolve parents of current uri for and assign to variable breadcrumb for building breadcrumb --}}
-{{resolveParents uri assign="breadcrumb"}}
-{{!-- Resolve navigation fetching children of root uri "/" with depth 2 --}}
-{{resolveChildren "/" depth=2 assign="navigation"}}
+{{!-- Main handlebars is the main file rendered by handlebars.performs type check on content type and decides which template to render  --}}{{!-- Resolve parents of current uri for and assign to variable breadcrumb for building breadcrumb --}}{{resolveParents uri assign="breadcrumb"}}{{!-- Resolve navigation fetching children of root uri "/" with depth 2 --}} {{#if_any (eq type "home_page") (eq type "taxonomy_landing_page") (eq type "product_page") (eq type "bulletin") (eq type "article") (eq type "timeseries") (eq type "timeseries") (eq type "dataset") (eq type "timeseries_dataset") (eq type "compendium_landing_page") (eq type "compendium_chapter") (eq type "compendium_data") }} 
+			{{resolveChildren "/" depth=2 assign="navigation"}}{{> partials/header}}
+			{{else}}
+			{{resolveChildren "/" depth=2 assign="navigation"}}{{> partials/header-old}}
+	    {{/if_any}}
 
-{{> partials/header}}
+
+
 {{#if_eq type "home_page"}}{{> content/t1}}{{/if_eq}}
 {{#if_eq type "taxonomy_landing_page"}}{{> content/t2}}{{/if_eq}}
 {{#if_eq type "product_page"}}{{> content/t3}}{{/if_eq}}
@@ -26,6 +26,5 @@ performs type check on content type and decides which template to render  --}}
 {{#if_eq type "static_qmi"}}{{> content/t7-1}}{{/if_eq}}
 {{#if_eq type "static_adhoc"}}{{> content/t7-2}}{{/if_eq}}
 {{#if_eq type "static_foi"}}{{> content/t7-3}}{{/if_eq}}
-{{#if_eq type "search_results_page"}}{{> content/t10}}{{/if_eq}}
 {{#if_eq type "release"}}{{> content/t16}}{{/if_eq}}
 {{> partials/footer}}

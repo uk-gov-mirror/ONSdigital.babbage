@@ -1,0 +1,47 @@
+<main id="main" role="main" tabindex="-1">
+    <div class="page-intro">
+		<div class="wrapper">
+			<div class="col-wrap">
+				<div class="col one">
+					{{> list/partials/list-page-breadcrumb label=labels.previous}}
+					<h1 class="page-intro__title">{{results.0.description.title}} {{> type-label type=results.0.type plural=true}}</h1>
+                    <p class="page-intro__content col col--md-47 col--lg-48">
+						{{results.0.description.summary}}
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+    <div class="wrapper print-links">
+        <div class="col-wrap">
+            <div class="col col--md-two-thirds col--lg-two-thids">
+        		<p>
+        			<strong>Frequency: </strong>{{results.0.description.frequency}}
+        		</p>
+                <ul class="list--neutral">
+					{{#each results}}
+					<li {{#if @first}}class="margin-bottom--double"{{/if}}>
+					{{#if @first}}
+						<h3 class="flush">{{labels.previous-latest}}</h3>
+						<h3 class="flush stand-out-text">
+					{{else}}
+						<h3 class="flush">
+					{{/if}}
+						<a href="{{uri}}">{{description.title}}
+							{{#if description.edition}}
+							{{#if_ne description.edition 'yes'}}: {{description.edition}}{{/if_ne}}
+							{{/if}}
+						</a>
+						</h3>
+						<p class="flush {{#if @first}}stand-out-text{{/if}}">
+							{{labels.released}}: {{df description.releaseDate}}
+						</p>
+					</li>
+					{{/each}}
+				</ul>
+				{{> list/partials/paginator}}
+            </div>
+        </div>
+	{{> partials/archives-box}}
+    </div>
+</main>

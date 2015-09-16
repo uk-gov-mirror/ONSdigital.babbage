@@ -76,6 +76,7 @@ var renderLineChart = function(timeseries) {
 
 
 	function filter() {
+		// console.log("filter start");
 		//Filter
 		var data = getAllData();
 		if (currentFilter === 'all') {
@@ -117,6 +118,7 @@ var renderLineChart = function(timeseries) {
 
 		}
 		render();
+		// console.log("filter end");
 	}
 
 	function render() {
@@ -325,7 +327,8 @@ var renderLineChart = function(timeseries) {
 		function initialize() {
 			bindFrequencyChangeButtons();
 			bindDisplayChangeButtons();
-			bindLinkEvents();
+			// bindLinkEvents();
+			bindTimePeriodButtons();
 			setCollapsible();
 			bindCustomDateFilters();
 			setYears();
@@ -452,7 +455,7 @@ var renderLineChart = function(timeseries) {
 			})
 		}
 
-		function bindLinkEvents() {
+		function bindTimePeriodButtons() {
 
 			$('[data-chart-controls-range]', element).on('click', function(e) {
 
@@ -462,7 +465,9 @@ var renderLineChart = function(timeseries) {
 				var fromMonth;
 				var fromQuarter;
 				e.preventDefault();
-				toggleSelectedLink(elem);
+				// toggleSelectedLink(elem);
+				// toggleTimePeriodButton(elem);
+				toggleSelectedButton();
 				var filterValue = elem.data('chart-controls-range');
 				if (filterValue === currentFilter) {
 					return;
@@ -522,55 +527,122 @@ var renderLineChart = function(timeseries) {
 		 */
 		function setCollapsible() {
 
-			var customControl = $('[data-chart-control-custom-range]', element);
-			var elem;
-			var target;
 
-			$('[data-chart-control-custom-trigger-for]', customControl).on('click', function(e) {
+			// var customControl = $('[data-chart-control-custom-range]', element);
+			// var elem;
+			// var target;
+
+			$('[data-chart-control-custom-trigger-for]', element).on('click', function(e) {
+
+				// console.log('hello');
 				e.preventDefault();
-				elem = $(this);
-				target = $('.' + elem.data('chart-control-custom-trigger-for'));
-
-				if (customControl.data('chart-control-custom-expanded') == true) {
-					target.slideUp('fast', function() {
-						customControl.data('chart-control-custom-expanded', false);
-						customControl.removeClass('chart-area__controls__custom--active');
-						$('.icon-up-open-big', customControl)
-							.removeClass('icon-up-open-big')
-							.addClass('icon-down-open-big');
-					});
-
-				} else {
-					customControl.addClass('chart-area__controls__custom--active');
-
-					// remove our nice no-js friendly hiding now we know js is active
-					target.hide().removeClass('js-hidden');
-
-					target.slideDown('fast', function() {
-						customControl.data('chart-control-custom-expanded', true);
-						$('.icon-down-open-big', customControl)
-							.removeClass('icon-down-open-big')
-							.addClass('icon-up-open-big');
-
-					});
-				}
+				toggleSelectedButton();
+				toggleCollapsible();
+				
 
 			});
 		};
+
+		function toggleCollapsible() {
+			dropdown = $('.chart-area__controls__custom');
+
+			if (dropdown.hasClass('chart-area__controls__custom--active')) {
+				// console.log('closing custom dd');
+				dropdown.removeClass('chart-area__controls__custom--active');
+				dropdown.stop(true, true).slideUp();
+			} else {
+				// console.log('opening custom dd');
+				// dropdown.height(0);
+				dropdown.removeClass('js-hidden');
+				dropdown.hide();
+				dropdown.addClass('chart-area__controls__custom--active');
+				dropdown.stop(true, true).slideDown();
+
+			}
+		}
+
+		function hideCollapsible() {
+			$('.chart-area__controls__custom').slideUp;
+		}
 
 		function toggleSelectedLink(clickedElem) {
 			$('a', element).removeClass('chart-area__controls__active');
 			clickedElem.addClass('chart-area__controls__active');
+
 		};
 
 		function toggleSelectedButton() {
 
+			// hideCollapsible();
+			// setCollapsible();
+
 			var selectedElement = $('input:checked', element);
-			$('label', element).removeClass('btn--secondary--active');
+			
+
+			var customcontrols = $('.chart-area__controls__custom');
+			var toggleTheCollapsible;
+			var devNote;
+
+			// $('.chart-area__controls__custom').hasClass('chart-area__controls__custom--active')
+
+			selectedElement.each(function(index){
+				var selectedElementDataAttr = $(this).attr('data-chart-control-custom-trigger-for');
+				
+
+
+				if ($(this).attr('data-chart-controls-range')){
+					devNote = "time period not custom";
+					if($('.chart-area__controls__custom').hasClass('chart-area__controls__custom--active')){
+						toggleTheCollapsible = true;
+					}
+					// toggleTheCollapsible = true;
+				} else if ($(this).attr('data-chart-control-custom-trigger-for')){
+					devNote = "is custom";
+					toggleTheCollapsible = false;
+				}else{
+					devNote = "not time period, not custom";
+					// if($('.chart-area__controls__custom').hasClass('chart-area__controls__custom--active')){
+						toggleTheCollapsible = false;
+					// }
+				}
+
+				
+				// console.log($(this).attr('data-chart-control-custom-trigger-for'));
+				// var n = selectedElementDataAttr.length;
+				// console.log(n);
+				// if(selectedElement.attr('data-chart-control-custom-trigger-for').length() > 0){
+				// 	console.log('not custom');
+				// 	// if($('.chart-area__controls__custom').hasClass('chart-area__controls__custom--active')){
+				// 	// 	toggleCollapsable();
+				// 	// }
+				// }
+			});
+			console.log(devNote);
+			if (toggleTheCollapsible) {
+					toggleCollapsible();
+				}
+
+
+			// if(!selectedElement.attr('data-chart-control-custom-trigger-for')){
+			// 	console.log('not custom');
+			// 	// if($('.chart-area__controls__custom').hasClass('chart-area__controls__custom--active')){
+			// 	// 	toggleCollapsable();
+			// 	// }
+				
+			// }
+			// console.log(selectedElement.attr('data-chart-control-custom-trigger-for'));
+			// console.log(selectedElement);
+
+
+
+
+			selectedElement.closest('.btn-group').find('.btn').removeClass('btn--secondary--active');
 
 			selectedElement.each(function() {
-				$(this).parent('label').addClass('btn--secondary--active');
+
+				$(this).closest('.btn').addClass('btn--secondary--active');
 			});
+
 		};
 
 		$.extend(this, {

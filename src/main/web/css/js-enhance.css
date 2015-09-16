@@ -270,7 +270,7 @@
 
 
 /*--[enhance table of contents]--*/
-.table-of-contents-ordered-list-sticky {
+/*.table-of-contents-ordered-list-sticky {
   height: 7.2rem;
   overflow: hidden;
   background: #FAFAFA;
@@ -292,13 +292,13 @@
   display: none;
   max-width: 868px;
   margin: 0 auto;
-}
+} */
 
 .wrapper--content {
   /*padding-top: 7.2rem;*/
 }
 
-.toc-sticky-wrap {
+/*.toc-sticky-wrap {
   display: none;
   height: 7.2rem;
   overflow: hidden;
@@ -315,7 +315,7 @@
 
 .toc-select-list {
   max-width: 100%;
-}
+}*/
 
 .markdown-chart-container ol {
   margin-bottom: 0;

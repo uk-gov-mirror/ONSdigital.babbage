@@ -1,0 +1,10 @@
+<div class="sort-results">
+	<label for="select" class="sort__label">Sort by
+		<select class="sort__select" id="select" name="sortBy">
+			<option class="sort__option" value="" {{#if_eq parameters.sortBy.0 ""}}selected{{/if_eq}}>Relevance</option>
+			<option class="sort__option" value="release_date" {{#if_eq parameters.sortBy.0 "release_date"}}selected{{/if_eq}} >Release date</option>
+			<option class="sort__option" value="title" {{#if_eq parameters.sortBy.0 "title"}}selected{{/if_eq}}>Title</option>
+		</select>
+		<button type="submit" class="btn btn--thin btn--small">Sort</button>
+	</label>
+</div>

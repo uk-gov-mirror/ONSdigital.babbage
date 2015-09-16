@@ -1,126 +1,156 @@
 <main id="main" role="main" tabindex="-1">
-	<div class="page-header slate slate--blue">
+	{{!-- Page header --}}
+	<div class="page-intro">
 		<div class="wrapper">
-			{{> partials/breadcrumb}}
-			<p class="page-header__title">
-				{{labels.compendium}}
-			</p>
-			<h1 class="page-header__title flush--half--bottom">{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}</h1>
-			<div class="grid-wrap mini">
-				<p class="grid-col tablet-grid-one-quarter {{#if description.nationalStatistic}}page-header__meta-block-with-img{{/if}}">
-					{{#if description.nationalStatistic}}
-					<img src="/node_modules/ONS-Pattern-Library/ui/img/national-statistics.png" alt="National Statistics logo">
+			<div class="col-wrap">
+				<div class="col">
+					{{!-- Breadcrumb --}}
+					{{> partials/breadcrumb}}
+
+					{{!-- Title & summary --}}
+					<h1 class="page-intro__title">{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}</h1>
+
+					{{#if description.summary}}
+						<p class="page-intro__content col col--md-47 col--lg-48">{{description.summary}}</p>
 					{{/if}}
-					<span>{{labels.meta-contact}}: </span></br>
-					<a href="mailto:{{description.contact.email}}">{{#if description.contact.name}}{{description.contact.name}}{{else}}{{description.contact.email}}{{/if}}</a>
-				</p>
-				<p class="grid-col tablet-grid-one-quarter divider--border-left">
-					<span>{{labels.release-date}}: </span></br>{{df description.releaseDate}}
-					</br>
-					<a class="print-hidden" href="#">{{labels.release-prev}}</a>
-				</p>
-				{{#if description.nextRelease}}
-				<p class="grid-col tablet-grid-one-quarter divider--border-left">
-					<span>{{labels.release-next}}: </span><br/>{{description.nextRelease}}
-				</p>
-				{{/if}}
-				<p class="grid-col tablet-grid-one-quarter divider--border-left print-hidden">
-					<a href="" id="jsEnhancePrintCompendium" class="link-complex nojs-hidden js-enhance--show">
-						<span class="icon-print"></span>
-						<span class="link-complex__target print-analytics">{{labels.print-report}}</span>
-					</a>
-					{{!--<br class="nojs-hidden js-enhance--show"/>
-					<a href="#" class="link-complex">
-						<span class="icon-download" role="presentation"></span>
-						<span class="link-complex__target">Download PDF</span>--}}
-					</a>
-				</p>
-			</div>
-			<!-- /grip-wrap -->
-		</div>
-		<!-- /wrapper -->
-	</div>
-	<!-- /page-header -->
-	<div class="wrapper panel--mar print-content">
-		<div class="grid-wrap">
-			<div class="grid-col desktop-grid-full-width">
-				<div class="lede print-links">
-					{{md summary}}
+
 				</div>
-				<h2>{{labels.compendium-whats-in}}</h2>
-				<section class="accordion is-collapsed">
-					<h3 id="sc-{{@index}}" class="accordion__title" aria-controls="content-{{@index}}">{{labels.compendium-chapters}}</h3>
-					<div id="content-{{@index}}" class="accordion__content" aria-labelledby="sc-{{@index}}">
-						<ul class="list--neutral">
-							{{#each chapters}}
+			</div>
+		</div> {{!-- /wrapper --}}
+
+		{{!-- FIX WHEN LATEST FUNCTION WORKING ON COMPENDIUM --}}
+		<!-- <div class="alert">
+			<div class="wrapper">
+				<div class="col-wrap">
+					<div class="col">
+
+						{{!-- Latest info --}}
+						{{#resolve (concat (parentPath uri) "/latest") filter="title"}}
+							{{#if_eq uri ../uri}}
+							<p class="alert__content">This is the latest release</p> <a class="btn print--hide" href="{{parentPath uri}}/previousReleases">view previous releases</a>
+							{{else}}
+							<p class="alert__content">This is not the latest release</p> <a class="btn print--hide" href="{{uri}}">view latest release</a>
+							{{/if_eq}}
+						{{/resolve}}
+
+					</div>
+				</div>
+			</div> {{!-- /wrapper --}}
+		</div> {{!-- /slate--ship-gray --}} -->
+
+		<div class="meta-wrap">
+			<div class="wrapper">
+
+				{{!-- Meta info --}}
+				<div class="col-wrap">
+
+					{{!-- Contact & NS logo--}}
+					<p class="col col--md-14 col--lg-17 meta__item">
+						{{#if description.nationalStatistic}}
+						<img class="meta__image" src="/node_modules/ONS-Pattern-Library/dist/img/national-statistics.png" alt="National Statistics logo" />
+						{{/if}}
+						<span>{{labels.meta-contact}}: </span><br/><a href="mailto:{{description.contact.email}}">{{#if description.contact.name}}{{description.contact.name}}{{else}}{{description.contact.email}}{{/if}}</a>
+					</p>
+
+					{{!-- Release date --}}
+					<p class="col col--md-11 col--lg-14 meta__item">
+						<span>{{labels.release-date}}: </span><br/>{{df description.releaseDate}}<br/>
+					</p>
+
+					{{!-- Next release --}}
+					<p class="col col--md-11 col--lg-14 meta__item">
+						<span>{{labels.release-next}}: </span><br/>{{#if description.nextRelease}}{{description.nextRelease}}{{else}}To be announced{{/if}}
+					</p>
+
+
+					{{!-- Print and download --}}
+					<p class="col col--md-11 col--lg-14 print--hide meta__item">
+						<a href="" id="jsEnhancePrintCompendium" class="nojs-hidden js-enhance--show">
+							{{labels.print-report}}
+						</a>
+						{{!-- <br class="nojs-hidden js-enhance--show"/>
+						<a href="{{uri}}/pdf" class="link-complex">
+							{{labels.dl-pdf}}
+						</a> --}}
+					</p>
+				</div>
+			</div> {{!-- /wrapper --}}
+		</div> {{!-- /meta-wrap --}}
+	</div> {{!-- /page-intro --}}
+
+	<div class="wrapper">
+		<div class="col-wrap print--avoid-break">
+			<h2 class="margin-bottom col col--lg-one">{{labels.compendium-whats-in}}</h2>
+
+			{{!-- Chapters --}}
+			<section class="col col--lg-one accordion is-collapsed">
+				<h3 id="sc-1" class="accordion__title" aria-controls="content-1">{{labels.compendium-chapters}}</h3>
+				<div id="content-1" class="accordion__content" aria-labelledby="sc-1">
+					<ul class="list--neutral">
+						{{#each chapters}}
 							{{#resolve uri filter="description"}}
-							<li>
-								<h4 class="flush" ><a href="{{uri}}" class="chapter">{{description.title}}</a></h4>
-								<p>{{description.headline}}</p>
+							<li class="flush">
+								<h4><a href="{{uri}}" class="chapter">{{description.title}}</a></h4>
+								{{#if description.headline}}
+									<p>{{description.headline}}</p>
+								{{/if}}
 							</li>
 							{{/resolve}}
-							{{/each}}
-						</ul>
-					</div>
-				</section>
-				<!-- /accordion -->
-				<section>
-				<!--<section class="accordion is-collapsed">-->
-					<!--<h3 id="sc-{{@index}}" class="accordion__title" aria-controls="content-{{@index}}">Data</h3>-->
-					<h3 class="accordion__title">{{labels.data}}</h3>
-					<!--<div id="content-{{@index}}" class="accordion__content" aria-labelledby="sc-{{@index}}">-->
-					<div class="accordion__content">
-						<ul class="list--neutral">
-							{{#each datasets}}
-							{{#resolve uri filter="title"}}
-							<li>
-								<h4 class="flush"><a href="{{uri}}">{{description.title}}</a></h4>
-               					<p>{{labels.compendium-time-series}}</p>
-							</li>
-							{{/resolve}}
-							{{/each}}
-						</ul>
-					</div>
-				</section>
-				<!-- /accordion -->
-				<div class="grid-wrap panel--top-pad-large">
-					<div class="grid-col desktop-grid-one-half">
-						<article class="box box--padded sectioned">
-							<h3 class="box__section__header">{{labels.methodology}}</h3>
-							<div class="box__content">
-								<ul class="list--neutral">
-									{{#each relatedMethodology}}
-									{{#resolve uri filter="title"}}
-									<li class="flush--third--bottom">
-										<a href="{{uri}}" title="{{description.title}}">{{description.title}}</a>
-									</li>
-									{{/resolve}}
-									{{/each}}
-								</ul>
-							</div>
-						</article>
-					</div>
-					<!-- /grid-desktop-one-half -->
-					<div class="grid-col desktop-grid-one-half">
-						<div class="box box--padded sectioned">
-							<h3 class="box__section__header">{{labels.contact-details}}</h3>
-							<div class="box__content">
-								<address>
-									{{#if description.contact.name}}{{description.contact.name}}</br>{{/if}}
-		                      		<a href="mailto:{{description.contact.email}}">{{description.contact.email}}</a></br>
-		                      		{{#if description.contact.telephone}}{{labels.phone}}: {{description.contact.telephone}}{{/if}}
-								</address>
-							</div>
-						</div>
-						<!-- /box -->
-					</div>
-					<!-- /grid-desktop-one-half -->
+						{{/each}}
+					</ul>
 				</div>
-				<!-- /grid-wrap panel--top -->
-			</div>
-			<!-- /desktop-grid-full-width -->
+			</section>
+			{{!-- /Chapters --}}
+
+			{{!-- Data --}}
+			<section class="col col--lg-one">
+				<h3>{{labels.data}}</h3>
+				<ul class="list--neutral">
+					{{#each datasets}}
+						{{#resolve uri filter="title"}}
+							<li>
+								<h4 class="flush-bottom"><a href="{{uri}}">{{description.title}}</a></h4>
+               					<p class="flush">{{labels.compendium-time-series}}</p>
+							</li>
+						{{/resolve}}
+					{{/each}}
+				</ul>
+			</section>
+			{{!-- /Data --}}
 		</div>
-		<!-- /grid-wrap -->
+
+		<div class="col-wrap tiles">
+
+			{{!-- Methodology --}}
+			{{#if relatedMethodology}}
+			<div class="col col--lg-half col--md-half tiles__item tiles__item--nav-type">
+				<h3 class="tiles__title-h3 tiles__title-h3--nav">{{labels.methodology}}</h3>
+				<ul class="list--neutral">
+				{{#each relatedMethodology}}
+					{{#resolve uri filter="title"}}
+					<li class="tiles__content--nav">
+						<a href="{{uri}}" title="{{description.title}}">{{description.title}}</a>
+					</li>
+					{{/resolve}}
+				{{/each}}
+				</ul>
+			</div>
+			{{/if}}
+
+			{{!-- Contact details --}}
+			<div class="col col--lg-half col--md-half tiles__item">
+				<h3 class="tiles__title-h3 tiles__title-h3--nav">{{labels.contact-details}}</h3>
+				<address class="tiles__content--nav">
+					{{#if description.contact.name}}
+						{{description.contact.name}}</br>
+					{{/if}}
+                  	<a href="mailto:{{description.contact.email}}">{{description.contact.email}}</a></br>
+                  	{{#if description.contact.telephone}}
+                  		{{labels.phone}}: {{description.contact.telephone}}
+              		{{/if}}
+				</address>
+			</div>
+		</div>
 	</div>
-	<!-- /wrapper -->
+	<div id="print-here"></div>
 </main>

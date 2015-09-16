@@ -1,55 +1,55 @@
-<footer class="global-footer">
+<footer class="print--hide">
 	<h2 class="visuallyhidden">Footer links</h2>
-	<div class="slate--light panel--pad-large panel--separated print-hidden">
+	<div class="slate--iron-light">
 		<div class="wrapper">
-			<nav class="grid-wrap">
-				<div class="grid-col tablet-grid-one-third">
-					<h3 class="delta">Help</h3>
-					<ul class="list--neutral list--grid list--spaced">
-						<li>
+			<nav class="footer-nav col-wrap">
+				<div class="col col--lg-one-third col--md-one-third">
+					<h3 class="footer-nav__heading">Help</h3>
+					<ul class="footer-nav__list">
+						<li class="footer-nav__item">
 							<a href="/about/accessibility">Accessibility</a>
 						</li>
-						<li>
+						<li class="footer-nav__item">
 							<a href="/about/cookiesandprivacy">{{labels.cookies}}</a>
 						</li>
-						<li>
+						<li class="footer-nav__item">
 							<a href="/about/termsandconditions">{{labels.terms-conditions}}</a>
 						</li>
 					</ul>
 				</div>
-				<div class="grid-col tablet-grid-one-third">
-					<h3 class="delta">About us</h3>
-					<ul class="list--neutral list--grid list--spaced">
-						<li>
+				<div class="col col--lg-one-third col--md-one-third">
+					<h3 class="footer-nav__heading">About us</h3>
+					<ul class="footer-nav__list">
+						<li class="footer-nav__item">
 							<a href="/about/whatonsdo">What we do</a>
 						</li>
-						<li>
+						<li class="footer-nav__item">
 							<a href="/about/careersatons">{{labels.careers}}</a>
 						</li>
-						<li>
+						<li class="footer-nav__item">
 							<a href="/about/contactus">{{labels.contact-us}}</a>
 						</li>
-						<li>
+						<li class="footer-nav__item">
 							<a href="/about/media">Media enquiries</a>
 						</li>
-						<li>
+						<li class="footer-nav__item">
 							<a href="/about/freedomofinformationact">Freedom of information</a>
 						</li>
 					</ul>
 				</div>
-				<div class="grid-col tablet-grid-one-third">
-					<h3 class="delta">{{{labels.connect}}}</h3>
-					<ul class="list--neutral list--grid list--spaced">
-						<li>
+				<div class="col col--lg-one-third col--md-one-third">
+					<h3 class="footer-nav__heading">{{labels.connect}}</h3>
+					<ul class="footer-nav__list">
+						<li class="footer-nav__item">
 							<a href="https://twitter.com/ONS" class="hide-icon">{{labels.twitter}}</a>
 						</li>
-						<li>
+						<li class="footer-nav__item">
 							<a href="https://www.facebook.com/ONS" class="hide-icon">{{labels.facebook}}</a>
 						</li>
-						<li>
+						<li class="footer-nav__item">
 							<a href="https://www.linkedin.com/company/office-for-national-statistics" class="hide-icon">{{labels.linkedin}}</a>
 						</li>
-						<li>
+						<li class="footer-nav__item">
 							<a href="https://public.govdelivery.com/accounts/UKONS/subscribers/new" class="hide-icon">Email alerts</a>
 						</li>
 					</ul>
@@ -59,22 +59,22 @@
 		<!-- /wrapper -->
 	</div>
 	<!-- /slate -->
-	<div class="slate--mid-grey">
+	<div class="slate--iron">
 		<div class="wrapper">
-			<div class="footer__license">
-				<img class="footer__license__img" alt="OGL" width="60" src="/node_modules/ONS-Pattern-Library/ui/img/ogl.png">
-				<p class="footer__license__body">
+			<div class="footer-license">
+				<img class="footer-license__img" alt="OGL" width="60" src="/node_modules/ONS-Pattern-Library/ui/img/ogl.png">
+				<p class="footer-license__text">
 					{{{labels.ogl}}}
 				</p>
 			</div>
 		</div>
 	</div>
 </footer>
-<a id="my_feedback" onclick="_bugHerd.win.bugherd.applicationView.anonymousbar.toggleOptions()" class="mini print-hidden">Send feedback</a>
+<a id="feedback" onclick="_bugHerd.win.bugherd.applicationView.anonymousbar.toggleOptions()" class="mini print--hide">Send Feedback</a>
 
 <script type="text/javascript" src="/node_modules/ONS-Pattern-Library/dist/js/footer.min.js"></script>
 <script type="text/javascript" src="/ui/js/lib/jquery.tooltipster.min.js"></script>
-<!--<script type="text/javascript" src="/ui/js/lib/highcharts.js"></script>-->
+{{!--<script type="text/javascript" src="/ui/js/lib/highcharts.js"></script> --}}
 <script type="text/javascript" src="/js/linechart.js"></script>
 <script type="text/javascript" src="/js/sparkline.js"></script>
 <script type="text/javascript" src="/js/chartRenderer.js"></script>
@@ -85,12 +85,11 @@
 m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 ga('create', 'UA-56892037-3', {'allowAnchor': true});
-console.log({'page': location.pathname + getSearch() + location.hash});
 ga('send', 'pageview', {'page': location.pathname + getSearch() + location.hash});
 
 function getSearch(){
 	if(location.pathname === '/search'){
-		var numberOfResults = {{#if statisticsSearchResult.numberOfResults}} {{statisticsSearchResult.numberOfResults}} {{else}} 0 {{/if}};
+		var numberOfResults = {{#if numberOfResults}} {{numberOfResults}} {{else}} 0 {{/if}};
 		return location.search + '&numberOfResults=' + numberOfResults;		
 	} else {
 		return location.search;

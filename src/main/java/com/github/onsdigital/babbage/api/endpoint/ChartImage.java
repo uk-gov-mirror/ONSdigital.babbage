@@ -2,7 +2,7 @@ package com.github.onsdigital.babbage.api.endpoint;
 
 import com.github.davidcarboni.restolino.framework.Api;
 import com.github.onsdigital.babbage.request.handler.highcharts.linechart.LineChartImageRequestHandler;
-import com.github.onsdigital.babbage.request.response.BabbageResponse;
+import com.github.onsdigital.babbage.response.BabbageResponse;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

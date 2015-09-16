@@ -1,31 +1,29 @@
-<div class="panel flush">
-	<div class="grid-wrap">
-		<div class="grid-col desktop-grid-full-width">
-			<h2 class="flush">{{labels.product-related-articles}}</h2>
-			<div class="grid-wrap">
-				<ul class="list--neutral">
-					{{#each relatedArticles}}
-					{{#resolve this.uri filter="description"}}
-					<li class="grid-col desktop-grid-one-third box--padded-vertical nav--block-landing">
-						<h3>
-						<a href="{{uri}}" title="{{description.title}}">
-							{{description.title}}{{#if description.edition}}
-								{{#if_ne description.edition 'yes'}}: {{description.edition}}{{/if_ne}}
-							{{/if}}
-						</a>
-						</h3>
-						<p>
-							{{description._abstract}}
-						</p>
-					</li>
-					{{/resolve}}
-					{{/each}}
-				</ul>
-			</div>
-			<!-- /grid-col -->
-		</div>
-		<!-- /grid-wrap -->
+<div class="col-wrap">
+	<div class="col">
+		<h3>Articles</h3>
 	</div>
-	<a href="{{uri}}/articles">View all related articles</a>
-	<!-- /grid-wrap -->
+</div>
+<div class="col-wrap">
+	<div class="col col--lg-40">
+
+	<ul class="tiles__list">
+		{{#each relatedArticles}}
+		{{#resolve this.uri filter="description"}}
+		<li class="tiles__item--list-type-simple clickable-wrap flush-col">
+			<h4 class="tiles__title-h4">
+				<a href="{{uri}}" title="{{description.title}}">
+					{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}
+				</a>
+			</h4>
+			<p class="tiles__content">
+				{{description._abstract}}
+			</p>
+		</li>
+		{{/resolve}}
+		{{/each}}
+	</ul>
+
+		<a href="{{uri}}/publications?type=article&type=compendium_landing_page" class="btn btn--full-width">View all related articles</a>
+
+	</div>
 </div>

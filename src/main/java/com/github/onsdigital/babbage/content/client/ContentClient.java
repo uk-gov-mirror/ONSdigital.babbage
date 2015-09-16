@@ -1,6 +1,7 @@
 package com.github.onsdigital.babbage.content.client;
 
 import com.github.onsdigital.babbage.util.ThreadContext;
+import com.github.onsdigital.babbage.util.http.ClientConfiguration;
 import com.github.onsdigital.babbage.util.http.PooledHttpClient;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.ArrayUtils;
@@ -42,12 +43,18 @@ public class ContentClient {
                 if (instance == null) {
                     instance = new ContentClient();
                     System.out.println("Initializing content service http client");
-                    client = new PooledHttpClient(getServerUrl());
-                    client.getConfiguration().setMaxConnection(getMaxContentServiceConnection());
+                    client = new PooledHttpClient(getServerUrl(), createConfiguration());
                 }
             }
         }
         return instance;
+    }
+
+    private static ClientConfiguration createConfiguration() {
+        ClientConfiguration configuration = new ClientConfiguration();
+        configuration.setMaxTotalConnection(getMaxContentServiceConnection());
+        configuration.setDisableRedirectHandling(true);
+        return configuration;
     }
 
 
@@ -117,10 +124,11 @@ public class ContentClient {
         return sendGet(getSearchEndpoint(), getParameters(uri, queryParameters));
     }
 
-    public ContentStream reIndex(String key) throws ContentReadException {
-        List<NameValuePair> keyValue = new ArrayList<>();
-        keyValue.add(new BasicNameValuePair("key", key));
-        return sendPost(getReindexEndpoint(), keyValue);
+    public ContentStream reIndex(String key, String uri) throws ContentReadException {
+        List<NameValuePair> parameters = new ArrayList<>();
+        parameters.add(new BasicNameValuePair("key", key));
+        parameters.add(new BasicNameValuePair("uri", uri));
+        return sendPost(getReindexEndpoint(), parameters);
     }
 
     public ContentStream getParents(String uri, Map<String, String[]> queryParameters) throws ContentReadException {

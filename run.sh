@@ -58,12 +58,6 @@ export PACKAGE_PREFIX=com.github.onsdigital
 #export PASSWORD=password
 #export REALM=onsalpha
 
-# Elasticsearch
-export BONSAI_URL=http://localhost:9200
-export BONSAI_CLUSTERNAME=elasticsearch
-export BONSAI_HOSTNAME=localhost
-export BONSAI_TRANSPORT_PORT=9300
-
 export PHANTOMJS_PATH=`which phantomjs`
 
 # Development: reloadable
@@ -72,8 +66,6 @@ $JAVA_HOME/bin/java $JAVA_OPTS \
  -Drestolino.files=$RESTOLINO_STATIC \
  -Drestolino.classes=$RESTOLINO_CLASSES \
  -Drestolino.packageprefix=$PACKAGE_PREFIX \
- -Dmongo.user=$MONGO_USER \
- -Dmongo.password=$MONGO_PASSWORD \
  -cp "target/dependency/*" \
  com.github.davidcarboni.restolino.Main
 

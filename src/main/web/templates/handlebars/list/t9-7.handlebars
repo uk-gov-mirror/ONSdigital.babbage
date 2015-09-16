@@ -1,0 +1,69 @@
+<main id="main" role="main" tabindex="-1">
+	<div class="page-intro">
+		<div class="wrapper">
+			<div class="col-wrap">
+				<div class="col one">
+					{{> list/partials/list-page-breadcrumb label="Topic specific methodology"}}
+					{{#each breadcrumb}}
+						{{#if @last}}
+							<h1 class="page-intro__title margin-bottom--double">{{description.title}} methodology</h1>
+						{{/if}}
+					{{/each}}
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="wrapper print-links">
+		<form id="filters">
+			<div class="col-wrap print-hidden">
+				<div class="col col--md-37 col--lg-46 margin-left">
+					&nbsp;
+				</div>
+				<div class="col col--md-10 col--lg-13">
+					{{> list/filters/sort}}
+				</div>
+			</div>
+			<div class="col col--md-12 col--lg-18 margin-bottom">
+				<div class="tiles__item tiles__item--nav-type flush-col print--hide">
+					<div class="tiles__title-h3 tiles__title-h3--nav">
+						<h3 class="inline">Refine results</h3>
+						<a href="./topicspecificmethodology" value="Reset" class="btn btn--thin btn--narrow btn--small float-right">{{labels.search-refine-clear}}</a>
+					</div>
+					<div class="tiles__content tiles__content--nav">
+						{{> list/filters/keywords}}
+
+						<h4>Content types to show</h4>
+							<ul class="list--neutral">
+								<li>
+									<input id="checkbox-qmi" type="checkbox" name="type" value="static_qmi" {{#contains parameters.type 'static_qmi'}}checked{{/contains}} >
+									<label for="checkbox-qmi">
+										Quality and Methodology Information (QMI)
+									</label>
+								</li>
+								<li>
+									<input id="checkbox-methodology" type="checkbox" name="type" value="static_methodology" {{#contains parameters.type 'static_methodology'}}checked{{/contains}}>
+									<label for="checkbox-methodology">
+										Article
+									</label>
+								</li>
+							</ul>
+						{{> list/filters/topics}}
+						<button type="submit" class="btn btn--block btn--thick margin-top">Filter</button>
+					</div>
+				</div>
+				{{> partials/archives-box}}
+			</div>
+			<!-- /desktop-grid-one-third -->
+			<div class="results col col--md-34 col--lg-40 margin-left">
+				{{> list/partials/results-text}}
+				{{> list/partials/results}}
+				{{> list/partials/paginator}}
+			</div>
+			<!-- /desktop-grid-two-thirds -->
+		</div>
+		<!-- /grid-wrap -->
+	</form>
+</div>
+<!-- /wrapper panel--mar -->
+</main>

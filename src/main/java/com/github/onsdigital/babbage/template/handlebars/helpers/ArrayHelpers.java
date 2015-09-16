@@ -37,7 +37,6 @@ public enum ArrayHelpers implements BabbageHandlebarsHelper<List> {
             handlebars.registerHelper(this.name(), this);
         }
 
-    };
-
+    }
 
 }

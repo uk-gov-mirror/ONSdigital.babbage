@@ -1,62 +1,60 @@
-    <div class="chart-area slate nojs-hidden js-enhance--show" >
-        <div class="chart-area__controls ">
-            <div data-chart-controls="" data-chart-controls-for="">
-                <div class="button-bar chart-area__controls__buttons">
-                    <div class="button-group chart-area__controls__type">
-                        <label class="btn btn--secondary btn--small btn--narrow btn--thin">
-                            <span class="icon--button-inline--rev-small icon-chart" role="presentation"></span>
-                            Chart
-                            <input type="radio" name="type" data-chart-controls-type="chart" checked>
-                        </label>
-                        <label class="btn btn--secondary btn--small btn--narrow btn--thin">
-                            <span class="icon--button-inline--rev-small icon-table" role="presentation"></span>
-                            Table
-                            <input type="radio" name="type" data-chart-controls-type="table">
-                        </label>
-                    </div>
-                    <div class="button-group chart-area__controls__timespan">
-                        <label class="btn btn--secondary btn--small btn--narrow btn--thin frequency-select">
-                            Monthly
-                            <input type="radio" name="scale" data-chart-controls-scale="months" value="months">
-                        </label>
-                        <label class="btn btn--secondary btn--small btn--narrow btn--thin frequency-select">
-                            Quarterly
-                            <input type="radio" name="scale" data-chart-controls-scale="quarters" value="quarters">
-                        </label>
-                        <label class="btn btn--secondary btn--small btn--narrow btn--thin frequency-select">
-                            Yearly
-                            <input type="radio" name="scale" data-chart-controls-scale="years" value="years">
-                        </label>
-                    </div>
+<div class="timeseries__filters">
+    <h3 class="tiles__title-h3">Filters</h3>
+    <div class="tiles__content">
+        <div data-chart-controls="" data-chart-controls-for="">
+            <!-- <div class="button-bar chart-area__controls__buttons"> -->
+                <div class="col col--md-12 col--lg-14 btn-group">
+                    <p class="flush">Show data as</p>
+                    <label class="btn btn--secondary btn--chart-control">
+                        Chart
+                        <input type="radio" name="type" data-chart-controls-type="chart" checked>
+                    </label>
+                    <label class="btn btn--secondary btn--chart-control">
+                        Table
+                        <input type="radio" name="type" data-chart-controls-type="table">
+                    </label>
                 </div>
-                <!-- /chart-area__controls__buttons -->
-                <div class="chart-area__controls__time">
-                    <span class="chart-area__controls__time__label">Time period:</span>
-                    <ul class="nav flush--top chart-area__controls__time__ranges">
-                        <li>
-                            <a href="#" data-chart-controls-range="all">All</a>
-                        </li>
-                        <li>
-                            <a href="#" data-chart-controls-range="10yr">Last 10 yrs</a>
-                        </li>
-                        <li>
-                            <a href="#" data-chart-controls-range="5yr">Last 5 yrs</a>
-                        </li>
-                        <li data-chart-control-custom-range="">
-                            <a href="#" class="link-complex" data-chart-control-custom-trigger-for="chart-area__controls__custom">
-                                <span class="link-complex__target">Custom</span>
-                                <span class="icon-down-open-big icon--inline" role="presentation"></span>
-                            </a>
-                        </li>
-                    </ul>
+                <div class="col col--md-16 col--lg-20 btn-group">
+                    <p class="flush">Frequency</p>
+                    <label class="btn btn--secondary btn--chart-control frequency-select">
+                        Monthly
+                        <input type="radio" name="scale" data-chart-controls-scale="months" value="months">
+                    </label>
+                    <label class="btn btn--secondary btn--chart-control frequency-select">
+                        Quarterly
+                        <input type="radio" name="scale" data-chart-controls-scale="quarters" value="quarters">
+                    </label>
+                    <label class="btn btn--secondary btn--chart-control frequency-select">
+                        Yearly
+                        <input type="radio" name="scale" data-chart-controls-scale="years" value="years">
+                    </label>
                 </div>
-                <!-- /chart-area__controls__time -->
+            <!-- </div> -->
+            <!-- /chart-area__controls__buttons -->
+            <div class="col col--md-17 col--lg-23 btn-group">
+                <p class="flush">Time period</p>
+                <label class="btn btn--secondary btn--chart-control btn--chart-control--all btn--secondary--active">
+                    All
+                    <input type="radio" name="range" data-chart-controls-range="all">
+                </label>
+                <label class="btn btn--secondary btn--chart-control">
+                    10yrs
+                    <input type="radio" name="range" data-chart-controls-range="10yr">
+                </label>
+                <label class="btn btn--secondary btn--chart-control">
+                    5yrs
+                    <input type="radio" name="range" data-chart-controls-range="5yr">
+                </label>
+                <label class="btn btn--secondary btn--chart-control" >
+                    Custom
+                    <input type="radio" name="range" data-chart-control-custom-trigger-for="chart-area__controls__custom">
+                </label>
                 <div class="chart-area__controls__custom js-hidden" id="customControls">
-                    <div class="chart-area__controls__custom__errors"></div>
                     <div class="chart-area__controls__custom__container">
                         <div class="chart-area__controls__dropdowns">
+                            <p>Custom time period</p>
                             <fieldset class="chart-area__controls__date">
-                                <legend class="chart-area__controls__date__label">From</legend>
+                                <legend class="chart-area__controls__date__legend">From</legend>
                                 <label class="visuallyhidden" for="from-month-1">Month</label>
                                 <select class="chart-area__controls__month" id="from-month-1" name="from-month" data-chart-controls-from-month="">
                                     <option value="01">Jan</option>
@@ -84,7 +82,7 @@
                                 </select>
                             </fieldset>
                             <fieldset class="chart-area__controls__date">
-                                <legend class="chart-area__controls__date__label">To</legend>
+                                <legend class="chart-area__controls__date__legend">To</legend>
                                 <label class="visuallyhidden" for="to-month-2">Month</label>
                                 <select class="chart-area__controls__month" id="to-month-2" name="to-month" data-chart-controls-to-month="">
                                     <option value="01">Jan</option>
@@ -112,14 +110,74 @@
                                 </select>
                             </fieldset>
                         </div>
-                        <!-- <div class="chart-area__controls__submit">
-                            <input class="btn btn--small btn--thin btn--narrow btn--primary" type="submit" name="submit" data-chart-controls-submit="" value="Show">
-                        </div> -->
                     </div>
+                    <div class="chart-area__controls__custom__errors"></div>
                 </div>
             </div>
+
+
+
+
+
+
+    <!--<div class="tiles__content">
+        <div class="col col--lg-13">
+        <form>
+            <label>
+                Show data as </br>
+                <input type="radio" name="type" data-chart-controls-type="chart" checked>
+                Chart
+            </label>
+            <label>
+                <input type="radio" name="type" data-chart-controls-type="table">
+                Table
+            </label>
+        </form>
         </div>
-        <!-- /chart-area__controls -->
+        <div class="col col--lg-20">
+        <form>
+            Frequency </br>
+            <label>
+                Monthly
+                <input type="radio" name="scale" data-chart-controls-scale="months" value="months" checked>
+            </label>
+            <label>
+                Quarterly
+                <input type="radio" name="scale" data-chart-controls-scale="quarters" value="quarters">
+            </label>
+            <label>
+                Yearly
+                <input type="radio" name="scale" data-chart-controls-scale="years" value="years">
+            </label>
+        </form>
+        </div>
+        <div class="col col--lg-24">
+        <form class="chart-area__controls__time">
+            Time period </br>
+            <label>
+                All
+                <input type="radio" name="range" data-chart-controls-range="all">
+            </label>
+            <label>
+                10yrs
+                <input type="radio" name="range" data-chart-controls-range="10yrs">
+            </label>
+            <label>
+                5yrs
+                <input type="radio" name="range" data-chart-controls-range="5yrs">
+            </label>
+            <label>
+                Custom
+                <input type="radio" name="range" data-chart-controls-range="Custom">
+            </label>
+            {{!-- ADD IN CUSTOM DROPDOWN / INPUT --}}
+        </form> -->
+        </div>
+    </div>
+</div>
+<div class="timeseries__chart">
+    <h3 class="tiles__title-h3">Chart</h3>
+    <div class="col col--md-45 col--lg-57 margin-left chart-area__timeseries">
         <div class="js-enhance--show nojs-hidden chart linechart" data-chart="" data-uri="{{uri}}" ></div>
         <div class="js-enhance--show nojs-hidden"></div>
         <table class="tablesaw" data-table="">
@@ -133,9 +191,12 @@
             </tbody>
         </table>
     </div>
-    {{#unless cookies.jsEnhanced}}
-    <img class="js-enhance--hide" src="{{uri}}/linechartimage" alt="{{description.title}}" width="875" height="400">
-    {{/unless}}
-   
+{{#unless cookies.jsEnhanced}}
+<img class="js-enhance--hide" src="{{uri}}/linechartimage" alt="{{description.title}}" width="875" height="400">
+{{/unless}}
+
+
 {{!-- Dynamically generated linechart configuration file --}}
 <script type="text/javascript" src="{{uri}}/linechartconfig"></script>
+
+</div>

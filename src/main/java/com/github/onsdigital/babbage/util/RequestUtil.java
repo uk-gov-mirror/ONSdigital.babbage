@@ -29,6 +29,7 @@ public class RequestUtil {
         Locale locale = resolveLocale(request);
         ThreadContext.addData("labels", LocaleConfig.getLabels(locale));
         ThreadContext.addData("lang", locale.getLanguage());
+        ThreadContext.addData("domain_name", request.getServerName());
     }
 
     public static void clearContext() {

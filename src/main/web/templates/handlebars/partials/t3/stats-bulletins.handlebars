@@ -1,29 +1,28 @@
-<div class="panel flush">
-	<div class="grid-wrap">
-		<div class="grid-col desktop-grid-full-width">
-			<h2 id ="reports" class="flush">{{labels.product-latest-stats-bulletins}}</h2>
-			<div class="grid-wrap">
-				<ul class="list--neutral">
-					{{#each statsBulletins}}
-					{{#resolve this.uri filter="description"}}
-					<li class="grid-col desktop-grid-one-third box--padded-vertical nav--block-landing">
-						<h3>
-						<a href="{{uri}}" title="{{description.title}}">
-							{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}
-						</a>
-						</h3>
-						<p>
-							{{description.summary}}
-						</p>
-					</li>
-					{{/resolve}}
-					{{/each}}
-				</ul>
-			</div>
-			<!-- /grid-col -->
-		</div>
-		<!-- /grid-wrap -->
+<div class="col-wrap">
+	<div class="col">
+		<h3>Statistical bulletins</h3>
 	</div>
-	<a href="{{uri}}/bulletins">View all statistical bulletins</a>
-	<!-- /grid-wrap -->
+</div>
+<div class="col-wrap">
+	<div class="col col--lg-40">
+		<ul class="tiles__list">
+			{{#each statsBulletins}}
+			{{#resolve this.uri filter="description"}}
+			<li class="col-wrap tiles__item--list-type-simple clickable-wrap flush-col">
+				<h4 class="tiles__title-h4">
+					<a href="{{uri}}" title="{{description.title}}">
+						{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}
+					</a>
+				</h4>
+				<p class="tiles__content">
+					{{description.summary}}
+				</p>
+			</li>
+			{{/resolve}}
+			{{/each}}
+		</ul>
+
+		<a href="{{uri}}/publications?type=bulletin" class="btn btn--full-width">View all statistical bulletins</a>
+
+	</div>
 </div>

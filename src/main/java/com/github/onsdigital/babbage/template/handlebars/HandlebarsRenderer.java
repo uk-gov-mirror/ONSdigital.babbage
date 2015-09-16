@@ -19,7 +19,7 @@ import static com.github.onsdigital.babbage.configuration.Configuration.HANDLEBA
 
 /**
  * Created by bren on 28/05/15.
- * <p>
+ * <p/>
  * HandlebarsRenderer renders data in Map Value structure
  */
 public class HandlebarsRenderer {
@@ -40,34 +40,24 @@ public class HandlebarsRenderer {
         registerHelpers();
     }
 
-    /**
-     * Renders content using main handlebars template, array of data is combined into a single context
-     *
-     * @param data array of data
-     * @return
-     * @throws IOException
-     */
-    public String renderContent(Map<String, Object>... data) throws IOException {
-        return render(getMainContentTemplateName(), data);
-    }
-
 
     /**
      * Renders content with given template name, array of data is combined to a single context
      *
-     * @param data array of data
+     * @param data           Main data to render template with
+     * @param additionalData Additional data to add to context for rendering
      * @return
      * @throws IOException
      */
-    public String render(String templateName, Map<String, Object>... data) throws IOException {
+    public String render(String templateName, Object data, Map<String, Object>... additionalData) throws IOException {
         Template template = getTemplate(templateName);
 
         Context.Builder builder = Context
                 .newBuilder(data)
                 .resolver(MapValueResolver.INSTANCE, FieldValueResolver.INSTANCE);
 
-        if (data != null) {
-            for (Map<String, Object> next : data) {
+        if (additionalData != null) {
+            for (Map<String, Object> next : additionalData) {
                 if (next != null) {
                     for (Map.Entry<String, Object> entry : next.entrySet()) {
                         builder.combine(entry.getKey(), entry.getValue());

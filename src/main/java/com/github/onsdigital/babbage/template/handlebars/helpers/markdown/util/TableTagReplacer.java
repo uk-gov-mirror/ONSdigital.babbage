@@ -52,9 +52,8 @@ public class TableTagReplacer extends TagReplacementStrategy {
 
             LinkedHashMap<String, Object> htmlEntry = new LinkedHashMap<>();
             htmlEntry.put("html", html.getAsString());
-            String htmlJson = JsonUtil.toJson(htmlEntry);
             String jsonString = json.getAsString();
-            String result = TemplateService.getInstance().renderTemplate("partials/table", jsonString, htmlJson);
+            String result = TemplateService.getInstance().renderTemplate("partials/table", jsonString);
             return result;
 
         } catch (ContentReadException e) {

@@ -1,41 +1,43 @@
 package com.github.onsdigital.babbage.request.handler.base;
 
-import com.github.onsdigital.babbage.content.client.ContentClient;
-import com.github.onsdigital.babbage.request.response.BabbageResponse;
-import com.github.onsdigital.babbage.request.response.BabbageStringResponse;
+import com.github.onsdigital.babbage.paginator.Paginator;
+import com.github.onsdigital.babbage.response.BabbageResponse;
+import com.github.onsdigital.babbage.response.BabbageStringResponse;
+import com.github.onsdigital.babbage.search.SearchService;
+import com.github.onsdigital.babbage.search.helpers.SearchRequestHelper;
+import com.github.onsdigital.babbage.search.helpers.SearchResponseHelper;
 import com.github.onsdigital.babbage.template.TemplateService;
 import com.github.onsdigital.content.util.URIUtil;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.InputStream;
-import java.util.Map;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 
-import static com.github.onsdigital.babbage.util.RequestUtil.getQueryParameters;
+import static com.github.onsdigital.babbage.util.URIUtil.cleanUri;
 
 /**
  * Render a list page for bulletins under the given URI.
  */
 public abstract class ListPageBaseRequestHandler implements RequestHandler {
 
-    private final static String DATA_REQUEST = "data";
     public static final String CONTENT_TYPE = "text/html";
 
     /**
      * The type of page to be returned in the list page
+     *
      * @return
      */
-    public abstract String[] getListTypes();
+    protected abstract String[] getAllowedTypes();
 
-    /**
-     * The template to use when rendering the page.
-     * @return
-     */
-    public abstract String getTemplateName();
+    protected boolean isFilterLatest(HttpServletRequest request) {
+        return false;
+    }
 
     /**
      * Return true if the list page is localised to a uri.
      * e.g the bulletin page is localised to t3 level uri, whereas the FOI
      * list page is not localised and contains all FOI's.
+     *
      * @return
      */
     public abstract boolean useLocalisedUri();
@@ -43,42 +45,40 @@ public abstract class ListPageBaseRequestHandler implements RequestHandler {
     @Override
     public BabbageResponse get(String requestedUri, HttpServletRequest request) throws Exception {
 
-        System.out.println("List page request from " + this.getClass().getSimpleName() + " for uri: " + requestedUri) ;
+        System.out.println("List page request from " + this.getClass().getSimpleName() + " for uri: " + requestedUri);
 
         BabbageResponse babbageResponse;
         String type = URIUtil.resolveRequestType(request.getRequestURI());
-
-        // trim /data from the uri if its a data request.
-        if (type.equals(DATA_REQUEST)) {
-            requestedUri = URIUtil.removeEndpoint(requestedUri);
-        }
-
-        String uri = "";
+        String uri;
         if (useLocalisedUri()) {
             uri = requestedUri;
+        } else {
+            String topic = request.getParameter("topic");
+            uri = cleanUri(topic);
         }
 
-        Map<String, String[]> queryParameters = getQueryParameters(request);
-        queryParameters.put("type", getListTypes());
-
-        try (InputStream dataStream = ContentClient.getInstance().getList(uri, queryParameters).getDataStream()) {
-            String html = TemplateService.getInstance().renderTemplate(getTemplateName(), dataStream);
-            babbageResponse = new BabbageStringResponse(html, CONTENT_TYPE);
+        SearchRequestHelper searchRequestHelper = new SearchRequestHelper(request, uri, getAllowedTypes());
+        if (isFilterLatest(request)) {
+            searchRequestHelper.setFilterLatest(true);
         }
 
-//        switch (type) {
-//            case DATA_REQUEST:
-//                babbageResponse = new BabbageStringResponse(IOUtils.toString(zebedeeResponse));
-//                break;
-//            default:
-//                SearchResultsPage searchResultsPage = ContentUtil.deserialise(zebedeeResponse, SearchResultsPage.class);
-//                searchResultsPage.setNavigation(NavigationUtil.getNavigation());
-//                String html = TemplateService.getInstance().render(searchResultsPage, getTemplateName());
-//
-//                babbageResponse = new BabbageStringResponse(html, CONTENT_TYPE);
-//                break;
-//        }
+        SearchResponseHelper responseHelper = doSearch(searchRequestHelper);
 
+        Paginator.assertPage(searchRequestHelper.getPage(), responseHelper);
+
+        LinkedHashMap<String, Object> listData = new LinkedHashMap<>();
+        listData.put("paginator", Paginator.getPaginator(searchRequestHelper.getPage(), responseHelper));
+        listData.put("uri", request.getRequestURI());//set full uri in the context
+        listData.put("type", type);
+
+        String html = TemplateService.getInstance().renderListPage(responseHelper.getResult(), listData);
+        babbageResponse = new BabbageStringResponse(html, CONTENT_TYPE);
         return babbageResponse;
     }
+
+    protected SearchResponseHelper doSearch(SearchRequestHelper searchRequestHelper) throws IOException {
+        return SearchService.getInstance().search(searchRequestHelper.buildQuery());
+    }
+
+
 }

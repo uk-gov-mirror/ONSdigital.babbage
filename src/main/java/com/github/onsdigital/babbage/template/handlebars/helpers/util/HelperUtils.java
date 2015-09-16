@@ -1,6 +1,8 @@
 package com.github.onsdigital.babbage.template.handlebars.helpers.util;
 
+import com.github.jknack.handlebars.Handlebars;
 import com.github.jknack.handlebars.Handlebars.Utils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigDecimal;
 
@@ -37,7 +39,7 @@ public class HelperUtils {
         if (Utils.isEmpty(o1)) {
             return 1;
         }
-        if(Utils.isEmpty(o2)) {
+        if (Utils.isEmpty(o2)) {
             return -1;
         }
         if (o1 instanceof Number && o2 instanceof Number) {
@@ -47,9 +49,29 @@ public class HelperUtils {
     }
 
 
-
     public static boolean isNotEqual(Object o1, Object o2) {
         return !isEqual(o1, o2);
+    }
+
+
+    public static Double toNumber(Object object) {
+        if (Handlebars.Utils.isEmpty(object)) {
+            return null;
+        }
+        if (object instanceof Number) {
+            return ((Number) object).doubleValue();
+        } else if (object instanceof String) {
+            String numberString = (String) object;
+            if (StringUtils.isNotEmpty(numberString)) {
+                try {
+                    return Double.valueOf(numberString);
+                } catch (NumberFormatException e) {
+                    System.err.println(object + " is not a number!!");
+                    return null;
+                }
+            }
+        }
+        return null;
     }
 
 }

@@ -13,7 +13,7 @@ ADD ./src/main/web /usr/src/src/main/web
 #ADD ./target/*-jar-with-dependencies.jar /usr/src/target/
 
 # Temporary: expose Elasticsearch
-EXPOSE 9200
+#EXPOSE 9200
 
 # Update the entry point script
 RUN mv /usr/entrypoint/container.sh /usr/src/

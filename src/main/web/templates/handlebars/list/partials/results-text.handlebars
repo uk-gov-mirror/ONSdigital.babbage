@@ -1,0 +1,17 @@
+<p>
+	{{#if results}}
+	<span class="stand-out-text">
+	{{numberOfResults}}</span> results
+	{{#if parameters.type}}
+	for <strong>{{#each parameters.type}}{{> type-label type=this plural=true}}<span class="icon icon-cancel js-enhance--show" role="presentation"></span>,{{/each}}</strong>
+	{{/if}}
+	related to
+	<strong>{{#each breadcrumb}}{{#if @last}}{{description.title}}{{/if}}{{/each}}</strong>.
+	{{#if parameters.all-releases}}
+	You have chosen to expand these results to <strong>include all releases over time</strong><span class="icon icon-cancel js-enhance--show" role="presentation"></span>
+	{{/if}}
+	
+	{{else}}
+	No content available.
+	{{/if}}
+</p>

@@ -90,7 +90,6 @@
 			<version>1.4.2</version>
 		</dependency>
 
-
 		<!-- Commons -->
 		<dependency>
 			<groupId>commons-lang</groupId>
@@ -104,6 +103,15 @@
 			<artifactId>content-library</artifactId>
 			<version>content-library-1.0.67</version>
 		</dependency>
+
+
+		<!-- Elastic Search -->
+		<dependency>
+			<groupId>org.elasticsearch</groupId>
+			<artifactId>elasticsearch</artifactId>
+			<version>1.7.1</version>
+		</dependency>
+
 
 		<!--Using Guava for caching in memory currently-->
 		<dependency>

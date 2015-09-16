@@ -1,11 +1,12 @@
-	<ol class="nav nav--heavy breadcrumb breadcrumb_hero mini">
+<nav class="breadcrumb print--hide">
+	<ol class="breadcrumb__list">
 		{{#each breadcrumb}}
-		<li>
-			<a href="{{uri}}">{{description.title}}</a>
+		<li class="breadcrumb__item">
+			<a class="breadcrumb__link" href="{{uri}}">{{description.title}}</a>
 		</li>
 		{{/each}}
-		<li class="nav__active breadcrumb">
+		<li class="breadcrumb__item">
 			{{description.title}}
 		</li>
 	</ol>
-	<!-- /breadcrumb -->
+</nav>
