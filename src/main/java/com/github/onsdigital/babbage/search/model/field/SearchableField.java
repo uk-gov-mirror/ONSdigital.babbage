@@ -1,13 +1,13 @@
-package com.github.onsdigital.babbage.search.helpers;
+package com.github.onsdigital.babbage.search.model.field;
 
 /**
  * Created by bren on 08/09/15.
  *
- * Searchable field names
+ * Searchable field names with boost factors
  */
-public enum SearchFields {
+public enum SearchableField {
     title(100),
-    edition(50),
+    edition(100),
     summary,
     metaDescription,
     keywords,
@@ -15,11 +15,11 @@ public enum SearchFields {
 
     private double boostFactor = 1;
 
-    SearchFields(double boostFactors) {
+    SearchableField(double boostFactors) {
         this.boostFactor = boostFactors;
     }
 
-    SearchFields() {
+    SearchableField() {
 
     }
 

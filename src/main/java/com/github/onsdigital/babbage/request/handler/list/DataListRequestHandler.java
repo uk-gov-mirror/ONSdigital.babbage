@@ -1,7 +1,7 @@
 package com.github.onsdigital.babbage.request.handler.list;
 
-import com.github.onsdigital.babbage.content.model.ContentType;
 import com.github.onsdigital.babbage.request.handler.base.ListPageBaseRequestHandler;
+import com.github.onsdigital.babbage.search.model.ContentType;
 
 /**
  * Render a list page for bulletins under the given URI.
@@ -9,7 +9,7 @@ import com.github.onsdigital.babbage.request.handler.base.ListPageBaseRequestHan
 public class DataListRequestHandler extends ListPageBaseRequestHandler {
 
     private final static String REQEUST_TYPE = "datalist";
-    private final static String[] ALLOWED_TYPES = new String[]{ContentType.dataset.toString(), ContentType.timeseries.toString()};
+    private final static ContentType[] ALLOWED_TYPES = {ContentType.dataset, ContentType.timeseries};
 
     @Override
     public String getRequestType() {
@@ -17,7 +17,7 @@ public class DataListRequestHandler extends ListPageBaseRequestHandler {
     }
 
     @Override
-    public String[] getAllowedTypes() {
+    public ContentType[] getAllowedTypes() {
         return ALLOWED_TYPES;
     }
 

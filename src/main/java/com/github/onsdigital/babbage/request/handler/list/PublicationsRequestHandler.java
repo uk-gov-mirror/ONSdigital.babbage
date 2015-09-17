@@ -1,6 +1,6 @@
 package com.github.onsdigital.babbage.request.handler.list;
 
-import com.github.onsdigital.babbage.content.model.ContentType;
+import com.github.onsdigital.babbage.search.model.ContentType;
 import com.github.onsdigital.babbage.request.handler.base.ListPageBaseRequestHandler;
 
 import javax.servlet.http.HttpServletRequest;
@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class PublicationsRequestHandler extends ListPageBaseRequestHandler {
 
-    private final static String[] ALLOWED_TYPES = new String[]{ContentType.article.toString(), ContentType.bulletin.toString(), ContentType.compendium_landing_page.toString()};
+    private final static ContentType[] ALLOWED_TYPES = {ContentType.article, ContentType.bulletin, ContentType.compendium_landing_page};
     private final static String REQEUST_TYPE = "publications";
 
     @Override
@@ -19,7 +19,7 @@ public class PublicationsRequestHandler extends ListPageBaseRequestHandler {
     }
 
     @Override
-    public String[] getAllowedTypes() {
+    public ContentType[] getAllowedTypes() {
         return ALLOWED_TYPES;
     }
 
