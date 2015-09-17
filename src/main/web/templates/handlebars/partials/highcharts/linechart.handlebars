@@ -1,4 +1,4 @@
-<div class="timeseries__filters">
+<div class="timeseries__filters nojs-hidden">
     <h3 class="tiles__title-h3">Filters</h3>
     <div class="tiles__content">
         <div data-chart-controls="" data-chart-controls-for="">
@@ -180,7 +180,7 @@
     <div class="col col--md-45 col--lg-57 margin-left chart-area__timeseries">
         <div class="js-enhance--show nojs-hidden chart linechart" data-chart="" data-uri="{{uri}}" ></div>
         <div class="js-enhance--show nojs-hidden"></div>
-        <table class="tablesaw" data-table="">
+        <table class="tablesaw nojs-hidden" data-table="">
             <thead>
                 <tr>
                     <th>Period</th>
@@ -192,7 +192,9 @@
         </table>
     </div>
 {{#unless cookies.jsEnhanced}}
-<img class="js-enhance--hide" src="{{uri}}/linechartimage" alt="{{description.title}}" width="875" height="400">
+<div class="tiles__content">
+    <img class="js-enhance--hide" src="{{uri}}/linechartimage" alt="{{description.title}}" width="875" height="400">
+</div>
 {{/unless}}
 
 
