@@ -5,7 +5,6 @@ import com.github.onsdigital.babbage.content.client.ContentReadException;
 import com.github.onsdigital.babbage.content.client.ContentStream;
 import com.github.onsdigital.babbage.template.TemplateService;
 import com.github.onsdigital.babbage.util.URIUtil;
-import com.github.onsdigital.babbage.util.json.JsonUtil;
 
 import java.io.IOException;
 import java.util.LinkedHashMap;
@@ -53,7 +52,7 @@ public class TableTagReplacer extends TagReplacementStrategy {
             LinkedHashMap<String, Object> htmlEntry = new LinkedHashMap<>();
             htmlEntry.put("html", html.getAsString());
             String jsonString = json.getAsString();
-            String result = TemplateService.getInstance().renderTemplate("partials/table", jsonString);
+            String result = TemplateService.getInstance().renderTemplate("partials/table", jsonString, htmlEntry);
             return result;
 
         } catch (ContentReadException e) {

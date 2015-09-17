@@ -44,6 +44,9 @@ public class SearchRequestHelper {
             sortBy = SortBy.RELEVANCE;
         }
         this.query = request.getParameter("q");
+        if (StringUtils.isEmpty(query)) {
+            this.query = request.getParameter("query");
+        }
         this.keywords = request.getParameterValues("keywords");
         this.fromDate = parseDate(request.getParameter("fromDate"));
         this.toDate = parseDate(request.getParameter("toDate"));

@@ -25,7 +25,11 @@ public class RequestUtil {
      */
     public static void saveRequestContext(HttpServletRequest request) {
         ThreadContext.addData("cookies", getAllCookies(request));
-        ThreadContext.addData("parameters", request.getParameterMap());
+        try {
+            ThreadContext.addData("parameters", RequestUtil.getQueryParameters(request));
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException("Failed saving request context");
+        }
         Locale locale = resolveLocale(request);
         ThreadContext.addData("labels", LocaleConfig.getLabels(locale));
         ThreadContext.addData("lang", locale.getLanguage());
@@ -62,7 +66,6 @@ public class RequestUtil {
     }
 
     /**
-     *
      * Resolves locale using cookie, if cookie not available falls back to sub domain name ( e.g. cy.ons.gov.uk )
      *
      * @param request
@@ -80,7 +83,7 @@ public class RequestUtil {
 
         Collection<Locale> supportedLanguages = LocaleConfig.getSupportedLanguages();
         for (Locale supportedLanguage : supportedLanguages) {
-            if (StringUtils.startsWithIgnoreCase(languageSegment,supportedLanguage.getLanguage() + ".")) {
+            if (StringUtils.startsWithIgnoreCase(languageSegment, supportedLanguage.getLanguage() + ".")) {
                 return supportedLanguage;
             }
         }
