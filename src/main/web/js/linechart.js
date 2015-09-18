@@ -445,6 +445,12 @@ var renderLineChart = function(timeseries) {
 				currentDisplay = $(this).data('chart-controls-type');
 				toggleSelectedButton();
 				filter();
+
+				// Changes the title above chart/table
+				// Capitalise the first character
+				displayTitle = currentDisplay[0].toUpperCase() + currentDisplay.slice(1);
+				$('#title-type').text(displayTitle );
+
 			});
 		}
 
@@ -538,7 +544,7 @@ var renderLineChart = function(timeseries) {
 				e.preventDefault();
 				toggleSelectedButton();
 				toggleCollapsible();
-				
+
 
 			});
 		};
@@ -577,7 +583,7 @@ var renderLineChart = function(timeseries) {
 			// setCollapsible();
 
 			var selectedElement = $('input:checked', element);
-			
+
 
 			var customcontrols = $('.chart-area__controls__custom');
 			var toggleTheCollapsible;
@@ -587,7 +593,7 @@ var renderLineChart = function(timeseries) {
 
 			selectedElement.each(function(index){
 				var selectedElementDataAttr = $(this).attr('data-chart-control-custom-trigger-for');
-				
+
 
 
 				if ($(this).attr('data-chart-controls-range')){
@@ -606,7 +612,7 @@ var renderLineChart = function(timeseries) {
 					// }
 				}
 
-				
+
 				// console.log($(this).attr('data-chart-control-custom-trigger-for'));
 				// var n = selectedElementDataAttr.length;
 				// console.log(n);
@@ -628,7 +634,7 @@ var renderLineChart = function(timeseries) {
 			// 	// if($('.chart-area__controls__custom').hasClass('chart-area__controls__custom--active')){
 			// 	// 	toggleCollapsable();
 			// 	// }
-				
+
 			// }
 			// console.log(selectedElement.attr('data-chart-control-custom-trigger-for'));
 			// console.log(selectedElement);
