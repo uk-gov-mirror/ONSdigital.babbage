@@ -70,7 +70,7 @@
                                         <div class="col col--md-15 col--lg-23 margin-top--half">
                                             <label class="label inline">{{#if_eq type 'timeseries_dataset'}}{{labels.dataset-latest}}{{else}}{{title}}{{/if_eq}}</label>
                                         </div>
-                                        <button type="submit" title="Latest version" class="btn btn--wide btn--thick download-analytics">
+                                        <button type="submit" title="Latest version" class="btn btn--primary btn--wide btn--thick download-analytics">
                                         {{fe (lowercase file)}} ({{fs (lowercase file)}})
                                         </button>
                                         <input  type="hidden" name="uri" value="{{lowercase file}}"/>
@@ -86,9 +86,9 @@
 
                 {{!-- Related data --}}
                 {{#if relatedDatasets}}
-                    <div class="tiles__item tiles__item--nav-type">
-                        <h3>Related datasets</h3>
-                        <ul class="list--neutral">
+                    <div class="tiles__item tiles__item--nav-type flush-col">
+                        <h3 class="tiles__title-h3 tiles__title-h3--nav">Related datasets</h3>
+                        <ul class="tiles__content tiles__content--nav list--neutral">
                             {{#each relatedDatasets}}
                                 <li><a href="{{absolute uri}}" title="{{description.title}}">{{description.title}}</a></li>
                             {{/each}}
@@ -98,7 +98,7 @@
 
                 {{!-- Related articles and bulletins --}}
                 {{#if relatedDocuments}}
-                    <div class="tiles__item tiles__item--nav-type">
+                    <div class="tiles__item tiles__item--nav-type flush-col">
                         <h3 class="tiles__title-h3 tiles__title-h3--nav">Statistical bulletins and articles that use this data</h3>
                         <ul class="tiles__content tiles__content--nav list--neutral">
                             {{#each relatedDocuments}}
@@ -117,9 +117,7 @@
                 {{/if}}
 
                 {{!-- At the moment local box has no margin so extra div required --}}
-                <div class="margin-left"> 
                     {{> partials/local-box}}
-                </div>
 
             </div>
         </div>
@@ -138,7 +136,7 @@
                                     <a href="{{uri}}" title="{{description.title}}">{{description.title}}</a>
                                 </li>
                             {{/each}}
-                        </ul>   
+                        </ul>
                     </div>
                 </div>
             {{/if_any}}
