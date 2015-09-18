@@ -9,6 +9,7 @@ import com.github.onsdigital.babbage.search.model.ContentType;
 import com.github.onsdigital.babbage.search.model.field.FilterableField;
 import com.github.onsdigital.babbage.search.model.field.SearchableField;
 import com.github.onsdigital.babbage.search.model.filter.ValueFilter;
+import com.github.onsdigital.babbage.util.URIUtil;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -66,7 +67,7 @@ public class SearchRequestHelper {
     }
 
     private void resolveUriPrefix(ONSQuery onsQuery) {
-        String uriPrefix = getParam(FilterableField.uri.name());
+        String uriPrefix = URIUtil.cleanUri(topicUri);
         if (isNotEmpty(uriPrefix)) {
             onsQuery.setUriPrefix(cleanUri(uriPrefix));
         }

@@ -34,6 +34,7 @@ public class PreviousReleasesRequestHandler extends ListPageBaseRequestHandler {
 
     @Override
     protected SearchResponseHelper doSearch(ONSQuery query) throws IOException {
+        query.getSorts().clear();
         query.addSort(SortBy.RELEASE_DATE);
         return super.doSearch(query);
     }

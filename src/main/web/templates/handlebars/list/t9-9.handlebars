@@ -36,13 +36,13 @@
 						<h4 class="flush-bottom">Data format</h4>
 						<ul class="list--neutral">
 							<li>
-								<input id="checkbox-timeseries" type="checkbox" name="type" value="timeseries" {{#contains parameters.type 'timeseries'}}checked{{/contains}} >
+								<input id="checkbox-timeseries" type="checkbox" name="filter" value="single_time_series" {{#contains parameters.filter 'single_time_series'}}checked{{/contains}} >
 								<label for="checkbox-timeseries">
 									Single time series
 								</label>
 							</li>
 							<li>
-								<input id="checkbox-dataset" type="checkbox" name="type" value="dataset" {{#contains parameters.type 'dataset'}}checked{{/contains}}>
+								<input id="checkbox-dataset" type="checkbox" name="filter" value="large_dataset" {{#contains parameters.filter 'large_dataset'}}checked{{/contains}}>
 								<label for="checkbox-dataset">
 									Large dataset
 								</label>

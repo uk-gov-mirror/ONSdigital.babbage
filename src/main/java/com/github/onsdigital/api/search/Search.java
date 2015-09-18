@@ -78,24 +78,31 @@ public class Search {
     }
 
     private void searchContent(HttpServletRequest request, HttpServletResponse response, String query, String type) throws IOException {
-        ONSQuery featuredResultQuery = buildFeaturedResultQuery(query);
         ONSQuery contentQuery = buildContentQuery(request);
+        ONSQuery featuredResultQuery = buildFeaturedResultQuery(contentQuery, request);
 
-        List<SearchResponseHelper> responseHelpers = SearchService.getInstance().searchMultiple(featuredResultQuery, contentQuery);
-        Iterator<SearchResponseHelper> iterator = responseHelpers.iterator();
-        SearchResponseHelper featuredResponseHelper = iterator.next();
-        SearchResponseHelper searchResponseHelper = iterator.next();
 
-        Paginator.assertPage(contentQuery.getPage(), searchResponseHelper);
-
+        SearchResponseHelper searchResponse;
         LinkedHashMap<String, Object> searchData = new LinkedHashMap<>();
+        if (featuredResultQuery != null) {
+            SearchResponseHelper featuredResponse;
+            List<SearchResponseHelper> responseHelpers = SearchService.getInstance().searchMultiple(featuredResultQuery, contentQuery);
+            Iterator<SearchResponseHelper> iterator = responseHelpers.iterator();
+            featuredResponse = iterator.next();
+            searchResponse = iterator.next();
+            searchData.put("featuredResult", featuredResponse.getResult());
+        } else {
+            searchResponse = SearchService.getInstance().search(contentQuery);
+        }
+
+        Paginator.assertPage(contentQuery.getPage(), searchResponse);
         searchData.put("type", type);
-        searchData.put("paginator", Paginator.getPaginator(contentQuery.getPage(), searchResponseHelper));
-        searchData.put("featuredResult", featuredResponseHelper.getResult());
-        String html = TemplateService.getInstance().renderListPage(searchResponseHelper.getResult(), searchData);
+        searchData.put("paginator", Paginator.getPaginator(contentQuery.getPage(), searchResponse));
+        String html = TemplateService.getInstance().renderListPage(searchResponse.getResult(), searchData);
         BabbageResponse babbageResponse = new BabbageStringResponse(html, CONTENT_TYPE);
         babbageResponse.apply(response);
     }
+
 
     private String searchTimeSeries(String query) throws IOException {
         ONSQuery onsQuery = new ONSQuery(ContentType.timeseries)
@@ -109,12 +116,20 @@ public class Search {
         return null;
     }
 
-    private ONSQuery buildFeaturedResultQuery(String query) throws IOException {
+    private ONSQuery buildFeaturedResultQuery(ONSQuery contentQuery, HttpServletRequest request) throws IOException {
+        if (isFiltered(request) || contentQuery.getPage() > 1) {
+            return null;
+        }
+
         return new ONSQuery(ContentType.product_page)
                 .setSize(1)
-                .setQuery(query)
+                .setQuery(contentQuery.getQuery())
                 .setFields(SearchableField.values())
                 .setHighLightFields(true);
+    }
+
+    private boolean isFiltered(HttpServletRequest request) {
+        return request.getParameterValues("filter") != null;
     }
 
     private ONSQuery buildContentQuery(HttpServletRequest request) throws IOException {

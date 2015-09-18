@@ -62,7 +62,7 @@ public abstract class ListPageBaseRequestHandler implements RequestHandler {
 
         ONSQuery query = new SearchRequestHelper(request, uri, getAllowedTypes()).buildQuery();
         if (isFilterLatest(request)) {
-            query.addFilter(FilterableField.releaseDate, true);
+            query.addFilter(FilterableField.latestRelease, true);
         }
 
         SearchResponseHelper responseHelper = doSearch(query);
