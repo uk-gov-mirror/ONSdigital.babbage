@@ -9,16 +9,16 @@
 	<ul class="tiles__list">
 		{{#each relatedArticles}}
 		{{#resolve this.uri filter="description"}}
-		<li class="tiles__item--list-type-simple clickable-wrap flush-col">
-			<h4 class="tiles__title-h4">
-				<a href="{{uri}}" title="{{description.title}}">
-					{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}
-				</a>
-			</h4>
-			<p class="tiles__content">
-				{{description._abstract}}
-			</p>
-		</li>
+			<li class="tiles__item--list-type-simple flush-col">
+				<h4 class="tiles__title-h4">
+					<a href="{{uri}}" title="{{description.title}}">
+						{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}
+					</a>
+				</h4>
+				<p class="tiles__content">
+					{{description._abstract}}
+				</p>
+			</li>
 		{{/resolve}}
 		{{/each}}
 	</ul>
