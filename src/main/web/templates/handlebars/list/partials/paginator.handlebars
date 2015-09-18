@@ -3,22 +3,22 @@
 <nav>
 	<ul class="list--neutral list--inline">
 		{{#if_ne paginator.currentPage paginator.start}}
-		<li>
-			<button type="submit" name="page" value="{{decrement paginator.currentPage}}" class="page-link btn btn--small btn--thin" >Prev</button>
+		<li class="flush">
+			<button type="submit" name="page" value="{{decrement paginator.currentPage}}" class="page-link btn btn--plain">Prev</button>
 		</li>
 		{{/if_ne}}
 		{{#each paginator.pages}}
-		<li>
+		<li class="flush">
 			{{#if_eq this paginator.currentPage}}
-			<span>{{this}}</span>
+			<span class="page-link btn btn--plain btn--plain__active btn--block">{{this}}</span>
 			{{else}}
-			<button type="submit" name="page" value="{{this}}" class="page-link btn btn--small btn--thin" >{{this}}</button>
+			<button type="submit" name="page" value="{{this}}" class="page-link btn btn--plain">{{this}}</button>
 			{{/if_eq}}
 		</li>
 		{{/each}}
 		{{#if_ne paginator.currentPage paginator.end}}
-		<li>
-			<button type="submit" name="page" value="{{increment paginator.currentPage}}" class="page-link btn btn--small btn--thin" >Next</button>
+		<li class="flush">
+			<button type="submit" name="page" value="{{increment paginator.currentPage}}" class="page-link btn btn--plain">Next</button>
 		</li>
 		{{/if_ne}}
 	</ul>
