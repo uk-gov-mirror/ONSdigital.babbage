@@ -18,25 +18,22 @@ public enum WebHelper implements BabbageHandlebarsHelper<Object> {
     query_string {
         @Override
         public CharSequence apply(Object context, Options options) throws IOException {
-            Map<String,Object> queryParameters = (Map<String, Object>) options.context.get("parameters");
+            Map<String, Object> queryParameters = (Map<String, Object>) options.context.get("parameters");
             String exclude = options.hash("exclude");
 
             StringBuilder builder = new StringBuilder();
-            Iterator<Map.Entry<String, Object>> iterator = queryParameters.entrySet().iterator();
-            while (iterator.hasNext()) {
-                Map.Entry next =  iterator.next();
-                String key = (String) next.getKey();
-                Object[] values = (Object[]) next.getValue();
-                for (Object o : values) {
-                    if (key.equals(exclude)) {
-                        continue;
-                    }
-                    builder.append(key).append("=").append(o);
-                    if (iterator.hasNext()) {
-                        builder.append("&");
-                    }
+            for (Map.Entry<String, Object> params : queryParameters.entrySet()) {
+                String key = params.getKey();
+                Object[] values = (Object[]) params.getValue();
+                if (key.equals(exclude)) {
+                    continue;
+                }
+                for (int i = 0; i < values.length; i++) {
+                    Object value = values[i];
+                    builder.append(key).append("=").append(value).append("&");
                 }
             }
+
             String queryString = builder.toString();
             queryString = isNoneEmpty(queryString) ? "?" + queryString : queryString;
             return new Handlebars.SafeString(queryString);
