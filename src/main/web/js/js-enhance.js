@@ -124,9 +124,20 @@ $(function() {
       var clickableDiv = $('.clickable-wrap');
       var hoverHashTable = {};
       hoverHashTable['tiles__item'] = ['tiles__item--hover'];
+      hoverHashTable['tiles__item--list-type'] = ['tiles__item--list-type-hover'];
+      hoverHashTable['tiles__item--list-type-simple'] = ['tiles__item--list-type-simple-hover'];
       hoverHashTable['tiles__content'] = ['tiles__content--hover'];
       hoverHashTable['sparkline-holder'] = ['sparkline-holder--hover'];
       hoverHashTable['image-holder'] = ['image-holder--hover'];
+      hoverHashTable['tiles__image--headline-sparkline'] = ['tiles__image--headline-sparkline-hover'];
+      hoverHashTable['tiles__title-dt'] = ['tiles__title-dt--hover'];
+      hoverHashTable['tiles__title-h3'] = ['tiles__title-h3--hover'];
+      hoverHashTable['tiles__title-h2--home'] = ['tiles__title-h2--home-hover'];
+      hoverHashTable['tiles__title-h3--nav'] = ['tiles__title-h3--nav-hover'];
+      hoverHashTable['tiles__title-h4'] = ['tiles__title-h4--hover'];
+      hoverHashTable['tiles__content--nav'] = ['tiles__content--nav-hover'];
+      hoverHashTable['tiles__read-more'] = ['tiles__read-more--hover'];
+
 
 
       // on click grab the first link of the content and go there
@@ -144,7 +155,7 @@ $(function() {
       $(clickableDiv).hover(function() {
         var elem = $(this);
         $.each(hoverHashTable, function(className, hoverClassName) {
-            // $(elem).find(className).css('background-color', 'red');
+            // $(elem).find('.'+className).css('background-color', 'red');
             $(elem).find('.'+className).addClass(hoverClassName[0]);
         });
       }, function() {
@@ -155,13 +166,13 @@ $(function() {
       });
 
       // check if there's a nav--block-landing to remove :after class
-      if ($('.nav--block-landing')) {
-          $(clickableDiv).hover(function() {
-            $('.nav--block-landing').addClass('nav--block-landing--remove');
-          }, function() {
-            $('.nav--block-landing').removeClass('nav--block-landing--remove');
-          });
-        }
+    //   if ($('.nav--block-landing')) {
+    //       $(clickableDiv).hover(function() {
+    //         $('.nav--block-landing').addClass('nav--block-landing--remove');
+    //       }, function() {
+    //         $('.nav--block-landing').removeClass('nav--block-landing--remove');
+    //       });
+    //     }
     }
 
 
