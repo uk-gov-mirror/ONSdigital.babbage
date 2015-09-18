@@ -1,6 +1,6 @@
 package com.github.onsdigital.babbage.request.handler.list;
 
-import com.github.onsdigital.babbage.content.model.ContentType;
+import com.github.onsdigital.babbage.search.model.ContentType;
 import com.github.onsdigital.babbage.request.handler.base.ListPageBaseRequestHandler;
 
 /**
@@ -8,7 +8,7 @@ import com.github.onsdigital.babbage.request.handler.base.ListPageBaseRequestHan
  */
 public class TopicSpecificMethodologyRequestHandler extends ListPageBaseRequestHandler {
 
-    private final static String[] ALLOWED_TYPES = new String[]{ContentType.static_methodology.toString(), ContentType.static_qmi.toString()};
+    private final static ContentType[] ALLOWED_TYPES = {ContentType.static_methodology, ContentType.static_qmi};
     private final static String REQEUST_TYPE = "topicspecificmethodology";
 
     @Override
@@ -17,7 +17,7 @@ public class TopicSpecificMethodologyRequestHandler extends ListPageBaseRequestH
     }
 
     @Override
-    public String[] getAllowedTypes() {
+    public ContentType[] getAllowedTypes() {
         return ALLOWED_TYPES;
     }
 

@@ -28,33 +28,33 @@
             <div class="tiles__item tiles__item--nav-type flush-col print--hide">
                 <div class="tiles__title-h3 tiles__title-h3--nav">
                     <h3 class="inline">Refine results</h3>
-                    <a href="./publications" value="Reset" class="btn btn--thin btn--narrow btn--small float-right">{{labels.search-refine-clear}}</a>
+                    <a href="./publications" value="Reset" class="btn btn--primary btn--thin btn--narrow btn--small float-right">{{labels.search-refine-clear}}</a>
                 </div>
                 <div class="tiles__content tiles__content--nav">
                     {{> list/filters/keywords}}
                     <h4>{{labels.search-refine-types}}</h4>
                     <ul class="list--neutral">
                         <li>
-                            <input id="checkbox-statsbulletin" type="checkbox" name="type" value="bulletin" {{#contains parameters.type 'bulletin'}}checked{{/contains}} >
+                            <input id="checkbox-statsbulletin" type="checkbox" name="filter" value="bulletin" {{#contains parameters.filter 'bulletin'}}checked{{/contains}} >
                             <label for="checkbox-statsbulletin">
                                 Statistical bulletin
                             </label>
                         </li>
                         <li>
-                            <input id="checkbox-article" type="checkbox" name="type" value="article" {{#contains parameters.type 'article'}}checked{{/contains}}>
+                            <input id="checkbox-article" type="checkbox" name="filter" value="article" {{#contains parameters.filter 'article'}}checked{{/contains}}>
                             <label for="checkbox-article">
                                 Article
                             </label>
                         </li>
                         <li>
-                            <input id="checkbox-compendia" type="checkbox" name="type" value="compendium_landing_page" {{#contains parameters.type 'compendium_landing_page'}}checked{{/contains}}>
+                            <input id="checkbox-compendia" type="checkbox" name="filter" value="compendia" {{#contains parameters.filter 'compendia'}}checked{{/contains}}>
                             <label for="checkbox-compendia">
                                 Compendia
                             </label>
                         </li>
                     </ul>
                     {{> list/filters/all-releases}}
-                    <button type="submit" class="btn btn--block btn--thick margin-top">{{labels.search-filter}}</button>
+                    <button type="submit" class="btn btn--primary btn--block btn--thick margin-top">{{labels.search-filter}}</button>
                 </div>
             </div>
             {{> partials/archives-box}}

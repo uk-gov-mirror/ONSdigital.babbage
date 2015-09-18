@@ -1,4 +1,6 @@
-package com.github.onsdigital.babbage.search.query.filter;
+package com.github.onsdigital.babbage.search.model.filter;
+
+import com.github.onsdigital.babbage.search.model.field.FilterableField;
 
 /**
  * Created by bren on 07/09/15.
@@ -8,22 +10,22 @@ package com.github.onsdigital.babbage.search.query.filter;
  */
 public class RangeFilter {
 
-    private String field;
+    private FilterableField field;
     private Object from;
     private Object to;
 
-    public RangeFilter(String field, Object from , Object to) {
+    public RangeFilter(FilterableField field, Object from , Object to) {
         this.field = field;
         this.from = from;
         this.to = to;
     }
 
 
-    public String getField() {
+    public FilterableField getField() {
         return field;
     }
 
-    public void setField(String field) {
+    public void setField(FilterableField field) {
         this.field = field;
     }
 

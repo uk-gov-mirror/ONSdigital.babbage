@@ -1,4 +1,6 @@
-package com.github.onsdigital.babbage.search.query.filter;
+package com.github.onsdigital.babbage.search.model.filter;
+
+import com.github.onsdigital.babbage.search.model.field.FilterableField;
 
 /**
  * Created by bren on 07/09/15.
@@ -6,23 +8,22 @@ package com.github.onsdigital.babbage.search.query.filter;
  * Filter for field value
  *
  */
-public class Filter {
-    private String field;
+public class ValueFilter {
+    private FilterableField field;
     private Object[] values;
     private FilterType filterType;
 
-    public Filter(FilterType filterType, String field, Object... values) {
+    public ValueFilter(FilterType filterType, FilterableField field, Object... values) {
         this.field = field;
         this.values = values;
         this.filterType = filterType;
     }
 
-
-    public String getField() {
+    public FilterableField getField() {
         return field;
     }
 
-    public void setField(String field) {
+    public void setField(FilterableField field) {
         this.field = field;
     }
 
@@ -43,7 +44,7 @@ public class Filter {
     }
 
     public enum FilterType{
-        PREFIX,
-        TERM
+        PREFIX, /**Filters with prefix*/
+        TERM /**Filters with exact match*/
     }
 }

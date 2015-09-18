@@ -1,6 +1,6 @@
 package com.github.onsdigital.babbage.request.handler.list;
 
-import com.github.onsdigital.babbage.content.model.ContentType;
+import com.github.onsdigital.babbage.search.model.ContentType;
 import com.github.onsdigital.babbage.request.handler.base.ListPageBaseRequestHandler;
 
 /**
@@ -9,7 +9,7 @@ import com.github.onsdigital.babbage.request.handler.base.ListPageBaseRequestHan
 public class AdhocsRequestHandler extends ListPageBaseRequestHandler {
 
     private final static String REQEUST_TYPE = "adhoc";
-    private final static String[] ALLOWED_TYPES = new String[]{ContentType.static_adhoc.toString()};
+    private final static ContentType[] ALLOWED_TYPES = {ContentType.static_adhoc};
 
     @Override
     public String getRequestType() {
@@ -17,7 +17,7 @@ public class AdhocsRequestHandler extends ListPageBaseRequestHandler {
     }
 
     @Override
-    public String[] getAllowedTypes() {
+    public ContentType[] getAllowedTypes() {
         return ALLOWED_TYPES;
     }
 

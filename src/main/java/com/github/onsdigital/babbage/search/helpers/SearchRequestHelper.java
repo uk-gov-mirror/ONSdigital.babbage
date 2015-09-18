@@ -2,8 +2,14 @@ package com.github.onsdigital.babbage.search.helpers;
 
 import com.github.onsdigital.babbage.configuration.Configuration;
 import com.github.onsdigital.babbage.error.ResourceNotFoundException;
-import com.github.onsdigital.babbage.search.ONSQueryBuilder;
-import com.github.onsdigital.babbage.search.query.filter.Filter;
+import com.github.onsdigital.babbage.search.ONSQuery;
+import com.github.onsdigital.babbage.search.input.SortBy;
+import com.github.onsdigital.babbage.search.input.TypeFilter;
+import com.github.onsdigital.babbage.search.model.ContentType;
+import com.github.onsdigital.babbage.search.model.field.FilterableField;
+import com.github.onsdigital.babbage.search.model.field.SearchableField;
+import com.github.onsdigital.babbage.search.model.filter.ValueFilter;
+import com.github.onsdigital.babbage.util.URIUtil;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -15,6 +21,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static com.github.onsdigital.babbage.util.URIUtil.cleanUri;
+import static org.apache.commons.lang3.StringUtils.isEmpty;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 /**
@@ -22,104 +29,107 @@ import static org.apache.commons.lang3.StringUtils.isNotEmpty;
  */
 public class SearchRequestHelper {
 
-    private String uriPrefix;
-    private String[] types;
-    private Integer page;
-    private Integer size;
-    private SortBy sortBy;
-    private String query;
-    private String[] keywords;
-    private Date fromDate;
-    private Date toDate;
-    private boolean filterLatest;
 
+    private HttpServletRequest request;
+    private String topicUri;
+    private ContentType[] allowedTypes;
 
-    public SearchRequestHelper(HttpServletRequest request, String topicUri, String[] allowedTypes) {
-        this.uriPrefix = cleanUri(topicUri);
-        this.types = extractTypes(allowedTypes, request);
-        this.page = extractPage(request);
-        this.size = Configuration.GENERAL.getResultsPerPage();
-        this.sortBy = extractSortBy(request.getParameter("sortBy"));
-        if (sortBy == null) {
-            sortBy = SortBy.RELEVANCE;
-        }
-        this.query = request.getParameter("q");
-        if (StringUtils.isEmpty(query)) {
-            this.query = request.getParameter("query");
-        }
-        this.keywords = request.getParameterValues("keywords");
-        this.fromDate = parseDate(request.getParameter("fromDate"));
-        this.toDate = parseDate(request.getParameter("toDate"));
+    public SearchRequestHelper(HttpServletRequest request, String topicUri, ContentType... allowedTypes) {
+        this.request = request;
+        this.topicUri = topicUri;
+        this.allowedTypes = allowedTypes;
     }
 
-    public ONSQueryBuilder buildQuery() {
+    public ONSQuery buildQuery() {
 
-        ONSQueryBuilder onsQueryBuilder = new ONSQueryBuilder();
-
-        onsQueryBuilder
-                .setTypes(types)
-                .setFields(SearchFields.values())
-                .setPage(page)
-                .setSize(size)
+        ONSQuery onsQuery = new ONSQuery()
+                .setTypes(resolveTypesFilter(allowedTypes))
+                .setFields(SearchableField.values())
+                .setPage(extractPage())
+                .setSize(Configuration.GENERAL.getResultsPerPage())
                 .setHighLightFields(true)
-                .addRangeFilter(Fields.releaseDate.name(), fromDate, toDate);
-        if (query != null) {
-            onsQueryBuilder.setQuery(query);
+                .addRangeFilter(FilterableField.releaseDate, parseDate(getParam("fromDate")), parseDate(getParam("toDate")));
+
+        resolveUriPrefix(onsQuery);
+        resolveQuery(onsQuery);
+        resolveKeywords(onsQuery);
+        resolveSorting(onsQuery);
+        return onsQuery;
+    }
+
+    private void resolveSorting(ONSQuery onsQuery) {
+        SortBy sortBy = extractSortBy();
+        if (sortBy != null) {
+            onsQuery.addSort(sortBy);
+        } else {
+            onsQuery.addSort(SortBy.RELEVANCE);
         }
+    }
+
+    private void resolveUriPrefix(ONSQuery onsQuery) {
+        String uriPrefix = URIUtil.cleanUri(topicUri);
+        if (isNotEmpty(uriPrefix)) {
+            onsQuery.setUriPrefix(cleanUri(uriPrefix));
+        }
+    }
+
+    private void resolveKeywords(ONSQuery onsQuery) {
+        String[] keywords = getParams("keywords");
         if (keywords != null) {
             for (String keyword : keywords) {
                 if (StringUtils.isNotEmpty(keyword)) {
-                    onsQueryBuilder.addFilter(Filter.FilterType.TERM, keyword, Fields.keywords_raw, keyword.trim());
+                    onsQuery.addFilter(ValueFilter.FilterType.TERM, FilterableField.keywords_raw, keyword.trim());
                 }
             }
         }
-
-        if (isNotEmpty(uriPrefix)) {
-            onsQueryBuilder.setUriPrefix(uriPrefix);
-        }
-
-        if (filterLatest) {
-            onsQueryBuilder.addFilter(Fields.latestRelease.name(), true);
-        }
-        if (sortBy != null) {
-            for (Fields sortField : sortBy.getSortFields()) {
-                onsQueryBuilder.addSort(sortField, sortField.getSortOrder());
-            }
-        }
-
-        return onsQueryBuilder;
     }
 
-    private SortBy extractSortBy(String sortBy) {
-        if (StringUtils.isEmpty(sortBy)) {
+    private void resolveQuery(ONSQuery onsQuery) {
+        String query = getParam("q", getParam("query"));//get query if q not given, list pages use query
+        if (isNotEmpty(query)) {
+            onsQuery.setQuery(query);
+        }
+    }
+
+    private SortBy extractSortBy() {
+        String sortBy = getParam("sortBy");
+        if (isEmpty(sortBy)) {
             return null;
         }
         try {
             return SortBy.valueOf(sortBy.toUpperCase());
         } catch (IllegalArgumentException e) {
-//            given sortBy parameter is not available, ignore
+            //ignore invalid sort by parameter
             return null;
         }
-
     }
 
-    private String[] extractTypes(String[] allowedTypes, HttpServletRequest request) {
-        String[] types = request.getParameterValues("type");
-        if (types == null || types.length == 0) {
+    private ContentType[] resolveTypesFilter(ContentType[] allowedTypes) {
+        TypeFilter[] requestedFilters = getFiltersByName(getParams("filter"));
+        //if no filter is given use all allowed filters
+        if (requestedFilters == null) {
             return allowedTypes;
         }
 
+        //return requested filter requestedTypes if no allowed filter list given
         if (allowedTypes == null) {
-            return types;
+            return getTypesFor(requestedFilters);
+        }
+        return resolveTypeFilter(allowedTypes, requestedFilters);
+    }
+
+    private ContentType[] resolveTypeFilter(ContentType[] allowedTypes, TypeFilter[] requestedFilters) {
+        Set<ContentType> allowedTypeSet = toSet(allowedTypes);
+        ContentType[] typesToQuery = new ContentType[0];
+        for (TypeFilter filter : requestedFilters) {
+            for (ContentType contentType : filter.getTypes()) {
+                if (allowedTypeSet.contains(contentType)) {
+                    typesToQuery = ArrayUtils.add(typesToQuery, contentType);
+                }
+            }
+
         }
 
-        Set<String> allowedTypeSet = toSet(allowedTypes);
-        String[] typesToQuery = new String[0];
-        for (String type : types) {
-            if (allowedTypeSet.contains(type)) {
-                typesToQuery = ArrayUtils.add(typesToQuery, type);
-            }
-        }
         if (typesToQuery.length > 0) {
             return typesToQuery;
         } else {
@@ -127,9 +137,41 @@ public class SearchRequestHelper {
         }
     }
 
-    private Set<String> toSet(String[] types) {
-        HashSet<String> typeSet = new HashSet<>();
-        for (String type : types) {
+    private TypeFilter[] getFiltersByName(String... filterNames) {
+        if (filterNames == null) {
+            return null;
+        }
+        TypeFilter[] filters = null;
+        for (String filterName : filterNames) {
+            if (isEmpty(filterName)) {
+                continue;
+            }
+            try {
+                filters = ArrayUtils.addAll(filters, TypeFilter.valueOf(filterName.toUpperCase()));
+            } catch (IllegalArgumentException e) {
+                //ignore invalid filter name typed in the url
+                continue;
+            }
+        }
+
+        return filters;
+    }
+
+    private ContentType[] getTypesFor(TypeFilter... filters) {
+        if (filters == null) {
+            return null;
+        }
+        ContentType[] types = new ContentType[0];
+        for (TypeFilter filter : filters) {
+            types = ArrayUtils.addAll(types, filter.getTypes());
+        }
+
+        return types;
+    }
+
+    private Set<ContentType> toSet(ContentType[] types) {
+        HashSet<ContentType> typeSet = new HashSet<>();
+        for (ContentType type : types) {
             typeSet.add(type);
         }
         return typeSet;
@@ -138,13 +180,12 @@ public class SearchRequestHelper {
     /**
      * Extract the page number from a request - for paged results.
      *
-     * @param request
      * @return
      */
-    private static int extractPage(HttpServletRequest request) {
+    private int extractPage() {
         String page = request.getParameter("page");
 
-        if (StringUtils.isEmpty(page)) {
+        if (isEmpty(page)) {
             return 1;
         }
         try {
@@ -169,83 +210,20 @@ public class SearchRequestHelper {
         return null;
     }
 
-    public String getUriPrefix() {
-        return uriPrefix;
+
+    private String getParam(String name) {
+        return request.getParameter(name);
     }
 
-    public void setUriPrefix(String uriPrefix) {
-        this.uriPrefix = uriPrefix;
+    private String getParam(String name, String defaultValue) {
+        String param = getParam(name);
+        if (isEmpty(param)) {
+            return defaultValue;
+        }
+        return param;
     }
 
-    public String[] getTypes() {
-        return types;
-    }
-
-    public void setTypes(String[] types) {
-        this.types = types;
-    }
-
-    public Integer getPage() {
-        return page;
-    }
-
-    public void setPage(Integer page) {
-        this.page = page;
-    }
-
-    public int getSize() {
-        return size;
-    }
-
-    public void setSize(Integer size) {
-        this.size = size;
-    }
-
-    public SortBy getSortBy() {
-        return sortBy;
-    }
-
-    public void setSortBy(SortBy sortBy) {
-        this.sortBy = sortBy;
-    }
-
-    public String getQuery() {
-        return query;
-    }
-
-    public void setQuery(String query) {
-        this.query = query;
-    }
-
-    public String[] getKeywords() {
-        return keywords;
-    }
-
-    public void setKeywordsQuery(String... keywords) {
-        this.keywords = keywords;
-    }
-
-    public Date getFromDate() {
-        return fromDate;
-    }
-
-    public void setFromDate(Date fromDate) {
-        this.fromDate = fromDate;
-    }
-
-    public Date getToDate() {
-        return toDate;
-    }
-
-    public void setToDate(Date toDate) {
-        this.toDate = toDate;
-    }
-
-    public boolean isFilterLatest() {
-        return filterLatest;
-    }
-
-    public void setFilterLatest(boolean filterLatest) {
-        this.filterLatest = filterLatest;
+    private String[] getParams(String name) {
+        return request.getParameterValues(name);
     }
 }

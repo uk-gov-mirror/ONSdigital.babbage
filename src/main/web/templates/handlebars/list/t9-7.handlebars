@@ -28,7 +28,7 @@
 				<div class="tiles__item tiles__item--nav-type flush-col print--hide">
 					<div class="tiles__title-h3 tiles__title-h3--nav">
 						<h3 class="inline">Refine results</h3>
-						<a href="./topicspecificmethodology" value="Reset" class="btn btn--thin btn--narrow btn--small float-right">{{labels.search-refine-clear}}</a>
+						<a href="./topicspecificmethodology" value="Reset" class="btn btn--primary btn--thin btn--narrow btn--small float-right">{{labels.search-refine-clear}}</a>
 					</div>
 					<div class="tiles__content tiles__content--nav">
 						{{> list/filters/keywords}}
@@ -36,20 +36,20 @@
 						<h4>Content types to show</h4>
 							<ul class="list--neutral">
 								<li>
-									<input id="checkbox-qmi" type="checkbox" name="type" value="static_qmi" {{#contains parameters.type 'static_qmi'}}checked{{/contains}} >
+									<input id="checkbox-qmi" type="checkbox" name="filter" value="qmi" {{#contains parameters.filter 'qmi'}}checked{{/contains}} >
 									<label for="checkbox-qmi">
 										Quality and Methodology Information (QMI)
 									</label>
 								</li>
 								<li>
-									<input id="checkbox-methodology" type="checkbox" name="type" value="static_methodology" {{#contains parameters.type 'static_methodology'}}checked{{/contains}}>
+									<input id="checkbox-methodology" type="checkbox" name="filter" value="methodology_article" {{#contains parameters.filter 'methodology_article'}}checked{{/contains}}>
 									<label for="checkbox-methodology">
 										Article
 									</label>
 								</li>
 							</ul>
 						{{> list/filters/topics}}
-						<button type="submit" class="btn btn--block btn--thick margin-top">Filter</button>
+						<button type="submit" class="btn btn--primary btn--block btn--thick margin-top">Filter</button>
 					</div>
 				</div>
 				{{> partials/archives-box}}

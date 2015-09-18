@@ -5,7 +5,6 @@
 <div class="page-content">
 	<div class="wrapper">
 		<form>
-			<input class="sort__input" type="hidden" name="q" value="{{parameters.q.0}}">
 			<div class="col-wrap print-hidden">
 				<div class="col col--md-37 col--lg-46 margin-left">
 					&nbsp;
@@ -16,27 +15,28 @@
 			</div>
 			{{!-- FILTERS --}}
 			<div class="col col--md-12 col--lg-18 margin-bottom">
+				<input class="sort__input" type="hidden" name="q" value="{{parameters.q.0}}">
 				<div class="tiles__title-h3 tiles__title-h3--nav">
 					<h3 class="inline">Refine results</h3>
-					<a href="/search?q={{parameters.q.0}}" value="Reset" class="btn btn--thin btn--narrow btn--small float-right">{{labels.search-refine-clear}}</a>
+					<a href="/search?q={{parameters.q.0}}" value="Reset" class="btn btn--primary btn--thin btn--narrow btn--small float-right">{{labels.search-refine-clear}}</a>
 				</div>
 				<div class="tiles__content tiles__content--nav">
 					<h4>{{labels.search-refine-types}}</h4>
 					<ul class="list--neutral">
 						<li>
-							<input type="checkbox" name="type" value="bulletin" id="checkbox-statsbulletin" {{#contains parameters.type 'bulletin'}}checked{{/contains}} >
+							<input type="checkbox" name="filter" value="bulletin" id="checkbox-statsbulletin" {{#contains parameters.filter 'bulletin'}}checked{{/contains}} >
 							<label for="checkbox-statsbulletin">
 								{{labels.bulletin}}
 							</label>
 						</li>
 						<li>
-							<input type="checkbox" name="type" value="article" id="checkbox-article" {{#contains parameters.type 'article'}}checked{{/contains}}>
+							<input type="checkbox" name="filter" value="article" id="checkbox-article" {{#contains parameters.filter 'article'}}checked{{/contains}}>
 							<label for="checkbox-article">
 								{{labels.article}}
 							</label>
 						</li>
 						<li>
-							<input type="checkbox" name="type" value="compendium_landing_page" id="checkbox-compendia" {{#contains parameters.type 'compendium_landing_page'}}checked{{/contains}}>
+							<input type="checkbox" name="filter" value="compendia" id="checkbox-compendia" {{#contains parameters.filter 'compendia'}}checked{{/contains}}>
 							<label for="checkbox-compendia">
 								Compendia
 							</label>
@@ -48,13 +48,13 @@
 							</label>
 						</li> --}}
 						<li>
-							<input type="checkbox" name="type" value="dataset" id="checkbox-dataset" {{#contains parameters.type 'dataset'}}checked{{/contains}}>
+							<input type="checkbox" name="filter" value="large_dataset" id="checkbox-dataset" {{#contains parameters.filter 'large_dataset'}}checked{{/contains}}>
 							<label for="checkbox-dataset">
-								{{labels.dataset}}
+								Large datasets
 							</label>
 						</li>
 						<li>
-							<input type="checkbox" name="methodology" value="1" id="checkbox-methodology" {{#if parameters.methodology.0}}checked{{/if}} >
+							<input type="checkbox" name="filter" value="methodology" id="checkbox-methodology" {{#contains parameters.filter 'methodology'}}checked{{/contains}} >
 							<label for="checkbox-methodology">
 								{{labels.methodology}}
 							</label>
@@ -66,7 +66,7 @@
 						{{labels.search-expand-all}}</br>
 						({{labels.search-expand-types}})
 					</label>
-					<button type="submit" class="btn btn--block btn--thick margin-top">{{labels.search-filter}}</button>
+					<button type="submit" class="btn btn--primary btn--block btn--thick margin-top">{{labels.search-filter}}</button>
 				</div>
 			</div>
 			{{!-- RESULTS --}}
@@ -100,8 +100,8 @@
 				<!-- /desktop-grid-two-thirds -->
 				{{/if}}
 			</div>
-		</div>
-	</form>
+		</form>
+	</div>
 </div>
 {{!-- {{/if}} --}}
 </main>

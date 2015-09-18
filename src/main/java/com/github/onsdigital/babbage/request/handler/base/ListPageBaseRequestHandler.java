@@ -3,9 +3,12 @@ package com.github.onsdigital.babbage.request.handler.base;
 import com.github.onsdigital.babbage.paginator.Paginator;
 import com.github.onsdigital.babbage.response.BabbageResponse;
 import com.github.onsdigital.babbage.response.BabbageStringResponse;
+import com.github.onsdigital.babbage.search.ONSQuery;
 import com.github.onsdigital.babbage.search.SearchService;
 import com.github.onsdigital.babbage.search.helpers.SearchRequestHelper;
 import com.github.onsdigital.babbage.search.helpers.SearchResponseHelper;
+import com.github.onsdigital.babbage.search.model.ContentType;
+import com.github.onsdigital.babbage.search.model.field.FilterableField;
 import com.github.onsdigital.babbage.template.TemplateService;
 import com.github.onsdigital.content.util.URIUtil;
 
@@ -27,7 +30,7 @@ public abstract class ListPageBaseRequestHandler implements RequestHandler {
      *
      * @return
      */
-    protected abstract String[] getAllowedTypes();
+    protected abstract ContentType[] getAllowedTypes();
 
     protected boolean isFilterLatest(HttpServletRequest request) {
         return false;
@@ -57,17 +60,17 @@ public abstract class ListPageBaseRequestHandler implements RequestHandler {
             uri = cleanUri(topic);
         }
 
-        SearchRequestHelper searchRequestHelper = new SearchRequestHelper(request, uri, getAllowedTypes());
+        ONSQuery query = new SearchRequestHelper(request, uri, getAllowedTypes()).buildQuery();
         if (isFilterLatest(request)) {
-            searchRequestHelper.setFilterLatest(true);
+            query.addFilter(FilterableField.latestRelease, true);
         }
 
-        SearchResponseHelper responseHelper = doSearch(searchRequestHelper);
+        SearchResponseHelper responseHelper = doSearch(query);
 
-        Paginator.assertPage(searchRequestHelper.getPage(), responseHelper);
+        Paginator.assertPage(query.getPage(), responseHelper);
 
         LinkedHashMap<String, Object> listData = new LinkedHashMap<>();
-        listData.put("paginator", Paginator.getPaginator(searchRequestHelper.getPage(), responseHelper));
+        listData.put("paginator", Paginator.getPaginator(query.getPage(), responseHelper));
         listData.put("uri", request.getRequestURI());//set full uri in the context
         listData.put("type", type);
 
@@ -76,8 +79,8 @@ public abstract class ListPageBaseRequestHandler implements RequestHandler {
         return babbageResponse;
     }
 
-    protected SearchResponseHelper doSearch(SearchRequestHelper searchRequestHelper) throws IOException {
-        return SearchService.getInstance().search(searchRequestHelper.buildQuery());
+    protected SearchResponseHelper doSearch(ONSQuery query) throws IOException {
+        return SearchService.getInstance().search(query);
     }
 
 

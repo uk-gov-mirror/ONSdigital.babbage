@@ -5,7 +5,8 @@
 </div>
 <ul class="tiles__list">
 	{{#each datasets}}
-		<li class="col-wrap tiles__item tiles__item--list-type clickable-wrap flush-col">
+	<div class="clickable-wrap">
+		<li class="col-wrap tiles__item tiles__item--list-type flush-col">
 			{{#resolve (absolute this.uri) filter="description"}}
 			<div class="col col--lg-38">
 				<h4 class="tiles__title-h4">
@@ -16,11 +17,12 @@
 				<p class="tiles__content">{{description.summary}}</p>
 			</div>
 			<div class="col col--lg-20">
-				<h4 class="tiles__title-h4">Meta</h4>
-				<p class="tiles__content">Meta stuffs, maybe?</p>
+				{{!-- <h4 class="tiles__title-h4">Meta</h4> --}}
+				{{!-- <p class="tiles__content">Meta stuffs, maybe?</p> --}}
 			</div>
 			{{/resolve}}
 		</li>
+	</div>
 	{{/each}}
 </ul>
-<a href="{{uri}}/datalist?type=dataset" class="btn btn--full-width">View all datasets related to {{description.title}}</a>
+<a href="{{uri}}/datalist?filter=large_dataset" class="btn btn--primary btn--full-width">View all datasets related to {{description.title}}</a>
