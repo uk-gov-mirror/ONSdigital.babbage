@@ -26,7 +26,6 @@ public enum ContentType {
     dataset,
     timeseries_dataset,
     release,
-    release_list,
     reference_tables,
     chart,
     table

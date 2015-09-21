@@ -1,0 +1,89 @@
+<main id="main" role="main" tabindex="-1">
+
+<h1 class="visuallyhidden">Data explorer</h1>
+
+<!-- /wrapper -->
+	<div class="wrapper print-links">
+		<form id="filters">
+    		<div class="col-wrap print-hidden">
+                <div class="col col--md-37 col--lg-46 margin-left">
+                    &nbsp;
+                </div>
+    			<div class="col col--md-10 col--lg-13">
+    				{{> list/filters/sort}}
+    			</div>
+    		</div>
+			<div class="col col--md-12 col--lg-18 margin-bottom">
+				<div class="tiles__item tiles__item--nav-type flush-col print--hide">
+					<div class="tiles__title-h3 tiles__title-h3--nav">
+						<h3 class="inline">Refine results</h3>
+						<a href="./datalist" value="Reset" class="btn btn--primary btn--thin btn--narrow btn--small float-right">{{labels.search-refine-clear}}</a>
+					</div>
+					<div class="tiles__content tiles__content--nav">
+						{{> list/filters/keywords}}
+						<h4 class="flush-bottom">Data format</h4>
+						<ul class="list--neutral">
+							<li>
+								<input id="checkbox-timeseries" type="checkbox" name="filter" value="single_time_series" {{#contains parameters.filter 'single_time_series'}}checked{{/contains}} >
+								<label for="checkbox-timeseries">
+									Single time series
+								</label>
+							</li>
+							<li>
+								<input id="checkbox-dataset" type="checkbox" name="filter" value="large_dataset" {{#contains parameters.filter 'large_dataset'}}checked{{/contains}}>
+								<label for="checkbox-dataset">
+									Large dataset
+								</label>
+							</li>
+						</ul>
+						<h4 class="flush-bottom">Keywords</h4>
+						<div class="box__content">
+							<ul class="list--neutral">
+								<li>
+									<input id="checkbox-sa" type="checkbox" name="keywords" value="Seasonally adjusted" {{#contains parameters.keywords 'Seasonally adjusted'}}checked{{/contains}} >
+									<label for="checkbox-sa">
+										Seasonally adjusted (SA)
+									</label>
+								</li>
+								<li>
+									<input id="checkbox-nsa" type="checkbox" name="keywords" value="Non seasonally adjusted" {{#contains parameters.keywords 'Non seasonally adjusted'}}checked{{/contains}}>
+									<label for="checkbox-nsa">
+										Non seasonally adjusted (NSA)
+									</label>
+								</li>
+								<li>
+									<input id="checkbox-gender" type="checkbox" name="keywords" value="By gender" {{#contains parameters.keywords 'By gender'}}checked{{/contains}}>
+									<label for="checkbox-gender">
+										By gender
+									</label>
+								</li>
+								<li>
+									<input id="checkbox-age" type="checkbox" name="keywords" value="By age" {{#contains parameters.keywords 'By age'}}checked{{/contains}}>
+									<label for="checkbox-age">
+										By age
+									</label>
+								</li>
+							</ul>
+						</div>
+						{{> list/filters/publish-date}}
+						{{> list/filters/topics}}
+						<button type="submit" class="btn btn--primary btn--block btn--thick margin-top">{{labels.search-filter}}</button>
+						</div>
+					</div>
+					{{> partials/archives-box}}
+					<!-- /box -->
+				</div>
+				<!-- /desktop-grid-one-third -->
+				<div class="results col col--md-34 col--lg-40 margin-left">
+					{{> list/partials/results-text}}
+					{{> list/partials/results}}
+					{{> list/partials/paginator}}
+				</div>
+				<!-- /desktop-grid-two-thirds -->
+			</div>
+			<!-- /grid-wrap -->
+		</form>
+
+	</div>
+<!-- /wrapper panel--mar -->
+</main>

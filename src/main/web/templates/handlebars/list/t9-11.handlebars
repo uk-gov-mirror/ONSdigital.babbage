@@ -3,12 +3,7 @@
 		<div class="wrapper">
 			<div class="col-wrap">
 				<div class="col one">
-					{{> list/partials/list-page-breadcrumb label="Methodology"}}
-					{{#each breadcrumb}}
-						{{#if @last}}
-							<h1 class="page-intro__title margin-bottom--double">{{description.title}} methodology</h1>
-						{{/if}}
-					{{/each}}
+					{{> list/partials/list-page-breadcrumb label="Published methodologies"}}
 				</div>
 			</div>
 		</div>
@@ -48,6 +43,7 @@
 									</label>
 								</li>
 							</ul>
+							{{> list/filters/topics}}
 						<button type="submit" class="btn btn--primary btn--block btn--thick margin-top">Filter</button>
 					</div>
 				</div>

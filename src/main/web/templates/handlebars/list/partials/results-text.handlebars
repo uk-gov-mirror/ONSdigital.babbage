@@ -8,8 +8,10 @@
 	{{#if parameters.filter}}
 	for <strong>{{#each parameters.filter}}{{> filter-label this}}<span class="icon icon-cancel js-enhance--show" role="presentation"></span>{{#unless @last}},{{/unless}}{{/each}}</strong>
 	{{/if}}
+	{{#unless global}}
 	related to
 	<strong>{{#each breadcrumb}}{{#if @last}}{{description.title}}{{/if}}{{/each}}</strong>.
+	{{/unless}}
 	{{#if parameters.allReleases}}
 	You have chosen to expand these results to <strong>include all releases over time</strong><span class="icon icon-cancel js-enhance--show" role="presentation"></span>
 	{{/if}}
