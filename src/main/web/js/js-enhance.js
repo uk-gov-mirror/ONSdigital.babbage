@@ -126,6 +126,7 @@ $(function() {
       hoverHashTable['tiles__item'] = ['tiles__item--hover'];
       hoverHashTable['tiles__item--list-type'] = ['tiles__item--list-type-hover'];
       hoverHashTable['tiles__item--list-type-simple'] = ['tiles__item--list-type-simple-hover'];
+      hoverHashTable['tiles__item--nav-type-fixed'] = ['tiles__item--nav-type-fixed-hover'];
       hoverHashTable['tiles__content'] = ['tiles__content--hover'];
       hoverHashTable['sparkline-holder'] = ['sparkline-holder--hover'];
       hoverHashTable['image-holder'] = ['image-holder--hover'];
