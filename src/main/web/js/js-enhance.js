@@ -439,7 +439,6 @@ $(function() {
 
                 var hostname = getHostname(this.href);
 
-                console.log(hostname);
                 if (hostname) {
                     if (hostname !== document.domain && hostname.indexOf('ons.gov.uk') == -1) {
                         $(this).attr('target', '_blank');
