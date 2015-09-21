@@ -425,16 +425,17 @@ $(function() {
     }
 
     function jsEnhanceExternalLinks() {
-        // function eachAnchor(excludedString) {
-        //     //Add icon to links outside of ons.gov.uk domain
-        //     $(excludedString).each(function(){
-        //         if (this.host !== location.host && this.host.indexOf('ons.gov.uk') == -1) {
-        //             $(this).attr('target', '_blank');
-        //         }
-        //     });
-        // }
-        // eachAnchor('a[href^="http://"]');
-        // eachAnchor('a[href^="https://"]');
+        function eachAnchor(excludedString) {
+            //Add icon to links outside of ons.gov.uk domain
+            $(excludedString).each(function(){
+                console.log(this.host);
+                // if (this.host !== location.host && this.host.indexOf('ons.gov.uk') == -1) {
+                //     $(this).attr('target', '_blank');
+                // }
+            });
+        }
+        eachAnchor('a[href^="http://"]');
+        eachAnchor('a[href^="https://"]');
     }
 
 
