@@ -428,10 +428,10 @@ $(function() {
         function eachAnchor(excludedString) {
             //Add icon to links outside of ons.gov.uk domain
             $(excludedString).each(function(){
-                console.log(this.host);
-                // if (this.host !== location.host && this.host.indexOf('ons.gov.uk') == -1) {
-                //     $(this).attr('target', '_blank');
-                // }
+
+                if (this.href !== location.host && this.host.indexOf('ons.gov.uk') == -1) {
+                    $(this).attr('target', '_blank');
+                }
             });
         }
         eachAnchor('a[href^="http://"]');
