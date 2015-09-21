@@ -126,6 +126,7 @@ $(function() {
       hoverHashTable['tiles__item'] = ['tiles__item--hover'];
       hoverHashTable['tiles__item--list-type'] = ['tiles__item--list-type-hover'];
       hoverHashTable['tiles__item--list-type-simple'] = ['tiles__item--list-type-simple-hover'];
+      hoverHashTable['tiles__item--nav-type-fixed'] = ['tiles__item--nav-type-fixed-hover'];
       hoverHashTable['tiles__content'] = ['tiles__content--hover'];
       hoverHashTable['sparkline-holder'] = ['sparkline-holder--hover'];
       hoverHashTable['image-holder'] = ['image-holder--hover'];
@@ -424,11 +425,24 @@ $(function() {
     }
 
     function jsEnhanceExternalLinks() {
-        function eachAnchor(excludedString) {
-            //Add icon to links outside of ons.gov.uk domain
-            $(excludedString).each(function(){
-                if (this.host !== location.host && this.host.indexOf('ons.gov.uk') == -1) {
-                    $(this).attr('target', '_blank');
+
+        // Using regex instead of simply using 'host' because it causes error with security on Government browsers (IE9 so far)
+        function getHostname(url) {
+            var m = url.match(/^http:\/\/[^/]+/);
+            return m ? m[0] : null;     
+        }
+
+
+        function eachAnchor(anchors) {
+            
+            $(anchors).each(function(){
+
+                var hostname = getHostname(this.href);
+
+                if (hostname) {
+                    if (hostname !== document.domain && hostname.indexOf('ons.gov.uk') == -1) {
+                        $(this).attr('target', '_blank');
+                    }
                 }
             });
         }
