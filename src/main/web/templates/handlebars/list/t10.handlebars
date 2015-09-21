@@ -5,7 +5,6 @@
 <div class="page-content">
 	<div class="wrapper">
 		<form>
-			<input class="sort__input" type="hidden" name="q" value="{{parameters.q.0}}">
 			<div class="col-wrap print-hidden">
 				<div class="col col--md-37 col--lg-46 margin-left">
 					&nbsp;
@@ -16,6 +15,7 @@
 			</div>
 			{{!-- FILTERS --}}
 			<div class="col col--md-12 col--lg-18 margin-bottom">
+				<input class="sort__input" type="hidden" name="q" value="{{parameters.q.0}}">
 				<div class="tiles__title-h3 tiles__title-h3--nav">
 					<h3 class="inline">Refine results</h3>
 					<a href="/search?q={{parameters.q.0}}" value="Reset" class="btn btn--primary btn--thin btn--narrow btn--small float-right">{{labels.search-refine-clear}}</a>
@@ -100,8 +100,8 @@
 				<!-- /desktop-grid-two-thirds -->
 				{{/if}}
 			</div>
-		</div>
-	</form>
+		</form>
+	</div>
 </div>
 {{!-- {{/if}} --}}
 </main>

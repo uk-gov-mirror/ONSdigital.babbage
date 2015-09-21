@@ -40,7 +40,7 @@ public enum MathHelpers implements BabbageHandlebarsHelper<Object> {
                 return null;
             }
             num--;
-            return new Handlebars.SafeString(String.valueOf(context));
+            return new Handlebars.SafeString(String.valueOf(num.longValue()));
         }
 
         @Override
