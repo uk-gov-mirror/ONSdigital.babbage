@@ -429,10 +429,12 @@ $(function() {
             //Add icon to links outside of ons.gov.uk domain
             $(excludedString).each(function(){
 
-                //use 'location.hostname' instead of 'host' to stop IE8/9 breaking
-                if (this.hostname !== location.hostname && this.hostname.indexOf('ons.gov.uk') == -1) {
-                    $(this).attr('target', '_blank');
-                }
+                console.log(this.domain);
+
+                //use 'hostname' instead of 'host' to stop IE8/9 breaking
+                // if (this.hostname !== location.hostname && this.hostname.indexOf('ons.gov.uk') == -1) {
+                //     $(this).attr('target', '_blank');
+                // }
             });
         }
         eachAnchor('a[href^="http://"]');
