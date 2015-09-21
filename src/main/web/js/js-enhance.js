@@ -436,7 +436,7 @@ $(function() {
         eachAnchor('a[href^="http://"]');
         eachAnchor('a[href^="https://"]');
 
-        console.log(this.hostname);
+        console.log(location.hostname);
     }
 
 
