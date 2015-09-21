@@ -146,17 +146,19 @@
 				</section>
 				{{/each}}
 				{{#if relatedMethodology}}
-				<section id="methodology" class="accordion is-collapsed section__content--markdown">
-					<h2 class="accordion__title" aria-controls="content-{{@index}}"><span class="section__content-number">{{nf (add sections.size @index_1)}}.</span>Methodology</h2>
-					<div class="accordion__content panel--bottom-mar-small" aria-labelledby="sc-{{@index}}">
-						<ul class="list--neutral">
-						{{#each relatedMethodology}}
-							<li><a href="{{absolute uri}}">{{title}}</a></li>
-						{{/each}}
-						</ul>
-						<a class="print--hide jsEnhanceAnimateScroll" href="#toc" title="{{labels.back-to-toc}}" class="">{{labels.back-to-toc}}</a>
-					</div>
-				</section>
+					<section id="methodology" class="accordion is-collapsed section__content--markdown">
+						<h2 class="accordion__title" aria-controls="content-{{@index}}"><span class="section__content-number">{{nf (add sections.size (increment accordion.size))}}.</span>Methodology</h2>
+						<div class="accordion__content panel--bottom-mar-small" aria-labelledby="sc-{{@index}}">
+							<ul class="list--neutral">
+							{{#each relatedMethodology}}
+								{{#resolve this.uri filter="description"}}
+								<li><a href="{{absolute uri}}">{{description.title}}</a></li>
+								{{/resolve}}
+							{{/each}}
+							</ul>
+							<a class="print--hide jsEnhanceAnimateScroll" href="#toc" title="{{labels.back-to-toc}}" class="">{{labels.back-to-toc}}</a>
+						</div>
+					</section>
 				{{/if}}
 			</div>
 			{{/if}}
