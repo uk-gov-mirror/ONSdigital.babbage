@@ -430,7 +430,7 @@ $(function() {
             $(excludedString).each(function(){
 
                 //use 'location.hostname' instead of 'host' to stop IE8/9 breaking
-                if (this.location.hostname !== location.location.hostname && this.location.hostname.indexOf('ons.gov.uk') == -1) {
+                if (this.hostname !== location.hostname && this.hostname.indexOf('ons.gov.uk') == -1) {
                     $(this).attr('target', '_blank');
                 }
             });
