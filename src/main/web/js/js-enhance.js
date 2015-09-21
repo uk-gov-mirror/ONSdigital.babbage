@@ -429,7 +429,7 @@ $(function() {
             //Add icon to links outside of ons.gov.uk domain
             $(excludedString).each(function(){
 
-                if (this.href !== location.host && this.host.indexOf('ons.gov.uk') == -1) {
+                if (this.hostname !== location.host && this.host.indexOf('ons.gov.uk') == -1) {
                     $(this).attr('target', '_blank');
                 }
             });
