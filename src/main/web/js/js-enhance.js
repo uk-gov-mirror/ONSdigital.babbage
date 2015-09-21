@@ -425,16 +425,26 @@ $(function() {
     }
 
     function jsEnhanceExternalLinks() {
-        function eachAnchor(excludedString) {
-            //Add icon to links outside of ons.gov.uk domain
-            $(excludedString).each(function(){
 
-                console.log(this.domain);
+        // Using regex instead of simply using 'host' because it causes error with security on Government browsers (IE9 so far)
+        function getHostname(url) {
+            var m = url.match(/^http:\/\/[^/]+/);
+            return m ? m[0] : null;     
+        }
 
-                //use 'hostname' instead of 'host' to stop IE8/9 breaking
-                // if (this.hostname !== location.hostname && this.hostname.indexOf('ons.gov.uk') == -1) {
-                //     $(this).attr('target', '_blank');
-                // }
+
+        function eachAnchor(anchors) {
+            
+            $(anchors).each(function(){
+
+                var hostname = getHostname(this.href);
+
+                console.log(hostname);
+                if (hostname) {
+                    if (hostname !== document.domain && hostname.indexOf('ons.gov.uk') == -1) {
+                        $(this).attr('target', '_blank');
+                    }
+                }
             });
         }
         eachAnchor('a[href^="http://"]');
