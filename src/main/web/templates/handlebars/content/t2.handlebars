@@ -21,7 +21,7 @@
 				{{!-- loop for children nodes --}}
 				{{#each highlightedLinks}}
 					{{#resolve this.uri}}
-					    {{#if_any items datasets statsBulletins relatedArticles}}
+					    {{#if_any items datasets statsBulletins relatedArticles sections}}
 					    	{{> partials/t2/t2-section}}
 					    {{else}}
 					    	{{#if_eq type 'taxonomy_landing_page'}}
