@@ -41,7 +41,7 @@ public class Configuration {
     public static class CONTENT_SERVICE {
         private static final String SERVER_URL = StringUtils.removeEnd(StringUtils.defaultIfBlank(getValue("CONTENT_SERVICE_URL"), "http://localhost:8082"), "/");
         private static final String DATA_ENDPOINT = "/data";
-        private static final String CHILDREN_ENDPOINT = "/children";
+        private static final String TAXONOMY_ENDPOINT = "/taxonomy";
         private static final String PARENTS_ENDPOINT = "/parents";
         private static final String RESOURCE_ENDPOINT = "/resource";
         private static final String FILE_SIZE_ENDPOINT = "/filesize";
@@ -67,8 +67,8 @@ public class Configuration {
             return FILE_SIZE_ENDPOINT;
         }
 
-        public static String getChildrenEndpoint() {
-            return CHILDREN_ENDPOINT;
+        public static String getTaxonomyEndpoint() {
+            return TAXONOMY_ENDPOINT;
         }
 
         public static String getParentsEndpoint() {

@@ -103,13 +103,13 @@ public class ContentClient {
         return sendGet(getFileSizePath(), getParameters(uri, null));
     }
 
-    public ContentStream getChildren(String uri, Map<String, String[]> queryParameters) throws ContentReadException {
-        System.out.println("getChildren(): Reading child tree, uri: " + uri);
-        return sendGet(getChildContentPath(), getParameters(uri, queryParameters));
+    public ContentStream getTaxonomy(Map<String, String[]> queryParameters) throws ContentReadException {
+        System.out.println("getTaxonomy(): Reading taxonomy nodes");
+        return sendGet(getTaxonomyListPath(), getParameters(null, queryParameters));
     }
 
-    public ContentStream getChildren(String uri) throws ContentReadException {
-        return sendGet(getChildContentPath(), null);
+    public ContentStream getTaxonomy() throws ContentReadException {
+        return sendGet(getTaxonomyListPath(), null);
     }
 
     public ContentStream getParents(String uri) throws ContentReadException {
@@ -250,12 +250,12 @@ public class ContentClient {
     }
 
 
-    private String getChildContentPath() {
+    private String getTaxonomyListPath() {
         String collectionId = getCollectionId();
         if (collectionId == null) {
-            return getChildrenEndpoint();
+            return getTaxonomyEndpoint();
         } else {
-            return getChildrenEndpoint() + "/" + collectionId;
+            return getTaxonomyEndpoint() + "/" + collectionId;
         }
     }
 

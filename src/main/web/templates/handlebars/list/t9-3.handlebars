@@ -1,7 +1,7 @@
 {{!-- Resolve parents of current uri for and assign to variable breadcrumb for building breadcrumb --}}
 {{resolveParents uri assign="breadcrumb"}}
 {{!-- Resolve navigation fetching children of root uri "/" with depth 2 --}}
-{{resolveChildren "/" depth=2 assign="navigation"}}
+{{resolveTaxonomy depth=2 assign="navigation"}}
 
 {{> partials/header}}
 
