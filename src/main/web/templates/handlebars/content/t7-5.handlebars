@@ -4,7 +4,7 @@
             <div class="col-wrap">
                 <div class="col one">
                     {{> partials/breadcrumb}}
-                    <h1 class="page-intro__title margin-bottom">{{description.title}}</h1>
+                    <h1 class="page-intro__title margin-bottom--double">{{description.title}}</h1>
                 </div>
             </div>
 		</div>
@@ -14,7 +14,9 @@
 		<div class="col-wrap">
 			<article class="col {{#if links}}col--lg-two-thirds{{else}}one{{/if}}">
 				{{#each markdown}}
-						{{md this}}
+                        <section class="section__content--static-markdown margin-top">
+						    {{md this}}
+                        </section>
 				{{/each}}
 			</article>
 			
@@ -29,7 +31,7 @@
 
                     <ul class="tiles__content tiles__content--nav list--neutral">
                         {{#each links}}
-                        <li class="flush--third--bottom"><a href="{{uri}}">{{md title}}</a></li>
+                        <li><a href="{{uri}}">{{title}}</a></li>
                         {{/each}}
                     </ul>
 				</div>
