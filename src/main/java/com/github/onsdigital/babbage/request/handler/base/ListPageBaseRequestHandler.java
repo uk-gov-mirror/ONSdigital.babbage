@@ -65,7 +65,7 @@ public abstract class ListPageBaseRequestHandler implements RequestHandler {
             query.addFilter(FilterableField.latestRelease, true);
         }
 
-        SearchResponseHelper responseHelper = doSearch(query);
+        SearchResponseHelper responseHelper = doSearch(request, query);
 
         Paginator.assertPage(query.getPage(), responseHelper);
 
@@ -79,7 +79,7 @@ public abstract class ListPageBaseRequestHandler implements RequestHandler {
         return babbageResponse;
     }
 
-    protected SearchResponseHelper doSearch(ONSQuery query) throws IOException {
+    protected SearchResponseHelper doSearch(HttpServletRequest request , ONSQuery query) throws IOException {
         return SearchService.getInstance().search(query);
     }
 
