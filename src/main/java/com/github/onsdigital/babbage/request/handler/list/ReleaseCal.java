@@ -12,7 +12,7 @@ import java.io.IOException;
 /**
  * Created by bren on 22/09/15.
  */
-public class ReleaseCalendar extends ListPageBaseRequestHandler {
+public class ReleaseCal extends ListPageBaseRequestHandler {
     private final static ContentType[] ALLOWED_TYPES = {ContentType.release};
     private final static String REQEUST_TYPE = "releasecalendar";
 
