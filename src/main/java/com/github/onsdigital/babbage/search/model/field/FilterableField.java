@@ -10,6 +10,7 @@ public enum FilterableField {
     title_raw,
     releaseDate,
     cdid,
+    published,
     keywords_raw,
     latestRelease,
     _score

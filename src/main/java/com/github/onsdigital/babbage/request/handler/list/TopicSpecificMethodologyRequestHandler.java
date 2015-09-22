@@ -23,6 +23,6 @@ public class TopicSpecificMethodologyRequestHandler extends ListPageBaseRequestH
 
     @Override
     public boolean useLocalisedUri() {
-        return false;
+        return true;
     }
 }

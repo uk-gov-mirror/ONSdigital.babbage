@@ -7,6 +7,7 @@ import com.github.onsdigital.babbage.search.helpers.SearchRequestHelper;
 import com.github.onsdigital.babbage.search.helpers.SearchResponseHelper;
 import com.github.onsdigital.babbage.search.input.SortBy;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 /**
@@ -33,9 +34,10 @@ public class PreviousReleasesRequestHandler extends ListPageBaseRequestHandler {
     }
 
     @Override
-    protected SearchResponseHelper doSearch(ONSQuery query) throws IOException {
+    protected SearchResponseHelper doSearch(HttpServletRequest request,  ONSQuery query) throws IOException {
+        //default sort is relevance, clear before searching
         query.getSorts().clear();
         query.addSort(SortBy.RELEASE_DATE);
-        return super.doSearch(query);
+        return super.doSearch(request,query);
     }
 }

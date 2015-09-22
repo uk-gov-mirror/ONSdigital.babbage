@@ -58,31 +58,40 @@
 <div class="page-content">
     <div class="wrapper">
         <div class="col-wrap">
-            <h3 class="col">{{labels.dataset-downloads}}</h3>
-            {{!-- LIST OF DOWNLOADS --}}
             <div class="col col--lg-two-thirds col--md-two-thirds">
-                <ul class="tiles__list">
-                    {{#each downloads}}
-                    {{#if file}}
-                        <li class="tiles__item--list-type-simple flush-col">
-                                    <form method="get" action="/file">
-                                        <!-- link to given uris of given files-->
-                                        <div class="col col--md-15 col--lg-23 margin-top--half">
-                                            <label class="label inline">{{#if_eq type 'timeseries_dataset'}}{{labels.dataset-latest}}{{else}}{{title}}{{/if_eq}}</label>
-                                        </div>
-                                        <button type="submit" title="Latest version" class="btn btn--primary btn--wide btn--thick download-analytics">
-                                        {{fe (lowercase file)}} ({{fs (lowercase file)}})
-                                        </button>
-                                        <input  type="hidden" name="uri" value="{{lowercase file}}"/>
-                                    </form>
-                        </li>
-                    {{/if}}
-                    {{/each}}
-                </ul>
+                {{#if downloads}}
+                    <h3>{{labels.dataset-downloads}}</h3>
+                    {{!-- LIST OF DOWNLOADS --}}
+                    <ul class="tiles__list">
+                        {{#each downloads}}
+                        {{#if file}}
+                            <li class="tiles__item--list-type-simple flush-col">
+                                <form method="get" action="/file">
+                                    <!-- link to given uris of given files-->
+                                    <div class="col col--md-15 col--lg-23 margin-top--half">
+                                        <label class="label inline">{{#if_eq type 'timeseries_dataset'}}{{labels.dataset-latest}}{{else}}{{title}}{{/if_eq}}</label>
+                                    </div>
+                                    <button type="submit" title="Latest version" class="btn btn--primary btn--wide btn--thick download-analytics">
+                                    {{fe (lowercase file)}} ({{fs (lowercase file)}})
+                                    </button>
+                                    <input  type="hidden" name="uri" value="{{lowercase file}}"/>
+                                </form>
+                            </li>
+                        {{/if}}
+                        {{/each}}
+                    </ul>
+                {{/if}}
+
+                {{!-- INFORMATION AND NOTES --}}
+                {{#if section.markdown}}
+                    <h3>{{labels.dataset-notes}}</h3>
+                    {{md section.markdown}}
+                {{/if}}
+
             </div>
 
             {{!-- RELATED DATA AND DOCUMENTS --}}
-            <div class="col col--lg-one-third col--md-one-third">
+            <div class="col col--lg-one-third col--md-one-third margin-top">
 
                 {{!-- Related data --}}
                 {{#if relatedDatasets}}
@@ -90,7 +99,9 @@
                         <h3 class="tiles__title-h3 tiles__title-h3--nav">Related datasets</h3>
                         <ul class="tiles__content tiles__content--nav list--neutral">
                             {{#each relatedDatasets}}
-                                <li><a href="{{absolute uri}}" title="{{description.title}}">{{description.title}}</a></li>
+                                {{#resolve this.uri filter="title"}}
+                                    <li><a href="{{absolute uri}}" title="{{title}}">{{title}}</a></li>
+                                {{/resolve}}
                             {{/each}}
                         </ul>
                     </div>
@@ -102,15 +113,18 @@
                         <h3 class="tiles__title-h3 tiles__title-h3--nav">Statistical bulletins and articles that use this data</h3>
                         <ul class="tiles__content tiles__content--nav list--neutral">
                             {{#each relatedDocuments}}
+                                {{#resolve this.uri filter="title"}}
                                 <li>
-                                    <a href="{{uri}}" title="{{description.title}}">
-                                    {{description.title}}
-                                        {{#if description.edition}}
-                                            {{#if_ne description.edition 'yes'}}: {{description.edition}}
-                                            {{/if_ne}}
-                                        {{/if}}
+                                    <a href="{{uri}}" title="{{title}}">
+                                    {{title}}
+                                    {{#if edition}}
+                                        {{#if_ne edition 'yes'}}
+                                            : {{edition}}
+                                        {{/if_ne}}
+                                    {{/if}}
                                     </a>
                                 </li>
+                                {{/resolve}}
                             {{/each}}
                         </ul>
                     </div>
@@ -132,9 +146,11 @@
                         <h3 class="tiles__title-h3 tiles__title-h3--nav">{{labels.methodology}}</h3>
                         <ul class="tiles__content tiles__content--nav">
                             {{#each relatedMethodology}}
-                                <li>
-                                    <a href="{{uri}}" title="{{description.title}}">{{description.title}}</a>
-                                </li>
+                                {{#resolve this.uri filter="title"}}
+                                    <li>
+                                        <a href="{{uri}}" title="{{title}}">{{title}}</a>
+                                    </li>
+                                {{/resolve}}
                             {{/each}}
                         </ul>
                     </div>

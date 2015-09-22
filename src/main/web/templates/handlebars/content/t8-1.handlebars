@@ -93,8 +93,9 @@
 			</div>
 		</div>
 
-		{{!-- LIST OF DOWNLOADS --}}
 		<div class="col {{#if_any relatedDatasets relatedDocuments}}col--md-36 col--lg-39{{else}}col--md-47 col--lg-59{{/if_any}}">
+
+            {{!-- LIST OF DOWNLOADS --}}
 			<ul class="list--neutral">
 				{{#each downloads}}
 					<li>
@@ -103,6 +104,7 @@
 					</li>
 				{{/each}}
 			</ul>
+
 		</div>
 
 		{{!-- RELATED DATA AND DOCUMENTS --}}
@@ -114,7 +116,9 @@
 		            <h3>Related datasets</h3>
 	              	<ul class="list--neutral">
 						{{#each relatedDatasets}}
-		                	<li><a href="{{absolute uri}}" title="{{description.title}}">{{description.title}}</a></li>
+                            {{#resolve this.uri filter="title"}}
+		                	    <li><a href="{{absolute uri}}" title="{{title}}">{{title}}</a></li>
+                            {{/resolve}}
 						{{/each}}
 	            	</ul>
 		        </div>
@@ -126,15 +130,17 @@
 		            <h3 class="tiles__title-h3 tiles__title-h3--nav">Statistical bulletins and articles that use this data</h3>
 	              	<ul class="tiles__content tiles__content--nav list--neutral">
 						{{#each relatedDocuments}}
-		                	<li>
-			                    <a href="{{uri}}" title="{{description.title}}">
-		                    	{{description.title}}
-									{{#if description.edition}}
-										{{#if_ne description.edition 'yes'}}: {{description.edition}}
-										{{/if_ne}}
-									{{/if}}
-			                    </a>
-			                </li>
+                            {{#resolve this.uri filter="title"}}
+                                <li>
+                                    <a href="{{uri}}" title="{{description.title}}">
+                                    {{description.title}}
+                                        {{#if description.edition}}
+                                            {{#if_ne description.edition 'yes'}}: {{description.edition}}
+                                            {{/if_ne}}
+                                        {{/if}}
+                                    </a>
+                                </li>
+                            {{/resolve}}
 						{{/each}}
 	            	</ul>
 		        </div>
@@ -154,9 +160,11 @@
 						<h3 class="tiles__title-h3 tiles__title-h3--nav">{{labels.methodology}}</h3>
 						<ul class="tiles__content tiles__content--nav">
 							{{#each relatedMethodology}}
-								<li>
-									<a href="{{uri}}" title="{{description.title}}">{{description.title}}</a>
-								</li>
+                                {{#resolve this.uri filter="title"}}
+                                    <li>
+                                        <a href="{{uri}}" title="{{description.title}}">{{description.title}}</a>
+                                    </li>
+                                {{/resolve}}
 							{{/each}}
 						</ul>	
 					</div>
