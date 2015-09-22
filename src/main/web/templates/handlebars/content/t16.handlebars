@@ -1,83 +1,180 @@
-<div class="page-header slate slate--green">
-	<div class="wrapper">
-		{{> templates/handlebars/partials/breadcrumb}}
-		<p class="page-header__title">
-			Release
-		</p>
-		<h1 class="page-header__title flush--half--bottom">{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}</h1>
-		<div class="grid-wrap mini">
-			<p class="grid-col tablet-grid-one-quarter {{#if description.nationalStatistic}}page-header__meta-block-with-img{{/if}}">
-				{{#if description.nationalStatistic}}
-			    <img src="../../node_modules/ONS-Pattern-Library/ui/img/national-statistics.png" alt="National Statistics logo" />
-			    {{/if}}
-				<span>Contact: </span><br/><a href="mailto:{{description.contact.email}}">{{#if description.contact.name}}{{description.contact.name}}{{else}}{{description.contact.email}}{{/if}}</a>
-			</p>
-			<p class="grid-col tablet-grid-one-quarter divider--border-left">
-				<span>Release date:</span></br>{{df description.releaseDate}}
-			</p>
-			<p class="grid-col tablet-grid-one-quarter divider--border-left">
-				<span>Next release:</span></br>{{df description.nextRelease}}
-				</br>
-				<a href="#">pre-release access list</a>
-			</p>
-		</div>
-		<!-- /grip-wrap -->
-		
-	</div>
-</div>
-<!-- /page-header -->
-<div class="wrapper panel--mar ">
-	<div class="grid-wrap">
-		<div class="grid-col desktop-grid-full-width">
-			{{md summary}}
-			<div class="grid-wrap panel--pad">
-				<div class="grid-col desktop-grid-one-third">
-					<h2>Statistical bulletins and articles</h2>
-				</div>
-				<!-- /desktop-grid-one-third -->
-				{{#each bulletins}}
-				<div class="grid-col desktop-grid-one-third">
-					<h3 class="flush"><a href="{{uri}}">{{title}}</a></h3>
-					{{md description}}
-				</div>
-				<!-- /desktop-grid-one-third -->
-				{{/each}}
-			</div>
-			<!-- /grid-wrap -->
-			<div class="grid-wrap panel--bottom-pad">
-				<div class="grid-col desktop-grid-one-third">
-					<h2 class="flush">Datasets in this release</h2>
-					<p><a href="{{allData}}">See all datasets in this release &#62;</a></p>
-				</div>
-				<!-- /desktop-grid-one-third -->
-				{{#each datasets}}
-				<div class="grid-col desktop-grid-one-third">
-					<h3 class="flush"><a href="{{uri}}">{{title}}</a></h3>
-					{{md description}}
-				</div>
-				<!-- /desktop-grid-one-third -->
-				{{/each}}
-			</div>
-			<!-- /grid-wrap -->
-			{{#each sections}}
-			<h2 class="delta">{{title}}</h2>
-			{{md markdown}}
-			{{/each}}
-			{{#if accordions}}
-				{{#each}}
-				<section id="{{slugify title}}" class="accordion is-collapsed">
-					<h2 id="sc-{{@index}}" class="accordion__title delta" aria-controls="content-{{@index}}">{{title}}</h2>
-					<div id="content-{{@index}}" class="accordion__content" aria-labelledby="sc-{{@index}}">
-						{{md markdown}}
-					</div>
-					<!-- /accordion__content -->
-				</section>
-				<!-- /accordion -->
-				{{/each}}
-			{{/if}}
-		</div>
-		<!-- / desktop-grid-full-width -->
-	</div>
-	<!-- / grid-wrap -->
-</div>
-<!-- / wrapper panel--mar -->
+<main id="main" role="main" tabindex="-1">
+
+    {{!-- PAGE INTRO --}}
+    <div class="page-intro">
+        <div class="wrapper">
+            <div class="col-wrap">
+                <div class="col one">
+
+                    {{!-- Breadcrumb --}}
+                    {{> partials/breadcrumb}}
+
+                    {{!-- Title & summary --}}
+                    <h1 class="page-intro__title margin-bottom--double">{{description.title}}{{#if description.edition}}
+                        : {{description.edition}}{{/if}}</h1>
+                </div>
+            </div>
+        </div>
+
+        <div class="meta-wrap">
+            <div class="wrapper">
+
+                {{!-- Meta info --}}
+                <div class="col-wrap">
+
+                    {{!-- Contact & NS logo--}}
+                    <p class="col col--md-14 col--lg-17 meta__item">
+                        {{#if description.nationalStatistic}}
+                            <img class="meta__image" src="/node_modules/ONS-Pattern-Library/dist/img/national-statistics.png" alt="National Statistics logo" />
+                        {{/if}}
+                        <span>{{labels.meta-contact}}: </span><br/><a href="mailto:{{description.contact.email}}">{{#if description.contact.name}}{{description.contact.name}}{{else}}{{description.contact.email}}{{/if}}</a>
+                        {{#if description.contact.telephone}}
+                            <br/>
+                        {{/if}}
+                    </p>
+
+                    {{!-- Release date --}}
+                    <p class="col col--md-11 col--lg-14 meta__item">
+                        <span>{{labels.release-date}}: </span><br/>{{df description.releaseDate}}<br/>
+                    </p>
+
+                    {{!-- Next release --}}
+                    <p class="col col--md-11 col--lg-14 meta__item">
+                        <span>{{labels.release-next}}: </span><br/>{{#if description.nextRelease}}{{description.nextRelease}}{{else}}To be announced{{/if}}
+                    </p>
+
+
+                    {{!-- Print and download --}}
+                    <p class="col col--md-11 col--lg-14 print--hide meta__item">
+                        <a href="#prereleaseaccesslist">Pre-release access list</a>
+                    </p>
+                </div>
+            </div> {{!-- /wrapper --}}
+        </div> {{!-- /meta-wrap --}}
+    </div>
+    {{!-- /page-intro --}}
+
+
+    {{!-- PAGE CONTENT --}}
+    <div class="page-content">
+        <div class="wrapper">
+            <div class="col-wrap">
+
+                {{!-- SUMMARY --}}
+                <div class="col one">
+                    {{md markdown}}
+                </div>
+
+                {{!-- RELATED PUBLICATIONS --}}
+                {{#if relatedDocuments}}
+                    <div class="tiles">
+                        <h2>Statistical bulletins and articles</h2>
+
+                        <ul class="col-wrap col-span--lg-thirds list--neutral tiles__list">
+                            {{#each relatedDocuments}}
+                                {{#resolve this.uri}}
+                                    <div class="clickable-wrap">
+                                        <li class="col col--md-half col--lg-one-third tiles__item tiles__item--nav-type-fixed">
+                                            <h3 class="tiles__title-h3 tiles__title-h3--nav">
+                                                <a href="{{uri}}">{{description.title}}</a>
+                                            </h3>
+                                            <p class="tiles__content tiles__content--nav">
+                                                {{description.summary}}
+                                            </p>
+                                        </li>
+                                    </div>
+                                {{/resolve}}
+                            {{/each}}
+                        </ul>
+                    </div>
+                {{/if}}
+
+                {{!-- RELATED DATA --}}
+                {{#if relatedDatasets}}
+                    <div class="tiles">
+                        <h2>Statistical bulletins and articles</h2>
+
+                        <ul class="col-wrap col-span--lg-thirds list--neutral tiles__list">
+                            {{#each relatedDatasets}}
+                                {{#resolve this.uri}}
+                                    <div class="clickable-wrap">
+                                        <li class="col col--md-half col--lg-one-third tiles__item tiles__item--nav-type-fixed">
+                                            <h3 class="tiles__title-h3 tiles__title-h3--nav">
+                                                <a href="{{uri}}">{{description.title}}</a>
+                                            </h3>
+                                            <p class="tiles__content tiles__content--nav">
+                                                {{description.summary}}
+                                            </p>
+                                        </li>
+                                    </div>
+                                {{/resolve}}
+                            {{/each}}
+                        </ul>
+                    </div>
+                {{/if}}
+
+                {{#if_any nationalStatistic preRelease}}
+                    <div class="col one">
+                        {{!-- RELEASE INFORMATION --}}
+                        {{#if nationalStatistic}}
+                            <section class="section__content--static-markdown">
+                                <p> The United Kingdom Statistics Authority has designated these statistics as National
+                                    Statistics, in accordance with the Statistics and Registration Service Act 2007 and
+                                    signifying compliance with the Code of Practice for Official Statistics.
+                                </p>
+
+                                <p>
+                                    Designation can be broadly interpreted to mean that the statistics:
+                                </p>
+                                <ul>
+                                    <li>meet identified user needs;</li>
+                                    <li>are well explained and readily accessible;</li>
+                                    <li>are produced according to sound methods; and</li>
+                                    <li>are managed impartially and objectively in the public interest</li>
+                                </ul>
+                                <p>
+                                    Once statistics have been designated as National Statistics it is a statutory
+                                    requirement that the Code of Practice shall continue to be observed.
+                                </p>
+                            </section>
+                        {{/if}}
+
+                        {{!-- PRE-RELEASE ACCESS LIST --}}
+                        {{#if preRelease}}
+                            <div> {{!-- TODO Extra div required so top border shows on first/only accordion --}}
+                                <section id="prereleaseaccesslist"
+                                         class="accordion is-collapsed section__content--static-markdown">
+                                    <h2 class="accordion__title" aria-controls="content-1">Pre-release access list
+                                        for {{description.title}}{{#if description.edition}}
+                                            : {{description.edition}}{{/if}}</h2>
+
+                                    <div class="accordion__content" aria-labelledby="sc-1">
+                                        <p>
+                                            The phrase 'Pre-release Access' refers to the practice whereby official
+                                            statistics
+                                            in their final form, and any accompanying written commentary, are made
+                                            available
+                                            to
+                                            an eligible person in advance of their publication. The rules and principles
+                                            which
+                                            govern pre-release access are featured within the Pre-release Access to
+                                            Official
+                                            Statistics Order 2008.
+                                        </p>
+
+                                        <p>
+                                            Besides ONS staff, the following persons are given pre-release access by the
+                                            period
+                                            indicated before release.
+                                        </p>
+                                        {{md preRelease}}
+                                    </div>
+                                </section>
+                            </div>
+                        {{/if}}
+                    </div>
+                {{/if_any}}
+            </div>
+        </div>
+    </div>
+</main>
