@@ -43,11 +43,12 @@
                         <span>{{labels.release-next}}: </span><br/>{{#if description.nextRelease}}{{description.nextRelease}}{{else}}To be announced{{/if}}
                     </p>
 
-
-                    {{!-- Print and download --}}
-                    <p class="col col--md-11 col--lg-14 print--hide meta__item">
-                        <a href="#prereleaseaccesslist">Pre-release access list</a>
-                    </p>
+                    {{#if preRelease}}
+                        {{!-- Print and download --}}
+                        <p class="col col--md-11 col--lg-14 print--hide meta__item">
+                            <a href="#prereleaseaccesslist">Pre-release access list</a>
+                        </p>
+                    {{/if}}
                 </div>
             </div> {{!-- /wrapper --}}
         </div> {{!-- /meta-wrap --}}
@@ -62,7 +63,7 @@
 
                 {{!-- SUMMARY --}}
                 <div class="col one">
-                    {{md markdown}}
+                    {{md markdown.0}}
                 </div>
 
                 {{!-- RELATED PUBLICATIONS --}}
@@ -113,7 +114,7 @@
                     </div>
                 {{/if}}
 
-                {{#if_any nationalStatistic preRelease}}
+                {{#if_any nationalStatistic preRelease dateChanges}}
                     <div class="col one">
                         {{!-- RELEASE INFORMATION --}}
                         {{#if nationalStatistic}}
@@ -142,8 +143,7 @@
                         {{!-- PRE-RELEASE ACCESS LIST --}}
                         {{#if preRelease}}
                             <div> {{!-- TODO Extra div required so top border shows on first/only accordion --}}
-                                <section id="prereleaseaccesslist"
-                                         class="accordion is-collapsed section__content--static-markdown">
+                                <section id="prereleaseaccesslist" class="accordion is-collapsed section__content--static-markdown">
                                     <h2 class="accordion__title" aria-controls="content-1">Pre-release access list
                                         for {{description.title}}{{#if description.edition}}
                                             : {{description.edition}}{{/if}}</h2>
@@ -171,6 +171,29 @@
                                     </div>
                                 </section>
                             </div>
+                        {{/if}}
+
+                        {{!-- DATE CHANGES --}}
+                        {{#if dateChanges}}
+                            <section id="datechanges" class="section__content--static-markdown">
+                                <h3>
+                                    The release date has changed
+                                </h3>
+
+                                <ul class="list--neutral">
+                                    {{#each dateChanges}}
+                                        <li class="margin-bottom">
+                                            {{!-- TODO Indent properly --}}
+                                            {{!-- <p><span class="col--lg-10">Previous date:</span><span
+                                                     class="col--lg-48">{{df previousDate}}</span></p>
+                                             <p><span class="col--lg 10">Reason for change:</span><span
+                                                     class="col--lg-48">{{changeNotice}}</span></p> --}}
+                                            <p>Previous date: {{df previousDate}}</p>
+                                            <p>Reason for change: {{changeNotice}}</p>
+                                        </li>
+                                    {{/each}}
+                                </ul>
+                            </section>
                         {{/if}}
                     </div>
                 {{/if_any}}
