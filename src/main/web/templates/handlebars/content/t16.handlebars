@@ -43,7 +43,7 @@
                         <span>{{labels.release-next}}: </span><br/>{{#if description.nextRelease}}{{description.nextRelease}}{{else}}To be announced{{/if}}
                     </p>
 
-                    {{#if preRelease}}
+                    {{#if markdown}}
                         {{!-- Print and download --}}
                         <p class="col col--md-11 col--lg-14 print--hide meta__item">
                             <a href="#prereleaseaccesslist">Pre-release access list</a>
@@ -63,61 +63,61 @@
 
                 {{!-- SUMMARY --}}
                 <div class="col one">
-                    {{description.summary}}
+                    <p>{{description.summary}}</p>
                 </div>
 
                 {{!-- RELATED PUBLICATIONS --}}
                 {{#if relatedDocuments}}
-                    <div class="tiles">
+                    <div class="col col--md-half col--lg-one-third">
                         <h2>Statistical bulletins and articles</h2>
-
-                        <ul class="col-wrap col-span--lg-thirds list--neutral tiles__list">
-                            {{#each relatedDocuments}}
-                                {{#resolve this.uri}}
-                                    <div class="clickable-wrap">
-                                        <li class="col col--md-half col--lg-one-third tiles__item tiles__item--nav-type-fixed">
-                                            <h3 class="tiles__title-h3 tiles__title-h3--nav">
-                                                <a href="{{uri}}">{{description.title}}</a>
-                                            </h3>
-                                            <p class="tiles__content tiles__content--nav">
-                                                {{description.summary}}
-                                            </p>
-                                        </li>
-                                    </div>
-                                {{/resolve}}
-                            {{/each}}
-                        </ul>
                     </div>
+
+                    <ul class="col-wrap col-span--lg-thirds">
+                        {{#each relatedDocuments}}
+                            {{#resolve this.uri}}
+                                <div class="clickable-wrap">
+                                    <li class="col col--md-half col--lg-one-third">
+                                        <h3>
+                                            <a href="{{uri}}">{{description.title}}</a>
+                                        </h3>
+                                        <p>
+                                            {{description.summary}}
+                                        </p>
+                                    </li>
+                                </div>
+                            {{/resolve}}
+                        {{/each}}
+                    </ul>
                 {{/if}}
 
                 {{!-- RELATED DATA --}}
                 {{#if relatedDatasets}}
-                    <div class="tiles">
+                    <div class="col col--md-half col--lg-one-third">
                         <h2>Statistical bulletins and articles</h2>
-
-                        <ul class="col-wrap col-span--lg-thirds list--neutral tiles__list">
-                            {{#each relatedDatasets}}
-                                {{#resolve this.uri}}
-                                    <div class="clickable-wrap">
-                                        <li class="col col--md-half col--lg-one-third tiles__item tiles__item--nav-type-fixed">
-                                            <h3 class="tiles__title-h3 tiles__title-h3--nav">
-                                                <a href="{{uri}}">{{description.title}}</a>
-                                            </h3>
-                                            <p class="tiles__content tiles__content--nav">
-                                                {{description.summary}}
-                                            </p>
-                                        </li>
-                                    </div>
-                                {{/resolve}}
-                            {{/each}}
-                        </ul>
                     </div>
+
+                    <ul class="col-wrap col-span--lg-thirds">
+                        {{#each relatedDatasets}}
+                            {{#resolve this.uri}}
+                                <div class="clickable-wrap">
+                                    <li class="col col--md-half col--lg-one-third">
+                                        <h3>
+                                            <a href="{{uri}}">{{description.title}}</a>
+                                        </h3>
+                                        <p>
+                                            {{description.summary}}
+                                        </p>
+                                    </li>
+                                </div>
+                            {{/resolve}}
+                        {{/each}}
+                    </ul>
                 {{/if}}
 
-                {{#if_any nationalStatistic preRelease dateChanges}}
-                    <div class="col one">
+                {{#if_any description.nationalStatistic preRelease dateChanges}}
+                    <div class="col one margin-bottom--double">
                         {{!-- RELEASE INFORMATION --}}
-                        {{#if nationalStatistic}}
+                        {{#if description.nationalStatistic}}
                             <section class="section__content--static-markdown">
                                 <p> The United Kingdom Statistics Authority has designated these statistics as National
                                     Statistics, in accordance with the Statistics and Registration Service Act 2007 and
@@ -140,10 +140,11 @@
                             </section>
                         {{/if}}
 
-                        {{!-- PRE-RELEASE ACCESS LIST --}}
-                        {{#if markdown}}
-                            <div> {{!-- TODO Extra div required so top border shows on first/only accordion --}}
-                                <section id="prereleaseaccesslist" class="accordion is-collapsed section__content--static-markdown">
+                        <div> {{!-- TODO Empty div needed for top border on first accordion --}}
+                            {{!-- PRE-RELEASE ACCESS LIST --}}
+                            {{#if markdown}}
+                                <section id="prereleaseaccesslist"
+                                         class="accordion is-collapsed section__content--static-markdown flush">
                                     <h2 class="accordion__title" aria-controls="content-1">Pre-release access list
                                         for {{description.title}}{{#if description.edition}}
                                             : {{description.edition}}{{/if}}</h2>
@@ -170,31 +171,32 @@
                                         {{md markdown.0}}
                                     </div>
                                 </section>
-                            </div>
-                        {{/if}}
+                            {{/if}}
 
-                        {{!-- DATE CHANGES --}}
-                        {{#if dateChanges}}
-                            <section id="datechanges" class="section__content--static-markdown">
-                                <h3>
-                                    The release date has changed
-                                </h3>
-
-                                <ul class="list--neutral">
-                                    {{#each dateChanges}}
-                                        <li class="margin-bottom">
-                                            {{!-- TODO Indent properly --}}
-                                            {{!-- <p><span class="col--lg-10">Previous date:</span><span
-                                                     class="col--lg-48">{{df previousDate}}</span></p>
-                                             <p><span class="col--lg 10">Reason for change:</span><span
-                                                     class="col--lg-48">{{changeNotice}}</span></p> --}}
-                                            <p>Previous date: {{df previousDate}}</p>
-                                            <p>Reason for change: {{changeNotice}}</p>
-                                        </li>
-                                    {{/each}}
-                                </ul>
-                            </section>
-                        {{/if}}
+                            {{!-- DATE CHANGES --}}
+                            {{#if dateChanges}}
+                                <section id="datechanges"
+                                         class="accordion is-collapsed section__content--static-markdown flush">
+                                    <h2 class="accordion__title" aria-controls="content-2">Changes to this release date</h2>
+                                        <ul class="accordion__content list--neutral margin-top" aria-labelledby="sc-2">
+                                            {{#each dateChanges}}
+                                                <li class="margin-bottom overflow--hidden">
+                                                    <dl>
+                                                        <dt>
+                                                        <div class="col col--md-10 col--lg-10">Previous date:</div>
+                                                        <div class="col col--md-37 col--lg-49">{{df previousDate}}</div>
+                                                        </dt>
+                                                        <dt>
+                                                        <div class="col col--md-10 col--lg-10">Reason for change:</div>
+                                                        <div class="col col--md-37 col--lg-49">{{changeNotice}}</div>
+                                                        </dt>
+                                                    </dl>
+                                                </li>
+                                            {{/each}}
+                                        </ul>
+                                </section>
+                            {{/if}}
+                        </div>
                     </div>
                 {{/if_any}}
             </div>
