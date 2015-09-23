@@ -10,6 +10,7 @@ import com.github.onsdigital.babbage.search.helpers.SearchResponseHelper;
 import com.github.onsdigital.babbage.search.model.ContentType;
 import com.github.onsdigital.babbage.search.model.field.FilterableField;
 import com.github.onsdigital.babbage.template.TemplateService;
+import com.github.onsdigital.content.util.ContentUtil;
 import com.github.onsdigital.content.util.URIUtil;
 
 import javax.servlet.http.HttpServletRequest;
@@ -45,28 +46,24 @@ public abstract class ListPageBaseRequestHandler implements RequestHandler {
      */
     public abstract boolean useLocalisedUri();
 
+    public String getData(String requestedUri, HttpServletRequest request) throws Exception {
+
+        System.out.println("List page data request from " + this.getClass().getSimpleName() + " for uri: " + requestedUri);
+        ONSQuery query = createQuery(requestedUri, request);
+
+        SearchResponseHelper responseHelper = doSearch(request, query);
+        Paginator.assertPage(query.getPage(), responseHelper);
+        return ContentUtil.serialise(responseHelper.getResult());
+    }
+
     @Override
     public BabbageResponse get(String requestedUri, HttpServletRequest request) throws Exception {
 
         System.out.println("List page request from " + this.getClass().getSimpleName() + " for uri: " + requestedUri);
-
         BabbageResponse babbageResponse;
         String type = URIUtil.resolveRequestType(request.getRequestURI());
-        String uri;
-        if (useLocalisedUri()) {
-            uri = requestedUri;
-        } else {
-            String topic = request.getParameter("topic");
-            uri = cleanUri(topic);
-        }
-
-        ONSQuery query = new SearchRequestHelper(request, uri, getAllowedTypes()).buildQuery();
-        if (isFilterLatest(request)) {
-            query.addFilter(FilterableField.latestRelease, true);
-        }
-
+        ONSQuery query = createQuery(requestedUri, request);
         SearchResponseHelper responseHelper = doSearch(request, query);
-
         Paginator.assertPage(query.getPage(), responseHelper);
 
         LinkedHashMap<String, Object> listData = new LinkedHashMap<>();
@@ -77,6 +74,26 @@ public abstract class ListPageBaseRequestHandler implements RequestHandler {
         String html = TemplateService.getInstance().renderListPage(responseHelper.getResult(), listData);
         babbageResponse = new BabbageStringResponse(html, CONTENT_TYPE);
         return babbageResponse;
+    }
+
+    private ONSQuery createQuery(String requestedUri, HttpServletRequest request) {
+        String uri = processUri(requestedUri, request);
+        ONSQuery query = new SearchRequestHelper(request, uri, getAllowedTypes()).buildQuery();
+        if (isFilterLatest(request)) {
+            query.addFilter(FilterableField.latestRelease, true);
+        }
+        return query;
+    }
+
+    private String processUri(String requestedUri, HttpServletRequest request) {
+        String uri;
+        if (useLocalisedUri()) {
+            uri = requestedUri;
+        } else {
+            String topic = request.getParameter("topic");
+            uri = cleanUri(topic);
+        }
+        return uri;
     }
 
     protected SearchResponseHelper doSearch(HttpServletRequest request , ONSQuery query) throws IOException {
