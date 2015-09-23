@@ -23,10 +23,10 @@
 			<div class="col">
 				{{!-- Latest info --}}
 				{{#if description.latestRelease}}
-				<p class="alert__content">This is the latest release</p> <a class="btn btn--primary print--hide" href="{{parentPath uri}}/previousReleases">view previous releases</a>
+				<p class="alert__title">This is the latest release</p> <a class="btn btn--primary print--hide" href="{{parentPath uri}}/previousReleases">view previous releases</a>
 				{{else}}
 				{{#resolve (concat (parentPath uri) "/latest") filter="title"}}
-				<p class="alert__content">This is not the latest release</p> <a class="btn btn--primary print--hide" href="{{uri}}">view latest release</a>
+				<p class="alert__title">This is not the latest release</p> <a class="btn btn--primary print--hide" href="{{uri}}">view latest release</a>
 				{{/resolve}}
 				{{/if}}
 			</div>
