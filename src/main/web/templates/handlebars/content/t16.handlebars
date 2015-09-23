@@ -50,13 +50,23 @@
 
                     {{!-- Release date --}}
                     <p class="col col--md-11 col--lg-14 meta__item">
-                        <span>{{labels.release-date}}: </span><br/>{{df description.releaseDate}}<br/>
+                        <span>{{#if description.cancelled}}Proposed release date{{else}}{{labels.release-date}}{{/if}}: </span><br/>{{df description.releaseDate}}<br/>
                     </p>
 
+                    {{!-- Cancelled date --}}
+                    {{#if description.cancelled}}
+                        <p class="col col--md-11 col--lg-14 meta__item">
+                            <span>Cancellation date: </span><br/>
+                            {{nf cancellationDate}}
+                        </p>
+                    {{else}}
                     {{!-- Next release --}}
-                    <p class="col col--md-11 col--lg-14 meta__item">
-                        <span>{{labels.release-next}}: </span><br/>{{#if description.nextRelease}}{{description.nextRelease}}{{else}}To be announced{{/if}}
-                    </p>
+                        <p class="col col--md-11 col--lg-14 meta__item">
+                            <span>{{labels.release-next}}
+                                : </span><br/>{{#if description.nextRelease}}{{description.nextRelease}}{{else}}To be
+                            announced{{/if}}
+                        </p>
+                    {{/if}}
 
                     {{#if markdown}}
                         {{!-- Print and download --}}
@@ -94,12 +104,12 @@
                         {{#each relatedDocuments}}
                             {{#resolve this.uri}}
                                 <div class="col col--md-half col--lg-one-third {{!-- clickable-wrap --}}">
-                                    <li class="tiles__item tiles__item--list-type">
-                                        <h3 class="tiles__title-h3">
+                                    <li class="tiles__item tiles__item--list-type flush">
+                                        <h3 class="tiles__title-h3 padding-left--none">
                                             <a href="{{uri}}">{{description.title}}</a>
                                         </h3>
 
-                                        <p class="tiles__content">
+                                        <p class="tiles__content padding-left--none">
                                             {{#if description.summary}}{{description.summary}}{{else}}{{description._abstract}}{{/if}}
                                         </p>
                                     </li>
@@ -119,11 +129,11 @@
                         {{#each relatedDatasets}}
                             {{#resolve this.uri}}
                                 <div class="col col--md-half col--lg-one-third {{!-- clickable-wrap --}}">
-                                    <li class="tiles__item tiles__item--list-type">
-                                        <h3 class="tiles__title-h3">
+                                    <li class="tiles__item tiles__item--list-type flush">
+                                        <h3 class="tiles__title-h3 padding-left--none">
                                             <a href="{{uri}}">{{description.title}}</a>
                                         </h3>
-                                        <p class="tiles__content">
+                                        <p class="tiles__content padding-left--none">
                                             {{description.summary}}
                                         </p>
                                     </li>
