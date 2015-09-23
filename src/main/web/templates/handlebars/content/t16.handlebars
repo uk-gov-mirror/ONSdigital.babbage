@@ -63,7 +63,7 @@
 
                 {{!-- SUMMARY --}}
                 <div class="col one">
-                    {{md markdown.0}}
+                    {{description.summary}}
                 </div>
 
                 {{!-- RELATED PUBLICATIONS --}}
@@ -141,7 +141,7 @@
                         {{/if}}
 
                         {{!-- PRE-RELEASE ACCESS LIST --}}
-                        {{#if preRelease}}
+                        {{#if markdown}}
                             <div> {{!-- TODO Extra div required so top border shows on first/only accordion --}}
                                 <section id="prereleaseaccesslist" class="accordion is-collapsed section__content--static-markdown">
                                     <h2 class="accordion__title" aria-controls="content-1">Pre-release access list
@@ -167,7 +167,7 @@
                                             period
                                             indicated before release.
                                         </p>
-                                        {{md preRelease}}
+                                        {{md markdown.0}}
                                     </div>
                                 </section>
                             </div>
