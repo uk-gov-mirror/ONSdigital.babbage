@@ -89,10 +89,11 @@
                         <h2>Publications</h2>
                     </div>
 
+
                     <ul class="tiles__list">
                         {{#each relatedDocuments}}
                             {{#resolve this.uri}}
-                                <div class="col col--md-half col--lg-one-third {{!-- clickable-wrap --}}{{#if @first}}flush-col{{/if}}">
+                                <div class="col col--md-half col--lg-one-third {{#if @first}}flush-col{{/if}} {{!-- clickable-wrap --}}">
                                     <li class="tiles__item tiles__item--list-type">
                                         <h3 class="tiles__title-h3">
                                             <a href="{{uri}}">{{description.title}}</a>
@@ -110,19 +111,19 @@
 
                 {{!-- RELATED DATA --}}
                 {{#if relatedDatasets}}
-                    <div class="col col--md-half col--lg-one-third">
+                    <div class="col one">
                         <h2>Data</h2>
                     </div>
 
                     <ul class="tiles__list">
                         {{#each relatedDatasets}}
                             {{#resolve this.uri}}
-                                <div class="col col--md-half col--lg-one-third clickable-wrap">
+                                <div class="col col--md-half col--lg-one-third {{#if @first}}flush-col{{/if}} {{!-- clickable-wrap --}}">
                                     <li class="tiles__item tiles__item--list-type">
-                                        <h3>
+                                        <h3 class="tiles__title-h3">
                                             <a href="{{uri}}">{{description.title}}</a>
                                         </h3>
-                                        <p>
+                                        <p class="tiles__content">
                                             {{description.summary}}
                                         </p>
                                     </li>
