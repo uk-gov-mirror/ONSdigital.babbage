@@ -30,10 +30,11 @@
 							<a href="./adhoc" value="Reset" class="btn btn--primary btn--thin btn--narrow btn--small float-right">{{labels.search-refine-clear}}</a>
 					</div>
 					<div class="tiles__content tiles__content--nav">
+						<div class="filters">
 							{{> list/filters/keywords}}
 							{{> list/filters/publish-date}}
-
-							<button type="submit" class="btn btn--primary btn--block btn--thick margin-top">Filter</button>
+						</div>
+						<button type="submit" class="btn btn--primary btn--block btn--thick margin-top">Filter</button>
 					</div>
 				</div>
 				{{> partials/archives-box}}
