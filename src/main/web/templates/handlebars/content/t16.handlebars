@@ -10,9 +10,9 @@
                     {{> partials/breadcrumb}}
 
                     {{!-- Title & summary --}}
-                    <h1 class="page-intro__title {{!-- margin-bottom--double --}}">{{description.title}}{{#if description.edition}}
+                    <h1 class="page-intro__title margin-bottom--double">{{description.title}}{{#if description.edition}}
                         : {{description.edition}}{{/if}}</h1>
-                    <p class="page-intro__content">{{description.summary}}</p>
+
                 </div>
             </div>
         </div>
@@ -87,13 +87,13 @@
         <div class="wrapper">
 
             {{!-- SUMMARY --}}
-            {{!-- {{#if description.summary}}
+            {{#if description.summary}}
                  <div class="col-wrap">
                      <div class="col">
-
+                         <p>{{description.summary}}</p>
                      </div>
                  </div>
-             {{/if}} --}}
+             {{/if}}
 
 
             {{!-- RELATED PUBLICATIONS --}}
@@ -150,13 +150,15 @@
 
             {{#if_any description.nationalStatistic preRelease dateChanges}}
                 <div class="col-wrap">
-                    <div class="col one margin-bottom--double">
+                    <div class="col one margin-bottom--double margin-top--double">
                         {{!-- RELEASE INFORMATION --}}
                         {{#if description.nationalStatistic}}
                             <section class="section__content--static-markdown">
                                 <p> The United Kingdom Statistics Authority has designated these statistics as National
-                                    Statistics, in accordance with the Statistics and Registration Service Act 2007 and
-                                    signifying compliance with the Code of Practice for Official Statistics.
+                                    Statistics, in accordance with the <a href="http://www.legislation.gov.uk/ukpga/2007/18/contents">Statistics and Registration Service
+                                        Act 2007</a> and
+                                    signifying compliance with the <a href="http://www.statisticsauthority.gov.uk/assessment/code-of-practice/">Code of Practice for Official
+                                        Statistics</a>.
                                 </p>
 
                                 <p>

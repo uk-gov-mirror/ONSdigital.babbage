@@ -1,10 +1,15 @@
 <nav class="breadcrumb print--hide">
 	<ol class="breadcrumb__list">
 		{{#each breadcrumb}}
-		<li class="breadcrumb__item">
-			<a class="breadcrumb__link" href="{{uri}}">{{description.title}}</a>
-		</li>
+            <li class="breadcrumb__item">
+                <a class="breadcrumb__link" href="{{uri}}">{{description.title}}</a>
+            </li>
 		{{/each}}
+        {{#if_eq type "release"}}
+            <li class="breadcrumb__item">
+                <a class="breadcrumb__link" href="/releasecalendar">Release calendar</a>
+            </li>
+        {{/if_eq}}
 		<li class="breadcrumb__item">
 			{{description.title}}
 		</li>
