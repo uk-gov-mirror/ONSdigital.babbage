@@ -342,7 +342,7 @@
 						{{/each}}
 						{{#each relatedDatasets}}
 						{{#resolve this.uri filter="description"}}
-						<li><a href="{{uri}}">{{#if description.datasetId}}{{description.datasetId}}: {{/if}}{{description.title}}</a></li>
+						<li class="flush"><a href="{{uri}}">{{#if description.datasetId}}{{description.datasetId}}: {{/if}}{{description.title}}</a></li>
 						{{/resolve}}
 						{{/each}}
 					</ul>
@@ -356,7 +356,7 @@
 					<ul class="list--neutral">
 						{{#each relatedDocuments}}
 			            {{#resolve this.uri filter="title"}}
-			            <li ><a href="{{uri}}">{{title}}{{#if edition}}{{#if_ne edition 'yes'}}: {{edition}}{{/if_ne}}{{/if}}</a></li>
+			            <li class="flush"><a href="{{uri}}">{{title}}{{#if edition}}{{#if_ne edition 'yes'}}: {{edition}}{{/if_ne}}{{/if}}</a></li>
 			            {{/resolve}}
 			            {{/each}}
 					</ul>
@@ -370,7 +370,7 @@
 	                <ul class="list--neutral">
 	                    {{#each relatedMethodology}}
 	                    {{#resolve this.uri filter="title"}}
-	                    <li><a href="{{uri}}" title="{{title}}">{{title}}</a></li>
+	                    <li class="flush"><a href="{{uri}}" title="{{title}}">{{title}}</a></li>
 	                    {{/resolve}}
 	                    {{/each}}
 	                </ul>
