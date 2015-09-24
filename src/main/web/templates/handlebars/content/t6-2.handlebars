@@ -185,11 +185,13 @@
 				<h3 class="tiles__title-h3 tiles__title-h3--nav">
 				{{labels.bulletin-contact}}
 				</h3>
-				<address class="tiles__content--nav">
-					{{#if description.contact.name}}{{description.contact.name}}<br/>{{/if}}
-					<a href="mailto:{{description.contact.email}}">{{description.contact.email}}</a></br>
-					{{#if description.contact.telephone}}{{labels.phone}}: {{description.contact.telephone}}{{/if}}
-				</address>
+				<div class="tiles__content--nav">
+					<address>
+						{{#if description.contact.name}}{{description.contact.name}}<br/>{{/if}}
+						<a href="mailto:{{description.contact.email}}">{{description.contact.email}}</a></br>
+						{{#if description.contact.telephone}}{{labels.phone}}: {{description.contact.telephone}}{{/if}}
+					</address>
+				</div>
 			</div>{{!-- /tiles --}}
 		</div> {{!-- /col --}}
 
