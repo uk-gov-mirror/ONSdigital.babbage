@@ -10,8 +10,9 @@
                     {{> partials/breadcrumb}}
 
                     {{!-- Title & summary --}}
-                    <h1 class="page-intro__title margin-bottom--double">{{description.title}}{{#if description.edition}}
+                    <h1 class="page-intro__title {{!-- margin-bottom--double --}}">{{description.title}}{{#if description.edition}}
                         : {{description.edition}}{{/if}}</h1>
+                    <p class="page-intro__content">{{description.summary}}</p>
                 </div>
             </div>
         </div>
@@ -84,66 +85,71 @@
     {{!-- PAGE CONTENT --}}
     <div class="page-content">
         <div class="wrapper">
-            <div class="col-wrap">
 
-                {{#if description.summary}}
-                    {{!-- SUMMARY --}}
-                    <div class="col one">
-                        <p>{{description.summary}}</p>
-                    </div>
-                {{/if}}
+            {{!-- SUMMARY --}}
+            {{!-- {{#if description.summary}}
+                 <div class="col-wrap">
+                     <div class="col">
 
-                {{!-- RELATED PUBLICATIONS --}}
-                {{#if relatedDocuments}}
-                    <div class="col one {{!-- col--md-half col--lg-one-third --}}">
-                        <h2>Publications</h2>
-                    </div>
+                     </div>
+                 </div>
+             {{/if}} --}}
 
 
-                    <ul class="tiles__list col-span--lg-thirds">
+            {{!-- RELATED PUBLICATIONS --}}
+            {{#if relatedDocuments}}
+
+                <div class="col-wrap">
+                    <h2 class="col">Publications</h2>
+                </div>
+
+                <div class="col-wrap">
+                    <ul class="tiles__list col col--lg-40">
                         {{#each relatedDocuments}}
                             {{#resolve this.uri}}
-                                <div class="col col--md-half col--lg-one-third {{!-- clickable-wrap --}}">
-                                    <li class="tiles__item tiles__item--list-type flush">
-                                        <h3 class="tiles__title-h3 padding-left--none">
-                                            <a href="{{uri}}">{{description.title}}</a>
-                                        </h3>
+                                <li class="tiles__item--list-type-simple">
+                                    <h3 class="tiles__title-h3">
+                                        <a href="{{uri}}">{{description.title}}{{#if description.edition}}
+                                            : {{description.edition}}{{/if}}</a>
+                                    </h3>
 
-                                        <p class="tiles__content padding-left--none">
-                                            {{#if description.summary}}{{description.summary}}{{else}}{{description._abstract}}{{/if}}
-                                        </p>
-                                    </li>
-                                </div>
+                                    <p class="tiles__content">
+                                        {{#if description.summary}}{{description.summary}}{{else}}{{description._abstract}}{{/if}}
+                                    </p>
+                                </li>
                             {{/resolve}}
                         {{/each}}
                     </ul>
-                {{/if}}
+                </div>
+            {{/if}}
 
-                {{!-- RELATED DATA --}}
-                {{#if relatedDatasets}}
-                    <div class="col one">
-                        <h2>Data</h2>
-                    </div>
+            {{!-- RELATED DATA --}}
+            {{#if relatedDatasets}}
+                <div class="col-wrap">
+                    <h2 class="col">Data</h2>
+                </div>
 
-                    <ul class="tiles__list col-span--lg-thirds">
+                <div class="col-wrap">
+                    <ul class="tiles__list col col--lg-40">
                         {{#each relatedDatasets}}
                             {{#resolve this.uri}}
-                                <div class="col col--md-half col--lg-one-third {{!-- clickable-wrap --}}">
-                                    <li class="tiles__item tiles__item--list-type flush">
-                                        <h3 class="tiles__title-h3 padding-left--none">
-                                            <a href="{{uri}}">{{description.title}}</a>
-                                        </h3>
-                                        <p class="tiles__content padding-left--none">
-                                            {{description.summary}}
-                                        </p>
-                                    </li>
-                                </div>
+                                <li class="tiles__item--list-type-simple">
+                                    <h3 class="tiles__title-h3">
+                                        <a href="{{uri}}">{{description.title}}</a>
+                                    </h3>
+
+                                    <p class="tiles__content">
+                                        {{description.summary}}
+                                    </p>
+                                </li>
                             {{/resolve}}
                         {{/each}}
                     </ul>
-                {{/if}}
+                </div>
+            {{/if}}
 
-                {{#if_any description.nationalStatistic preRelease dateChanges}}
+            {{#if_any description.nationalStatistic preRelease dateChanges}}
+                <div class="col-wrap">
                     <div class="col one margin-bottom--double">
                         {{!-- RELEASE INFORMATION --}}
                         {{#if description.nationalStatistic}}
@@ -212,12 +218,12 @@
                                                 <li class="margin-bottom overflow--hidden">
                                                     <dl>
                                                         <dt>
-                                                        <div class="col col--md-10 col--lg-10">Previous date:</div>
-                                                        <div class="col col--md-37 col--lg-49">{{df previousDate}}</div>
+                                                            <div class="col col--md-10 col--lg-10">Previous date:</div>
+                                                            <div class="col col--md-37 col--lg-49">{{df previousDate}}</div>
                                                         </dt>
                                                         <dt>
-                                                        <div class="col col--md-10 col--lg-10">Reason for change:</div>
-                                                        <div class="col col--md-37 col--lg-49">{{changeNotice}}</div>
+                                                            <div class="col col--md-10 col--lg-10">Reason for change:</div>
+                                                            <div class="col col--md-37 col--lg-49">{{changeNotice}}</div>
                                                         </dt>
                                                     </dl>
                                                 </li>
@@ -227,8 +233,8 @@
                             {{/if}}
                         </div>
                     </div>
-                {{/if_any}}
-            </div>
+                </div>
+            {{/if_any}}
         </div>
     </div>
 </main>
