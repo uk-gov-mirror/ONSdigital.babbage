@@ -41,7 +41,7 @@
 		<div class="col-wrap">
 
 			{{!-- Contact & NS logo--}}
-			<p class="col col--md-14 col--lg-17 meta__item">
+			<p class="col col--md-11 col--lg-14 meta__item">
 				{{#if description.nationalStatistic}}
 				<img class="meta__image" src="/node_modules/ONS-Pattern-Library/dist/img/national-statistics.png" alt="National Statistics logo" />
 				{{/if}}
@@ -49,18 +49,18 @@
 			</p>
 
 			{{!-- Release date --}}
-			<p class="col col--md-11 col--lg-14 meta__item">
+			<p class="col col--md-12 col--lg-15 meta__item">
 				<span>{{labels.release-date}}: </span><br/>{{df description.releaseDate}}<br/>
 			</p>
 
 			{{!-- Next release --}}
-			<p class="col col--md-11 col--lg-14 meta__item">
+			<p class="col col--md-12 col--lg-15 meta__item">
 				<span>{{labels.release-next}}: </span><br/>{{#if description.nextRelease}}{{description.nextRelease}}{{else}}To be announced{{/if}}
 			</p>
 
 
 			{{!-- Print and download --}}
-			<p class="col col--md-11 col--lg-14 print--hide meta__item">
+			<p class="col col--md-12 col--lg-15 print--hide meta__item">
 				<a href="" id="jsEnhancePrint" class="link-complex nojs-hidden js-enhance--show">
 					{{labels.print-report}}
 				</a>
