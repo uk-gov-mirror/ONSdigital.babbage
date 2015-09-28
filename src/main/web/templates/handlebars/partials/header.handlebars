@@ -35,6 +35,7 @@
 		<link rel="stylesheet" href="/css/js-enhance.css"/>
 		{{!-- <link rel="stylesheet" href="/css/c3.css"/> --}}
 	  	{{!-- <script src="/node_modules/ONS-Pattern-Library/dist/js/header.js"></script> --}}
+
 	  	<!-- Bugherd integration script: http://bugherd.com/documentation/installing-the-sidebar/ -->
 	  	<script type='text/javascript'>
 	  		var BugHerdConfig = {"feedback":{"hide":true}};
@@ -47,15 +48,16 @@
 	  	    })(document, 'script');
 	  	</script>
   	</head>
+
   	<body>
   		<script type="text/javascript" src="/js/js-enhance-loading.js"></script>
 	  	<header>
 		  	{{!-- Skip to main content accessibility link --}}
-		  	{{!-- <div class="wrapper">
-				<a class="skiplinks visuallyhidden focusable" href="#main" tabindex="0">
+		  	<div class="wrapper">
+				<a class="skiplink visuallyhidden focusable" href="#main" tabindex="0">
 					Skip to main content
 				</a>
-			</div> --}}
+			</div>
 
 			{{!-- produced for download analytics function --}}
 			<div id="pagePath" class="hide">{{uri}}</div>
@@ -108,6 +110,8 @@
 			{{!-- MAIN NAV --}}
 			<div class="primary-nav print--hide">
 				<nav>
+
+                    {{!-- MENU AND SEARCH TOGGLES ON MOBILE --}}
 					<ul class="nav--controls">
 						<li class="nav--controls__item">
 							<a href="#nav-primary" id="menu-toggle" aria-controls="nav-primary" class="nav--controls__menu">
@@ -120,6 +124,8 @@
 							</a>
 						</li>
 					</ul>
+
+                    {{!-- PRIMARY NAVIGATION --}}
 					<div class="wrapper nav-main--hidden" id="nav-primary">
 						<ul class="primary-nav__list">
 							<li class="primary-nav__item hide--mobile old-ie--display-block"><a class="primary-nav__link col col--md-7 col--lg-9" href="/">{{labels.home}}</a></li>
