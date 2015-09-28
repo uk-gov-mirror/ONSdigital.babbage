@@ -23,10 +23,10 @@
 			<div class="col">
 				{{!-- Latest info --}}
 				{{#if description.latestRelease}}
-				<p class="alert__content">This is the latest release</p> <a class="btn btn--primary print--hide" href="{{parentPath uri}}/previousReleases">view previous releases</a>
+				<p class="alert__title">This is the latest release</p> <a class="btn btn--primary print--hide" href="{{parentPath uri}}/previousReleases">view previous releases</a>
 				{{else}}
 				{{#resolve (concat (parentPath uri) "/latest") filter="title"}}
-				<p class="alert__content">This is not the latest release</p> <a class="btn btn--primary print--hide" href="{{uri}}">view latest release</a>
+				<p class="alert__title">This is not the latest release</p> <a class="btn btn--primary print--hide" href="{{uri}}">view latest release</a>
 				{{/resolve}}
 				{{/if}}
 			</div>
@@ -41,7 +41,7 @@
 		<div class="col-wrap">
 
 			{{!-- Contact & NS logo--}}
-			<p class="col col--md-14 col--lg-17 meta__item">
+			<p class="col col--md-12 col--lg-15 meta__item">
 				{{#if description.nationalStatistic}}
 				<img class="meta__image" src="/node_modules/ONS-Pattern-Library/dist/img/national-statistics.png" alt="National Statistics logo" />
 				{{/if}}
@@ -49,18 +49,18 @@
 			</p>
 
 			{{!-- Release date --}}
-			<p class="col col--md-11 col--lg-14 meta__item">
+			<p class="col col--md-12 col--lg-15 meta__item">
 				<span>{{labels.release-date}}: </span><br/>{{df description.releaseDate}}<br/>
 			</p>
 
 			{{!-- Next release --}}
-			<p class="col col--md-11 col--lg-14 meta__item">
+			<p class="col col--md-12 col--lg-15 meta__item">
 				<span>{{labels.release-next}}: </span><br/>{{#if description.nextRelease}}{{description.nextRelease}}{{else}}To be announced{{/if}}
 			</p>
 
 
 			{{!-- Print and download --}}
-			<p class="col col--md-11 col--lg-14 print--hide meta__item">
+			<p class="col col--md-12 col--lg-15 print--hide meta__item">
 				<a href="" id="jsEnhancePrint" class="link-complex nojs-hidden js-enhance--show">
 					{{labels.print-report}}
 				</a>
@@ -155,37 +155,40 @@
 			{{!-- Sidebar --}}
 
 			<div class="col col--md-11 col--lg-20">
-			{{!-- Related data --}}
+			    {{!-- Related data --}}
 				{{#if relatedData}}
 					<div class="tiles__item tiles__item--nav-type flush-col">
 						<h3 class="tiles__title-h3 tiles__title-h3--nav">{{labels.bulletin-related-data}}</h3>
-						<ul class="tiles__content--nav list--neutral">
-							{{#each relatedData}}
-							{{#resolve this.uri filter="title"}}
-							<li><a href="{{absolute uri}}">{{title}}</a></li>
-							{{/resolve}}
-							{{/each}}
-						</ul>
+						<div class="tiles__content--nav">
+							<ul class="list--neutral">
+								{{#each relatedData}}
+								{{#resolve this.uri filter="title"}}
+								<li><a href="{{absolute uri}}">{{title}}</a></li>
+								{{/resolve}}
+								{{/each}}
+							</ul>
+						</div>
 					</div>
 				{{/if}}
 
 				{{#if relatedBulletins}}
 					<div class="tiles__item tiles__item--nav-type flush-col">
 						<h3 class="tiles__title-h3 tiles__title-h3--nav">{{labels.bulletin-related-bulletins}}</h3>
-						<ul class="tiles__content tiles__content--nav list--neutral">
-							{{#each relatedBulletins}}
-							{{#resolve this.uri filter="description"}}
-								<li>
-									<h3>
-									<a href="{{uri}}">{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}</a>
-									</h3>
-									{{md description.summary}}
-								</li>
-							{{/resolve}}
-							{{/each}}
+						<div class="tiles__content tiles__content--nav">
+							<ul class="list--neutral">
+								{{#each relatedBulletins}}
+								{{#resolve this.uri filter="description"}}
+									<li>
+										<h3>
+										<a href="{{uri}}">{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}</a>
+										</h3>
+										{{md description.summary}}
+									</li>
+								{{/resolve}}
+								{{/each}}
 							</ul>
+						</div>
 					</div>
-				</div>
 				{{/if}}
 
 				{{!-- Contact details --}}
@@ -193,16 +196,17 @@
 					<h3 class="tiles__title-h3 tiles__title-h3--nav">
 					{{labels.bulletin-contact}}
 					</h3>
-					<address class="tiles__content--nav">
-						{{#if description.contact.name}}{{description.contact.name}}<br/>{{/if}}
-						<a href="mailto:{{description.contact.email}}">{{description.contact.email}}</a></br>
-						{{#if description.contact.telephone}}{{labels.phone}}: {{description.contact.telephone}}{{/if}}
-					</address>
+					<div class="tiles__content--nav">
+						<address>
+							{{#if description.contact.name}}{{description.contact.name}}<br/>{{/if}}
+							<a href="mailto:{{description.contact.email}}">{{description.contact.email}}</a></br>
+							{{#if description.contact.telephone}}{{labels.phone}}: {{description.contact.telephone}}{{/if}}
+						</address>
+					</div>
 				</div>{{!-- /tiles --}}
 
 				{{> partials/local-box}}
-
-			</div> {{!-- /col --}}
+            </div>
 		</div> {{!-- /wrapper --}}
 	</div>
 </main>

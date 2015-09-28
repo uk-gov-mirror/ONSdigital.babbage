@@ -1,12 +1,14 @@
-<ul class="list--neutral">
+<ul class="list--neutral search-results">
 {{!-- 	{{#if_all featuredResult parameters.timeseries}}
-	<li class="search--result-item margin-bottom--double">
-		<h3 class="inline-block"><a href="/datalist?type=timeseries&query={{parameters.q.0}}">{{{featuredResult.results.0.description.title}}} time series collection
+	<li class="search-results__item">
+		<h3 class="search-results__title"> <a href="/datalist?type=timeseries&query={{parameters.q.0}}">{{{featuredResult.results.0.description.title}}} time series collection
 			{{#if featuredResult.results.0.description.edition}}
 			{{#if_all (ne featuredResult.results.0.description.edition 'yes') (ne featuredResult.results.0.description.edition '<strong>yes</strong>')}}: {{{featuredResult.results.0.description.edition}}}{{/if_all}}
 		{{/if}}</a></h3>
-		<span class="lozenge margin-left--half">time series</span>
-		<p>Contains all single time series covering {{{featuredResult.results.0.description.title}}}</p>
+		<p class="search-results__meta">Time series</p>
+		<div class="search-results__summary">
+			<p>Contains all single time series covering {{{featuredResult.results.0.description.title}}}</p>
+		</div>
 		{{#if featuredResult.results.0.description.keywords}}
 		<p class="flush">
 			Keywords: {{#each featuredResult.results.0.description.keywords}}{{{this}}}  {{/each}}
@@ -16,23 +18,25 @@
 	{{/if_all}} --}}
 
 	{{#each results}}
-	<li class="search--result-item margin-bottom--double">
-		<h3 class="inline-block"><a href="{{uri}}">{{{description.title}}}
+	<li class="search-results__item">
+		<h3 class="search-results__title"><a href="{{uri}}">{{{description.title}}}
 			{{#if description.edition}}
 			{{#if_all (ne description.edition 'yes') (ne description.edition '<strong>yes</strong>')}}: {{{description.edition}}}{{/if_all}}
 		{{/if}}</a></h3>
-		<span class="lozenge margin-left--half">{{> type-label type=this.type}}</span>
 		{{#if partOf}}
 		<p>
 			<a href="{{uri}}">{{{description.title}}}</a><span class="icon-search-1"></span>
 		</p>
 		{{/if}}
-		<p class="flush">
-			Released: {{df description.releaseDate}} {{#if description.reference}}Ref: {{{description.reference}}}{{/if}}
+		<p class="search-results__meta">
+			{{> type-label type=this.type}} | Released on {{df description.releaseDate}} {{#if description.reference}}Ref: {{{description.reference}}}{{/if}}
 		</p>
-		{{md description.summary}}
+
+		<div class="search-results__summary">
+			{{md description.summary}}
+		</div>
 		{{#if description.keywords}}
-		<p class="flush">
+		<p class="search-results__keywords">
 			Keywords: {{#each description.keywords}}{{{this}}}  {{/each}}
 		</p>
 		{{/if}}

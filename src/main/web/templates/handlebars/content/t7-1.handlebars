@@ -1,155 +1,221 @@
 <main id="main" role="main" tabindex="-1">
-	<div class="page-header slate slate--red">
+
+    {{!-- -------------------------------------------------------------
+    THIS TEMPLATE CONTAINS A LOT OF CONDITIONALS
+
+    I know, you're thinking: "Well duh, I already knew that!".
+    It's to compensate for the variations we can get for the metadata block.
+    To get some of the borders to line up between the top row and second row we've had to make this mess :'(
+    -------------------------------------------------------------- --}}
+
+	<div class="page-intro">
 		<div class="wrapper">
-		{{> partials/breadcrumb}}
-			<p class="page-header__title">
-				{{labels.qmi}}
-			</p>
-			<h1 class="page-header__title flush--half--bottom">{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}</h1>
-			<div class="grid-wrap mini">
-        <p class="grid-col tablet-grid-one-quarter {{#if description.nationalStatistic}}page-header__meta-block-with-img{{/if}}">
-					{{#if description.nationalStatistic}}
-            <img src="/node_modules/ONS-Pattern-Library/ui/img/national-statistics.png" alt="National Statistics logo" />
-					{{/if}}
-					<span>{{labels.meta-contact}}: </span></br>
-					<a href="mailto:{{description.contact.email}}">{{#if description.contact.name}}{{description.contact.name}}{{else}}{{description.contact.email}}{{/if}}</a>
-				</p>
-				<p class="grid-col tablet-grid-one-quarter divider--border-left">
-					<span>{{labels.qmi-last-revised}}: </span><br/>{{df description.lastRevised}}
-				</p>
-				<p class="grid-col tablet-grid-one-half divider--border-left">
-					<a class="link-complex" href="/pdf">
-						<span class="icon icon-download"></span>
-						<span class="link-complex__target">{{labels.dl-pdf}}</span>
-					</a>
-				</p>
-			</div>
+            <div class="col-wrap">
+                <div class="col">
+                    {{!-- Breadcrumb --}}
+                    {{> partials/breadcrumb}}
+
+                    {{!-- Title --}}
+                    <h1 class="page-intro__title margin-bottom--double">{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}</h1>
+                </div>
+            </div>
+        </div> {{!-- /wrapper --}}
+
+        {{!-- METADATA --}}
+        <div class="meta-wrap">
+            <div class="wrapper">
+                <div class="col-wrap">
+
+                    {{!-- First line of metadata --}}
+                    {{#if description.nationalStatistic}}
+                        <p class="col {{#if_all description.surveyName description.frequency description.compilation description.sampleSize description.geographicCoverage}}col--md-12 col--lg-16{{else}}col--md-15 col--lg-18{{/if_all}} meta__item">
+                            <span>{{labels.meta-contact}}: </span></br>
+                            <a href="mailto:{{description.contact.email}}">{{#if description.contact.name}}{{description.contact.name}}{{else}}{{description.contact.email}}{{/if}}</a>
+                        </p>
+
+                        <p class="col col--md-11 {{#if_all description.surveyName description.frequency description.compilation description.sampleSize description.geographicCoverage}}col--lg-15{{else}}col--lg-14{{/if_all}} meta__item">
+                            <span>{{labels.qmi-last-revised}}: </span><br/>{{df description.lastRevised}}
+                        </p>
+
+                        <p class="col col--md-11 {{#if_all description.surveyName description.frequency description.compilation description.sampleSize description.geographicCoverage}}col--lg-15{{else}}col--lg-14{{/if_all}} meta__item">
+                            <a href="{{downloads.0.file}}">{{downloads.0.title}}</a>
+                            ({{fs downloads.0.file}} {{fe downloads.0.file}})
+                        </p>
+
+                    {{else}}
+
+                        <p class="col col--md-12 col--lg-15 meta__item">
+                            <span>{{labels.meta-contact}}: </span></br>
+                            <a href="mailto:{{description.contact.email}}">{{#if description.contact.name}}{{description.contact.name}}{{else}}{{description.contact.email}}{{/if}}</a>
+                        </p>
+
+                        <p class="col col--md-12 col--lg-15 meta__item">
+                            <span>{{labels.qmi-last-revised}}: </span><br/>{{df description.lastRevised}}
+                        </p>
+
+                        <p class="col col--md-12 col--lg-15 meta__item">
+                            <a href="{{downloads.0.file}}">{{downloads.0.title}}</a> ({{fs downloads.0.file}} {{fe downloads.0.file}})
+                        </p>
+                    {{/if}}
+
+                </div>
+            </div>
+
+
+            {{!-- Second line of metadata (Methodology background) --}}
 			{{#if_any description.surveyName description.frequency description.compilation description.sampleSize description.geographicCoverage}}
-			<h2 class="gamma">{{labels.qmi-meth-background}}</h2>
-			<div class="grid-wrap mini">
-				{{#if description.surveyName}}
-				<p class="grid-col {{#if_all description.surveyName description.frequency description.compilation description.sampleSize description.geographicCoverage}}tablet-grid-one-fifth{{else}}tablet-grid-one-quarter{{/if_all}} {{#if description.nationalStatistic}}page-header__meta-block-with-img{{/if}}">
-					<span>{{labels.qmi-survey-name}}: </span><br/>{{description.surveyName}}
-				</p>
-				{{/if}}
-				{{#if description.frequency}}
-				<p class="grid-col {{#if_all description.surveyName description.frequency description.compilation description.sampleSize description.geographicCoverage}}tablet-grid-one-fifth{{else}}tablet-grid-one-quarter{{/if_all}} {{#if description.surveyName}}divider--border-left{{/if}}">
-					<span>{{labels.qmi-frequency}}: </span><br/>{{description.frequency}}
-				</p>
-				{{/if}}
-				{{#if description.compilation}}
-				<p class="grid-col {{#if_all description.surveyName description.frequency description.compilation description.sampleSize description.geographicCoverage}}tablet-grid-one-fifth{{else}}tablet-grid-one-quarter{{/if_all}} {{#if_any description.surveyName description.frequency}}divider--border-left{{/if_any}}">
-					<span>{{labels.qmi-compiled}}: </span><br/>{{description.compilation}}
-				</p>
-				{{/if}}
-				{{#if description.sampleSize}}
-				<p class="grid-col {{#if_all description.surveyName description.frequency description.compilation description.sampleSize description.geographicCoverage}}tablet-grid-one-fifth{{else}}tablet-grid-one-quarter{{/if_all}} {{#if_any description.surveyName description.frequency description.compilation}}divider--border-left{{/if_any}}">
-					<span>{{labels.qmi-sample-size}}: </span><br/><span class="stat__figure-enhance">{{description.sampleSize}}</span>
-				</p>
-				{{/if}}
-				{{#if description.geographicCoverage}}
-				<p class="grid-col {{#if_all description.surveyName description.frequency description.compilation description.sampleSize description.geographicCoverage}}tablet-grid-one-fifth{{else}}tablet-grid-one-quarter{{/if_all}} {{#if_any description.surveyName description.frequency description.compilation description.sampleSize}}divider--border-left{{/if_any}}">
-					<span>{{labels.qmi-geog}}: </span><br/>{{description.geographicCoverage}}
-				</p>
-				{{/if}}
-			</div>
-			{{/if_any}}
+                <div class="wrapper">
+                    <h2 class="flush">{{labels.qmi-meth-background}}</h2>
+
+                    <div class="col-wrap">
+                        {{#if description.nationalStatistic}}
+
+                            <div class="col col--md-4 {{#if_all description.surveyName description.frequency description.compilation description.sampleSize description.geographicCoverage}}col--lg-5{{else}}col--lg-4{{/if_all}}">
+                                <img class="meta__image padding-left padding-top--half" src="/node_modules/ONS-Pattern-Library/ui/img/national-statistics.png" alt="National Statistics logo"/>
+                            </div>
+                            {{#if description.surveyName}}
+                                <p class="col {{#if_all description.surveyName description.frequency description.compilation description.sampleSize description.geographicCoverage}}col--md-8 col--lg-11{{else}}col--md-11 col--lg-14{{/if_all}} meta__item">
+                                    <span>{{labels.qmi-survey-name}}: </span><br/>
+                                    {{description.surveyName}}
+                                </p>
+                            {{/if}}
+                            {{#if description.frequency}}
+                                <p class="col {{#if_all description.surveyName description.frequency description.compilation description.sampleSize description.geographicCoverage}}col--md-8 col--lg-11{{else}}col--md-11 col--lg-14{{/if_all}} meta__item">
+                                    <span>{{labels.qmi-frequency}}: </span><br/>{{description.frequency}}
+                                </p>
+                            {{/if}}
+                            {{#if description.compilation}}
+                                <p class="col {{#if_all description.surveyName description.frequency description.compilation description.sampleSize description.geographicCoverage}}col--md-8 col--lg-11{{else}}col--md-11 col--lg-14{{/if_all}} meta__item">
+                                    <span>{{labels.qmi-compiled}}: </span><br/>{{description.compilation}}
+                                </p>
+                            {{/if}}
+                            {{#if description.sampleSize}}
+                                <p class="col {{#if_all description.surveyName description.frequency description.compilation description.sampleSize description.geographicCoverage}}col--md-8 col--lg-11{{else}}col--md-11 col--lg-14{{/if_all}} meta__item">
+                                    <span>{{labels.qmi-sample-size}}: </span><br/>
+                                    {{description.sampleSize}}
+                                </p>
+                            {{/if}}
+                            {{#if description.geographicCoverage}}
+                                <p class="col {{#if_all description.surveyName description.frequency description.compilation description.sampleSize description.geographicCoverage}}col--md-8 col--lg-11{{else}}col--md-11 col--lg-14{{/if_all}} meta__item"> <span>{{labels.qmi-geog}}: </span><br/>{{description.geographicCoverage}}
+                                </p>
+                            {{/if}}
+
+                        {{else}}
+
+
+                            {{#if description.surveyName}}
+                                <p class="col {{#if_all description.surveyName description.frequency description.compilation description.sampleSize description.geographicCoverage}}col--md-10 col--lg-12{{else}}col--md-12 col--lg-15{{/if_all}} meta__item">
+                                    <span>{{labels.qmi-survey-name}}: </span><br/>
+                                    {{description.surveyName}}
+                                </p>
+                            {{/if}}
+                            {{#if description.frequency}}
+                                <p class="col {{#if_all description.surveyName description.frequency description.compilation description.sampleSize description.geographicCoverage}}col--md-9 col--lg-12{{else}}col--md-12 col--lg-15{{/if_all}} meta__item">
+                                    <span>{{labels.qmi-frequency}}: </span><br/>{{description.frequency}}
+                                </p>
+                            {{/if}}
+                            {{#if description.compilation}}
+                                <p class="col {{#if_all description.surveyName description.frequency description.compilation description.sampleSize description.geographicCoverage}}col--md-10 col--lg-12{{else}}col--md-12 col--lg-15{{/if_all}} meta__item">
+                                    <span>{{labels.qmi-compiled}}: </span><br/>{{description.compilation}}
+                                </p>
+                            {{/if}}
+                            {{#if description.sampleSize}}
+                                <p class="col {{#if_all description.surveyName description.frequency description.compilation description.sampleSize description.geographicCoverage}}col--md-9 col--lg-12{{else}}col--md-12 col--lg-15{{/if_all}} meta__item">
+                                    <span>{{labels.qmi-sample-size}}: </span><br/>
+                                    {{description.sampleSize}}
+                                </p>
+                            {{/if}}
+                            {{#if description.geographicCoverage}}
+                                <p class="col {{#if_all description.surveyName description.frequency description.compilation description.sampleSize description.geographicCoverage}}col--md-10 col--lg-12{{else}}col--md-12 col--lg-15{{/if_all}} meta__item"> <span>{{labels.qmi-geog}}: </span><br/>{{description.geographicCoverage}}
+                                </p>
+                            {{/if}}
+                        {{/if}}
+                    </div>
+                </div>
+            {{/if_any}}
 		</div>
 	</div>
-	<!-- /page-header 'slate' -->
-	<div class="wrapper panel--mar">
-		<div class="grid-wrap">
-			<article class="grid-col desktop-grid-two-thirds">
-				{{#each markdown}}
-					{{md this}}
-				{{/each}}
-			</article>
-			<!-- /grid-two-thirds -->
-			<div class="grid-col desktop-grid-one-third">
-				{{#if relatedDocuments}}
-				<article class="box solid box--teal--separated--left">
-					<div class="box__inner border box--padded">
-						<h3 class="box__section__header">
-							{{labels.qmi-docs-using}}
-						</h3>
-						<!-- /box__header -->
-						<div class="box__content">
-							<ul class="list--neutral">
-								{{#each relatedDocuments}}
-									{{#resolve this.uri filter="title"}}
-										<li class="flush--third--bottom"><a href="{{uri}}">{{title}}{{#if edition}}: {{edition}}{{/if}}</a></li>
-									{{/resolve}}
-								{{/each}}
-							</ul>
-						</div>
-						<!-- /box__content -->
-					</div>
-					<!-- /box__inner -->
-				</article>
-				{{/if}}
-				{{#if relatedDatasets}}
-					<article class="box box--green box--green--separated--left">
-						<div class="box__inner border box--padded">
-							<h3 class="box__section__header">
-								{{labels.qmi-data-using}}
-							</h3>
-							<div class="box__content">
-								<ul class="list--neutral">
-									{{#each relatedDatasets}}
-										{{#resolve this.uri filter="title"}}
-										<li class="flush--third--bottom"><a href="{{uri}}">{{title}}</a></li>
-										{{/resolve}}
-									{{/each}}
-								</ul>
-							</div>
-						</div>
-					</article>
-				{{/if}}
-				<!-- /box -->
-				<div class="box box--padded sectioned">
-					<h3 class="box__section__header">
-						{{labels.qmi-contact}}
-					</h3>
-					<!-- /box__header -->
-					<div class="box__content">
-						<address>
-							{{#if description.contact.name}}{{description.contact.name}}<br/>{{/if}}
-		                    <a href="mailto:{{description.contact.email}}">{{description.contact.email}}</a><br/>
-		                    {{#if description.contact.telephone}}{{labels.phone}}: {{description.contact.telephone}}{{/if}}
-						</address>
-					</div>
-					<!-- /box__content -->
-				</div>
-				<!-- /box -->
-			</div>
-			<!-- /desktop-grid-one-third -->
-		</div>
-		<!-- /grid-wrap -->
-		<div class="grid-wrap">
-			<div class="grid-col desktop-grid-one-third">
-				<div class="box solid box--purple--separated--left">
-					<div class="box__inner border box--padded">
-						<h3 class="box__section__header">
-							{{labels.qmi-download}}
-						</h3>
-						<!-- /box__header -->
-						<div class="box__content">
-							<ul class="list--neutral">
-								{{#each downloads}}
-								<li class="flush--third--bottom">
-									<a href="/file?uri={{file}}" title="{{title}}">{{title}}</a>
-								</li>
-								{{/each}}
-							</ul>
-						</div>
-						<!-- /box__content -->
-					</div>
-					<!-- /box__inner -->
-				</div>
-				<!-- /box -->
-			</div>
-			<!-- /desktop-grid-one-third -->
-		</div>
-		<!-- /grid-wrap -->
-	</div>
+
+    <div class="page-content">
+        <div class="wrapper">
+            <div class="col-wrap">
+
+                {{!-- MARKDOWN --}}
+                <div class="col {{#if_any relatedDocuments relatedDatasets description.contact}}col--md-two-thirds col--lg-two-thirds{{/if_any}}">
+                    <section class="section__content--static-markdown">
+                        {{#each markdown}}
+                            {{md this}}
+                        {{/each}}
+                    </section>
+
+                    <div class="tiles__item tiles__item--nav-type col--md-31 col--lg-19 flush-col">
+                        <h3 class="tiles__title-h3 tiles__title-h3--nav">{{labels.qmi-download}}</h3>
+
+                        <div class="tiles__content--nav">
+                            <ul class="list--neutral">
+                                {{#each downloads}}
+                                    <li class="flush--third--bottom">
+                                        <a href="/file?uri={{file}}" title="{{title}}">{{title}}</a> ({{fs file}} {{fe file}})
+                                    </li>
+                                {{/each}}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                {{!-- 'RELATED' TILES --}}
+                {{#if_any relatedDocuments relatedDatasets description.contact}}
+                    <div class="col col--md-one-third col--lg-one-third margin-top">
+                        {{!-- Related documents --}}
+                        {{#if relatedDocuments}}
+                            <div class="tiles__item tiles__item--nav-type flush-col">
+                                <h3 class="tiles__title-h3 tiles__title-h3--nav">{{labels.qmi-docs-using}}</h3>
+
+                                <div class="tiles__content--nav">
+                                    <ul class="list--neutral">
+                                        {{#each relatedDocuments}}
+                                            {{#resolve this.uri filter="title"}}
+                                                <li><a href="{{uri}}">{{title}}{{#if edition}}: {{edition}}{{/if}}</a></li>
+                                            {{/resolve}}
+                                        {{/each}}
+                                    </ul>
+                                </div>
+                            </div>
+                        {{/if}}
+
+                        {{#if relatedDatasets}}
+                            <div class="tiles__item tiles__item--nav-type flush-col">
+                                <h3 class="tiles__title-h3 tiles__title-h3--nav">{{labels.qmi-data-using}}</h3>
+
+                                <div class="tiles__content--nav">
+                                    <div class="list--neutral">
+                                        {{#each relatedDatasets}}
+                                            {{#resolve this.uri filter="title"}}
+                                                <li class="flush--third--bottom"><a href="{{uri}}">{{title}}</a></li>
+                                            {{/resolve}}
+                                        {{/each}}
+                                    </div>
+                                </div>
+                            </div>
+                        {{/if}}
+                        
+                        {{!-- Contact details --}}
+                        {{#if description.contact}}
+                            <div class="tiles__item tiles__item--nav-type flush-col">
+                                <h3 class="tiles__title-h3 tiles__title-h3--nav">{{labels.qmi-contact}}</h3>
+
+                                <div class="tiles__content--nav">
+                                    <address>
+                                        {{#if description.contact.name}}{{description.contact.name}}<br/>{{/if}}
+                                        <a href="mailto:{{description.contact.email}}">{{description.contact.email}}</a><br/>
+                                        {{#if description.contact.telephone}}{{labels.phone}}: {{description.contact.telephone}}{{/if}}
+                                    </address>
+                                </div>
+                            </div>
+                        {{/if}}
+                    </div>
+                {{/if_any}}
+            </div>
+        </div>
+    </div>
 </main>

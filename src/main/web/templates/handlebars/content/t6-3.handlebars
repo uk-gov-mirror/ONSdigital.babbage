@@ -26,7 +26,7 @@
 			<div class="col-wrap">
 
 				{{!-- Contact & NS logo--}}
-				<p class="col col--md-14 col--lg-17 meta__item">
+				<p class="col col--md-12 col--lg-15 meta__item">
 					{{#if description.nationalStatistic}}
 					<img class="meta__image" src="/node_modules/ONS-Pattern-Library/dist/img/national-statistics.png" alt="National Statistics logo" />
 					{{/if}}
@@ -34,17 +34,17 @@
 				</p>
 
 				{{!-- Release date --}}
-				<p class="col col--md-11 col--lg-14 meta__item">
+				<p class="col col--md-12 col--lg-15 meta__item">
 					<span>{{labels.release-date}}: </span><br/>{{df description.releaseDate}}<br/>
 				</p>
 
 				{{!-- Next release --}}
-				<p class="col col--md-11 col--lg-14 meta__item">
+				<p class="col col--md-12 col--lg-15 meta__item">
 					<span>{{labels.release-next}}: </span><br/>{{#if description.nextRelease}}{{description.nextRelease}}{{else}}To be announced{{/if}}
 				</p>
 
 				{{!-- Dataset ID --}}
-				<p class="col col--md-11 col--lg-14 meta__item">
+				<p class="col col--md-12 col--lg-15 meta__item">
 					<span>{{labels.dataset-id}}: </span>{{description.datasetId}}
 	        		<a href="#" class="tooltip" title="This series ID is a unique random identifier for this individual time series. The digits themselves do not have any specific meaning" aria-label="This series ID is a unique random identifier for this individual time series. The digits themselves do not have any specific meaning">{{labels.dataset-what-is}} </a>
 				</p>
