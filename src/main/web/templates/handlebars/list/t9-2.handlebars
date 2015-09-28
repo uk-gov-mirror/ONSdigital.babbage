@@ -4,6 +4,11 @@
 			<div class="col-wrap">
 				<div class="col one">
 					{{> list/partials/list-page-breadcrumb label="Published requests"}}
+					{{#each breadcrumb}}
+						{{#if @last}}
+							<h1 class="page-intro__title margin-bottom--double">{{description.title}} published requests</h1>
+						{{/if}}
+					{{/each}}
 				</div>
 			</div>
 		</div>
@@ -29,7 +34,7 @@
 							{{> list/filters/keywords}}
 							{{> list/filters/publish-date}}
 						</div>
-						<button type="submit" class="btn btn--primary btn--block btn--thick margin-top">Filter</button>
+						<button type="submit" class="btn btn--primary btn--thick margin-top--double">Filter</button>
 					</div>
 				</div>
 				{{> partials/archives-box}}

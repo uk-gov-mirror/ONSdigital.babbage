@@ -41,7 +41,7 @@ var linechart = {
      categories: [],
       tickPositioner: function () {
        var positions = [];
-       var increment = Math.ceil(((this.dataMax) - (this.dataMin)) / 15);
+       var increment = Math.ceil(((this.dataMax) - (this.dataMin)) / 16);
        var tick = Math.floor(this.dataMin);
        for (tick; tick < this.dataMax; tick += increment) {
          positions.push(tick);
