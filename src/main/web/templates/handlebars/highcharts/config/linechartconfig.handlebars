@@ -16,7 +16,8 @@ var series = [];
 var description = {{json description}};
 var linechart = {
    chart: {
-     type: 'line'
+     type: 'line',
+     marginRight: 35
    },
    colors: ['#007dc3', '#409ed2', '#7fbee1', '#007dc3', '#409ed2', '#7fbee1'],
 
@@ -38,21 +39,22 @@ var linechart = {
    },
    xAxis: {
      categories: [],
-     tickInterval:  function(){ 
-         if (series.length <= 20) {
-            return 1;
-        } else if (series.length <= 80) {
-            return 4;
-        } else if (series.length <= 240) {
-            return 12;
-        } else if (series.length <= 480) {
-            return 48;
-        } else if (series.length <= 960) {
-            return 96;
-        } else {
-            return 192;
-        }
-     }(),
+      tickPositioner: function () {
+       var positions = [];
+       var increment = Math.ceil(((this.dataMax) - (this.dataMin)) / 15);
+       var tick = Math.floor(this.dataMin);
+       for (tick; tick < this.dataMax; tick += increment) {
+         positions.push(tick);
+       }
+       //prevent last tick label overlap the last data in the array if too close
+       var diff = tick - this.dataMax;
+       if(diff > (increment /2) ) {
+        var deleted = positions.pop();
+       }
+
+       positions.push(this.dataMax);
+       return positions;
+     },
      labels: {
        formatter: function() {
          var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
@@ -61,7 +63,7 @@ var linechart = {
            if (this.isFirst) {
              count = 0;
            }
-           if (count % 3 === 0) {
+           if (count % 4 === 0 || this.isLast) {
              response = this.value;
            }
            count++;

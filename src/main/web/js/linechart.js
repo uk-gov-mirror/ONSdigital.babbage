@@ -623,7 +623,7 @@ var renderLineChart = function(timeseries) {
 				// 	// }
 				// }
 			});
-			console.log(devNote);
+			// console.log(devNote);
 			if (toggleTheCollapsible) {
 					toggleCollapsible();
 				}
