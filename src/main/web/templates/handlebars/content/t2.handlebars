@@ -14,57 +14,54 @@
 	</div>
 
 	{{#if highlightedLinks}}
-	<div class="wrapper">
-		<div class="tiles">
-			<h2>Highlighted topics</h2>
-			<ul class="col-wrap col-span--lg-thirds tiles__list">
-				{{!-- loop for children nodes --}}
-				{{#each highlightedLinks}}
-					{{#resolve this.uri}}
-					    {{#if_any items datasets statsBulletins relatedArticles sections}}
-					    	{{> partials/t2/t2-section}}
-					    {{else}}
-					    	{{#if_eq type 'taxonomy_landing_page'}}
-					    	    {{!-- if child landing page has sections to show --}}
-					    		{{#if sections}}
-					    			{{> partials/t2/t2-section}}
-					    		{{/if}}
-					    	{{/if_eq}}
-					    {{/if_any}}
-					{{/resolve}}
-				{{/each}}
-			</ul>
+	<div class="slate--alabaster">
+		<div class="wrapper">
+			<div class="tiles">
+				<h2>Highlighted content</h2>
+				<ul class="col-wrap tiles__list margin-bottom--double">
+					{{!-- loop for children nodes --}}
+					{{#each highlightedLinks}}
+						{{#resolve this.uri}}
+						    {{#if_any items datasets statsBulletins relatedArticles sections}}
+						    	{{> partials/t2/t2-highlighted-content}}
+						    {{/if_any}}
+						{{/resolve}}
+					{{/each}}
+				</div>
+			</div>
 		</div>
 	</div>
 	{{/if}}
 
-	<div class="wrapper">
-		<div class="tiles">
-			<h2>In this section</h2>
-			<ul class="col-wrap col-span--lg-thirds tiles__list">
-				{{!-- loop for children nodes --}}
-				{{#each sections}}
-					{{#resolve this.uri}}
-					    {{#if_any items datasets statsBulletins relatedArticles}}
-					    	{{> partials/t2/t2-section}}
-					    {{else}}
-					    	{{#if_eq type 'taxonomy_landing_page'}}
-					    	    {{!-- if child landing page has sections to show --}}
-					    		{{#if sections}}
-					    			{{> partials/t2/t2-section}}
-					    		{{/if}}
-					    	{{/if_eq}}
-					    {{/if_any}}
-					{{/resolve}}
-				{{/each}}
-			</ul>
-		</div>
-		<div class="col-wrap">
-			<div class="col col--md-one-third col--lg-one-third">
-				{{> partials/local-box}}
+	<div class="page-content">
+		<div class="wrapper">
+			<div class="tiles">
+				<h2>In this section</h2>
+				<ul class="col-wrap col-span--lg-thirds tiles__list">
+					{{!-- loop for children nodes --}}
+					{{#each sections}}
+						{{#resolve this.uri}}
+						    {{#if_any items datasets statsBulletins relatedArticles}}
+						    	{{> partials/t2/t2-section}}
+						    {{else}}
+						    	{{#if_eq type 'taxonomy_landing_page'}}
+						    	    {{!-- if child landing page has sections to show --}}
+						    		{{#if sections}}
+						    			{{> partials/t2/t2-section}}
+						    		{{/if}}
+						    	{{/if_eq}}
+						    {{/if_any}}
+						{{/resolve}}
+					{{/each}}
+				</ul>
 			</div>
+			<div class="col-wrap">
+				<div class="col col--md-one-third col--lg-one-third">
+					{{> partials/local-box}}
+				</div>
+			</div>
+			{{!-- /grid-col --}}
 		</div>
-		{{!-- /grid-col --}}
+		{{!-- /wrapper --}}
 	</div>
-	{{!-- /wrapper --}}
 </main>
