@@ -14,7 +14,7 @@
 	</div>
     <div class="wrapper print-links">
         <div class="col-wrap">
-            <div class="col col--md-two-thirds col--lg-two-thids">
+            <div class="col col--md-two-thirds col--lg-two-thirds">
         		<p>
         			<strong>Frequency: </strong>{{results.0.description.frequency}}
         		</p>
@@ -41,7 +41,9 @@
 				</ul>
 				{{> list/partials/paginator}}
             </div>
+            <div class="col col--md-two-thirds col--lg-two-thirds margin-bottom">
+                {{> partials/archives-box}}
+            </div>
         </div>
-	{{> partials/archives-box}}
     </div>
 </main>
