@@ -3,11 +3,15 @@
 <ul class="list--neutral">
 {{!-- Using date format to ensure entered date is correct date format and gibberish does not end up in input box, which should make user understand date filter did not take affect --}}
 	<li>
-		<label for="input-from-date">Published after</label>
-		<input type="text" autocomplete="off" id="input-start-date" name="fromDate" value="{{df parameters.fromDate.0 outputFormat="dd/MM/yyyy" inputFormat="dd/MM/yyyy"}}" placeholder="e.g. 23/01/2015" class="input">
+		<div class="filters__field">
+			<label for="input-from-date">Published after</label>
+			<input type="text" autocomplete="off" id="input-start-date" name="fromDate" value="{{df parameters.fromDate.0 outputFormat="dd/MM/yyyy" inputFormat="dd/MM/yyyy"}}" placeholder="e.g. 23/01/2015" class="input">
+		</div>
 	</li>
 	<li>
-		<label for="input-end-date">Published before</label>
-		<input type="text" autocomplete="off" id="input-end-date" name="toDate" value="{{df parameters.toDate.0 outputFormat="dd/MM/yyyy" inputFormat="dd/MM/yyyy"}}" placeholder="e.g. 23/02/2015" class="input">
+		<div class="filters__field">
+			<label for="input-end-date">Published before</label>
+			<input type="text" autocomplete="off" id="input-end-date" name="toDate" value="{{df parameters.toDate.0 outputFormat="dd/MM/yyyy" inputFormat="dd/MM/yyyy"}}" placeholder="e.g. 23/02/2015" class="input">
+		</div>
 	</li>
 </ul>

@@ -33,23 +33,27 @@
 						<div class="filters">
 							{{> list/filters/keywords}}
 
-							<h4>Content types to show</h4>
+							<h4 class="filters__title">Content types to show</h4>
 							<ul class="list--neutral">
 								<li>
-									<input id="checkbox-qmi" type="checkbox" name="filter" value="qmi" {{#contains parameters.filter 'qmi'}}checked{{/contains}} >
-									<label for="checkbox-qmi">
-										Quality and Methodology Information (QMI)
-									</label>
+									<div class="filters__field">
+										<input id="checkbox-qmi" type="checkbox" name="filter" value="qmi" {{#contains parameters.filter 'qmi'}}checked{{/contains}} >
+										<label for="checkbox-qmi">
+											Quality and Methodology Information (QMI)
+										</label>
+									</div>
 								</li>
 								<li>
-									<input id="checkbox-methodology" type="checkbox" name="filter" value="methodology_article" {{#contains parameters.filter 'methodology_article'}}checked{{/contains}}>
-									<label for="checkbox-methodology">
-										Article
-									</label>
+									<div class="filters__field">
+										<input id="checkbox-methodology" type="checkbox" name="filter" value="methodology_article" {{#contains parameters.filter 'methodology_article'}}checked{{/contains}}>
+										<label for="checkbox-methodology">
+											Article
+										</label>
+									</div>
 								</li>
 							</ul>
 						</div>
-						<button type="submit" class="btn btn--primary btn--block btn--thick margin-top">Filter</button>
+						<button type="submit" class="btn btn--primary btn--thick margin-top--double">Filter</button>
 					</div>
 				</div>
 				{{> partials/archives-box}}
