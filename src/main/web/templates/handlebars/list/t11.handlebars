@@ -12,12 +12,12 @@
 		<div class="wrapper">
 			<ul class="list--neutral list--inline flush">
 				<li>
-					<a href="/releasecalendar" class="tab__item tab__item--active">
+					<a href="/releasecalendar" class="tab__item {{#unless parameters.view.0}}tab__item--active{{/unless}}">
 					Published releases
 					</a>
 				</li>
 				<li>
-					<a href="/releasecalendar?view=upcoming" class="tab__item">
+					<a href="/releasecalendar?view=upcoming" class="tab__item {{#if_eq parameters.view.0 "upcoming"}}tab__item--active{{/if_eq}}">
 						Upcoming releases
 					</a>
 				</li>
