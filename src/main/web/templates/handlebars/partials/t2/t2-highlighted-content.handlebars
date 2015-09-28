@@ -1,10 +1,10 @@
-<div class=" clickable-wrap">
-	<li class="col col--md-half col--lg-one-third tiles__item--list-type-simple">
-		<h3 class="tiles__title-h3">
+<div class="col col--md-half col--lg-one-third margin-bottom--double">
+	<div class="tiles__item--list-type-simple">
+		<h3 class="tiles__title-h3 padding-left--none">
 			<a href="{{uri}}">{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}</a>
 		</h3>
-		<div class="tiles__content">
-			<p>{{#if description.summary}}{{description.summary}}{{else}}description._abstract{{/if}}</p>
+		<div class="tiles__content padding-left--none">
+			<p class="flush">{{#if description.summary}}{{description.summary}}{{else}}description._abstract{{/if}}</p>
 		</div>
-	</li>
+	</div>
 </div>
