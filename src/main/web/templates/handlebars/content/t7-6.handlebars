@@ -64,8 +64,8 @@
 				<div class="panel--mar">
 					{{#each accordion}}
 					<section id="{{slugify title}}" class="accordion is-collapsed">
-						<h2 class="accordion__title" aria-controls="content-{{add @index 1}}">{{title}}</h2>
-						<div class="accordion__content" aria-labelledby="sc-{{add @index 1}}">
+						<h2 class="accordion__title" aria-controls="content-{{@index_1}}">{{title}}</h2>
+						<div class="accordion__content" aria-labelledby="sc-{{@index_1}}">
 							{{md markdown}}
 							<a class="print-hidden" href="#toc" title="Back to table of contents">{{labels.toc}}</a>
 						</div>
