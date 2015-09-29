@@ -153,19 +153,71 @@ $(function() {
           'cursor': 'pointer'
       });
 
-      // change the background colour on hover
-      $(clickableDiv).hover(function() {
-        var elem = $(this);
-        $.each(hoverHashTable, function(className, hoverClassName) {
-            // $(elem).find('.'+className).css('background-color', 'red');
-            $(elem).find('.'+className).addClass(hoverClassName[0]);
+        //add class to change background colour
+        function addHoverClass(elem) {
+            $.each(hoverHashTable, function(className, hoverClassName) {
+                $(elem).find('.'+className).addClass(hoverClassName[0]);
+            });
+        }
+
+        //remove class to toggle background to origin colour
+        function removeHoverClass(elem) {
+            $.each(hoverHashTable, function(className, hoverClassName) {
+                $(elem).find('.'+hoverClassName[0]).removeClass(hoverClassName[0]);
+            });
+        }
+
+        // change the background colour on hover
+        $(clickableDiv).hover(function () {
+                addHoverClass(this);
+            },
+            function () {
+                removeHoverClass(this);
+            }
+        );
+
+        // change the background colour on focus
+        $('.tiles__item--nav-type-fixed a, .tiles__item--nav-type a, .tiles__title-dt a, .tiles__title a').focus(function() {
+            if ($(this).parent(clickableDiv)) {
+                var elem = $(this).closest(clickableDiv);
+                addHoverClass(elem);
+                console.log(elem);
+
+                $(elem).focusout(function(){
+                    removeHoverClass(elem);
+                });
+            }
         });
-      }, function() {
-        var elem = $(this);
-        $.each(hoverHashTable, function(className, hoverClassName) {
-            $(elem).find('.'+hoverClassName[0]).removeClass(hoverClassName[0]);
-        });
-      });
+
+
+
+        //var anchor = $(clickableDiv).find('a:first');
+        //$(clickableDiv).focus(function () {
+        //        var elem = $(this);
+        //        console.log('focus now');
+        //        addHoverClass(elem);
+        //    },
+        //    function () {
+        //        var elem = $(this);
+        //        console.log('stop focus');
+        //        removeHoverClass(elem);
+        //    }
+        //);
+
+      //$(clickableDiv).hover(function() {
+      //  var elem = $(this);
+      //    console.log('elem = ' + elem);
+      //  $.each(hoverHashTable, function(className, hoverClassName) {
+      //      // $(elem).find('.'+className).css('background-color', 'red');
+      //      $(elem).find('.'+className).addClass(hoverClassName[0]);
+      //  });
+      //}, function() {
+      //  var elem = $(this);
+      //    console.log('elem = ' + elem);
+      //  $.each(hoverHashTable, function(className, hoverClassName) {
+      //      $(elem).find('.'+hoverClassName[0]).removeClass(hoverClassName[0]);
+      //  });
+      //});
 
       // check if there's a nav--block-landing to remove :after class
     //   if ($('.nav--block-landing')) {

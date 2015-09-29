@@ -67,13 +67,13 @@
                             <div class="col {{#if_any data.years data.quarters data.months}}col--md-half col--lg-half{{/if_any}}">
                                 <h2 id="latest-publication">{{labels.product-latest-stats-bulletin}}</h2>
                                 <div class="clickable-wrap">
-                                    <div class="tiles__item tiles__item--image-type-headline clickable-wrap flush-col">
+                                    <div class="tiles__item tiles__item--image-type-headline flush-col">
                                         <div class="tiles__image tiles__image--headline">
 
                                             <img src="{{#if_any (eq 'localhost' domain_name) (eq '127.0.0.1' domain_name)}}http://localhost:9000/dist/img/latest-publications.png{{else}}/node_modules/sixteens/dist/img/latest-publications.png{{/if_any}}" alt="" />
                                         </div>
                                         <div class="equal-height">
-                                        <h3 class="tiles__title-h3">
+                                        <h3 class="tiles__title tiles__title-h3">
                                             <a href="{{statsBulletins.0.uri}}">{{bulletin.description.title}}{{#if bulletin.description.edition}}: {{bulletin.description.edition}}{{/if}}</a>
                                         </h3>
                                         <h4 class="tiles__title-h4">{{labels.product-whats-in-bulletin}}</h4>
