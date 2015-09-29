@@ -42,6 +42,7 @@ public class SearchResponseHelper {
         SearchHits hits = response.getHits();
         for (SearchHit hit : hits) {
             Map<String, Object> source = new HashMap<>(hit.getSource());
+            source.put("_type", hit.getType());
             Map<String, HighlightField> highlightFields = new HashMap<>(hit.getHighlightFields());
                 overlayHighlightFields(source, highlightFields);
             searchResult.addResult(source);

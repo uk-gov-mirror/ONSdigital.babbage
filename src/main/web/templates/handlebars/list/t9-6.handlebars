@@ -4,7 +4,7 @@
 			<div class="col-wrap">
 				<div class="col one">
 					{{> list/partials/list-page-breadcrumb label=labels.previous}}
-					<h1 class="page-intro__title">{{results.0.description.title}} {{> type-label type=results.0.type plural=true}}</h1>
+					<h1 class="page-intro__title">{{results.0.description.title}} {{> type-label type_code=results.0.type plural=true}}</h1>
                     <p class="page-intro__content col col--md-47 col--lg-48">
 						{{results.0.description.summary}}
 					</p>
