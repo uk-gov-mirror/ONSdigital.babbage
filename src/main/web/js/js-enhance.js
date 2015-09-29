@@ -491,11 +491,10 @@ $(function() {
             $(anchors).each(function(){
 				var href = $(this).attr("href");
 				var hostname = getHostname(href);
-				
+
                 if (hostname) {
                     if (hostname !== document.domain && hostname.indexOf('ons.gov.uk') == -1) {
                         $(this).attr('target', '_blank');
-						console.log("External link = " + this);
                     }
                 }
 
