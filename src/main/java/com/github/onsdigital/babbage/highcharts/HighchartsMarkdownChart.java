@@ -15,6 +15,7 @@ public class HighchartsMarkdownChart {
     public PlotOptions plotOptions = new PlotOptions();
     public Tooltip tooltip;
     public Credits credits = new Credits();
+    public String customType;
 
     private boolean stacked = false;
 
@@ -25,6 +26,7 @@ public class HighchartsMarkdownChart {
         Double heightCalculated = chart.width * Double.parseDouble(markdownChart.getAspectRatio());
         chart.height = (heightCalculated.intValue());
 
+        this.customType = markdownChart.getChartType();
         this.colors = Arrays.asList("#274796", "#F5942F", "#E73F40", "#7BCAE2", "#979796", "#E9E117", "#74B630", "#674796", "#BD5B9E");
 
         mapSeries(markdownChart);
