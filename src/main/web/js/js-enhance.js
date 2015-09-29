@@ -481,7 +481,7 @@ $(function() {
 
         // Using regex instead of simply using 'host' because it causes error with security on Government browsers (IE9 so far)
         function getHostname(url) {
-            var m = url.match(/^http:\/\/[^/]+/);
+            var m = url.match(/^http(s?):\/\/[^/]+/);
             return m ? m[0] : null;     
         }
 
@@ -489,16 +489,16 @@ $(function() {
         function eachAnchor(anchors) {
             
             $(anchors).each(function(){
-				console.log(this);
 				var href = $(this).attr("href");
-
 				var hostname = getHostname(href);
-
+				
                 if (hostname) {
                     if (hostname !== document.domain && hostname.indexOf('ons.gov.uk') == -1) {
                         $(this).attr('target', '_blank');
+						console.log("External link = " + this);
                     }
                 }
+
             });
         }
         eachAnchor('a[href^="http://"]');
