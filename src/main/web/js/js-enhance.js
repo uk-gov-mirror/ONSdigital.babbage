@@ -181,9 +181,8 @@ $(function() {
             if ($(this).parent(clickableDiv)) {
                 var elem = $(this).closest(clickableDiv);
                 addHoverClass(elem);
-                console.log(elem);
 
-                $(elem).focusout(function(){
+                $(this).focusout(function(){
                     removeHoverClass(elem);
                 });
             }
@@ -481,7 +480,7 @@ $(function() {
 
         // Using regex instead of simply using 'host' because it causes error with security on Government browsers (IE9 so far)
         function getHostname(url) {
-            var m = url.match(/^http:\/\/[^/]+/);
+            var m = url.match(/^http(s?):\/\/[^/]+/);
             return m ? m[0] : null;     
         }
 
@@ -489,9 +488,7 @@ $(function() {
         function eachAnchor(anchors) {
             
             $(anchors).each(function(){
-				console.log(this);
 				var href = $(this).attr("href");
-
 				var hostname = getHostname(href);
 
                 if (hostname) {
@@ -499,6 +496,7 @@ $(function() {
                         $(this).attr('target', '_blank');
                     }
                 }
+
             });
         }
         eachAnchor('a[href^="http://"]');
