@@ -490,7 +490,7 @@ $(function() {
             
             $(anchors).each(function(){
 
-                var hostname = getHostname(this.href);
+                var hostname = getHostname(this.attr('href'));
 
                 if (hostname) {
                     if (hostname !== document.domain && hostname.indexOf('ons.gov.uk') == -1) {
