@@ -181,9 +181,8 @@ $(function() {
             if ($(this).parent(clickableDiv)) {
                 var elem = $(this).closest(clickableDiv);
                 addHoverClass(elem);
-                console.log(elem);
 
-                $(elem).focusout(function(){
+                $(this).focusout(function(){
                     removeHoverClass(elem);
                 });
             }
