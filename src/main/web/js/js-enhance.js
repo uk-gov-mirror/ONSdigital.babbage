@@ -48,6 +48,8 @@ $(function() {
 
         jsEnhanceMobileTables();
 
+		jsEnhanceRemoveFocus();
+
         // prototypeModalButtons();
 
         // setTimeout(function() {
@@ -630,4 +632,22 @@ $(function() {
             });
         });
     }
+
+	function jsEnhanceRemoveFocus() {
+
+		//function to remove focus on click
+		function removeFocus(elem) {
+			$(elem).click(function() {
+				this.blur();
+			});
+		}
+
+		//run function on all elements/classes that have a focus state
+		removeFocus("a");
+		removeFocus("button");
+		removeFocus("input");
+		removeFocus("textarea");
+		removeFocus("*[tabindex]");
+		removeFocus(".accordion__title");
+	}
 });
