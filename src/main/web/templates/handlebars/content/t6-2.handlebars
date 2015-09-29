@@ -1,4 +1,4 @@
-<main id="main" role="main" tabindex="-1">
+
 
 {{!-- Page header --}}
 <div class="page-intro">
@@ -138,8 +138,8 @@
 			<div>
 				{{#each accordion}}
 				<section id="{{slugify title}}" class="accordion is-collapsed section__content--markdown">
-					<h2 class="accordion__title" aria-controls="content-{{@index}}"><span class="section__content-number">{{nf (add sections.size @index_1)}}.</span>{{title}}<span class="accordion__icon">down arrow</span></h2>
-					<div class="accordion__content panel--bottom-mar-small" aria-labelledby="sc-{{@index}}">
+					<h2 class="accordion__title" aria-controls="content-{{add @index 1}}"><span class="section__content-number">{{nf (add sections.size @index_1)}}.</span>{{title}}<span class="accordion__icon">down arrow</span></h2>
+					<div class="accordion__content panel--bottom-mar-small" aria-labelledby="sc-{{add @index 1}}">
 						{{md markdown}}
 						<a class="print--hide jsEnhanceAnimateScroll" href="#toc" title="{{labels.back-to-toc}}" class="">{{labels.back-to-toc}}</a>
 					</div>
@@ -147,8 +147,8 @@
 				{{/each}}
 				{{#if relatedMethodology}}
 					<section id="methodology" class="accordion is-collapsed section__content--markdown">
-						<h2 class="accordion__title" aria-controls="content-{{@index}}"><span class="section__content-number">{{nf (add sections.size (increment accordion.size))}}.</span>Methodology</h2>
-						<div class="accordion__content panel--bottom-mar-small" aria-labelledby="sc-{{@index}}">
+						<h2 class="accordion__title" aria-controls="content-{{add @index 1}}"><span class="section__content-number">{{nf (add sections.size (increment accordion.size))}}.</span>Methodology</h2>
+						<div class="accordion__content panel--bottom-mar-small" aria-labelledby="sc-{{add @index 1}}">
 							<ul class="list--neutral">
 							{{#each relatedMethodology}}
 								{{#resolve this.uri filter="description"}}
@@ -223,4 +223,4 @@
 		</div>
 	</div>
 </div>
-</main>
+
