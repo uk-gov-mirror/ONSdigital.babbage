@@ -11,13 +11,28 @@
 				</div>
 			</div>
 		</div>
+		<div class="nav-secondary-wrap">
+			<div class="wrapper">
+				<div class="col-wrap">
+					<nav class="nav-secondary col col--lg-half">
+						<h2 class="nav-secondary__title">On this page:</h2>
+						<ul class="nav-secondary__list">
+							{{#if highlightedLinks}}
+							<li class="nav-secondary__item"><a href="#highlighted">Highlighted content in this section</a></li>
+							{{/if}}
+							<li class="nav-secondary__item"><a href="#topics">Topics in this section</a></li>
+						</ul>
+					</nav>
+				</div> {{!-- /col-wrap --}}
+			</div> {{!-- /wrapper --}}
+		</div> {{!-- /nav-secondary--}}
 	</div>
 
 	{{#if highlightedLinks}}
-	<div class="slate--alabaster">
+	<div class="highlighted-wrap slate--alabaster">
 		<div class="wrapper">
 			<div class="tiles">
-				<h2>Highlighted content</h2>
+				<h2 id="highlighted">Highlighted content in this section</h2>
 				<ul class="col-wrap tiles__list margin-bottom--double">
 					{{!-- loop for children nodes --}}
 					{{#each highlightedLinks}}
@@ -33,10 +48,12 @@
 	</div>
 	{{/if}}
 
+
+
 	<div class="page-content">
 		<div class="wrapper">
 			<div class="tiles">
-				<h2>In this section</h2>
+				<h2 id="topics">In this section</h2>
 				<ul class="col-wrap col-span--lg-thirds tiles__list">
 					{{!-- loop for children nodes --}}
 					{{#each sections}}
@@ -55,7 +72,7 @@
 					{{/each}}
 				</ul>
 			</div>
-			<div class="col-wrap">
+			<div class="col-wrap margin-bottom">
 				<div class="col col--md-one-third col--lg-one-third">
 					{{> partials/local-box}}
 				</div>
