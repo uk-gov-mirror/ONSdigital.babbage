@@ -5,26 +5,27 @@
 	    {{/if_any}}
 
 
-
-{{#if_eq type "home_page"}}{{> content/t1}}{{/if_eq}}
-{{#if_eq type "taxonomy_landing_page"}}{{> content/t2}}{{/if_eq}}
-{{#if_eq type "product_page"}}{{> content/t3}}{{/if_eq}}
-{{#if_eq type "bulletin"}}{{> content/t4-1}}{{/if_eq}}
-{{#if_eq type "article"}}{{> content/t4-2}}{{/if_eq}}
-{{#if_eq type "timeseries"}}{{> content/t5-1}}{{/if_eq}}
-{{#if_eq type "data_slice"}}{{> content/t5-2}}{{/if_eq}}
-{{#if_eq type "compendium_landing_page"}}{{> content/t6-1}}{{/if_eq}}
-{{#if_eq type "compendium_chapter"}}{{> content/t6-2}}{{/if_eq}}
-{{#if_eq type "compendium_data"}}{{> content/t6-3}}{{/if_eq}}
-{{#if_eq type "reference_tables"}}{{> content/t8-1}}{{/if_eq}}
-{{#if_eq type "dataset"}}{{> content/t8-3}}{{/if_eq}}
-{{#if_eq type "timeseries_dataset"}}{{> content/t8-3}}{{/if_eq}}
-{{#if_eq type "static_landing_page"}}{{> content/t7-4-1}}{{/if_eq}}
-{{#if_eq type "static_page"}}{{> content/t7-5}}{{/if_eq}}
-{{#if_eq type "static_article"}}{{> content/t7-6}}{{/if_eq}}
-{{#if_eq type "static_methodology"}}{{> content/t7-6}}{{/if_eq}}
-{{#if_eq type "static_qmi"}}{{> content/t7-1}}{{/if_eq}}
-{{#if_eq type "static_adhoc"}}{{> content/t7-2}}{{/if_eq}}
-{{#if_eq type "static_foi"}}{{> content/t7-3}}{{/if_eq}}
-{{#if_eq type "release"}}{{> content/t16}}{{/if_eq}}
+<main id="main" role="main">
+	{{#if_eq type "home_page"}}{{> content/t1}}{{/if_eq}}
+	{{#if_eq type "taxonomy_landing_page"}}{{> content/t2}}{{/if_eq}}
+	{{#if_eq type "product_page"}}{{> content/t3}}{{/if_eq}}
+	{{#if_eq type "bulletin"}}{{> content/t4-1}}{{/if_eq}}
+	{{#if_eq type "article"}}{{> content/t4-2}}{{/if_eq}}
+	{{#if_eq type "timeseries"}}{{> content/t5-1}}{{/if_eq}}
+	{{#if_eq type "data_slice"}}{{> content/t5-2}}{{/if_eq}}
+	{{#if_eq type "compendium_landing_page"}}{{> content/t6-1}}{{/if_eq}}
+	{{#if_eq type "compendium_chapter"}}{{> content/t6-2}}{{/if_eq}}
+	{{#if_eq type "compendium_data"}}{{> content/t6-3}}{{/if_eq}}
+	{{#if_eq type "reference_tables"}}{{> content/t8-1}}{{/if_eq}}
+	{{#if_eq type "dataset"}}{{> content/t8-3}}{{/if_eq}}
+	{{#if_eq type "timeseries_dataset"}}{{> content/t8-3}}{{/if_eq}}
+	{{#if_eq type "static_landing_page"}}{{> content/t7-4-1}}{{/if_eq}}
+	{{#if_eq type "static_page"}}{{> content/t7-5}}{{/if_eq}}
+	{{#if_eq type "static_article"}}{{> content/t7-6}}{{/if_eq}}
+	{{#if_eq type "static_methodology"}}{{> content/t7-6}}{{/if_eq}}
+	{{#if_eq type "static_qmi"}}{{> content/t7-1}}{{/if_eq}}
+	{{#if_eq type "static_adhoc"}}{{> content/t7-2}}{{/if_eq}}
+	{{#if_eq type "static_foi"}}{{> content/t7-3}}{{/if_eq}}
+	{{#if_eq type "release"}}{{> content/t16}}{{/if_eq}}
+</main>
 {{> partials/footer}}
