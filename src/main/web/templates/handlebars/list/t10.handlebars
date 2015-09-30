@@ -87,9 +87,8 @@
 			{{> list/partials/search-results-text result}}
 			<div class="headline-result">
 				{{!-- HEADLINE RESULTS --}}
+				{{#if showFeaturedResult}}
 				{{#resolve featuredResult.results.0.uri}}
-				{{#unless parameters.filter}}
-				{{#unless parameters.time_series}}
 				<div class="col col--md-36 col--lg-40 tiles__item flush">
 					{{!-- Sparkline --}}
 					<div class="col col--md-17 col--lg-20">
@@ -107,9 +106,8 @@
 						<p class="tiles__content tiles__content--nav">{{{featuredResult.results.0.description.summary}}}</p>
 					</div>
 				</div>
-				{{/unless}}
-				{{/unless}}
 				{{/resolve}}
+				{{/if}}
 			</div>
 			{{!-- MAIN RESULTS --}}
 			<!-- /desktop-grid-one-third -->

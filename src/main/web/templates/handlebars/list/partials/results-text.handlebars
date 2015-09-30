@@ -1,7 +1,7 @@
 <p>
-	{{#if results}}
+	{{#if result.results}}
 	<span class="stand-out-text">
-	{{numberOfResults}}</span> results
+	{{result.numberOfResults}}</span> results
 	{{else}}
 	Sorry, there were no results
 	{{/if}}
@@ -15,7 +15,7 @@
 	{{#if parameters.allReleases}}
 	You have chosen to expand these results to <strong>include all releases over time</strong><span class="icon icon-cancel js-enhance--show" role="presentation"></span>
 	{{/if}}
-	{{#unless results}}
+	{{#unless result.results}}
 	<div class="col col--lg-42">
 		{{labels.search-try-other}}
 		<ul>

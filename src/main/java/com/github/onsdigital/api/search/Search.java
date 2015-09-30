@@ -116,6 +116,12 @@ public class Search {
             SearchResponseHelper topicResponse = SearchService.getInstance().search(featuredResultQuery);
             if (topicResponse.getNumberOfResults() > 1) {
                 searchResponseData.put("featuredResult", topicResponse.getResult());
+                //hide featured results if time series is requested
+                if (timeSeriesRequested) {
+                    searchResponseData.put("showFeaturedResult", false);
+                } else {
+                    searchResponseData.put("showFeaturedResult", true);
+                }
                 if (countTimeSeries) {
                     long timeSeriesCount = countTimeSeries((String) topicResponse.getResult().getResults().get(0).get(FilterableField.uri.name()));
                     searchResponseData.put("timeSeriesCount", timeSeriesCount);
@@ -177,6 +183,11 @@ public class Search {
 
     private ONSQuery buildContentQuery(HttpServletRequest request) throws IOException {
         ONSQuery query = new SearchRequestHelper(request, null, ALLOWED_TYPES).buildQuery();
+
+        if(isFiltered(request) == false && isTimeSeriesRequested(request)) {
+            query.setTypes(null);//clear types if time series requested
+        }
+
         if (isStaticsRequested(request)) {
             ContentType[] types = query.getTypes();
             query.setTypes(ArrayUtils.addAll(types, STATIC_TYPES));
