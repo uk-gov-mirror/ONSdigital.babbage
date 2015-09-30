@@ -29,8 +29,10 @@ class QueryRequestBuilder {
                 .setSearchType(SearchType.QUERY_THEN_FETCH)
                 .setTypes(getTypeNames(query.getTypes()));
         if (query.getFrom() != null) {
-            builder.setFrom(query.getFrom())
-                    .setSize(query.getSize());
+            builder.setFrom(query.getFrom());
+        }
+        if(query.getSize() != null) {
+            builder.setSize(query.getSize());
         }
         if (query.isHighLightFields()) {
             setHighlights(builder, query.getFieldNames());
