@@ -104,7 +104,7 @@ public class Search {
         boolean notFiltered = (filtered == false);
         boolean timeSeriesRequested = isTimeSeriesRequested(request);
         boolean staticsRequested = isStaticsRequested(request);
-        boolean countTimeSeries = timeSeriesRequested || (notFiltered && timeSeriesRequested == false);
+        boolean countTimeSeries = page == 1 && (timeSeriesRequested || (notFiltered && timeSeriesRequested == false));
         boolean searchContent = staticsRequested || (notFiltered && timeSeriesRequested == false) || filtered;
 
         if (searchContent == false && page > 1) {
