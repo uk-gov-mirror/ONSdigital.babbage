@@ -132,6 +132,7 @@ $(function() {
       hoverHashTable['tiles__content'] = ['tiles__content--hover'];
       hoverHashTable['sparkline-holder'] = ['sparkline-holder--hover'];
       hoverHashTable['image-holder'] = ['image-holder--hover'];
+      hoverHashTable['tiles__image--headline'] = ['tiles__image--headline-hover'];
       hoverHashTable['tiles__image--headline-sparkline'] = ['tiles__image--headline-sparkline-hover'];
       hoverHashTable['tiles__title-dt'] = ['tiles__title-dt--hover'];
       hoverHashTable['tiles__title-h3'] = ['tiles__title-h3--hover'];
@@ -483,12 +484,12 @@ $(function() {
         // Using regex instead of simply using 'host' because it causes error with security on Government browsers (IE9 so far)
         function getHostname(url) {
             var m = url.match(/^http(s?):\/\/[^/]+/);
-            return m ? m[0] : null;     
+            return m ? m[0] : null;
         }
 
 
         function eachAnchor(anchors) {
-            
+
             $(anchors).each(function(){
 				var href = $(this).attr("href");
 				var hostname = getHostname(href);
