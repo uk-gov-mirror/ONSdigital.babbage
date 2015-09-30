@@ -6,7 +6,7 @@ performs type check on content type and decides which template to render  --}}
 {{resolveTaxonomy depth=2 assign="navigation"}}
 
 {{> partials/header}}
-<main id="main" role="main" tabindex="-2">
+<main id="main" role="main" tabindex="-1">
 	{{#if_eq type "adhoc"}}{{> list/t9-1}}{{/if_eq}}
 	{{#if_eq type "publishedrequests"}}{{> list/t9-2 global=true}}{{/if_eq}}
 	{{#if_eq type "previousreleases"}}{{> list/t9-6}}{{/if_eq}}

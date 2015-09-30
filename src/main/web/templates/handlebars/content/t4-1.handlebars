@@ -79,34 +79,33 @@
 
 {{!-- TABLE OF CONTENTS --}}
 <div class="page-content">
-<div class="wrapper">
-	<div class="col-wrap">
-		<div class="col table-of-contents print--avoid-break">
-			<h2 class="table-of-contents__title">{{labels.toc}}</h2>
-			<ol id="toc" class="table-of-contents__list">
-				{{#each sections}}
-				<li class="table-of-contents__item">
-					<a href="#{{slugify title}}" class="jsEnhanceAnimateScroll">{{title}}</a>
-				</li>
-				{{/each}}
-				{{#if accordion}}
-				{{#each accordion}}
-				<li class="table-of-contents__item">
-					<a href="#{{slugify title}}" class="jsEnhanceAnimateScroll expand-accordion">{{title}}</a>
-				</li>
-				{{/each}}
-				{{/if}}
-				{{#if relatedMethodology}}
-				<li class="table-of-contents__item">
-					<a href="#methodology" class="jsEnhanceAnimateScroll expand-accordion">Methodology</a>
-				</li>
-				{{/if}}
-			</ol>
+	<div class="wrapper">
+		<div class="col-wrap">
+			<div class="col table-of-contents print--avoid-break">
+				<h2 class="table-of-contents__title">{{labels.toc}}</h2>
+				<ol id="toc" class="table-of-contents__list">
+					{{#each sections}}
+					<li class="table-of-contents__item">
+						<a href="#{{slugify title}}" class="jsEnhanceAnimateScroll">{{title}}</a>
+					</li>
+					{{/each}}
+					{{#if accordion}}
+					{{#each accordion}}
+					<li class="table-of-contents__item">
+						<a href="#{{slugify title}}" class="jsEnhanceAnimateScroll expand-accordion">{{title}}</a>
+					</li>
+					{{/each}}
+					{{/if}}
+					{{#if relatedMethodology}}
+					<li class="table-of-contents__item">
+						<a href="#methodology" class="jsEnhanceAnimateScroll expand-accordion">Methodology</a>
+					</li>
+					{{/if}}
+				</ol>
+			</div>
 		</div>
-	</div>
 
-	{{!-- Content --}}
-	<!-- <div class="col-wrap"> -->
+		{{!-- Content --}}
 		<article class="col col--md-36 col--lg-39 page-content__main-content">
 			{{#each sections}}
 				<section id="{{slugify title}}" class="section__content--markdown">
@@ -119,38 +118,38 @@
 				{{/each}}
 				<!-- Accordion -->
 				{{#if accordion}}
-				<div> {{!-- TODO Reliant on empty div for first accordion to have top border --}}
-					{{#each accordion}}
-					<section id="{{slugify title}}" class="accordion is-collapsed section__content--markdown">
-						<h2 class="accordion__title" aria-controls="content-{{@index_1}}"><span class="section__content-number">{{nf (add sections.size @index_1)}}.</span>{{title}}</h2>
-						<div class="accordion__content panel--bottom-mar-small" aria-labelledby="sc-{{@index_1}}">
-							{{md markdown}}
-							<a class="print--hide jsEnhanceAnimateScroll" href="#toc" title="{{labels.back-to-toc}}" class="">{{labels.back-to-toc}}</a>
-						</div>
-					</section>
-					{{/each}}
-					{{#if relatedMethodology}}
-					<section id="methodology" class="accordion is-collapsed section__content--markdown">
-						<h2 class="accordion__title" aria-controls="content-{{@index_1}}"><span class="section__content-number">{{nf (add sections.size (increment accordion.size))}}.</span>Methodology</h2>
-						<div class="accordion__content panel--bottom-mar-small" aria-labelledby="sc-{{@index_1}}">
-							<ul class="list--neutral">
-							{{#each relatedMethodology}}
-								{{#resolve this.uri filter="description"}}
-								<li><a href="{{absolute uri}}">{{description.title}}</a></li>
-								{{/resolve}}
-							{{/each}}
-							</ul>
-							<a class="print--hide jsEnhanceAnimateScroll" href="#toc" title="{{labels.back-to-toc}}" class="">{{labels.back-to-toc}}</a>
-						</div>
-					</section>
-					{{/if}}
-				</div>
+					<div> {{!-- TODO Reliant on empty div for first accordion to have top border --}}
+						{{#each accordion}}
+							<section id="{{slugify title}}" class="accordion is-collapsed section__content--markdown">
+								<h2 class="accordion__title" aria-controls="content-{{@index_1}}"><span class="section__content-number">{{nf (add sections.size @index_1)}}.</span>{{title}}</h2>
+								<div class="accordion__content panel--bottom-mar-small" aria-labelledby="sc-{{@index_1}}">
+									{{md markdown}}
+									<a class="print--hide jsEnhanceAnimateScroll" href="#toc" title="{{labels.back-to-toc}}" class="">{{labels.back-to-toc}}</a>
+								</div>
+							</section>
+						{{/each}}
+						{{#if relatedMethodology}}
+							<section id="methodology" class="accordion is-collapsed section__content--markdown">
+								<h2 class="accordion__title" aria-controls="content-{{@index_1}}"><span class="section__content-number">{{nf (add sections.size (increment accordion.size))}}.</span>Methodology</h2>
+								<div class="accordion__content panel--bottom-mar-small" aria-labelledby="sc-{{@index_1}}">
+									<ul class="list--neutral">
+									{{#each relatedMethodology}}
+										{{#resolve this.uri filter="description"}}
+										<li><a href="{{absolute uri}}">{{description.title}}</a></li>
+										{{/resolve}}
+									{{/each}}
+									</ul>
+									<a class="print--hide jsEnhanceAnimateScroll" href="#toc" title="{{labels.back-to-toc}}">{{labels.back-to-toc}}</a>
+								</div>
+							</section>
+						{{/if}}
+					</div>
 				{{/if}}
 			</article>
 			{{!-- Sidebar --}}
 
 			<div class="col col--md-11 col--lg-20">
-			    {{!-- Related data --}}
+				{{!-- Related data --}}
 				{{#if relatedData}}
 					<div class="tiles__item tiles__item--nav-type flush-col">
 						<h3 class="tiles__title-h3 tiles__title-h3--nav">{{labels.bulletin-related-data}}</h3>
@@ -194,14 +193,14 @@
 					<div class="tiles__content--nav">
 						<address>
 							{{#if description.contact.name}}{{description.contact.name}}<br/>{{/if}}
-							<a href="mailto:{{description.contact.email}}">{{description.contact.email}}</a></br>
+							<a href="mailto:{{description.contact.email}}">{{description.contact.email}}</a><br/>
 							{{#if description.contact.telephone}}{{labels.phone}}: {{description.contact.telephone}}{{/if}}
 						</address>
 					</div>
 				</div>{{!-- /tiles --}}
 
 				{{> partials/local-box}}
-            </div>
+			</div>
 		</div> {{!-- /wrapper --}}
 	</div>
 
