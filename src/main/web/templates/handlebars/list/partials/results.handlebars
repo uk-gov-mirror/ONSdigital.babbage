@@ -1,7 +1,7 @@
 <ul class="list--neutral search-results">
 	{{#if timeSeriesCount}}
 	<li class="search-results__item">
-		<h3 class="search-results__title"> <a href="/dataexplorer?filter=single_time_series&query={{parameters.q.0}}">{{{featuredResult.results.0.description.title}}} time series collection
+		<h3 class="search-results__title"> <a href="/dataexplorer?filter=single_time_series&topic={{featuredResult.results.0.uri}}">{{{featuredResult.results.0.description.title}}} time series collection
 			{{#if featuredResult.results.0.description.edition}}
 			{{#if_all (ne featuredResult.results.0.description.edition 'yes') (ne featuredResult.results.0.description.edition '<strong>yes</strong>')}}: {{{featuredResult.results.0.description.edition}}}{{/if_all}}
 		{{/if}}</a></h3>
