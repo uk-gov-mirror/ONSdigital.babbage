@@ -121,7 +121,7 @@
 				{{/each}}
 				<!-- Accordion -->
 				{{#if accordion}}
-				<div> {{!-- TODO Reliant on empty div for first accordion to have top border --}}
+				<div class="accordion__container"> {{!-- TODO Reliant on empty div for first accordion to have top border --}}
 					{{#each accordion}}
 						<section id="{{slugify title}}" class="accordion is-collapsed section__content--markdown">
 							<h2 class="accordion__title" aria-controls="content-{{@index_1}}"><span class="section__content-number">{{nf (add sections.size @index_1)}}.</span>{{title}}</h2>

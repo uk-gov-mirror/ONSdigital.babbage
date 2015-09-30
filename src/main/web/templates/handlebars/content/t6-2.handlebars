@@ -120,12 +120,8 @@
 		<!-- <div class="col-wrap"> -->
 		<article class="col col--md-36 col--lg-39 page-content__main-content">
 			{{#each sections}}
-			{{!-- Prevent bottom border on last section before accordian --}}
-				{{#if @last}}
-					<section id="{{slugify title}}" class="section__content--markdown">
-				{{else}}
-					<section id="{{slugify title}}" class="section__content--markdown">
-				{{/if}}
+				<section id="{{slugify title}}" class="section__content--markdown">
+
 					<header>
 						<h2><span class="section__content-number">{{@index_1}}.</span> {{title}}</h2>
 					</header>
@@ -135,7 +131,7 @@
 			{{/each}}
 			<!-- Accordion -->
 			{{#if accordion}}
-			<div>
+			<div class="accordion__container">
 				{{#each accordion}}
 				<section id="{{slugify title}}" class="accordion is-collapsed section__content--markdown">
 					<h2 class="accordion__title" aria-controls="content-{{@index_1}}"><span class="section__content-number">{{nf (add sections.size @index_1)}}.</span>{{title}}<span class="accordion__icon">down arrow</span></h2>
@@ -156,7 +152,7 @@
 								{{/resolve}}
 							{{/each}}
 							</ul>
-							<a class="print--hide jsEnhanceAnimateScroll" href="#toc" title="{{labels.back-to-toc}}" class="">{{labels.back-to-toc}}</a>
+							<a class="print--hide jsEnhanceAnimateScroll" href="#toc" title="{{labels.back-to-toc}}">{{labels.back-to-toc}}</a>
 						</div>
 					</section>
 				{{/if}}
