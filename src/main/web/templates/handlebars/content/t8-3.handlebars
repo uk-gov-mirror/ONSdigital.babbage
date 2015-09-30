@@ -1,5 +1,6 @@
 
 
+
 {{!-- Page header --}}
 <div class="page-intro">
     <div class="wrapper">
@@ -59,27 +60,72 @@
     <div class="wrapper">
         <div class="col-wrap">
             <div class="col col--lg-two-thirds col--md-two-thirds">
+
                 {{#if downloads}}
-                    <h3>{{labels.dataset-downloads}}</h3>
-                    {{!-- LIST OF DOWNLOADS --}}
-                    <ul class="tiles__list">
-                        {{#each downloads}}
-                        {{#if file}}
-                            <li class="tiles__item--list-type-simple flush-col">
-                                <form method="get" action="/file">
-                                    <!-- link to given uris of given files-->
-                                    <div class="col col--md-15 col--lg-23 margin-top--half">
-                                        <label class="label inline">{{#if_eq type 'timeseries_dataset'}}{{labels.dataset-latest}}{{else}}{{title}}{{/if_eq}}</label>
-                                    </div>
-                                    <button type="submit" title="Latest version" class="btn btn--primary btn--wide btn--thick download-analytics">
-                                    {{fe (lowercase file)}} ({{fs (lowercase file)}})
-                                    </button>
-                                    <input  type="hidden" name="uri" value="{{lowercase file}}"/>
-                                </form>
-                            </li>
+                    <h2>{{labels.dataset-downloads}}</h2>
+                    {{#if downloads.0.cdids}}
+                        {{!-- TIME SERIES DATASETS --}}
+                        <h3 class="flush-bottom">Latest</h3>
+                        {{#if previousVersions}}
+                            <p class="flush"><a href="#">Previous versions</a> of this data are avaiable</p>
                         {{/if}}
+                        <div class="col-wrap">
+                        {{#each downloads}}
+                            {{#if file}}
+                                <div class="col col--md-8 col--lg-9 margin-right">
+                                    <form method="get" action="/file">
+                                        <button type="submit" title="Latest version" class="btn btn--primary btn--full-width btn--thick download-analytics">
+                                        {{fe (lowercase file)}} ({{fs (lowercase file)}})
+                                        </button>
+                                        <input type="hidden" name="uri" value="{{lowercase file}}"/>
+                                    </form>
+                                </div>
+                            {{/if}}
                         {{/each}}
-                    </ul>
+                        </div>
+                        {{#if supportingFiles}}
+                        <h5 class="flush-bottom">Supporting files you may find useful</h5>
+                        <ul class="list--neutral flush-top">
+                            {{#each supportingFiles}}
+                                <li class="flush"><a href="{{uri}}">{{title}}</a> (filesize)</li>
+                            {{/each}}
+                        </ul>
+                        {{/if}}
+                    {{else}}
+                        {{#each downloads}}
+                            {{#if file}}
+                            {{!-- NON-TIME SERIES DATASETS --}}
+                                <section id="{{title}}" class="accordion {{#if @first}}is-expanded{{else}}is-collapsed{{/if}}">
+                                    <h3 class="accordion__title" aria-controls="content-{{@index}}">{{title}} {{#if @first}}(latest){{/if}}</h3>
+                                    <div class="accordion__content" aria-labelledby="sc-{{@index}}">
+                                        {{#if previousVersions}}
+                                            <p class="flush"><a href="#">Previous versions</a> of this data are avaiable</p>
+                                        {{/if}}
+                                        <div class="col-wrap {{#unless supportingFiles}}margin-bottom{{/unless}}">
+
+                                            <div class="col col--md-8 col--9 margin-right">
+                                                <form method="get" action="/file">
+                                                    <button type="submit" title="Latest version" class="btn btn--primary btn--thick download-analytics">
+                                                    {{fe (lowercase file)}} ({{fs (lowercase file)}})
+                                                    </button>
+                                                    <input type="hidden" name="uri" value="{{lowercase file}}"/>
+                                                </form>
+                                            </div>
+
+                                        </div>
+                                        {{#if supportingFiles}}
+                                        <h5 class="flush-bottom">Supporting files you may find useful</h5>
+                                        <ul class="list--neutral flush-top">
+                                            {{#each supportingFiles}}
+                                                <li class="flush"><a href="{{uri}}">{{title}}</a> (filesize)</li>
+                                            {{/each}}
+                                        </ul>
+                                        {{/if}}
+                                    </div>
+                                </section>
+                            {{/if}}
+                        {{/each}}
+                    {{/if}}
                 {{/if}}
 
                 {{!-- INFORMATION AND NOTES --}}
@@ -91,7 +137,7 @@
             </div>
 
             {{!-- RELATED DATA AND DOCUMENTS --}}
-            <div class="col col--lg-one-third col--md-one-third margin-top">
+            <div class="col col--lg-one-third col--md-one-third margin-top margin-bottom">
 
                 {{!-- Related data --}}
                 {{#if relatedDatasets}}
@@ -130,48 +176,34 @@
                     </div>
                 {{/if}}
 
-                {{!-- At the moment local box has no margin so extra div required --}}
-                    {{> partials/local-box}}
+                {{!-- Related methodology --}}
+                {{#if_any relatedMethodology}}
+                        <div class="tiles__item tiles__item--nav-type">
+                            <h3 class="tiles__title-h3 tiles__title-h3--nav">{{labels.methodology}}</h3>
+                            <ul class="tiles__content tiles__content--nav">
+                                {{#each relatedMethodology}}
+                                    {{#resolve this.uri filter="title"}}
+                                        <li>
+                                            <a href="{{uri}}" title="{{title}}">{{title}}</a>
+                                        </li>
+                                    {{/resolve}}
+                                {{/each}}
+                            </ul>
+                        </div>
+                {{/if_any}}
 
-            </div>
-        </div>
-
-
-        {{!-- METHODOLOGY AND CONTACT DETAILS --}}
-        <div class="col-wrap">
-            {{!-- Related methodology --}}
-            {{#if_any relatedMethodology}}
-                <div class="col col--lg-half col--md-half">
-                    <div class="tiles__item tiles__item--nav-type">
-                        <h3 class="tiles__title-h3 tiles__title-h3--nav">{{labels.methodology}}</h3>
-                        <ul class="tiles__content tiles__content--nav">
-                            {{#each relatedMethodology}}
-                                {{#resolve this.uri filter="title"}}
-                                    <li>
-                                        <a href="{{uri}}" title="{{title}}">{{title}}</a>
-                                    </li>
-                                {{/resolve}}
-                            {{/each}}
-                        </ul>
-                    </div>
-                </div>
-            {{/if_any}}
-
-            {{!-- Contact details --}}
-            <div class="col col--lg-half col--md-half">
-                <div class="tile__item tiles__item--nav-type margin-bottom">
+                <div class="tiles__item tiles__item--nav-type flush-col">
                     <h3 class="tiles__title-h3 tiles__title-h3--nav">{{labels.contact-details}}</h3>
                     <address class="tiles__content tiles__content--nav">
-                        {{#if description.contact.name}}{{description.contact.name}}</br>{{/if}}
-                        <a href="mailto:{{description.contact.email}}">{{description.contact.email}}</a></br>
+                        {{#if description.contact.name}}{{description.contact.name}}<br/>{{/if}}
+                        <a href="mailto:{{description.contact.email}}">{{description.contact.email}}</a><br/>
                         {{#if description.contact.telephone}}Telephone: {{description.contact.telephone}}{{/if}}
                     </address>
                 </div>
+
+                {{> partials/local-box}}
+
             </div>
         </div>
-
-        {{!-- </div> --}}
     </div>
 </div> {{!-- /page-content --}}
-
-
