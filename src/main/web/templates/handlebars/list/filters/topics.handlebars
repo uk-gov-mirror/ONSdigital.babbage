@@ -1,17 +1,10 @@
-{{#if global}}
 <h4 class="filters__title">Topics</h4>
 </div>
 <div class="filters__field">
 	<select class="input inline width-auto" id="select-topic" name="topic">
 		<option value="" >Select topic</option>
-		{{#each navigation}}
-		{{#if_eq this.type "taxonomy_landing_page"}}
-		<option value="{{this.uri}}" {{#if_eq parameters.topic.0 this.uri}}selected{{/if_eq}}>{{this.description.title}}</option>
-		{{#each children}}
-		<option value="{{this.uri}}" {{#if_eq parameters.topic.0 this.uri}}selected{{/if_eq}}>{{this.description.title}}</option>
-		{{/each}} {{!-- /each to find 2nd level nodes --}}
-		{{/if_eq}}
+		{{#each topics}}	
+		<option value="{{this.uri}}" {{#if_eq parameters.topic.0 this.uri}}selected{{/if_eq}}>{{this.title}}</option>
 		{{/each}}
 	</select>
 </div>
-{{/if}}

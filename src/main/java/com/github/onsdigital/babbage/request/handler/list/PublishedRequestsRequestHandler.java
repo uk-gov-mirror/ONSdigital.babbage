@@ -22,7 +22,7 @@ public class PublishedRequestsRequestHandler extends ListPageBaseRequestHandler 
     }
 
     @Override
-    public boolean useLocalisedUri() {
+    public boolean isLocalisedUri() {
         return false;
     }
 }

@@ -7,6 +7,7 @@ import com.github.onsdigital.babbage.search.ONSQuery;
 import com.github.onsdigital.babbage.search.SearchService;
 import com.github.onsdigital.babbage.search.helpers.SearchRequestHelper;
 import com.github.onsdigital.babbage.search.helpers.SearchResponseHelper;
+import com.github.onsdigital.babbage.search.input.SortBy;
 import com.github.onsdigital.babbage.search.model.ContentType;
 import com.github.onsdigital.babbage.search.model.field.FilterableField;
 import com.github.onsdigital.babbage.template.TemplateService;
@@ -15,7 +16,10 @@ import com.github.onsdigital.content.util.URIUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 import static com.github.onsdigital.babbage.util.URIUtil.cleanUri;
 
@@ -44,7 +48,7 @@ public abstract class ListPageBaseRequestHandler implements RequestHandler {
      *
      * @return
      */
-    public abstract boolean useLocalisedUri();
+    public abstract boolean isLocalisedUri();
 
     public String getData(String requestedUri, HttpServletRequest request) throws Exception {
 
@@ -67,10 +71,12 @@ public abstract class ListPageBaseRequestHandler implements RequestHandler {
         Paginator.assertPage(query.getPage(), responseHelper);
 
         LinkedHashMap<String, Object> listData = new LinkedHashMap<>();
+        listData.put("type", type);
         listData.put("paginator", Paginator.getPaginator(query.getPage(), responseHelper));
         listData.put("uri", request.getRequestURI());//set full uri in the context
-        listData.put("type", type);
-
+        if (isLocalisedUri() == false) {
+            listData.put("topics", getTopics());
+        }
         String html = TemplateService.getInstance().renderListPage(responseHelper.getResult(), listData);
         babbageResponse = new BabbageStringResponse(html, CONTENT_TYPE);
         return babbageResponse;
@@ -87,7 +93,7 @@ public abstract class ListPageBaseRequestHandler implements RequestHandler {
 
     private String processUri(String requestedUri, HttpServletRequest request) {
         String uri;
-        if (useLocalisedUri()) {
+        if (isLocalisedUri()) {
             uri = requestedUri;
         } else {
             String topic = request.getParameter("topic");
@@ -96,8 +102,53 @@ public abstract class ListPageBaseRequestHandler implements RequestHandler {
         return uri;
     }
 
-    protected SearchResponseHelper doSearch(HttpServletRequest request , ONSQuery query) throws IOException {
+    protected SearchResponseHelper doSearch(HttpServletRequest request, ONSQuery query) throws IOException {
         return SearchService.getInstance().search(query);
+    }
+
+    private List<Topic> getTopics() throws IOException {
+        ONSQuery topicListQuery = new ONSQuery(ContentType.product_page).addSort(SortBy.TITLE).setSize(Integer.MAX_VALUE);
+        SearchResponseHelper search = SearchService.getInstance().search(topicListQuery);
+        List<Map<String, Object>> results = search.getResult().getResults();
+        List<Topic> topics = new ArrayList<>();
+
+        for (Map<String, Object> result : results) {
+            String uri = (String) result.get("uri");
+            String title = null;
+            Map<String, Object> description = (Map<String, Object>) result.get("description");
+            if (description != null) {
+                title = (String) description.get("title");
+            }
+            topics.add(new Topic(uri, title));
+        }
+        return topics;
+    }
+
+
+    public class Topic {
+        private String uri;
+        private String title;
+
+        public Topic(String uri, String title) {
+            this.uri = uri;
+            this.title = title;
+        }
+
+        public String getUri() {
+            return uri;
+        }
+
+        public void setUri(String uri) {
+            this.uri = uri;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        public void setTitle(String title) {
+            this.title = title;
+        }
     }
 
 

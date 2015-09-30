@@ -29,13 +29,12 @@ import static org.apache.commons.lang3.StringUtils.isNotEmpty;
  */
 public class SearchRequestHelper {
 
-
-    private HttpServletRequest request;
+    private HttpServletRequest searchRequest;
     private String topicUri;
     private ContentType[] allowedTypes;
 
     public SearchRequestHelper(HttpServletRequest request, String topicUri, ContentType... allowedTypes) {
-        this.request = request;
+        this.searchRequest = request;
         this.topicUri = topicUri;
         this.allowedTypes = allowedTypes;
     }
@@ -45,10 +44,10 @@ public class SearchRequestHelper {
         ONSQuery onsQuery = new ONSQuery()
                 .setTypes(resolveTypesFilter(allowedTypes))
                 .setFields(SearchableField.values())
-                .setPage(extractPage())
+                .setPage(extractPage(searchRequest))
                 .setSize(Configuration.GENERAL.getResultsPerPage())
                 .setHighLightFields(true)
-                .addRangeFilter(FilterableField.releaseDate, parseDate(getParam("fromDate")), parseDate(getParam("toDate")));
+                .addRangeFilter(FilterableField.releaseDate, parseDate(getParam(searchRequest,"fromDate")), parseDate(getParam(searchRequest,"toDate")));
 
         resolveUriPrefix(onsQuery);
         resolveQuery(onsQuery);
@@ -58,7 +57,7 @@ public class SearchRequestHelper {
     }
 
     private void resolveSorting(ONSQuery onsQuery) {
-        SortBy sortBy = extractSortBy();
+        SortBy sortBy = extractSortBy(searchRequest);
         if (sortBy != null) {
             onsQuery.addSort(sortBy);
         } else {
@@ -74,7 +73,7 @@ public class SearchRequestHelper {
     }
 
     private void resolveKeywords(ONSQuery onsQuery) {
-        String[] keywords = getParams("keywords");
+        String[] keywords = getParams(searchRequest, "keywords");
         if (keywords != null) {
             for (String keyword : keywords) {
                 if (StringUtils.isNotEmpty(keyword)) {
@@ -85,27 +84,14 @@ public class SearchRequestHelper {
     }
 
     private void resolveQuery(ONSQuery onsQuery) {
-        String query = getParam("q", getParam("query"));//get query if q not given, list pages use query
+        String query = extractSearchTerm(searchRequest);
         if (isNotEmpty(query)) {
             onsQuery.setQuery(query);
         }
     }
 
-    private SortBy extractSortBy() {
-        String sortBy = getParam("sortBy");
-        if (isEmpty(sortBy)) {
-            return null;
-        }
-        try {
-            return SortBy.valueOf(sortBy.toUpperCase());
-        } catch (IllegalArgumentException e) {
-            //ignore invalid sort by parameter
-            return null;
-        }
-    }
-
     private ContentType[] resolveTypesFilter(ContentType[] allowedTypes) {
-        TypeFilter[] requestedFilters = getFiltersByName(getParams("filter"));
+        TypeFilter[] requestedFilters = getFiltersByName(getParams(searchRequest, "filter"));
         //if no filter is given use all allowed filters
         if (requestedFilters == null) {
             return allowedTypes;
@@ -177,12 +163,53 @@ public class SearchRequestHelper {
         return typeSet;
     }
 
+    private Date parseDate(String date) {
+        if (isNotEmpty(date)) {
+            date = date.trim();
+            try {
+                return new SimpleDateFormat("dd/MM/yyyy").parse(date);
+            } catch (ParseException e) {
+            }
+        }
+        return null;
+    }
+
+
+    public static String getParam(HttpServletRequest request, String name) {
+        return request.getParameter(name);
+    }
+
+    public static String getParam(HttpServletRequest request , String name, String defaultValue) {
+        String param = getParam(request, name);
+        if (isEmpty(param)) {
+            return defaultValue;
+        }
+        return param;
+    }
+
+    public static String[] getParams(HttpServletRequest request, String name) {
+        return request.getParameterValues(name);
+    }
+
+    public static SortBy extractSortBy(HttpServletRequest request) {
+        String sortBy = getParam(request, "sortBy");
+        if (isEmpty(sortBy)) {
+            return null;
+        }
+        try {
+            return SortBy.valueOf(sortBy.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            //ignore invalid sort by parameter
+            return null;
+        }
+    }
+
     /**
      * Extract the page number from a request - for paged results.
      *
      * @return
      */
-    private int extractPage() {
+    public static int extractPage(HttpServletRequest request) {
         String page = request.getParameter("page");
 
         if (isEmpty(page)) {
@@ -199,31 +226,22 @@ public class SearchRequestHelper {
         }
     }
 
-    private Date parseDate(String date) {
-        if (isNotEmpty(date)) {
-            date = date.trim();
-            try {
-                return new SimpleDateFormat("dd/MM/yyyy").parse(date);
-            } catch (ParseException e) {
-            }
+    /**
+     * Extracts search term, checks for parameter "q" if it does not exist looks for parameter "query"
+     * @param request
+     * @return
+     */
+    public static String extractSearchTerm(HttpServletRequest request) {
+        String query = getParam(request, "q", getParam(request, "query"));//get query if q not given, list pages use query
+        if (StringUtils.isEmpty(query)) {
+            return null;
         }
-        return null;
-    }
-
-
-    private String getParam(String name) {
-        return request.getParameter(name);
-    }
-
-    private String getParam(String name, String defaultValue) {
-        String param = getParam(name);
-        if (isEmpty(param)) {
-            return defaultValue;
+        if (query.length() > 200) {
+            throw new RuntimeException("Search query contains too many characters");
         }
-        return param;
+        return query;
+//        String sanitizedQuery = query.replaceAll("[^a-zA-Z0-9 ]+", "");
+//        return sanitizedQuery;
     }
 
-    private String[] getParams(String name) {
-        return request.getParameterValues(name);
-    }
 }
