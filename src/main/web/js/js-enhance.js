@@ -607,13 +607,14 @@ $(function() {
 
         //Offsets page to make room for sticky nav if arrive on page directly at section
         $(window).load(function(){
-            if (location.hash && $('.page-content__main-content').length > 0) {
-                var contentStart = $('.page-content__main-content').offset().top;
+			var contentClass = '.page-content__main-content';
+
+            if (location.hash && $(contentClass).length > 0) {
+                var contentStart = $(contentClass).offset().top;
                 var scrollTop = $(window).scrollTop();
 
                 if (scrollTop > contentStart) {
-                    //console.log('scrollTop = ' + scrollTop + ' contentStart = ' + contentStart)
-                    $(document).scrollTop( $(location.hash).offset().top - 60 );
+					$(location.hash).offset().top - 100;
                 }
             }
         });
@@ -644,10 +645,6 @@ $(function() {
 
 		//run function on all elements/classes that have a focus state
 		removeFocus("a");
-		removeFocus("button");
-		removeFocus("input");
-		removeFocus("textarea");
-		removeFocus("*[tabindex]");
 		removeFocus(".accordion__title");
 	}
 });
