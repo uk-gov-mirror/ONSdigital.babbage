@@ -2,6 +2,8 @@ package com.github.onsdigital.api.search;
 
 import com.github.davidcarboni.restolino.framework.Api;
 import com.github.onsdigital.babbage.content.client.ContentReadException;
+import com.github.onsdigital.babbage.error.ResourceNotFoundException;
+import com.github.onsdigital.babbage.search.helpers.CountResponseHelper;
 import com.github.onsdigital.babbage.search.model.ContentType;
 import com.github.onsdigital.babbage.paginator.Paginator;
 import com.github.onsdigital.babbage.response.BabbageResponse;
@@ -13,6 +15,7 @@ import com.github.onsdigital.babbage.search.model.field.SearchableField;
 import com.github.onsdigital.babbage.search.helpers.SearchRequestHelper;
 import com.github.onsdigital.babbage.search.helpers.SearchResponseHelper;
 import com.github.onsdigital.babbage.template.TemplateService;
+import com.github.onsdigital.babbage.util.json.JsonUtil;
 import com.github.onsdigital.content.service.ContentNotFoundException;
 import com.github.onsdigital.content.util.URIUtil;
 import org.apache.commons.lang3.ArrayUtils;
@@ -47,64 +50,100 @@ public class Search {
     };
     private final ContentType[] STATIC_TYPES = {ContentType.static_adhoc, ContentType.static_article, ContentType.static_foi, ContentType.static_page};
 
+    private final String SEARCH_PAGE_TYPE = "search";
+
     @GET
     public Object get(@Context HttpServletRequest request, @Context HttpServletResponse response) throws IOException, ContentNotFoundException, ContentReadException, URISyntaxException {
 
         String type = URIUtil.resolveRequestType(request.getRequestURI());
-        String query = extractSearchTerm(request);
+        String query = SearchRequestHelper.extractSearchTerm(request);
         if (query == null) {
-            renderEmptyPage(response, type);
+            if (isDataRequest(type)) {
+                return "Please enter a search query";
+            } else {
+                renderEmptyPage(response);
+            }
         } else {
             search(request, response, query, type);
         }
         return null;
     }
 
-    private void renderEmptyPage(HttpServletResponse response, String type) throws IOException {
+    private void renderEmptyPage(HttpServletResponse response) throws IOException {
         LinkedHashMap<String, Object> searchData = new LinkedHashMap<>();
-        searchData.put("type", type);
+        searchData.put("type", SEARCH_PAGE_TYPE);
         String html = TemplateService.getInstance().renderListPage(searchData);
         BabbageResponse babbageResponse = new BabbageStringResponse(html, CONTENT_TYPE);
         babbageResponse.apply(response);
     }
 
+    /*Searches for time series cdid, if there is a match redirects to time series page, otherwise performs search for content*/
     private void search(HttpServletRequest request, HttpServletResponse response, String query, String type) throws IOException {
-        String uri = searchTimeSeries(query);
+        String uri = searchTimeSeriesUri(query);
         if (uri != null) {
             response.sendRedirect(uri);
             return;
         }
-        searchContent(request, response, query, type);
+        LinkedHashMap<String, Object> searchData = searchContent(request, query);
+        BabbageResponse searchResponse;
+        if (isDataRequest(type)) {
+            searchResponse = new BabbageStringResponse(JsonUtil.toJson(searchData));
+        } else {
+            searchData.put("type", SEARCH_PAGE_TYPE);
+            String html = TemplateService.getInstance().renderListPage(searchData);
+            searchResponse = new BabbageStringResponse(html, CONTENT_TYPE);
+        }
+        searchResponse.apply(response);
     }
 
-    private void searchContent(HttpServletRequest request, HttpServletResponse response, String query, String type) throws IOException {
-        ONSQuery contentQuery = buildContentQuery(request);
-        ONSQuery featuredResultQuery = buildFeaturedResultQuery(contentQuery, request);
+    private LinkedHashMap<String, Object> searchContent(HttpServletRequest request, String query) throws IOException {
+        LinkedHashMap<String, Object> searchResponseData = new LinkedHashMap<>();
+        int page = SearchRequestHelper.extractPage(request);
 
+        boolean filtered = isFiltered(request);
+        boolean notFiltered = (filtered == false);
+        boolean timeSeriesRequested = isTimeSeriesRequested(request);
+        boolean staticsRequested = isStaticsRequested(request);
+        boolean countTimeSeries = timeSeriesRequested || (notFiltered && timeSeriesRequested == false);
+        boolean searchContent = staticsRequested || (notFiltered && timeSeriesRequested == false) || filtered;
 
-        SearchResponseHelper searchResponse;
-        LinkedHashMap<String, Object> searchData = new LinkedHashMap<>();
-        if (featuredResultQuery != null) {
-            SearchResponseHelper featuredResponse;
-            List<SearchResponseHelper> responseHelpers = SearchService.getInstance().searchMultiple(featuredResultQuery, contentQuery);
-            Iterator<SearchResponseHelper> iterator = responseHelpers.iterator();
-            featuredResponse = iterator.next();
-            searchResponse = iterator.next();
-            searchData.put("featuredResult", featuredResponse.getResult());
-        } else {
-            searchResponse = SearchService.getInstance().search(contentQuery);
+        if (searchContent == false && page > 1) {
+            throw new ResourceNotFoundException("Non-existing page request");
         }
 
-        Paginator.assertPage(contentQuery.getPage(), searchResponse);
-        searchData.put("type", type);
-        searchData.put("paginator", Paginator.getPaginator(contentQuery.getPage(), searchResponse));
-        String html = TemplateService.getInstance().renderListPage(searchResponse.getResult(), searchData);
-        BabbageResponse babbageResponse = new BabbageStringResponse(html, CONTENT_TYPE);
-        babbageResponse.apply(response);
+        if (countTimeSeries) {
+            ONSQuery featuredResultQuery = buildFeaturedResultQuery(query);
+            SearchResponseHelper topicResponse = SearchService.getInstance().search(featuredResultQuery);
+            if (topicResponse.getNumberOfResults() > 1) {
+                searchResponseData.put("featuredResult", topicResponse.getResult());
+                if (countTimeSeries) {
+                    long timeSeriesCount = countTimeSeries((String) topicResponse.getResult().getResults().get(0).get(FilterableField.uri.name()));
+                    searchResponseData.put("timeSeriesCount", timeSeriesCount);
+                }
+            }
+        }
+
+        if (searchContent) {
+            ONSQuery contentQuery = buildContentQuery(request);
+            SearchResponseHelper contentResponse = SearchService.getInstance().search(contentQuery);
+            Paginator.assertPage(contentQuery.getPage(), contentResponse);
+            searchResponseData.put("result", contentResponse.getResult());
+            searchResponseData.put("paginator", Paginator.getPaginator(contentQuery.getPage(), contentResponse));
+        }
+        return searchResponseData;
     }
 
+    //Counts time series for featured result
+    private long countTimeSeries(String uri) {
+        System.out.println("Counting time series starting with uri " + uri);
+        ONSQuery query = new ONSQuery(ContentType.timeseries).setUriPrefix(uri);
+        CountResponseHelper countResponse = SearchService.getInstance().count(query);
+        return countResponse.getCount();
 
-    private String searchTimeSeries(String query) throws IOException {
+    }
+
+    //returns uri for time series if there is a cdid match
+    private String searchTimeSeriesUri(String query) throws IOException {
         ONSQuery onsQuery = new ONSQuery(ContentType.timeseries)
                 .addFilter(FilterableField.cdid, query.toLowerCase()).
                         setSize(1);
@@ -116,14 +155,10 @@ public class Search {
         return null;
     }
 
-    private ONSQuery buildFeaturedResultQuery(ONSQuery contentQuery, HttpServletRequest request) throws IOException {
-        if (isFiltered(request) || contentQuery.getPage() > 1) {
-            return null;
-        }
-
+    private ONSQuery buildFeaturedResultQuery(String query) throws IOException {
         return new ONSQuery(ContentType.product_page)
                 .setSize(1)
-                .setQuery(contentQuery.getQuery())
+                .setQuery(query)
                 .setFields(SearchableField.values())
                 .setHighLightFields(true);
     }
@@ -132,27 +167,24 @@ public class Search {
         return request.getParameterValues("filter") != null;
     }
 
-    private ONSQuery buildContentQuery(HttpServletRequest request) throws IOException {
-        String includeStatics = request.getParameter("includeStatics");
-        ONSQuery query = new SearchRequestHelper(request, null, ALLOWED_TYPES).buildQuery();
+    private boolean isTimeSeriesRequested(HttpServletRequest request) {
+        return request.getParameter("time_series") != null;
+    }
 
-        if (StringUtils.isNotEmpty(includeStatics)) {
+    private boolean isStaticsRequested(HttpServletRequest request) {
+        return request.getParameter("includeStatics") != null;
+    }
+
+    private ONSQuery buildContentQuery(HttpServletRequest request) throws IOException {
+        ONSQuery query = new SearchRequestHelper(request, null, ALLOWED_TYPES).buildQuery();
+        if (isStaticsRequested(request)) {
             ContentType[] types = query.getTypes();
             query.setTypes(ArrayUtils.addAll(types, STATIC_TYPES));
         }
         return query;
     }
 
-    private String extractSearchTerm(HttpServletRequest request) {
-        String query = request.getParameter("q");
-
-        if (StringUtils.isEmpty(query)) {
-            return null;
-        }
-        if (query.length() > 200) {
-            throw new RuntimeException("Search query contains too many characters");
-        }
-        String sanitizedQuery = query.replaceAll("[^a-zA-Z0-9 ]+", "");
-        return sanitizedQuery;
+    private boolean isDataRequest(String type) {
+        return "data".equals(type);
     }
 }
