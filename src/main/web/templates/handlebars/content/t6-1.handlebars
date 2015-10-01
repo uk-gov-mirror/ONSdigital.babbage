@@ -84,7 +84,11 @@
 
 			{{!-- Chapters --}}
 			<section class="col col--lg-one accordion is-collapsed">
-				<h3 id="sc-1" class="accordion__title" aria-controls="content-1">{{labels.compendium-chapters}}</h3>
+				<h3 id="sc-1" class="accordion__title" aria-controls="content-1">
+                    {{labels.compendium-chapters}}
+                    <span class="icon icon-arrow-down"></span>
+                    <span class="icon icon-arrow-up"></span>
+                </h3>
 				<div id="content-1" class="accordion__content" aria-labelledby="sc-1">
 					<ul class="list--neutral">
 						{{#each chapters}}
