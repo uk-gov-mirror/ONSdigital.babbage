@@ -1,4 +1,3 @@
-
 	<div class="page-intro">
 		<div class="wrapper">
 			<div class="col-wrap">
@@ -52,16 +51,21 @@
 			<div class="results col col--md-34 col--lg-40 margin-left">
 				{{> list/partials/results-text}}
 				<ul class="list--neutral">
-					{{#each results}}
-					<li class="search--result-item margin-bottom--double">
-						<h3 class="inline-block"><a href="{{uri}}">{{{description.title}}}
-							{{#if description.edition}}
-							{{#if_all (ne description.edition 'yes') (ne description.edition '<strong>yes</strong>')}}: {{{description.edition}}}{{/if_all}}
-						{{/if}}</a></h3>
-						<p class="flush">
-							{{df description.releaseDate}}
-						</p>
-					</li>
+					{{#each result.results}}
+						<li class="search--result-item margin-bottom--double">
+							<h3 class="inline-block">
+								<a href="{{uri}}">{{{description.title}}}
+									{{#if description.edition}}
+										{{#if_all (ne description.edition 'yes') (ne description.edition '<strong>yes</strong>')}}
+											: {{{description.edition}}}
+										{{/if_all}}
+									{{/if}}
+								</a>
+							</h3>
+							<p class="flush">
+								{{df description.releaseDate}}
+							</p>
+						</li>
 					{{/each}}
 				</ul>
 				{{> list/partials/paginator}}
