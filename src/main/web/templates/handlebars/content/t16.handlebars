@@ -63,7 +63,15 @@
 
                     {{!-- Release date --}}
 					<p class="col {{#if description.nationalStatistic}}col--md-11 col--lg-14{{else}}col--md-12 col--lg-15{{/if}} meta__item">
-                        <span>{{#if description.cancelled}}Proposed release date{{else}}{{labels.release-date}}{{/if}}: </span><br/>{{df description.releaseDate}}<br/>
+						{{#if description.provisionalDate}}
+							Provisional release date:
+							<br>
+							{{description.provisionalDate}}
+						{{else}}
+							<span>{{#if description.cancelled}}
+								Proposed release date{{else}}{{labels.release-date}}{{/if}}
+								: </span><br/>{{df description.releaseDate}}<br/>
+						{{/if}}
                     </p>
 
                     {{!-- Cancelled date --}}
@@ -73,14 +81,16 @@
 							 <span>Cancellation date: </span><br/>
 							 {{nf cancellationDate}}
 						 </p>
-					 {{else}} --}}
+					 {{else}}
 
                     {{!-- Next release --}}
+					{{#unless description.cancelled}}
 					<p class="col {{#if description.nationalStatistic}}col--md-11 col--lg-14{{else}}col--md-12 col--lg-15{{/if}} meta__item">
 						<span>{{labels.release-next}}
 							: </span><br/>{{#if description.nextRelease}}{{description.nextRelease}}{{else}}To be
 						announced{{/if}}
 					</p>
+					{{/unless}}
 
                     {{#if markdown}}
                         {{!-- Pre-release list link --}}
