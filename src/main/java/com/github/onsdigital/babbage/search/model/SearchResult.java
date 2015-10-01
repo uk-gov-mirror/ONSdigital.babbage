@@ -1,4 +1,4 @@
-package com.github.onsdigital.babbage.search;
+package com.github.onsdigital.babbage.search.model;
 
 import java.util.ArrayList;
 import java.util.List;

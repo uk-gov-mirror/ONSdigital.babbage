@@ -29,5 +29,4 @@ public enum ContentType {
     reference_tables,
     chart,
     table
-
 }

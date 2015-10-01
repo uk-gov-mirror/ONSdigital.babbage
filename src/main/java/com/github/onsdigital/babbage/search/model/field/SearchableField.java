@@ -2,7 +2,7 @@ package com.github.onsdigital.babbage.search.model.field;
 
 /**
  * Created by bren on 08/09/15.
- *
+ * <p/>
  * Searchable field names with boost factors
  */
 public enum SearchableField {
@@ -13,9 +13,9 @@ public enum SearchableField {
     keywords,
     type;
 
-    private double boostFactor = 1;
+    private Long boostFactor;
 
-    SearchableField(double boostFactors) {
+    SearchableField(long boostFactors) {
         this.boostFactor = boostFactors;
     }
 
@@ -23,7 +23,7 @@ public enum SearchableField {
 
     }
 
-    public double getBoostFactor() {
+    public Long getBoostFactor() {
         return boostFactor;
     }
 

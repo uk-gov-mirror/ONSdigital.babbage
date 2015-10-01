@@ -6,6 +6,7 @@ import com.github.onsdigital.babbage.response.BabbageStringResponse;
 import com.github.onsdigital.babbage.search.ONSQuery;
 import com.github.onsdigital.babbage.search.SearchService;
 import com.github.onsdigital.babbage.search.helpers.SearchRequestHelper;
+import com.github.onsdigital.babbage.search.helpers.SearchRequestQueryBuilder;
 import com.github.onsdigital.babbage.search.helpers.SearchResponseHelper;
 import com.github.onsdigital.babbage.search.input.SortBy;
 import com.github.onsdigital.babbage.search.model.ContentType;
@@ -41,6 +42,10 @@ public abstract class ListPageBaseRequestHandler implements RequestHandler {
         return false;
     }
 
+    protected boolean isListTopics() {
+        return isLocalisedUri() == false;
+    }
+
     /**
      * Return true if the list page is localised to a uri.
      * e.g the bulletin page is localised to t3 level uri, whereas the FOI
@@ -49,6 +54,8 @@ public abstract class ListPageBaseRequestHandler implements RequestHandler {
      * @return
      */
     public abstract boolean isLocalisedUri();
+
+
 
     public String getData(String requestedUri, HttpServletRequest request) throws Exception {
 
@@ -74,10 +81,10 @@ public abstract class ListPageBaseRequestHandler implements RequestHandler {
         listData.put("type", type);
         listData.put("paginator", Paginator.getPaginator(query.getPage(), responseHelper));
         listData.put("uri", request.getRequestURI());//set full uri in the context
-        if (isLocalisedUri() == false) {
+        if (isListTopics()) {
             listData.put("topics", getTopics());
         }
-        listData.put("result",responseHelper.getResult());
+        listData.put("result", responseHelper.getResult());
         String html = TemplateService.getInstance().renderListPage(listData);
         babbageResponse = new BabbageStringResponse(html, CONTENT_TYPE);
         return babbageResponse;
@@ -85,9 +92,9 @@ public abstract class ListPageBaseRequestHandler implements RequestHandler {
 
     private ONSQuery createQuery(String requestedUri, HttpServletRequest request) {
         String uri = processUri(requestedUri, request);
-        ONSQuery query = new SearchRequestHelper(request, uri, getAllowedTypes()).buildQuery();
+        ONSQuery query = new SearchRequestQueryBuilder(request, uri, getAllowedTypes()).buildQuery();
         if (isFilterLatest(request)) {
-            query.addFilter(FilterableField.latestRelease, true);
+            SearchRequestHelper.addTermFilter(query, FilterableField.latestRelease, true);
         }
         return query;
     }
@@ -108,7 +115,8 @@ public abstract class ListPageBaseRequestHandler implements RequestHandler {
     }
 
     private List<Topic> getTopics() throws IOException {
-        ONSQuery topicListQuery = new ONSQuery(ContentType.product_page).addSort(SortBy.TITLE).setSize(Integer.MAX_VALUE);
+        ONSQuery topicListQuery = new ONSQuery(ContentType.product_page.name()).setSize(Integer.MAX_VALUE);
+        SearchRequestHelper.addSort(topicListQuery, SortBy.TITLE);
         SearchResponseHelper search = SearchService.getInstance().search(topicListQuery);
         List<Map<String, Object>> results = search.getResult().getResults();
         List<Topic> topics = new ArrayList<>();
