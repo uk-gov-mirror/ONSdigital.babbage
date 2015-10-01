@@ -47,8 +47,8 @@
                 {{!-- Dataset ID --}}
                 {{#if description.datasetId}}
                 <p class="col col--md-12 col--lg-15 meta__item">
-                    <span>{{labels.dataset-id}}: </span>{{description.datasetId}}
-                    <a href="#" class="tooltip" title="This series ID is a unique random identifier for this individual time series. The digits themselves do not have any specific meaning" aria-label="This series ID is a unique random identifier for this individual time series. The digits themselves do not have any specific meaning">{{labels.dataset-what-is}} </a>
+                    <span>{{labels.dataset-id}}: </span>{{description.datasetId}}&nbsp;
+                    <span><a href="#" class="tooltip-npl" title="This series ID is a unique random identifier for this individual time series. The digits themselves do not have any specific meaning" aria-label="This series ID is a unique random identifier for this individual time series. The digits themselves do not have any specific meaning"> {{labels.dataset-what-is}} </a></span>
                 </p>
                 {{/if}}
             </div>
@@ -69,11 +69,11 @@
                         {{#if previousVersions}}
                             <p class="flush"><a href="#">Previous versions</a> of this data are avaiable</p>
                         {{/if}}
-                        <div class="col-wrap">
+                        <div class="col-wrap flush">
                         {{#each downloads}}
                             {{#if file}}
                                 <div class="col col--md-8 col--lg-9 margin-right">
-                                    <form method="get" action="/file">
+                                    <form method="get" action="/file" class="margin-bottom">
                                         <button type="submit" title="Latest version" class="btn btn--primary btn--full-width btn--thick download-analytics">
                                         {{fe (lowercase file)}} ({{fs (lowercase file)}})
                                         </button>
@@ -130,8 +130,10 @@
 
                 {{!-- INFORMATION AND NOTES --}}
                 {{#if section.markdown}}
-                    <h3>{{labels.dataset-notes}}</h3>
-                    {{md section.markdown}}
+                    <div class="margin-top">
+                        <h3>{{labels.dataset-notes}}</h3>
+                        {{md section.markdown}}
+                    </div>
                 {{/if}}
 
             </div>
