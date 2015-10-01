@@ -62,9 +62,11 @@
 			{{!-- Print and download --}}
 			<p class="col col--md-12 col--lg-15 print--hide meta__item">
 				<a href="" id="jsEnhancePrint" class="link-complex nojs-hidden js-enhance--show">
+					{{!-- <span class="icon icon-print"></span> --}}
 					{{labels.print-report}}
 				</a>
 				<br class="nojs-hidden js-enhance--show"/>
+				{{!-- <span class="icon icon-download"></span> --}}
 				<a href="{{uri}}/pdf" class="link-complex">
 					{{labels.dl-pdf}}
 				</a>
@@ -121,7 +123,11 @@
 					<div class="accordion__container"> {{!-- TODO Reliant on empty div for first accordion to have top border --}}
 						{{#each accordion}}
 							<section id="{{slugify title}}" class="accordion is-collapsed section__content--markdown">
-								<h2 class="accordion__title" aria-controls="content-{{@index_1}}"><span class="section__content-number">{{nf (add sections.size @index_1)}}.</span>{{title}}</h2>
+								<h2 class="accordion__title" aria-controls="content-{{@index_1}}">
+									<span class="section__content-number">{{nf (add sections.size @index_1)}}.</span>{{title}}
+									<span class="icon icon-arrow-down"></span>
+									<span class="icon icon-arrow-up"></span>
+								</h2>
 								<div class="accordion__content panel--bottom-mar-small" aria-labelledby="sc-{{@index_1}}">
 									{{md markdown}}
 									<a class="print--hide jsEnhanceAnimateScroll" href="#toc" title="{{labels.back-to-toc}}" class="">{{labels.back-to-toc}}</a>
@@ -130,7 +136,11 @@
 						{{/each}}
 						{{#if relatedMethodology}}
 							<section id="methodology" class="accordion is-collapsed section__content--markdown">
-								<h2 class="accordion__title" aria-controls="content-{{@index_1}}"><span class="section__content-number">{{nf (add sections.size (increment accordion.size))}}.</span>Methodology</h2>
+								<h2 class="accordion__title" aria-controls="content-{{@index_1}}">
+									<span class="section__content-number">{{nf (add sections.size (increment accordion.size))}}.</span>Methodology
+									<span class="icon icon-arrow-down"></span>
+									<span class="icon icon-arrow-up"></span>
+								</h2>
 								<div class="accordion__content panel--bottom-mar-small" aria-labelledby="sc-{{@index_1}}">
 									<ul class="list--neutral">
 									{{#each relatedMethodology}}
