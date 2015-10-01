@@ -14,6 +14,8 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import static org.apache.commons.lang3.StringUtils.isEmpty;
+
 /**
  * Created by bren on 10/08/15.
  */
@@ -89,6 +91,32 @@ public class RequestUtil {
         }
         return LocaleConfig.getDefaultLocale();
     }
+
+
+    public static String[] getParams(HttpServletRequest request, String name) {
+        return request.getParameterValues(name);
+    }
+
+    public static String getParam(HttpServletRequest request, String name) {
+        return request.getParameter(name);
+    }
+
+    /**
+     * gets request parameter, if value is empty returns given default value
+     *
+     * @param request
+     * @param name
+     * @param defaultValue
+     * @return
+     */
+    public static String getParam(HttpServletRequest request, String name, String defaultValue) {
+        String param = getParam(request, name);
+        if (isEmpty(param)) {
+            return defaultValue;
+        }
+        return param;
+    }
+
 
 
     /**

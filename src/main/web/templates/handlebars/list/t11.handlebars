@@ -63,8 +63,25 @@
 									{{/if}}
 								</a>
 							</h3>
+
 							<p class="flush">
-								{{df description.releaseDate}}
+
+								{{#if description.provisionalDate}}
+									{{description.provisionalDate}}
+								{{else}}
+									{{df description.releaseDate}}
+								{{/if}}
+								<span>
+									{{#if description.cancelled}}
+										(cancelled)
+									{{else}}
+										{{#if description.finalised}}
+											(confirmed)
+										{{else}}
+											(provisional)
+										{{/if}}
+									{{/if}}
+								</span>
 							</p>
 						</li>
 					{{/each}}

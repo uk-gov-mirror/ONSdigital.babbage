@@ -1,194 +1,111 @@
 package com.github.onsdigital.babbage.search.helpers;
 
-import com.github.onsdigital.babbage.configuration.Configuration;
 import com.github.onsdigital.babbage.error.ResourceNotFoundException;
 import com.github.onsdigital.babbage.search.ONSQuery;
 import com.github.onsdigital.babbage.search.input.SortBy;
-import com.github.onsdigital.babbage.search.input.TypeFilter;
-import com.github.onsdigital.babbage.search.model.ContentType;
 import com.github.onsdigital.babbage.search.model.field.FilterableField;
 import com.github.onsdigital.babbage.search.model.field.SearchableField;
-import com.github.onsdigital.babbage.search.model.filter.ValueFilter;
-import com.github.onsdigital.babbage.util.URIUtil;
-import org.apache.commons.lang3.ArrayUtils;
+import com.github.onsdigital.babbage.search.model.sort.SortField;
 import org.apache.commons.lang3.StringUtils;
+import org.elasticsearch.index.query.FilterBuilder;
+import org.elasticsearch.index.query.FilterBuilders;
+import org.elasticsearch.index.query.RangeFilterBuilder;
+import org.elasticsearch.search.sort.FieldSortBuilder;
 
 import javax.servlet.http.HttpServletRequest;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
-import static com.github.onsdigital.babbage.util.URIUtil.cleanUri;
+import static com.github.onsdigital.babbage.util.RequestUtil.getParam;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
-import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 /**
- * Created by bren on 07/09/15.
+ * Common utilities to manipulate search request query and extracting common search parameters
  */
+
 public class SearchRequestHelper {
 
-    private HttpServletRequest searchRequest;
-    private String topicUri;
-    private ContentType[] allowedTypes;
 
-    public SearchRequestHelper(HttpServletRequest request, String topicUri, ContentType... allowedTypes) {
-        this.searchRequest = request;
-        this.topicUri = topicUri;
-        this.allowedTypes = allowedTypes;
+    /**
+     * Adds given filters to query as or filters. The or filter will simply be a filter in encapsulating and filter, meaning all other filters added to query separately are anded with each other
+     *
+     * @param query
+     * @param filters
+     */
+    public static void addOrFilters(ONSQuery query, FilterBuilder... filters) {
+        query.addFilter(FilterBuilders.orFilter(filters));
     }
 
-    public ONSQuery buildQuery() {
-
-        ONSQuery onsQuery = new ONSQuery()
-                .setTypes(resolveTypesFilter(allowedTypes))
-                .setFields(SearchableField.values())
-                .setPage(extractPage(searchRequest))
-                .setSize(Configuration.GENERAL.getResultsPerPage())
-                .setHighLightFields(true)
-                .addRangeFilter(FilterableField.releaseDate, parseDate(getParam(searchRequest,"fromDate")), parseDate(getParam(searchRequest,"toDate")));
-
-        resolveUriPrefix(onsQuery);
-        resolveQuery(onsQuery);
-        resolveKeywords(onsQuery);
-        resolveSorting(onsQuery);
-        return onsQuery;
-    }
-
-    private void resolveSorting(ONSQuery onsQuery) {
-        SortBy sortBy = extractSortBy(searchRequest);
-        if (sortBy != null) {
-            onsQuery.addSort(sortBy);
-        } else {
-            onsQuery.addSort(SortBy.RELEVANCE);
+    public static void addFields(ONSQuery query, SearchableField... fields) {
+        for (SearchableField field : fields) {
+            query.addField(field.name(), field.getBoostFactor());
         }
     }
 
-    private void resolveUriPrefix(ONSQuery onsQuery) {
-        String uriPrefix = URIUtil.cleanUri(topicUri);
-        if (isNotEmpty(uriPrefix)) {
-            onsQuery.setUriPrefix(cleanUri(uriPrefix));
+
+    /**
+     * Adds term filters to ons query
+     *
+     * @param query
+     * @param field
+     * @param values
+     */
+    public static void addPrefixFilter(ONSQuery query, FilterableField field, String... values) {
+        if (values == null) {
+            query.addFilter(FilterBuilders.prefixFilter(field.name(), null));
+        }
+
+        for (String value : values) {
+            query.addFilter(FilterBuilders.prefixFilter(field.name(), value));
         }
     }
 
-    private void resolveKeywords(ONSQuery onsQuery) {
-        String[] keywords = getParams(searchRequest, "keywords");
-        if (keywords != null) {
-            for (String keyword : keywords) {
-                if (StringUtils.isNotEmpty(keyword)) {
-                    onsQuery.addFilter(ValueFilter.FilterType.TERM, FilterableField.keywords_raw, keyword.trim());
-                }
-            }
+    /**
+     * Adds term filters to ons query
+     *
+     * @param query
+     * @param field
+     * @param values
+     */
+    public static void addTermFilter(ONSQuery query, FilterableField field, Object... values) {
+        if (values == null) {
+            query.addFilter(FilterBuilders.termFilter(field.name(), null));
+        }
+
+        for (Object value : values) {
+            query.addFilter(FilterBuilders.termFilter(field.name(), value));
         }
     }
 
-    private void resolveQuery(ONSQuery onsQuery) {
-        String query = extractSearchTerm(searchRequest);
-        if (isNotEmpty(query)) {
-            onsQuery.setQuery(query);
+    /**
+     * Adds range filter to given query, only if any of from or to values are non-null, null values are not added to filter.
+     * If both from and to are null this method won't have any affect
+     *
+     * @param query
+     * @param field
+     * @param from
+     * @param to
+     */
+
+    public static void addRangeFilter(ONSQuery query, FilterableField field, Object from, Object to) {
+        if (from == null && to == null) {
+            return;
         }
+
+        RangeFilterBuilder dateFilter = new RangeFilterBuilder(field.name());
+        if (from != null) {
+            dateFilter.from(from);
+        }
+        if (to != null) {
+            dateFilter.to(to);
+        }
+        query.addFilter(dateFilter);
+
     }
 
-    private ContentType[] resolveTypesFilter(ContentType[] allowedTypes) {
-        TypeFilter[] requestedFilters = getFiltersByName(getParams(searchRequest, "filter"));
-        //if no filter is given use all allowed filters
-        if (requestedFilters == null) {
-            return allowedTypes;
+    public static void addSort(ONSQuery query, SortBy sortBy) {
+        SortField[] sortFields = sortBy.getSortFields();
+        for (SortField sortField : sortFields) {
+            query.addSort(new FieldSortBuilder(sortField.getField().name()).order(sortField.getOrder()).ignoreUnmapped(true));
         }
-
-        //return requested filter requestedTypes if no allowed filter list given
-        if (allowedTypes == null) {
-            return getTypesFor(requestedFilters);
-        }
-        return resolveTypeFilter(allowedTypes, requestedFilters);
-    }
-
-    private ContentType[] resolveTypeFilter(ContentType[] allowedTypes, TypeFilter[] requestedFilters) {
-        Set<ContentType> allowedTypeSet = toSet(allowedTypes);
-        ContentType[] typesToQuery = new ContentType[0];
-        for (TypeFilter filter : requestedFilters) {
-            for (ContentType contentType : filter.getTypes()) {
-                if (allowedTypeSet.contains(contentType)) {
-                    typesToQuery = ArrayUtils.add(typesToQuery, contentType);
-                }
-            }
-
-        }
-
-        if (typesToQuery.length > 0) {
-            return typesToQuery;
-        } else {
-            return allowedTypes;
-        }
-    }
-
-    private TypeFilter[] getFiltersByName(String... filterNames) {
-        if (filterNames == null) {
-            return null;
-        }
-        TypeFilter[] filters = null;
-        for (String filterName : filterNames) {
-            if (isEmpty(filterName)) {
-                continue;
-            }
-            try {
-                filters = ArrayUtils.addAll(filters, TypeFilter.valueOf(filterName.toUpperCase()));
-            } catch (IllegalArgumentException e) {
-                //ignore invalid filter name typed in the url
-                continue;
-            }
-        }
-
-        return filters;
-    }
-
-    private ContentType[] getTypesFor(TypeFilter... filters) {
-        if (filters == null) {
-            return null;
-        }
-        ContentType[] types = new ContentType[0];
-        for (TypeFilter filter : filters) {
-            types = ArrayUtils.addAll(types, filter.getTypes());
-        }
-
-        return types;
-    }
-
-    private Set<ContentType> toSet(ContentType[] types) {
-        HashSet<ContentType> typeSet = new HashSet<>();
-        for (ContentType type : types) {
-            typeSet.add(type);
-        }
-        return typeSet;
-    }
-
-    private Date parseDate(String date) {
-        if (isNotEmpty(date)) {
-            date = date.trim();
-            try {
-                return new SimpleDateFormat("dd/MM/yyyy").parse(date);
-            } catch (ParseException e) {
-            }
-        }
-        return null;
-    }
-
-
-    public static String getParam(HttpServletRequest request, String name) {
-        return request.getParameter(name);
-    }
-
-    public static String getParam(HttpServletRequest request , String name, String defaultValue) {
-        String param = getParam(request, name);
-        if (isEmpty(param)) {
-            return defaultValue;
-        }
-        return param;
-    }
-
-    public static String[] getParams(HttpServletRequest request, String name) {
-        return request.getParameterValues(name);
     }
 
     public static SortBy extractSortBy(HttpServletRequest request) {
@@ -228,6 +145,7 @@ public class SearchRequestHelper {
 
     /**
      * Extracts search term, checks for parameter "q" if it does not exist looks for parameter "query"
+     *
      * @param request
      * @return
      */

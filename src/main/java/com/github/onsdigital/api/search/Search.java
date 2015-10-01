@@ -3,23 +3,24 @@ package com.github.onsdigital.api.search;
 import com.github.davidcarboni.restolino.framework.Api;
 import com.github.onsdigital.babbage.content.client.ContentReadException;
 import com.github.onsdigital.babbage.error.ResourceNotFoundException;
-import com.github.onsdigital.babbage.search.helpers.CountResponseHelper;
-import com.github.onsdigital.babbage.search.model.ContentType;
 import com.github.onsdigital.babbage.paginator.Paginator;
 import com.github.onsdigital.babbage.response.BabbageResponse;
 import com.github.onsdigital.babbage.response.BabbageStringResponse;
 import com.github.onsdigital.babbage.search.ONSQuery;
 import com.github.onsdigital.babbage.search.SearchService;
+import com.github.onsdigital.babbage.search.helpers.CountResponseHelper;
+import com.github.onsdigital.babbage.search.helpers.SearchRequestHelper;
+import com.github.onsdigital.babbage.search.helpers.SearchRequestQueryBuilder;
+import com.github.onsdigital.babbage.search.helpers.SearchResponseHelper;
+import com.github.onsdigital.babbage.search.model.ContentType;
 import com.github.onsdigital.babbage.search.model.field.FilterableField;
 import com.github.onsdigital.babbage.search.model.field.SearchableField;
-import com.github.onsdigital.babbage.search.helpers.SearchRequestHelper;
-import com.github.onsdigital.babbage.search.helpers.SearchResponseHelper;
 import com.github.onsdigital.babbage.template.TemplateService;
+import com.github.onsdigital.babbage.util.common.EnumUtil;
 import com.github.onsdigital.babbage.util.json.JsonUtil;
 import com.github.onsdigital.content.service.ContentNotFoundException;
 import com.github.onsdigital.content.util.URIUtil;
 import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -27,10 +28,12 @@ import javax.ws.rs.GET;
 import javax.ws.rs.core.Context;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
+
+import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.addPrefixFilter;
+import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.addTermFilter;
+import static com.github.onsdigital.babbage.util.common.EnumUtil.namesOf;
 
 @Api
 public class Search {
@@ -142,7 +145,8 @@ public class Search {
     //Counts time series for featured result
     private long countTimeSeries(String uri) {
         System.out.println("Counting time series starting with uri " + uri);
-        ONSQuery query = new ONSQuery(ContentType.timeseries).setUriPrefix(uri);
+        ONSQuery query = new ONSQuery(ContentType.timeseries.name());
+        addPrefixFilter(query, FilterableField.uri, uri);
         CountResponseHelper countResponse = SearchService.getInstance().count(query);
         return countResponse.getCount();
 
@@ -150,9 +154,9 @@ public class Search {
 
     //returns uri for time series if there is a cdid match
     private String searchTimeSeriesUri(String query) throws IOException {
-        ONSQuery onsQuery = new ONSQuery(ContentType.timeseries)
-                .addFilter(FilterableField.cdid, query.toLowerCase()).
-                        setSize(1);
+        ONSQuery onsQuery = new ONSQuery(ContentType.timeseries.name()).setSize(1);
+        addTermFilter(onsQuery, FilterableField.cdid, query.toLowerCase());
+
         SearchResponseHelper searchResponseHelper = SearchService.getInstance().search(onsQuery);
         if (searchResponseHelper.getNumberOfResults() > 0) {
             Map<String, Object> timeSeries = searchResponseHelper.getResult().getResults().iterator().next();
@@ -162,11 +166,12 @@ public class Search {
     }
 
     private ONSQuery buildFeaturedResultQuery(String query) throws IOException {
-        return new ONSQuery(ContentType.product_page)
+        ONSQuery onsquery = new ONSQuery(ContentType.product_page.name())
                 .setSize(1)
-                .setQuery(query)
-                .setFields(SearchableField.values())
+                .setSearchTerm(query)
                 .setHighLightFields(true);
+        SearchRequestHelper.addFields(onsquery, SearchableField.values());
+        return onsquery;
     }
 
     private boolean isFiltered(HttpServletRequest request) {
@@ -182,15 +187,14 @@ public class Search {
     }
 
     private ONSQuery buildContentQuery(HttpServletRequest request) throws IOException {
-        ONSQuery query = new SearchRequestHelper(request, null, ALLOWED_TYPES).buildQuery();
+        ONSQuery query = new SearchRequestQueryBuilder(request, null, ALLOWED_TYPES).buildQuery();
 
         if(isFiltered(request) == false && isTimeSeriesRequested(request)) {
             query.setTypes(null);//clear types if time series requested
         }
-
         if (isStaticsRequested(request)) {
-            ContentType[] types = query.getTypes();
-            query.setTypes(ArrayUtils.addAll(types, STATIC_TYPES));
+            String[] types = query.getTypes();
+            query.setTypes(ArrayUtils.addAll(types, namesOf(STATIC_TYPES)));
         }
         return query;
     }

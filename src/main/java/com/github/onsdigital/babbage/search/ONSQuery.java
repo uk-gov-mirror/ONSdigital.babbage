@@ -1,109 +1,117 @@
 package com.github.onsdigital.babbage.search;
 
-import com.github.onsdigital.babbage.search.input.SortBy;
-import com.github.onsdigital.babbage.search.model.ContentType;
-import com.github.onsdigital.babbage.search.model.field.FilterableField;
-import com.github.onsdigital.babbage.search.model.field.SearchableField;
-import com.github.onsdigital.babbage.search.model.filter.RangeFilter;
-import com.github.onsdigital.babbage.search.model.filter.ValueFilter;
+import org.apache.commons.lang3.StringUtils;
+import org.elasticsearch.index.query.FilterBuilder;
+import org.elasticsearch.search.sort.SortBuilder;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by bren on 07/09/15.
+ * <p/>
+ * <p/>
+ * A wrapper-builder for building a filterable, multiple field match Elasticsearch query which can be executed against specified Elasticsearch types and can be sorted.
+ * <p/>
+ * Specifying a page is also possible by setting page and size properties. (e.g. a size 20 and page 3 will return results from 41 to 60)
+ * <p/>
+ * if a search term is not set will be just a filter query with no highlighting (even if highlighting is set) or scoring.
  */
 public class ONSQuery {
     static final String HIGHLIGHTER_PRE_TAG = "<strong>";
     static final String HIGHLIGHTER_POST_TAG = "</strong>";
 
-    private ContentType[] types;
-    private SearchableField[] fields;
-    private String uriPrefix;
-    private String query;
-    private List<ValueFilter> filters = new ArrayList<>();
-    private List<RangeFilter> rangeFilters = new ArrayList<>();
-    private List<SortBy> sorts = new ArrayList<>();
+    private String[] types;
+    private Map<String, Long> fields = new HashMap<>();//fieldName, boostFactor mapping
+    private String searchTerm;
+    private List<FilterBuilder> filters = new ArrayList<>();
+    private List<SortBuilder> sorts = new ArrayList<>();
     private boolean highLightFields;
     private Integer page;
     private Integer size;
 
-    public ONSQuery(ContentType... types) {
+    /**
+     * Initializes query with optional types, if not types are passed query will be for all Elasticsearch types
+     *
+     * @param types optional Elasticsearch types to run query against
+     */
+    public ONSQuery(String... types) {
         this.types = types;
     }
 
-    public ContentType[] getTypes() {
+    public String[] getTypes() {
         return types;
     }
 
-    public ONSQuery setTypes(ContentType... types) {
+    /**
+     * Sets (overwrites existing) types
+     *
+     * @param types Elasticsearch types to run query against
+     * @return
+     */
+    public ONSQuery setTypes(String... types) {
         this.types = types;
         return this;
     }
 
-    public SearchableField[] getFields() {
-        return fields;
+    public String[] getFields() {
+        return fields.keySet().toArray(new String[fields.size()]);
     }
 
-    String[] getFieldNames() {
-        String[] fieldNames = new String[fields.length];
-        for (int i = 0; i < fields.length; i++) {
-            fieldNames[i] = fields[i].name();
+    public String[] getBoostedFields() {
+        String[] boostedFieldNames = new String[fields.size()];
+        Iterator<Map.Entry<String, Long>> iterator = fields.entrySet().iterator();
+
+        for (int i = 0; i < boostedFieldNames.length; i++) {
+            Map.Entry<String, Long> next = iterator.next();
+            Long boost = next.getValue();
+            boostedFieldNames[i] = next.getKey() + (boost == null ? "" : "^" + boost);
         }
-        return fieldNames;
+        return boostedFieldNames;
     }
 
-    String[] getBoostedFieldNames() {
-        String[] fieldNames = new String[fields.length];
-        for (int i = 0; i < fields.length; i++) {
-            fieldNames[i] = fields[i].name() + "^" + fields[i].getBoostFactor();
+    /**
+     * Sets (overwrites existing) fields to match query
+     *
+     * @param fields
+     * @return
+     */
+    public ONSQuery setFields(String... fields) {
+        this.fields = new HashMap<>();
+        if (fields == null) {
+            return this;
         }
-        return fieldNames;
-    }
-
-    public ONSQuery setFields(SearchableField... fields) {
-        this.fields = fields;
+        for (String field : fields) {
+            this.fields.put(field, null);
+        }
         return this;
     }
 
-    public String getUriPrefix() {
-        return uriPrefix;
-    }
-
-    public ONSQuery setUriPrefix(String uriPrefix) {
-        this.uriPrefix = uriPrefix;
+    public ONSQuery addField(String field, Long boostFactor) {
+        this.fields.put(field, boostFactor);
         return this;
     }
 
-    public String getQuery() {
-        return query;
+    public String getSearchTerm() {
+        return searchTerm;
     }
 
-    public ONSQuery setQuery(String query) {
-        this.query = query;
+    public ONSQuery setSearchTerm(String searchTerm) {
+        this.searchTerm = searchTerm;
         return this;
     }
 
-    public List<ValueFilter> getFilters() {
+    public List<FilterBuilder> getFilters() {
         return filters;
     }
 
-    public ONSQuery addFilter(FilterableField field, Object... values) {
-        filters.add(new ValueFilter(ValueFilter.FilterType.TERM, field, values));
-        return this;
-    }
-
-    public ONSQuery addFilter(ValueFilter.FilterType filterType, FilterableField field, Object... values) {
-        filters.add(new ValueFilter(filterType, field, values));
-        return this;
-    }
-
-    public List<RangeFilter> getRangeFilters() {
-        return rangeFilters;
-    }
-
-    public ONSQuery addRangeFilter(FilterableField field, Object from, Object to) {
-        rangeFilters.add(new RangeFilter(field, from, to));
+    /**
+     * Adds filter to query, all filters added are added to a single and filter, thus every filter added will narrow the result set down
+     *
+     * @param filterBuilder
+     * @return
+     */
+    public ONSQuery addFilter(FilterBuilder filterBuilder) {
+        filters.add(filterBuilder);
         return this;
     }
 
@@ -133,7 +141,7 @@ public class ONSQuery {
     }
 
     public boolean isHighLightFields() {
-        return highLightFields;
+        return highLightFields && StringUtils.isNotEmpty(getSearchTerm());
     }
 
     public ONSQuery setHighLightFields(boolean highLightFields) {
@@ -141,12 +149,13 @@ public class ONSQuery {
         return this;
     }
 
-    public ONSQuery addSort(SortBy sortBy) {
-        this.sorts.add(sortBy);
+    public ONSQuery addSort(SortBuilder sort) {
+        this.sorts.add(sort);
         return this;
     }
 
-    public List<SortBy> getSorts() {
+    public List<SortBuilder> getSorts() {
         return sorts;
     }
+
 }
