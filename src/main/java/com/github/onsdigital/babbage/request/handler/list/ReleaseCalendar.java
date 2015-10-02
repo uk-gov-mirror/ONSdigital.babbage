@@ -9,6 +9,8 @@ import org.elasticsearch.index.query.AndFilterBuilder;
 import org.elasticsearch.index.query.FilterBuilders;
 import org.elasticsearch.index.query.RangeFilterBuilder;
 import org.elasticsearch.index.query.TermFilterBuilder;
+import org.elasticsearch.search.sort.FieldSortBuilder;
+import org.elasticsearch.search.sort.SortOrder;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -58,6 +60,9 @@ public class ReleaseCalendar extends ListPageBaseRequestHandler {
             AndFilterBuilder notPublishedAndNotCancelled = andFilter(notFilter(published), notFilter(cancelled));
             AndFilterBuilder cancelledAndNotDue = andFilter(cancelled, notFilter(due));
             addOrFilters(query, notPublishedAndNotCancelled, cancelledAndNotDue);// not published and not cancelled or cancelled and not due
+            query.getSorts().clear();
+            query.addSort(new FieldSortBuilder(FilterableField._score.name()).order(SortOrder.DESC));
+            query.addSort(new FieldSortBuilder(FilterableField.releaseDate.name()).order(SortOrder.ASC));
         } else {//published
             AndFilterBuilder publishedAndNotCancelled = andFilter(published, notFilter(cancelled));
             AndFilterBuilder cancelledAndDue = andFilter(cancelled, due);
