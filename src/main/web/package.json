@@ -24,8 +24,8 @@
     "url": "https://github.com/ONSdigital/babbage/issues"
   },
   "dependencies": {
-    "ONS-Pattern-Library": "https://github.com/ONSdigital/pattern-library.git",
-    "sixteens": "https://github.com/ONSdigital/sixteens.git"
+    "ONS-Pattern-Library": "git://github.com/ONSdigital/pattern-library",
+    "sixteens": "git://github.com/ONSdigital/sixteens"
   },
   "engines": {
     "node": "0.10.25",
