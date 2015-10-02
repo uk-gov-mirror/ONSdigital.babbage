@@ -1,6 +1,18 @@
-
-
-<h1 class="visuallyhidden">Data explorer</h1>
+<div class="page-intro">
+	<div class="wrapper">
+		<div class="col-wrap">
+			<div class="col one">
+				{{> list/partials/list-page-breadcrumb label="Data explorer"}}
+				{{#each breadcrumb}}
+					{{#if @last}}
+						<h1 class="page-intro__title margin-bottom--double">{{#if_eq description.title "Home"}}All{{else}}{{description.title}}{{/if_eq}} data</h1>
+					{{/if}}
+				{{/each}}
+			</div>
+		</div>
+	</div>
+</div>
+{{!-- /page-intro --}}
 
 <!-- /wrapper -->
 	<div class="wrapper print-links">
@@ -73,22 +85,17 @@
 							{{> list/filters/topics}}
 						</div>
 						<button type="submit" class="btn btn--primary btn--thick margin-top--double">{{labels.search-filter}}</button>
-						</div>
 					</div>
-					{{> partials/archives-box}}
-					<!-- /box -->
 				</div>
-				<!-- /desktop-grid-one-third -->
-				<div class="results col col--md-34 col--lg-40 margin-left">
-					{{> list/partials/results-text}}
-					{{> list/partials/results}}
-					{{> list/partials/paginator}}
-				</div>
-				<!-- /desktop-grid-two-thirds -->
+				{{> partials/archives-box}}
 			</div>
-			<!-- /grid-wrap -->
-		</form>
 
+			{{!-- RESULTS --}}
+			<div class="results col col--md-34 col--lg-40 margin-left">
+				{{> list/partials/results-text}}
+				{{> list/partials/results}}
+				{{> list/partials/paginator}}
+			</div>
+		</form>
 	</div>
-<!-- /wrapper panel--mar -->
 
