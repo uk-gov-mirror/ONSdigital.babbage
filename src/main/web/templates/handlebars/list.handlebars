@@ -6,14 +6,16 @@ performs type check on content type and decides which template to render  --}}
 {{resolveTaxonomy depth=2 assign="navigation"}}
 
 {{> partials/header}}
-{{#if_eq type "adhoc"}}{{> list/t9-1}}{{/if_eq}}
-{{#if_eq type "publishedrequests"}}{{> list/t9-2 global=true}}{{/if_eq}}
-{{#if_eq type "previousreleases"}}{{> list/t9-6}}{{/if_eq}}
-{{#if_eq type "topicspecificmethodology"}}{{> list/t9-7}}{{/if_eq}}
-{{#if_eq type "allmethodologies"}}{{> list/t9-11 global=true}}{{/if_eq}}
-{{#if_eq type "publications"}}{{> list/t9-8}}{{/if_eq}}
-{{#if_eq type "datalist"}}{{> list/t9-9}}{{/if_eq}}
-{{#if_eq type "dataexplorer"}}{{> list/t9-10 global=true}}{{/if_eq}}
-{{#if_eq type "search"}}{{> list/t10 global=true}}{{/if_eq}}
-{{#if_eq type "releasecalendar"}}{{> list/t11 global=true}}{{/if_eq}}
+<main id="main" role="main" tabindex="-1">
+	{{#if_eq type "adhoc"}}{{> list/t9-1}}{{/if_eq}}
+	{{#if_eq type "publishedrequests"}}{{> list/t9-2 global=true}}{{/if_eq}}
+	{{#if_eq type "previousreleases"}}{{> list/t9-6}}{{/if_eq}}
+	{{#if_eq type "topicspecificmethodology"}}{{> list/t9-7}}{{/if_eq}}
+	{{#if_eq type "allmethodologies"}}{{> list/t9-11 global=true}}{{/if_eq}}
+	{{#if_eq type "publications"}}{{> list/t9-8}}{{/if_eq}}
+	{{#if_eq type "datalist"}}{{> list/t9-9}}{{/if_eq}}
+	{{#if_eq type "dataexplorer"}}{{> list/t9-10 global=true}}{{/if_eq}}
+	{{#if_eq type "search"}}{{> list/t10 global=true}}{{/if_eq}}
+	{{#if_eq type "releasecalendar"}}{{> list/t11 global=true}}{{/if_eq}}
+</main>
 {{> partials/footer}}

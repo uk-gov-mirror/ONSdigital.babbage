@@ -1,21 +1,21 @@
 <p>
-	{{#if results}}
+	{{#if result.results}}
 	<span class="stand-out-text">
-	{{numberOfResults}}</span> results
+	{{result.numberOfResults}}</span> results
 	{{else}}
 	Sorry, there were no results
 	{{/if}}
 	{{#if parameters.filter}}
-	for <strong>{{#each parameters.filter}}{{> filter-label this}}<span class="icon icon-cancel js-enhance--show" role="presentation"></span>{{#unless @last}},{{/unless}}{{/each}}</strong>
+	for <strong>{{#each parameters.filter}}{{> filter-label this}}{{#unless @last}},{{/unless}}{{/each}}</strong>
 	{{/if}}
 	{{#unless global}}
 	related to
 	<strong>{{#each breadcrumb}}{{#if @last}}{{description.title}}{{/if}}{{/each}}</strong>.
 	{{/unless}}
 	{{#if parameters.allReleases}}
-	You have chosen to expand these results to <strong>include all releases over time</strong><span class="icon icon-cancel js-enhance--show" role="presentation"></span>
+	You have chosen to expand these results to <strong>include all releases over time</strong>
 	{{/if}}
-	{{#unless results}}
+	{{#unless result.results}}
 	<div class="col col--lg-42">
 		{{labels.search-try-other}}
 		<ul>

@@ -1,6 +1,6 @@
 package com.github.onsdigital.babbage.search.helpers;
 
-import com.github.onsdigital.babbage.search.SearchResult;
+import com.github.onsdigital.babbage.search.model.SearchResult;
 import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.common.text.Text;
@@ -42,6 +42,7 @@ public class SearchResponseHelper {
         SearchHits hits = response.getHits();
         for (SearchHit hit : hits) {
             Map<String, Object> source = new HashMap<>(hit.getSource());
+            source.put("_type", hit.getType());
             Map<String, HighlightField> highlightFields = new HashMap<>(hit.getHighlightFields());
                 overlayHighlightFields(source, highlightFields);
             searchResult.addResult(source);

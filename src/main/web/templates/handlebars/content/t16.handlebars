@@ -1,4 +1,4 @@
-<main id="main" role="main" tabindex="-1">
+
 
     {{!-- PAGE INTRO --}}
     <div class="page-intro">
@@ -38,40 +38,76 @@
                 {{!-- Meta info --}}
                 <div class="col-wrap">
 
-                    {{!-- Contact & NS logo--}}
-                    <p class="col col--md-12 col--lg-15 meta__item">
-                        {{#if description.nationalStatistic}}
-                            <img class="meta__image" src="/node_modules/ONS-Pattern-Library/dist/img/national-statistics.png" alt="National Statistics logo" />
-                        {{/if}}
-                        <span>{{labels.meta-contact}}: </span><br/><a href="mailto:{{description.contact.email}}">{{#if description.contact.name}}{{description.contact.name}}{{else}}{{description.contact.email}}{{/if}}</a>
-                        {{#if description.contact.telephone}}
-                            <br/>
-                        {{/if}}
+					{{!-- NS logo --}}
+					{{#if description.nationalStatistic}}
+						<div class="col col--md-4 col--lg-4 padding-left">
+							<img class="meta__image" src="/node_modules/ONS-Pattern-Library/dist/img/national-statistics.png" alt="National Statistics logo"/>
+						</div>
+					{{/if}}
+
+                    {{!-- Contact --}}
+					<p class="col {{#if description.nationalStatistic}}col--md-11 col--lg-14{{else}}col--md-12 col--lg-15{{/if}} meta__item">
+                        <span>{{labels.meta-contact}}: </span>
+						<br/>
+						{{#if description.contact.name}}
+							{{description.contact.name}}
+							<br/>
+						{{/if}}
+						<a href="mailto:{{description.contact.email}}">{{description.contact.email}}</a>
+						{{#if description.contact.telephone}}
+							<br/>
+							{{labels.phone}}: {{description.contact.telephone}}
+						{{/if}}
                     </p>
 
                     {{!-- Release date --}}
-                    <p class="col col--md-12 col--lg-15 meta__item">
-                        <span>{{#if description.cancelled}}Proposed release date{{else}}{{labels.release-date}}{{/if}}: </span><br/>{{df description.releaseDate}}<br/>
+					<p class="col {{#if description.nationalStatistic}}col--md-11 col--lg-14{{else}}col--md-12 col--lg-15{{/if}} meta__item">
+						{{#if description.cancelled}}
+							Proposed release date:
+							<br/>
+							{{df description.releaseDate}}
+
+						{{else}}
+
+							{{#if description.finalised}}
+								{{labels.release-date}}:
+								<br>
+								{{df description.releaseDate}}
+							{{else}}
+								Provisional release date:
+								<br>
+								{{#if description.provisionalDate}}
+									{{description.provisionalDate}}
+								{{else}}
+									{{df description.releaseDate}}
+								{{/if}}
+							{{/if}}
+
+						{{/if}}
+
                     </p>
 
                     {{!-- Cancelled date --}}
-                    {{#if description.cancelled}}
-                        <p class="col col--md-12 col--lg-15 meta__item">
-                            <span>Cancellation date: </span><br/>
-                            {{nf cancellationDate}}
-                        </p>
-                    {{else}}
+					{{!-- Commented until we can get cancelled date information --}}
+					{{!-- {{#if description.cancelled}}
+						 <p class="col col--md-12 col--lg-15 meta__item">
+							 <span>Cancellation date: </span><br/>
+							 {{nf cancellationDate}}
+						 </p>
+					 {{else}}
+
                     {{!-- Next release --}}
-                        <p class="col col--md-12 col--lg-15 meta__item">
-                            <span>{{labels.release-next}}
-                                : </span><br/>{{#if description.nextRelease}}{{description.nextRelease}}{{else}}To be
-                            announced{{/if}}
-                        </p>
-                    {{/if}}
+					{{#unless description.cancelled}}
+					<p class="col {{#if description.nationalStatistic}}col--md-11 col--lg-14{{else}}col--md-12 col--lg-15{{/if}} meta__item">
+						<span>{{labels.release-next}}
+							: </span><br/>{{#if description.nextRelease}}{{description.nextRelease}}{{else}}To be
+						announced{{/if}}
+					</p>
+					{{/unless}}
 
                     {{#if markdown}}
-                        {{!-- Print and download --}}
-                        <p class="col col--md-12 col--lg-15 print--hide meta__item">
+                        {{!-- Pre-release list link --}}
+						<p class="col {{#if description.nationalStatistic}}col--md-11 col--lg-14{{else}}col--md-12 col--lg-15	{{/if}} print--hide meta__item">
                             <a href="#prereleaseaccesslist">Pre-release access list</a>
                         </p>
                     {{/if}}
@@ -182,9 +218,11 @@
                             {{#if markdown}}
                                 <section id="prereleaseaccesslist"
                                          class="accordion is-collapsed section__content--static-markdown flush-col">
-                                    <h2 class="accordion__title" aria-controls="content-1">Pre-release access list
-                                        for {{description.title}}{{#if description.edition}}
-                                            : {{description.edition}}{{/if}}</h2>
+                                    <h2 class="accordion__title" aria-controls="content-1">
+										Pre-release access list for {{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}
+										<span class="icon icon-arrow-down"></span>
+										<span class="icon icon-arrow-up"></span>
+									</h2>
 
                                     <div class="accordion__content" aria-labelledby="sc-1">
                                         <p>
@@ -214,9 +252,14 @@
                             {{#if dateChanges}}
                                 <section id="datechanges"
                                          class="accordion is-collapsed section__content--static-markdown flush-col">
-                                    <h2 class="accordion__title" aria-controls="content-2">Changes to this release date</h2>
+                                    <h2 class="accordion__title" aria-controls="content-2">
+										Changes to this release date
+
+										<span class="icon icon-arrow-down"></span>
+										<span class="icon icon-arrow-up"></span>
+									</h2>
                                         <ul class="accordion__content list--neutral margin-top" aria-labelledby="sc-2">
-                                            {{#each dateChanges}}
+                                            {{#loop dateChanges orderBy="previousDate" reverse=true}}
                                                 <li class="margin-bottom overflow--hidden">
                                                     <dl>
                                                         <dt class="col col--md-10 col--lg-10">Previous date: </dt>
@@ -225,7 +268,7 @@
                                                         <dd class="col col--md-37 col--lg-49">{{changeNotice}}</dd>
                                                     </dl>
                                                 </li>
-                                            {{/each}}
+                                            {{/loop}}
                                         </ul>
                                 </section>
                             {{/if}}
@@ -235,4 +278,3 @@
             {{/if_any}}
         </div>
     </div>
-</main>

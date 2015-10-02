@@ -13,7 +13,7 @@ public class AllMethodologiesRequestHandler extends TopicSpecificMethodologyRequ
     }
 
     @Override
-    public boolean useLocalisedUri() {
+    public boolean isLocalisedUri() {
         return false;
     }
 }

@@ -1,4 +1,4 @@
-package com.github.onsdigital.babbage.search;
+package com.github.onsdigital.babbage.search.model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,16 +9,19 @@ import java.util.Map;
  */
 public class SearchResult {
 
-    private long numberOfResults;
+    private Long numberOfResults;
     private long took;
     private List<Map<String, Object>> results = new ArrayList<>();
 
-    public long getNumberOfResults() {
+    public Long getNumberOfResults() {
         return numberOfResults;
     }
 
     public void setNumberOfResults(long numberOfResults) {
-        this.numberOfResults = numberOfResults;
+        //do not set number of results if zero,so it does not appear in json
+        if (numberOfResults > 0) {
+            this.numberOfResults = numberOfResults;
+        }
     }
 
     public List<Map<String, Object>> getResults() {

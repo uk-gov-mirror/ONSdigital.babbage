@@ -13,7 +13,7 @@ public class DataExplorer extends DataListRequestHandler {
     }
 
     @Override
-    public boolean useLocalisedUri() {
+    public boolean isLocalisedUri() {
         return false;
     }
 }

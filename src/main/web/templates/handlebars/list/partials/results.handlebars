@@ -1,13 +1,13 @@
 <ul class="list--neutral search-results">
-{{!-- 	{{#if_all featuredResult parameters.timeseries}}
+	{{#if timeSeriesCount}}
 	<li class="search-results__item">
-		<h3 class="search-results__title"> <a href="/datalist?type=timeseries&query={{parameters.q.0}}">{{{featuredResult.results.0.description.title}}} time series collection
+		<h3 class="search-results__title"> <a href="/dataexplorer?filter=single_time_series&topic={{featuredResult.results.0.uri}}">{{{featuredResult.results.0.description.title}}} time series collection
 			{{#if featuredResult.results.0.description.edition}}
 			{{#if_all (ne featuredResult.results.0.description.edition 'yes') (ne featuredResult.results.0.description.edition '<strong>yes</strong>')}}: {{{featuredResult.results.0.description.edition}}}{{/if_all}}
 		{{/if}}</a></h3>
 		<p class="search-results__meta">Time series</p>
 		<div class="search-results__summary">
-			<p>Contains all single time series covering {{{featuredResult.results.0.description.title}}}</p>
+			<p>Contains all {{timeSeriesCount}} single time series related to {{{featuredResult.results.0.description.title}}}</p>
 		</div>
 		{{#if featuredResult.results.0.description.keywords}}
 		<p class="flush">
@@ -15,9 +15,9 @@
 		</p>
 		{{/if}}
 	</li>
-	{{/if_all}} --}}
+	{{/if}}
 
-	{{#each results}}
+	{{#each result.results}}
 	<li class="search-results__item">
 		<h3 class="search-results__title"><a href="{{uri}}">{{{description.title}}}
 			{{#if description.edition}}
@@ -29,7 +29,7 @@
 		</p>
 		{{/if}}
 		<p class="search-results__meta">
-			{{> type-label type=this.type}} | Released on {{df description.releaseDate}} {{#if description.reference}}Ref: {{{description.reference}}}{{/if}}
+			{{>type-label type_code=this._type}} | Released on {{df description.releaseDate}} {{#if description.reference}}Ref: {{{description.reference}}}{{/if}}
 		</p>
 
 		<div class="search-results__summary">

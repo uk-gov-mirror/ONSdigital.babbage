@@ -1,12 +1,12 @@
-<main id="main" role="main" tabindex="-1">
+
     <div class="page-intro">
 		<div class="wrapper">
 			<div class="col-wrap">
 				<div class="col one">
 					{{> list/partials/list-page-breadcrumb label=labels.previous}}
-					<h1 class="page-intro__title">{{results.0.description.title}} {{> type-label type=results.0.type plural=true}}</h1>
+					<h1 class="page-intro__title">{{result.results.0.description.title}} {{> type-label type_code=result.results.0.type plural=true}}</h1>
                     <p class="page-intro__content col col--md-47 col--lg-48">
-						{{results.0.description.summary}}
+						{{result.results.0.description.summary}}
 					</p>
 				</div>
 			</div>
@@ -16,10 +16,10 @@
         <div class="col-wrap">
             <div class="col col--md-two-thirds col--lg-two-thirds">
         		<p>
-        			<strong>Frequency: </strong>{{results.0.description.frequency}}
+        			<strong>Frequency: </strong>{{result.results.0.description.frequency}}
         		</p>
                 <ul class="list--neutral">
-					{{#each results}}
+					{{#each result.results}}
 					<li {{#if @first}}class="margin-bottom--double"{{/if}}>
 					{{#if @first}}
 						<h3 class="flush">{{labels.previous-latest}}</h3>
@@ -46,4 +46,4 @@
             </div>
         </div>
     </div>
-</main>
+

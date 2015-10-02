@@ -1,6 +1,7 @@
 package com.github.onsdigital.babbage.search.model.sort;
 
 import com.github.onsdigital.babbage.search.model.field.FilterableField;
+import org.elasticsearch.search.sort.SortOrder;
 
 /**
  * Created by bren on 16/09/15.

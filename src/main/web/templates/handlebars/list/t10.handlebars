@@ -1,4 +1,3 @@
-<main id="main" role="main" tabindex="-1">
 {{!-- {{#if parameters.q.0}} --}}
 <h1 class="visuallyhidden">Search results</h1>
 {{!-- {{json this}} --}}
@@ -47,81 +46,78 @@
 									</label>
 								</div>
 							</li>
-							{{!-- <li><div class="filters__field">
-								<input type="checkbox" name="timeseries" value="1" id="checkbox-timeseries" {{#if parameters.timeseries}}checked{{/if}}>
+							<li><div class="filters__field">
+								<input type="checkbox" name="time_series" value="1" id="checkbox-timeseries" {{#if parameters.time_series}}checked{{/if}}>
 								<label for="checkbox-timeseries">
 									Time series
 								</label>
 							</div>
-							</li> --}}
-							<li>
-								<div class="filters__field">
-									<input type="checkbox" name="filter" value="large_dataset" id="checkbox-dataset" {{#contains parameters.filter 'large_dataset'}}checked{{/contains}}>
-									<label for="checkbox-dataset">
-										Large datasets
-									</label>
-								</div>
-							</li>
-							<li>
-								<div class="filters__field">
-									<input type="checkbox" name="filter" value="methodology" id="checkbox-methodology" {{#contains parameters.filter 'methodology'}}checked{{/contains}} >
-									<label for="checkbox-methodology">
-										{{labels.methodology}}
-									</label>
-								</div>
-							</li>
-						</ul>
-						<p>{{labels.search-expand}}:</p>
-						<div class="filters__field">
+						</li>
+						<li>
+							<div class="filters__field">
+								<input type="checkbox" name="filter" value="large_dataset" id="checkbox-dataset" {{#contains parameters.filter 'large_dataset'}}checked{{/contains}}>
+								<label for="checkbox-dataset">
+									Large datasets
+								</label>
+							</div>
+						</li>
+						<li>
+							<div class="filters__field">
+								<input type="checkbox" name="filter" value="methodology" id="checkbox-methodology" {{#contains parameters.filter 'methodology'}}checked{{/contains}} >
+								<label for="checkbox-methodology">
+									{{labels.methodology}}
+								</label>
+							</div>
+						</li>
+					</ul>
+					<p>{{labels.search-expand}}:</p>
+					<div class="filters__field">
 						<input type="checkbox" name="includeStatics" value="1" id="checkbox-all-content" {{#if parameters.includeStatics.0}}checked{{/if}}>
 						<label for="checkbox-all-content">
 							{{labels.search-expand-all}}</br>
 							({{labels.search-expand-types}})
 						</label>
-						</div>
-						<button type="submit" class="btn btn--primary btn--thick margin-top--double">{{labels.search-filter}}</button>
 					</div>
+					<button type="submit" class="btn btn--primary btn--thick margin-top--double">{{labels.search-filter}}</button>
 				</div>
 			</div>
-			{{!-- RESULTS --}}
-
-			<div class="results col col--md-34 col--lg-40 margin-left">
-				{{> list/partials/search-results-text}}
-
-				<div class="headline-result">
-					{{!-- HEADLINE RESULTS --}}
-					{{#resolve featuredResult.results.0.uri assign="featured" }}
-					<div class="col col--md-36 col--lg-40 tiles__item flush">
-						{{!-- Sparkline --}}
-						<div class="col col--md-17 col--lg-20">
-							{{#resolve items.0.uri assign="series" filter="series"}}
-							<a href="{{../uri}}">
-								<div class="tiles__image--search-sparkline">
-									{{>partials/highcharts/sparkline}}
-								</div>
-							</a>
-							{{/resolve}}
-						</div>
-						{{!-- Summary --}}
-						<div class="col {{#if series}}col--md-17 col--lg-20{{else}}col--md-34 col--lg-40{{/if}} tiles__item--nav-type-fixed">
-							<h3 class="tiles__title-h3 tiles__title-h3--nav"><a href="{{uri}}">{{{featuredResult.results.0.description.title}}}</a></h3>
-							<p class="tiles__content tiles__content--nav">{{{featuredResult.results.0.description.summary}}}</p>
-						</div>
+		</div>
+		{{!-- RESULTS --}}
+		<div class="results col col--md-34 col--lg-40 margin-left">
+			{{> list/partials/search-results-text result}}
+			<div class="headline-result">
+				{{!-- HEADLINE RESULTS --}}
+				{{#if showFeaturedResult}}
+				{{#resolve featuredResult.results.0.uri}}
+				<div class="col col--md-36 col--lg-40 tiles__item flush">
+					{{!-- Sparkline --}}
+					<div class="col col--md-17 col--lg-20">
+						{{#resolve items.0.uri assign="series" filter="series"}}
+						<a href="{{../uri}}">
+							<div class="tiles__image--search-sparkline">
+								{{>partials/highcharts/sparkline}}
+							</div>
+						</a>
+						{{/resolve}}
 					</div>
-					{{/resolve}}
+					{{!-- Summary --}}
+					<div class="col {{#if series}}col--md-17 col--lg-20{{else}}col--md-34 col--lg-40{{/if}} tiles__item--nav-type-fixed">
+						<h3 class="tiles__title-h3 tiles__title-h3--nav"><a href="{{uri}}">{{{featuredResult.results.0.description.title}}}</a></h3>
+						<p class="tiles__content tiles__content--nav">{{{featuredResult.results.0.description.summary}}}</p>
+					</div>
 				</div>
-				{{#if results}}
-				{{!-- MAIN RESULTS --}}
-				<!-- /desktop-grid-one-third -->
-				<div class="search-results">
-					{{> list/partials/results}}
-				</div>
-				{{> list/partials/paginator}}
-				<!-- /desktop-grid-two-thirds -->
+				{{/resolve}}
 				{{/if}}
 			</div>
-		</form>
-	</div>
+			{{!-- MAIN RESULTS --}}
+			<!-- /desktop-grid-one-third -->
+			<div class="search-results">
+				{{> list/partials/results}}
+			</div>
+			{{> list/partials/paginator}}
+			<!-- /desktop-grid-two-thirds -->
+		</div>
+	</form>
+</div>
 </div>
 {{!-- {{/if}} --}}
-</main>

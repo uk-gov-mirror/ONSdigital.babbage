@@ -48,6 +48,8 @@ $(function() {
 
         jsEnhanceMobileTables();
 
+		jsEnhanceRemoveFocus();
+
         // prototypeModalButtons();
 
         // setTimeout(function() {
@@ -130,6 +132,7 @@ $(function() {
       hoverHashTable['tiles__content'] = ['tiles__content--hover'];
       hoverHashTable['sparkline-holder'] = ['sparkline-holder--hover'];
       hoverHashTable['image-holder'] = ['image-holder--hover'];
+      hoverHashTable['tiles__image--headline'] = ['tiles__image--headline-hover'];
       hoverHashTable['tiles__image--headline-sparkline'] = ['tiles__image--headline-sparkline-hover'];
       hoverHashTable['tiles__title-dt'] = ['tiles__title-dt--hover'];
       hoverHashTable['tiles__title-h3'] = ['tiles__title-h3--hover'];
@@ -153,19 +156,70 @@ $(function() {
           'cursor': 'pointer'
       });
 
-      // change the background colour on hover
-      $(clickableDiv).hover(function() {
-        var elem = $(this);
-        $.each(hoverHashTable, function(className, hoverClassName) {
-            // $(elem).find('.'+className).css('background-color', 'red');
-            $(elem).find('.'+className).addClass(hoverClassName[0]);
+        //add class to change background colour
+        function addHoverClass(elem) {
+            $.each(hoverHashTable, function(className, hoverClassName) {
+                $(elem).find('.'+className).addClass(hoverClassName[0]);
+            });
+        }
+
+        //remove class to toggle background to origin colour
+        function removeHoverClass(elem) {
+            $.each(hoverHashTable, function(className, hoverClassName) {
+                $(elem).find('.'+hoverClassName[0]).removeClass(hoverClassName[0]);
+            });
+        }
+
+        // change the background colour on hover
+        $(clickableDiv).hover(function () {
+                addHoverClass(this);
+            },
+            function () {
+                removeHoverClass(this);
+            }
+        );
+
+        // change the background colour on focus
+        $('.tiles__item--nav-type-fixed a, .tiles__item--nav-type a, .tiles__title-dt a, .tiles__title a').focus(function() {
+            if ($(this).parent(clickableDiv)) {
+                var elem = $(this).closest(clickableDiv);
+                addHoverClass(elem);
+
+                $(this).focusout(function(){
+                    removeHoverClass(elem);
+                });
+            }
         });
-      }, function() {
-        var elem = $(this);
-        $.each(hoverHashTable, function(className, hoverClassName) {
-            $(elem).find('.'+hoverClassName[0]).removeClass(hoverClassName[0]);
-        });
-      });
+
+
+
+        //var anchor = $(clickableDiv).find('a:first');
+        //$(clickableDiv).focus(function () {
+        //        var elem = $(this);
+        //        console.log('focus now');
+        //        addHoverClass(elem);
+        //    },
+        //    function () {
+        //        var elem = $(this);
+        //        console.log('stop focus');
+        //        removeHoverClass(elem);
+        //    }
+        //);
+
+      //$(clickableDiv).hover(function() {
+      //  var elem = $(this);
+      //    console.log('elem = ' + elem);
+      //  $.each(hoverHashTable, function(className, hoverClassName) {
+      //      // $(elem).find('.'+className).css('background-color', 'red');
+      //      $(elem).find('.'+className).addClass(hoverClassName[0]);
+      //  });
+      //}, function() {
+      //  var elem = $(this);
+      //    console.log('elem = ' + elem);
+      //  $.each(hoverHashTable, function(className, hoverClassName) {
+      //      $(elem).find('.'+hoverClassName[0]).removeClass(hoverClassName[0]);
+      //  });
+      //});
 
       // check if there's a nav--block-landing to remove :after class
     //   if ($('.nav--block-landing')) {
@@ -429,22 +483,23 @@ $(function() {
 
         // Using regex instead of simply using 'host' because it causes error with security on Government browsers (IE9 so far)
         function getHostname(url) {
-            var m = url.match(/^http:\/\/[^/]+/);
-            return m ? m[0] : null;     
+            var m = url.match(/^http(s?):\/\/[^/]+/);
+            return m ? m[0] : null;
         }
 
 
         function eachAnchor(anchors) {
-            
-            $(anchors).each(function(){
 
-                var hostname = getHostname(this.href);
+            $(anchors).each(function(){
+				var href = $(this).attr("href");
+				var hostname = getHostname(href);
 
                 if (hostname) {
                     if (hostname !== document.domain && hostname.indexOf('ons.gov.uk') == -1) {
                         $(this).attr('target', '_blank');
                     }
                 }
+
             });
         }
         eachAnchor('a[href^="http://"]');
@@ -553,13 +608,14 @@ $(function() {
 
         //Offsets page to make room for sticky nav if arrive on page directly at section
         $(window).load(function(){
-            if (location.hash && $('.page-content__main-content').length > 0) {
-                var contentStart = $('.page-content__main-content').offset().top;
+			var contentClass = '.page-content__main-content';
+
+            if (location.hash && $(contentClass).length > 0) {
+                var contentStart = $(contentClass).offset().top;
                 var scrollTop = $(window).scrollTop();
 
                 if (scrollTop > contentStart) {
-                    //console.log('scrollTop = ' + scrollTop + ' contentStart = ' + contentStart)
-                    $(document).scrollTop( $(location.hash).offset().top - 60 );
+					$(location.hash).offset().top - 100;
                 }
             }
         });
@@ -578,4 +634,18 @@ $(function() {
             });
         });
     }
+
+	function jsEnhanceRemoveFocus() {
+
+		//function to remove focus on click
+		function removeFocus(elem) {
+			$(elem).click(function() {
+				this.blur();
+			});
+		}
+
+		//run function on all elements/classes that have a focus state
+		removeFocus("a");
+		removeFocus(".accordion__title");
+	}
 });

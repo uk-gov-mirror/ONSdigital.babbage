@@ -30,7 +30,7 @@ public class PublicationsRequestHandler extends ListPageBaseRequestHandler {
     }
 
     @Override
-    public boolean useLocalisedUri() {
+    public boolean isLocalisedUri() {
         return true;
     }
 }

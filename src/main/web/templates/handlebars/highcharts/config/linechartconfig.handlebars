@@ -48,7 +48,7 @@ var linechart = {
        }
        //prevent last tick label overlap the last data in the array if too close
        var diff = tick - this.dataMax;
-       if(diff > (increment /2) ) {
+       if(diff >= (increment /2) ) {
         var deleted = positions.pop();
        }
 
