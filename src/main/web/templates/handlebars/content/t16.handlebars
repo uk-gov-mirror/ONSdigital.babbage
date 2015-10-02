@@ -259,7 +259,7 @@
 										<span class="icon icon-arrow-up"></span>
 									</h2>
                                         <ul class="accordion__content list--neutral margin-top" aria-labelledby="sc-2">
-                                            {{#loop dateChanges}}
+                                            {{#loop dateChanges orderBy="previousDate" reverse=true}}
                                                 <li class="margin-bottom overflow--hidden">
                                                     <dl>
                                                         <dt class="col col--md-10 col--lg-10">Previous date: </dt>
