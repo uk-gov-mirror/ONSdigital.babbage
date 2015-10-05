@@ -89,7 +89,7 @@
 				{{!-- HEADLINE RESULTS --}}
 				{{#if showFeaturedResult}}
 				{{#resolve featuredResult.results.0.uri}}
-				<div class="col col--md-36 col--lg-40 tiles__item flush">
+				<div class="col col--md-36 col--lg-40 tiles__item flush clickable-wrap">
 					{{!-- Sparkline --}}
 					<div class="col col--md-17 col--lg-20">
 						{{#resolve items.0.uri assign="series" filter="series"}}
