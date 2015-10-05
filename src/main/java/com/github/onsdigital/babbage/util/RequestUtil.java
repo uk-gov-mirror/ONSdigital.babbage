@@ -35,7 +35,7 @@ public class RequestUtil {
         Locale locale = resolveLocale(request);
         ThreadContext.addData("labels", LocaleConfig.getLabels(locale));
         ThreadContext.addData("lang", locale.getLanguage());
-        ThreadContext.addData("domain_name", request.getServerName());
+        ThreadContext.addData("location", getLocation(request));
     }
 
     public static void clearContext() {
@@ -92,6 +92,16 @@ public class RequestUtil {
         return LocaleConfig.getDefaultLocale();
     }
 
+    public static Location getLocation(HttpServletRequest request) {
+        String hostName = request.getServerName();
+        int port = request.getServerPort();
+        String pathName = StringUtils.removeEnd(request.getRequestURI(), "/");
+        Location location = new Location();
+        location.setHost(hostName + ":" + port);
+        location.setHostname(hostName);
+        location.setPathname(pathName);
+        return location;
+    }
 
     public static String[] getParams(HttpServletRequest request, String name) {
         return request.getParameterValues(name);
@@ -116,7 +126,6 @@ public class RequestUtil {
         }
         return param;
     }
-
 
 
     /**
@@ -149,5 +158,49 @@ public class RequestUtil {
             queryParameters.put(keyValuePair[0], values);
         }
         return queryParameters;
+    }
+
+
+    /**
+     * Current location information to be extracted from HTTP request
+     */
+    public static class Location {
+        /**
+         * Hostname and port of the current url
+         */
+        private String host;
+        /**
+         * Hostname of the current url
+         */
+        private String hostname;
+
+        /**
+         * Path name of the current url with no trailing slash,  empty if root path
+         */
+        private String pathname;
+
+        public String getHost() {
+            return host;
+        }
+
+        public void setHost(String host) {
+            this.host = host;
+        }
+
+        public String getHostname() {
+            return hostname;
+        }
+
+        public void setHostname(String hostname) {
+            this.hostname = hostname;
+        }
+
+        public String getPathname() {
+            return pathname;
+        }
+
+        public void setPathname(String pathname) {
+            this.pathname = pathname;
+        }
     }
 }
