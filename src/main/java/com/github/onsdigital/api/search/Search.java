@@ -118,7 +118,7 @@ public class Search {
         if (countTimeSeries) {
             ONSQuery featuredResultQuery = buildFeaturedResultQuery(query);
             SearchResponseHelper topicResponse = SearchService.getInstance().search(featuredResultQuery);
-            if (topicResponse.getNumberOfResults() > 1) {
+            if (topicResponse.getNumberOfResults() >= 1) {
                 searchResponseData.put("featuredResult", topicResponse.getResult());
                 //hide featured results if time series is requested
                 if (timeSeriesRequested) {
