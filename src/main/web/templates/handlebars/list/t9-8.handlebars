@@ -12,8 +12,8 @@
                 </div>
             </div>
         </div>
-    </div>
-    {{!-- /page-intro --}}
+    </div> {{!-- /page-intro --}}
+
     <div class="wrapper print-links">
         <form id="filters">
             <div class="col-wrap print-hidden">
@@ -35,7 +35,7 @@
                             <h4 class="filters__title">{{labels.search-refine-types}}</h4>
                             <ul class="list--neutral">
                                 <li>
-                                    <div class"filters__field">
+                                    <div class="filters__field">
                                         <input id="checkbox-statsbulletin" type="checkbox" name="filter" value="bulletin" {{#contains parameters.filter 'bulletin'}}checked{{/contains}} >
                                         <label for="checkbox-statsbulletin">
                                             Statistical bulletin
@@ -43,7 +43,7 @@
                                     </div>
                                 </li>
                                 <li>
-                                    <div class"filters__field">
+                                    <div class="filters__field">
                                         <input id="checkbox-article" type="checkbox" name="filter" value="article" {{#contains parameters.filter 'article'}}checked{{/contains}}>
                                         <label for="checkbox-article">
                                             Article
@@ -51,7 +51,7 @@
                                     </div>
                                 </li>
                                 <li>
-                                    <div class"filters__field">
+                                    <div class="filters__field">
                                         <input id="checkbox-compendia" type="checkbox" name="filter" value="compendia" {{#contains parameters.filter 'compendia'}}checked{{/contains}}>
                                         <label for="checkbox-compendia">
                                             Compendia
@@ -66,13 +66,13 @@
                 </div>
                 {{> partials/archives-box}}
             </div>
-            <!-- /desktop-grid-one-third -->
+
+			{{!-- RESULTS --}}
             <div class="results col col--md-34 col--lg-40 margin-left">
                 {{> list/partials/results-text}}
                 {{> list/partials/results}}
                 {{> list/partials/paginator}}
             </div>
-            <!-- /desktop-grid-two-thirds -->
         </form>
     </div>
 

@@ -21,6 +21,7 @@ import com.github.onsdigital.babbage.util.json.JsonUtil;
 import com.github.onsdigital.content.service.ContentNotFoundException;
 import com.github.onsdigital.content.util.URIUtil;
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -60,7 +61,7 @@ public class Search {
 
         String type = URIUtil.resolveRequestType(request.getRequestURI());
         String query = SearchRequestHelper.extractSearchTerm(request);
-        if (query == null) {
+        if (StringUtils.isEmpty(query)) {
             if (isDataRequest(type)) {
                 return "Please enter a search query";
             } else {
@@ -117,7 +118,7 @@ public class Search {
         if (countTimeSeries) {
             ONSQuery featuredResultQuery = buildFeaturedResultQuery(query);
             SearchResponseHelper topicResponse = SearchService.getInstance().search(featuredResultQuery);
-            if (topicResponse.getNumberOfResults() > 1) {
+            if (topicResponse.getNumberOfResults() >= 1) {
                 searchResponseData.put("featuredResult", topicResponse.getResult());
                 //hide featured results if time series is requested
                 if (timeSeriesRequested) {

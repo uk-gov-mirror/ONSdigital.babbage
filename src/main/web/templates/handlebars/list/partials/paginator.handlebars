@@ -4,7 +4,7 @@
 	<ul class="list--neutral list--inline">
 		{{#if_ne paginator.currentPage paginator.start}}
 		<li class="flush">
-			<a href="{{query_string exclude="page"}}page={{decrement paginator.currentPage}}" class="page-link btn btn--plain">Prev</a>
+			<a href="{{location.pathname}}{{query_string exclude="page"}}page={{decrement paginator.currentPage}}" class="page-link btn btn--plain">Prev</a>
 		</li>
 		{{/if_ne}}
 		{{#each paginator.pages}}
@@ -12,13 +12,13 @@
 			{{#if_eq this paginator.currentPage}}
 			<span class="page-link btn btn--plain btn--plain__active btn--block">{{this}}</span>
 			{{else}}
-			<a href="{{query_string exclude="page"}}page={{this}}" class="page-link btn btn--plain">{{this}}</a>
+			<a href="{{location.pathname}}{{query_string exclude="page"}}page={{this}}" class="page-link btn btn--plain">{{this}}</a>
 			{{/if_eq}}
 		</li>
 		{{/each}}
 		{{#if_ne paginator.currentPage paginator.end}}
 		<li class="flush">
-			<a href="{{query_string exclude="page"}}page={{increment paginator.currentPage}}" class="page-link btn btn--plain">Next</a>
+			<a href="{{location.pathname}}{{query_string exclude="page"}}page={{increment paginator.currentPage}}" class="page-link btn btn--plain">Next</a>
 		</li>
 		{{/if_ne}}
 	</ul>
