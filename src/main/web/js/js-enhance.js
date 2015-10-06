@@ -136,10 +136,12 @@ $(function() {
       hoverHashTable['tiles__image--headline-sparkline'] = ['tiles__image--headline-sparkline-hover'];
       hoverHashTable['tiles__title-dt'] = ['tiles__title-dt--hover'];
       hoverHashTable['tiles__title-h3'] = ['tiles__title-h3--hover'];
+      hoverHashTable['tiles__title-h2'] = ['tiles__title-h2--hover'];
       hoverHashTable['tiles__title-h2--home'] = ['tiles__title-h2--home-hover'];
       hoverHashTable['tiles__title-h3--nav'] = ['tiles__title-h3--nav-hover'];
       hoverHashTable['tiles__title-h2--nav'] = ['tiles__title-h2--nav-hover'];
       hoverHashTable['tiles__title-h4'] = ['tiles__title-h4--hover'];
+      hoverHashTable['tiles__content'] = ['tiles__content--hover'];
       hoverHashTable['tiles__content--nav'] = ['tiles__content--nav-hover'];
       hoverHashTable['tiles__read-more'] = ['tiles__read-more--hover'];
       hoverHashTable['tiles__image--search-sparkline'] = ['tiles__image--search-sparkline-hover'];

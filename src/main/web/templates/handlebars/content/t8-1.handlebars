@@ -156,9 +156,9 @@
 			{{!-- Related methodology --}}
 			{{#if_any relatedMethodology}}
 				<div class="col col--lg-half col--md-half">
-					<div class="tiles__item tiles__item--nav-type">
+					<div class="tiles__item tiles__item--nav-type flush-col">
 						<h3 class="tiles__title-h3 tiles__title-h3--nav">{{labels.methodology}}</h3>
-						<ul class="tiles__content tiles__content--nav">
+						<ul class="tiles__content tiles__content--nav list--neutral">
 							{{#each relatedMethodology}}
                                 {{#resolve this.uri filter="title"}}
                                     <li>

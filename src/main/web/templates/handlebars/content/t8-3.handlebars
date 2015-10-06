@@ -97,26 +97,25 @@
                             {{#if file}}
                             {{!-- NON-TIME SERIES DATASETS --}}
                                 {{#if_ne downloads.size 1}}
-                                <section id="{{title}}" class="accordion {{#if @first}}is-expanded{{else}}is-collapsed{{/if}}">
-                                    <h3 class="accordion__title" aria-controls="content-{{@index}}">
-                                        {{title}} {{#if @first}}(latest){{/if}}
-                                        <span class="icon icon-arrow-down"></span>
-                                    <span class="icon icon-arrow-up"></span>
-                                    </h3>
-                                    <div class="accordion__content" aria-labelledby="sc-{{@index}}">
+									<section id="{{title}}" class="accordion {{#if @first}}is-expanded{{else}}is-collapsed{{/if}}">
+										<h3 class="accordion__title" aria-controls="content-{{@index}}">
+											{{title}} {{#if @first}}(latest){{/if}}
+										</h3>
+										<div class="accordion__content" aria-labelledby="sc-{{@index}}">
 
                                 {{else}}
 
                                     <section>
-                                        <h3>{{title}}
+                                        <h3>{{title}}</h3>
                                         <div>
                                 {{/if_ne}}
+
                                         {{#if previousVersions}}
                                             <p class="flush"><a href="#">Previous versions</a> of this data are available</p>
                                         {{/if}}
-                                        <div class="col-wrap {{#unless supportingFiles}}margin-bottom{{/unless}}">
+                                        <div class="col-wrap flush-col {{#unless supportingFiles}}margin-bottom{{/unless}}">
 
-                                            <div class="col col--md-8 col--9 margin-right">
+                                            <div class="col col--md-8 col--lg-9 margin-right">
                                                 <form method="get" action="/file">
                                                     <button type="submit" title="Latest version" class="btn btn--primary btn--thick download-analytics">
                                                     {{fe (lowercase file)}} ({{fs (lowercase file)}})
@@ -126,14 +125,14 @@
                                             </div>
 
                                         </div>
-                                        {{#if supportingFiles}}
-                                        <h5 class="flush-bottom">Supporting files you may find useful</h5>
-                                        <ul class="list--neutral flush-top">
-                                            {{#each supportingFiles}}
-                                                <li class="flush"><a href="{{uri}}">{{title}}</a> (filesize)</li>
-                                            {{/each}}
-                                        </ul>
-                                        {{/if}}
+									{{#if supportingFiles}}
+											<h5 class="flush-bottom">Supporting files you may find useful</h5>
+											<ul class="list--neutral flush-top">
+												{{#each supportingFiles}}
+													<li class="flush"><a href="{{uri}}">{{title}}</a> (filesize)</li>
+												{{/each}}
+											</ul>
+									{{/if}}
                                     </div>
                                 </section>
                             {{/if}}
@@ -193,9 +192,9 @@
 
                 {{!-- Related methodology --}}
                 {{#if_any relatedMethodology}}
-                        <div class="tiles__item tiles__item--nav-type">
+                        <div class="tiles__item tiles__item--nav-type flush-col">
                             <h3 class="tiles__title-h3 tiles__title-h3--nav">{{labels.methodology}}</h3>
-                            <ul class="tiles__content tiles__content--nav">
+                            <ul class="tiles__content tiles__content--nav list--neutral">
                                 {{#each relatedMethodology}}
                                     {{#resolve this.uri filter="title"}}
                                         <li>
