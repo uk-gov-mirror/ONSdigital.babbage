@@ -15,7 +15,7 @@ public abstract class TagReplacementStrategy {
         Matcher matcher = this.getPattern().matcher(input);
         StringBuffer result = new StringBuffer(input.length());
         while (matcher.find()) {
-            matcher.appendReplacement(result, this.replace(matcher));
+            matcher.appendReplacement(result, Matcher.quoteReplacement(this.replace(matcher)));
         }
         matcher.appendTail(result);
         return result.toString();
