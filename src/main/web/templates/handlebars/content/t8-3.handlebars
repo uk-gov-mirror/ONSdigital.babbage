@@ -114,9 +114,9 @@
                                         {{#if previousVersions}}
                                             <p class="flush"><a href="#">Previous versions</a> of this data are available</p>
                                         {{/if}}
-                                        <div class="col-wrap {{#unless supportingFiles}}margin-bottom{{/unless}}">
+                                        <div class="col-wrap flush-col {{#unless supportingFiles}}margin-bottom{{/unless}}">
 
-                                            <div class="col col--md-8 col--9 margin-right">
+                                            <div class="col col--md-8 col--lg-9 margin-right">
                                                 <form method="get" action="/file">
                                                     <button type="submit" title="Latest version" class="btn btn--primary btn--thick download-analytics">
                                                     {{fe (lowercase file)}} ({{fs (lowercase file)}})
@@ -126,14 +126,14 @@
                                             </div>
 
                                         </div>
-                                        {{#if supportingFiles}}
-                                        <h5 class="flush-bottom">Supporting files you may find useful</h5>
-                                        <ul class="list--neutral flush-top">
-                                            {{#each supportingFiles}}
-                                                <li class="flush"><a href="{{uri}}">{{title}}</a> (filesize)</li>
-                                            {{/each}}
-                                        </ul>
-                                        {{/if}}
+								{{!-- {{#if supportingFiles}} --}}
+											<h5 class="flush-bottom">Supporting files you may find useful</h5>
+											<ul class="list--neutral flush-top">
+												{{#each supportingFiles}}
+													<li class="flush"><a href="{{uri}}">{{title}}</a> (filesize)</li>
+												{{/each}}
+											</ul>
+								{{!-- {{/if}} --}}
                                     </div>
                                 </section>
                             {{/if}}
