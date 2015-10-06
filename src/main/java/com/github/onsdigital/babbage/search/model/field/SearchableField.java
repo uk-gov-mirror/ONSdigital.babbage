@@ -7,7 +7,7 @@ package com.github.onsdigital.babbage.search.model.field;
  */
 public enum SearchableField {
     title(100),
-    edition(100),
+    edition(10),
     summary,
     metaDescription,
     keywords,
