@@ -62,7 +62,7 @@ public class ReleaseCalendar extends ListPageBaseRequestHandler {
             addOrFilters(query, notPublishedAndNotCancelled, cancelledAndNotDue);// not published and not cancelled or cancelled and not due
             query.getSorts().clear();
             query.addSort(new FieldSortBuilder(FilterableField._score.name()).order(SortOrder.DESC));
-            query.addSort(new FieldSortBuilder(FilterableField.releaseDate.name()).order(SortOrder.ASC));
+            query.addSort(new FieldSortBuilder(FilterableField.releaseDate.name()).order(SortOrder.ASC).ignoreUnmapped(true));
         } else {//published
             AndFilterBuilder publishedAndNotCancelled = andFilter(published, notFilter(cancelled));
             AndFilterBuilder cancelledAndDue = andFilter(cancelled, due);
