@@ -12,6 +12,8 @@ import com.github.onsdigital.babbage.util.json.JsonUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by bren on 18/06/15.
@@ -30,7 +32,9 @@ public class LineChartConfigRequestHandler implements RequestHandler {
         try (ContentStream series = ContentClient.getInstance().getContentStream(requestedUri, ContentClient.filter(ContentFilter.SERIES));
              ContentStream description = ContentClient.getInstance().getContentStream(requestedUri, ContentClient.filter(ContentFilter.DESCRIPTION))
         ) {
-            String config = TemplateService.getInstance().renderTemplate("highcharts/config/linechartconfig", series.getDataStream(), JsonUtil.toMap(description.getDataStream()));
+            Map<String, Object> descriptionMap = new HashMap<>();
+            descriptionMap.put("fullDescription", JsonUtil.toMap(description.getDataStream()));
+            String config = TemplateService.getInstance().renderTemplate("highcharts/config/linechartconfig", series.getDataStream(), descriptionMap);
             return config;
         }
 
