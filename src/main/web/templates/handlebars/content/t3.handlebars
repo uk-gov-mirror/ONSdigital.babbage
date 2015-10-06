@@ -150,7 +150,7 @@
                             <h3 class="tiles__title-h3 tiles__title-h3--nav">Related methodology</h3>
                                 <ul class="tiles__content tiles__content--nav list--neutral">
                                     {{#each relatedMethodology}}
-                                    {{#resolve this.uri filter="title"}}
+                                    {{#resolve this.uri filter="description"}}
                                     <li class="flush-top"><a href="{{absolute uri}}">{{description.title}}</a></li>
                                     {{/resolve}}
                                     {{/each}}
