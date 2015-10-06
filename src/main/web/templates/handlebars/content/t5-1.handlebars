@@ -291,7 +291,7 @@
 
 		{{!-- Info & notes, contact sidebar--}}
 	    <div class="col-wrap margin-bottom">
-			{{#if_any section.markdown notes.markdown}}
+			{{#if_any section.markdown notes}}
 			<div class="col col--lg-two-thirds">
 	            {{md section.markdown}}
 	            <h3>Important notes and usage information</h3>
@@ -299,7 +299,7 @@
 	        </div>
 			{{/if_any}}
 
-			<div class="col {{#if_any section.markdown notes}}col--md-one-third col--lg-one-third{{else}}col--md-two-thirds col--lg-two-thirds{{/if_any}}">
+			<div class="col {{#if_any section.markdown notes.0}}col--md-one-third col--lg-one-third{{else}}col--md-two-thirds col--lg-two-thirds{{/if_any}}">
 				<div class="tiles__item tiles__item--nav-type flush-col">
 					<h3 class="tiles__title-h3 tiles__title-h3--nav">
 					Contact details for this data
