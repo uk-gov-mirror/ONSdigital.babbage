@@ -52,9 +52,18 @@
 
                                 <div class="tiles__content--nav">
                                     <ul class="list--neutral">
-                                        {{#each downloads}}
-                                            <li><a href="{{file}}">{{title}} ({{fs file}}) [{{fe file}}]</a></li>
-                                        {{/each}}
+                                            <!--<li><a href="{{file}}">{{title}} ({{fs file}}) [{{fe file}}]</a></li>-->
+
+
+                                            {{#each downloads}}
+                                            <form method="get" action="/file" class="margin-bottom">
+                                                <button type="submit" title="{{title}}" class="download-analytics">
+                                                    {{title}} ({{fe (lowercase file)}}) [{{fs (lowercase file)}}]
+                                                </button>
+                                                <input type="hidden" name="uri" value="{{lowercase file}}"/>
+                                                </form>
+                                            {{/each}}
+
                                     </ul>
                                 </div>
                             </div>
