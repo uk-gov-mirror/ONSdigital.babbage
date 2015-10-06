@@ -220,8 +220,8 @@
                                          class="accordion is-collapsed section__content--static-markdown flush-col">
                                     <h2 class="accordion__title" aria-controls="content-1">
 										Pre-release access list for {{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}
-										<span class="icon icon-arrow-down"></span>
-										<span class="icon icon-arrow-up"></span>
+										<span class="icon icon-arrow-down nojs-hidden"></span>
+										<span class="icon icon-arrow-up nojs-hidden"></span>
 									</h2>
 
                                     <div class="accordion__content" aria-labelledby="sc-1">
@@ -255,8 +255,8 @@
                                     <h2 class="accordion__title" aria-controls="content-2">
 										Changes to this release date
 
-										<span class="icon icon-arrow-down"></span>
-										<span class="icon icon-arrow-up"></span>
+										<span class="icon icon-arrow-down nojs-hidden"></span>
+										<span class="icon icon-arrow-up nojs-hidden"></span>
 									</h2>
                                         <ul class="accordion__content list--neutral margin-top" aria-labelledby="sc-2">
                                             {{#loop dateChanges orderBy="previousDate" reverse=true}}
