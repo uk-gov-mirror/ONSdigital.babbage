@@ -19,10 +19,11 @@
 
 	{{#each result.results}}
 	<li class="search-results__item">
-		<h3 class="search-results__title"><a href="{{uri}}">{{{description.title}}}
+		<h3 class="search-results__title">
+		<a href="{{uri}}">{{{description.title}}}
 			{{#if description.edition}}
 			{{#if_all (ne description.edition 'yes') (ne description.edition '<strong>yes</strong>')}}: {{{description.edition}}}{{/if_all}}
-		{{/if}}</a></h3>
+		{{/if}} {{#if description.latestRelease}}(Latest release){{/if}}</a></h3>
 		{{#if partOf}}
 		<p>
 			<a href="{{uri}}">{{{description.title}}}</a><span class="icon-search-1"></span>
