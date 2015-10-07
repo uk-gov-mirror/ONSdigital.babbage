@@ -1,12 +1,12 @@
 <div class="col-wrap">
 	<div class="col">
-		<h3>Datasets</h3>
+		<h2 id="datasets">Highlighted datasets related to {{description.title}}</h2>
 	</div>
 </div>
-<ul class="tiles__list">
-	{{#each datasets}}
+<ul class="tiles__list margin-top--half">
+	{{#loop datasets limit=6}}
 	<div class="clickable-wrap">
-		<li class="col-wrap tiles__item tiles__item--list-type flush-col">
+		<li class="col-wrap tiles__item tiles__item--list-type tiles__item--list-type-mercury flush-col">
 			{{#resolve (absolute this.uri) filter="description"}}
 			<div class="col col--lg-38">
 				<h4 class="tiles__title tiles__title-h4">
@@ -14,7 +14,9 @@
 						{{description.title}}
 					</a>
 				</h4>
-				<p class="tiles__content">{{description.summary}}</p>
+				<div class="tiles__content">
+                    <p class="flush">{{description.summary}}</p>
+                </div>
 			</div>
 			<div class="col col--lg-20">
 				{{!-- <h4 class="tiles__title-h4">Meta</h4> --}}
@@ -23,6 +25,6 @@
 			{{/resolve}}
 		</li>
 	</div>
-	{{/each}}
+	{{/loop}}
 </ul>
 <a href="{{uri}}/datalist?filter=large_dataset" class="btn btn--primary btn--full-width">View all datasets related to {{description.title}}</a>

@@ -25,15 +25,16 @@
 							{{resolve items.0.uri assign="data"}}
 							{{#if_any data.years data.quarters data.months}}<li class="nav-secondary__item"><a href="#latest-data">Latest data</a></li>{{/if_any}}
 							<li class="nav-secondary__item"><a href="#latest-publication">Latest publications</a></li>
-							{{#if_any items datasets}}<li class="nav-secondary__item"><a href="#data">Highlighted data</a></li>{{/if_any}}
+							{{#if items}}<li class="nav-secondary__item"><a href="#timeseries">Highlighted timeseries</a></li>{{/if}}
+                            {{#if datasets}}<li class="nav-secondary__item"><a href="#datasets">Highlighted datasets</a></li>{{/if}}
 							<li class="nav-secondary__item"><a href="#publications">Highlighted publications</a></li>
 						</ul>
 					</nav>
 					<nav class="nav-secondary col col--lg-half">
 						<h2 class="nav-secondary__title">Quick links:</h2>
 						<ul class="nav-secondary__list">
-							{{#if_any items datasets}}<li class="nav-secondary__item"><a href="{{uri}}/datalist">All data in this section</a></li>{{/if_any}}
-							<li class="nav-secondary__item"><a href="{{uri}}/publications">All publications in this section</a></li>
+							{{#if_any items datasets}}<li class="nav-secondary__item"><a href="{{uri}}/datalist">All data in this topic</a></li>{{/if_any}}
+							<li class="nav-secondary__item"><a href="{{uri}}/publications">All publications in this topic</a></li>
 						</ul>
 					</nav>
 				</div> {{!-- /col-wrap --}}
@@ -89,7 +90,7 @@
                                             {{/if}}
                                         </ul>
                                     </div>
-                                        <a href="{{bulletin.uri}}" class="tiles__read-more">Read this statistical bulletin</a>
+                                        <a href="{{bulletin.uri}}" class="tiles__extra">Read this statistical bulletin</a>
                                     </div>
                                 </div>
                                 <a href="#publications" class="btn btn--primary btn--full-width">More publications</a>
@@ -100,28 +101,31 @@
             </div>{{!-- /wrapper --}}
         </section>
 
-        {{!-- Timeseries & datasets --}}
-        {{#if_any items datasets}}
-        <section class="slate--iron-light">
-            <div class="wrapper">
-                <div class="col-wrap">
-                    <div class="col">
-                        <h2 id="data">Highlighted data related to {{description.title}}</h2>
-                    </div>
+        {{!-- Timeseries --}}
+        {{#if items}}
+        <div class="slate--mercury">
+            <section>
+                <div class="wrapper">
+                        {{> partials/t3/timeseries-list}}
                 </div>
-                {{#if items}}
-                    {{> partials/t3/timeseries-list}}
-                {{/if}}
-                {{#if datasets}}
+            </section>
+        </div>
+        {{/if}}
+
+        {{!-- Datasets --}}
+        {{#if datasets}}
+        <div class="slate--alabaster">
+            <section>
+                <div class="wrapper">
                     {{> partials/t3/dataset-list}}
-                {{/if}}
-            </div> {{!-- /div.wrapper --}}
-        </section>
-        {{/if_any}}
+                </div>
+            </section>
+        </div>
+        {{/if}}
 
         {{!-- Latest publications --}}
         {{#if_any statsBulletins relatedArticles}}
-        <section class="{{#if_any items datasets}}slate--alabaster{{else}}slate--iron-light{{/if_any}}">
+        <section class="{{#if datasets}}slate--mercury{{else}}slate--alabaster{{/if}}">
             <div class="wrapper">
                 <div class="col-wrap">
                     <div class="col">

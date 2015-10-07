@@ -6,8 +6,8 @@
 <div class="col-wrap">
 	<div class="col col--lg-40">
 
-	<ul class="tiles__list">
-		{{#each relatedArticles}}
+	<ul class="tiles__list flush">
+		{{#loop relatedArticles limit=6}}
 		{{#resolve this.uri filter="description"}}
 			<li class="tiles__item--list-type-simple flush-col">
 				<h4 class="titles__title tiles__title-h4">
@@ -20,7 +20,7 @@
 				</p>
 			</li>
 		{{/resolve}}
-		{{/each}}
+		{{/loop}}
 	</ul>
 
 		<a href="{{uri}}/publications?filter=article&filter=compendia" class="btn btn--primary btn--full-width">View all related articles</a>
