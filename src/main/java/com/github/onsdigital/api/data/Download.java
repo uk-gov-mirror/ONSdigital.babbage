@@ -1,13 +1,15 @@
 package com.github.onsdigital.api.data;
 
 import com.github.davidcarboni.restolino.framework.Api;
+import com.github.onsdigital.babbage.configuration.Configuration;
+import com.github.onsdigital.babbage.content.client.ContentClient;
+import com.github.onsdigital.babbage.content.client.ContentReadException;
+import com.github.onsdigital.babbage.content.client.ContentStream;
 import com.github.onsdigital.bean.DateVal;
 import com.github.onsdigital.bean.DownloadRequest;
-import com.github.onsdigital.babbage.configuration.Configuration;
 import com.github.onsdigital.content.page.statistics.data.timeseries.TimeSeries;
 import com.github.onsdigital.content.partial.TimeseriesValue;
 import com.github.onsdigital.content.util.ContentUtil;
-import com.github.onsdigital.data.LocalFileDataService;
 import com.github.onsdigital.util.CSVGenerator;
 import com.github.onsdigital.util.XLSXGenerator;
 import org.apache.commons.io.FileUtils;
@@ -20,7 +22,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.POST;
 import javax.ws.rs.core.Context;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
@@ -48,7 +49,7 @@ public class Download {
      */
 
     @POST
-    public void post(@Context HttpServletRequest request, @Context HttpServletResponse response) throws IOException {
+    public void post(@Context HttpServletRequest request, @Context HttpServletResponse response) throws IOException, ContentReadException {
         try {
             DownloadRequest downloadRequest = initializeDownloadRequest(request);
             System.out.println("Download request recieved" + downloadRequest);
@@ -103,7 +104,7 @@ public class Download {
         return null;
     }
 
-    private void processRequest(OutputStream output, DownloadRequest downloadRequest) throws IOException {
+    private void processRequest(OutputStream output, DownloadRequest downloadRequest) throws IOException, ContentReadException {
 
         Path tempDirectory = FileSystems.getDefault().getPath(FileUtils.getTempDirectoryPath());
         String from = downloadRequest.from == null ? "" : downloadRequest.from.toString();
@@ -134,8 +135,8 @@ public class Download {
         // Process URIs
         if (downloadRequest.uriList != null) {
             for (String uri : downloadRequest.uriList) {
-                try (InputStream input = LocalFileDataService.getInstance().getDataStream(uri)) {
-                    TimeSeries.add(ContentUtil.deserialise(input, TimeSeries.class));
+                try (ContentStream input = ContentClient.getInstance().getContentStream(uri)) {
+                    TimeSeries.add(ContentUtil.deserialise(input.getDataStream(), TimeSeries.class));
                 }
             }
         }

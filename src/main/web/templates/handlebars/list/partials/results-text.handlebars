@@ -8,10 +8,15 @@
 	{{#if parameters.filter}}
 	for <strong>{{#each parameters.filter}}{{> filter-label this}}{{#unless @last}},{{/unless}}{{/each}}</strong>
 	{{/if}}
-	{{#unless global}}
+	{{#if global}}
+	{{#if parameters.topic.0}}
+	related to
+	{{topics.[(parameters.topic.0)]}}
+	{{/if}}
+	{{else}}
 	related to
 	<strong>{{#each breadcrumb}}{{#if @last}}{{description.title}}{{/if}}{{/each}}</strong>.
-	{{/unless}}
+	{{/if}}
 	{{#if parameters.allReleases}}
 	You have chosen to expand these results to <strong>include all releases over time</strong>
 	{{/if}}
