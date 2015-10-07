@@ -9,7 +9,7 @@
 				{{> partials/breadcrumb}}
 
 				{{!-- Title & summary --}}
-				<h1 class="page-intro__title">{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}</h1>
+				<h1 class="page-intro__title {{#unless description.summary}}margin-bottom{{/unless}}">{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}</h1>
 
 				{{#if description.summary}}<p class="page-intro__content col col--md-47 col--lg-48">{{description.summary}}</p>{{/if}}
 
@@ -138,7 +138,7 @@
 					</div>
 				{{/if_any}}
 
-				<div class="col {{#if_any section.markdown notes.0}}col--md-one-third col--lg-one-third{{else}}col--md-two-thirds col--lg-two-thirds{{/if_any}}">
+				<div class="col col--md-one-third col--lg-one-third {{#if_any section.markdown notes.0}}{{else}}meta__item{{/if_any}}">
 					<h3>
 						Contact details for this data
 					</h3>
@@ -160,11 +160,11 @@
 	{{!-- Related link and local box --}}
 	{{#if_any relatedDocuments relatedData relatedDatasets relatedMethodology}}
 		<div class="wrapper">
-			<h3>Related</h3>
-			<div class="col-wrap">
+			<h2>Related</h2>
+			<div class="col-wrap flexbox__wrap">
 				{{#if_any relatedData relatedDatasets}}
 					<div class="col {{#if_all relatedDocuments relatedData relatedDatasets relatedMethodology}}col--lg-one-third {{else}}col--lg-half {{/if_all}} tiles__item tiles__item--nav-type">
-						<h4 class="tiles__title-h3 tiles__title-h3--nav">Timeseries</h4>
+						<h3 class="tiles__title-h3 tiles__title-h3--nav">Timeseries</h3>
 						<div class="tiles__content tiles__content--nav">
 							<ul class="list--neutral">
 								{{#each relatedData}}
@@ -179,11 +179,14 @@
 								{{/each}}
 							</ul>
 						</div>
+						<div class="tiles__extra">
+							<a href="{{#each breadcrumb}}{{#if @last}}{{uri}}/datalist?filter=single_time_series{{/if}}{{/each}}">View all related time series</a>
+						</div>
 					</div>
 				{{/if_any}}
 				{{#if relatedDocuments}}
 					<div class="col {{#if_all relatedDocuments relatedData relatedDatasets relatedMethodology}}col--lg-one-third {{else}}col--lg-half {{/if_all}} tiles__item tiles__item--nav-type">
-						<h4 class="tiles__title-h3 tiles__title-h3--nav">Publications</h4>
+						<h3 class="tiles__title-h3 tiles__title-h3--nav">Publications</h3>
 						<div class="tiles__content tiles__content--nav">
 							<ul class="list--neutral">
 								{{#each relatedDocuments}}
@@ -193,11 +196,14 @@
 								{{/each}}
 							</ul>
 						</div>
+						{{!-- <div class="tiles__extra">
+ 							<a href="{{#each breadcrumb}}{{#if @last}}{{uri}}/publications{{/if}}{{/each}}">View all related publications</a>
+ 						</div> --}}
 					</div>
 				{{/if}}
 				{{#if relatedMethodology}}
 					<div class="col {{#if_all relatedDocuments relatedData relatedDatasets relatedMethodology}}col--lg-one-third {{else}}col--lg-half {{/if_all}} tiles__item tiles__item--nav-type">
-						<h4 class="tiles__title-h3 tiles__title-h3--nav">Methodology</h4>
+						<h3 class="tiles__title-h3 tiles__title-h3--nav">Methodology</h3>
 						<div class="tiles__content tiles__content--nav">
 							<ul class="list--neutral">
 								{{#each relatedMethodology}}
@@ -207,6 +213,9 @@
 								{{/each}}
 							</ul>
 						</div>
+						{{!-- <div class="tiles__extra">
+ 							<a href="{{#each breadcrumb}}{{#if @last}}{{uri}}/allmethodologies{{/if}}{{/each}}">View all related methodology</a>
+ 						</div> --}}
 					</div>
 				{{/if}}
 			</div>
