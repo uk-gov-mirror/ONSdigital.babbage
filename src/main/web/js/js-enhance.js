@@ -143,7 +143,7 @@ $(function() {
       hoverHashTable['tiles__title-h4'] = ['tiles__title-h4--hover'];
       hoverHashTable['tiles__content'] = ['tiles__content--hover'];
       hoverHashTable['tiles__content--nav'] = ['tiles__content--nav-hover'];
-      hoverHashTable['tiles__read-more'] = ['tiles__read-more--hover'];
+      hoverHashTable['tiles__extra'] = ['tiles__extra--hover'];
       hoverHashTable['tiles__image--search-sparkline'] = ['tiles__image--search-sparkline-hover'];
 
       // on click grab the first link of the content and go there

@@ -5,8 +5,8 @@
 </div>
 <div class="col-wrap">
 	<div class="col col--lg-40">
-		<ul class="tiles__list">
-			{{#each statsBulletins}}
+		<ul class="tiles__list margin-top--half">
+			{{#loop statsBulletins limit=6}}
 			{{#resolve this.uri filter="description"}}
 			<li class="col-wrap tiles__item--list-type-simple flush-col">
 				<h4 class="tiles__title tiles__title-h4">
@@ -19,7 +19,7 @@
 				</p>
 			</li>
 			{{/resolve}}
-			{{/each}}
+			{{/loop}}
 		</ul>
 
 		<a href="{{uri}}/publications?filter=bulletin" class="btn btn--primary btn--full-width">View all statistical bulletins</a>

@@ -1,5 +1,6 @@
 package com.github.onsdigital.babbage.template.handlebars.helpers;
 
+import com.github.jknack.handlebars.Context;
 import com.github.jknack.handlebars.Handlebars;
 import com.github.jknack.handlebars.Options;
 import com.github.jknack.handlebars.helper.EachHelper;
@@ -15,7 +16,7 @@ import static java.util.Collections.reverse;
 /**
  * Created by bren on 02/07/15.
  * <p/>
- * Repeat content fixed number of times, or array sorted by a field or in reverse order
+ * Repeat content fixed number of times, or array sorted by a field or in reverse order, does not work with set or map objects
  */
 
 public class LoopHelper extends EachHelper implements BabbageHandlebarsHelper<Object> {
@@ -24,20 +25,52 @@ public class LoopHelper extends EachHelper implements BabbageHandlebarsHelper<Ob
 
     @Override
     public CharSequence apply(Object context, Options options) throws IOException {
-        if (context == null) {
-            return "";
+        if (options.isFalsy(context)) {
+            return options.inverse();
         }
 
         //Delegate everything other than repeat number to each helper
         if (context instanceof Number == false) {
+            List list = (List) context;
             boolean reverse = Boolean.TRUE.equals(options.hash("reverse"));
+            int limit = resolveLimit(list, options);
             String field = options.hash("orderBy");
-            sort((List) context, reverse, field);
-            return super.apply(context, options);
+            sort(list, reverse, field);
+            return apply(list, options, limit);
         }
-
         //Create an integer list with given number and delegate to each helper to be able to use all features of each helper (index, last , first etc)
         return super.apply(buildList((Number) context), options);
+    }
+
+    private CharSequence apply(final List list, final Options options, int limit)
+            throws IOException {
+        return render(list, options, limit);
+    }
+
+    private CharSequence render(final List<Object> context, final Options options, int limit)
+            throws IOException {
+        StringBuilder buffer = new StringBuilder();
+        int index = -1;
+        Context parent = options.context;
+        while (index < limit - 1) {
+            index += 1;
+            Object element = context.get(index);
+            boolean first = index == 0;
+            boolean even = index % 2 == 0;
+            boolean last = (limit == index + 1);
+            Context current = Context.newBuilder(parent, element)
+                    .combine("@index", index)
+                    .combine("@first", first ? "first" : "")
+                    .combine("@last", last ? "last" : "")
+                    .combine("@odd", even ? "" : "odd")
+                    .combine("@even", even ? "even" : "")
+                            // 1-based index
+                    .combine("@index_1", index + 1)
+                    .build();
+            buffer.append(options.fn(current));
+            current.destroy();
+        }
+        return buffer.toString();
     }
 
     private List<Integer> buildList(Number repeatNumber) {
@@ -47,6 +80,20 @@ public class LoopHelper extends EachHelper implements BabbageHandlebarsHelper<Ob
             integers.add(i);
         }
         return integers;
+    }
+
+    /**
+     * Number of elements to show
+     *
+     * @return
+     */
+    private int resolveLimit(List list, Options options) {
+        int limit = options.hash("limit", 0);
+        if (limit <= 0 || limit > list.size()) {
+            return list.size();
+        } else {
+            return limit;
+        }
     }
 
     @Override
@@ -60,7 +107,7 @@ public class LoopHelper extends EachHelper implements BabbageHandlebarsHelper<Ob
             if (reverse) {
                 reverse(list);
             } else {
-                Collections.sort(list);
+                return; // no sorting if no field is set and reversed not set
             }
         } else {
             Collections.sort(list, new MapFieldComparator<>(field, reverse));
@@ -128,7 +175,7 @@ public class LoopHelper extends EachHelper implements BabbageHandlebarsHelper<Ob
                 return comparable;
             } else {
                 String firstField = field.substring(0, i);
-                System.out.println(firstField +  ":");
+                System.out.println(firstField + ":");
                 return getField((Map) m.get(firstField), field.substring(i + 1));
             }
 

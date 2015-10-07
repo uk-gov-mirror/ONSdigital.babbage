@@ -1,7 +1,7 @@
 <ul class="list--neutral search-results">
 	{{#if timeSeriesCount}}
 	<li class="search-results__item">
-		<h3 class="search-results__title"> <a href="/dataexplorer?filter=single_time_series&topic={{featuredResult.results.0.uri}}">{{{featuredResult.results.0.description.title}}} time series collection
+		<h3 class="search-results__title"> <a href="{{featuredResult.results.0.uri}}/datalist?filter=single_time_series">{{{featuredResult.results.0.description.title}}} time series collection
 			{{#if featuredResult.results.0.description.edition}}
 			{{#if_all (ne featuredResult.results.0.description.edition 'yes') (ne featuredResult.results.0.description.edition '<strong>yes</strong>')}}: {{{featuredResult.results.0.description.edition}}}{{/if_all}}
 		{{/if}}</a></h3>
@@ -11,7 +11,7 @@
 		</div>
 		{{#if featuredResult.results.0.description.keywords}}
 		<p class="flush">
-			Keywords: {{#each featuredResult.results.0.description.keywords}}{{{this}}}  {{/each}}
+			Keywords: {{#each featuredResult.results.0.description.keywords}}{{{this}}}{{#unless @last}}, {{/unless}}{{/each}}
 		</p>
 		{{/if}}
 	</li>
@@ -30,7 +30,13 @@
 		</p>
 		{{/if}}
 		<p class="search-results__meta">
-			{{>type-label type_code=this._type}} | Released on {{df description.releaseDate}} {{#if description.reference}}Ref: {{{description.reference}}}{{/if}}
+			{{>type-label type_code=this._type}} |
+            {{#if_any description.releaseDate description.lastRevised}}
+                {{#if description.releaseDate}}Released on {{df description.releaseDate}}
+                {{else}}Revised on {{description.lastRevised}}
+                {{/if}}
+            {{/if_any}}
+            {{#if description.reference}}Ref: {{{description.reference}}}{{/if}}
 		</p>
 
 		<div class="search-results__summary">
@@ -38,7 +44,7 @@
 		</div>
 		{{#if description.keywords}}
 		<p class="search-results__keywords">
-			Keywords: {{#each description.keywords}}{{{this}}}  {{/each}}
+			Keywords: {{#each description.keywords}}{{{this}}}{{#unless @last}}, {{/unless}}{{/each}}
 		</p>
 		{{/if}}
 	</li>
