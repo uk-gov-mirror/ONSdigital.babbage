@@ -11,7 +11,7 @@
 		</div>
 		{{#if featuredResult.results.0.description.keywords}}
 		<p class="flush">
-			Keywords: {{#each featuredResult.results.0.description.keywords}}{{{this}}}  {{/each}}
+			Keywords: {{#each featuredResult.results.0.description.keywords}}{{{this}}}{{#unless @last}}, {{/unless}}{{/each}}
 		</p>
 		{{/if}}
 	</li>
@@ -38,7 +38,7 @@
 		</div>
 		{{#if description.keywords}}
 		<p class="search-results__keywords">
-			Keywords: {{#each description.keywords}}{{{this}}}  {{/each}}
+			Keywords: {{#each description.keywords}}{{{this}}}{{#unless @last}}, {{/unless}}{{/each}}
 		</p>
 		{{/if}}
 	</li>
