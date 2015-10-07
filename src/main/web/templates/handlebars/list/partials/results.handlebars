@@ -30,7 +30,13 @@
 		</p>
 		{{/if}}
 		<p class="search-results__meta">
-			{{>type-label type_code=this._type}} | Released on {{df description.releaseDate}} {{#if description.reference}}Ref: {{{description.reference}}}{{/if}}
+			{{>type-label type_code=this._type}} |
+            {{#if_any description.releaseDate description.lastRevised}}
+                {{#if description.releaseDate}}Released on {{df description.releaseDate}}
+                {{else}}Revised on {{description.lastRevised}}
+                {{/if}}
+            {{/if_any}}
+            {{#if description.reference}}Ref: {{{description.reference}}}{{/if}}
 		</p>
 
 		<div class="search-results__summary">
