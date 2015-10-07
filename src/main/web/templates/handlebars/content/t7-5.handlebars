@@ -54,7 +54,7 @@
                                     <ul class="list--neutral">
                                         {{#each downloads}}
                                             <form method="get" action="/file" class="margin-bottom">
-                                                <button type="submit" title="{{title}}" class="download-analytics">
+                                                <button type="submit" title="{{title}}" class="btn btn--simple download-analytics">
                                                     {{title}} ({{fe (lowercase file)}}) [{{fs (lowercase file)}}]
                                                 </button>
                                                 <input type="hidden" name="uri" value="{{lowercase file}}"/>
