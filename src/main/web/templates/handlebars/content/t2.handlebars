@@ -2,51 +2,42 @@
 	<div class="page-intro">
 		<div class="wrapper">
 			<div class="col-wrap">
-				<div class="col one">
+				<div class="col">
 					{{> partials/breadcrumb}}
-					<h1 class="page-intro__title">{{description.title}}</h1>
-					<p class="page-intro__content col col--md-47 col--lg-48">
-						{{description.summary}}
-					</p>
+					{{#if highlightedLinks}}
+					<div class="col col--md-47 col--lg-38">
+						<h1 class="page-intro__title">{{description.title}}</h1>
+						<p class="page-intro__content">
+							{{description.summary}}
+						</p>
+					</div>
+					<div class="nav-secondary--border-left-lg col col--md-47 col--lg-19 col--lg-offset-2 padding-left margin-top-lg--4">
+						<h2 class="margin-top-lg--1">Highlighted content</h2>
+						<ul class="list--neutral">
+							{{#each highlightedLinks}}
+							{{#resolve this.uri}}
+							{{#if_any items datasets statsBulletins relatedArticles sections}}
+							<li><a href="{{uri}}">{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}</a></li>
+							{{/if_any}}
+							{{/resolve}}
+							{{/each}}
+						</ul>
+					</div>
+					{{else}}
+					<div class="col col--md-47 col--lg-48">
+						<h1 class="page-intro__title">{{description.title}}</h1>
+						<p class="page-intro__content">
+							{{description.summary}}
+						</p>
+					</div>
+					{{/if}}
 				</div>
 			</div>
 		</div>
-		{{#if highlightedLinks}}
-		<div class="nav-secondary-wrap">
-			<div class="wrapper">
-				<div class="col-wrap">
-					<nav class="nav-secondary col col--lg-half">
-						<h2 class="nav-secondary__title">On this page:</h2>
-						<ul class="nav-secondary__list">
-							<li class="nav-secondary__item"><a href="#highlighted">Highlighted content in this section</a></li>
-							<li class="nav-secondary__item"><a href="#topics">Topics in this section</a></li>
-						</ul>
-					</nav>
-				</div> {{!-- /col-wrap --}}
-			</div> {{!-- /wrapper --}}
-		</div> {{!-- /nav-secondary-wrap --}}
-		{{/if}}
+
 	</div>
 
-	{{#if highlightedLinks}}
-	<div class="highlighted-wrap slate--alabaster">
-		<div class="wrapper">
-			<div class="tiles">
-				<h2 id="highlighted">Highlighted content in this section</h2>
-				<ul class="col-wrap tiles__list margin-bottom--double">
-					{{!-- loop for children nodes --}}
-					{{#each highlightedLinks}}
-						{{#resolve this.uri}}
-						    {{#if_any items datasets statsBulletins relatedArticles sections}}
-						    	{{> partials/t2/t2-highlighted-content}}
-						    {{/if_any}}
-						{{/resolve}}
-					{{/each}}
-				</div>
-			</div>
-		</div>
-	</div>
-	{{/if}}
+
 	
 
 	<div class="page-content">
