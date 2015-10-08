@@ -33,7 +33,7 @@
 			{{>type-label type_code=this._type}} |
             {{#if_any description.releaseDate description.lastRevised}}
                 {{#if description.releaseDate}}Released on {{df description.releaseDate}}
-                {{else}}Revised on {{description.lastRevised}}
+                {{else}}Revised on {{df description.lastRevised}}
                 {{/if}}
             {{/if_any}}
             {{#if description.reference}}Ref: {{{description.reference}}}{{/if}}
