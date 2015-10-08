@@ -1,4 +1,4 @@
-package com.github.onsdigital.cache;
+package com.github.onsdigital.babbage.cache;
 
 import com.github.onsdigital.babbage.configuration.Configuration;
 import com.github.onsdigital.babbage.response.BabbageResponse;

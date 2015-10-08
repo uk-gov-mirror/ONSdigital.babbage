@@ -1,4 +1,4 @@
-package com.github.onsdigital.api.search;
+package com.github.onsdigital.babbage.api.endpoint.search;
 
 import com.github.davidcarboni.restolino.framework.Api;
 import com.github.onsdigital.babbage.content.client.ContentReadException;
