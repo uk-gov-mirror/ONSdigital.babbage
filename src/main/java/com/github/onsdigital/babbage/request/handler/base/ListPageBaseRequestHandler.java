@@ -56,7 +56,6 @@ public abstract class ListPageBaseRequestHandler implements RequestHandler {
     public abstract boolean isLocalisedUri();
 
 
-
     public String getData(String requestedUri, HttpServletRequest request) throws Exception {
 
         System.out.println("List page data request from " + this.getClass().getSimpleName() + " for uri: " + requestedUri);
@@ -100,13 +99,8 @@ public abstract class ListPageBaseRequestHandler implements RequestHandler {
     }
 
     private String processUri(String requestedUri, HttpServletRequest request) {
-        String uri;
-        if (isLocalisedUri()) {
-            uri = requestedUri;
-        } else {
-            String topic = request.getParameter("topic");
-            uri = cleanUri(topic);
-        }
+        String uri = isLocalisedUri() ? requestedUri : cleanUri(request.getParameter("topic"));
+        uri = uri.endsWith("/") ? uri : (uri + "/");
         return uri;
     }
 
