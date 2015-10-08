@@ -13,7 +13,6 @@ public class Configuration {
         private static final int GLOBAL_CACHE_TIMEOUT = 5;
         private static final int GLOBAL_REQUEST_CACHE_SIZE = 1000;
 
-
         public static int getMaxVisiblePaginatorLink() {
             return MAX_VISIBLE_PAGINATOR_LINK;
         }
@@ -31,8 +30,13 @@ public class Configuration {
         }
 
         public static boolean isCacheEnabled() {
-            String babbage_env = StringUtils.defaultIfBlank(getValue("ENABLE_CACHE"), "");
-            return "Y".equals(babbage_env);
+            String enableCache = StringUtils.defaultIfBlank(getValue("ENABLE_CACHE"), "");
+            return "Y".equals(enableCache);
+        }
+
+        public static boolean isDevEnvironment() {
+            String devEnvironment = StringUtils.defaultIfBlank(getValue("DEV_ENVIRONMENT"), "");
+            return "Y".equals(devEnvironment);
         }
 
     }
