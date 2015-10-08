@@ -24,11 +24,22 @@ public class Reindex {
     public void reIndex(@Context HttpServletRequest request, @Context HttpServletResponse response) throws IOException {
         String key = request.getParameter("key");
         String uri = request.getParameter("uri");
-        try (ContentStream stream = ContentClient.getInstance().reIndex(key, uri )) {
-            IOUtils.copy(stream.getDataStream(), response.getOutputStream());
+        boolean reindexAll = "1".equals(request.getParameter("all"));
+        ContentStream responseStream = null;
+        try {
+            if (reindexAll) {
+                responseStream = ContentClient.getInstance().reIndexAll(key);
+            } else {
+                responseStream = ContentClient.getInstance().reIndex(key, uri);
+            }
+            IOUtils.copy(responseStream.getDataStream(), response.getOutputStream());
         } catch (ContentReadException ex) {
             response.setStatus(ex.getStatusCode());
             IOUtils.copy(new StringReader(ex.getCause().getMessage()), response.getOutputStream());
+        } finally {
+            if (response != null) {
+                IOUtils.closeQuietly(responseStream);
+            }
         }
     }
 }

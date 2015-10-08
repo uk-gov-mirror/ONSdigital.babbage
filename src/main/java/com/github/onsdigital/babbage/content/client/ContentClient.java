@@ -131,6 +131,13 @@ public class ContentClient {
         return sendPost(getReindexEndpoint(), parameters);
     }
 
+    public ContentStream reIndexAll(String key) throws ContentReadException {
+        List<NameValuePair> parameters = new ArrayList<>();
+        parameters.add(new BasicNameValuePair("key", key));
+        parameters.add(new BasicNameValuePair("all", "1"));
+        return sendPost(getReindexEndpoint(), parameters);
+    }
+
     public ContentStream getParents(String uri, Map<String, String[]> queryParameters) throws ContentReadException {
         System.out.println("getParents(): Reading parents, uri:" + uri);
         return sendGet(getParentsPath(), getParameters(uri, queryParameters));
