@@ -49,6 +49,7 @@ $(function() {
         jsEnhanceMobileTables();
 
 		jsEnhanceRemoveFocus();
+		jsEnhanceChartFocus();
 
         // prototypeModalButtons();
 
@@ -649,4 +650,29 @@ $(function() {
 		removeFocus("a");
 		removeFocus(".accordion__title");
 	}
+
+	function jsEnhanceChartFocus() {
+
+		$('.btn--chart-control input').focusin(function() {
+			//console.log('hello');
+
+			var inputGroup = $(this).closest('.btn-group');
+			console.log(inputGroup);
+
+			$(inputGroup).addClass('input--focus');
+
+			$(inputGroup).focus();
+
+		});
+
+		$('.btn--chart-control input').focusout(function() {
+			var inputGroup = $(this).closest('.btn-group');
+			console.log("focus out");
+
+			$(inputGroup).removeClass('input--focus');
+
+		});
+
+	}
+
 });
