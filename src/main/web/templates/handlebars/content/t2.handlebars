@@ -44,7 +44,7 @@
 		<div class="wrapper">
 			<div class="tiles">
 				<h2 id="topics">In this section</h2>
-				<ul class="col-wrap col-span--lg-thirds tiles__list">
+				<ul class="col-wrap col-span--lg-thirds tiles__list margin-bottom">
 					{{!-- loop for children nodes --}}
 					{{#each sections}}
 						{{#resolve this.uri}}
@@ -59,13 +59,14 @@
 						    	{{/if_eq}}
 						    {{/if_any}}
 						{{/resolve}}
+
+                        {{#if @last}}
+                            <div class="col col--md-one-third col--lg-one-third">
+                                {{> partials/local-box}}
+                            </div>
+                        {{/if}}
 					{{/each}}
 				</ul>
-			</div>
-			<div class="col-wrap margin-bottom">
-				<div class="col col--md-one-third col--lg-one-third">
-					{{> partials/local-box}}
-				</div>
 			</div>
 			{{!-- /grid-col --}}
 		</div>
