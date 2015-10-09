@@ -649,6 +649,7 @@ $(function() {
 		//run function on all elements/classes that have a focus state
 		removeFocus("a");
 		removeFocus(".accordion__title");
+		removeFocus(".timeseries__chart");
 	}
 
 	function jsEnhanceChartFocus() {
