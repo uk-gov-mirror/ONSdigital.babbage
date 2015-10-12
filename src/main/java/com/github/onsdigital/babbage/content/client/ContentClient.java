@@ -159,7 +159,7 @@ public class ContentClient {
     private ContentStream sendPost(String path, List<NameValuePair> postParameters) throws ContentReadException {
         CloseableHttpResponse response = null;
         try {
-            return new ContentStream(client.sendPost(path, null, postParameters));
+            return new ContentStream(client.sendPost(path, getHeaders(), postParameters));
         } catch (HttpResponseException e) {
             IOUtils.closeQuietly(response);
             throw wrapException(e);
