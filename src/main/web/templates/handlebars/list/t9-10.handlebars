@@ -39,7 +39,7 @@
 									<div class="filters__field">
 										<input id="checkbox-timeseries" type="checkbox" name="filter" value="single_time_series" {{#contains parameters.filter 'single_time_series'}}checked{{/contains}} >
 										<label for="checkbox-timeseries">
-											Single time series
+											Time series data
 										</label>
 									</div>
 								</li>
@@ -47,7 +47,7 @@
 									<div class="filters__field">
 										<input id="checkbox-dataset" type="checkbox" name="filter" value="large_dataset" {{#contains parameters.filter 'large_dataset'}}checked{{/contains}}>
 										<label for="checkbox-dataset">
-											Large dataset
+											Spreadsheets
 										</label>
 									</div>
 								</li>
@@ -56,29 +56,35 @@
 							<ul class="list--neutral">
 								<li>
 									<div class="filters__field">
-									<input id="checkbox-sa" type="checkbox" name="keywords" value="Seasonally adjusted" {{#contains parameters.keywords 'Seasonally adjusted'}}checked{{/contains}} >
-									<label for="checkbox-sa">
-										Seasonally adjusted (SA)
-									</label>
-								</div>
+										<input id="checkbox-sa" type="checkbox" name="keywords" value="Seasonally adjusted" {{#contains parameters.keywords 'Seasonally adjusted'}}checked{{/contains}} >
+										<label for="checkbox-sa">
+											Seasonally adjusted (SA)
+										</label>
+									</div>
 								</li>
 								<li>
-									<input id="checkbox-nsa" type="checkbox" name="keywords" value="Non seasonally adjusted" {{#contains parameters.keywords 'Non seasonally adjusted'}}checked{{/contains}}>
-									<label for="checkbox-nsa">
-										Non seasonally adjusted (NSA)
-									</label>
+									<div class="filters__field">
+										<input id="checkbox-nsa" type="checkbox" name="keywords" value="Non seasonally adjusted" {{#contains parameters.keywords 'Non seasonally adjusted'}}checked{{/contains}}>
+										<label for="checkbox-nsa">
+											Non seasonally adjusted (NSA)
+										</label>
+									</div>
 								</li>
 								<li>
-									<input id="checkbox-gender" type="checkbox" name="keywords" value="By gender" {{#contains parameters.keywords 'By gender'}}checked{{/contains}}>
-									<label for="checkbox-gender">
-										By gender
-									</label>
+									<div class="filters__field">
+										<input id="checkbox-gender" type="checkbox" name="keywords" value="By gender" {{#contains parameters.keywords 'By gender'}}checked{{/contains}}>
+										<label for="checkbox-gender">
+											By gender
+										</label>
+									</div>
 								</li>
 								<li>
-									<input id="checkbox-age" type="checkbox" name="keywords" value="By age" {{#contains parameters.keywords 'By age'}}checked{{/contains}}>
-									<label for="checkbox-age">
-										By age
-									</label>
+									<div class="filters__field">
+										<input id="checkbox-age" type="checkbox" name="keywords" value="By age" {{#contains parameters.keywords 'By age'}}checked{{/contains}}>
+										<label for="checkbox-age">
+											By age
+										</label>
+									</div>
 								</li>
 							</ul>
 							{{> list/filters/publish-date}}
