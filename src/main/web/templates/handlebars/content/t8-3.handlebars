@@ -142,9 +142,11 @@
 
                 {{!-- INFORMATION AND NOTES --}}
                 {{#if section.markdown}}
-                    <div class="margin-top">
-                        <h3>{{labels.dataset-notes}}</h3>
-                        {{md section.markdown}}
+                    <div class="section__content--static-markdown">
+						<section>
+							<h3>{{labels.dataset-notes}}</h3>
+							{{md section.markdown}}
+						</section>
                     </div>
                 {{/if}}
 
