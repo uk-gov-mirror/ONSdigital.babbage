@@ -1,0 +1,22 @@
+{{#unless result.results}}
+<h2 class="search-page__results-text">
+	{{#unless results}}
+	{{#unless showFeaturedResult}}
+	{{#unless timeSeriesCount}}
+	<div class="col col--lg-42">
+		{{labels.search-try-other}}
+		<ul>
+			<li>{{labels.search-diff-words}}</li>
+			{{#if parameters.filter}}
+            <li>{{labels.search-remove-filters}}</li>
+            {{/if}}
+			{{#unless parameters.includeStatics}}
+			<li><a href="{{query_string}}includeStatics=1">{{labels.search-expand-all}}</a></li>
+			{{/unless}}
+		</ul>
+	</div>
+	{{/unless}}
+	{{/unless}}
+	{{/unless}}
+</h2>
+{{/unless}}
