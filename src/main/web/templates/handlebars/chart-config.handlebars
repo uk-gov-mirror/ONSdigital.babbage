@@ -1,0 +1,6 @@
+{{#if_eq type "chart"}}
+	{{#if_eq chartType "line"}}{{> highcharts/config/line-chart-config}}{{/if_eq}}
+	{{#if_eq chartType "barline"}}{{> highcharts/config/barline-chart-config}}{{/if_eq}}
+	{{#if_eq chartType "rotated"}}{{> highcharts/config/rotated-bar-chart-config}}{{/if_eq}}
+	{{#if_eq chartType "bar"}}{{> highcharts/config/bar-chart-config}}{{/if_eq}}
+{{/if_eq}}

@@ -139,6 +139,7 @@ public class Configuration {
         private static final String TEMPLATES_SUFFIX = StringUtils.defaultIfBlank(getValue("TEMPLATES_SUFFIX"), ".handlebars");
         private static final String MAIN_CONTENT_TEMPLATE_NAME = "main";
         private static final String MAIN_LIST_PAGE_TEMPLATE_NAME = "list";
+        private static final String MAIN_CHART_CONFIG_TEMPLATE_NAME = "chart-config";
 
         public static String getHandlebarsDatePattern() {
             return DEFAULT_HANDLEBARS_DATE_PATTERN;
@@ -155,6 +156,11 @@ public class Configuration {
         public static String getMainContentTemplateName() {
             return MAIN_CONTENT_TEMPLATE_NAME;
         }
+
+        public static String getMainChartConfigTemplateName() {
+            return MAIN_CHART_CONFIG_TEMPLATE_NAME;
+        }
+
         public static String getMainListPageTemplateName() {
             return MAIN_LIST_PAGE_TEMPLATE_NAME;
         }
@@ -172,10 +178,6 @@ public class Configuration {
 
     /*Highcharts Image rendering configuration*/
     public static class HIGHCHARTS {
-        private final static String SPARKLINE_FILE = "sparklineconfig.js";
-        private final static String LINECHART_FILE = "linechartconfig.js";
-        private final static String SEARCHCHART_FILE = "searchchartconfig.js";
-        private static final String HIGHCHARTS_CONFIG_DIR = "src/main/web/templates/highcharts";
         private static final int MAX_HIGHCHARTS_SERVER_CONNECTION = defaultNumberIfBlank(getNumberValue("HIGHCHARTS_EXPORT_MAX_CONNECTION"), 50);
 
 

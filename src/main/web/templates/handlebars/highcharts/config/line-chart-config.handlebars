@@ -1,0 +1,87 @@
+{{#partial "chart-config"}}
+{
+	chart: {
+		height: {{width}} * {{aspectRatio}},
+		width: {{width}},
+		marginRight: 35
+	},
+	colors: [
+		"#274796",
+		"#F5942F",
+		"#E73F40",
+		"#7BCAE2",
+		"#979796",
+		"#E9E117",
+		"#74B630",
+		"#674796",
+		"#BD5B9E"
+	],
+	series: [{{#each series}}
+	{
+		name: "{{this}}",
+		type: "line",
+		data: [{{#each data}}{{nf (get this ..) alt="null"}},{{/each}}]
+	},{{/each}} 
+	],
+	title: {
+		text: ""
+	},
+	yAxis: {
+		title: {
+			text: ""
+		},
+		labels: {
+			format: "{value:,f}"
+		}
+	},
+	xAxis: {
+		categories: [{{#each categories}}"{{this}}",{{/each}}],
+		tickInterval: "{{labelInterval}}",
+		tickPositioner: function() {
+          var positions = [];
+          var tick = Math.floor(this.dataMax);
+          for (tick; tick >= this.dataMin; tick -= this.tickInterval) {
+            positions.push(tick);
+          }
+          return positions;
+        }
+	},
+	labels: {
+		items: [{
+			html: "{{unit}}",
+			style: {
+				left: "0px",
+				top: "0px"
+			}
+		}]
+	},
+	legend: {
+		verticalAlign: "top"
+	},
+	plotOptions: {
+		series: {
+			animation: false,
+			pointPadding: 0,
+			groupPadding: 0.1
+		},
+		line: {
+			lineWidth: 1,
+			marker: {
+				radius: 2,
+				symbol: "circle"
+			}
+		},
+		column: {}
+	},
+	tooltip: {
+		valueDecimals: "{{decimalPlaces}}",
+		shared: true
+	},
+	credits: {
+		enabled: false
+	}
+}
+{{/partial}}
+
+{{!-- This denotes the template inheritcs from base-chart-config--}}
+{{> highcharts/config/base-chart-config}} 

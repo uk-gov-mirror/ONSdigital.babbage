@@ -47,12 +47,14 @@ public class HighChartsExportClient {
         return configuration;
     }
 
-    public InputStream getImage(String chartConfig) throws IOException {
+    public InputStream getImage(String chartConfig, Integer width) throws IOException {
         System.out.println("Calling Highcharts export server");
-        List<NameValuePair> postParameters = new ArrayList<NameValuePair>();
+        List<NameValuePair> postParameters = new ArrayList<>();
         postParameters.add(new BasicNameValuePair("options", chartConfig));
         postParameters.add(new BasicNameValuePair("type", "png"));
-//        postParameters.add(new BasicNameValuePair("width", "1500"));
+        if (width != null) {
+            postParameters.add(new BasicNameValuePair("width", width.toString()));
+        }
         postParameters.add(new BasicNameValuePair("async", "false"));
         CloseableHttpResponse response = client.sendPost("/", null, postParameters);
         System.out.println("Highcharts export response: " + response.getStatusLine());

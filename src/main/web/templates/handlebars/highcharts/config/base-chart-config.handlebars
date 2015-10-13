@@ -1,0 +1,22 @@
+{{!--
+This template forms a base configuration for all chart types, this is included in client side as javascript source file. 
+It is used to render highchart configuration and attach it to window object when run in a browser. Since Highcharts configurations are javascript objects it is not possible to read complex chart configurations ( objects with functions as members) as json objects, that is why it has to be rendered dynamically as a javascript source file.
+The chart configurations are used both by Babbage and Florence, thats why it is rendered on server side using handlebars to make it possible to edit configuration without the need of rebuilding.
+--}}
+
+(function(){
+
+	{{!-- chart-config block is to be overriden by chart types inheriting this template --}}
+	var chartConfig = {{#block "chart-config"}}{}{{/block}};
+
+	{{!-- Chart id is the file name for Florence chart builder generated charts, and cdid for time series --}}
+	var chartId = "{{#if filename}}{{filename}}{{else}}{{description.cdid}}{{/if}}";
+	
+	{{!-- attaching id to window object to be used on client side --}}
+	window["chart-" + chartId] = chartConfig;
+
+	{{!-- Returning chart to be used by highcharts export server for server side image rendering --}}
+	return chartConfig; 
+
+{{!-- Don't add semi-colon at end of closing brackets below - it breaks server-side rendering --}}
+})()

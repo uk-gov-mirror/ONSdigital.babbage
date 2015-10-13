@@ -10,6 +10,7 @@ import java.io.InputStream;
 import java.util.Collections;
 import java.util.Map;
 
+import static com.github.onsdigital.babbage.configuration.Configuration.HANDLEBARS.getMainChartConfigTemplateName;
 import static com.github.onsdigital.babbage.configuration.Configuration.HANDLEBARS.getMainContentTemplateName;
 import static com.github.onsdigital.babbage.configuration.Configuration.HANDLEBARS.getMainListPageTemplateName;
 import static com.github.onsdigital.babbage.util.json.JsonUtil.toMap;
@@ -54,6 +55,18 @@ public class TemplateService {
      */
     public String renderListPage(Object data, Map<String, Object>... additionalData) throws IOException {
         return renderer.render(getMainListPageTemplateName(), sanitize(data), addThreadContext(additionalData));
+    }
+
+    /**
+     * Renders chart configuration using main chart configuration template, current ThreadContext data is added to context as additional data
+     *
+     * @param data           Main data to render template with
+     * @param additionalData optional additional data map, map keys will be set as the object name when combined with main data
+     * @return
+     * @throws IOException
+     */
+    public String renderChartConfiguration(Object data, Map<String, Object>... additionalData) throws IOException {
+        return renderer.render(getMainChartConfigTemplateName(), sanitize(data), addThreadContext(additionalData));
     }
 
     /**
