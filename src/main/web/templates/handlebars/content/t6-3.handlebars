@@ -99,14 +99,18 @@
 		{{#if_any relatedDatasets relatedDocuments}}
 			<div class="col col--md-11 col--lg-20">
 
+
 				{{!-- Related data --}}
 				{{#if relatedDatasets}}
 					<div class="tiles__item tiles__item--nav-type flush-col">
 						<h3 class="tiles__title-h3 tiles__title-h3--nav">Related data</h3>
+
 						<div class="tiles__content tiles__content--nav">
 							<ul class="list--neutral">
 								{{#each relatedDatasets}}
-									<li><a href="{{absolute uri}}" title="{{description.title}}">{{description.title}}</a></li>
+									{{#resolve this.uri filter="title"}}
+										<li><a href="{{absolute uri}}" title="{{title}}">{{title}}</a></li>
+									{{/resolve}}
 								{{/each}}
 							</ul>
 						</div>
@@ -115,20 +119,23 @@
 
 				{{!-- Related articles and bulletins --}}
 				{{#if relatedDocuments}}
-					<div class="tiles__item tiles__item--nav-type">
+					<div class="tiles__item tiles__item--nav-type flush-col">
 						<h3 class="tiles__title-h3 tiles__title-h3--nav">Statistical bulletins and articles that use this data</h3>
 						<div class="tiles__content tiles__content--nav">
 							<ul class="list--neutral">
 								{{#each relatedDocuments}}
-									<li>
-										<a href="{{uri}}" title="{{title}}">
-											{{title}}
-											{{#if edition}}
-												{{#if_ne edition 'yes'}}: {{edition}}
-												{{/if_ne}}
-											{{/if}}
-										</a>
-									</li>
+									{{#resolve this.uri filter="title"}}
+										<li>
+											<a href="{{uri}}" title="{{title}}">
+												{{title}}
+												{{#if edition}}
+													{{#if_ne edition 'yes'}}
+														: {{edition}}
+													{{/if_ne}}
+												{{/if}}
+											</a>
+										</li>
+									{{/resolve}}
 								{{/each}}
 							</ul>
 						</div>

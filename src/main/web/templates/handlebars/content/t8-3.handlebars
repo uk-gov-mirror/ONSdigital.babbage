@@ -197,18 +197,20 @@
 
                 {{!-- Related methodology --}}
                 {{#if_any relatedMethodology}}
-                        <div class="tiles__item tiles__item--nav-type flush-col">
-                            <h3 class="tiles__title-h3 tiles__title-h3--nav">{{labels.methodology}}</h3>
-                            <ul class="tiles__content tiles__content--nav list--neutral">
-                                {{#each relatedMethodology}}
-                                    {{#resolve this.uri filter="title"}}
-                                        <li>
-                                            <a href="{{uri}}" title="{{title}}">{{title}}</a>
-                                        </li>
-                                    {{/resolve}}
-                                {{/each}}
-                            </ul>
-                        </div>
+					<div class="tiles__item tiles__item--nav-type flush-col">
+						<h3 class="tiles__title-h3 tiles__title-h3--nav">{{labels.methodology}}</h3>
+						<div class="tiles__content tiles__content--nav">
+							<ul class="list--neutral">
+								{{#each relatedMethodology}}
+									{{#resolve this.uri filter="title"}}
+										<li>
+											<a href="{{uri}}" title="{{title}}">{{title}}</a>
+										</li>
+									{{/resolve}}
+								{{/each}}
+							</ul>
+						</div>
+					</div>
                 {{/if_any}}
 
                 <div class="tiles__item tiles__item--nav-type flush-col">
