@@ -72,7 +72,9 @@ page = require('webpage').create();
 page.paperSize = {
     format: pageSize,
     orientation: pageOrientation,
-    margin: '1cm'
+	width: (widthInInches / 0.75),
+	height: (heightInInches / 0.75),
+    margin: '0'
 };
 page.viewportSize = {
     width: pdfViewportWidth,
