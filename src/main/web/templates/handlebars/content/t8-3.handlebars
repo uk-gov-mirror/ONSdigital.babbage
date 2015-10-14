@@ -158,7 +158,7 @@
                 {{!-- Related data --}}
                 {{#if relatedDatasets}}
                     <div class="tiles__item tiles__item--nav-type flush">
-                        <h3 class="tiles__title-h3 tiles__title-h3--nav">Related datasets</h3>
+                        <h3 class="tiles__title-h3 tiles__title-h3--nav">Related data</h3>
                         <div class="tiles__content tiles__content--nav">
                             <ul class="list--neutral">
                                 {{#each relatedDatasets}}
@@ -170,7 +170,7 @@
                         </div>
                     </div>
                     <div class="tiles__extra margin-bottom-md--2">
-                        <a href="{{parentPath (parentPath uri)}}/datalist?filter=large_dataset">View all datasets related to {{breadcrumb.2.description.title}}</a>
+                        <a href="{{parentPath (parentPath uri)}}/datalist?filter=large_dataset">View all data related to {{breadcrumb.2.description.title}}</a>
                     </div>
                 {{/if}}
 
