@@ -23,11 +23,11 @@
 						<h2 class="nav-secondary__title">On this page:</h2>
 						<ul class="nav-secondary__list">
 							{{resolve items.0.uri assign="data"}}
-							{{#if_any data.years data.quarters data.months}}<li class="nav-secondary__item"><a href="#latest-data">Latest data</a></li>{{/if_any}}
-							<li class="nav-secondary__item"><a href="#latest-publication">Latest publications</a></li>
-							{{#if items}}<li class="nav-secondary__item"><a href="#timeseries">Highlighted time series data</a></li>{{/if}}
-                            {{#if datasets}}<li class="nav-secondary__item"><a href="#datasets">Highlighted spreadsheets</a></li>{{/if}}
-							<li class="nav-secondary__item"><a href="#publications">Highlighted publications</a></li>
+							{{#if_any data.years data.quarters data.months}}<li class="nav-secondary__item"><a href="#latest-data" class="jsEnhanceAnimateScroll">Latest data</a></li>{{/if_any}}
+							<li class="nav-secondary__item"><a href="#latest-publication" class="jsEnhanceAnimateScroll">Latest publications</a></li>
+							{{#if items}}<li class="nav-secondary__item"><a href="#timeseries" class="jsEnhanceAnimateScroll">Highlighted time series data</a></li>{{/if}}
+                            {{#if datasets}}<li class="nav-secondary__item"><a href="#datasets" class="jsEnhanceAnimateScroll">Highlighted spreadsheets</a></li>{{/if}}
+							<li class="nav-secondary__item"><a href="#publications" class="jsEnhanceAnimateScroll">Highlighted publications</a></li>
 						</ul>
 					</nav>
 					<nav class="nav-secondary col col--lg-half">
