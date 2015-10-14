@@ -112,37 +112,42 @@
 
 			{{!-- Related data --}}
 			{{#if relatedDatasets}}
-		        <div class="tiles__item tiles__item--nav-type">
-		            <h3>Related datasets</h3>
-	              	<ul class="list--neutral">
-						{{#each relatedDatasets}}
-                            {{#resolve this.uri filter="title"}}
-		                	    <li><a href="{{absolute uri}}" title="{{title}}">{{title}}</a></li>
-                            {{/resolve}}
-						{{/each}}
-	            	</ul>
-		        </div>
+				<div class="tiles__item tiles__item--nav-type flush-col">
+					<h3 class="tiles__title-h3 tiles__title-h3--nav">Related data</h3>
+					<div class="tiles__content tiles__content--nav">
+						<ul class="list--neutral">
+							{{#each relatedDatasets}}
+								{{#resolve this.uri filter="title"}}
+									<li><a href="{{absolute uri}}" title="{{title}}">{{title}}</a></li>
+								{{/resolve}}
+							{{/each}}
+						</ul>
+					</div>
+				</div>
 			{{/if}}
 
 			{{!-- Related articles and bulletins --}}
 			{{#if relatedDocuments}}
 				<div class="tiles__item tiles__item--nav-type flush-col">
 		            <h3 class="tiles__title-h3 tiles__title-h3--nav">Statistical bulletins and articles that use this data</h3>
-	              	<ul class="tiles__content tiles__content--nav list--neutral">
-						{{#each relatedDocuments}}
-                            {{#resolve this.uri filter="title"}}
-                                <li>
-                                    <a href="{{uri}}" title="{{description.title}}">
-                                    {{description.title}}
-                                        {{#if description.edition}}
-                                            {{#if_ne description.edition 'yes'}}: {{description.edition}}
-                                            {{/if_ne}}
-                                        {{/if}}
-                                    </a>
-                                </li>
-                            {{/resolve}}
-						{{/each}}
-	            	</ul>
+
+					<div class="tiles__content tiles__content--nav">
+						<ul class="list--neutral">
+							{{#each relatedDocuments}}
+								{{#resolve this.uri filter="title"}}
+									<li>
+										<a href="{{uri}}" title="{{title}}">
+											{{title}}
+											{{#if edition}}
+												{{#if_ne edition 'yes'}}: {{edition}}
+												{{/if_ne}}
+											{{/if}}
+										</a>
+									</li>
+								{{/resolve}}
+							{{/each}}
+						</ul>
+					</div>
 		        </div>
 			{{/if}}
 

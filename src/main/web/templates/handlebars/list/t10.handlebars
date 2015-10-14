@@ -1,17 +1,39 @@
 {{!-- {{#if parameters.q.0}} --}}
-<h1 class="visuallyhidden">Search results</h1>
 {{!-- {{json this}} --}}
+<div class="tab">
+    <div class="wrapper">
+        <ul class="list--neutral list--inline flush">
+            <li>
+                <a href="/search?q={{parameters.q.0}}" class="tab__item tab__item--active">
+                    Search results
+                </a>
+            </li>
+            <li>
+                <a href="/dataexplorer?q={{parameters.q.0}}" class="tab__item">
+                    Explore data
+                </a>
+            </li>
+        </ul>
+    </div>
+</div> {{!-- /tab --}}
 <div class="page-content">
 	<div class="wrapper">
 		<form>
 			<div class="col-wrap print-hidden">
 				<div class="col">
-					<div class="float-right">
-						{{> list/filters/sort}}
-					</div>
+                    <div class="col col--md-28 col--lg-38">
+                        <h1 class="search-page__title">Search results</h1>
+                        {{> list/partials/search-results-text-number result}}
+                    </div>
+                    {{#if result.results}}
+                        <div class="float-right">
+                            {{> list/filters/sort}}
+                        </div>
+                    {{/if}}
 				</div>
 			</div>
 			{{!-- FILTERS --}}
+            {{#if_any result.results parameters.filter}}
 			<div class="col col--md-12 col--lg-18 margin-bottom">
 				<input class="sort__input" type="hidden" name="q" value="{{parameters.q.0}}">
 				<div class="tiles__title-h3 tiles__title-h3--nav">
@@ -49,7 +71,7 @@
 							<li><div class="filters__field">
 								<input type="checkbox" name="time_series" value="1" id="checkbox-timeseries" {{#if parameters.time_series}}checked{{/if}}>
 								<label for="checkbox-timeseries">
-									Time series
+									Time series data
 								</label>
 							</div>
 						</li>
@@ -57,7 +79,7 @@
 							<div class="filters__field">
 								<input type="checkbox" name="filter" value="large_dataset" id="checkbox-dataset" {{#contains parameters.filter 'large_dataset'}}checked{{/contains}}>
 								<label for="checkbox-dataset">
-									Large datasets
+									Spreadsheets
 								</label>
 							</div>
 						</li>
@@ -82,14 +104,16 @@
 				</div>
 			</div>
 		</div>
+        {{/if_any}}
 		{{!-- RESULTS --}}
-		<div class="results col col--md-34 col--lg-40 margin-left">
-			{{> list/partials/search-results-text result}}
+            <div class="results col col--md-34 col--lg-40 {{#if_any result.results parameters.filter}}margin-left-md--1{{/if_any}}">
+            {{> list/partials/search-results-text-help result}}
+
 				{{!-- HEADLINE RESULTS --}}
 				{{#if showFeaturedResult}}
                 <div class="headline-result clickable-wrap">
 				{{#resolve featuredResult.results.0.uri}}
-				<div class="col col--md-36 col--lg-40 tiles__item flush">
+				<div class="col col--md-36 col--lg-40 tiles__item flush-col flush-top">
 					{{!-- Sparkline --}}
 					<div class="col col--md-17 col--lg-20">
 						{{#resolve items.0.uri assign="series" filter="series"}}

@@ -1,55 +1,64 @@
 <ul class="list--neutral search-results">
 	{{#if timeSeriesCount}}
-	<li class="search-results__item">
-		<h3 class="search-results__title"> <a href="{{featuredResult.results.0.uri}}/datalist?filter=single_time_series">{{{featuredResult.results.0.description.title}}} time series collection
-			{{#if featuredResult.results.0.description.edition}}
-			{{#if_all (ne featuredResult.results.0.description.edition 'yes') (ne featuredResult.results.0.description.edition '<strong>yes</strong>')}}: {{{featuredResult.results.0.description.edition}}}{{/if_all}}
-		{{/if}}</a></h3>
-		<p class="search-results__meta">Time series</p>
-		<div class="search-results__summary">
-			<p>Contains all {{timeSeriesCount}} single time series related to {{{featuredResult.results.0.description.title}}}</p>
-		</div>
-		{{#if featuredResult.results.0.description.keywords}}
-		<p class="flush">
-			Keywords: {{#each featuredResult.results.0.description.keywords}}{{{this}}}{{#unless @last}}, {{/unless}}{{/each}}
-		</p>
-		{{/if}}
-	</li>
+		<li class="search-results__item">
+
+			<h3 class="search-results__title">
+				<a href="{{featuredResult.results.0.uri}}/datalist?filter=single_time_series">{{{featuredResult.results.0.description.title}}} time series collection
+				{{#if featuredResult.results.0.description.edition}}
+				{{#if_all (ne featuredResult.results.0.description.edition 'yes') (ne featuredResult.results.0.description.edition '<strong>yes</strong>')}}: {{{featuredResult.results.0.description.edition}}}{{/if_all}}
+			{{/if}}</a>
+			</h3>
+
+			<p class="search-results__meta">Time series data</p>
+
+			<div class="search-results__summary">
+				<p>Contains all {{timeSeriesCount}} time series data related to {{{featuredResult.results.0.description.title}}}</p>
+			</div>
+
+			{{#if featuredResult.results.0.description.keywords}}
+			<p class="flush">
+				Keywords: {{#each featuredResult.results.0.description.keywords}}{{{this}}}{{#unless @last}}, {{/unless}}{{/each}}
+			</p>
+			{{/if}}
+		</li>
 	{{/if}}
 
 	{{#each result.results}}
-	<li class="search-results__item">
-		<h3 class="search-results__title">
-		<a href="{{uri}}">{{{description.title}}}
-			{{#if description.edition}}
-			{{#if_all (ne description.edition 'yes') (ne description.edition '<strong>yes</strong>')}}: {{{description.edition}}}{{/if_all}}
-		{{/if}} {{#if description.latestRelease}}(Latest release){{/if}}</a></h3>
-		{{#if partOf}}
-		<p>
-			<a href="{{uri}}">{{{description.title}}}</a><span class="icon-search-1"></span>
-		</p>
-		{{/if}}
-		<p class="search-results__meta">
-			{{>type-label type_code=this._type}} |
-			{{#if description.cdid}}
-			Series ID: {{description.cdid}} |
-			{{/if}}
-            {{#if_any description.releaseDate description.lastRevised}}
-                {{#if description.releaseDate}}Released on {{df description.releaseDate}}
-                {{else}}Revised on {{df description.lastRevised}}
-                {{/if}}
-            {{/if_any}}
-            {{#if description.reference}}Ref: {{{description.reference}}}{{/if}}
-		</p>
+		<li class="search-results__item">
+			<h3 class="search-results__title">
+			<a href="{{uri}}">{{{description.title}}}
+				{{#if description.edition}}
+					{{#if_all (ne description.edition 'yes') (ne description.edition '<strong>yes</strong>')}}: {{{description.edition}}}{{/if_all}}
+			{{/if}} {{#if description.latestRelease}}(Latest release){{/if}}</a></h3>
 
-		<div class="search-results__summary">
-			{{md description.summary}}
-		</div>
-		{{#if description.keywords}}
-		<p class="search-results__keywords">
-			Keywords: {{#each description.keywords}}{{{this}}}{{#unless @last}}, {{/unless}}{{/each}}
-		</p>
-		{{/if}}
-	</li>
+			{{#if partOf}}
+			<p>
+				<a href="{{uri}}">{{{description.title}}}</a><span class="icon-search-1"></span>
+			</p>
+			{{/if}}
+
+			<p class="search-results__meta">
+				{{>type-label type_code=this._type}}
+				{{#if description.cdid}}
+				Series ID: {{description.cdid}} |
+				{{/if}}
+				{{#if_any description.releaseDate description.lastRevised}} |
+					{{#if description.releaseDate}}Released on {{df description.releaseDate}}
+					{{else}}Revised on {{df description.lastRevised}}
+					{{/if}}
+				{{/if_any}}
+				{{#if description.reference}}Ref: {{{description.reference}}}{{/if}}
+			</p>
+
+			<div class="search-results__summary">
+				{{md description.summary}}
+			</div>
+
+			{{#if description.keywords}}
+				<p class="search-results__keywords">
+					Keywords: {{#each description.keywords}}{{{this}}}{{#unless @last}}, {{/unless}}{{/each}}
+				</p>
+			{{/if}}
+		</li>
 	{{/each}}
 </ul>

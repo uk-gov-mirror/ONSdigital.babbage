@@ -104,7 +104,7 @@
                                     <a class="secondary-nav__link" href="/methodology">{{labels.methodology}}</a>
                                 </li>
                                 <li class="secondary-nav__item">
-                                    <a class="secondary-nav__link" href="/about">{{labels.about}}</a>
+                                    <a class="secondary-nav__link" href="/aboutus">{{labels.about}}</a>
                                 </li>
                             </ul>
                         </nav>
@@ -167,14 +167,14 @@
 							{{!-- Has to be in individal div so JS adds classes correctly on mobile --}}
 							<div class="primary-nav--secondary__list">
 								{{!-- TODO clean up or remove this content from HTML --}}
-								<li class="primary-nav__item {{#if_eq uri '/about/surveys'}}primary-nav__item--active{{/if_eq}}">
-									<a class="primary-nav__link col" href="/about/releasecalendar">{{labels.release-calendar}}</a>
-								</li>
+								<!--<li class="primary-nav__item {{#if_eq uri '/about/surveys'}}primary-nav__item--active{{/if_eq}}">-->
+									<!--<a class="primary-nav__link col" href="/about/releasecalendar">{{labels.release-calendar}}</a>-->
+								<!--</li>-->
 								<li class="primary-nav__item {{#if_eq uri '/about/surveys'}}primary-nav__item--active{{/if_eq}}">
 									<a class="primary-nav__link col" href="/methodology">{{labels.methodology}}</a>
 								</li>
 								<li class="primary-nav__item {{#if_eq uri '/about/surveys'}}primary-nav__item--active{{/if_eq}}">
-									<a class="primary-nav__link col" href="/about">{{labels.about}}</a>
+									<a class="primary-nav__link col" href="/aboutus">{{labels.about}}</a>
 								</li>
 							</div>
 						</ul>
@@ -186,14 +186,14 @@
 			<div class="search nav-search--hidden" id="searchBar">
 				<div class="wrapper">
 					{{!-- <div class=""> --}}
-						<form class="col-wrap search__form" id="searchBar" action="/search">
-							<label class="search__label col col--md-22 col--lg-24" for="nav-search">Search for keyword(s) or time series ID</label>
-							<input type="search" autocomplete="off" class="search__input col col--md-18 col--lg-27" id="nav-search" name="q" value="{{parameters.q.0}}">
-							<button type="submit" class="search__button col--md-7 col--lg-8" id="nav-search-submit">
-								<span>{{labels.search}}</span>
-								<span class="icon--search"></span>
-							</button>
-						</form>
+                    <form class="col-wrap search__form" id="searchBar" {{#if_eq type "dataexplorer"}}action="/dataexplorer"{{else}}action="/search"{{/if_eq}}>
+						<label class="search__label col col--md-24 col--lg-24" for="nav-search">Search for keyword(s) or time series data ID</label>
+						<input type="search" autocomplete="off" class="search__input col col--md-19 col--lg-31" id="nav-search" name="q" value="{{parameters.q.0}}">
+						<button type="submit" class="search__button col--md-4 col--lg-4" id="nav-search-submit">
+							<span class="visuallyhidden"{>{{labels.search}}</span>
+							<span class="icon icon-search--light"></span>
+						</button>
+					</form>
 					{{!-- </div> --}}
 				</div>
 			</div>

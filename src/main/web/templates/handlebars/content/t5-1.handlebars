@@ -60,7 +60,7 @@
 <div class="page-content">
 	{{#if_any years quarters months}}
 		<div class="wrapper">
-			<h2>Time series</h2>
+			<h2>Time series data</h2>
 			<div class="col-wrap">
 				<div class="col col--lg-one tiles__item flush-bottom">
 
@@ -164,7 +164,7 @@
 			<div class="col-wrap flexbox__item">
 				{{#if_any relatedData relatedDatasets}}
 					<div class="col {{#if_all relatedDocuments relatedData relatedDatasets relatedMethodology}}col--lg-one-third {{else}}col--lg-half {{/if_all}} tiles__item tiles__item--nav-type">
-						<h3 class="tiles__title-h3 tiles__title-h3--nav">Timeseries</h3>
+						<h3 class="tiles__title-h3 tiles__title-h3--nav">Time series data</h3>
 						<div class="tiles__content tiles__content--nav">
 							<ul class="list--neutral">
 								{{#each relatedData}}
@@ -180,7 +180,7 @@
 							</ul>
 						</div>
 						<div class="tiles__extra">
-							<a href="{{#each breadcrumb}}{{#if @last}}{{uri}}/datalist?filter=single_time_series{{/if}}{{/each}}">View all related time series</a>
+							<a href="{{#each breadcrumb}}{{#if @last}}{{uri}}/datalist?filter=single_time_series{{/if}}{{/each}}">View all related time series data</a>
 						</div>
 					</div>
 				{{/if_any}}
