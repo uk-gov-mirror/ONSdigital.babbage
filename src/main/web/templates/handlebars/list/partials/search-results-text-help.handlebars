@@ -7,11 +7,13 @@
 		{{labels.search-try-other}}
 		<ul>
 			<li>{{labels.search-diff-words}}</li>
-			{{#if parameters.filter}}
+            {{#if_any parameters.filter parameters.topic parameters.toDate parameters.fromDate}}
             <li>{{labels.search-remove-filters}}</li>
-            {{/if}}
+            {{/if_any}}
 			{{#unless parameters.includeStatics}}
-			<li><a href="{{query_string}}includeStatics=1">{{labels.search-expand-all}}</a></li>
+                {{#if_eq type "search"}}
+			        <li><a href="{{query_string}}includeStatics=1">{{labels.search-expand-all}}</a></li>
+                {{/if_eq}}
 			{{/unless}}
 		</ul>
 	</div>
