@@ -91,29 +91,29 @@ public class ContentClient {
      */
     public ContentStream getContentStream(String uri, Map<String, String[]> queryParameters) throws ContentReadException {
         System.out.println("getContentStream(): Reading content from content server, uri:" + uri);
-        return sendGet(getDataPath(), getParameters(uri, queryParameters));
+        return sendGet(getPath(getDataEndpoint()), getParameters(uri, queryParameters));
     }
 
     public ContentStream getResource(String uri) throws ContentReadException {
         System.out.println("getResource(): Reading resource from content server, uri:" + uri);
-        return sendGet(getResourcePath(), getParameters(uri, null));
+        return sendGet(getPath(getResourceEndpoint()), getParameters(uri, null));
     }
 
     public ContentStream getFileSize(String uri) throws ContentReadException {
-        return sendGet(getFileSizePath(), getParameters(uri, null));
+        return sendGet(getPath(getFileSizeEndpoint()), getParameters(uri, null));
     }
 
     public ContentStream getTaxonomy(Map<String, String[]> queryParameters) throws ContentReadException {
         System.out.println("getTaxonomy(): Reading taxonomy nodes");
-        return sendGet(getTaxonomyListPath(), getParameters(null, queryParameters));
+        return sendGet(getPath(getTaxonomyEndpoint()), getParameters(null, queryParameters));
     }
 
     public ContentStream getTaxonomy() throws ContentReadException {
-        return sendGet(getTaxonomyListPath(), null);
+        return sendGet(getPath(getTaxonomyEndpoint()), null);
     }
 
     public ContentStream getParents(String uri) throws ContentReadException {
-        return sendGet(getParentsPath(), getParameters(uri, null));
+        return sendGet(getPath(getParentsEndpoint()), getParameters(uri, null));
     }
 
     public ContentStream getList(String uri, Map<String, String[]> queryParameters) throws ContentReadException {
@@ -140,7 +140,7 @@ public class ContentClient {
 
     public ContentStream getParents(String uri, Map<String, String[]> queryParameters) throws ContentReadException {
         System.out.println("getParents(): Reading parents, uri:" + uri);
-        return sendGet(getParentsPath(), getParameters(uri, queryParameters));
+        return sendGet(getPath(getParentsEndpoint()), getParameters(uri, queryParameters));
     }
 
     private ContentStream sendGet(String path, List<NameValuePair> getParameters) throws ContentReadException {
@@ -229,50 +229,12 @@ public class ContentClient {
         return null;
     }
 
-    private String getDataPath() {
+    private String getPath(String endpoint) {
         String collectionId = getCollectionId();
         if (collectionId == null) {
-            return getDataEndpoint();
+            return endpoint;
         } else {
-            return getDataEndpoint() + "/" + collectionId;
-        }
-    }
-
-    private String getResourcePath() {
-        String collectionId = getCollectionId();
-        if (collectionId == null) {
-            return getResourceEndpoint();
-        } else {
-            return getResourceEndpoint() + "/" + collectionId;
-        }
-    }
-
-    private String getFileSizePath() {
-        String collectionId = getCollectionId();
-        if (collectionId == null) {
-            return getFileSizeEndpoint();
-        } else {
-            return getFileSizeEndpoint() + "/" + collectionId;
-        }
-    }
-
-
-    private String getTaxonomyListPath() {
-        String collectionId = getCollectionId();
-        if (collectionId == null) {
-            return getTaxonomyEndpoint();
-        } else {
-            return getTaxonomyEndpoint() + "/" + collectionId;
-        }
-    }
-
-
-    private String getParentsPath() {
-        String collectionId = getCollectionId();
-        if (collectionId == null) {
-            return getParentsEndpoint();
-        } else {
-            return getParentsEndpoint() + "/" + collectionId;
+            return endpoint + "/" + collectionId;
         }
     }
 
