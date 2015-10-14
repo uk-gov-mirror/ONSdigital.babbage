@@ -19,7 +19,7 @@
 	{
 		name: "{{this}}",
 		type: "column",
-		data: [{{#each data}}{{nf (get this ..) alt="null"}},{{/each}}]
+		data: [{{#each data}}{{alt (get this ..) "null"}},{{/each}}]
 	},{{/each}} 
 	],
 	title: {

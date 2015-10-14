@@ -58,6 +58,28 @@ public class ChartRenderer {
         }
     }
 
+
+    /**
+     * Converts given data into chart configuration and renders using Handlebars templates for the chart type.
+     * <p/>
+     * Optionally takes a width parameter, width is 600 by default, if width exceeds max, max width will be applied, if it is smaller than min, min width will apply
+     *
+     * @param data
+     * @param width width of the chart, max=1500, min=300, default=600
+     * @return
+     * @throws IOException
+     * @throws ContentReadException
+     */
+    public String getChartConfigFor(String data, Integer width) throws IOException {
+        LinkedHashMap<String, Object> additionalData = new LinkedHashMap<>();
+        if (width == null) {
+            width = DEFAULT_CHART_WIDTH;
+        }
+        additionalData.put("width", width);
+        String config = TemplateService.getInstance().renderChartConfiguration(data, additionalData);
+        return config;
+    }
+
     /**
      * Fetches configuration from Zebedee Reader and renders self contained chart html
      * <p/>

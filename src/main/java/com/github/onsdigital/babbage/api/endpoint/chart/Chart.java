@@ -26,6 +26,7 @@ public class Chart {
     public String get(@Context HttpServletRequest request, @Context HttpServletResponse response) throws IOException, ContentReadException {
         String uri = request.getParameter("uri");
         if (StringUtils.isEmpty(uri)) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return "Please specify uri of the chart";
         }
         uri = URIUtil.cleanUri(uri);

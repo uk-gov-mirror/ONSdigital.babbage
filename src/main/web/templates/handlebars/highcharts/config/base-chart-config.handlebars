@@ -6,6 +6,14 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 
 (function(){
 
+	function numberFormat(val, decimalPlaces) {
+		if(!decimalPlaces) {
+			return val;
+		}
+	    var multiplier = Math.pow(10, decimalPlaces);
+	    return (Math.round(val * multiplier) / multiplier).toFixed(decimalPlaces);
+	}
+
 	{{!-- chart-config block is to be overriden by chart types inheriting this template --}}
 	var chartConfig = {{#block "chart-config"}}{}{{/block}};
 

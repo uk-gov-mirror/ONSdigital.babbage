@@ -1,0 +1,103 @@
+{{#partial "chart-config"}}
+{
+	chart: {
+		height: {{width}} * {{aspectRatio}},
+		width: {{width}},
+		type:"bar"
+	},
+	colors: [
+		"#274796",
+		"#F5942F",
+		"#E73F40",
+		"#7BCAE2",
+		"#979796",
+		"#E9E117",
+		"#74B630",
+		"#674796",
+		"#BD5B9E"
+	],
+	series: [{{!-- Negating data of first series for negative stacking in highcharts to create Population pyramid --}}
+	    {
+	    	name: "{{headers.1}}",
+	    	data: [{{#each data}}-1 *{{alt (get this headers.1) 0}},{{/each}}]
+	    },{
+	    	name: "{{headers.2}}",
+	    	data: [{{#each data}}{{alt (get this headers.2) 0}},{{/each}}]
+	    }
+	],
+	title: {
+		text: ""
+	},
+	yAxis: {
+		title: {
+			text: ""
+		},
+		labels: {
+			format: "{value:,f}",
+			formatter: function () {
+			    return Math.abs(this.value);
+			}
+		}
+	},
+	xAxis: [
+		{
+		    categories: [{{#each categories}}"{{this}}",{{/each}}],
+		    reversed: false,
+		    labels: {
+				step: "{{labelInterval}}"
+		    }
+		},
+		{
+		    categories: [{{#each categories}}"{{this}}",{{/each}}],
+		    reversed: false,
+		    labels: {
+		        step: "{{labelInterval}}"
+		    },
+		    opposite: true,
+		    linkedTo: 0
+		}
+	],
+	labels: {
+		items: [{
+			html: "{{unit}}",
+			style: {
+				left: "0px",
+				top: "0px"
+			}
+		}]
+	},
+	legend: {
+		verticalAlign: "top"
+	},
+	plotOptions: {
+		series: {
+			animation: false,
+			pointPadding: 0,
+			groupPadding: 0.1,
+			stacking:"normal"
+		},
+		line: {
+			lineWidth: 1,
+			marker: {
+				radius: 2,
+				symbol: "circle"
+			}
+		},
+		column: {}
+	},
+	tooltip: {
+	    formatter: function() {
+	    	return '{{headers.0}}: ' + this.x + '<br/>' +
+	    		this.points[0].series.name + ': <b>' + numberFormat(-1 * this.points[0].y, {{alt decimalPlaces 0}}) + '</b><br/>' +
+	    		this.points[1].series.name + ': <b>' + numberFormat(this.points[1].y, {{alt decimalPlaces 0}}) + '</b>';
+	    },
+		shared: true
+	},
+	credits: {
+		enabled: false
+	}
+}
+{{/partial}}
+
+{{!-- This denotes the template inheritcs from base-chart-config--}}
+{{> highcharts/config/base-chart-config}} 

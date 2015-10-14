@@ -2,7 +2,8 @@
 {
 	chart: {
 		height: {{width}} * {{aspectRatio}},
-		width: {{width}}
+		width: {{width}},
+		marginRight: 35
 	},
 	colors: [
 		"#274796",
@@ -18,10 +19,10 @@
 	series: [{{#each series}}
 	{
 		name: "{{this}}",
-		type: "{{#if_eq (get  chartTypes this) "bar"}}column{{else}}line{{/if_eq}}",
+		type: "{{#if_eq (get  chartTypes this) "bar"}}{{#if rotated}}bar{{else}}column{{/if}}{{else}}line{{/if_eq}}",
 		zIndex: {{#if_eq (get  chartTypes this) "line"}}100{{else}}0{{/if_eq}},
 		stack: "{{#contains groups.0 this}}group1{{else}}{{this}}{{/contains}}",
-		data: [{{#each data}}{{nf (get this ..) alt="null"}}{{/each}}]
+		data: [{{#each data}}{{alt (get this ..) "null"}},{{/each}}]
 	},{{/each}} 
 	],
 	title: {
@@ -63,6 +64,9 @@
 				radius: 2,
 				symbol: "circle"
 			}
+		},
+		bar: {
+			stacking: "normal"
 		},
 		column: {
 			stacking: "normal"

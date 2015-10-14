@@ -19,7 +19,7 @@
     {
         name: "{{this}}",
         type: "bar",
-        data: [{{#each data}}{{nf (get this ..) alt="null"}},{{/each}}]
+        data: [{{#each data}}{{alt (get this ..) alt="null"}},{{/each}}]
     },{{/each}} 
     ],
     title:{  

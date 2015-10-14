@@ -19,7 +19,7 @@
 	series: [{{#each series}}
 	{
 		name: "{{this}}",
-		type: "{{#if area}}area{{else}}line{{/if}}",
+		type: "scatter",
 		data: [{{#each data}}{{alt (get this ..) "null"}},{{/each}}]
 	},{{/each}} 
 	],
@@ -36,15 +36,7 @@
 	},
 	xAxis: {
 		categories: [{{#each categories}}"{{this}}",{{/each}}],
-		tickInterval: "{{labelInterval}}",
-		tickPositioner: function() {
-          var positions = [];
-          var tick = Math.floor(this.dataMax);
-          for (tick; tick >= this.dataMin; tick -= this.tickInterval) {
-            positions.push(tick);
-          }
-          return positions;
-        }
+		tickInterval: "{{labelInterval}}"
 	},
 	labels: {
 		items: [{
@@ -71,9 +63,7 @@
 				symbol: "circle"
 			}
 		},
-		area: {
-			stacking: "normal"
-		}
+		column: {}
 	},
 	tooltip: {
 		valueDecimals: "{{decimalPlaces}}",
