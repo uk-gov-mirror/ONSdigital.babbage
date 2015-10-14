@@ -116,6 +116,10 @@ public class ContentClient {
         return sendGet(getPath(getParentsEndpoint()), getParameters(uri, null));
     }
 
+    public ContentStream getGenerator(String uri, Map<String, String[]> queryParameters) throws ContentReadException {
+        return sendGet(getPath(getGeneratorEndpoint()), getParameters(uri, queryParameters));
+    }
+
     public ContentStream getList(String uri, Map<String, String[]> queryParameters) throws ContentReadException {
         return sendGet(getListEndpoint(), getParameters(uri, queryParameters));
     }
