@@ -5,9 +5,9 @@ var page, system, address, output;
 //Below page size configration based on http://stackoverflow.com/questions/22017746/while-rendering-webpage-to-pdf-using-phantomjs-how-can-i-auto-adjust-my-viewpor
 var pageSize = "A4",
     pageOrientation = "portrait",
-    dpi = 120, //from experimenting with different combinations of viewportSize and paperSize the pixels per inch comes out to be 150
-    pdfViewportWidth = 1600,
-    pdfViewportHeight = 900,
+    dpi = 72, //from experimenting with different combinations of viewportSize and paperSize the pixels per inch comes out to be 150
+    pdfViewportWidth = 595,
+    pdfViewportHeight = 842,
     cmToInchFactor = 0.393701,
     widthInInches,
     heightInInches,
