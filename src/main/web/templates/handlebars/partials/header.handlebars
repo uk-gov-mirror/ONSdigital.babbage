@@ -186,14 +186,14 @@
 			<div class="search nav-search--hidden" id="searchBar">
 				<div class="wrapper">
 					{{!-- <div class=""> --}}
-						<form class="col-wrap search__form" id="searchBar" action="/search">
-							<label class="search__label col col--md-23 col--lg-24" for="nav-search">Search for keyword(s) or time series data ID</label>
-							<input type="search" autocomplete="off" class="search__input col col--md-18 col--lg-27" id="nav-search" name="q" value="{{parameters.q.0}}">
-							<button type="submit" class="search__button col--md-6 col--lg-8" id="nav-search-submit">
-								<span>{{labels.search}}</span>
-								<span class="icon--search"></span>
-							</button>
-						</form>
+					<form class="col-wrap search__form" id="searchBar" action="/search">
+						<label class="search__label col col--md-23 col--lg-24" for="nav-search">Search for keyword(s) or time series data ID</label>
+						<input type="search" autocomplete="off" class="search__input col col--md-21 col--lg-32" id="nav-search" name="q" value="{{parameters.q.0}}">
+						<button type="submit" class="search__button col--md-3 col--lg-3" id="nav-search-submit">
+							{{!-- <span>{{labels.search}}</span> --}}
+							<span class="icon icon-search--light"></span>
+						</button>
+					</form>
 					{{!-- </div> --}}
 				</div>
 			</div>
