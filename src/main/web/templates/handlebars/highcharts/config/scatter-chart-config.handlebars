@@ -32,7 +32,9 @@
 		},
 		labels: {
 			format: "{value:,f}"
-		}
+		},
+		plotLines: yaxisPlotLines,
+		gridZIndex: yAxisGridZIndex
 	},
 	xAxis: {
 		categories: [{{#each categories}}"{{{this}}}",{{/each}}],

@@ -14,6 +14,10 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 	    return (Math.round(val * multiplier) / multiplier).toFixed(decimalPlaces);
 	}
 
+	//Plotlines configuration applied to all charts
+	var yaxisPlotLines = [{color: 'gray',width: 2,value: 0,zIndex: -100}];
+	var yAxisGridZIndex = -200;
+
 	{{!-- chart-config block is to be overriden by chart types inheriting this template --}}
 	var chartConfig = {{#block "chart-config"}}{}{{/block}};
 
