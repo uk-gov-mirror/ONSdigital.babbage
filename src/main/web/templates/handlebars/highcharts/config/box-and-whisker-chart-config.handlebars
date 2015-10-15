@@ -4,11 +4,11 @@
 		height: {{width}} * {{aspectRatio}},
 		width: {{width}},
 		marginRight: 35,
-		inverted: false
+		type: 'boxplot'
 	},
 	colors: [
-		"#F5942F",
 		"#274796",
+		"#F5942F",
 		"#E73F40",
 		"#7BCAE2",
 		"#979796",
@@ -20,13 +20,12 @@
 	series: [
 	    {
 	    	name: "{{headers.0}}",
-	    	type: "errorbar",
-	    	data: [{{#each data}}[{{alt (get this headers.1) "null"}},{{alt (get this headers.2) "null"}}],{{/each}}]
+	    	data: [{{#each data}}[{{alt (get this headers.1) "null"}},{{alt (get this headers.2) "null"}},{{alt (get this headers.3) "null"}},{{alt (get this headers.4) "null"}},{{alt (get this headers.5) "null"}}],{{/each}}]
 	    }, 
 	    {
-			name: "{{headers.3}}",
+			name: "{{headers.6}}",
 			type: "scatter",
-			data: [{{#each data}}{{alt (get this headers.3) "null"}},{{/each}}]
+			data: [{{#each data}}{{alt (get this headers.6) "null"}},{{/each}}]
 	    }
 	],
 	title: {
@@ -57,15 +56,17 @@
 		verticalAlign: "top"
 	},
 	plotOptions: {
-		errorbar: {
+		series: {
 			animation: false,
 			pointPadding: 0,
 			groupPadding: 0.1
 		},
-		scatter: {
-		    marker: {
-                radius: 4
-            }
+		line: {
+			lineWidth: 1,
+			marker: {
+				radius: 2,
+				symbol: "circle"
+			}
 		}
 	},
 	tooltip: {
