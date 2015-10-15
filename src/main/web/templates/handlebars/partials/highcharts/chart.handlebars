@@ -11,4 +11,27 @@
   <h6 class="flush--third--bottom">Notes:</h6>
     {{md notes}}
   {{/if}}
+
+    <h6>Download this chart</h6>
+
+    <a href="{{uri}}/chartimage" class="btn btn--primary" download="{{title}} title="Download image">Image</a>
+
+    <form method="get" action="/generator" class="inline">
+        <button type="submit" title="Download CSV" class="btn btn--primary btn--thick download-analytics">
+            .csv
+        </button>
+        <input type="hidden" name="format" value="csv"/>
+        <input type="hidden" name="uri" value="{{absolute  uri}}"/>
+    </form>
+
+    <form method="get" action="/generator" class="inline">
+        <button type="submit" title="Download XLS" class="btn btn--primary btn--thick download-analytics">
+            .xls
+        </button>
+        <input type="hidden" name="format" value="xls"/>
+        <input type="hidden" name="uri" value="{{absolute uri}}"/>
+    </form>
+
+
+
 </div>

@@ -9,11 +9,20 @@
 
     <h6>Download this table</h6>
 
-    <form method="get" action="/file">
-        <button type="submit" title="csv" class="btn btn--primary btn--thick download-analytics">
-            {{fe (lowercase uri)}} ({{fs (lowercase uri)}})
+    <form method="get" action="/generator" class="inline">
+        <button type="submit" title="Download CSV" class="btn btn--primary btn--thick download-analytics">
+            .csv
         </button>
-        <input type="hidden" name="uri" value="{{uri}}.xls"/>
+        <input type="hidden" name="format" value="csv"/>
+        <input type="hidden" name="uri" value="{{absolute uri}}"/>
+    </form>
+
+    <form method="get" action="/generator" class="inline">
+        <button type="submit" title="Download XLS" class="btn btn--primary btn--thick download-analytics">
+            .xls
+        </button>
+        <input type="hidden" name="format" value="xls"/>
+        <input type="hidden" name="uri" value="{{absolute uri}}"/>
     </form>
 
 </div>
