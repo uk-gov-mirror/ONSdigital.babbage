@@ -13,4 +13,27 @@
   {{/if}}
   {{!-- Including dynamically generated chart configuration which attaches itself to window object in browser --}}
   <script type="text/javascript" src="/chartconfig?uri={{uri}}&width={{width}}"></script>
+
+<h6>Download this chart</h6>
+
+    <a href="{{uri}}/chartimage" class="btn btn--primary" download="{{title}} title="Download image">Image</a>
+
+    <form method="get" action="/generator" class="inline">
+        <button type="submit" title="Download CSV" class="btn btn--primary btn--thick download-analytics">
+            .csv
+        </button>
+        <input type="hidden" name="format" value="csv"/>
+        <input type="hidden" name="uri" value="{{absolute  uri}}"/>
+    </form>
+
+    <form method="get" action="/generator" class="inline">
+        <button type="submit" title="Download XLS" class="btn btn--primary btn--thick download-analytics">
+            .xls
+        </button>
+        <input type="hidden" name="format" value="xls"/>
+        <input type="hidden" name="uri" value="{{absolute uri}}"/>
+    </form>
+
+
+
 </div>
