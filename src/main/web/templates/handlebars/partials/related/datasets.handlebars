@@ -11,5 +11,13 @@
 				{{/each}}
 			</ul>
 		</div>
+
+		{{!-- Shows link to view all spreadsheets at that topic level --}}
+		{{#if_any (eq type "dataset") (eq type "timeseries_dataset")}}
+			<div class="tiles__extra margin-bottom-md--2">
+				<a href="{{parentPath (parentPath uri)}}/datalist?filter=large_dataset">View all data related to {{breadcrumb.2.description.title}}</a>
+			</div>
+		{{/if_any}}
+
 	</div>
 {{/if}}
