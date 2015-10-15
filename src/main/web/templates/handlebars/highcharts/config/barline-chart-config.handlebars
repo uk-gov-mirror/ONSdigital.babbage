@@ -18,7 +18,7 @@
 	],
 	series: [{{#each series}}
 	{
-		name: "{{this}}",
+		name: "{{{this}}}",
 		type: "{{#if_eq (get  chartTypes this) "bar"}}{{#if rotated}}bar{{else}}column{{/if}}{{else}}line{{/if_eq}}",
 		zIndex: {{#if_eq (get  chartTypes this) "line"}}100{{else}}0{{/if_eq}},
 		stack: "{{#contains groups.0 this}}group1{{else}}{{this}}{{/contains}}",
@@ -37,12 +37,12 @@
 		}
 	},
 	xAxis: {
-		categories: [{{#each categories}}"{{this}}",{{/each}}],
+		categories: [{{#each categories}}"{{{this}}}",{{/each}}],
 		tickInterval: "{{labelInterval}}"
 	},
 	labels: {
 		items: [{
-			html: "{{unit}}",
+			html: "{{{unit}}}",
 			style: {
 				left: "0px",
 				top: "0px"

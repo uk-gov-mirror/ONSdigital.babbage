@@ -17,14 +17,14 @@
 	],
 	series: [
 	{
-		name: "{{headers.1}}",
+		name: "{{{headers.1}}}",
 		type: "{{#if_eq (get  chartTypes headers.1) "bar"}}column{{else}}line{{/if_eq}}",
 		zIndex: {{#if_eq (get  chartTypes headers.1) "line"}}100{{else}}0{{/if_eq}},
 		yAxis: 0,
 		data: [{{#each data}}{{alt (get this headers.1) "null"}},{{/each}}]
 	},
 	{
-		name: "{{headers.2}}",
+		name: "{{{headers.2}}}",
 		type: "{{#if_eq (get  chartTypes headers.2) "bar"}}column{{else}}line{{/if_eq}}",
 		zIndex: {{#if_eq (get  chartTypes headers.2) "line"}}100{{else}}0{{/if_eq}},
 		yAxis: 1,
@@ -35,22 +35,22 @@
 		text: ""
 	},
 	yAxis: [{
-		title: {text: "{{headers.1}}"},
+		title: {text: "{{{headers.1}}}"},
 		labels: {format: "{value:,f}"}
 		},
 		{
-		title: {text: "{{headers.2}}"},
+		title: {text: "{{{headers.2}}}"},
 		labels: {format: "{value:,f}"},
 		opposite:true
 	}],
 	xAxis: {
-		categories: [{{#each categories}}"{{this}}",{{/each}}],
+		categories: [{{#each categories}}"{{{this}}}",{{/each}}],
 		tickInterval: "{{labelInterval}}",
 		crosshair: true
 	},
 	labels: {
 		items: [{
-			html: "{{unit}}",
+			html: "{{{unit}}}",
 			style: {
 				left: "0px",
 				top: "0px"

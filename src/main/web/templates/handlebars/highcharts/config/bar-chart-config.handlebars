@@ -2,7 +2,8 @@
 {
 	chart: {
 		height: {{width}} * {{aspectRatio}},
-		width: {{width}}
+		width: {{width}},
+		marginRight: 35
 	},
 	colors: [
 		"#274796",
@@ -17,7 +18,7 @@
 	],
 	series: [{{#each series}}
 	{
-		name: "{{this}}",
+		name: "{{{this}}}",
 		type: "column",
 		data: [{{#each data}}{{alt (get this ..) "null"}},{{/each}}]
 	},{{/each}} 
@@ -34,12 +35,12 @@
 		}
 	},
 	xAxis: {
-		categories: [{{#each categories}}"{{this}}",{{/each}}],
+		categories: [{{#each categories}}"{{{this}}}",{{/each}}],
 		tickInterval: "{{labelInterval}}"
 	},
 	labels: {
 		items: [{
-			html: "{{unit}}",
+			html: "{{{unit}}}",
 			style: {
 				left: "0px",
 				top: "0px"

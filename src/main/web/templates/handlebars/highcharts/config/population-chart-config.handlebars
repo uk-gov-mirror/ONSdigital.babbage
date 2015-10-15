@@ -18,10 +18,10 @@
 	],
 	series: [{{!-- Negating data of first series for negative stacking in highcharts to create Population pyramid --}}
 	    {
-	    	name: "{{headers.1}}",
+	    	name: "{{{headers.1}}}",
 	    	data: [{{#each data}}-1 *{{alt (get this headers.1) 0}},{{/each}}]
 	    },{
-	    	name: "{{headers.2}}",
+	    	name: "{{{headers.2}}}",
 	    	data: [{{#each data}}{{alt (get this headers.2) 0}},{{/each}}]
 	    }
 	],
@@ -41,14 +41,14 @@
 	},
 	xAxis: [
 		{
-		    categories: [{{#each categories}}"{{this}}",{{/each}}],
+		    categories: [{{#each categories}}"{{{this}}}",{{/each}}],
 		    reversed: false,
 		    labels: {
 				step: "{{labelInterval}}"
 		    }
 		},
 		{
-		    categories: [{{#each categories}}"{{this}}",{{/each}}],
+		    categories: [{{#each categories}}"{{{this}}}",{{/each}}],
 		    reversed: false,
 		    labels: {
 		        step: "{{labelInterval}}"
@@ -59,7 +59,7 @@
 	],
 	labels: {
 		items: [{
-			html: "{{unit}}",
+			html: "{{{unit}}}",
 			style: {
 				left: "0px",
 				top: "0px"
@@ -87,7 +87,7 @@
 	},
 	tooltip: {
 	    formatter: function() {
-	    	return '{{headers.0}}: ' + this.x + '<br/>' +
+	    	return '{{{headers.0}}}: ' + this.x + '<br/>' +
 	    		this.points[0].series.name + ': <b>' + numberFormat(-1 * this.points[0].y, {{alt decimalPlaces 0}}) + '</b><br/>' +
 	    		this.points[1].series.name + ': <b>' + numberFormat(this.points[1].y, {{alt decimalPlaces 0}}) + '</b>';
 	    },

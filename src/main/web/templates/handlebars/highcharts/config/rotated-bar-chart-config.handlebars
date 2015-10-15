@@ -2,7 +2,8 @@
 {  
     chart: {
         height: {{width}} * {{aspectRatio}},
-        width: {{width}}
+        width: {{width}},
+        marginRight: 35
     },
     colors:[  
         "#274796",
@@ -17,7 +18,7 @@
     ],
     series: [{{#each series}}
     {
-        name: "{{this}}",
+        name: "{{{this}}}",
         type: "bar",
         data: [{{#each data}}{{alt (get this ..) alt="null"}},{{/each}}]
     },{{/each}} 
@@ -27,7 +28,7 @@
     },
     yAxis:{  
         title:{  
-            text:"{{unit}}",
+            text:"{{{unit}}}",
             align:"high"
         },
         labels:{  
@@ -35,7 +36,7 @@
         }
     },
     xAxis: {
-        categories: [{{#each categories}}"{{this}}",{{/each}}],
+        categories: [{{#each categories}}"{{{this}}}",{{/each}}],
         tickInterval: "{{labelInterval}}"
     },
     legend:{  

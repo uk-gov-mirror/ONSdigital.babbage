@@ -19,12 +19,12 @@
 	],
 	series: [
 	    {
-	    	name: "{{headers.0}}",
+	    	name: "{{{headers.0}}}",
 	    	type: "errorbar",
 	    	data: [{{#each data}}[{{alt (get this headers.1) "null"}},{{alt (get this headers.2) "null"}}],{{/each}}]
 	    }, 
 	    {
-			name: "{{headers.3}}",
+			name: "{{{headers.3}}}",
 			type: "scatter",
 			data: [{{#each data}}{{alt (get this headers.3) "null"}},{{/each}}]
 	    }
@@ -41,12 +41,12 @@
 		}
 	},
 	xAxis: {
-		categories: [{{#each categories}}"{{this}}",{{/each}}],
+		categories: [{{#each categories}}"{{{this}}}",{{/each}}],
 		tickInterval: "{{labelInterval}}"
 	},
 	labels: {
 		items: [{
-			html: "{{unit}}",
+			html: "{{{unit}}}",
 			style: {
 				left: "0px",
 				top: "0px"
