@@ -64,7 +64,7 @@ public enum ArrayHelpers implements BabbageHandlebarsHelper<Object> {
 
             Object lookup = null;
             if (context instanceof Map) {
-                lookup = ((Map) context).get(options.param(0).toString());
+                lookup = ((Map) context).get(options.param(0));
             } else if (context instanceof List) {
                 lookup = ((List) context).get(options.<Integer>param(0));
             } else {
