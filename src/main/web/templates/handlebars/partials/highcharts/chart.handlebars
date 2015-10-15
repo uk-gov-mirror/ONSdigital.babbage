@@ -12,11 +12,11 @@
     {{md notes}}
   {{/if}}
 
-    <h6>Download this chart</h6>
+    <h6 class="print--hide">Download this chart</h6>
 
-    <a href="{{uri}}/chartimage" class="btn btn--primary" download="{{title}} title="Download image">Image</a>
+    <a href="{{uri}}/chartimage" class="btn btn--primary print--hide" download="{{title}} title="Download image">Image</a>
 
-    <form method="get" action="/generator" class="inline">
+    <form method="get" action="/generator" class="inline print--hide">
         <button type="submit" title="Download CSV" class="btn btn--primary btn--thick download-analytics">
             .csv
         </button>
@@ -24,7 +24,7 @@
         <input type="hidden" name="uri" value="{{absolute  uri}}"/>
     </form>
 
-    <form method="get" action="/generator" class="inline">
+    <form method="get" action="/generator" class="inline print--hide">
         <button type="submit" title="Download XLS" class="btn btn--primary btn--thick download-analytics">
             .xls
         </button>
