@@ -5,6 +5,7 @@ import com.github.jknack.handlebars.MarkdownHelper;
 import com.github.jknack.handlebars.Options;
 import com.github.onsdigital.babbage.template.handlebars.helpers.base.BabbageHandlebarsHelper;
 import com.github.onsdigital.babbage.template.handlebars.helpers.markdown.util.ChartTagReplacer;
+import com.github.onsdigital.babbage.template.handlebars.helpers.markdown.util.ImageTagReplacer;
 import com.github.onsdigital.babbage.template.handlebars.helpers.markdown.util.TableTagReplacer;
 
 import java.io.IOException;
@@ -31,6 +32,7 @@ public class CustomMarkdownHelper extends MarkdownHelper implements BabbageHandl
         markdown = markdown.replaceAll(SUPER_SCRIPT_PATTERN, "<sup>$1</sup>");
         markdown = new ChartTagReplacer().replaceCustomTags(markdown);
         markdown = new TableTagReplacer().replaceCustomTags(markdown);
+        markdown = new ImageTagReplacer().replaceCustomTags(markdown);
         return new Handlebars.SafeString(markdown) ;
     }
 
