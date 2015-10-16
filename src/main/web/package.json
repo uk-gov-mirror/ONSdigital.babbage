@@ -6,7 +6,8 @@
   "main": " ",
   "scripts": {
     "clean": "",
-    "build": ""
+    "build": "",
+    "postinstall" : "cd node_modules && git clone -b $npm_config_branch --single-branch --depth=1 git://github.com/ONSdigital/sixteens && cd sixteens && npm install --production"
   },
   "repository": {
     "type": "git",
@@ -24,8 +25,7 @@
     "url": "https://github.com/ONSdigital/babbage/issues"
   },
   "dependencies": {
-    "ONS-Pattern-Library": "git://github.com/ONSdigital/pattern-library",
-    "sixteens": "git://github.com/ONSdigital/sixteens"
+    "ONS-Pattern-Library": "git://github.com/ONSdigital/pattern-library"
   },
   "engines": {
     "node": "0.10.25",
