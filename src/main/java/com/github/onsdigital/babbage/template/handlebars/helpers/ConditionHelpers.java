@@ -128,9 +128,11 @@ public enum ConditionHelpers implements BabbageHandlebarsHelper<Object> {
             if (!options.isFalsy(context)) {
                 return context.toString();
             } else {
-                Object param = options.param(0);
-                if (param != null) {
-                    return param.toString();
+                if (options.params.length > 0) {
+                    Object param = options.param(0);
+                    if (param != null) {
+                        return param.toString();
+                    }
                 }
             }
             return null;
