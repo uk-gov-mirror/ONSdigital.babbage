@@ -1,4 +1,16 @@
 {{#partial "chart-config"}}
+options.xAxis.categories=[]; {{!-- override categories --}}
+
+options.series=[{
+	    	name: "{{{headers.1}}}",
+	    	type: "errorbar",
+	    	data: [{{#each data}}[{{alt (get this headers.1) "null"}},{{alt (get this headers.2) "null"}}],{{/each}}]
+	    }, {
+			name: "{{{headers.3}}}",
+			type: "scatter",
+			data: [{{#each data}}{{alt (get this headers.3) "null"}},{{/each}}]
+	    }];
+
 options.series=[{{#each series}}{
 		name: "{{{this}}}",
 		type: "scatter",

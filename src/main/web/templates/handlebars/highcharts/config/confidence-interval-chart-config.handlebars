@@ -1,13 +1,13 @@
 {{#partial "chart-config"}}
 options.chart.inverted=false;
 options.series=[{
-	    	name: "{{{headers.0}}}",
+			name: "{{{headers.1}}}",
+			type: "bar",
+			data: [{{#each data}}{{alt (get this headers.1) "null"}},{{/each}}]
+	    },{
+	    	name: "",
 	    	type: "errorbar",
-	    	data: [{{#each data}}[{{alt (get this headers.1) "null"}},{{alt (get this headers.2) "null"}}],{{/each}}]
-	    }, {
-			name: "{{{headers.3}}}",
-			type: "scatter",
-			data: [{{#each data}}{{alt (get this headers.3) "null"}},{{/each}}]
+	    	data: [{{#each data}}[{{alt (get this headers.2) "null"}},{{alt (get this headers.3) "null"}}],{{/each}}]
 	    }];
 options.plotOptions.scatter={
 			    marker: {
