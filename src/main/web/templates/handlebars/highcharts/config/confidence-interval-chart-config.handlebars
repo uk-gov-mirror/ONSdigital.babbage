@@ -1,86 +1,19 @@
 {{#partial "chart-config"}}
-{
-	chart: {
-		height: {{width}} * {{aspectRatio}},
-		width: {{width}},
-		marginRight: 35,
-		inverted: false
-	},
-	colors: [
-		"#F5942F",
-		"#274796",
-		"#E73F40",
-		"#7BCAE2",
-		"#979796",
-		"#E9E117",
-		"#74B630",
-		"#674796",
-		"#BD5B9E"
-	],
-	series: [
-	    {
+options.chart.inverted=false;
+options.series=[{
 	    	name: "{{{headers.0}}}",
 	    	type: "errorbar",
 	    	data: [{{#each data}}[{{alt (get this headers.1) "null"}},{{alt (get this headers.2) "null"}}],{{/each}}]
-	    }, 
-	    {
+	    }, {
 			name: "{{{headers.3}}}",
 			type: "scatter",
 			data: [{{#each data}}{{alt (get this headers.3) "null"}},{{/each}}]
-	    }
-	],
-	title: {
-		text: ""
-	},
-	yAxis: {
-		title: {
-			text: ""
-		},
-		labels: {
-			format: "{value:,f}"
-		},
-		plotLines: yaxisPlotLines,
-		gridZIndex: yAxisGridZIndex
-	},
-	xAxis: {
-		categories: [{{#each categories}}"{{{this}}}",{{/each}}],
-		tickInterval: "{{labelInterval}}"
-	},
-	labels: {
-		items: [{
-			html: "{{{unit}}}",
-			style: {
-				left: "0px",
-				top: "0px"
-			}
-		}]
-	},
-	legend: {
-		verticalAlign: "top"
-	},
-	plotOptions: {
-		series: {
-			animation: false,
-		},
-		errorbar: {
-			animation: false,
-			pointPadding: 0,
-			groupPadding: 0.1
-		},
-		scatter: {
-		    marker: {
-                radius: 4
-            }
-		}
-	},
-	tooltip: {
-		valueDecimals: "{{decimalPlaces}}",
-		shared: true
-	},
-	credits: {
-		enabled: false
-	}
-}
+	    }];
+options.plotOptions.scatter={
+			    marker: {
+	                radius: 4
+	            }
+			};
 {{/partial}}
 
 {{!-- This denotes the template inheritcs from base-chart-config--}}

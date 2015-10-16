@@ -1,84 +1,13 @@
 {{#partial "chart-config"}}
-{
-	chart: {
-		height: {{width}} * {{aspectRatio}},
-		width: {{width}},
-		marginRight: 35,
-		type: 'boxplot'
-	},
-	colors: [
-		"#274796",
-		"#F5942F",
-		"#E73F40",
-		"#7BCAE2",
-		"#979796",
-		"#E9E117",
-		"#74B630",
-		"#674796",
-		"#BD5B9E"
-	],
-	series: [
-	    {
+options.chart.type="boxplot";
+options.series= [{
 	    	name: "{{{headers.0}}}",
 	    	data: [{{#each data}}[{{alt (get this headers.1) "null"}},{{alt (get this headers.2) "null"}},{{alt (get this headers.3) "null"}},{{alt (get this headers.4) "null"}},{{alt (get this headers.5) "null"}}],{{/each}}]
-	    }, 
-	    {
+	    },{
 			name: "{{{headers.6}}}",
 			type: "scatter",
 			data: [{{#each data}}{{alt (get this headers.6) "null"}},{{/each}}]
-	    }
-	],
-	title: {
-		text: ""
-	},
-	yAxis: {
-		title: {
-			text: ""
-		},
-		labels: {
-			format: "{value:,f}"
-		},
-		plotLines: yaxisPlotLines,
-		gridZIndex: yAxisGridZIndex
-	},
-	xAxis: {
-		categories: [{{#each categories}}"{{{this}}}",{{/each}}],
-		tickInterval: "{{labelInterval}}"
-	},
-	labels: {
-		items: [{
-			html: "{{{unit}}}",
-			style: {
-				left: "0px",
-				top: "0px"
-			}
-		}]
-	},
-	legend: {
-		verticalAlign: "top"
-	},
-	plotOptions: {
-		series: {
-			animation: false,
-			pointPadding: 0,
-			groupPadding: 0.1
-		},
-		line: {
-			lineWidth: 1,
-			marker: {
-				radius: 2,
-				symbol: "circle"
-			}
-		}
-	},
-	tooltip: {
-		valueDecimals: "{{decimalPlaces}}",
-		shared: true
-	},
-	credits: {
-		enabled: false
-	}
-}
+	    }];
 {{/partial}}
 
 {{!-- This denotes the template inheritcs from base-chart-config--}}

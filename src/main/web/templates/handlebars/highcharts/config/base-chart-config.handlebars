@@ -13,22 +13,100 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 	    var multiplier = Math.pow(10, decimalPlaces);
 	    return (Math.round(val * multiplier) / multiplier).toFixed(decimalPlaces);
 	}
-
-	//Plotlines configuration applied to all charts
-	var yaxisPlotLines = [{color: 'gray',width: 2,value: 0,zIndex: -100}];
-	var yAxisGridZIndex = -200;
-
 	{{!-- chart-config block is to be overriden by chart types inheriting this template --}}
-	var chartConfig = {{#block "chart-config"}}{}{{/block}};
+	var options = {
+		chart: {
+			height: {{width}} * {{aspectRatio}},
+			width: {{width}},
+			marginRight: 35
+		},
+		colors: [
+			"#274796",
+			"#F5942F",
+			"#E73F40",
+			"#7BCAE2",
+			"#979796",
+			"#E9E117",
+			"#74B630",
+			"#674796",
+			"#BD5B9E"
+		],
+		series: [],
+		title: {
+			text: ""
+		},
+		yAxis: {
+			title: {
+				text: ""
+			},
+			labels: {
+				format: "{value:,f}"
+			},
+			plotLines: [{color: 'gray',width: 2,value: 0,zIndex: -100}],
+			gridZIndex: -200
+		},
+		xAxis: {
+			categories: [{{#each categories}}"{{{this}}}",{{/each}}],
+			tickInterval: "{{labelInterval}}",
+			tickPositioner: function() {
+	          var positions = [];
+	          var tick = Math.floor(this.dataMax);
+	          for (tick; tick >= this.dataMin; tick -= this.tickInterval) {
+	            positions.push(tick);
+	          }
+	          return positions;
+	        }
+		},
+		labels: {
+			items: [{
+				html: "{{{unit}}}",
+				style: {
+					left: "0px",
+					top: "0px"
+				}
+			}]
+		},
+		legend: {
+			verticalAlign: "top"
+		},
+		plotOptions: {
+			series: {
+				animation: false,
+				pointPadding: 0,
+				groupPadding: 0.1
+			},
+			line: {
+				lineWidth: 1,
+				marker: {
+					radius: 2,
+					symbol: "circle"
+				}
+			},
+			area: {
+				stacking: "normal"
+			}
+		},
+		tooltip: {
+			valueDecimals: "{{decimalPlaces}}",
+			shared: true
+		},
+		credits: {
+			enabled: false
+		}
+	};
+
+	{{#block "chart-config"}}
+	{{!-- Overridde this block for altering chart configuration for individual chart types --}}
+	{{/block}}
 
 	{{!-- Chart id is the file name for Florence chart builder generated charts, and cdid for time series --}}
 	var chartId = "{{#if filename}}{{filename}}{{else}}{{description.cdid}}{{/if}}";
 	
 	{{!-- attaching id to window object to be used on client side --}}
-	window["chart-" + chartId] = chartConfig;
+	window["chart-" + chartId] = options;
 
 	{{!-- Returning chart to be used by highcharts export server for server side image rendering --}}
-	return chartConfig; 
+	return options; 
 
 {{!-- Don't add semi-colon at end of closing brackets below - it breaks server-side rendering --}}
 })()

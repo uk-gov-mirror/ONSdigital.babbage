@@ -1,44 +1,12 @@
 {{#partial "chart-config"}}
-{
-	chart: {
-		height: {{width}} * {{aspectRatio}},
-		width: {{width}},
-		marginRight: 35,
-		type: "pie"
-	},
-	colors: [
-		"#274796",
-		"#F5942F",
-		"#E73F40",
-		"#7BCAE2",
-		"#979796",
-		"#E9E117",
-		"#74B630",
-		"#674796",
-		"#BD5B9E"
-	],
-	series: [{
+options.chart.type="pie";
+options.series=[{
 		name: "{{{headers.1}}}",
 		sliced:true,
 		colorByPoint: true,
 		data: [{{#each data}} {name:"{{{get this headers.0}}}",y:{{alt (get this headers.1) "null"}} },{{/each}}]
-	}],
-	title: {
-		text: ""
-	},
-	labels: {
-		items: [{
-			html: "{{{unit}}}",
-			style: {
-				left: "0px",
-				top: "0px"
-			}
-		}]
-	},
-	legend: {
-		verticalAlign: "bottom"
-	},
-	plotOptions: {
+	}];
+options.plotOptions={
 	     pie: {
 	         allowPointSelect: true,
 	         cursor: 'pointer',
@@ -49,14 +17,11 @@
 	             format: '<b>{point.name}</b>: {point.percentage:.{{decimalPlaces}}f} %'
 	         }
 	     }
-	 },
-	tooltip: {
+	 };
+options.tooltip={
 		pointFormat: '{series.name}: <b>{point.percentage:.{{decimalPlaces}}f}%</b>'
-	},
-	credits: {
-		enabled: false
-	}
-}
+	};
+options.legend={verticalAlign: "bottom"};
 {{/partial}}
 
 {{!-- This denotes the template inheritcs from base-chart-config--}}
