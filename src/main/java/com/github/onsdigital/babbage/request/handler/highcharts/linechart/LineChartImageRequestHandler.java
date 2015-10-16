@@ -20,7 +20,7 @@ public class LineChartImageRequestHandler implements RequestHandler {
     public BabbageResponse get(String requestedUri, HttpServletRequest request) throws Exception {
         System.out.println("Generating linechart image for " + requestedUri);
         String chartConfig = new LineChartConfigRequestHandler().getChartConfig(requestedUri);
-        try (InputStream stream = HighChartsExportClient.getInstance().getImage(chartConfig)) {
+        try (InputStream stream = HighChartsExportClient.getInstance().getImage(chartConfig, null)) {
             return new BabbageBinaryResponse(stream, CONTENT_TYPE);
         }
     }

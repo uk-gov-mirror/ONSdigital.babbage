@@ -1,16 +1,18 @@
 <div class="markdown-chart-container panel--bottom-mar print--avoid-break">
-    <h4 class="flush--third--vertical">{{title}}</h4>
-    <h5 class="flush--third--bottom">{{subtitle}}</h5>
-  <div id="chart-{{filename}}" data-uri="{{uri}}" class="markdown-chart">
+  <h4 class="flush--third--vertical">{{title}}</h4>
+  <h5 class="flush--third--bottom">{{subtitle}}</h5>
+  <div id="chart-{{filename}}" class="markdown-chart">
     {{#unless cookies.jsEnhanced}}
-      <img src="{{uri}}/chartimage" alt="{{alt-text}}">
+    <img src="/chartimage?uri={{uri}}&width={{width}}" alt="{{alt-text}}">
     {{/unless}}
   </div>
   {{#if source}}<h6 class="flush--third--bottom">Source: {{source}}</h6>{{/if}}
   {{#if notes}}
   <h6 class="flush--third--bottom">Notes:</h6>
-    {{md notes}}
+  {{md notes}}
   {{/if}}
+  {{!-- Including dynamically generated chart configuration which attaches itself to window object in browser --}}
+  <script type="text/javascript" src="/chartconfig?uri={{uri}}&width={{width}}"></script>
 
     <h6 class="print--hide">Download this chart</h6>
 
