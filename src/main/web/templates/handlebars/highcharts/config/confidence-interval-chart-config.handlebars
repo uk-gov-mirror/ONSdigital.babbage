@@ -10,7 +10,7 @@ options.series=[{
 			type: "bar",
 			data: [{{#each data}}{{alt (get this headers.1) "null"}},{{/each}}]
 	    },{
-	    	name: "",
+	    	name: "{{headers.2}} - {{headers.3}}",
 	    	type: "errorbar",
 	    	data: [{{#each data}}[{{alt (get this headers.2) "null"}},{{alt (get this headers.3) "null"}}],{{/each}}]
 	    }];
@@ -21,5 +21,5 @@ options.plotOptions.scatter={
 			};
 {{/partial}}
 
-{{!-- This denotes the template inheritcs from base-chart-config--}}
+{{!-- This denotes the template inherits from base-chart-config--}}
 {{> highcharts/config/base-chart-config}} 

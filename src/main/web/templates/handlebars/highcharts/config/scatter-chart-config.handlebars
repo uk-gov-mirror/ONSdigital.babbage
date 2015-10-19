@@ -1,22 +1,12 @@
 {{#partial "chart-config"}}
+options.chart.type="scatter";
 options.xAxis.categories=[]; {{!-- override categories --}}
-
-options.series=[{
-	    	name: "{{{headers.1}}}",
-	    	type: "errorbar",
-	    	data: [{{#each data}}[{{alt (get this headers.1) "null"}},{{alt (get this headers.2) "null"}}],{{/each}}]
-	    }, {
-			name: "{{{headers.3}}}",
-			type: "scatter",
-			data: [{{#each data}}{{alt (get this headers.3) "null"}},{{/each}}]
-	    }];
-
-options.series=[{{#each series}}{
-		name: "{{{this}}}",
-		type: "scatter",
-		data: [{{#each data}}{{alt (get this ..) "null"}},{{/each}}]
-	},{{/each}}];
+options.series=[{{#each headers}}{{#if @even}}{
+	name:"{{this}}",
+	data: [{{#each data}}[{{alt (get this ..) "null"}},{{alt (get this (get headers ../@index_1)) "null"}}],{{/each}}],
+},
+{{/if}}{{/each}}];
 {{/partial}}
 
-{{!-- This denotes the template inheritcs from base-chart-config--}}
+{{!-- This denotes the template inherits from base-chart-config--}}
 {{> highcharts/config/base-chart-config}} 
