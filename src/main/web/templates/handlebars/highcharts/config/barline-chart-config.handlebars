@@ -1,4 +1,10 @@
 {{#partial "chart-config"}}
+{{#if rotated}}options.labels={};
+options.yAxis.title={
+	align:"high",
+	text:"{{unit}}"
+};{{/if}}
+
 options.series=[{{#each series}}{
 		name: "{{{this}}}",
 		type: "{{#if_eq (get  chartTypes this) "bar"}}{{#if rotated}}bar{{else}}column{{/if}}{{else}}line{{/if_eq}}",

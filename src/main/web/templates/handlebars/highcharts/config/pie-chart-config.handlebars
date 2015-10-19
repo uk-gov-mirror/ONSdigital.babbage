@@ -1,5 +1,7 @@
 {{#partial "chart-config"}}
 options.chart.type="pie";
+options.labels={};
+
 options.series=[{
 		name: "{{{headers.1}}}",
 		sliced:true,
@@ -14,12 +16,12 @@ options.plotOptions={
 	         animation:false,
 	         dataLabels: {
 	             enabled: true,
-	             format: '{point.name}: {point.y:.{{decimalPlaces}}f}'
+	             format: '{point.name}: {point.y:.{{decimalPlaces}}f} {{unit}}'
 	         }
 	     }
 	 };
 options.tooltip={
-		pointFormat: '{series.name}: <b>{point.y:.{{decimalPlaces}}f}</b>'
+		pointFormat: '{series.name}: <b>{point.y:.{{decimalPlaces}}f} {{unit}}</b>'
 	};
 options.legend={verticalAlign: "bottom"};
 {{/partial}}

@@ -1,4 +1,9 @@
 {{#partial "chart-config"}}
+options.labels={};
+options.yAxis.title={
+	align:"high",
+	text:"{{unit}}"
+};
 options.chart.inverted=false;
 options.series=[{
 			name: "{{{headers.1}}}",
