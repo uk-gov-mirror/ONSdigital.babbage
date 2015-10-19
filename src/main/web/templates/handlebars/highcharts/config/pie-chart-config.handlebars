@@ -14,12 +14,12 @@ options.plotOptions={
 	         animation:false,
 	         dataLabels: {
 	             enabled: true,
-	             format: '<b>{point.name}</b>: {point.percentage:.{{decimalPlaces}}f} %'
+	             format: '{point.name}: {point.y:.{{decimalPlaces}}f}'
 	         }
 	     }
 	 };
 options.tooltip={
-		pointFormat: '{series.name}: <b>{point.percentage:.{{decimalPlaces}}f}%</b>'
+		pointFormat: '{series.name}: <b>{point.y:.{{decimalPlaces}}f}</b>'
 	};
 options.legend={verticalAlign: "bottom"};
 {{/partial}}
