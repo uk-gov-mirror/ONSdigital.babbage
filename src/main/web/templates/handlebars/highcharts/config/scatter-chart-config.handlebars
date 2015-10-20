@@ -1,11 +1,10 @@
 {{#partial "chart-config"}}
 options.chart.type="scatter";
 options.xAxis.categories=[]; {{!-- override categories --}}
-options.series=[{{#each headers}}{{#if @even}}{
-	name:"{{this}}",
-	data: [{{#each data}}[{{alt (get this ..) "null"}},{{alt (get this (get headers ../@index_1)) "null"}}],{{/each}}],
-},
-{{/if}}{{/each}}];
+options.legend.enabled=false;
+options.series=[{
+	data: [{{#each data}}{label:"{{get categories @index}}",x:{{alt (get this headers.1) "null"}},y:{{alt (get this headers.2) "null"}} },{{/each}}],
+}];
 
 options.plotOptions.scatter= {
         marker: {
@@ -24,8 +23,8 @@ options.plotOptions.scatter= {
             }
         },
         tooltip: {
-            headerFormat: '<b>{series.name}</b><br>',
-            pointFormat: '{point.x}, {point.y}'
+            headerFormat: '',
+            pointFormat: '<b>{point.label}</b><br/>{{headers.1}}: {point.x} <br/>{{headers.2}}: {point.y}',
         }
 };
 
