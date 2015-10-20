@@ -6,6 +6,31 @@ options.series=[{{#each headers}}{{#if @even}}{
 	data: [{{#each data}}[{{alt (get this ..) "null"}},{{alt (get this (get headers ../@index_1)) "null"}}],{{/each}}],
 },
 {{/if}}{{/each}}];
+
+options.plotOptions= {
+	scatter: {
+        marker: {
+            radius: 5,
+            states: {
+                hover: {
+                    enabled: true
+                }
+            }
+        },
+        states: {
+            hover: {
+                marker: {
+                    enabled: false
+                }
+            }
+        },
+        tooltip: {
+            headerFormat: '<b>{series.name}</b><br>',
+            pointFormat: '{point.x}, {point.y}'
+        }
+    }
+};
+
 {{/partial}}
 
 {{!-- This denotes the template inherits from base-chart-config--}}
