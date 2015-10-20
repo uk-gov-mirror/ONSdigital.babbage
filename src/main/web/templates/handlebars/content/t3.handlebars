@@ -23,11 +23,10 @@
 						<h2 class="nav-secondary__title">On this page:</h2>
 						<ul class="nav-secondary__list">
 							{{resolve items.0.uri assign="data"}}
-							{{#if_any data.years data.quarters data.months}}<li class="nav-secondary__item"><a href="#latest-data" class="jsEnhanceAnimateScroll">Latest data</a></li>{{/if_any}}
-							<li class="nav-secondary__item"><a href="#latest-publication" class="jsEnhanceAnimateScroll">Latest publications</a></li>
-							{{#if items}}<li class="nav-secondary__item"><a href="#timeseries" class="jsEnhanceAnimateScroll">Highlighted time series data</a></li>{{/if}}
-                            {{#if datasets}}<li class="nav-secondary__item"><a href="#datasets" class="jsEnhanceAnimateScroll">Highlighted spreadsheets</a></li>{{/if}}
-							<li class="nav-secondary__item"><a href="#publications" class="jsEnhanceAnimateScroll">Highlighted publications</a></li>
+							{{!-- <li class="nav-secondary__item"><a href="#latest-publication" class="jsEnhanceAnimateScroll">Highlights</a></li> --}}
+							{{#if items}}<li class="nav-secondary__item"><a href="#timeseries" class="jsEnhanceAnimateScroll">Time series data</a></li>{{/if}}
+                            {{#if datasets}}<li class="nav-secondary__item"><a href="#datasets" class="jsEnhanceAnimateScroll">Spreadsheets</a></li>{{/if}}
+							<li class="nav-secondary__item"><a href="#publications" class="jsEnhanceAnimateScroll">Publications</a></li>
 						</ul>
 					</nav>
 					<nav class="nav-secondary col col--lg-half">
@@ -50,11 +49,14 @@
 		<section class="slate--alabaster">
 			<div class="wrapper">
 				<div class="tiles">
-                    <div class="col-wrap tiles__block">
-                    {{resolve statsBulletins.0.uri filter="description" assign="bulletin"}}
-                    {{#if bulletin}}
-                        {{resolve items.0.uri assign="data"}}
-                        <!-- <div id="latest" class="col col--md-half col--lg-half tiles__item tiles__item--image-type-headline"> -->
+                    <div class="col-wrap">
+						<div class="col">
+							<h2>Highlights</h2>
+						</div>
+						{{resolve statsBulletins.0.uri filter="description" assign="bulletin"}}
+                    	{{#if bulletin}}
+                        	{{resolve items.0.uri assign="data"}}
+							<!-- <div id="latest" class="col col--md-half col--lg-half tiles__item tiles__item--image-type-headline"> -->
 
                             {{!-- Check for data and print partial --}}
                             {{#if_any data.years data.quarters data.months}}
@@ -66,7 +68,6 @@
 
                             {{!-- Latest publication block --}}
                             <div class="col {{#if_any data.years data.quarters data.months}}col--md-half col--lg-half{{/if_any}}">
-                                <h2 id="latest-publication">{{labels.product-latest-stats-bulletin}}</h2>
                                 <div class="clickable-wrap">
                                     <div class="tiles__item tiles__item--image-type-headline flush-col">
                                         <div class="tiles__image tiles__image--headline">
@@ -129,7 +130,7 @@
             <div class="wrapper">
                 <div class="col-wrap">
                     <div class="col">
-                        <h2 id="publications">Highlighted publications related to {{description.title}}</h2>
+                        <h2 id="publications">Publications related to {{description.title}}</h2>
                     </div>
                 </div>
                 {{!-- Latest statistical bulletins --}}
@@ -151,7 +152,7 @@
                 <div class="col-wrap">
                     <div class="col col--lg-two-thirds">
                         <div class="tiles__item tiles__item--nav-type flush-col">
-                            <h3 class="tiles__title-h3 tiles__title-h3--nav">Related methodology</h3>
+                            <h3 class="tiles__title-h3 tiles__title-h3--nav">Methodology related to {{description.title}}</h3>
                                 <ul class="tiles__content tiles__content--nav list--neutral">
                                     {{#each relatedMethodology}}
                                     {{#resolve this.uri filter="description"}}
