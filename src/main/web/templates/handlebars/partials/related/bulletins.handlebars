@@ -6,10 +6,7 @@
 				{{#each relatedBulletins}}
 					{{#resolve this.uri filter="description"}}
 						<li>
-							<h3>
-								<a href="{{uri}}">{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}</a>
-							</h3>
-							{{md description.summary}}
+							<a href="{{uri}}">{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}</a>
 						</li>
 					{{/resolve}}
 				{{/each}}
