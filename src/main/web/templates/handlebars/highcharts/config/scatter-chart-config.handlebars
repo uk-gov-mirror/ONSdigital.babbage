@@ -7,8 +7,7 @@ options.series=[{{#each headers}}{{#if @even}}{
 },
 {{/if}}{{/each}}];
 
-options.plotOptions= {
-	scatter: {
+options.plotOptions.scatter= {
         marker: {
             radius: 5,
             states: {
@@ -28,7 +27,6 @@ options.plotOptions= {
             headerFormat: '<b>{series.name}</b><br>',
             pointFormat: '{point.x}, {point.y}'
         }
-    }
 };
 
 {{/partial}}
