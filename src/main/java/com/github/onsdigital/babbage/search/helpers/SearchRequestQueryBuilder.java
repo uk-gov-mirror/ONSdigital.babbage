@@ -7,7 +7,6 @@ import com.github.onsdigital.babbage.search.input.TypeFilter;
 import com.github.onsdigital.babbage.search.model.ContentType;
 import com.github.onsdigital.babbage.search.model.field.FilterableField;
 import com.github.onsdigital.babbage.search.model.field.SearchableField;
-import com.github.onsdigital.babbage.util.URIUtil;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 

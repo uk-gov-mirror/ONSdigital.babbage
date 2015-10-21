@@ -16,7 +16,6 @@ import com.github.onsdigital.babbage.search.model.ContentType;
 import com.github.onsdigital.babbage.search.model.field.FilterableField;
 import com.github.onsdigital.babbage.search.model.field.SearchableField;
 import com.github.onsdigital.babbage.template.TemplateService;
-import com.github.onsdigital.babbage.util.common.EnumUtil;
 import com.github.onsdigital.babbage.util.json.JsonUtil;
 import com.github.onsdigital.content.service.ContentNotFoundException;
 import com.github.onsdigital.content.util.URIUtil;
