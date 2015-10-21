@@ -15,8 +15,23 @@
 	{{/if}}
 	{{else}}
 	related to
-	<strong>{{#each breadcrumb}}{{#if @last}}{{description.title}}{{/if}}{{/each}}</strong>.
+	<strong>{{#each breadcrumb}}{{#if @last}}{{description.title}}{{/if}}{{/each}}</strong>
 	{{/if}}
+	{{#if parameters.query.0}}
+	containing <strong>‘{{parameters.query.0}}‘</strong>
+	{{/if}}.
+	{{#if_any parameters.fromDate.0 df parameters.toDate.0}}
+	You have chosen to filter results published
+	{{/if_any}}
+	{{#if parameters.fromDate.0}}
+	after <strong>{{df parameters.fromDate.0 outputFormat="dd MMMM yyyy" inputFormat="dd/MM/yyyy"}}</strong>
+	{{/if}}
+	{{#if parameters.toDate.0}}
+	{{#if parameters.fromDate.0}}
+	and
+	{{/if}}
+	before <strong>{{df parameters.toDate.0 outputFormat="dd MMMM yyyy" inputFormat="dd/MM/yyyy"}}</strong>
+	{{/if}}.
 	{{#if parameters.allReleases}}
 	You have chosen to expand these results to <strong>include all releases over time</strong>
 	{{/if}}
