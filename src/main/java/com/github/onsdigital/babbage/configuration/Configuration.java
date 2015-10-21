@@ -13,7 +13,6 @@ public class Configuration {
         private static final int GLOBAL_CACHE_TIMEOUT = 5;
         private static final int GLOBAL_REQUEST_CACHE_SIZE = 1000;
 
-
         public static int getMaxVisiblePaginatorLink() {
             return MAX_VISIBLE_PAGINATOR_LINK;
         }
@@ -31,8 +30,13 @@ public class Configuration {
         }
 
         public static boolean isCacheEnabled() {
-            String babbage_env = StringUtils.defaultIfBlank(getValue("ENABLE_CACHE"), "");
-            return "Y".equals(babbage_env);
+            String enableCache = StringUtils.defaultIfBlank(getValue("ENABLE_CACHE"), "");
+            return "Y".equals(enableCache);
+        }
+
+        public static boolean isDevEnvironment() {
+            String devEnvironment = StringUtils.defaultIfBlank(getValue("DEV_ENVIRONMENT"), "");
+            return "Y".equals(devEnvironment);
         }
 
     }
@@ -48,6 +52,7 @@ public class Configuration {
         private static final String SEARCH_ENDPOINT = "/search";
         private static final String REINDEX_ENDPOINT = "/reindex";
         private static final String LIST_ENDPOINT = "/list";
+        private static final String GENERATOR_ENDPOINT = "/generator";
         private static final int MAX_CONTENT_SERVICE_CONNECTION = defaultNumberIfBlank(getNumberValue("CONTENT_SERVICE_MAX_CONNECTION"), 50);
         private static final String DEFAULT_CONTENT_DATE_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
 
@@ -85,6 +90,10 @@ public class Configuration {
 
         public static String getListEndpoint() {
             return LIST_ENDPOINT;
+        }
+
+        public static String getGeneratorEndpoint() {
+            return GENERATOR_ENDPOINT;
         }
 
         public static int getMaxContentServiceConnection() {

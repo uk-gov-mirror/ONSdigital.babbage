@@ -1,5 +1,6 @@
 package com.github.onsdigital.babbage.util;
 
+import com.github.onsdigital.babbage.configuration.Configuration;
 import com.github.onsdigital.babbage.locale.LocaleConfig;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -36,6 +37,7 @@ public class RequestUtil {
         ThreadContext.addData("labels", LocaleConfig.getLabels(locale));
         ThreadContext.addData("lang", locale.getLanguage());
         ThreadContext.addData("location", getLocation(request));
+        ThreadContext.addData("is_dev", Configuration.GENERAL.isDevEnvironment());
     }
 
     public static void clearContext() {

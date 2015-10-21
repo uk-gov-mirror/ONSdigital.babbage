@@ -85,7 +85,7 @@ public class SearchRequestQueryBuilder {
 
 
     private void resolveUriPrefix(ONSQuery onsQuery) {
-        String uriPrefix = URIUtil.cleanUri(topicUri);
+        String uriPrefix = topicUri;
         if (isNotEmpty(uriPrefix)) {
             addPrefixFilter(onsQuery, FilterableField.uri, uriPrefix);
         }

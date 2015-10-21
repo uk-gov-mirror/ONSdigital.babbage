@@ -141,14 +141,6 @@ public class Download {
             }
         }
 
-        // Process CDIDs
-        if (downloadRequest.cdidList != null) {
-            Map<String, TimeSeries> TimeSeriesMap = Cdid.getTimeSeries(downloadRequest.cdidList);
-            for (TimeSeries TimeSeries2 : TimeSeriesMap.values()) {
-                TimeSeries.add(TimeSeries2);
-            }
-        }
-
         // Collate into a "grid":
         Map<String, TimeseriesValue[]> data = collateData(TimeSeries, downloadRequest);
 

@@ -21,19 +21,19 @@
 					<h3 class="footer-nav__heading">About us</h3>
 					<ul class="footer-nav__list">
 						<li class="footer-nav__item">
-							<a href="/about/whatonsdo">What we do</a>
+							<a href="/aboutus/whatwedo">What we do</a>
 						</li>
 						<li class="footer-nav__item">
-							<a href="/about/careersatons">{{labels.careers}}</a>
+							<a href="/aboutus/careers">{{labels.careers}}</a>
 						</li>
 						<li class="footer-nav__item">
-							<a href="/about/contactus">{{labels.contact-us}}</a>
+							<a href="/aboutus/contactus">{{labels.contact-us}}</a>
 						</li>
 						<li class="footer-nav__item">
-							<a href="/about/media">Media enquiries</a>
+							<a href="/aboutus/mediaenquiries">Media enquiries</a>
 						</li>
 						<li class="footer-nav__item">
-							<a href="/about/freedomofinformationact">Freedom of information</a>
+							<a href="aboutus/transparencyandgovernance/freedomofinformationfoi">Freedom of information</a>
 						</li>
 					</ul>
 				</div>
@@ -69,17 +69,22 @@
 <a id="feedback" onclick="_bugHerd.win.bugherd.applicationView.anonymousbar.toggleOptions()" class="mini print--hide">Send Feedback</a>
 
 <script type="text/javascript">
-var loop11_key = "337d81d31cfbf84b69656066246098759bec0f56";
-document.write(unescape("%3cscript src='//cdn.loop11.com/my/loop11.js' type='text/javascript'%3e%3c/script%3e"));
-</script>
+ var loop11_key = "337d81d31cfbf84b69656066246098759bec0f56";
+ document.write(unescape("%3cscript src='//cdn.loop11.com/my/loop11.js' type='text/javascript'%3e%3c/script%3e"));
+ </script>
 
-<script type="text/javascript" src="/node_modules/ONS-Pattern-Library/dist/js/footer.min.js"></script>
-<script type="text/javascript" src="/ui/js/lib/jquery.tooltipster.min.js"></script>
-{{!--<script type="text/javascript" src="/ui/js/lib/highcharts.js"></script> --}}
+{{!-- <script type="text/javascript" src="/node_modules/ONS-Pattern-Library/dist/js/footer.min.js"></script> --}}
+<script type="text/javascript" src="{{#if is_dev}}http://localhost:9000/dist/js/main.js{{else}}/node_modules/sixteens/dist/js/main.js{{/if}}"></script>
+
+{{!-- <link rel="stylesheet" type="text/css" href="{{#if_any (eq 'localhost' location.hostname) (eq '127.0.0.1' location.hostname)}}http://localhost:9000/dist/css/main.css{{else}}/node_modules/sixteens/dist/css/main.css{{/if_any}}"> --}}
+
+{{!-- <script type="text/javascript" src="/ui/js/lib/jquery.tooltipster.min.js"></script>
+<script type="text/javascript" src="/ui/js/lib/highcharts.js"></script> 
 <script type="text/javascript" src="/js/linechart.js"></script>
 <script type="text/javascript" src="/js/sparkline.js"></script>
 <script type="text/javascript" src="/js/chartRenderer.js"></script>
-<script type="text/javascript" src="/js/js-enhance.js"></script>
+<script type="text/javascript" src="/js/js-enhance.js"></script> --}}
+
 <script>
 (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),

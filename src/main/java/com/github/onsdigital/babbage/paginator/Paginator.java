@@ -1,6 +1,5 @@
 package com.github.onsdigital.babbage.paginator;
 
-import com.github.onsdigital.babbage.configuration.Configuration;
 import com.github.onsdigital.babbage.error.ResourceNotFoundException;
 import com.github.onsdigital.babbage.search.helpers.SearchResponseHelper;
 
