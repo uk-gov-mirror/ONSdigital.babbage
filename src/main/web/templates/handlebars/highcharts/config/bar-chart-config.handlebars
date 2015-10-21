@@ -1,0 +1,9 @@
+{{#partial "chart-config"}}
+options.series = [{{#each series}}{
+		name: "{{{this}}}",
+		type: "column",
+		data: [{{#each data}}{{alt (get this ..) "null"}},{{/each}}]
+	},{{/each}} ];
+{{/partial}}
+{{!-- This denotes the template inherits from base-chart-config--}}
+{{> highcharts/config/base-chart-config}} 

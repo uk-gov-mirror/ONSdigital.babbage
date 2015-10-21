@@ -111,46 +111,12 @@
 		<div class="col col--md-11 col--lg-20">
 
 			{{!-- Related data --}}
-			{{#if relatedDatasets}}
-				<div class="tiles__item tiles__item--nav-type flush-col">
-					<h3 class="tiles__title-h3 tiles__title-h3--nav">Related data</h3>
-					<div class="tiles__content tiles__content--nav">
-						<ul class="list--neutral">
-							{{#each relatedDatasets}}
-								{{#resolve this.uri filter="title"}}
-									<li><a href="{{absolute uri}}" title="{{title}}">{{title}}</a></li>
-								{{/resolve}}
-							{{/each}}
-						</ul>
-					</div>
-				</div>
-			{{/if}}
+			{{> partials/related/datasets }}
 
-			{{!-- Related articles and bulletins --}}
-			{{#if relatedDocuments}}
-				<div class="tiles__item tiles__item--nav-type flush-col">
-		            <h3 class="tiles__title-h3 tiles__title-h3--nav">Statistical bulletins and articles that use this data</h3>
+			{{!-- Related publications --}}
+			{{> partials/related/documents }}
 
-					<div class="tiles__content tiles__content--nav">
-						<ul class="list--neutral">
-							{{#each relatedDocuments}}
-								{{#resolve this.uri filter="title"}}
-									<li>
-										<a href="{{uri}}" title="{{title}}">
-											{{title}}
-											{{#if edition}}
-												{{#if_ne edition 'yes'}}: {{edition}}
-												{{/if_ne}}
-											{{/if}}
-										</a>
-									</li>
-								{{/resolve}}
-							{{/each}}
-						</ul>
-					</div>
-		        </div>
-			{{/if}}
-
+			{{!-- Local stats tile --}}
 			{{> partials/local-box}}
 
 		</div>
@@ -160,32 +126,14 @@
 		<div class="col-wrap">
 			{{!-- Related methodology --}}
 			{{#if_any relatedMethodology}}
-				<div class="col col--lg-half col--md-half">
-					<div class="tiles__item tiles__item--nav-type flush-col">
-						<h3 class="tiles__title-h3 tiles__title-h3--nav">{{labels.methodology}}</h3>
-						<ul class="tiles__content tiles__content--nav list--neutral">
-							{{#each relatedMethodology}}
-                                {{#resolve this.uri filter="title"}}
-                                    <li>
-                                        <a href="{{uri}}" title="{{description.title}}">{{description.title}}</a>
-                                    </li>
-                                {{/resolve}}
-							{{/each}}
-						</ul>	
-					</div>
+				<div class="col col--md-half col--lg-half">
+					{{> partials/related/methodology }}
 				</div>
 			{{/if_any}}
 
 			{{!-- Contact details --}}
-			<div class="col col--lg-half col--md-half">
-				<div class="tile__item tiles__item--nav-type margin-bottom">
-					<h3 class="tiles__title-h3 tiles__title-h3--nav">{{labels.contact-details}}</h3>
-					<address class="tiles__content tiles__content--nav">
-						{{#if description.contact.name}}{{description.contact.name}}</br>{{/if}}
-						<a href="mailto:{{description.contact.email}}">{{description.contact.email}}</a></br>
-						{{#if description.contact.telephone}}Telephone: {{description.contact.telephone}}{{/if}}
-					</address>
-				</div>
+			<div class="col col--md-half col--lg-half">
+				{{> partials/contact }}
 			</div>
 		</div>
 	</div>

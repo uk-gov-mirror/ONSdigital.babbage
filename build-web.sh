@@ -2,5 +2,5 @@
 
 export WEB_DIRECTORY="./src/main/web"
 
-npm --prefix $WEB_DIRECTORY install
+npm --branch=develop --prefix $WEB_DIRECTORY install
 

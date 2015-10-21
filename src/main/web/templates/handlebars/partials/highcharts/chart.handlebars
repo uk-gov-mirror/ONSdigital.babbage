@@ -1,14 +1,40 @@
 <div class="markdown-chart-container panel--bottom-mar print--avoid-break">
-    <h4 class="flush--third--vertical">{{title}}</h4>
-    <h5 class="flush--third--bottom">{{subtitle}}</h5>
-  <div id="chart-{{filename}}" data-uri="{{uri}}" class="markdown-chart">
+  <h4 class="flush--third--vertical">{{title}}</h4>
+  <h5 class="flush--third--bottom">{{subtitle}}</h5>
+  <div id="chart-{{filename}}" data-filename="{{filename}}" data-uri="{{uri}}" class="markdown-chart">
     {{#unless cookies.jsEnhanced}}
-      <img src="{{uri}}/chartimage" alt="{{alt-text}}">
+    <img src="/chartimage?uri={{uri}}&width={{width}}" alt="{{alt-text}}">
     {{/unless}}
   </div>
   {{#if source}}<h6 class="flush--third--bottom">Source: {{source}}</h6>{{/if}}
   {{#if notes}}
   <h6 class="flush--third--bottom">Notes:</h6>
-    {{md notes}}
+  {{md notes}}
   {{/if}}
+  
+    <h6 class="print--hide">Download this chart</h6>
+
+    <form method="get" action="/chartimage" class="inline print--hide">
+        <button type="submit" title="Download chart image" class="btn btn--primary btn--thick download-analytics">
+            Image
+        </button>
+        <input type="hidden" name="uri" value="{{absolute  uri}}"/>
+    </form>
+
+    <form method="get" action="/generator" class="inline print--hide">
+        <button type="submit" title="Download CSV" class="btn btn--primary btn--thick download-analytics">
+            .csv
+        </button>
+        <input type="hidden" name="format" value="csv"/>
+        <input type="hidden" name="uri" value="{{absolute  uri}}"/>
+    </form>
+
+    <form method="get" action="/generator" class="inline print--hide">
+        <button type="submit" title="Download XLS" class="btn btn--primary btn--thick download-analytics">
+            .xls
+        </button>
+        <input type="hidden" name="format" value="xls"/>
+        <input type="hidden" name="uri" value="{{absolute uri}}"/>
+    </form>
+
 </div>

@@ -1,0 +1,21 @@
+{{#partial "chart-config"}}
+options.labels={};
+options.yAxis.title={
+	align:"high",
+	text:"{{unit}}"
+};
+options.chart.inverted=false;
+options.series=[{
+			name: "{{{headers.1}}}",
+			type: "bar",
+			data: [{{#each data}}{{alt (get this headers.1) "null"}},{{/each}}]
+	    },{
+	    	name: "{{headers.2}} - {{headers.3}}",
+	    	type: "errorbar",
+	    	data: [{{#each data}}[{{alt (get this headers.2) "null"}},{{alt (get this headers.3) "null"}}],{{/each}}]
+	    }];
+options.plotOptions.scatter={marker: {radius: 4}};
+{{/partial}}
+
+{{!-- This denotes the template inherits from base-chart-config--}}
+{{> highcharts/config/base-chart-config}} 

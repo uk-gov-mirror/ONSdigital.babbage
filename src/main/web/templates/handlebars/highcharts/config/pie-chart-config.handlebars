@@ -1,0 +1,30 @@
+{{#partial "chart-config"}}
+options.chart.type="pie";
+options.labels={};
+
+options.series=[{
+		name: "{{{headers.1}}}",
+		sliced:true,
+		colorByPoint: true,
+		data: [{{#each data}} {name:"{{{get this headers.0}}}",y:{{alt (get this headers.1) "null"}} },{{/each}}]
+	}];
+options.plotOptions={
+	     pie: {
+	         allowPointSelect: true,
+	         cursor: 'pointer',
+	         showInLegend: true,
+	         animation:false,
+	         dataLabels: {
+	             enabled: true,
+	             format: '{point.name}: {point.y:.{{decimalPlaces}}f} {{unit}}'
+	         }
+	     }
+	 };
+options.tooltip={
+		pointFormat: '{series.name}: <b>{point.y:.{{decimalPlaces}}f} {{unit}}</b>'
+	};
+options.legend={verticalAlign: "bottom"};
+{{/partial}}
+
+{{!-- This denotes the template inherits from base-chart-config--}}
+{{> highcharts/config/base-chart-config}} 

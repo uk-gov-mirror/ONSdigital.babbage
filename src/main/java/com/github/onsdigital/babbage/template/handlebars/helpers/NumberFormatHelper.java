@@ -28,7 +28,16 @@ public class NumberFormatHelper implements BabbageHandlebarsHelper<Object> {
         }
         String pattern = resolvePattern(options.params);
         NumberFormat numberFormat = pattern == null ? new DecimalFormat() : new DecimalFormat(pattern);
-        return new Handlebars.SafeString(numberFormat.format(HelperUtils.toNumber(context)));
+        Double number = HelperUtils.toNumber(context);
+        if (number == null) {
+            Object o = options.hash("alt");
+            if (o != null) {
+                return new Handlebars.SafeString(o.toString());
+            } else {
+                return null;
+            }
+        }
+        return new Handlebars.SafeString(numberFormat.format(number));
     }
 
     private String resolvePattern(Object[] params) {

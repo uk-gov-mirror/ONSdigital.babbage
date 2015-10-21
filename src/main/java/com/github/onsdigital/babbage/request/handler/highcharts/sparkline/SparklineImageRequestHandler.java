@@ -21,7 +21,7 @@ public class SparklineImageRequestHandler implements RequestHandler {
     public BabbageResponse get(String requestedUri, HttpServletRequest request) throws Exception {
         System.out.println("Generating sparkline image for " + requestedUri);
         String config = new SparklineConfigRequestHandler().getChartConfig(requestedUri);
-        InputStream stream = HighChartsExportClient.getInstance().getImage(config);
+        InputStream stream = HighChartsExportClient.getInstance().getImage(config, null);
         return new BabbageBinaryResponse(stream, CONTENT_TYPE);
     }
 
