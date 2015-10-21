@@ -14,11 +14,7 @@ options.series=[{
 	    	type: "errorbar",
 	    	data: [{{#each data}}[{{alt (get this headers.2) "null"}},{{alt (get this headers.3) "null"}}],{{/each}}]
 	    }];
-options.plotOptions.scatter={
-			    marker: {
-	                radius: 4
-	            }
-			};
+options.plotOptions.scatter={marker: {radius: 4}};
 {{/partial}}
 
 {{!-- This denotes the template inherits from base-chart-config--}}

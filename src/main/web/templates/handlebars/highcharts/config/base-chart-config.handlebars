@@ -6,13 +6,8 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 
 (function(){
 
-	function numberFormat(val, decimalPlaces) {
-		if(!decimalPlaces) {
-			return val;
-		}
-	    var multiplier = Math.pow(10, decimalPlaces);
-	    return (Math.round(val * multiplier) / multiplier).toFixed(decimalPlaces);
-	}
+	Highcharts.setOptions({lang: {thousandsSep: ','}});
+
 	{{!-- chart-config block is to be overriden by chart types inheriting this template --}}
 	var options = {
 		chart: {
@@ -47,15 +42,7 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 		},
 		xAxis: {
 			categories: [{{#each categories}}"{{{this}}}",{{/each}}],
-			tickInterval: "{{labelInterval}}",
-			tickPositioner: function() {
-	          var positions = [];
-	          var tick = Math.floor(this.dataMax);
-	          for (tick; tick >= this.dataMin; tick -= this.tickInterval) {
-	            positions.push(tick);
-	          }
-	          return positions;
-	        }
+			tickInterval: "{{labelInterval}}"
 		},
 		labels: {
 			items: [{

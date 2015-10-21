@@ -16,8 +16,7 @@ options.xAxis=[{
 		    labels: {
 				step: "{{labelInterval}}"
 		    }
-		},
-		{
+		},{
 		    categories: [{{#each categories}}"{{{this}}}",{{/each}}],
 		    reversed: false,
 		    labels: {
@@ -28,11 +27,15 @@ options.xAxis=[{
 		}
 	];
 
+options.yAxis.labels.formatter=function(){
+	return Highcharts.numberFormat(Math.abs(this.value),0);	
+};
+
 options.tooltip={
 	    formatter: function() {
 	    	return '{{{headers.0}}}: ' + this.x + '<br/>' +
-	    		this.points[0].series.name + ': <b>' + numberFormat(-1 * this.points[0].y, {{alt decimalPlaces 0}}) + '</b><br/>' +
-	    		this.points[1].series.name + ': <b>' + numberFormat(this.points[1].y, {{alt decimalPlaces 0}}) + '</b>';
+	    		this.points[0].series.name + ': <b>' + Highcharts.numberFormat(-1 * this.points[0].y, {{alt decimalPlaces 0}}) + '</b><br/>' +
+	    		this.points[1].series.name + ': <b>' + Highcharts.numberFormat(this.points[1].y, {{alt decimalPlaces 0}}) + '</b>';
 	    },
 		shared: true
 	};
