@@ -12,7 +12,7 @@ public enum FilterableField {
     cdid,
     published,
     cancelled,
-    keywords_raw,
+    keywords_raw,//raw means not analyzed, fields analyzed when indexing by default has _raw versions if needs to be filterable
     latestRelease,
     _score
 }

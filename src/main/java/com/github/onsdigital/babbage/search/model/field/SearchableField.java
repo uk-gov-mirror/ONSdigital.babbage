@@ -6,8 +6,7 @@ package com.github.onsdigital.babbage.search.model.field;
  * Searchable field names with boost factors
  */
 public enum SearchableField {
-    title(100),
-    edition(10),
+    title_edition(100), //combined title and edition field, analyzed as one single field
     summary,
     metaDescription,
     keywords,

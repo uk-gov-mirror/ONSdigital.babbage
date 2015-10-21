@@ -1,5 +1,6 @@
 package com.github.onsdigital.babbage.search;
 
+import com.github.onsdigital.babbage.search.model.field.HighlightField;
 import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.action.count.CountRequestBuilder;
 import org.elasticsearch.action.search.SearchRequestBuilder;
@@ -27,7 +28,7 @@ class QueryRequestBuilder {
             builder.setSize(query.getSize());
         }
         if (query.isHighLightFields()) {
-            setHighlights(builder, query.getFields());
+            setHighlights(builder, HighlightField.values());
         }
         addSorts(builder, query.getSorts());
         return builder;
@@ -64,12 +65,12 @@ class QueryRequestBuilder {
         return andFilterBuilder;
     }
 
-    private void setHighlights(SearchRequestBuilder searchRequestBuilder,  String... fields) {
-        if (fields == null) {
+    private void setHighlights(SearchRequestBuilder searchRequestBuilder,  HighlightField[] highlightFields) {
+        if (highlightFields == null) {
             return;
         }
-        for (String field : fields) {
-            searchRequestBuilder.addHighlightedField(field, 0, 0);
+        for (HighlightField field : highlightFields) {
+            searchRequestBuilder.addHighlightedField(field.name(), 0, 0);
         }
         searchRequestBuilder.setHighlighterPreTags(ONSQuery.HIGHLIGHTER_PRE_TAG);
         searchRequestBuilder.setHighlighterPostTags(ONSQuery.HIGHLIGHTER_POST_TAG);
