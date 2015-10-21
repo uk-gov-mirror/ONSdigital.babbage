@@ -10,7 +10,9 @@ public enum SearchableField {
     summary,
     metaDescription,
     keywords,
-    type;
+    type,
+    cdid,
+    datasetId;
 
     private Long boostFactor;
 
