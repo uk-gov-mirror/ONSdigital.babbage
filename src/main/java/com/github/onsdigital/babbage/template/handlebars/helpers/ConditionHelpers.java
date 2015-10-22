@@ -120,6 +120,28 @@ public enum ConditionHelpers implements BabbageHandlebarsHelper<Object> {
             handlebars.registerHelper(this.name(), this);
         }
 
+    },
+    //Renders alternative value if value not available
+    alt {
+        @Override
+        public CharSequence apply(Object context, Options options) throws IOException {
+            if (!options.isFalsy(context)) {
+                return context.toString();
+            } else {
+                if (options.params.length > 0) {
+                    Object param = options.param(0);
+                    if (param != null) {
+                        return param.toString();
+                    }
+                }
+            }
+            return null;
+        }
+
+        @Override
+        public void register(Handlebars handlebars) {
+            handlebars.registerHelper(this.name(), this);
+        }
     };
 
 

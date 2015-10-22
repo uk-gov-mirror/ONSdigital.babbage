@@ -1,0 +1,17 @@
+{{#partial "chart-config"}}
+options.labels={};
+options.yAxis.title={
+	align:"high",
+	text:"{{unit}}"
+};
+options.series=[{{#each series}}{
+        name: "{{{this}}}",
+        type: "bar",
+        data: [{{#each data}}{{num (get this ..)}},{{/each}}]
+    },{{/each}}];
+
+options.yAxis.align="high";
+{{/partial}}
+
+{{!-- This denotes the template inherits from base-chart-config--}}
+{{> highcharts/config/base-chart-config}} 

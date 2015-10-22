@@ -34,9 +34,11 @@
             {{/if}}
 
             {{!-- MARKDOWN --}}
-            {{#if markdown}}
-                {{md markdown.0}}
-            {{/if}}
+            <div class="section__content--static-markdown">
+                {{#if markdown}}
+                    {{md markdown.0}}
+                {{/if}}
+            </div>
 
             {{#if links}}
                 <div class="col-wrap">

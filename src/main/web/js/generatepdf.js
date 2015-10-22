@@ -3,11 +3,11 @@
 var page, system, address, output;
 
 //Below page size configration based on http://stackoverflow.com/questions/22017746/while-rendering-webpage-to-pdf-using-phantomjs-how-can-i-auto-adjust-my-viewpor
-var pageSize = "A3",
+var pageSize = "A4",
     pageOrientation = "portrait",
-    dpi = 150, //from experimenting with different combinations of viewportSize and paperSize the pixels per inch comes out to be 150
-    pdfViewportWidth = 1600,
-    pdfViewportHeight = 900,
+    dpi = 98, //from experimenting with different combinations of viewportSize and paperSize the pixels per inch comes out to be 150
+    pdfViewportWidth = 595,
+    pdfViewportHeight = 842,
     cmToInchFactor = 0.393701,
     widthInInches,
     heightInInches,
@@ -56,16 +56,6 @@ if (pageOrientation === 'Landscape') {
 pdfViewportWidth = dpi * widthInInches;
 pdfViewportHeight = dpi * heightInInches;
 
-page = require('webpage').create();
-page.paperSize = {
-    format: pageSize,
-    orientation: pageOrientation,
-    margin: '1cm'
-};
-page.viewportSize = {
-    width: pdfViewportWidth,
-    height: pdfViewportHeight
-};
 
 // Create a page object
 page = require('webpage').create();
@@ -98,7 +88,6 @@ for (var i = system.args.length - 1; i > 2; i=i-2) {
         'value': value
     });
 };
-
 
 page.settings.userAgent = 'WebKit/534.46 Mobile/9A405 Safari/7534.48.3';
 page.settings.javascriptEnabled = false;

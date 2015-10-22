@@ -10,7 +10,7 @@
             </li>
             <li>
                 <a href="/dataexplorer?q={{parameters.q.0}}" class="tab__item">
-                    Explore data
+                    Explore our data
                 </a>
             </li>
         </ul>
@@ -33,7 +33,7 @@
 				</div>
 			</div>
 			{{!-- FILTERS --}}
-            {{#if_any result.results parameters.filter}}
+            {{#if_any result.results parameters.filter parameters.time_series}}
 			<div class="col col--md-12 col--lg-18 margin-bottom">
 				<input class="sort__input" type="hidden" name="q" value="{{parameters.q.0}}">
 				<div class="tiles__title-h3 tiles__title-h3--nav">
@@ -114,7 +114,7 @@
 		</div>
         {{/if_any}}
 		{{!-- RESULTS --}}
-            <div class="results col col--md-34 col--lg-40 {{#if_any result.results parameters.filter}}margin-left-md--1{{/if_any}}">
+            <div class="results col col--md-34 col--lg-40 {{#if_any result.results parameters.filter parameters.time_series}}margin-left-md--1{{/if_any}}">
             {{> list/partials/search-results-text-help result}}
 
 				{{!-- HEADLINE RESULTS --}}
@@ -133,7 +133,7 @@
 						{{/resolve}}
 					</div>
 					{{!-- Summary --}}
-					<div class="col {{#if series}}col--md-17 col--lg-20{{else}}col--md-34 col--lg-40{{/if}} tiles__item--nav-type-fixed">
+					<div class="col {{#if series}}col--md-17 col--lg-20 tiles__item--nav-type-fixed{{else}}col--md-34 col--lg-40 tiles__item--nav-type{{/if}}">
 						<h3 class="tiles__title-h3 tiles__title-h3--nav"><a href="{{uri}}">{{{featuredResult.results.0.description.title}}}</a></h3>
 						<div class="tiles__content tiles__content--nav">
                             <p>{{{featuredResult.results.0.description.summary}}}</p>

@@ -10,6 +10,18 @@
 	showing <strong>{{#each parameters.filter}}{{> filter-label this}}{{!--<span class="icon icon-cancel js-enhance--show" role="presentation"></span> --}} {{#unless @last}},{{/unless}}{{/each}}</strong>
 	{{/if}}
 	.
+	{{#if_any parameters.fromDate.0 parameters.toDate.0}}
+		You have chosen to show results published
+		{{#if parameters.fromDate.0}}
+		after <strong>{{df parameters.fromDate.0 outputFormat="dd MMMM yyyy" inputFormat="dd/MM/yyyy"}}</strong>
+		{{/if}}
+		{{#if parameters.toDate.0}}
+			{{#if parameters.fromDate.0}}
+			and
+			{{/if}}
+		before <strong>{{df parameters.toDate.0 outputFormat="dd MMMM yyyy" inputFormat="dd/MM/yyyy"}}</strong>
+		{{/if}}
+	{{/if_any}}
 	{{#if parameters.includeStatics}}
 	You have chosen to expand these results to include <strong>all other website content</strong>{{!-- <span class="icon icon-cancel js-enhance--show" role="presentation"></span> --}}
 	{{/if}}
