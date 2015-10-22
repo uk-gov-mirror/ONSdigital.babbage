@@ -1,5 +1,3 @@
-
-
 {{!-- Page header --}}
 <div class="page-intro">
 	<div class="wrapper">
@@ -23,11 +21,11 @@
 			<div class="col">
 				{{!-- Latest info --}}
 				{{#if description.latestRelease}}
-				<p class="alert__title">This is the latest release</p> <a class="btn btn--primary print--hide" href="{{parentPath uri}}/previousReleases">view previous releases</a>
+					<p class="alert__title">This is the latest release</p> <a class="btn btn--primary print--hide" href="{{parentPath uri}}/previousReleases">view previous releases</a>
 				{{else}}
-				{{#resolve (concat (parentPath uri) "/latest") filter="title"}}
-				<p class="alert__title">This is not the latest release</p> <a class="btn btn--primary print--hide" href="{{uri}}">view latest release</a>
-				{{/resolve}}
+					{{#resolve (concat (parentPath uri) "/latest") filter="title"}}
+						<p class="alert__title">This is not the latest release</p> <a class="btn btn--primary print--hide" href="{{uri}}">view latest release</a>
+					{{/resolve}}
 				{{/if}}
 			</div>
 		</div>
@@ -40,11 +38,15 @@
 		{{!-- Meta info --}}
 		<div class="col-wrap">
 
-			{{!-- Contact & NS logo--}}
-			<p class="col col--md-12 col--lg-15 meta__item">
-				{{#if description.nationalStatistic}}
-				<img class="meta__image" src="/node_modules/ONS-Pattern-Library/dist/img/national-statistics.png" alt="National Statistics logo" />
-				{{/if}}
+			{{!-- NS logo --}}
+			{{#if description.nationalStatistic}}
+				<p class="col col--md-4 col--lg-4 padding-left">
+					<img class="meta__image" src="/node_modules/ONS-Pattern-Library/dist/img/national-statistics.png" alt="National Statistics logo"/>
+				</p>
+			{{/if}}
+
+			{{!-- Contact --}}
+			<p class="col {{#if description.nationalStatistic}}col--md-8 col--lg-11{{else}}col--md-12 col--lg-15{{/if}} meta__item">
 				<span>{{labels.meta-contact}}: </span><br/><a href="mailto:{{description.contact.email}}">{{#if description.contact.name}}{{description.contact.name}}{{else}}{{description.contact.email}}{{/if}}</a>
 			</p>
 

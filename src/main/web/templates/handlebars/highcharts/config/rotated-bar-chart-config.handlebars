@@ -7,7 +7,7 @@ options.yAxis.title={
 options.series=[{{#each series}}{
         name: "{{{this}}}",
         type: "bar",
-        data: [{{#each data}}{{alt (get this ..) "null"}},{{/each}}]
+        data: [{{#each data}}{{num (get this ..)}},{{/each}}]
     },{{/each}}];
 
 options.yAxis.align="high";

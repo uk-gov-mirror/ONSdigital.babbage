@@ -2,7 +2,7 @@
 options.series = [{{#each series}}{
 		name: "{{{this}}}",
 		type: "column",
-		data: [{{#each data}}{{alt (get this ..) "null"}},{{/each}}]
+		data: [{{#each data}}{{num (get this ..)}},{{/each}}]
 	},{{/each}} ];
 {{/partial}}
 {{!-- This denotes the template inherits from base-chart-config--}}

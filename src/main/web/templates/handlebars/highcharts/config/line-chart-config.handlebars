@@ -2,7 +2,7 @@
 options.series = [{{#each series}}{
 			name: "{{{this}}}",
 			type: "{{#if area}}area{{else}}line{{/if}}",
-			data: [{{#each data}}{{alt (get this ..) "null"}},{{/each}}]
+			data: [{{#each data}}{{num (get this ..)}},{{/each}}]
 		},{{/each}} ];
 		
 options.xAxis.tickPositioner=function() {

@@ -10,7 +10,7 @@ options.series=[{{#each series}}{
 		type: "{{#if_eq (get  chartTypes this) "bar"}}bar{{else}}line{{/if_eq}}",
 		zIndex: {{#if_eq (get  chartTypes this) "line"}}100{{else}}0{{/if_eq}},
 		stack: "{{#contains groups.0 this}}group1{{else}}{{this}}{{/contains}}",
-		data: [{{#each data}}{{alt (get this ..) "null"}},{{/each}}]
+		data: [{{#each data}}{{num (get this ..)}},{{/each}}]
 	},{{/each}} ];
 
 options.plotOptions.bar = {stacking:"normal"};
