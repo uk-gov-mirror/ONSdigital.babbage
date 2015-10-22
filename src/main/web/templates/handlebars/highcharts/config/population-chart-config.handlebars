@@ -4,10 +4,10 @@ options.chart.type="bar";
 options.series=[{{!-- Negating data of first series for negative stacking in highcharts to create Population pyramid --}}
 	    {
 	    	name: "{{{headers.1}}}",
-	    	data: [{{#each data}}-1 *{{alt (get this headers.1) 0}},{{/each}}]
+	    	data: [{{#each data}}-1 *{{num (get this headers.1)}},{{/each}}]
 	    },{
 	    	name: "{{{headers.2}}}",
-	    	data: [{{#each data}}{{alt (get this headers.2) 0}},{{/each}}]
+	    	data: [{{#each data}}{{num (get this headers.2)}},{{/each}}]
 	    }
 	];
 options.xAxis=[{
@@ -34,8 +34,8 @@ options.yAxis.labels.formatter=function(){
 options.tooltip={
 	    formatter: function() {
 	    	return '{{{headers.0}}}: ' + this.x + '<br/>' +
-	    		this.points[0].series.name + ': <b>' + Highcharts.numberFormat(-1 * this.points[0].y, {{alt decimalPlaces 0}}) + '</b><br/>' +
-	    		this.points[1].series.name + ': <b>' + Highcharts.numberFormat(this.points[1].y, {{alt decimalPlaces 0}}) + '</b>';
+	    		this.points[0].series.name + ': <b>' + Highcharts.numberFormat(-1 * this.points[0].y, {{num decimalPlaces}}) + '</b><br/>' +
+	    		this.points[1].series.name + ': <b>' + Highcharts.numberFormat(this.points[1].y, {{num decimalPlaces}}) + '</b>';
 	    },
 		shared: true
 	};

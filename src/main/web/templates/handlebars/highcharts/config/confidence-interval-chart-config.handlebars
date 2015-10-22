@@ -8,11 +8,11 @@ options.chart.inverted=false;
 options.series=[{
 			name: "{{{headers.1}}}",
 			type: "bar",
-			data: [{{#each data}}{{alt (get this headers.1) "null"}},{{/each}}]
+			data: [{{#each data}}{{num (get this headers.1)}},{{/each}}]
 	    },{
 	    	name: "{{headers.2}} - {{headers.3}}",
 	    	type: "errorbar",
-	    	data: [{{#each data}}[{{alt (get this headers.2) "null"}},{{alt (get this headers.3) "null"}}],{{/each}}]
+	    	data: [{{#each data}}[{{num (get this headers.2)}},{{num (get this headers.3)}}],{{/each}}]
 	    }];
 options.plotOptions.scatter={marker: {radius: 4}};
 {{/partial}}
