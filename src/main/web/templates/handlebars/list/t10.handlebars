@@ -133,7 +133,7 @@
 						{{/resolve}}
 					</div>
 					{{!-- Summary --}}
-					<div class="col {{#if series}}col--md-17 col--lg-20{{else}}col--md-34 col--lg-40{{/if}} tiles__item--nav-type-fixed">
+                    <div class="col {{#if series}}col--md-17 col--lg-20 tiles__item--nav-type-fixed{{else}}col--md-34 col--lg-40 tiles__item--nav-type{{/if}}">
 						<h3 class="tiles__title-h3 tiles__title-h3--nav"><a href="{{uri}}">{{{featuredResult.results.0.description.title}}}</a></h3>
 						<div class="tiles__content tiles__content--nav">
                             <p>{{{featuredResult.results.0.description.summary}}}</p>
