@@ -47,15 +47,15 @@
 					<div role="radiogroup" aria-labelledby="period">
 						<label class="btn btn--secondary btn--chart-control btn--chart-control--all btn--secondary--active">
 							All
-							<input type="radio" name="range" data-chart-controls-range="all" aria-controls="data" checked>
+							<input type="radio" name="range" data-chart-controls-range="all" checked>
 						</label>
 						<label class="btn btn--secondary btn--chart-control">
 							10yrs
-							<input type="radio" name="range" data-chart-controls-range="10yr" aria-controls="data">
+							<input type="radio" name="range" data-chart-controls-range="10yr">
 						</label>
 						<label class="btn btn--secondary btn--chart-control">
 							5yrs
-							<input type="radio" name="range" data-chart-controls-range="5yr" aria-controls="data">
+							<input type="radio" name="range" data-chart-controls-range="5yr">
 						</label>
 						<label class="btn btn--secondary btn--chart-control">
 							Custom
@@ -197,7 +197,7 @@
     <div class="col col--md-45 col--lg-57 margin-left chart-area__timeseries">
         <div class="js-enhance--show nojs-hidden chart linechart" data-chart="" data-uri="{{uri}}" ></div>
         <div class="js-enhance--show nojs-hidden"></div>
-        <table class="tablesaw nojs-hidden" data-table="">
+        <table id="table" class="nojs-hidden" data-table="">
             <thead>
                 <tr>
                     <th>Period</th>
