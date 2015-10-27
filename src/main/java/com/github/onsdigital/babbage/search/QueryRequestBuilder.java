@@ -19,7 +19,9 @@ class QueryRequestBuilder {
 
     SearchRequestBuilder buildSearchRequest(SearchRequestBuilder builder, ONSQuery query) {
         builder.setQuery(buildSearchQuery(query))
-                .setSearchType(SearchType.QUERY_THEN_FETCH)
+                //checkout https://www.elastic.co/blog/understanding-query-then-fetch-vs-dfs-query-then-fetch
+                //we don't want shards to affect the results as latest results sometimes become less relevant than earlier ones
+                .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
                 .setTypes(query.getTypes());
         if (query.getFrom() != null) {
             builder.setFrom(query.getFrom());

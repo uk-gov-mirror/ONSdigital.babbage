@@ -3,7 +3,7 @@ options.chart.type="scatter";
 options.xAxis.categories=[]; {{!-- override categories --}}
 options.legend.enabled=false;
 options.series=[{
-	data: [{{#each data}}{label:"{{get categories @index}}",x:{{alt (get this headers.1) "null"}},y:{{alt (get this headers.2) "null"}} },{{/each}}],
+	data: [{{#each data}}{label:"{{get categories @index}}",x:{{num (get this headers.1)}},y:{{num (get this headers.2)}} },{{/each}}],
 }];
 
 options.plotOptions.scatter= {

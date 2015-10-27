@@ -8,7 +8,7 @@
 					{{> partials/breadcrumb}}
 
 					{{!-- Title & summary --}}
-					<h1 class="page-intro__title {{#unless description.summary}}margin-bottom--double{{/unless}}">{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}</h1>
+					<h1 class="page-intro__title {{#unless description.summary}}margin-bottom--double{{/unless}}"><span class="page-intro__type">Compendia:</span>{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}</h1>
 
 					{{#if description.summary}}
 						<p class="page-intro__content col col--md-47 col--lg-48">{{description.summary}}</p>
