@@ -7,7 +7,15 @@
                 {{> partials/breadcrumb}}
 
                 {{!-- Title & summary --}}
-                <h1 class="page-intro__title {{#unless description.summary}}margin-bottom{{/unless}}"><span class="page-intro__type">Spreadsheet version:</span>{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}</h1>
+                <h1 class="page-intro__title {{#unless description.summary}}margin-bottom{{/unless}}">
+                    <span class="page-intro__type">Spreadsheet version:</span>
+                    {{#each breadcrumb}}
+                        {{#if @last}}
+                            {{description.title}}
+                        {{/if}}
+                    {{/each}}
+                    {{#if description.edition}}: {{description.edition}}{{/if}}
+                </h1>
 
                 {{#if description.summary}}
                     <p class="page-intro__content col col--md-47 col--lg-48">{{description.summary}}</p>
@@ -64,22 +72,33 @@
 
                 {{#if versions}}
 
-                    <table width="100%" class="tablesaw">
+                    <table width="100%" class="tablesaw margin-bottom-md--2">
                         <thead>
                         <tr>
                             <th>Date updated</th>
                             <th>Reason for update</th>
-                            <th>More information</th>
-                            <th></th>
+                            <th>View data</th>
                         </tr>
                         </thead>
                         <tbody>
                         {{#each versions}}
                             <tr>
                                 <td>{{df updateDate}}</td>
-                                <td>{{correctionNotice}}</td>
-                                <td>{{information}}</td>
-                                <td><a href="#" class="btn btn--primary btn--thin btn--narrow btn--small float-right">Download</a></td>
+                                <td>{{#if correctionNotice}}{{correctionNotice}}{{else}}Superseded{{/if}}</td>
+                                <td>
+
+                                    {{#resolve this.uri}}
+
+                                        <form method="get" action="/file">
+                                            <button type="submit" title="Latest version" class="btn btn--primary btn--thin btn--narrow btn--small float-right download-analytics">
+                                                Download {{fe (lowercase (concat this.uri "/" downloads.0.file))}} ({{fs (lowercase (concat this.uri "/" downloads.0.file))}})
+                                            </button>
+                                            <input type="hidden" name="uri" value="{{absolute (concat this.uri "/" downloads.0.file)}}"/>
+                                        </form>
+
+                                    {{/resolve}}
+
+                                </td>
                             </tr>
                         {{/each}}
                         </tbody>
