@@ -4,7 +4,7 @@
         <div class="col-wrap">
             <div class="col">
                 {{!-- Breadcrumb --}}
-                {{> partials/breadcrumb}}
+                {{> list/partials/list-page-breadcrumb label=description.edition}}
 
                 {{!-- Title & summary --}}
                 <h1 class="page-intro__title {{#unless description.summary}}margin-bottom{{/unless}}">
@@ -66,13 +66,11 @@
         <div class="col-wrap">
             <div class="col col--lg-one col--md-two-one">
 
-                <p>Select or enter vintage dates to download data for this series that actually existed on those past dates in history. In general, economic data for past observation periods are revised as more accurate estimates become available. Entering vintage dates allows you to retrieve past revisions of economic data that were actually available as of specific dates.</p>
-
-                <p>Read download data help for more information about the options on this form. Note that files may take a while to download depending on the number of observations and vintage dates.</p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut a aliquet justo, condimentum faucibus lacus. Mauris quis blandit ipsum, sed euismod nunc. Mauris elit urna, imperdiet ut sagittis ut, ultricies sed dolor. Morbi sit amet fringilla elit, a mollis mauris. Duis feugiat, felis non elementum congue, lacus purus dignissim mi, ac pulvinar magna neque quis ligula. Integer rutrum nunc vel lorem facilisis viverra ut interdum lorem. Nullam semper convallis pharetra. Suspendisse sollicitudin erat ut diam interdum rutrum. Aliquam vitae ante ut metus molestie pellentesque eget vitae leo.</p>
 
                 {{#if versions}}
 
-                    <table width="100%" class="tablesaw margin-bottom-md--2">
+                    <table class="margin-bottom-md--2">
                         <thead>
                         <tr>
                             <th>Date updated</th>
@@ -81,16 +79,16 @@
                         </tr>
                         </thead>
                         <tbody>
-                        {{#each versions}}
+                        {{#loop versions reverse=true}}
                             <tr>
                                 <td>{{df updateDate}}</td>
-                                <td>{{#if correctionNotice}}{{correctionNotice}}{{else}}Superseded{{/if}}</td>
+                                <td>{{#if correctionNotice}}{{correctionNotice}}{{else}}Scheduled revision{{/if}}</td>
                                 <td>
 
                                     {{#resolve this.uri}}
 
                                         <form method="get" action="/file">
-                                            <button type="submit" title="Latest version" class="btn btn--primary btn--thin btn--narrow btn--small float-right download-analytics">
+                                            <button type="submit" title="Latest version" class="btn btn--primary btn--thin btn--narrow btn--small btn--full-width download-analytics">
                                                 Download {{fe (lowercase (concat this.uri "/" downloads.0.file))}} ({{fs (lowercase (concat this.uri "/" downloads.0.file))}})
                                             </button>
                                             <input type="hidden" name="uri" value="{{absolute (concat this.uri "/" downloads.0.file)}}"/>
@@ -100,7 +98,7 @@
 
                                 </td>
                             </tr>
-                        {{/each}}
+                        {{/loop}}
                         </tbody>
                     </table>
 
@@ -125,126 +123,3 @@
     </div>
 </div> {{!-- /page-content --}}
 
-{{!--
-<div class="wrapper panel--mar print-links">
-	<div class="grid-wrap">
-		<div class="grid-col desktop-grid-full-width">
-			{{md introduction}}
-			<div class="grid-wrap">
-				<div class="grid-col desktop-grid-two-thirds">
-					<div class="grid-wrap">
-						<!-- data FROM select boxes -->
-						<div class="grid-col desktop-grid-one-half">
-							<div class="grid-wrap">
-								<p class="grid-col grid-one-half">
-									Data published between
-								</p>
-								<select class="input grid-col grid-one-quarter" id="select-month" name="month">
-									<option value="1" selected>Sept</option>
-									<option value="2">Oct</option>
-								</select>
-								<select class="input grid-col grid-one-quarter" id="select-year" name="year">
-									<option value="1" selected>2014</option>
-									<option value="2">2015</option>
-								</select>
-							</div>
-						</div>
-						<!-- end of data from select boxes -->
-						<!-- data TO select boxes -->
-						<div class="grid-col desktop-grid-one-half">
-							<div class="grid-wrap">
-								<p class="grid-col grid-one-half">
-									To
-								</p>
-								<select class="input grid-col grid-one-quarter" id="select-month" name="month">
-									<option value="1" selected>Nov</option>
-									<option value="2">Dec</option>
-								</select>
-								<select class="input grid-col grid-one-quarter" id="select-year" name="year">
-									<option value="1" selected>2014</option>
-									<option value="2">2015</option>
-								</select>
-							</div>
-						</div>
-						<!-- end of data to select boxes -->
-					</div>
-				</div>
-				<div class="grid-col desktop-grid-one-third">
-					<div class="grid-wrap">
-						<div class="grid-col grid-one-half">
-							<a href="#" class="btn btn--primary btn--small btn--thin btn--narrow">
-								Show
-							</a>
-						</div>
-					</div>
-				</div>
-			</div>
-			<table width="100%" class="tablesaw">
-				<thead>
-					<tr>
-						<th>Date updated</th>
-						<th>Reason for update</th>
-						<th>More information</th>
-						<th class="text-right"><label>Select all <input type="checkbox" name="checkbox" value="1"></label></th>
-					</tr>
-				</thead>
-				<tbody>
-					{{#each versions}}
-					<tr>
-						<td>{{date}}</td>
-						<td>{{reason}}</td>
-						<td>{{information}}</td>
-						<td class="text-right"><input type="checkbox" name="checkbox" value="1"></td>
-					</tr>
-					{{/each}}
-				</tbody>
-			</table>
-			<div class="slate--mid-grey panel--pad-small panel--bottom-mar">
-				<div class="grid-wrap">
-					<div class="grid-col desktop-grid-one-third desktop-grid-push-two-thirds">
-						<a href="#" class="btn btn--primary btn--thin btn--narrow">.CSV
-							<span class="icon icon-download icon--button-inline"></span>
-						</a>
-						<a href="#" class="btn btn--primary btn--thin btn--narrow">.XLSX
-							<span class="icon icon-download icon--button-inline"></span>
-						</a>
-					</div>
-				</div>
-			</div>
-			{{#each sections}}
-			<h2>{{title}}</h2>
-			{{md markdown}}
-			{{/each}}
-		</div><!-- /grid-full-width -->
-		<div class="grid-col desktop-grid-one-half">
-			<article class="box box--padded sectioned">
-				<header class="box__header">
-					<h3>Methodology</h3>
-				</header>
-				<div class="box__content">
-					<ul class="list--neutral">
-						{{#each methodology}}
-						<li class="flush--third--bottom">
-							<a href="{{uri}}">{{title}}</a>
-						</li>
-						{{/each}}
-					</ul>
-				</div>
-			</article>
-		</div>
-		<div class="grid-col desktop-grid-one-half">
-			<article class="box box--padded sectioned">
-				<header class="box__header">
-					<h3>Contact details for this time series</h3>
-				</header>
-				<div class="box__content">
-					<address>
-						{{#if description.contact.name}}{{description.contact.name}}</br>{{/if}}
-	              		<a href="mailto:{{description.contact.email}}">{{description.contact.email}}</a></br>
-	              		{{#if description.contact.telephone}}Telephone: {{description.contact.telephone}}{{/if}}
-	                </address>
-				</div>
-			</article>
-		</div>
-	</div><!-- /grid-wrap -->
-</div> --}}
