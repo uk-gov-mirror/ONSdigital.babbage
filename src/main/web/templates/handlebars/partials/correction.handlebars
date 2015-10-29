@@ -1,0 +1,12 @@
+{{#if versions}}
+	<section class="show-hide--warning__content section__content--markdown">
+		{{#if_all versions alerts}}
+			<h3 class="alert--correction__title">Correction</h3>
+		{{/if_all}}
+		{{#each versions}}
+			<p class="alert__date">{{df updateDate}}</p>
+			{{md correctionNotice}}
+			<a class="btn btn--primary print--hide" href="{{uri}}">View previous version</a>
+		{{/each}}
+	</section>
+{{/if}}
