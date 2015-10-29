@@ -12,8 +12,8 @@ import com.github.onsdigital.babbage.search.input.SortBy;
 import com.github.onsdigital.babbage.search.model.ContentType;
 import com.github.onsdigital.babbage.search.model.field.FilterableField;
 import com.github.onsdigital.babbage.template.TemplateService;
-import com.github.onsdigital.content.util.ContentUtil;
-import com.github.onsdigital.content.util.URIUtil;
+import com.github.onsdigital.babbage.util.URIUtil;
+import com.github.onsdigital.babbage.util.json.JsonUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -63,7 +63,7 @@ public abstract class ListPageBaseRequestHandler implements RequestHandler {
 
         SearchResponseHelper responseHelper = doSearch(request, query);
         Paginator.assertPage(query.getPage(), responseHelper);
-        return ContentUtil.serialise(responseHelper.getResult());
+        return JsonUtil.toJson(responseHelper.getResult());
     }
 
     @Override

@@ -16,9 +16,8 @@ import com.github.onsdigital.babbage.search.model.ContentType;
 import com.github.onsdigital.babbage.search.model.field.FilterableField;
 import com.github.onsdigital.babbage.search.model.field.SearchableField;
 import com.github.onsdigital.babbage.template.TemplateService;
+import com.github.onsdigital.babbage.util.URIUtil;
 import com.github.onsdigital.babbage.util.json.JsonUtil;
-import com.github.onsdigital.content.service.ContentNotFoundException;
-import com.github.onsdigital.content.util.URIUtil;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -56,7 +55,7 @@ public class Search {
     private final String SEARCH_PAGE_TYPE = "search";
 
     @GET
-    public Object get(@Context HttpServletRequest request, @Context HttpServletResponse response) throws IOException, ContentNotFoundException, ContentReadException, URISyntaxException {
+    public Object get(@Context HttpServletRequest request, @Context HttpServletResponse response) throws IOException, ContentReadException, URISyntaxException {
 
         String type = URIUtil.resolveRequestType(request.getRequestURI());
         String query = SearchRequestHelper.extractSearchTerm(request);

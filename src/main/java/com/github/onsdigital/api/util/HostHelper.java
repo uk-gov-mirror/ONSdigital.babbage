@@ -1,4 +1,4 @@
-package com.github.onsdigital.util;
+package com.github.onsdigital.api.util;
 
 import java.net.MalformedURLException;
 import java.net.URL;
