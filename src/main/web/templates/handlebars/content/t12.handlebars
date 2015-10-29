@@ -1,155 +1,159 @@
-<div class="page-header slate slate--light-green">
-	<div class="wrapper">
-		{{> templates/handlebars/partials/breadcrumb}}
-		<p class="page-header__title">
-			Time series previous versions
-		</p>
-		<h1 class="page-header__title flush--half--bottom">{{description.title}}</h1>
-		<div class="grid-wrap mini">
-			<p class="grid-col tablet-grid-one-quarter {{#if description.nationalStatistic}}page-header__meta-block-with-img{{/if}}">
-				{{#if description.nationalStatistic}}
-				<img src="../../node_modules/ONS-Pattern-Library/ui/img/national-statistics.png" alt="National Statistics logo">
-				{{/if}}
-				<span>Contact: </span><br/><a href="mailto:{{description.contact.email}}">{{#if description.contact.name}}{{description.contact.name}}{{else}}{{description.contact.email}}{{/if}}</a>
-			<p class="grid-col tablet-grid-one-quarter divider--border-left">
-				<span>Data period covered: </span>{{description.period}}
-			</p>
-			<p class="grid-col tablet-grid-one-quarter divider--border-left">
-				<span>Next release: </span></br>{{df description.nextRelease}}
-			</p>
-			<p class="grid-col tablet-grid-one-quarter divider--border-left">
-				<span>Series ID: </span>{{description.seriesID}}
-				</br>
-				<span>Units :</span>{{description.units}}
-				</br>
-				{{description.adjustment}}
-			</p>
-		</div>
-		<!-- /grip-wrap -->
-		
-	</div>
-	<!-- /wrapper -->
-</div>
-<!-- /page-header -->
-<div class="wrapper panel--mar print-links">
-	<div class="grid-wrap">
-		<div class="grid-col desktop-grid-full-width">
-			{{md introduction}}
-			<div class="grid-wrap">
-				<div class="grid-col desktop-grid-two-thirds">
-					<div class="grid-wrap">
-						<!-- data FROM select boxes -->
-						<div class="grid-col desktop-grid-one-half">
-							<div class="grid-wrap">
-								<p class="grid-col grid-one-half">
-									Data published between
-								</p>
-								<select class="input grid-col grid-one-quarter" id="select-month" name="month">
-									<option value="1" selected>Sept</option>
-									<option value="2">Oct</option>
-								</select>
-								<select class="input grid-col grid-one-quarter" id="select-year" name="year">
-									<option value="1" selected>2014</option>
-									<option value="2">2015</option>
-								</select>
-							</div>
-						</div>
-						<!-- end of data from select boxes -->
-						<!-- data TO select boxes -->
-						<div class="grid-col desktop-grid-one-half">
-							<div class="grid-wrap">
-								<p class="grid-col grid-one-half">
-									To
-								</p>
-								<select class="input grid-col grid-one-quarter" id="select-month" name="month">
-									<option value="1" selected>Nov</option>
-									<option value="2">Dec</option>
-								</select>
-								<select class="input grid-col grid-one-quarter" id="select-year" name="year">
-									<option value="1" selected>2014</option>
-									<option value="2">2015</option>
-								</select>
-							</div>
-						</div>
-						<!-- end of data to select boxes -->
-					</div>
-				</div>
-				<div class="grid-col desktop-grid-one-third">
-					<div class="grid-wrap">
-						<div class="grid-col grid-one-half">
-							<a href="#" class="btn btn--primary btn--small btn--thin btn--narrow">
-								Show
-							</a>
-						</div>
-					</div>
-				</div>
-			</div>
-			<table width="100%" class="tablesaw">
-				<thead>
-					<tr>
-						<th>Date updated</th>
-						<th>Reason for update</th>
-						<th>More information</th>
-						<th class="text-right"><label>Select all <input type="checkbox" name="checkbox" value="1"></label></th>
-					</tr>
-				</thead>
-				<tbody>
-					{{#each versions}}
-					<tr>
-						<td>{{date}}</td>
-						<td>{{reason}}</td>
-						<td>{{information}}</td>
-						<td class="text-right"><input type="checkbox" name="checkbox" value="1"></td>
-					</tr>
-					{{/each}}
-				</tbody>
-			</table>
-			<div class="slate--mid-grey panel--pad-small panel--bottom-mar">
-				<div class="grid-wrap">
-					<div class="grid-col desktop-grid-one-third desktop-grid-push-two-thirds">
-						<a href="#" class="btn btn--primary btn--thin btn--narrow">.CSV
-							<span class="icon icon-download icon--button-inline"></span>
-						</a>
-						<a href="#" class="btn btn--primary btn--thin btn--narrow">.XLSX
-							<span class="icon icon-download icon--button-inline"></span>
-						</a>
-					</div>
-				</div>
-			</div>
-			{{#each sections}}
-			<h2>{{title}}</h2>
-			{{md markdown}}
-			{{/each}}
-		</div><!-- /grid-full-width -->
-		<div class="grid-col desktop-grid-one-half">
-			<article class="box box--padded sectioned">
-				<header class="box__header">
-					<h3>Methodology</h3>
-				</header>
-				<div class="box__content">
-					<ul class="list--neutral">
-						{{#each methodology}}
-						<li class="flush--third--bottom">
-							<a href="{{uri}}">{{title}}</a>
-						</li>
-						{{/each}}
-					</ul>
-				</div>
-			</article>
-		</div>
-		<div class="grid-col desktop-grid-one-half">
-			<article class="box box--padded sectioned">
-				<header class="box__header">
-					<h3>Contact details for this time series</h3>
-				</header>
-				<div class="box__content">
-					<address>
-						{{#if description.contact.name}}{{description.contact.name}}</br>{{/if}}
-	              		<a href="mailto:{{description.contact.email}}">{{description.contact.email}}</a></br>
-	              		{{#if description.contact.telephone}}Telephone: {{description.contact.telephone}}{{/if}}
-	                </address>
-				</div>
-			</article>
-		</div>
-	</div><!-- /grid-wrap -->
-</div>
+{{!-- Page header --}}
+<div class="page-intro">
+    <div class="wrapper">
+        <div class="col-wrap">
+            <div class="col">
+                {{!-- Breadcrumb --}}
+                {{> list/partials/list-page-breadcrumb label=description.edition}}
+
+                {{!-- Title & summary --}}
+                <h1 class="page-intro__title {{#unless description.summary}}margin-bottom{{/unless}}">
+                    <span class="page-intro__type">Spreadsheet version:</span>
+                    {{#each breadcrumb}}
+                        {{#if @last}}
+                            {{description.title}}
+                        {{/if}}
+                    {{/each}}
+                    {{#if description.edition}}: {{description.edition}}{{/if}}
+                </h1>
+
+                {{#if description.summary}}
+                    <p class="page-intro__content col col--md-47 col--lg-48">{{description.summary}}</p>
+                {{/if}}
+
+
+
+                    {{meta}}
+
+
+
+
+
+            </div>
+        </div>
+    </div> {{!-- /wrapper --}}
+
+    <div class="meta-wrap">
+        <div class="wrapper">
+
+            {{!-- Meta info --}}
+            <div class="col-wrap">
+
+                {{#each breadcrumb}}
+                    {{#if @last}}
+                        {{#resolve uri assign="parent"}}
+                            {{!-- Contact & NS logo--}}
+                            <p class="col col--md-12 col--lg-15 meta__item">
+                                {{#if parent.description.nationalStatistic}}
+                                    <img class="meta__image" src="/node_modules/ONS-Pattern-Library/dist/img/national-statistics.png" alt="National Statistics logo" />
+                                {{/if}}
+                                <span>{{labels.meta-contact}}: </span><br/><a href="mailto:{{parent.description.contact.email}}">{{#if parent.description.contact.name}}{{parent.description.contact.name}}{{else}}{{parent.description.contact.email}}{{/if}}</a>
+                            </p>
+
+                            {{!-- Release date --}}
+                            <p class="col col--md-12 col--lg-15 meta__item">
+                                <span>{{labels.release-date}}: </span><br/>{{df parent.description.releaseDate}}<br/>
+                            </p>
+
+                            {{!-- Next release --}}
+                            <p class="col col--md-12 col--lg-15 meta__item">
+                                <span>{{labels.release-next}}: </span><br/>{{#if parent.description.nextRelease}}{{parent.description.nextRelease}}{{else}}To be announced{{/if}}
+                            </p>
+
+                            {{!-- Dataset ID --}}
+                            {{#if parent.description.datasetId}}
+                                <p class="col col--md-12 col--lg-15 meta__item">
+                                    <span>{{labels.dataset-id}}: </span>{{parent.description.datasetId}}&nbsp;
+                                    <span><a href="#" class="tooltip-npl" title="This series ID is a unique random identifier for this individual time series. The digits themselves do not have any specific meaning" aria-label="This series ID is a unique random identifier for this individual time series. The digits themselves do not have any specific meaning"> {{labels.dataset-what-is}} </a></span>
+                                </p>
+                            {{/if}}
+                        {{/resolve}}
+                    {{/if}}
+                {{/each}}
+            </div>
+        </div> {{!-- /wrapper --}}
+    </div> {{!-- /meta-wrap --}}
+</div> {{!-- /page-intro --}}
+
+<div class="page-content">
+    <div class="wrapper">
+        <div class="col-wrap">
+            <div class="col col--lg-one col--md-two-one">
+
+                <div class="section__content--static-markdown">
+
+                    <p>Provides files to download data as it existed for this spreadsheet on previous dates. </p>
+
+                    <p>Statistics are most often revised for 1 of 2 reasons:</p>
+
+                    <ol>
+                        <li>For certain statistics initial estimates are released with the expectation that these may be revised and updated as further data becomes available.</li>
+                        <li>Revisions may also be made when methods or systems are changed.</li>
+                    </ol>
+
+                    <p>These types of planned revisions should not be confused with errors in released statistics, which are genuine mistakes. Despite our best efforts and quality control procedures, mistakes can happen. When they do, corrections are made in a timely manner, announced and clearly explained to users in line with the Code of Practice for Official Statistics (Principle 2, Practice 7).</p>
+
+                </div>
+
+                {{#if versions}}
+
+                    <table class="margin-bottom-md--2">
+                        <thead>
+                        <tr>
+                            <th>Date updated</th>
+                            <th>Reason for update</th>
+                            <th>View data</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {{#loop versions reverse=true}}
+                            <tr>
+                                <td>{{df updateDate}}</td>
+                                <td>{{#if correctionNotice}}{{correctionNotice}}{{else}}Scheduled revision{{/if}}</td>
+                                <td>
+
+                                    {{#resolve this.uri}}
+
+                                        <form method="get" action="/file">
+                                            <button type="submit" title="Latest version" class="btn btn--primary btn--thin btn--narrow btn--small btn--full-width download-analytics">
+                                                Download {{fe (lowercase (concat this.uri "/" downloads.0.file))}} ({{fs (lowercase (concat this.uri "/" downloads.0.file))}})
+                                            </button>
+                                            <input type="hidden" name="uri" value="{{absolute (concat this.uri "/" downloads.0.file)}}"/>
+                                        </form>
+
+                                    {{/resolve}}
+
+                                </td>
+                            </tr>
+                        {{/loop}}
+                        </tbody>
+                    </table>
+
+                {{/if}}
+
+
+
+
+
+                {{!-- INFORMATION AND NOTES --}}
+                {{#each breadcrumb}}
+                    {{#if @last}}
+                        {{#resolve uri assign="parent"}}
+                            {{#if parent.section.markdown}}
+                                <div class="section__content--static-markdown">
+                                    <section>
+                                        <h3>{{labels.dataset-notes}}</h3>
+                                        {{md parent.section.markdown}}
+                                    </section>
+                                </div>
+                            {{/if}}
+                        {{/resolve}}
+                    {{/if}}
+                {{/each}}
+
+            </div>
+        </div>
+    </div>
+
+</div> {{!-- /page-content --}}
+

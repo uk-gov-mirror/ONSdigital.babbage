@@ -16,28 +16,43 @@
 		</div>
 	</div> {{!-- /wrapper --}}
 
-<div class="alert">
-	<div class="wrapper">
-		<div class="col-wrap">
-			<div class="col">
-				{{!-- Latest info --}}
-				{{#if description.latestRelease}}
-					<p class="alert__title">This is the latest release</p> <a class="btn btn--primary print--hide" href="{{parentPath uri}}/previousReleases">view previous releases</a>
-				{{else}}
-					{{#resolve (concat (parentPath uri) "/latest") filter="title"}}
-						<p class="alert__title">This is not the latest release</p> <a class="btn btn--primary print--hide" href="{{uri}}">view latest release</a>
-					{{/resolve}}
-				{{/if}}
-			</div>
-		</div>
-	</div> {{!-- /wrapper --}}
-</div> {{!-- /slate--ship-gray --}}
 
-<div class="meta-wrap">
-	<div class="wrapper">
+	{{#if_any description.latestRelease versions alerts}}
+		<div class="alert">
+			<div class="wrapper">
+				<div class="col-wrap">
+					<div class="col">
+						{{!-- Latest info --}}
+						{{> partials/latest-release}}
 
-		{{!-- Meta info --}}
-		<div class="col-wrap">
+						{{!-- Corrections & alerts --}}
+						{{#if_any versions alerts}}
+							<div class="show-hide js-show-hide">
+								<div class="js-show-hide__title">
+									<div class="show-hide--warning">!</div>
+
+									<h2 class="show-hide--warning__title inline-block">
+										{{#if_all versions alerts}}Corrections and notices{{else}}{{#if versions}}
+											Correction{{#if plural}}s{{/if}}{{else}}Notice{{#if plural}}
+											s{{/if}}{{/if}}{{/if_all}}
+									</h2>
+								</div>
+
+								<div class="js-show-hide__content">
+									{{> partials/correction}}
+									{{> partials/notice}}
+								</div>
+
+                            </div>
+                        {{/if_any}}
+                    </div>
+                </div>
+            </div> {{!-- /wrapper --}}
+        </div> {{!-- /slate--ship-gray --}}
+    {{/if_any}}
+
+      <div class="meta-wrap">
+        <div class="wrapper">
 
 			{{!-- NS logo --}}
 			{{#if description.nationalStatistic}}
@@ -74,13 +89,12 @@
 					{{labels.dl-pdf}}
 				</a>
 			</p>
-		</div>
-	</div> {{!-- /wrapper --}}
-</div> {{!-- /meta-wrap --}}
+        </div> {{!-- /wrapper --}}
+      </div> {{!-- /meta-wrap --}}
+
+
 
 </div> {{!-- /page-intro --}}
-
-
 
 {{!-- TABLE OF CONTENTS --}}
 <div class="page-content">
@@ -131,7 +145,7 @@
 
 
 								</h2>
-								<div class="accordion__content panel--bottom-mar-small" aria-labelledby="sc-{{@index_1}}">
+								<div class="accordion__content" aria-labelledby="sc-{{@index_1}}">
 									{{md markdown}}
 									<a class="print--hide jsEnhanceAnimateScroll" href="#toc" title="{{labels.back-to-toc}}" class="">{{labels.back-to-toc}}</a>
 								</div>
@@ -143,7 +157,7 @@
 									<span class="section__content-number">{{nf (add sections.size (increment accordion.size))}}.</span>
 									Methodology
 								</h2>
-								<div class="accordion__content panel--bottom-mar-small" aria-labelledby="sc-{{@index_1}}">
+								<div class="accordion__content" aria-labelledby="sc-{{@index_1}}">
 									<ul class="list--neutral">
 									{{#each relatedMethodology}}
 										{{#resolve this.uri filter="description"}}

@@ -7,6 +7,8 @@ import com.github.onsdigital.babbage.template.handlebars.helpers.base.BabbageHan
 import com.github.onsdigital.babbage.template.handlebars.helpers.markdown.util.ChartTagReplacer;
 import com.github.onsdigital.babbage.template.handlebars.helpers.markdown.util.ImageTagReplacer;
 import com.github.onsdigital.babbage.template.handlebars.helpers.markdown.util.TableTagReplacer;
+import com.github.onsdigital.babbage.util.RequestUtil;
+import com.github.onsdigital.babbage.util.ThreadContext;
 
 import java.io.IOException;
 
@@ -26,13 +28,18 @@ public class CustomMarkdownHelper extends MarkdownHelper implements BabbageHandl
         if (options.isFalsy(context)) {
             return "";
         }
+
+        RequestUtil.Location location = (RequestUtil.Location)ThreadContext.getData("location");
+        String path = location.getPathname();
+        System.out.println("uri:" + location.getPathname());
+
         String markdown = context.toString();
         markdown = super.apply(markdown, options).toString();
         markdown = markdown.replaceAll(SUBSCRIPT_PATTERN, "<sub>$1</sub>");
         markdown = markdown.replaceAll(SUPER_SCRIPT_PATTERN, "<sup>$1</sup>");
-        markdown = new ChartTagReplacer().replaceCustomTags(markdown);
-        markdown = new TableTagReplacer().replaceCustomTags(markdown);
-        markdown = new ImageTagReplacer().replaceCustomTags(markdown);
+        markdown = new ChartTagReplacer(path).replaceCustomTags(markdown);
+        markdown = new TableTagReplacer(path).replaceCustomTags(markdown);
+        markdown = new ImageTagReplacer(path).replaceCustomTags(markdown);
         return new Handlebars.SafeString(markdown) ;
     }
 

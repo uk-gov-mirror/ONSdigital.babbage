@@ -4,6 +4,7 @@ import com.github.davidcarboni.restolino.json.Serialiser;
 import com.github.onsdigital.babbage.template.TemplateService;
 
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -13,6 +14,10 @@ import java.util.regex.Pattern;
 public class ImageTagReplacer extends TagReplacementStrategy {
 
     private static final Pattern pattern = Pattern.compile("<ons-image\\spath=\"([-A-Za-z0-9+&@#/%?=~_|!:,.;()*$]+)\"?\\s?/>");
+
+    public ImageTagReplacer(String path) {
+        super(path);
+    }
 
     /**
      * Gets the pattern that this strategy is applied to.
@@ -33,13 +38,10 @@ public class ImageTagReplacer extends TagReplacementStrategy {
     @Override
     public String replace(Matcher matcher) throws IOException {
 
-        String uri = matcher.group(1);
+        String tagPath = matcher.group(1);
+        String figureUri = resolveFigureUri(this.getPath(), Paths.get(tagPath));
 
-        if (!uri.startsWith("/")) {
-            uri = "/" + uri;
-        }
-
-        return TemplateService.getInstance().renderTemplate("partials/image", Serialiser.serialise(new ImageData(uri)));
+        return TemplateService.getInstance().renderTemplate("partials/image", Serialiser.serialise(new ImageData(figureUri)));
     }
 
     /**

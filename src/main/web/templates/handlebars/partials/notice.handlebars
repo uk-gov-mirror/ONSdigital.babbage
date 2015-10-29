@@ -1,0 +1,12 @@
+{{#if alerts}}
+	<section class="show-hide--warning__content section__content--markdown">
+		{{#if_all versions alerts}}
+			<h3 class="alert--notice__title">Notice</h3>
+		{{/if_all}}
+		{{#each alerts}}
+			<p class="alert__date">{{df date}}</p>
+			{{md markdown}}
+		{{/each}}
+	</section>
+{{/if}}
+
