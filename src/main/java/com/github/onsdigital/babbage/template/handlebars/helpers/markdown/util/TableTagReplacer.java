@@ -7,6 +7,7 @@ import com.github.onsdigital.babbage.template.TemplateService;
 import com.github.onsdigital.babbage.util.URIUtil;
 
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.LinkedHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -17,6 +18,10 @@ import java.util.regex.Pattern;
 public class TableTagReplacer extends TagReplacementStrategy {
 
     private static final Pattern pattern = Pattern.compile("<ons-table\\spath=\"([-A-Za-z0-9+&@#/%?=~_|!:,.;()*$]+)\"?\\s?/>");
+
+    public TableTagReplacer(String path) {
+        super(path);
+    }
 
     /**
      * Gets the pattern that this strategy is applied to.
@@ -38,15 +43,12 @@ public class TableTagReplacer extends TagReplacementStrategy {
     @Override
     public String replace(Matcher matcher) throws IOException {
 
-        String uri = matcher.group(1);
-
-        if (!uri.startsWith("/")) {
-            uri = "/" + uri;
-        }
+        String tagPath = matcher.group(1);
+        String figureUri = resolveFigureUri(this.getPath(), Paths.get(tagPath));
 
         try (
-                ContentStream json = ContentClient.getInstance().getContentStream(uri);
-                ContentStream html = ContentClient.getInstance().getResource(URIUtil.cleanUri(uri) + ".html")
+                ContentStream json = ContentClient.getInstance().getContentStream(figureUri);
+                ContentStream html = ContentClient.getInstance().getResource(URIUtil.cleanUri(figureUri) + ".html")
         ) {
 
             LinkedHashMap<String, Object> htmlEntry = new LinkedHashMap<>();
@@ -56,7 +58,7 @@ public class TableTagReplacer extends TagReplacementStrategy {
             return result;
 
         } catch (ContentReadException e) {
-            System.err.println("Failed rendering table, uri:" + uri);
+            System.err.println("Failed rendering table, uri:" + figureUri);
             return matcher.group();
         }
     }
