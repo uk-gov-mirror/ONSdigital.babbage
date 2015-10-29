@@ -77,10 +77,10 @@
                                 {{#if file}}
                                     <div class="col col--md-8 col--lg-9 margin-right">
                                         <form method="get" action="/file" class="margin-bottom">
-                                            <button type="submit" title="Latest version" class="btn btn--primary btn--full-width btn--thick download-analytics">
-                                                {{fe (lowercase file)}} ({{fs (lowercase file)}})
+                                            <button type="submit" title="Latest version" class="btn btn--primary btn--thick download-analytics">
+                                                {{fe (lowercase (concat this.uri "/" downloads.0.file))}} ({{fs (lowercase (concat this.uri "/" downloads.0.file))}})
                                             </button>
-                                            <input type="hidden" name="uri" value="{{lowercase file}}"/>
+                                            <input type="hidden" name="uri" value="{{concat this.uri "/" downloads.0.file}}"/>
                                         </form>
                                     </div>
                                 {{/if}}
@@ -125,9 +125,9 @@
                                     <div class="col col--md-8 col--lg-9 margin-right">
                                         <form method="get" action="/file">
                                             <button type="submit" title="Latest version" class="btn btn--primary btn--thick download-analytics">
-                                                {{fe (lowercase (concat this.uri downloads.0.file))}} ({{fs (lowercase (concat this.uri downloads.0.file))}})
+                                                {{fe (lowercase (concat this.uri "/" downloads.0.file))}} ({{fs (lowercase (concat this.uri "/" downloads.0.file))}})
                                             </button>
-                                            <input type="hidden" name="uri" value="{{absolute (concat this.uri downloads.0.file)}}"/>
+                                            <input type="hidden" name="uri" value="{{concat this.uri "/" downloads.0.file}}"/>
                                         </form>
                                     </div>
 
@@ -140,7 +140,7 @@
                                                     <button type="submit" title="Latest version" class="btn btn--simple download-analytics">
                                                         {{title}} ({{fe (lowercase file)}}, {{fs (lowercase file)}})
                                                     </button>
-                                                    <input type="hidden" name="uri" value="{{lowercase file}}"/>
+                                                    <input type="hidden" name="uri" value="{{absolute file}}"/>
                                                 </form>
                                             {{/each}}
                                         </ul>
