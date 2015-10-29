@@ -16,40 +16,8 @@
 		</div>
 	</div> {{!-- /wrapper --}}
 
-
-	{{#if_any description.latestRelease versions alerts}}
-		<div class="alert">
-			<div class="wrapper">
-				<div class="col-wrap">
-					<div class="col">
-						{{!-- Latest info --}}
-						{{> partials/latest-release}}
-
-						{{!-- Corrections & alerts --}}
-						{{#if_any versions alerts}}
-							<div class="show-hide js-show-hide">
-								<div class="js-show-hide__title">
-									<div class="show-hide--warning">!</div>
-
-									<h2 class="show-hide--warning__title inline-block">
-										{{#if_all versions alerts}}Corrections and notices{{else}}{{#if versions}}
-											Correction{{#if plural}}s{{/if}}{{else}}Notice{{#if plural}}
-											s{{/if}}{{/if}}{{/if_all}}
-									</h2>
-								</div>
-
-								<div class="js-show-hide__content">
-									{{> partials/correction}}
-									{{> partials/notice}}
-								</div>
-
-                            </div>
-                        {{/if_any}}
-                    </div>
-                </div>
-            </div> {{!-- /wrapper --}}
-        </div> {{!-- /slate--ship-gray --}}
-    {{/if_any}}
+	{{!-- Latest release flag, corrections and notices --}}
+	{{> partials/alert}}
 
       <div class="meta-wrap">
         <div class="wrapper">

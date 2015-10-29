@@ -19,26 +19,8 @@
 		</div>
 	</div> {{!-- /wrapper --}}
 
-	{{!-- FIX WHEN LATEST FUNCTION WORKING ON COMPENDIUM --}}
-	<!-- <div class="alert">
-		<div class="wrapper">
-			<div class="col-wrap">
-				<div class="col">
-
-					{{!-- Latest info --}}
-					{{#resolve (concat (parentPath uri) "/latest") filter="title"}}
-					{{#if_eq uri ../uri}}
-					<p class="alert__content">This is the latest release</p> <a class="btn print--hide" href="{{parentPath uri}}/previousReleases">view previous releases</a>
-
-					{{else}}
-					<p class="alert__content">This is not the latest release</p> <a class="btn print--hide" href="{{uri}}">view latest release</a>
-					{{/if_eq}}
-					{{/resolve}}
-
-				</div>
-			</div>
-		</div> {{!-- /wrapper --}}
-	</div> {{!-- /alert --}} -->
+	{{!-- Latest release flag, corrections and notices --}}
+	{{> partials/alert}}
 
 	<div class="meta-wrap">
 		<div class="wrapper">
