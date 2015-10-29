@@ -20,8 +20,6 @@
 
 	<div class="meta-wrap">
 		<div class="wrapper">
-
-			{{!-- Meta info --}}
 			<div class="col-wrap">
 
 				{{!-- NS logo --}}
@@ -47,6 +45,17 @@
 					<span>{{labels.release-next}}: </span><br/>{{description.nextRelease}}
 				</p>
 				{{/if}}
+
+				{{!-- Print and download --}}
+				<p class="col col--md-12 col--lg-15 print--hide meta__item">
+					<a href="" id="jsEnhancePrint" class="link-complex nojs-hidden js-enhance--show">
+						Print article
+					</a>
+					<br class="nojs-hidden js-enhance--show"/>
+					<a href="{{uri}}/pdf" class="link-complex">
+						{{labels.dl-pdf}}
+					</a>
+				</p>
 			</div>
 		</div> {{!-- /wrapper --}}
 	</div> {{!-- /meta-wrap --}}

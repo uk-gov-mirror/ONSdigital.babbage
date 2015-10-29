@@ -19,46 +19,48 @@
 	{{!-- Latest release flag, corrections and notices --}}
 	{{> partials/alert}}
 
-      <div class="meta-wrap">
-        <div class="wrapper">
+	<div class="meta-wrap">
+		<div class="wrapper">
+			<div class="col-wrap">
 
-			{{!-- NS logo --}}
-			{{#if description.nationalStatistic}}
-				<p class="col col--md-4 col--lg-4 padding-left">
-					<img class="meta__image" src="/node_modules/ONS-Pattern-Library/dist/img/national-statistics.png" alt="National Statistics logo"/>
+				{{!-- NS logo --}}
+				{{#if description.nationalStatistic}}
+					<p class="col col--md-4 col--lg-4 padding-left">
+						<img class="meta__image" src="/node_modules/ONS-Pattern-Library/dist/img/national-statistics.png" alt="National Statistics logo"/>
+					</p>
+				{{/if}}
+
+				{{!-- Contact --}}
+				<p class="col {{#if description.nationalStatistic}}col--md-8 col--lg-11{{else}}col--md-12 col--lg-15{{/if}} meta__item">
+					<span>{{labels.meta-contact}}: </span><br/><a href="mailto:{{description.contact.email}}">{{#if description.contact.name}}{{description.contact.name}}{{else}}{{description.contact.email}}{{/if}}</a>
 				</p>
-			{{/if}}
 
-			{{!-- Contact --}}
-			<p class="col {{#if description.nationalStatistic}}col--md-8 col--lg-11{{else}}col--md-12 col--lg-15{{/if}} meta__item">
-				<span>{{labels.meta-contact}}: </span><br/><a href="mailto:{{description.contact.email}}">{{#if description.contact.name}}{{description.contact.name}}{{else}}{{description.contact.email}}{{/if}}</a>
-			</p>
+				{{!-- Release date --}}
+				<p class="col col--md-12 col--lg-15 meta__item">
+					<span>{{labels.release-date}}: </span><br/>{{df description.releaseDate}}<br/>
+				</p>
 
-			{{!-- Release date --}}
-			<p class="col col--md-12 col--lg-15 meta__item">
-				<span>{{labels.release-date}}: </span><br/>{{df description.releaseDate}}<br/>
-			</p>
-
-			{{!-- Next release --}}
-			<p class="col col--md-12 col--lg-15 meta__item">
-				<span>{{labels.release-next}}: </span><br/>{{#if description.nextRelease}}{{description.nextRelease}}{{else}}To be announced{{/if}}
-			</p>
+				{{!-- Next release --}}
+				<p class="col col--md-12 col--lg-15 meta__item">
+					<span>{{labels.release-next}}: </span><br/>{{#if description.nextRelease}}{{description.nextRelease}}{{else}}To be announced{{/if}}
+				</p>
 
 
-			{{!-- Print and download --}}
-			<p class="col col--md-12 col--lg-15 print--hide meta__item">
-				<a href="" id="jsEnhancePrint" class="link-complex nojs-hidden js-enhance--show">
-					{{!-- <span class="icon icon-print"></span> --}}
-					Print statistical bulletin
-				</a>
-				<br class="nojs-hidden js-enhance--show"/>
-				{{!-- <span class="icon icon-download"></span> --}}
-				<a href="{{uri}}/pdf" class="link-complex">
-					{{labels.dl-pdf}}
-				</a>
-			</p>
-        </div> {{!-- /wrapper --}}
-      </div> {{!-- /meta-wrap --}}
+				{{!-- Print and download --}}
+				<p class="col col--md-12 col--lg-15 print--hide meta__item">
+					<a href="" id="jsEnhancePrint" class="link-complex nojs-hidden js-enhance--show">
+						{{!-- <span class="icon icon-print"></span> --}}
+						Print statistical bulletin
+					</a>
+					<br class="nojs-hidden js-enhance--show"/>
+					{{!-- <span class="icon icon-download"></span> --}}
+					<a href="{{uri}}/pdf" class="link-complex">
+						{{labels.dl-pdf}}
+					</a>
+				</p>
+			</div>
+		</div> {{!-- /wrapper --}}
+	</div> {{!-- /meta-wrap --}}
 
 
 
