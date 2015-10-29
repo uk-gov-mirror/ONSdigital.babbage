@@ -46,7 +46,7 @@ public class Search {
             ContentType.static_article,
             ContentType.static_methodology,
             ContentType.static_qmi,
-            ContentType.dataset,
+            ContentType.dataset_landing_page,
             ContentType.timeseries_dataset,
             ContentType.reference_tables
     };
