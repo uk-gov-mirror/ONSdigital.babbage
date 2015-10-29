@@ -1,0 +1,7 @@
+{{#if description.latestRelease}}
+	<p class="alert__title">This is the latest release</p> <a class="btn btn--primary print--hide" href="{{parentPath uri}}/previousReleases">View previous releases</a>
+{{else}}
+	{{#resolve (concat (parentPath uri) "/latest") filter="title"}}
+		<p class="alert__title">This is not the latest release</p> <a class="btn btn--primary print--hide" href="{{uri}}">View latest release</a>
+	{{/resolve}}
+{{/if}}
