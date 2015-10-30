@@ -1,0 +1,10 @@
+{{!-- This is the base template, all other templates inherits from this base template --}}
+{{resolveParents uri assign="breadcrumb"}}
+{{!-- Resolve navigation fetching children of root uri "/" with depth 2 --}}
+{{resolveTaxonomy depth=2 assign="navigation"}}
+{{> partials/header}}
+<main id="main" role="main" tabindex="-1">
+{{#block "block-main"}}
+{{/block}}
+</main>
+{{> partials/footer}}

@@ -143,7 +143,6 @@ public class Configuration {
         private static final String TEMPLATES_DIR = StringUtils.defaultIfBlank(getValue("TEMPLATES_DIR"), "src/main/web/templates/handlebars");
         private static final String TEMPLATES_SUFFIX = StringUtils.defaultIfBlank(getValue("TEMPLATES_SUFFIX"), ".handlebars");
         private static final String MAIN_CONTENT_TEMPLATE_NAME = "main";
-        private static final String MAIN_LIST_PAGE_TEMPLATE_NAME = "list";
         private static final String MAIN_CHART_CONFIG_TEMPLATE_NAME = "chart-config";
 
         public static String getHandlebarsDatePattern() {
@@ -164,10 +163,6 @@ public class Configuration {
 
         public static String getMainChartConfigTemplateName() {
             return MAIN_CHART_CONFIG_TEMPLATE_NAME;
-        }
-
-        public static String getMainListPageTemplateName() {
-            return MAIN_LIST_PAGE_TEMPLATE_NAME;
         }
     }
 

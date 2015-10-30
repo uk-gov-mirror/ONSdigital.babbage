@@ -84,7 +84,7 @@ public abstract class ListPageBaseRequestHandler implements RequestHandler {
             listData.put("topics", getTopics());
         }
         listData.put("result", responseHelper.getResult());
-        String html = TemplateService.getInstance().renderListPage(listData);
+        String html = TemplateService.getInstance().renderContent(listData);
         babbageResponse = new BabbageStringResponse(html, CONTENT_TYPE);
         return babbageResponse;
     }

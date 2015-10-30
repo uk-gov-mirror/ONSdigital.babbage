@@ -1,22 +1,27 @@
+{{#partial "block-main"}}
+
 <div class="page-intro">
 	<div class="wrapper">
 		<div class="col-wrap">
 			<div class="col">
-				{{#block "breadcrumb"}}
+				{{#block "block-breadcrumb"}}
 				{{> partials/breadcrumb}}
 				{{/block}}
 				
-				{{#block "page-intro"}}
+				{{#block "block-intro"}}
 				{{>content/partials/intro class="col col--md-47 col--lg-48"}}
 				{{/block}}
 			</div> {{!-- /col --}}
 		</div> {{!-- /col-wrap --}}
 	</div> {{!-- /wrapper --}}
 	
-	{{#block "page-intro-secondary"}}
-	{{/block}}
-
+	{{#block "block-intro-secondary"}}{{/block}}
 </div> {{!-- /page-intro --}}
 <div class="page-content">
-	{{#block "page-content"}}{{/block}}
+	{{#block "block-content"}}{{/block}}
 </div>
+
+{{/partial}}
+
+{{!-- Inherits base template structure --}}
+{{> base/base}}

@@ -1,61 +1,17 @@
-{{!-- Page header --}}
-<div class="page-intro">
-	<div class="wrapper">
-		<div class="col-wrap">
-			<div class="col">
-				{{!-- Breadcrumb --}}
-				{{> partials/breadcrumb}}
-
-				{{!-- Title & summary --}}
-				<h1 class="page-intro__title {{#unless description.summary}}margin-bottom{{/unless}}"><span class="page-intro__type">Time series data:</span>{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}</h1>
-
-				{{#if description.summary}}<p class="page-intro__content col col--md-47 col--lg-48">{{description.summary}}</p>{{/if}}
-
-			</div>
-		</div>
-	</div> {{!-- /wrapper --}}
-
-	<div class="meta-wrap">
-		<div class="wrapper">
-
-			{{!-- Meta info --}}
-			<div class="col-wrap">
-
-				{{!-- Contact & NS logo --}}
-				<p class="col col--md-12 col--lg-15 meta__item">
-					{{#if description.nationalStatistic}}
-					<img class="meta__image" src="/node_modules/ONS-Pattern-Library/dist/img/national-statistics.png" alt="National Statistics logo" />
-					{{/if}}
-					<span>{{labels.meta-contact}}: </span><br/><a href="mailto:{{description.contact.email}}">{{#if description.contact.name}}{{description.contact.name}}{{else}}{{description.contact.email}}{{/if}}</a>
-				</p>
-
-				{{!-- Release date --}}
-				<p class="col col--md-12 col--lg-15 meta__item">
-					<span>{{labels.release-date}}: </span><br/>{{df description.releaseDate}}<br/>
-				</p>
-
-				{{!-- Next release --}}
-				<p class="col col--md-12 col--lg-15 meta__item">
-					<span>{{labels.release-next}}: </span><br/>{{#if description.nextRelease}}{{description.nextRelease}}{{else}}To be announced{{/if}}
-				</p>
+{{#partial "block-additonal-metadata"}}
+	{{!-- Print and download --}}
+	<p class="col col--md-12 col--lg-15 print-hidden meta__item">
+		{{#if description.cdid}}Series ID: {{description.cdid}}
+        <a href="#" class="tooltip-npl" title="This series ID is a unique random identifier for this individual time series. The digits themselves do not have any specific meaning" aria-label="This series ID is a unique random identifier for this individual time series. The digits themselves do not have any specific meaning">what is this?</a><br/>{{/if}}
+        {{#if description.unit}}Units: {{description.preUnit}} {{description.unit}}<br/>{{/if}}
+        {{seasonalAdjustment}}
+	</p>
+{{/partial}}
 
 
-				{{!-- Print and download --}}
-				<p class="col col--md-12 col--lg-15 print-hidden meta__item">
-					{{#if description.cdid}}Series ID: {{description.cdid}}
-	                <a href="#" class="tooltip-npl" title="This series ID is a unique random identifier for this individual time series. The digits themselves do not have any specific meaning" aria-label="This series ID is a unique random identifier for this individual time series. The digits themselves do not have any specific meaning">what is this?</a><br/>{{/if}}
-	                {{#if description.unit}}Units: {{description.preUnit}} {{description.unit}}<br/>{{/if}}
-	                {{seasonalAdjustment}}
-				</p>
-			</div>
-		</div> {{!-- /wrapper --}}
-	</div> {{!-- /meta-wrap --}}
-</div> {{!-- /page-intro --}}
-
-
+{{#partial "block-content"}}
 {{!-- Hide chart section if no data to draw the chart with --}}
 {{!-- TODO: Add isdatavailable to timeseries to do this check --}}
-<div class="page-content">
 	{{#if_any years quarters months}}
 		<div class="wrapper">
 			<h2>Time series data</h2>
@@ -220,5 +176,6 @@
 			</div>
 		</div>
 	{{/if_any}}
-</div>
+{{/partial}}
 
+{{> content/base/statistics}}
