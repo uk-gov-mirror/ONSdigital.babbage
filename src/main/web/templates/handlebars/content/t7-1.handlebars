@@ -38,7 +38,7 @@
                         </p>
 
                         <p class="col col--md-11 {{#if_all description.surveyName description.frequency description.compilation description.sampleSize description.geographicCoverage}}col--lg-15{{else}}col--lg-14{{/if_all}} meta__item">
-                            <a href="/file?uri={{{downloads.0.file}}">{{downloads.0.title}}</a>
+                            <a href="/file?uri={{downloads.0.file}}">{{downloads.0.title}}</a>
                             ({{fs downloads.0.file}} {{fe downloads.0.file}})
                         </p>
 
