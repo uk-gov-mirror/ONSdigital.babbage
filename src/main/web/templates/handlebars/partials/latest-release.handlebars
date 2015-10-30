@@ -1,3 +1,4 @@
+{{#unless (endsWith (parentPath uri) "previous")}} {{!-- If not a previous version workout the latest link  --}}
 {{#if description.latestRelease}}
 	<p class="alert__title">This is the latest release</p> <a class="btn btn--primary print--hide" href="{{parentPath uri}}/previousReleases">View previous releases</a>
 {{else}}
@@ -5,3 +6,6 @@
 		<p class="alert__title">This is not the latest release</p> <a class="btn btn--primary print--hide" href="{{uri}}">View latest release</a>
 	{{/resolve}}
 {{/if}}
+{{else}}{{!-- If an older version of any release link to latest version of that release--}}
+		<p class="alert__title">This is not the latest version</p> <a class="btn btn--primary print--hide" href="{{parentPath (parentPath uri)}}">View latest version</a>
+{{/unless}}
