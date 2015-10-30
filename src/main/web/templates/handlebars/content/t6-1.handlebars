@@ -1,146 +1,91 @@
-
-{{!-- Page header --}}
-<div class="page-intro">
+{{#partial "block-alert"}}
+{{!-- Notices - Can't use 'alert' partial because 'latest release' doesn't work for compendia --}}
+{{#if alerts}}
+<div class="alert">
 	<div class="wrapper">
 		<div class="col-wrap">
 			<div class="col">
-				{{!-- Breadcrumb --}}
-				{{> partials/breadcrumb}}
-
-				{{!-- Title & summary --}}
-				<h1 class="page-intro__title {{#unless description.summary}}margin-bottom--double{{/unless}}"><span class="page-intro__type">Compendia:</span>{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}</h1>
-
-				{{#if description.summary}}
-					<p class="page-intro__content col col--md-47 col--lg-48">{{description.summary}}</p>
-				{{/if}}
-
-			</div>
-		</div>
-	</div> {{!-- /wrapper --}}
-
-	{{!-- Notices - Can't use 'alert' partial because 'latest release' doesn't work for compendia --}}
-	{{#if alerts}}
-		<div class="alert">
-			<div class="wrapper">
-				<div class="col-wrap">
-					<div class="col">
-						<div class="show-hide js-show-hide">
-							<div class="js-show-hide__title">
-								<div class="show-hide--warning">!</div>
-								<h2 class="show-hide--warning__title inline-block">
-									Notice
-								</h2>
-							</div>
-
-							<div class="js-show-hide__content">
-								{{> partials/notice}}
-							</div>
-
-						</div>
+				<div class="show-hide js-show-hide">
+					<div class="js-show-hide__title">
+						<div class="show-hide--warning">!</div>
+						<h2 class="show-hide--warning__title inline-block">
+						Notice
+						</h2>
+					</div>
+					<div class="js-show-hide__content">
+						{{> partials/notice}}
 					</div>
 				</div>
 			</div>
 		</div>
-	{{/if}}
-
-	<div class="meta-wrap">
-		<div class="wrapper">
-
-			{{!-- Meta info --}}
-			<div class="col-wrap">
-
-				{{!-- Contact & NS logo--}}
-				<p class="col col--md-12 col--lg-15 meta__item">
-					{{#if description.nationalStatistic}}
-					<img class="meta__image" src="/node_modules/ONS-Pattern-Library/dist/img/national-statistics.png" alt="National Statistics logo" />
-					{{/if}}
-					<span>{{labels.meta-contact}}: </span><br/><a href="mailto:{{description.contact.email}}">{{#if description.contact.name}}{{description.contact.name}}{{else}}{{description.contact.email}}{{/if}}</a>
-				</p>
-
-				{{!-- Release date --}}
-				<p class="col col--md-12 col--lg-15 meta__item">
-					<span>{{labels.release-date}}: </span><br/>{{df description.releaseDate}}<br/>
-				</p>
-
-				{{!-- Next release --}}
-				<p class="col col--md-12 col--lg-15 meta__item">
-					<span>{{labels.release-next}}: </span><br/>{{#if description.nextRelease}}{{description.nextRelease}}{{else}}To be announced{{/if}}
-				</p>
+	</div>
+</div>
+{{/if}}
+{{/partial}}
 
 
-				{{!-- Print and download --}}
-				<p class="col col--md-12 col--lg-15 print--hide meta__item">
-					<a href="" id="jsEnhancePrintCompendium" class="nojs-hidden js-enhance--show">
-						Print all chapters
-					</a>
-					{{!-- <br class="nojs-hidden js-enhance--show"/>
-					<a href="{{uri}}/pdf" class="link-complex">
-						{{labels.dl-pdf}}
-					</a> --}}
-				</p>
-			</div>
-		</div> {{!-- /wrapper --}}
-	</div> {{!-- /meta-wrap --}}
-</div> {{!-- /page-intro --}}
+{{#partial "block-additonal-metadata"}}
+{{!-- Print and download --}}
+<p class="col col--md-12 col--lg-15 print--hide meta__item">
+	<a href="" id="jsEnhancePrintCompendium" class="nojs-hidden js-enhance--show">
+		Print all chapters
+	</a>
+</p>
+{{/partial}}
 
+
+{{#partial "block-content"}}
 <div class="wrapper">
 	<div class="col-wrap print--avoid-break">
 		<h2 class="margin-bottom col col--lg-one">{{labels.compendium-whats-in}}</h2>
-
 		{{!-- Chapters --}}
 		{{#if chapters}}
-			<section class="col col--lg-one accordion is-collapsed">
-				<h3 id="sc-1" class="accordion__title" aria-controls="content-1">
-					{{labels.compendium-chapters}}
-				</h3>
-
-				<div id="content-1" class="accordion__content" aria-labelledby="sc-1">
-					<ul class="list--neutral">
-						{{#each chapters}}
-							{{#resolve uri filter="description"}}
-								<li class="flush">
-									<h4><a href="{{uri}}" class="chapter">{{description.title}}</a></h4>
-									{{#if description.headline}}
-										<p>{{description.headline}}</p>
-									{{/if}}
-								</li>
-							{{/resolve}}
-						{{/each}}
-					</ul>
-				</div>
-			</section>
-		{{/if}}
-		{{!-- /Chapters --}}
-
-		{{!-- Data --}}
-		{{#if datasets}}
-			<section class="col col--lg-one">
-				<h3>{{labels.data}}</h3>
+		<section class="col col--lg-one accordion is-collapsed">
+			<h3 id="sc-1" class="accordion__title" aria-controls="content-1">
+			{{labels.compendium-chapters}}
+			</h3>
+			<div id="content-1" class="accordion__content" aria-labelledby="sc-1">
 				<ul class="list--neutral">
-					{{#each datasets}}
-						{{#resolve uri filter="title"}}
-							<li>
-								<h4 class="flush-bottom"><a href="{{uri}}">{{description.title}}</a></h4>
-
-								<p class="flush">{{labels.compendium-time-series}}</p>
-							</li>
-						{{/resolve}}
+					{{#each chapters}}
+					{{#resolve uri filter="description"}}
+					<li class="flush">
+						<h4><a href="{{uri}}" class="chapter">{{description.title}}</a></h4>
+						{{#if description.headline}}
+						<p>{{description.headline}}</p>
+						{{/if}}
+					</li>
+					{{/resolve}}
 					{{/each}}
 				</ul>
-			</section>
+			</div>
+		</section>
+		{{/if}}
+		{{!-- /Chapters --}}
+		{{!-- Data --}}
+		{{#if datasets}}
+		<section class="col col--lg-one">
+			<h3>{{labels.data}}</h3>
+			<ul class="list--neutral">
+				{{#each datasets}}
+				{{#resolve uri filter="title"}}
+				<li>
+					<h4 class="flush-bottom"><a href="{{uri}}">{{description.title}}</a></h4>
+					<p class="flush">{{labels.compendium-time-series}}</p>
+				</li>
+				{{/resolve}}
+				{{/each}}
+			</ul>
+		</section>
 		{{/if}}
 		{{!-- /Data --}}
 	</div>
-
 	<div class="col-wrap tiles">
-
 		{{!-- Methodology --}}
 		{{#if relatedMethodology}}
-			<div class="col col--lg-half col--md-half">
-				{{> partials/related/methodology }}
-			</div>
+		<div class="col col--lg-half col--md-half">
+			{{> partials/related/methodology }}
+		</div>
 		{{/if}}
-
 		{{!-- Contact details --}}
 		<div class="col col--lg-half col--md-half">
 			{{> partials/contact }}
@@ -148,3 +93,7 @@
 	</div>
 </div>
 <div id="print-here"></div>
+{{/partial}}
+
+{{!-- Inheriting from statistics template --}}
+{{> content/base/statistics}}
