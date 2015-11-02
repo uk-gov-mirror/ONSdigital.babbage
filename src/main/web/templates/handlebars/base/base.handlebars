@@ -5,9 +5,14 @@
 {{!-- Resolve navigation fetching children of root uri "/" with depth 2 --}}
 {{resolveTaxonomy depth=2 assign="navigation"}}
 
-{{> partials/header}}
+{{#block "block-header"}}
+	{{> partials/header}}
+{{/block}}
 <main id="main" role="main" tabindex="-1">
 {{#block "block-main"}}
 {{/block}}
 </main>
-{{> partials/footer}}
+
+{{#block "block-footer"}}
+	{{> partials/footer}}
+{{/block}}

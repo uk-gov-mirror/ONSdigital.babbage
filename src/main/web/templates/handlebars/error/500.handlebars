@@ -1,8 +1,4 @@
-{{!-- Resolve navigation fetching children of root uri "/" with depth 2 --}}
-{{resolveTaxonomy depth=2 assign="navigation"}}
-
-{{> partials/header}}
-
+{{#partial "block-main"}}
 <div class="page-header slate">
     <div class="wrapper">
         <p class="page-header--error-desc"><strong>We're Sorry</strong>
@@ -35,5 +31,7 @@
     </div>
     <!-- /grid-col -->
 </div>
+{{/partial}}
 
-{{> partials/footer}}
+{{!-- Inheriting from base template --}}
+{{> base/base}}
