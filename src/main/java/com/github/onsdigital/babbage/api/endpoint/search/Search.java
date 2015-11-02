@@ -74,7 +74,7 @@ public class Search {
     private void renderEmptyPage(HttpServletResponse response) throws IOException {
         LinkedHashMap<String, Object> searchData = new LinkedHashMap<>();
         searchData.put("type", SEARCH_PAGE_TYPE);
-        String html = TemplateService.getInstance().renderListPage(searchData);
+        String html = TemplateService.getInstance().renderContent(searchData);
         BabbageResponse babbageResponse = new BabbageStringResponse(html, CONTENT_TYPE);
         babbageResponse.apply(response);
     }
@@ -92,7 +92,7 @@ public class Search {
             searchResponse = new BabbageStringResponse(JsonUtil.toJson(searchData));
         } else {
             searchData.put("type", SEARCH_PAGE_TYPE);
-            String html = TemplateService.getInstance().renderListPage(searchData);
+            String html = TemplateService.getInstance().renderContent(searchData);
             searchResponse = new BabbageStringResponse(html, CONTENT_TYPE);
         }
         searchResponse.apply(response);

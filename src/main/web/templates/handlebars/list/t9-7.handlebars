@@ -1,5 +1,4 @@
-
-	<div class="page-intro">
+{{#partial "block-main"}}	<div class="page-intro">
 		<div class="wrapper">
 			<div class="col-wrap">
 				<div class="col one">
@@ -67,4 +66,6 @@
 			</div>
 		</form>
 	</div>
-
+{{/partial}}
+	{{!-- Inheriting from base list template --}}
+	{{> list/base/list}}

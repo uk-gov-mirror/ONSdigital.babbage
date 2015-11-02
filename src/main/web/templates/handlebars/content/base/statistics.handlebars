@@ -1,0 +1,27 @@
+{{#partial "block-intro-secondary"}}
+	{{#block "block-alert"}}
+	{{!-- Latest release flag, corrections and notices --}}
+	{{> partials/alert}}
+	{{/block}}
+	<div class="meta-wrap">
+	{{#block "block-metadata"}}
+		<div class="wrapper">
+			<div class="col-wrap">
+				{{> content/partials/metadata/ns-logo}}
+				{{> content/partials/metadata/contact}}
+				{{> content/partials/metadata/release-date}}
+				{{#block "block-next-release"}}
+				{{!-- Next release --}}
+				<p class="col col--md-12 col--lg-15 meta__item">
+					<span>{{labels.release-next}}: </span><br/>{{#if description.nextRelease}}{{description.nextRelease}}{{else}}To be announced{{/if}}
+				</p>
+				{{/block}}
+				
+				{{#block "block-additonal-metadata"}}{{/block}}
+			</div>
+		</div>
+	{{/block}}
+	</div> {{!-- /meta-wrap --}}
+{{/partial}}
+{{!-- Inheriting from base handlebars template --}}
+{{> content/base/content showType=true}}

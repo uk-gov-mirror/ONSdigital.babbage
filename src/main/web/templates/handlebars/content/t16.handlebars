@@ -2,21 +2,6 @@
 
     {{!-- PAGE INTRO --}}
     <div class="page-intro">
-        <div class="wrapper">
-            <div class="col-wrap">
-                <div class="col one">
-
-                    {{!-- Breadcrumb --}}
-                    {{> partials/breadcrumb}}
-
-                    {{!-- Title & summary --}}
-                    <h1 class="page-intro__title margin-bottom--double">{{description.title}}{{#if description.edition}}
-                        : {{description.edition}}{{/if}}</h1>
-
-                </div>
-            </div>
-        </div>
-
 		{{#if_any description.latestRelease versions alerts description.cancelled}}
 			<div class="alert">
 				<div class="wrapper">
@@ -298,3 +283,7 @@
             {{/if_any}}
         </div>
     </div>
+
+
+
+

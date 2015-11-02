@@ -1,75 +1,53 @@
+{{#if highlightedLinks}}
+{{#partial "block-intro"}}
+<div class="col col--md-47 col--lg-38" >
+	{{> content/partials/intro}}
+</div>
+<div class="nav-secondary--border-left-lg col col--md-47 col--lg-19 col--lg-offset-2 padding-left margin-top-lg--4">
+	<h2 class="margin-top-lg--1">Highlighted content</h2>
+	<ul class="list--neutral margin-top--negative-one-fix">
+		{{#each highlightedLinks}}
+		{{#resolve this.uri}}
+		{{#if_any items datasets statsBulletins relatedArticles sections}}
+		<li><a href="{{uri}}">{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}</a></li>
+		{{/if_any}}
+		{{/resolve}}
+		{{/each}}
+	</ul>
+</div>
+{{/partial}}
+{{/if}}
 
-	<div class="page-intro">
-		<div class="wrapper">
-			<div class="col-wrap">
-				<div class="col">
-					{{> partials/breadcrumb}}
-					{{#if highlightedLinks}}
-					<div class="col col--md-47 col--lg-38">
-						<h1 class="page-intro__title">{{description.title}}</h1>
-						<p class="page-intro__content">
-							{{description.summary}}
-						</p>
-					</div>
-					<div class="nav-secondary--border-left-lg col col--md-47 col--lg-19 col--lg-offset-2 padding-left margin-top-lg--4">
-						<h2 class="margin-top-lg--1">Highlighted content</h2>
-						<ul class="list--neutral margin-top--negative-one-fix">
-							{{#each highlightedLinks}}
-							{{#resolve this.uri}}
-							{{#if_any items datasets statsBulletins relatedArticles sections}}
-							<li><a href="{{uri}}">{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}</a></li>
-							{{/if_any}}
-							{{/resolve}}
-							{{/each}}
-						</ul>
-					</div>
-					{{else}}
-					<div class="col col--md-47 col--lg-48">
-						<h1 class="page-intro__title">{{description.title}}</h1>
-						<p class="page-intro__content">
-							{{description.summary}}
-						</p>
-					</div>
-					{{/if}}
-				</div>
+{{#partial "block-content"}}
+<div class="wrapper">
+	<div class="tiles">
+		<h2 id="topics">In this section</h2>
+		<ul class="col-wrap col-span--lg-thirds tiles__list margin-bottom">
+			{{!-- loop for children nodes --}}
+			{{#each sections}}
+			{{#resolve this.uri}}
+			{{#if_any items datasets statsBulletins relatedArticles}}
+			{{> partials/t2/t2-section}}
+			{{else}}
+			{{#if_eq type 'taxonomy_landing_page'}}
+			{{!-- if child landing page has sections to show --}}
+			{{#if sections}}
+			{{> partials/t2/t2-section}}
+			{{/if}}
+			{{/if_eq}}
+			{{/if_any}}
+			{{/resolve}}
+			{{#if @last}}
+			<div class="col col--md-one-third col--lg-one-third">
+				{{> partials/local-box}}
 			</div>
-		</div>
-
+			{{/if}}
+			{{/each}}
+		</ul>
 	</div>
-
-
-	
-
-	<div class="page-content">
-		<div class="wrapper">
-			<div class="tiles">
-				<h2 id="topics">In this section</h2>
-				<ul class="col-wrap col-span--lg-thirds tiles__list margin-bottom">
-					{{!-- loop for children nodes --}}
-					{{#each sections}}
-						{{#resolve this.uri}}
-						    {{#if_any items datasets statsBulletins relatedArticles}}
-						    	{{> partials/t2/t2-section}}
-						    {{else}}
-						    	{{#if_eq type 'taxonomy_landing_page'}}
-						    	    {{!-- if child landing page has sections to show --}}
-						    		{{#if sections}}
-						    			{{> partials/t2/t2-section}}
-						    		{{/if}}
-						    	{{/if_eq}}
-						    {{/if_any}}
-						{{/resolve}}
-
-                        {{#if @last}}
-                            <div class="col col--md-one-third col--lg-one-third">
-                                {{> partials/local-box}}
-                            </div>
-                        {{/if}}
-					{{/each}}
-				</ul>
-			</div>
-			{{!-- /grid-col --}}
-		</div>
-		{{!-- /wrapper --}}
-	</div>
-
+	{{!-- /grid-col --}}
+</div>
+{{!-- /wrapper --}}
+{{/partial}}
+{{!-- Inheriting from base handlebars template --}}
+{{> content/base/content}}
