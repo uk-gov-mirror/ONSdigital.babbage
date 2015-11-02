@@ -1,166 +1,107 @@
+{{#partial "block-additonal-metadata"}}
+{{!-- Dataset ID --}}
+<p class="col col--md-12 col--lg-15 meta__item">
+	<span>{{labels.dataset-id}}: </span>{{description.datasetId}}
+	<a href="#" class="tooltip-npl" title="This series ID is a unique random identifier for this individual time series. The digits themselves do not have any specific meaning" aria-label="This series ID is a unique random identifier for this individual time series. The digits themselves do not have any specific meaning">{{labels.dataset-what-is}} </a>
+</p>
+{{/partial}}
 
-
-{{!-- Page header --}}
-<div class="page-intro">
-	<div class="wrapper">
-		<div class="col-wrap">
-			<div class="col">
-				{{!-- Breadcrumb --}}
-				{{> partials/breadcrumb}}
-
-				{{!-- Title & summary --}}
-				<h1 class="page-intro__title margin-bottom"><span class="page-intro__type">Spreadsheet(s):</span>{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}</h1>
-
-				{{#if description.summary}}
-					<p class="page-intro__content col col--md-47 col--lg-48">{{description.summary}}</p>
-				{{/if}}
-
-			</div>
-		</div>
-	</div> {{!-- /wrapper --}}
-
-	{{!-- Latest release flag, corrections and notices --}}
-	{{> partials/alert}}
-
-	<div class="meta-wrap">
-		<div class="wrapper">
-
-			{{!-- Meta info --}}
-			<div class="col-wrap">
-
-				{{!-- Contact & NS logo--}}
-				<p class="col col--md-12 col--lg-15 meta__item">
-					{{#if description.nationalStatistic}}
-					<img class="meta__image" src="/node_modules/ONS-Pattern-Library/dist/img/national-statistics.png" alt="National Statistics logo" />
-					{{/if}}
-					<span>{{labels.meta-contact}}: </span><br/><a href="mailto:{{description.contact.email}}">{{#if description.contact.name}}{{description.contact.name}}{{else}}{{description.contact.email}}{{/if}}</a>
-				</p>
-
-				{{!-- Release date --}}
-				<p class="col col--md-12 col--lg-15 meta__item">
-					<span>{{labels.release-date}}: </span><br/>{{df description.releaseDate}}<br/>
-				</p>
-
-				{{!-- Next release --}}
-				<p class="col col--md-12 col--lg-15 meta__item">
-					<span>{{labels.release-next}}: </span><br/>{{#if description.nextRelease}}{{description.nextRelease}}{{else}}To be announced{{/if}}
-				</p>
-
-				{{!-- Dataset ID --}}
-				<p class="col col--md-12 col--lg-15 meta__item">
-					<span>{{labels.dataset-id}}: </span>{{description.datasetId}}
-	        		<a href="#" class="tooltip-npl" title="This series ID is a unique random identifier for this individual time series. The digits themselves do not have any specific meaning" aria-label="This series ID is a unique random identifier for this individual time series. The digits themselves do not have any specific meaning">{{labels.dataset-what-is}} </a>
-				</p>
-			</div>
-		</div> {{!-- /wrapper --}}
-	</div> {{!-- /meta-wrap --}}
-</div> {{!-- /page-intro --}}
-
-<div class="page-content">
-	<div class="wrapper">
-		<div class="col-wrap">
-			<div class="col">
-				{{!-- Return to parent landing page --}}
-				<p>
+{{#partial "block-content"}}
+<div class="wrapper">
+	<div class="col-wrap">
+		<div class="col">
+			{{!-- Return to parent landing page --}}
+			<p>
 				{{#each breadcrumb}}
-					{{#if @last}}
-						{{labels.compendium-return}} <a href="{{uri}}">{{description.title}}</a>
-					{{/if}}
+				{{#if @last}}
+				{{labels.compendium-return}} <a href="{{uri}}">{{description.title}}</a>
+				{{/if}}
 				{{/each}}
-				</p>
-
-				{{!-- Number of results --}}
-				<p>
-					<span class="stand-out-text">
+			</p>
+			{{!-- Number of results --}}
+			<p>
+				<span class="stand-out-text">
 					{{#each downloads}}
-						{{#if @last}}
-							{{#if_eq @index_1 '1'}}
-								{{@index_1}}</span> result
-							{{/if_eq}}
-							{{#if_ne @index_1 '1'}}
-								{{@index_1}}</span> results
-							{{/if_ne}}
-						{{/if}}
-					{{/each}}
-				</p>
-			</div>
-		</div>
-
-		{{!-- LIST OF DOWNLOADS --}}
-		<div class="col {{#if_any relatedDatasets relatedDocuments}}col--md-36 col--lg-39{{else}}col--md-47 col--lg-59{{/if_any}}">
+					{{#if @last}}
+					{{#if_eq @index_1 '1'}}
+				{{@index_1}}</span> result
+				{{/if_eq}}
+				{{#if_ne @index_1 '1'}}
+			{{@index_1}}</span> results
+			{{/if_ne}}
+			{{/if}}
+			{{/each}}
+		</p>
+	</div>
+</div>
+{{!-- LIST OF DOWNLOADS --}}
+<div class="col {{#if_any relatedDatasets relatedDocuments}}col--md-36 col--lg-39{{else}}col--md-47 col--lg-59{{/if_any}}">
+	<ul class="list--neutral">
+		{{#each downloads}}
+		<li>
+			<h3><a href="/file?uri={{file}}" title="{{title}}">{{title}}</a> ({{fs file}}, {{fe file}})</h3>
+			<p class="flush">{{fileDescription}}</p>
+		</li>
+		{{/each}}
+	</ul>
+</div>
+{{!-- RELATED DATA AND DOCUMENTS --}}
+{{#if_any relatedDatasets relatedDocuments}}
+<div class="col col--md-11 col--lg-20">
+	{{!-- Related data --}}
+	{{#if relatedDatasets}}
+	<div class="tiles__item tiles__item--nav-type flush-col">
+		<h3 class="tiles__title-h3 tiles__title-h3--nav">Related data</h3>
+		<div class="tiles__content tiles__content--nav">
 			<ul class="list--neutral">
-				{{#each downloads}}
-					<li>
-						<h3><a href="/file?uri={{file}}" title="{{title}}">{{title}}</a> ({{fs file}}, {{fe file}})</h3>
-						<p class="flush">{{fileDescription}}</p>
-					</li>
+				{{#each relatedDatasets}}
+				{{#resolve this.uri filter="title"}}
+				<li><a href="{{absolute uri}}" title="{{title}}">{{title}}</a></li>
+				{{/resolve}}
 				{{/each}}
 			</ul>
 		</div>
-
-		{{!-- RELATED DATA AND DOCUMENTS --}}
-		{{#if_any relatedDatasets relatedDocuments}}
-			<div class="col col--md-11 col--lg-20">
-
-
-				{{!-- Related data --}}
-				{{#if relatedDatasets}}
-					<div class="tiles__item tiles__item--nav-type flush-col">
-						<h3 class="tiles__title-h3 tiles__title-h3--nav">Related data</h3>
-
-						<div class="tiles__content tiles__content--nav">
-							<ul class="list--neutral">
-								{{#each relatedDatasets}}
-									{{#resolve this.uri filter="title"}}
-										<li><a href="{{absolute uri}}" title="{{title}}">{{title}}</a></li>
-									{{/resolve}}
-								{{/each}}
-							</ul>
-						</div>
-					</div>
-				{{/if}}
-
-				{{!-- Related articles and bulletins --}}
-				{{#if relatedDocuments}}
-					<div class="tiles__item tiles__item--nav-type flush-col">
-						<h3 class="tiles__title-h3 tiles__title-h3--nav">Statistical bulletins and articles that use this data</h3>
-						<div class="tiles__content tiles__content--nav">
-							<ul class="list--neutral">
-								{{#each relatedDocuments}}
-									{{#resolve this.uri filter="title"}}
-										<li>
-											<a href="{{uri}}" title="{{title}}">
-												{{title}}
-												{{#if edition}}
-													{{#if_ne edition 'yes'}}
-														: {{edition}}
-													{{/if_ne}}
-												{{/if}}
-											</a>
-										</li>
-									{{/resolve}}
-								{{/each}}
-							</ul>
-						</div>
-					</div>
-				{{/if}}
-			</div>
-		{{/if_any}}
-
-		{{!-- METHODOLOGY AND CONTACT DETAILS --}}
-		<div class="col-wrap">
-			{{!-- Related methodology --}}
-			{{#if_any relatedMethodology}}
-				<div class="col col--lg-half col--md-half">
-					{{> partials/related/methodology }}
-				</div>
-			{{/if_any}}
-
-			{{!-- Contact details --}}
-			<div class="col col--lg-half col--md-half">
-				{{> partials/contact }}
-			</div>
+	</div>
+	{{/if}}
+	{{!-- Related articles and bulletins --}}
+	{{#if relatedDocuments}}
+	<div class="tiles__item tiles__item--nav-type flush-col">
+		<h3 class="tiles__title-h3 tiles__title-h3--nav">Statistical bulletins and articles that use this data</h3>
+		<div class="tiles__content tiles__content--nav">
+			<ul class="list--neutral">
+				{{#each relatedDocuments}}
+				{{#resolve this.uri filter="title"}}
+				<li>
+					<a href="{{uri}}" title="{{title}}">
+						{{title}}
+						{{#if edition}}
+						{{#if_ne edition 'yes'}}
+						: {{edition}}
+						{{/if_ne}}
+						{{/if}}
+					</a>
+				</li>
+				{{/resolve}}
+				{{/each}}
+			</ul>
 		</div>
 	</div>
+	{{/if}}
 </div>
-
+{{/if_any}}
+{{!-- METHODOLOGY AND CONTACT DETAILS --}}
+<div class="col-wrap">
+	{{!-- Related methodology --}}
+	{{#if_any relatedMethodology}}
+	<div class="col col--lg-half col--md-half">
+		{{> partials/related/methodology }}
+	</div>
+	{{/if_any}}
+	{{!-- Contact details --}}
+	<div class="col col--lg-half col--md-half">
+		{{> partials/contact }}
+	</div>
+</div>
+{{/partial}}
+{{!-- Inheriting from statistics template --}}
+{{> content/base/statistics}}
