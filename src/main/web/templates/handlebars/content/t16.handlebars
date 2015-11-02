@@ -31,7 +31,7 @@
 
 
 {{#partial "block-next-release"}}
-{{!-- Next release --}}
+	{{!-- Next release --}}
 	{{#unless description.cancelled}}
 		<p class="col {{#if description.nationalStatistic}}col--md-11 col--lg-14{{else}}col--md-12 col--lg-15{{/if}} meta__item">
 				<span>{{labels.release-next}}
@@ -44,7 +44,7 @@
 
 {{#partial "block-additional-metadata"}}
 	{{#if markdown}}
-	{{!-- Pre-release list link --}}
+		{{!-- Pre-release list link --}}
 		<p class="col {{#if description.nationalStatistic}}col--md-11 col--lg-14{{else}}col--md-12 col--lg-15	{{/if}} print--hide meta__item">
 			<a href="#prereleaseaccesslist">Pre-release access list</a>
 		</p>
@@ -54,9 +54,28 @@
 
 {{#partial "block-alert"}}
 	{{#unless description.published}}
+		<div class="alert">
+			<div class="wrapper">
+				<div class="col-wrap">
+					<div class="col">
 
+						{{#if description.cancelled}}
+							{{!-- Cancelled notice --}}
+							<h2 class="alert__title flush-bottom">Cancelled</h2>
+							<p class="alert__content">
+								{{description.cancellationNotice.0}}
+							</p>
+						{{else}}
+							{{!-- Upcoming alert --}}
+							<p class="alert__title">This will be released {{#if description.provisionalDate}}in {{description.provisionalDate}}{{else}}on {{df description.releaseDate}}{{/if}}</p>
+						{{/if}}
+
+					</div>
+				</div>
+			</div>
+		</div>
 	{{else}}
-		{{#if_any alerts description.cancelled}}
+		{{#if_any description.cancelled}}
 			<div class="alert">
 				<div class="wrapper">
 					<div class="col-wrap">
@@ -68,23 +87,6 @@
 								{{description.cancellationNotice.0}}
 							</p>
 
-							{{!-- Corrections & alerts --}}
-							{{#if_any alerts}}
-								<div class="show-hide js-show-hide">
-									<div class="js-show-hide__title">
-										<div class="show-hide--warning">!</div>
-
-										<h2 class="show-hide--warning__title inline-block">
-											{{#if_eq alerts.size 1}}Notice{{else}}Notices{{/if_eq}}
-										</h2>
-									</div>
-
-									<div class="js-show-hide__content">
-										{{> partials/notice}}
-									</div>
-
-								</div>
-							{{/if_any}}
 						</div>
 					</div>
 				</div>
