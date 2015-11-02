@@ -1,35 +1,16 @@
-
-
-<div class="page-intro">
-    <div class="wrapper">
-        <div class="col-wrap">
-            <div class="col">
-                {{!-- Breadcrumb --}}
-                {{> partials/breadcrumb}}
-
-                {{!-- Title --}}
-                <h1 class="page-intro__title margin-bottom--double"><span class="page-intro__type">Commissioned data:</span>{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}</h1>
-            </div>
-        </div>
-    </div> {{!-- /wrapper --}}
-
-    {{!-- Metadata --}}
-    <div class="meta-wrap">
+{{#partial "block-metadata"}}
+  {{!-- Metadata --}}
         <div class="wrapper">
             <div class="col-wrap">
-                <p class="col col--md-12 col--lg-15 meta__item">
-                    <span>{{labels.release-date}}: </span><br/>{{df description.releaseDate}}
-                </p>
-
+                {{> content/partials/metadata/release-date}}
                 <p class="col col--md-12 col--lg-15 meta__item">
                     <span>{{labels.urd-ref-no}}: </span><br/>{{description.reference}}
                 </p>
             </div>
         </div>
-    </div>
-</div>
+{{/partial}}
 
-<div class="page-content">
+{{#partial "block-content"}}
     <div class="wrapper">
         <div class="col-wrap">
             <article class="col col--md-two-thirds col--lg-two-thirds margin-bottom--double">
@@ -78,52 +59,8 @@
 
         </div>
     </div>
-</div>
+{{/partial}}
 
 
-
-    {{!-- <div class="wrapper panel--mar">
-		 <div class="grid-wrap">
-			 <article class="grid-col desktop-grid-two-thirds">
-				 <h2 class="delta">{{labels.urd-summary}}</h2>
-				 {{#each markdown}}
-					 {{md this}}
-				 {{/each}}
-
-				 <h2>{{#if_eq downloads.size 1}}{{labels.urd-download}}{{/if_eq}} {{#if_ne downloads.size 1}}{{labels.urd-downloads}}{{/if_ne}}</h2>
-				 <ul class="list--neutral">
-					 {{#each downloads}}
-					 <li class="flush--third--bottom">
-						 <a href="/file?uri={{file}}" title="{{title}}">{{title}}</a>
-					 </li>
-					 {{/each}}
-				 </ul>
-			 </article>
-			 <!-- /desktop-grid-two-thirds -->
-			 <div class="grid-col desktop-grid-one-third">
-				 <article class="box solid box--purple--separated--left">
-					 <div class="box__inner border box--padded">
-						 <h3 class="box__section__header">
-							 {{#if_eq downloads.size 1}}{{labels.urd-download}}{{/if_eq}} {{#if_ne downloads.size 1}}{{labels.urd-downloads}}{{/if_ne}}
-						 </h3>
-						 <!-- /box__header -->
-						 <div class="box__content">
-							 <ul class="list--neutral">
-								 {{#each downloads}}
-								 <li class="flush--third--bottom">
-									 <a href="/file?uri={{file}}" title="{{title}}">{{title}}</a>
-								 </li>
-								 {{/each}}
-							 </ul>
-						 </div>
-						 <!-- /box__content -->
-					 </div>
-					 <!-- /box__inner -->
-				 </article>
-				 <!-- /box -->
-			 </div>
-			 <!-- /desktop-grid-one-third -->
-		 </div>
-		 <!-- /grid-wrap -->
-	 </div>
-	 <!-- /wrapper --> --}}
+{{!-- Inheriting from base content template --}}
+{{> content/base/content showType=true}}

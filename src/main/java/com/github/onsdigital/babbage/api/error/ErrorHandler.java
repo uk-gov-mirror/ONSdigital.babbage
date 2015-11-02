@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.core.MediaType;
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * Created by bren on 28/05/15.
@@ -19,6 +21,8 @@ import java.io.StringReader;
  * Handles exceptions and returns appropriate response to the client.
  */
 public class ErrorHandler implements ServerError {
+
+    private final static String ERROR = "error";
 
     private static void logError(Throwable e) {
         System.err.println(e.getMessage() + ", cause: " + (e.getCause() != null ? e.getCause().getMessage() : ""));
@@ -49,7 +53,10 @@ public class ErrorHandler implements ServerError {
     public static void renderErrorPage(int statusCode, HttpServletResponse response) throws IOException {
         try {
             response.setStatus(statusCode);
-            String errorHtml = TemplateService.getInstance().renderTemplate("error/" + String.valueOf(statusCode));
+            Map<String, Object> context = new LinkedHashMap<>();
+            context.put("type", ERROR);
+            context.put("code", statusCode);
+            String errorHtml = TemplateService.getInstance().renderContent(context);
             IOUtils.copy(new StringReader(errorHtml), response.getOutputStream());
         } catch (Exception e) {
             if (statusCode != 500) {

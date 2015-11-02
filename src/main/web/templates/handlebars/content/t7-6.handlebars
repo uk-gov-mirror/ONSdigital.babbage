@@ -1,4 +1,4 @@
-{{#partial 'block-metadata'}}
+{{#partial 'block-intro-secondary'}}
 	<div class="meta-wrap">
 		<div class="wrapper">
 			<div class="col-wrap">
@@ -11,13 +11,10 @@
 				<p class="col col--md-12 col--lg-15 meta__item">
 					<span>Last revised: </span><br/>{{df description.releaseDate}}<br/>
 				</p>
-
 			</div>
 		</div>
 	</div>
-
 {{/partial}}
 
-
-{{!-- Ineriting from publication --}}
-{{> content/base/publication}}
+{{!-- Inheriting from base content template --}}
+{{> content/base/content}}

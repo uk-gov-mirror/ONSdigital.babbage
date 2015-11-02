@@ -1,5 +1,4 @@
 {{#partial "block-main"}}
-
 <div class="page-intro">
 	<div class="wrapper">
 		<div class="col-wrap">
@@ -9,7 +8,9 @@
 				{{/block}}
 				
 				{{#block "block-intro"}}
-				{{>content/partials/intro class="col col--md-47 col--lg-48"}}
+				<div class="col col--md-47 col--lg-48">
+					{{>content/partials/intro}}
+				</div>
 				{{/block}}
 			</div> {{!-- /col --}}
 		</div> {{!-- /col-wrap --}}
@@ -20,8 +21,6 @@
 <div class="page-content">
 	{{#block "block-content"}}{{/block}}
 </div>
-
 {{/partial}}
-
 {{!-- Inherits base template structure --}}
 {{> base/base}}

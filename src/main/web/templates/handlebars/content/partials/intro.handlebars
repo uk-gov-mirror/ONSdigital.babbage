@@ -1,10 +1,8 @@
-<div class="{{class}}">
-	<h1 class="page-intro__title">{{#if showType}}<span class="page-intro__type">{{>type-label type_code=type}}:</span>{{/if}}{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}</h1>
-		{{#if description._abstract}}
-			<p class="page-intro__content">{{description._abstract}}</p>
-		{{else}}
-			{{#if description.summary}}
-			<p class="page-intro__content">{{description.summary}}</p>
-			{{/if}}
-		{{/if}}
-</div>
+<h1 class="page-intro__title {{#if_any description._abstract description.summary}}{{else}}margin-bottom-sm--4 margin-bottom-md--4{{/if_any}}">{{#if showType}}<span class="page-intro__type">{{>type-label type_code=type}}:</span>{{/if}}{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}</h1>
+{{#if description._abstract}}
+<p class="page-intro__content">{{description._abstract}}</p>
+{{else}}
+{{#if description.summary}}
+<p class="page-intro__content">{{description.summary}}</p>
+{{/if}}
+{{/if}}

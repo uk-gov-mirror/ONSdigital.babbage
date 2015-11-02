@@ -1,19 +1,4 @@
-
-    <div class="page-intro">
-        <div class="wrapper">
-            <div class="col-wrap">
-                <div class="col">
-                    {{> partials/breadcrumb}}
-                    <h1 class="page-intro__title">{{description.title}}</h1>
-                    <p class="page-intro__content col col--md-47 col--lg-48">
-                        {{description.summary}}
-                    </p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="page-content">
+{{#partial "block-content"}}
         <div class="wrapper">
 
             {{!-- SECTIONS --}}
@@ -61,4 +46,7 @@
             {{/if}}
 
         </div>
-    </div>
+{{/partial}}
+
+{{!-- Inheriting from base content template --}}
+{{> content/base/content}}
