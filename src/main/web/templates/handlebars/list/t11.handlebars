@@ -9,6 +9,12 @@
 	</div> {{!-- /page-intro --}}
 	<div class="tab">
 		<div class="wrapper">
+			<p class="float-right flush-bottom">
+				<a href="/calendar{{uri}}">
+					<span class="icon icon-calendar--dark-small margin-right-md--1"></span>
+					Add releases to your calendar (ICS)
+				</a>
+			</p>
 			<ul class="list--neutral list--inline flush">
 				<li>
 					<a href="/releasecalendar" class="tab__item {{#unless parameters.view.0}}tab__item--active{{/unless}}">
@@ -24,71 +30,69 @@
 		</div>
 	</div> {{!-- /tab --}}
 
-	<div class="wrapper print-links">
-		<form id="filters">
-			<input type="hidden" name="view" value="{{parameters.view.0}}">
-			<div class="col-wrap print-hidden">
-				<div class="col">
-					<div class="float-right">
-						<p class="margin-top--half margin-bottom--half">Get updates to this calendar by <a href="#">Email</a>, <a href="#">RSS</a></p>
-					</div>
-				</div>
-			</div>
-			<div class="col col--md-12 col--lg-18 margin-bottom">
-				<div class="tiles__item tiles__item--nav-type flush-col print--hide">
-					<div class="tiles__title-h3 tiles__title-h3--nav">
-						<h3 class="inline">Refine results</h3>
-						<a href="/releasecalendar?view={{parameters.view.0}}" value="Reset" class="btn btn--primary btn--thin btn--narrow btn--small float-right">{{labels.search-refine-clear}}</a>
-					</div>
-					<div class="tiles__content tiles__content--nav">
-						{{> list/filters/keywords}}
-						{{> list/filters/publish-date}}
-						<button type="submit" class="btn btn--primary btn--thick margin-top--double">{{labels.search-filter}}</button>
-					</div>
-				</div>
-				<!-- /box -->
-			</div>
-			<!-- /desktop-grid-one-third -->
-			<div class="results col col--md-34 col--lg-40 margin-left">
-				{{> list/partials/results-text}}
-				<ul class="list--neutral">
-					{{#each result.results}}
-						<li class="search--result-item margin-bottom--double">
-							<h3 class="inline-block">
-								<a href="{{uri}}">{{{description.title}}}
-									{{#if description.edition}}
-										{{#if_all (ne description.edition 'yes') (ne description.edition '<strong>yes</strong>')}}
-											: {{{description.edition}}}
-										{{/if_all}}
-									{{/if}}
-								</a>
-							</h3>
+	<div class="page-content">
+		<div class="wrapper margin-top-md--3 print-links">
+			<form id="filters">
+				<input type="hidden" name="view" value="{{parameters.view.0}}">
 
-							<p class="flush">
-
-								{{#if description.provisionalDate}}
-									{{description.provisionalDate}}
-								{{else}}
-									{{df description.releaseDate}}
-								{{/if}}
-								<span>
-									{{#if description.cancelled}}
-										(cancelled)
-									{{else}}
-										{{#if description.finalised}}
-											(confirmed)
-										{{else}}
-											(provisional)
+				<div class="col col--md-12 col--lg-18 margin-bottom">
+					<div class="tiles__item tiles__item--nav-type flush-col print--hide">
+						<div class="tiles__title-h3 tiles__title-h3--nav">
+							<h3 class="inline">Refine results</h3>
+							<a href="/releasecalendar?view={{parameters.view.0}}" value="Reset"
+							   class="btn btn--primary btn--thin btn--narrow btn--small float-right">{{labels.search-refine-clear}}</a>
+						</div>
+						<div class="tiles__content tiles__content--nav">
+							{{> list/filters/keywords}}
+							{{> list/filters/publish-date}}
+							<button type="submit"
+									class="btn btn--primary btn--thick margin-top--double">{{labels.search-filter}}</button>
+						</div>
+					</div>
+					<!-- /box -->
+				</div>
+				<!-- /desktop-grid-one-third -->
+				<div class="results col col--md-34 col--lg-40 margin-left">
+					{{> list/partials/results-text}}
+					<ul class="list--neutral">
+						{{#each result.results}}
+							<li class="search--result-item margin-bottom--double">
+								<h3 class="inline-block">
+									<a href="{{uri}}">{{{description.title}}}
+										{{#if description.edition}}
+											{{#if_all (ne description.edition 'yes') (ne description.edition '<strong>yes</strong>')}}
+												: {{{description.edition}}}
+											{{/if_all}}
 										{{/if}}
+									</a>
+								</h3>
+
+								<p class="flush">
+
+									{{#if description.provisionalDate}}
+										{{description.provisionalDate}}
+									{{else}}
+										{{df description.releaseDate}}
 									{{/if}}
-								</span>
-							</p>
-						</li>
-					{{/each}}
-				</ul>
-				{{> list/partials/paginator}}
-			</div>
-			<!-- /desktop-grid-two-thirds -->
-		</form>
+									<span>
+										{{#if description.cancelled}}
+											(cancelled)
+										{{else}}
+											{{#if description.finalised}}
+												(confirmed)
+											{{else}}
+												(provisional)
+											{{/if}}
+										{{/if}}
+									</span>
+								</p>
+							</li>
+						{{/each}}
+					</ul>
+					{{> list/partials/paginator}}
+				</div>
+				<!-- /desktop-grid-two-thirds -->
+			</form>
+		</div>
 	</div>
 
