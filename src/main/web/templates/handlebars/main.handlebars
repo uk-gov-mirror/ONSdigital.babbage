@@ -48,8 +48,13 @@
 		<script type="text/javascript" src="/js/js-enhance-loading.js"></script>
 		
 		{{!-- Main handlebars is the main file rendered by handlebars.
-
 		performs type check on content type and decides which template to render  --}}
+		
+		{{!-- TODO: --}}
+		{{!-- In order to keep the code cleaner seperate if statements are used instead of indented if else statements. 
+		This means the comparison actually happens for all conditions listed below. 
+		Handlebars 3.0.0 supports chained else if statements which is a syntactic sugar for indented if else statements, as soon as Handlebars.java 3.0 comes out an update and using chanined if statements would be nice.
+		Follow on:   --}}
 
 		{{!-- Content --}}
 		{{#if_eq type "home_page"}}{{> content/t1}}{{/if_eq}}
