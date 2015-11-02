@@ -1,8 +1,62 @@
 
+{{#partial "block-intro"}}
+	<h1 class="page-intro__title margin-bottom-sm--4 margin-bottom-md--4"><span class="page-intro__type">{{>type-label type_code=type}}:</span>{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}</h1>
+{{/partial}}
 
-    {{!-- PAGE INTRO --}}
-    <div class="page-intro">
-		{{#if_any description.latestRelease versions alerts description.cancelled}}
+
+{{#partial "block-release-date"}}
+	{{!-- Release date --}}
+	<p class="col {{#if description.nationalStatistic}}col--md-11 col--lg-14{{else}}col--md-12 col--lg-15{{/if}} meta__item">
+		{{#if description.cancelled}}
+			Proposed release date:
+			<br/>
+			{{df description.releaseDate}}
+		{{else}}
+			{{#if description.finalised}}
+				{{labels.release-date}}:
+				<br>
+				{{df description.releaseDate}}
+			{{else}}
+				Provisional release date:
+				<br>
+				{{#if description.provisionalDate}}
+					{{description.provisionalDate}}
+				{{else}}
+					{{df description.releaseDate}}
+				{{/if}}
+			{{/if}}
+		{{/if}}
+	</p>
+{{/partial}}
+
+
+{{#partial "block-next-release"}}
+{{!-- Next release --}}
+	{{#unless description.cancelled}}
+		<p class="col {{#if description.nationalStatistic}}col--md-11 col--lg-14{{else}}col--md-12 col--lg-15{{/if}} meta__item">
+				<span>{{labels.release-next}}
+					: </span><br/>{{#if description.nextRelease}}{{description.nextRelease}}{{else}}To be
+			announced{{/if}}
+		</p>
+	{{/unless}}
+{{/partial}}
+
+
+{{#partial "block-additional-metadata"}}
+	{{#if markdown}}
+	{{!-- Pre-release list link --}}
+		<p class="col {{#if description.nationalStatistic}}col--md-11 col--lg-14{{else}}col--md-12 col--lg-15	{{/if}} print--hide meta__item">
+			<a href="#prereleaseaccesslist">Pre-release access list</a>
+		</p>
+	{{/if}}
+{{/partial}}
+
+
+{{#partial "block-alert"}}
+	{{#unless description.published}}
+
+	{{else}}
+		{{#if_any alerts description.cancelled}}
 			<div class="alert">
 				<div class="wrapper">
 					<div class="col-wrap">
@@ -15,20 +69,17 @@
 							</p>
 
 							{{!-- Corrections & alerts --}}
-							{{#if_any versions alerts}}
+							{{#if_any alerts}}
 								<div class="show-hide js-show-hide">
 									<div class="js-show-hide__title">
 										<div class="show-hide--warning">!</div>
 
 										<h2 class="show-hide--warning__title inline-block">
-											{{#if_all versions alerts}}Corrections and notices{{else}}{{#if versions}}
-												Correction{{#if plural}}s{{/if}}{{else}}Notice{{#if plural}}
-												s{{/if}}{{/if}}{{/if_all}}
+											{{#if_eq alerts.size 1}}Notice{{else}}Notices{{/if_eq}}
 										</h2>
 									</div>
 
 									<div class="js-show-hide__content">
-										{{> partials/correction}}
 										{{> partials/notice}}
 									</div>
 
@@ -39,93 +90,11 @@
 				</div>
 			</div>
 		{{/if_any}}
-
-        <div class="meta-wrap">
-            <div class="wrapper">
-
-                {{!-- Meta info --}}
-                <div class="col-wrap">
-
-					{{!-- NS logo --}}
-					{{#if description.nationalStatistic}}
-						<div class="col col--md-4 col--lg-4 padding-left">
-							<img class="meta__image" src="/node_modules/ONS-Pattern-Library/dist/img/national-statistics.png" alt="National Statistics logo"/>
-						</div>
-					{{/if}}
-
-                    {{!-- Contact --}}
-					<p class="col {{#if description.nationalStatistic}}col--md-11 col--lg-14{{else}}col--md-12 col--lg-15{{/if}} meta__item">
-                        <span>{{labels.meta-contact}}: </span>
-						<br/>
-						{{#if description.contact.name}}
-							{{description.contact.name}}
-							<br/>
-						{{/if}}
-						<a href="mailto:{{description.contact.email}}">{{description.contact.email}}</a>
-						{{#if description.contact.telephone}}
-							<br/>
-							{{labels.phone}}: {{description.contact.telephone}}
-						{{/if}}
-                    </p>
-
-                    {{!-- Release date --}}
-					<p class="col {{#if description.nationalStatistic}}col--md-11 col--lg-14{{else}}col--md-12 col--lg-15{{/if}} meta__item">
-						{{#if description.cancelled}}
-							Proposed release date:
-							<br/>
-							{{df description.releaseDate}}
-
-						{{else}}
-
-							{{#if description.finalised}}
-								{{labels.release-date}}:
-								<br>
-								{{df description.releaseDate}}
-							{{else}}
-								Provisional release date:
-								<br>
-								{{#if description.provisionalDate}}
-									{{description.provisionalDate}}
-								{{else}}
-									{{df description.releaseDate}}
-								{{/if}}
-							{{/if}}
-
-						{{/if}}
-
-                    </p>
-
-                    {{!-- Cancelled date --}}
-					{{!-- Commented until we can get cancelled date information --}}
-					{{!-- {{#if description.cancelled}}
-						 <p class="col col--md-12 col--lg-15 meta__item">
-							 <span>Cancellation date: </span><br/>
-							 {{nf cancellationDate}}
-						 </p>
-					 {{else}}
-
-                    {{!-- Next release --}}
-					{{#unless description.cancelled}}
-					<p class="col {{#if description.nationalStatistic}}col--md-11 col--lg-14{{else}}col--md-12 col--lg-15{{/if}} meta__item">
-						<span>{{labels.release-next}}
-							: </span><br/>{{#if description.nextRelease}}{{description.nextRelease}}{{else}}To be
-						announced{{/if}}
-					</p>
-					{{/unless}}
-
-                    {{#if markdown}}
-                        {{!-- Pre-release list link --}}
-						<p class="col {{#if description.nationalStatistic}}col--md-11 col--lg-14{{else}}col--md-12 col--lg-15	{{/if}} print--hide meta__item">
-                            <a href="#prereleaseaccesslist">Pre-release access list</a>
-                        </p>
-                    {{/if}}
-                </div>
-            </div> {{!-- /wrapper --}}
-        </div> {{!-- /meta-wrap --}}
-    </div>
-    {{!-- /page-intro --}}
+	{{/unless}}
+{{/partial}}
 
 
+{{#partial "block-content"}}
     {{!-- PAGE CONTENT --}}
     <div class="page-content">
         <div class="wrapper">
@@ -142,21 +111,17 @@
 
             {{!-- RELATED PUBLICATIONS --}}
             {{#if relatedDocuments}}
-
                 <div class="col-wrap">
                     <h2 class="col">Publications</h2>
                 </div>
-
                 <div class="col-wrap">
                     <ul class="tiles__list col col--lg-40">
                         {{#each relatedDocuments}}
                             {{#resolve this.uri}}
                                 <li class="tiles__item--list-type-simple">
                                     <h3 class="tiles__title-h3">
-                                        <a href="{{uri}}">{{description.title}}{{#if description.edition}}
-                                            : {{description.edition}}{{/if}}</a>
+                                        <a href="{{uri}}">{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}</a>
                                     </h3>
-
                                     <p class="tiles__content">
                                         {{#if description.summary}}{{description.summary}}{{else}}{{description._abstract}}{{/if}}
                                     </p>
@@ -172,7 +137,6 @@
                 <div class="col-wrap">
                     <h2 class="col">Data</h2>
                 </div>
-
                 <div class="col-wrap">
                     <ul class="tiles__list col col--lg-40 margin-bottom--double">
                         {{#each relatedDatasets}}
@@ -194,7 +158,7 @@
 
             {{#if_any description.nationalStatistic markdown dateChanges}}
                 <div class="col-wrap">
-                    <div class="col one margin-bottom--double">
+                    <div class="col margin-bottom--double">
                         {{!-- RELEASE INFORMATION --}}
                         {{#if description.nationalStatistic}}
                             <section class="section__content--static-markdown">
@@ -228,8 +192,6 @@
                                          class="accordion is-collapsed section__content--static-markdown flush-col">
                                     <h2 class="accordion__title" aria-controls="content-1">
 										Pre-release access list for {{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}
-
-
 									</h2>
 
                                     <div class="accordion__content" aria-labelledby="sc-1">
@@ -283,6 +245,10 @@
             {{/if_any}}
         </div>
     </div>
+{{/partial}}
+
+{{!-- Inheriting from base statistics template --}}
+{{> content/base/statistics}}
 
 
 
