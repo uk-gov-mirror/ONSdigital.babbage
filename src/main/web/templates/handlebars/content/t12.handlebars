@@ -118,16 +118,34 @@
                     <table class="table-advanced margin-bottom-md--2">
                         <thead>
                         <tr>
-                            <th>Date updated</th>
-                            <th>Reason for update</th>
-                            <th>View data</th>
+                            <th width="15%">Date updated</th>
+                            <th width="65%">Reason for update</th>
+                            <th width="20%">View data</th>
                         </tr>
                         </thead>
                         <tbody>
                         {{#loop versions reverse=true}}
                             <tr>
                                 <td>{{df updateDate}}</td>
-                                <td>{{#if correctionNotice}}{{correctionNotice}}{{else}}Scheduled revision{{/if}}</td>
+                                <td>
+                                    {{#if correctionNotice}}
+
+                                        <div class="show-hide show-hide--light js-show-hide">
+                                            <div class="js-show-hide__title">
+                                                <span class="no-js js-enhance--hide">Correction</span>
+                                                <span>See correction</span>
+                                            </div>
+
+                                            <div class="js-show-hide__content">
+                                                {{correctionNotice}}
+                                            </div>
+
+                                        </div>
+
+                                    {{else}}
+                                        Scheduled revision
+                                    {{/if}}
+                                </td>
                                 <td>
 
                                     {{#resolve this.uri}}
