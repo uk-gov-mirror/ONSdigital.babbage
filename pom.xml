@@ -59,6 +59,11 @@
 			<artifactId>handlebars-humanize</artifactId>
 			<version>${handlebars-java-version}</version>
 		</dependency>
+		<dependency>
+			<groupId>com.github.jknack</groupId>
+			<artifactId>handlebars-helpers</artifactId>
+			<version>${handlebars-java-version}</version>
+		</dependency>
         <dependency>
             <groupId>com.github.jknack</groupId>
             <artifactId>handlebars-jackson2</artifactId>
