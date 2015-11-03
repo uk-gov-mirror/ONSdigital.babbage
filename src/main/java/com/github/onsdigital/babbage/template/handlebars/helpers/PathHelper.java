@@ -7,7 +7,7 @@ import com.github.onsdigital.babbage.util.URIUtil;
 import org.apache.commons.io.FilenameUtils;
 
 import java.io.IOException;
-import java.net.URI;
+import java.nio.file.Paths;
 
 /**
  * Created by bren on 14/07/15.
@@ -63,7 +63,23 @@ public enum PathHelper implements BabbageHandlebarsHelper<String> {
             handlebars.registerHelper(this.name(), this);
         }
 
+    },
+
+    /*File name*/
+    fn {
+        @Override
+        public CharSequence apply(String uri, Options options) throws IOException {
+            if (options.isFalsy(uri)) {
+                return null;
+            }
+            return Paths.get(uri).getFileName().toString();
+        }
+
+        @Override
+        public void register(Handlebars handlebars) {
+            handlebars.registerHelper(this.name(), this);
+        }
     }
-
-
 }
+
+
