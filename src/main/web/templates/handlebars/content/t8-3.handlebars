@@ -5,42 +5,132 @@
         <div class="col-wrap">
             <div class="col col--lg-two-thirds col--md-two-thirds">
 
+                <div class="col col--md-31 col--lg-39">
+
+                {{#if datasets}}
+                    <h2>{{labels.dataset-downloads}}</h2>
+
+                    {{#each datasets}}
+
+                        {{#resolve this.uri}}
+
+                            {{#each downloads}}
+
+                                {{#if file}}
+
+                                    {{#if timeseries}}
+
+                                        {{!-- TIMESERIES DATASETS --}}
+
+                                        {{#if versions}}
+                                            <p class="flush"><a href="{{uri}}">Previous versions</a> of this data are available</p>
+                                        {{/if}}
+
+                                            <div class="col col--md-8 col--lg-9">
+                                                <form method="get" action="/file">
+                                                    <button type="submit" title="Latest version" class="btn btn--primary btn--thick download-analytics">
+                                                        {{fe (lowercase this.file)}} ({{fs (lowercase this.file)}})
+                                                    </button>
+                                                    <input type="hidden" name="uri" value="{{this.file}}"/>
+                                                </form>
+                                            </div>
+
+                                        {{#if supportingFiles}}
+                                            <h5 class="flush-bottom">Supporting files you may find useful</h5>
+                                            <ul class="list--neutral flush-top">
+                                                {{#each supportingFiles}}
+                                                    <li class="flush"><a href="{{uri}}">{{title}}</a> (filesize)</li>
+                                                {{/each}}
+                                            </ul>
+                                        {{/if}}
+
+                                    {{else}}
+
+                                        {{!-- NON-TIMESERIES DATASETS --}}
+
+                                        <div class="show-hide show-hide--light js-show-hide">
+                                            <div class="js-show-hide__title {{#if ../@first}}is-shown{{/if}}">
+                                                <h3>{{description.edition}}</h3>
+                                            </div>
+
+                                            <div class="js-show-hide__content">
+                                                {{#if versions}}
+                                                    <p class="flush"><a href="{{uri}}">Previous versions</a> of this data are available</p>
+                                                {{/if}}
+
+                                                <div class="col col--md-8 col--lg-9">
+                                                    <form method="get" action="/file">
+                                                        <button type="submit" title="Latest version" class="btn btn--primary btn--thick download-analytics">
+                                                            {{fe (lowercase (concat uri "/" this.file))}} ({{fs (lowercase (concat uri "/" this.file))}})
+                                                        </button>
+                                                        <input type="hidden" name="uri" value="{{concat uri "/" this.file}}"/>
+                                                    </form>
+                                                </div>
+
+                                                {{#if supportingFiles}}
+                                                    <h5 class="flush-bottom">Supporting files you may find useful</h5>
+                                                    <ul class="list--neutral flush-top">
+                                                        {{#each supportingFiles}}
+                                                            <li class="flush"><a href="{{uri}}">{{title}}</a> (filesize)</li>
+                                                        {{/each}}
+                                                    </ul>
+                                                {{/if}}
+                                            </div>
+
+                                        </div>
+
+                                    {{/if}}
+
+                                {{/if}}
+
+                            {{/each}}
+
+
+                        {{/resolve}}
+
+                    {{/each}}
+
+                {{/if}}
+
+                </div>
 
 
 
-                {{#if_eq type "timeseries_dataset"}}
+
 
                 {{!-- TIME SERIES DATASETS --}}
 
-                    <h2>{{labels.dataset-downloads}}</h2>
-                        <h3 class="flush-bottom">Current</h3>
-                    {{#if previousVersions}}
-                            <p class="flush"><a href="#">Previous versions</a> of this data are available</p>
-                    {{/if}}
-                        <div class="col-wrap flush">
-                            {{#each downloads}}
-                                {{#if file}}
-                                    <div class="col col--md-8 col--lg-9 margin-right-md--1">
-                                        <form method="get" action="/file" class="margin-bottom">
-                                            <button type="submit" title="Latest version" class="btn btn--primary btn--thick download-analytics">
-                                                {{fe (lowercase file)}} ({{fs (lowercase file)}})
-                                            </button>
-                                            <input type="hidden" name="uri" value="{{file}}"/>
-                                        </form>
-                                    </div>
-                                {{/if}}
-                            {{!--
-                                {{#if file}}
-                                    <div class="col col--md-8 col--lg-9 margin-right">
-                                        <form method="get" action="/file" class="margin-bottom">
-                                            <button type="submit" title="Latest version" class="btn btn--primary btn--thick download-analytics">
-                                                {{fe (lowercase (concat this.uri "/" downloads.0.file))}} ({{fs (lowercase (concat this.uri "/" downloads.0.file))}})
-                                            </button>
-                                            <input type="hidden" name="uri" value="{{concat this.uri "/" file}}"/>
-                                        </form>
-                                    </div>
-                                {{/if}}
-                                --}}
+                {{!--
+
+                <h2>{{labels.dataset-downloads}}</h2>
+                    <h3 class="flush-bottom">Current</h3>
+                {{#if previousVersions}}
+                        <p class="flush"><a href="#">Previous versions</a> of this data are available</p>
+                {{/if}}
+                    <div class="col-wrap flush">
+                        {{#each downloads}}
+                            {{#if file}}
+                                <div class="col col--md-8 col--lg-9 margin-right-md--1">
+                                    <form method="get" action="/file" class="margin-bottom">
+                                        <button type="submit" title="Latest version" class="btn btn--primary btn--thick download-analytics">
+                                            {{fe (lowercase file)}} ({{fs (lowercase file)}})
+                                        </button>
+                                        <input type="hidden" name="uri" value="{{file}}"/>
+                                    </form>
+                                </div>
+                            {{/if}}
+
+                            {{#if file}}
+                                <div class="col col--md-8 col--lg-9 margin-right">
+                                    <form method="get" action="/file" class="margin-bottom">
+                                        <button type="submit" title="Latest version" class="btn btn--primary btn--thick download-analytics">
+                                            {{fe (lowercase (concat this.uri "/" downloads.0.file))}} ({{fs (lowercase (concat this.uri "/" downloads.0.file))}})
+                                        </button>
+                                        <input type="hidden" name="uri" value="{{concat this.uri "/" file}}"/>
+                                    </form>
+                                </div>
+                            {{/if}}
+
                             {{/each}}
                         </div>
                     {{#if supportingFiles}}
@@ -54,7 +144,7 @@
 
                 {{else}}
 
-                {{!-- NON-TIME SERIES DATASETS --}}
+
                     {{#if datasets}}
                         <h2>{{labels.dataset-downloads}}</h2>
                         {{#each datasets}}
@@ -107,10 +197,6 @@
                             {{/resolve}}
                         {{/each}}
                     {{/if}}
-                {{/if_eq}}
-
-
-
 
 
                 {{!-- OLD FOR REFERENCE
@@ -192,11 +278,11 @@
 
                 {{!-- INFORMATION AND NOTES --}}
                 {{#if section.markdown}}
-                    <div class="section__content--static-markdown">
-						<section>
-							<h3>{{labels.dataset-notes}}</h3>
-							{{md section.markdown}}
-						</section>
+                    <div class="section__content--static-markdown float-left">
+                        <section>
+                            <h3>{{labels.dataset-notes}}</h3>
+                            {{md section.markdown}}
+                        </section>
                     </div>
                 {{/if}}
 
