@@ -18,8 +18,6 @@
 
                                 {{#if file}}
 
-
-
                                     {{#if timeseries}}
 
                                         {{!-- TIMESERIES DATASETS --}}
@@ -28,17 +26,14 @@
                                             <p class="flush"><a href="{{uri}}">Previous versions</a> of this data are available</p>
                                         {{/if}}
 
-
-
                                             <div class="col col--md-8 col--lg-9">
                                                 <form method="get" action="/file">
                                                     <button type="submit" title="Latest version" class="btn btn--primary btn--thick download-analytics">
-                                                        {{fe (lowercase (concat uri "/" this.file))}} ({{fs (lowercase (concat uri "/" this.file))}})
+                                                        {{fe (lowercase this.file)}} ({{fs (lowercase this.file)}})
                                                     </button>
-                                                    <input type="hidden" name="uri" value="{{concat uri "/" this.file}}"/>
+                                                    <input type="hidden" name="uri" value="{{this.file}}"/>
                                                 </form>
                                             </div>
-
 
                                         {{#if supportingFiles}}
                                             <h5 class="flush-bottom">Supporting files you may find useful</h5>
