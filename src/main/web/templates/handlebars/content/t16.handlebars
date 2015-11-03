@@ -1,6 +1,6 @@
 
 {{#partial "block-intro"}}
-	<h1 class="page-intro__title margin-bottom-sm--4 margin-bottom-md--4"><span class="page-intro__type">{{>type-label type_code=type}}:</span>{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}</h1>
+	<h1 class="page-intro__title margin-bottom-sm--4 margin-bottom-md--4"><span class="page-intro__type">Release:</span>{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}</h1>
 {{/partial}}
 
 
@@ -41,7 +41,7 @@
 {{/partial}}
 
 
-{{#partial "block-additional-metadata"}}
+{{#partial "block-additonal-metadata"}}
 	{{#if markdown}}
 		{{!-- Pre-release list link --}}
 		<p class="col {{#if description.nationalStatistic}}col--md-11 col--lg-14{{else}}col--md-12 col--lg-15	{{/if}} print--hide meta__item">
@@ -66,7 +66,7 @@
 							</p>
 						{{else}}
 							{{!-- Upcoming alert --}}
-							<p class="alert__title margin-top-md--1">This will be released {{#if description.provisionalDate}}in {{description.provisionalDate}}{{else}}on {{df description.releaseDate}}{{/if}}</p>
+							<p class="alert__title margin-top-md--1">This release is not yet published</p>
 						{{/if}}
 
 					</div>
