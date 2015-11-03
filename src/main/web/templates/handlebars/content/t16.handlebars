@@ -34,8 +34,7 @@
 	{{!-- Next release --}}
 	{{#unless description.cancelled}}
 		<p class="col {{#if description.nationalStatistic}}col--md-11 col--lg-14{{else}}col--md-12 col--lg-15{{/if}} meta__item">
-				<span>{{labels.release-next}}
-					: </span><br/>{{#if description.nextRelease}}{{description.nextRelease}}{{else}}To be
+				<span>{{labels.release-next}}: </span><br/>{{#if description.nextRelease}}{{description.nextRelease}}{{else}}To be
 			announced{{/if}}
 		</p>
 	{{/unless}}
@@ -67,7 +66,7 @@
 							</p>
 						{{else}}
 							{{!-- Upcoming alert --}}
-							<p class="alert__title">This will be released {{#if description.provisionalDate}}in {{description.provisionalDate}}{{else}}on {{df description.releaseDate}}{{/if}}</p>
+							<p class="alert__title margin-top-md--1">This will be released {{#if description.provisionalDate}}in {{description.provisionalDate}}{{else}}on {{df description.releaseDate}}{{/if}}</p>
 						{{/if}}
 
 					</div>
