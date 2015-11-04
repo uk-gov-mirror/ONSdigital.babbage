@@ -2,7 +2,7 @@
 
 
 {{#partial "block-intro"}}
-    <h1 class="page-intro__title margin-bottom-sm--4 margin-bottom-md--4"><span class="page-intro__type">Release:</span>{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}</h1>
+    <h1 class="page-intro__title margin-bottom-sm--4 margin-bottom-md--4"><span class="page-intro__type">Spreadsheet(s):</span>{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}</h1>
 {{/partial}}
 
 {{#partial "block-alert" no-versions=true}}{{/partial}}
@@ -29,26 +29,26 @@
 
                             {{#resolve this.uri}}
 
-                                {{#each downloads}}
+                                {{#if timeseries}}
 
-                                    {{#if file}}
+                                <div class="col-wrap margin-left-sm--0 margin-left-md--0">
 
-                                        {{#if timeseries}}
+                                    {{#each downloads}}
+
+                                        {{#if file}}
+
 
                                             {{!-- TIMESERIES DATASETS --}}
 
-                                            <div class="col-wrap margin-left-sm--0 margin-left-md--0">
-
-                                                <div class="col col--md-8 col--lg-9">
-                                                    <form method="get" action="/file">
-                                                        <button type="submit" title="Latest version" class="btn btn--primary btn--thick download-analytics">
-                                                            {{fe (lowercase this.file)}} ({{fs (lowercase this.file)}})
-                                                        </button>
-                                                        <input type="hidden" name="uri" value="{{this.file}}"/>
-                                                    </form>
-                                                </div>
-
+                                            <div class="col col--md-8 col--lg-9">
+                                                <form method="get" action="/file">
+                                                    <button type="submit" title="Latest version" class="btn btn--primary btn--thick download-analytics">
+                                                        {{fe (lowercase this.file)}} ({{fs (lowercase this.file)}})
+                                                    </button>
+                                                    <input type="hidden" name="uri" value="{{this.file}}"/>
+                                                </form>
                                             </div>
+
 
                                             {{#if versions}}
                                                 <p class="flush"><a href="{{uri}}">Previous versions</a> of this data are available</p>
@@ -63,7 +63,17 @@
                                                 </ul>
                                             {{/if}}
 
-                                        {{else}}
+                                        {{/if}}
+
+                                    {{/each}}
+
+                                </div>
+
+                                {{else}}
+
+                                    {{#each downloads}}
+
+                                        {{#if file}}
 
                                             {{!-- NON-TIMESERIES DATASETS --}}
 
@@ -104,22 +114,12 @@
                                             </div>
 
                                         {{/if}}
-
-                                    {{/if}}
-
-                                {{/each}}
-
-
+                                    {{/each}}
+                                {{/if}}
                             {{/resolve}}
-
                         {{/each}}
-
                     {{/if}}
-
                 </div>
-
-
-
 
 
                 {{!-- TIME SERIES DATASETS --}}
