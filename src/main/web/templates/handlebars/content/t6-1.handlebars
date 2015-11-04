@@ -1,29 +1,3 @@
-{{#partial "block-alert"}}
-{{!-- Notices - Can't use 'alert' partial because 'latest release' doesn't work for compendia --}}
-{{#if alerts}}
-<div class="alert">
-	<div class="wrapper">
-		<div class="col-wrap">
-			<div class="col">
-				<div class="show-hide js-show-hide">
-					<div class="js-show-hide__title">
-						<div class="show-hide--warning">!</div>
-						<h2 class="show-hide--warning__title inline-block">
-						Notice
-						</h2>
-					</div>
-					<div class="js-show-hide__content">
-						{{> partials/notice}}
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-{{/if}}
-{{/partial}}
-
-
 {{#partial "block-additonal-metadata"}}
 {{!-- Print and download --}}
 <p class="col col--md-12 col--lg-15 print--hide meta__item">

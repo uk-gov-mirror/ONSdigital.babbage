@@ -1,8 +1,12 @@
 {{> content/partials/metadata/dataset-id}}
 
+
 {{#partial "block-intro"}}
     <h1 class="page-intro__title margin-bottom-sm--4 margin-bottom-md--4"><span class="page-intro__type">Release:</span>{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}</h1>
 {{/partial}}
+
+{{#partial "block-alert" no-versions=true}}{{/partial}}
+
 
 {{#partial "block-content"}}
     <div class="wrapper">

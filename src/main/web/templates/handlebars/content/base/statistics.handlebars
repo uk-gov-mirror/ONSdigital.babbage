@@ -1,7 +1,11 @@
 {{#partial "block-intro-secondary"}}
+	{{!-- Latest release flag, corrections and notices --}}
 	{{#block "block-alert"}}
-		{{!-- Latest release flag, corrections and notices --}}
-		{{> partials/alert}}
+		{{#if no-versions}}
+			{{> partials/alert no-versions=true}}
+		{{else}}
+			{{> partials/alert}}
+		{{/if}}
 	{{/block}}
 
 	<div class="meta-wrap">
