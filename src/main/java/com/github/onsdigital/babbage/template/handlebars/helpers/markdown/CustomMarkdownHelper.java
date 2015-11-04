@@ -19,8 +19,6 @@ import java.io.IOException;
  */
 public class CustomMarkdownHelper extends MarkdownHelper implements BabbageHandlebarsHelper<Object> {
 
-    private final static String SUBSCRIPT_PATTERN = "~(?=\\S)(\\S*)~";
-    private final static String SUPER_SCRIPT_PATTERN = "\\^(?=\\S)(\\S*)\\^";
     private final String HELPER_NAME = "md";
 
     @Override
@@ -35,8 +33,8 @@ public class CustomMarkdownHelper extends MarkdownHelper implements BabbageHandl
 
         String markdown = context.toString();
         markdown = super.apply(markdown, options).toString();
-        markdown = markdown.replaceAll(SUBSCRIPT_PATTERN, "<sub>$1</sub>");
-        markdown = markdown.replaceAll(SUPER_SCRIPT_PATTERN, "<sup>$1</sup>");
+        markdown = SubscriptHelper.doSubscript(markdown);
+        markdown = SuperscriptHelper.doSuperscript(markdown);
         markdown = new ChartTagReplacer(path).replaceCustomTags(markdown);
         markdown = new TableTagReplacer(path).replaceCustomTags(markdown);
         markdown = new ImageTagReplacer(path).replaceCustomTags(markdown);
