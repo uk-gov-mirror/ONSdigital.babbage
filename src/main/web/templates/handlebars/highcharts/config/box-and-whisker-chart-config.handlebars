@@ -17,8 +17,18 @@ options.tooltip={
 	    },
 		shared: true
 	};
-
 options.legend.enabled=false;
+options.plotOptions={
+			boxplot: {
+				animation:false,
+                lineWidth: 2,
+                medianWidth: 3,
+                stemDashStyle: 'dash',
+                stemWidth: 1,
+                whiskerLength: '20%',
+                whiskerWidth: 3
+			}
+		};
 {{/partial}}
 {{!-- This denotes the template inherits from base-chart-config--}}
 {{> highcharts/config/base-chart-config}} 
