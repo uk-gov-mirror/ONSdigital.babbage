@@ -1,20 +1,35 @@
-{{#partial 'block-intro-secondary'}}
-	<div class="meta-wrap">
-		<div class="wrapper">
-			<div class="col-wrap">
 
-				{{!-- Contact --}}
-				<p class="col {{#if description.nationalStatistic}}col--md-8 col--lg-11{{else}}col--md-12 col--lg-15{{/if}} meta__item">
-					<span>{{labels.meta-contact}}: </span><br/><a href="mailto:{{description.contact.email}}">{{#if description.contact.name}}{{description.contact.name}}{{else}}{{description.contact.email}}{{/if}}</a>
-				</p>
-				{{!-- Release date --}}
-				<p class="col col--md-12 col--lg-15 meta__item">
-					<span>Last revised: </span><br/>{{df description.releaseDate}}<br/>
-				</p>
-			</div>
-		</div>
+{{#partial "block-metadata"}}
+	<div class="wrapper">
+	<div class="col-wrap">
+
+		{{!-- Contact --}}
+		<p class="col col--md-12 col--lg-15 meta__item">
+			<span>{{labels.meta-contact}}: </span><br/><a href="mailto:{{description.contact.email}}">{{#if description.contact.name}}{{description.contact.name}}{{else}}{{description.contact.email}}{{/if}}</a>
+		</p>
+		{{!-- Release date --}}
+		<p class="col col--md-12 col--lg-15 meta__item">
+			<span>Last revised: </span><br/>{{df description.releaseDate}}<br/>
+		</p>
+
+		{{#block "block-additonal-metadata"}}{{/block}}
+
 	</div>
+</div>
+{{/partial}}
+
+
+
+{{#partial "publication-sidebar"}}
+{{!-- Related data --}}
+	{{>partials/related/data}}
+	{{!-- Related publications --}}
+	{{>partials/related/documents}}
+	{{!-- Related articles --}}
+	{{>partials/related/articles}}
+	{{!-- Contact details --}}
+	{{>partials/contact}}
 {{/partial}}
 
 {{!-- Inheriting from base content template --}}
-{{> content/base/content}}
+{{> content/base/publication typeLabel="Methodology"}}
