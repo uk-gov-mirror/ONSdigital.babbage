@@ -1,12 +1,44 @@
 {{#if alerts}}
-	<section class="show-hide__content alert--warning__content section__content--markdown">
-		{{#if_all versions alerts}}
-			<h3 class="alert--notice__title">Notice</h3>
-		{{/if_all}}
-		{{#each alerts}}
-			<p class="alert__date">{{df date}}</p>
-			{{md markdown}}
-		{{/each}}
-	</section>
+
+	{{!-- For dataset pages that have 'correction alerts' instead of versions and 'alert alerts' for normal alerts --}}
+	{{#if has-corrections}}
+		<section class="show-hide__content alert--warning__content section__content--markdown">
+			{{#if_all has-corrections has-alerts}}
+				<h3 class="alert--notice__title">Corrections</h3>
+			{{/if_all}}
+			{{#each alerts}}
+				{{#if_eq type "correction"}}
+					<p class="alert__date">{{df date}}</p>
+					{{md markdown}}
+				{{/if_eq}}
+			{{/each}}
+		</section>
+	{{/if}}
+	{{#if has-alerts}}
+		<section class="show-hide__content alert--warning__content section__content--markdown">
+			{{#if_all has-corrections has-alerts}}
+				<h3 class="alert--notice__title">Notices</h3>
+			{{/if_all}}
+			{{#each alerts}}
+				{{#if_eq type "alert"}}
+					<p class="alert__date">{{df date}}</p>
+					{{md markdown}}
+				{{/if_eq}}
+			{{/each}}
+		</section>
+
+	{{else}}
+
+	{{!-- Normal alerts --}}
+		<section class="show-hide__content alert--warning__content section__content--markdown">
+			{{#if_all versions alerts}}
+				<h3 class="alert--notice__title">Notices</h3>
+			{{/if_all}}
+			{{#each alerts}}
+				<p class="alert__date">{{df date}}</p>
+				{{md markdown}}
+			{{/each}}
+		</section>
+	{{/if}}
 {{/if}}
 
