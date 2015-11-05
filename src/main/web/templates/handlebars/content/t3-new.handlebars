@@ -1,46 +1,4 @@
 {{#partial "block-content"}}
-	{{!-- Page header
-	<div class="page-intro">
-		<div class="wrapper">
-			<div class="col-wrap">
-				<div class="col">
-
-					{{> partials/breadcrumb}}
-
-
-					<h1 class="page-intro__title">{{description.title}}</h1>
-					<p class="page-intro__content col col--md-47 col--lg-48">{{description.summary}}</p>
-
-				</div>
-			</div>
-		</div>
-
-		{{!-- On this page and quick links
-		<div class="nav-secondary-wrap">
-			<div class="wrapper">
-				<div class="col-wrap">
-					<nav class="nav-secondary nav-secondary--border-right-lg col col--lg-half">
-						<h2 class="nav-secondary__title">On this page:</h2>
-						<ul class="nav-secondary__list">
-							{{resolve items.0.uri assign="data"}}
-							{{!-- <li class="nav-secondary__item"><a href="#latest-publication" class="jsEnhanceAnimateScroll">Highlights</a></li>
-							{{#if items}}<li class="nav-secondary__item"><a href="#timeseries" class="jsEnhanceAnimateScroll">Time series data</a></li>{{/if}}
-                            {{#if datasets}}<li class="nav-secondary__item"><a href="#datasets" class="jsEnhanceAnimateScroll">Spreadsheets</a></li>{{/if}}
-							<li class="nav-secondary__item"><a href="#publications" class="jsEnhanceAnimateScroll">Publications</a></li>
-						</ul>
-					</nav>
-					<nav class="nav-secondary col col--lg-half">
-						<h2 class="nav-secondary__title">Quick links:</h2>
-						<ul class="nav-secondary__list">
-							{{#if_any items datasets}}<li class="nav-secondary__item"><a href="{{uri}}/datalist">All data in this topic</a></li>{{/if_any}}
-							<li class="nav-secondary__item"><a href="{{uri}}/publications">All publications in this topic</a></li>
-						</ul>
-					</nav>
-				</div> {{!-- /col-wrap --}}
-			</div> {{!-- /wrapper --}}
-		</div> {{!-- /nav-secondary --}}
-	</div> {{!-- /page-intro --}}
-
 
 <div class="border-top--iron-sm border-top--iron-md border-top--iron-lg overflow--hidden">
     <div class="wrapper">
@@ -48,15 +6,19 @@
 
             {{!-- On this page side bar--}}
 
-            <div class="col col--md-7 col--lg-14 margin-right-md--2 margin-left-md--1 col margin-right-lg--2 margin-right-md--1">
-                <h2 class="">On this page:</h2>
-                <ul class="list--neutral">
-                    {{resolve items.0.uri assign="data"}}
-                    {{!-- <li class="nav-secondary__item"><a href="#latest-publication" class="jsEnhanceAnimateScroll">Highlights</a></li> --}}
-                    {{#if items}}<li class=""><a href="#timeseries" class="jsEnhanceAnimateScroll">Time series data</a></li>{{/if}}
-                    {{#if datasets}}<li class=""><a href="#datasets" class="jsEnhanceAnimateScroll">Spreadsheets</a></li>{{/if}}
-                    <li class=""><a href="#publications" class="jsEnhanceAnimateScroll">Publications</a></li>
-                </ul>
+            <div class="col col--md-7 col--lg-17 margin-left-md--1">
+
+                <div class="side-bar js-sticky-sidebar">
+                    <h2 class="">On this page:</h2>
+                    <ul class="list--neutral">
+                        {{resolve items.0.uri assign="data"}}
+                        <a href="#highlights" class="jsEnhanceAnimateScroll"><li class="side-bar__item" id="high1" >Highlights</li></a>
+                        {{#if items}}<a href="#timeseries" class="jsEnhanceAnimateScroll"><li id="high2" class="side-bar__item">Time series data</li></a>{{/if}}
+                        {{#if datasets}}<a href="#datasets" class="jsEnhanceAnimateScroll"><li id="high3" class="side-bar__item">Spreadsheets</li></a>{{/if}}
+                        <a href="#commissioned" class="jsEnhanceAnimateScroll"><li id="high4" class="side-bar__item">Commissioned Statistics</li></a>
+                        <a href="#publications" class="jsEnhanceAnimateScroll"><li id="high5" class="side-bar__item">Publications</li></a>
+                    </ul>
+                </div>
             </div>
 
             {{!-- Page content --}}
@@ -64,8 +26,8 @@
             <div class="col col--md-37 col--lg-42 border-left--iron-sm border-left--iron-md border-left--iron-lg">
 
                 {{!-- Latest data/publication block --}}
-                <div class="page-content padding-left-md--1 padding-bottom-md--2 overflow--hidden">
-                    <h2>Highlights</h2>
+                <div class="page-content padding-left-md--1 padding-bottom-md--2 overflow--hidden js-sticky-scroll">
+                    <h2 id="highlights">Highlights</h2>
                     <div class="col-wrap margin-left-lg--0">
                         {{resolve statsBulletins.0.uri filter="description" assign="bulletin"}}
                         {{#if bulletin}}
@@ -83,10 +45,10 @@
                             {{!-- Latest publication block --}}
                             <div class="col {{#if_any data.years data.quarters data.months}} col--lg-20 margin-left-md--1{{else}}col--lg-41{{/if_any}}">
                                 <!--<div class="clickable-wrap">-->
-                                    <div class="slate--iron-light margin-bottom-md--2">
-                                        <div class="tiles__image height--24 overflow--hidden">
+                                    <div class="background--iron-light margin-bottom-md--2">
+                                        <div class="background--abbey height--24 overflow--hidden">
 
-                                            <img src="{{#if_any (eq 'localhost' location.hostname) (eq '127.0.0.1' location.hostname)}}http://localhost:9000/dist/img/latest-publications.png{{else}}/node_modules/sixteens/dist/img/latest-publications.png{{/if_any}}" class="height--24" alt="" />
+                                            <img src="{{#if_any (eq 'localhost' location.hostname) (eq '127.0.0.1' location.hostname)}}http://localhost:9000/dist/img/latest-publications.png{{else}}/node_modules/sixteens/dist/img/latest-publications.png{{/if_any}}" class="height--24 width--20" alt="" />
                                         </div>
                                         <div class="equal-height box__content padding-top-md--2 padding-right-md--1 padding-bottom-md--2 padding-left-md--1">
                                             <h3>
@@ -105,7 +67,9 @@
                                                 {{/if}}
                                             </ul>
                                             </div>
-                                        <a href="{{bulletin.uri}}" class="slate--iron-light border-top--iron-md border-top--iron-sm">Read this statistical bulletin</a>
+                                        <div class="background--iron-light box__content height--9 width--50 border-top--iron-sm border-top--iron-md padding-top-md--2 padding-left-md--1">
+                                            <a href="{{bulletin.uri}}" class="block">Read this statistical bulletin</a>
+                                        </div>
                                     </div>
                                 <!--</div>-->
                                 <a href="#publications" class="btn btn--primary btn--full-width jsEnhanceAnimateScroll">More publications</a>
@@ -122,6 +86,18 @@
                 {{#if datasets}}
                     {{> partials/t3/new-dataset-list}}
                 {{/if}}
+
+                    {{!-- Commissioned Statistics --}}
+                    <h2 id="commissioned">Commissioned Statistics</h2>
+                    <div class="background--iron-light margin-bottom-md--2">
+
+                        <div class="box__content padding-top-md--3 padding-right-md--1 padding-bottom-md--2 padding-left-md--1">
+                            <h3>Looking for our user requested data?</h3>
+                            <p><a href="aboutus/whatwedo/statistics/requestingstatistics">We also product statistics not included in our standard publications</a></p>
+                        </div>
+
+                    </div>
+
 
                 {{!-- Publications list --}}
                 {{#if_any statsBulletins relatedArticles}}
