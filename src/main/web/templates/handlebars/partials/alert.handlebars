@@ -54,7 +54,7 @@
 
 {{else}}
 
-	{{#if_any description.latestRelease versions alerts (eq type "bulletin") (eq type "article") (eq type "compendium_chapter") (endsWith (parentPath uri) "previous")}} {{!-- Must always show on bulletin & article for 'not latest release' alert or for 'previous versions' alert on dataset-landing-pages --}}
+	{{#if_any description.latestRelease versions alerts (eq type "bulletin") (eq type "article") (eq type "compendium_landing_page") (endsWith (parentPath uri) "previous")}} {{!-- Must always show on bulletin & article for 'not latest release' alert or for 'previous versions' alert on dataset-landing-pages --}}
 		<div class="alert">
 			<div class="wrapper">
 				<div class="col-wrap">
