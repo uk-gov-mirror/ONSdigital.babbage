@@ -25,7 +25,7 @@ public class SuperscriptHelper implements BabbageHandlebarsHelper<String> {
         if (options.isFalsy(text)) {
             return "";
         }
-        if(!options.isFalsy(options.hash("clear")) ) {
+        if(Boolean.TRUE.equals(options.hash("clear")))  {
             return clearSuperScript(text);
         }
         return doSuperscript(text);
