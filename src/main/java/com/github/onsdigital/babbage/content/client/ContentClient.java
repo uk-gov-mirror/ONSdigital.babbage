@@ -256,7 +256,7 @@ public class ContentClient {
     }
 
     /***
-     * Create query parameters to get depth of children content request
+     * Create query parameters to get depth of taxonomy content request
      *
      * @param depth
      * @return
