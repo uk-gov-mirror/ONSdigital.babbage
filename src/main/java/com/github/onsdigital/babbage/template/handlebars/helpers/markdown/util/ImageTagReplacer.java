@@ -8,8 +8,6 @@ import com.github.onsdigital.babbage.template.TemplateService;
 
 import java.io.IOException;
 import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -45,9 +43,6 @@ public class ImageTagReplacer extends TagReplacementStrategy {
 
         String tagPath = matcher.group(1);
         String figureUri = resolveFigureUri(this.getPath(), Paths.get(tagPath));
-
-        Map<String, Object> additionalFields = new HashMap<>();
-        additionalFields.put("parentPageUri", this.getPath().toString());
 
         try (ContentStream stream = ContentClient.getInstance().getContentStream(figureUri)) {
             return TemplateService.getInstance().renderTemplate("partials/image", stream.getDataStream());
