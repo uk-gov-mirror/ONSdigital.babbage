@@ -46,17 +46,9 @@ public class TableTagReplacer extends TagReplacementStrategy {
         String tagPath = matcher.group(1);
         String figureUri = resolveFigureUri(this.getPath(), Paths.get(tagPath));
 
-        try (
-                ContentStream json = ContentClient.getInstance().getContentStream(figureUri);
-                ContentStream html = ContentClient.getInstance().getResource(URIUtil.cleanUri(figureUri) + ".html")
-        ) {
-
-            LinkedHashMap<String, Object> htmlEntry = new LinkedHashMap<>();
-            htmlEntry.put("html", html.getAsString());
-            String jsonString = json.getAsString();
-            String result = TemplateService.getInstance().renderTemplate("partials/table", jsonString, htmlEntry);
+        try (ContentStream json = ContentClient.getInstance().getContentStream(figureUri)) {
+            String result = TemplateService.getInstance().renderTemplate("partials/table", json.getDataStream());
             return result;
-
         } catch (ContentReadException e) {
             System.err.println("Failed rendering table, uri:" + figureUri);
             return matcher.group();

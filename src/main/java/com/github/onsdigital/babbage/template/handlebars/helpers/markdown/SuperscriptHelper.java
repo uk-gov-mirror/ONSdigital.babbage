@@ -25,10 +25,17 @@ public class SuperscriptHelper implements BabbageHandlebarsHelper<String> {
         if (options.isFalsy(text)) {
             return "";
         }
+        if(!options.isFalsy(options.hash("clear")) ) {
+            return clearSuperScript(text);
+        }
         return doSuperscript(text);
     }
 
     static String doSuperscript(String text) {
         return text.toString().replaceAll(SUPER_SCRIPT_PATTERN, "<sup>$1</sup>");
+    }
+
+    static String clearSuperScript(String text) {
+        return text.toString().replaceAll(SUPER_SCRIPT_PATTERN, "");
     }
 }

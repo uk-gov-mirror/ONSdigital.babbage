@@ -11,6 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -25,7 +26,7 @@ import static com.github.onsdigital.babbage.util.json.JsonUtil.toMap;
 public enum DataHelpers implements BabbageHandlebarsHelper<Object> {
 
     /**
-     * usage: {{#resolve "uri" [filter=]}}
+     * usage: {{#resolve "uri" [filter=] [assign=variableName]}}
      * <p>
      * If variableName is not empty data is assigned to given variable name
      */
@@ -124,6 +125,43 @@ public enum DataHelpers implements BabbageHandlebarsHelper<Object> {
             } finally {
                 if (stream != null) {
                     stream.close();
+                }
+            }
+        }
+
+        @Override
+        public void register(Handlebars handlebars) {
+            handlebars.registerHelper(this.name(), this);
+        }
+
+    },
+
+    /**
+     * Resolves resource file as string, if a file can not be resolved as a string, this will not work
+     * usage:  {{#resolveResource [depth=depthvalue] [assign=variableName]}
+     * <p>
+     * If assign is not empty data is assigned to given variable name
+     */
+    resolveResource {
+        @Override
+        public CharSequence apply(Object uri, Options options) throws IOException {
+            ContentStream contentStream = null;
+            try {
+                validateUri(uri);
+                String uriString =  (String)uri;
+
+                contentStream = ContentClient.getInstance().getResource(uriString);
+                String data = contentStream.getAsString();
+                Map<String, Object> context = new LinkedHashMap<>();
+                context.put("resource", data);
+                assign(options, context);
+                return options.fn(context);
+            } catch (Exception e) {
+                logResolveError(uri, e);
+                return options.inverse();
+            } finally {
+                if (contentStream != null) {
+                    contentStream.close();
                 }
             }
         }

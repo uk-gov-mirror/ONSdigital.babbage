@@ -24,10 +24,17 @@ public class SubscriptHelper implements BabbageHandlebarsHelper<String> {
         if (options.isFalsy(text)) {
             return "";
         }
+        if(!options.isFalsy(options.hash("clear")) ) {
+            return clearSubscript(text);
+        }
         return doSubscript(text);
     }
 
     static String doSubscript(String text) {
         return text.toString().replaceAll(SUBSCRIPT_PATTERN, "<sub>$1</sub>");
+    }
+
+    static String clearSubscript(String text) {
+        return text.toString().replaceAll(SUBSCRIPT_PATTERN, "");
     }
 }
