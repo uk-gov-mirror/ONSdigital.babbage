@@ -51,15 +51,23 @@
 		performs type check on content type and decides which template to render  --}}
 		
 		{{!-- TODO: --}}
-		{{!-- In order to keep the code cleaner seperate if statements are used instead of indented if else statements. 
+		{{!-- In order to keep the code cleaner if statements are used for all cases rather than indented if else statements. 
 		This means the comparison actually happens for all conditions listed below. 
-		Handlebars 3.0.0 supports chained else if statements which is a syntactic sugar for indented if else statements, as soon as Handlebars.java 3.0 comes out an update and using chanined if statements would be nice.
+		Handlebars 3.0.0 supports chained else if statements which is a syntactic sugar for indented if else statements, as soon as Handlebars.java 3.0 comes out an update and using chained if statements would be nice.
 		Follow on:   --}}
 
 		{{!-- Content --}}
 		{{#if_eq type "home_page"}}{{> content/t1}}{{/if_eq}}
 		{{#if_eq type "taxonomy_landing_page"}}{{> content/t2}}{{/if_eq}}
-		{{#if_eq type "product_page"}}{{> content/t3}}{{/if_eq}}
+		
+		{{#if_eq type "product_page"}}
+			{{#if_eq parameters.test.0 "B"}}
+				{{> content/t3-new}}
+			{{else}}
+				{{> content/t3}}
+			{{/if_eq}}
+		{{/if_eq}}
+		
 		{{#if_eq type "bulletin"}}{{> content/t4-1}}{{/if_eq}}
 		{{#if_eq type "article"}}{{> content/t4-2}}{{/if_eq}}
 		{{#if_eq type "timeseries"}}{{> content/t5-1}}{{/if_eq}}
