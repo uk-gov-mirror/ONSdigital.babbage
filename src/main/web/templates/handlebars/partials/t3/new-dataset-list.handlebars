@@ -1,0 +1,29 @@
+<h2 id="datasets">Spreadsheets related to {{description.title}}</h2>
+
+<div class="slate--iron-light padding-top-md--2 padding-bottom-md--2 padding-left-md--1">
+
+
+    <ul class="list--neutral margin-top-md--0">
+	    {{#loop datasets limit=6}}
+        <!--<div class="clickable-wrap">-->
+            <li class="col-wrap padding-top-lg--0 padding-bottom-md-0 margin-top-md--0 margin-left-md--0">
+                {{#resolve (absolute this.uri) filter="description"}}
+                    <div class="col col--lg-39 slate--white padding-top-md--1">
+                        <div class="box__content padding-top-md--0 padding-bottom-md--0 padding-left-md--1 padding-right-md--1">
+                            <h4>
+                                <a href="{{absolute uri}}" title="{{description.title}}">
+                                    {{description.title}}
+                                </a>
+                            </h4>
+                            <p>{{description.summary}}</p>
+                        </div>
+                    </div>
+                {{/resolve}}
+            </li>
+        <!--</div>-->
+        {{/loop}}
+    </ul>
+
+    <a href="{{uri}}/datalist?filter=large_dataset" class="btn btn--primary">View all spreadsheets related to {{description.title}}</a>
+
+</div>

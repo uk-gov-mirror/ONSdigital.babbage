@@ -1,21 +1,21 @@
-
-	{{!-- Page header --}}
+{{#partial "block-content"}}
+	{{!-- Page header
 	<div class="page-intro">
 		<div class="wrapper">
 			<div class="col-wrap">
 				<div class="col">
-					{{!-- Breadcrumb --}}
+
 					{{> partials/breadcrumb}}
 
-					{{!-- Title & summary --}}
+
 					<h1 class="page-intro__title">{{description.title}}</h1>
 					<p class="page-intro__content col col--md-47 col--lg-48">{{description.summary}}</p>
 
-				</div> {{!-- /col --}}
-			</div> {{!-- /col-wrap --}}
-		</div> {{!-- /wrapper --}}
+				</div>
+			</div>
+		</div>
 
-		{{!-- On this page and quick links --}}
+		{{!-- On this page and quick links
 		<div class="nav-secondary-wrap">
 			<div class="wrapper">
 				<div class="col-wrap">
@@ -23,7 +23,7 @@
 						<h2 class="nav-secondary__title">On this page:</h2>
 						<ul class="nav-secondary__list">
 							{{resolve items.0.uri assign="data"}}
-							{{!-- <li class="nav-secondary__item"><a href="#latest-publication" class="jsEnhanceAnimateScroll">Highlights</a></li> --}}
+							{{!-- <li class="nav-secondary__item"><a href="#latest-publication" class="jsEnhanceAnimateScroll">Highlights</a></li>
 							{{#if items}}<li class="nav-secondary__item"><a href="#timeseries" class="jsEnhanceAnimateScroll">Time series data</a></li>{{/if}}
                             {{#if datasets}}<li class="nav-secondary__item"><a href="#datasets" class="jsEnhanceAnimateScroll">Spreadsheets</a></li>{{/if}}
 							<li class="nav-secondary__item"><a href="#publications" class="jsEnhanceAnimateScroll">Publications</a></li>
@@ -42,122 +42,91 @@
 	</div> {{!-- /page-intro --}}
 
 
-<div class="slate--alabaster overflow--hidden">
-<div class="wrapper">
-<div class="col-wrap">
-<div class="col col--md-15 margin-right-md--2 margin-left-md--1 col col--lg-15 margin-right-lg--2 margin-right-md--1">
-    <h2 class="">On this page:</h2>
-    <ul class="list--neutral">
-        {{resolve items.0.uri assign="data"}}
-        {{!-- <li class="nav-secondary__item"><a href="#latest-publication" class="jsEnhanceAnimateScroll">Highlights</a></li> --}}
-        {{#if items}}<li class=""><a href="#timeseries" class="jsEnhanceAnimateScroll">Time series data</a></li>{{/if}}
-        {{#if datasets}}<li class=""><a href="#datasets" class="jsEnhanceAnimateScroll">Spreadsheets</a></li>{{/if}}
-        <li class=""><a href="#publications" class="jsEnhanceAnimateScroll">Publications</a></li>
-    </ul>
-</div>
+<div class="border-top--iron-sm border-top--iron-md border-top--iron-lg overflow--hidden">
+    <div class="wrapper">
+        <div class="col-wrap">
 
-<div class="col col--md-41 col--lg-41">
-	{{!-- Latest data/publication block --}}
-	<div class="page-content">
-		<section class="slate--alabaster">
-			
+            {{!-- On this page side bar--}}
 
-				<div class="tiles">
-                    <div class="overflow--hidden">
-						<div class="col">
-							<h2>Highlights</h2>
-						</div>
-						{{resolve statsBulletins.0.uri filter="description" assign="bulletin"}}
-                    	{{#if bulletin}}
-                        	{{resolve items.0.uri assign="data"}}
-							<!-- <div id="latest" class="col col--md-half col--lg-half tiles__item tiles__item--image-type-headline"> -->
+            <div class="col col--md-7 col--lg-14 margin-right-md--2 margin-left-md--1 col margin-right-lg--2 margin-right-md--1">
+                <h2 class="">On this page:</h2>
+                <ul class="list--neutral">
+                    {{resolve items.0.uri assign="data"}}
+                    {{!-- <li class="nav-secondary__item"><a href="#latest-publication" class="jsEnhanceAnimateScroll">Highlights</a></li> --}}
+                    {{#if items}}<li class=""><a href="#timeseries" class="jsEnhanceAnimateScroll">Time series data</a></li>{{/if}}
+                    {{#if datasets}}<li class=""><a href="#datasets" class="jsEnhanceAnimateScroll">Spreadsheets</a></li>{{/if}}
+                    <li class=""><a href="#publications" class="jsEnhanceAnimateScroll">Publications</a></li>
+                </ul>
+            </div>
+
+            {{!-- Page content --}}
+
+            <div class="col col--md-37 col--lg-42 border-left--iron-sm border-left--iron-md border-left--iron-lg">
+
+                {{!-- Latest data/publication block --}}
+                <div class="page-content padding-left-md--1 padding-bottom-md--2 overflow--hidden">
+                    <h2>Highlights</h2>
+                    <div class="col-wrap margin-left-lg--0">
+                        {{resolve statsBulletins.0.uri filter="description" assign="bulletin"}}
+                        {{#if bulletin}}
+                            {{resolve items.0.uri assign="data"}}
+                            <!-- <div id="latest" class="col col--md-half col--lg-half tiles__item tiles__item--image-type-headline"> -->
 
                             {{!-- Check for data and print partial --}}
                             {{#if_any data.years data.quarters data.months}}
-                                <div class="col col--lg-20 margin-left-lg--0">
-                                    {{> partials/t3/headline-data-new}}
+                                <div class="col col--md-36 col--lg-20">
+                                    {{> partials/t3/new-headline-data}}
                                 </div>
                             {{/if_any}}
                             <!-- </div> -->
 
                             {{!-- Latest publication block --}}
-                            <div class="col {{#if_any data.years data.quarters data.months}}col col--lg-20 margin-left-md--1{{/if_any}}">
-                                <div class="clickable-wrap">
-                                    <div class="tiles__item tiles__item--image-type-headline flush-col">
-                                        <div class="tiles__image tiles__image--headline height--24 overflow--hidden">
+                            <div class="col {{#if_any data.years data.quarters data.months}} col--lg-20 margin-left-md--1{{else}}col--lg-41{{/if_any}}">
+                                <!--<div class="clickable-wrap">-->
+                                    <div class="slate--iron-light margin-bottom-md--2">
+                                        <div class="tiles__image height--24 overflow--hidden">
 
                                             <img src="{{#if_any (eq 'localhost' location.hostname) (eq '127.0.0.1' location.hostname)}}http://localhost:9000/dist/img/latest-publications.png{{else}}/node_modules/sixteens/dist/img/latest-publications.png{{/if_any}}" class="height--24" alt="" />
                                         </div>
-                                        <div class="equal-height">
-                                        <h3 class="tiles__title tiles__title-h3">
-                                            <a href="{{bulletin.uri}}">{{bulletin.description.title}}{{#if bulletin.description.edition}}: {{bulletin.description.edition}}{{/if}}</a>
-                                        </h3>
-                                        <h4 class="tiles__title-h4">{{labels.product-whats-in-bulletin}}</h4>
-                                        <ul class="tiles__content-list">
-                                            {{#if bulletin.description.headline1}}
-                                                <li>{{bulletin.description.headline1}}</li>
-                                            {{/if}}
-                                            {{#if bulletin.description.headline2}}
-                                                <li>{{bulletin.description.headline2}}</li>
-                                            {{/if}}
-                                            {{#if bulletin.description.headline3}}
-                                                <li>{{bulletin.description.headline3}}</li>
-                                            {{/if}}
-                                        </ul>
+                                        <div class="equal-height box__content padding-top-md--2 padding-right-md--1 padding-bottom-md--2 padding-left-md--1">
+                                            <h3>
+                                                <a href="{{bulletin.uri}}">{{bulletin.description.title}}{{#if bulletin.description.edition}}: {{bulletin.description.edition}}{{/if}}</a>
+                                            </h3>
+                                            <h4>{{labels.product-whats-in-bulletin}}</h4>
+                                            <ul>
+                                                {{#if bulletin.description.headline1}}
+                                                    <li>{{bulletin.description.headline1}}</li>
+                                                {{/if}}
+                                                {{#if bulletin.description.headline2}}
+                                                    <li>{{bulletin.description.headline2}}</li>
+                                                {{/if}}
+                                                {{#if bulletin.description.headline3}}
+                                                    <li>{{bulletin.description.headline3}}</li>
+                                                {{/if}}
+                                            </ul>
+                                            </div>
+                                        <a href="{{bulletin.uri}}" class="slate--iron-light border-top--iron-md border-top--iron-sm">Read this statistical bulletin</a>
                                     </div>
-                                        <a href="{{bulletin.uri}}" class="tiles__extra">Read this statistical bulletin</a>
-                                    </div>
-                                </div>
+                                <!--</div>-->
                                 <a href="#publications" class="btn btn--primary btn--full-width jsEnhanceAnimateScroll">More publications</a>
                             </div>
                         {{/if}}
                     </div>
-                </div>
-            
-        </section>
 
-        {{!-- Timeseries --}}
-        {{#if items}}
-        <div class="slate--mercury">
-            <section>
-                <div class="wrapper">
-                        {{> partials/t3/timeseries-list}}
-                </div>
-            </section>
-        </div>
-        {{/if}}
-
-        {{!-- Datasets --}}
-        {{#if datasets}}
-        <div class="slate--alabaster">
-            <section>
-                <div class="wrapper">
-                    {{> partials/t3/dataset-list}}
-                </div>
-            </section>
-        </div>
-        {{/if}}
-
-        {{!-- Latest publications --}}
-        {{#if_any statsBulletins relatedArticles}}
-        <section class="{{#if datasets}}slate--mercury{{else}}slate--alabaster{{/if}}">
-            <div class="wrapper">
-                <div class="col-wrap">
-                    <div class="col">
-                        <h2 id="publications">Publications related to {{description.title}}</h2>
-                    </div>
-                </div>
-                {{!-- Latest statistical bulletins --}}
-                {{#if statsBulletins}}
-                    {{> partials/t3/stats-bulletins}}
+                {{!-- Timeseries list --}}
+                {{#if items}}
+                    {{> partials/t3/new-timeseries-list}}
                 {{/if}}
-                {{!-- Latest articles --}}
-                {{#if relatedArticles}}
-                    {{> partials/t3/related-articles}}
+
+                {{!-- Datasets list --}}
+                {{#if datasets}}
+                    {{> partials/t3/new-dataset-list}}
                 {{/if}}
-            </div>
-        </section>
-        {{/if_any}}
+
+                {{!-- Publications list --}}
+                {{#if_any statsBulletins relatedArticles}}
+                    {{> partials/t3/new-publications-list}}
+                {{/if_any}}
 
         {{!-- Related methodology --}}
 		{{#if relatedMethodology}}
@@ -184,7 +153,10 @@
         </section> {{!-- /section --}}
 		{{/if}}
     </div>
+    </div>
 </div>
 </div> {{!-- /col-wrap --}}
 </div>{{!-- /wrapper --}}
 </div>
+{{/partial}}
+{{> content/base/content}}
