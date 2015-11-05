@@ -1,22 +1,19 @@
 {{#partial "chart-config"}}
 options.chart.type="boxplot";
 options.series= [{
-	    	name: "{{{headers.0}}}",
+	    	name: "{{{sub (sup headers.0)}}}",
 	    	data: [{{#each data}}[{{num (get this headers.1)}},{{num (get this headers.2)}},{{num (get this headers.3)}},{{num (get this headers.4)}},{{num (get this headers.5)}}],{{/each}}]
 	    }];
 
-options.tooltip={
-	    formatter: function() {
-	    	console.log(this);
-	    	return this.x + '<br/>' + '<b>{{{headers.0}}}</b><br/>' +
-	    		'{{headers.1}}: ' + Highcharts.numberFormat(this.points[0].point.low, {{num decimalPlaces}}) + '<br/>' +
-	    		'{{headers.2}}: ' + Highcharts.numberFormat(this.points[0].point.q1, {{num decimalPlaces}}) + '<br/>' +
-	    		'{{headers.3}}: ' + Highcharts.numberFormat(this.points[0].point.median, {{num decimalPlaces}}) + '<br/>' +
-	    		'{{headers.4}}: ' + Highcharts.numberFormat(this.points[0].point.q3, {{num decimalPlaces}}) + '<br/>' +
-	    		'{{headers.5}}: ' + Highcharts.numberFormat(this.points[0].point.high, {{num decimalPlaces}});
-	    },
-		shared: true
-	};
+options.tooltip.formatter=function() {
+	    	return this.x + '<br/>' + '<b>{{{sub (sup headers.0)}}}</b><br/>' +
+	    		'{{{sub (sup headers.1)}}}: ' + Highcharts.numberFormat(this.points[0].point.low, {{num decimalPlaces}}) + '<br/>' +
+	    		'{{{sub (sup headers.2)}}}: ' + Highcharts.numberFormat(this.points[0].point.q1, {{num decimalPlaces}}) + '<br/>' +
+	    		'{{{sub (sup headers.3)}}}: ' + Highcharts.numberFormat(this.points[0].point.median, {{num decimalPlaces}}) + '<br/>' +
+	    		'{{{sub (sup headers.4)}}}: ' + Highcharts.numberFormat(this.points[0].point.q3, {{num decimalPlaces}}) + '<br/>' +
+	    		'{{{sub (sup headers.5)}}}: ' + Highcharts.numberFormat(this.points[0].point.high, {{num decimalPlaces}});
+	    };
+	    
 options.legend.enabled=false;
 options.plotOptions={
 			boxplot: {
@@ -31,4 +28,4 @@ options.plotOptions={
 		};
 {{/partial}}
 {{!-- This denotes the template inherits from base-chart-config--}}
-{{> highcharts/config/base-chart-config}} 
+{{> highcharts/config/base/base-chart-config}} 

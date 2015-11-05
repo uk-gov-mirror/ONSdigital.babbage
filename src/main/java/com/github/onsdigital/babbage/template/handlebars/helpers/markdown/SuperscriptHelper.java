@@ -8,13 +8,16 @@ import java.io.IOException;
 
 /**
  * Created by bren on 03/11/15.
+ *
+ * Replaces text wrapped with carets (^^) with html superscript tags
+ *
  */
 public class SuperscriptHelper implements BabbageHandlebarsHelper<String> {
     private final static String SUPER_SCRIPT_PATTERN = "\\^(?=\\S)(\\S*)\\^";
 
     @Override
     public void register(Handlebars handlebars) {
-        handlebars.registerHelper("superScript", this);
+        handlebars.registerHelper("sup", this);
     }
 
     @Override

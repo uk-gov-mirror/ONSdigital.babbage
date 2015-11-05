@@ -1,14 +1,13 @@
-{{#partial "chart-config"}}
+{{#partial "additional-chart-config"}}
 
-options.series=[{{#each series}}{
-		name: "{{{this}}}",
-		type: "{{#if_eq (get  chartTypes this) "bar"}}column{{else}}line{{/if_eq}}",
-		zIndex: {{#if_eq (get  chartTypes this) "line"}}100{{else}}0{{/if_eq}},
-		stack: "{{#contains groups.0 this}}group1{{else}}{{this}}{{/contains}}",
-		data: [{{#each data}}{{num (get this ..)}},{{/each}}]
-	},{{/each}} ];
+{{#each series}}
+	options.series[{{@index}}].type="{{#if_eq (get  chartTypes this) "bar"}}{{#if rotated}}bar{{else}}column{{/if}}{{else}}line{{/if_eq}}";
+	options.series[{{@index}}].zIndex={{#if_eq (get  chartTypes this) "line"}}100{{else}}0{{/if_eq}};
+	options.series[{{@index}}].stack="{{#contains groups.0 this}}group1{{else}}{{this}}{{/contains}}";
+{{/each}}
 
+options.plotOptions.bar = {stacking:"normal"};
 options.plotOptions.column = {stacking:"normal"};
 {{/partial}}
 {{!-- This denotes the template inherits from base-chart-config--}}
-{{> highcharts/config/base-chart-config}} 
+{{> highcharts/config/base/simple-chart-config}} 

@@ -8,6 +8,7 @@ import java.io.IOException;
 
 /**
  * Created by bren on 03/11/15.
+ * Replaces text wrapped with tilda (~~) with html subscript tags
  */
 public class SubscriptHelper implements BabbageHandlebarsHelper<String> {
 
@@ -15,7 +16,7 @@ public class SubscriptHelper implements BabbageHandlebarsHelper<String> {
 
     @Override
     public void register(Handlebars handlebars) {
-        handlebars.registerHelper("subScript", this);
+        handlebars.registerHelper("sub", this);
     }
 
     @Override

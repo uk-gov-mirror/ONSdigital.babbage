@@ -3,10 +3,10 @@ options.chart.type="pie";
 options.labels={};
 
 options.series=[{
-		name: "{{{headers.1}}}",
+		name: "{{{sub (sup headers.1)}}}",
 		sliced:true,
 		colorByPoint: true,
-		data: [{{#each data}} {name:"{{{get this headers.0}}}",y:{{num (get this headers.1)}} },{{/each}}]
+		data: [{{#each data}} {name:"{{{sup (sub (get this headers.0))}}}",y:{{num (get this headers.1)}} },{{/each}}]
 	}];
 options.plotOptions={
 	     pie: {
@@ -19,11 +19,9 @@ options.plotOptions={
 	         }
 	     }
 	 };
-options.tooltip={
-		pointFormat: '{series.name}: <b>{point.y:.{{decimalPlaces}}f} {{unit}}</b>'
-	};
-options.legend={verticalAlign: "bottom"};
+options.tooltip.pointFormat='{series.name}: <b>{point.y:.{{decimalPlaces}}f}' + unit + '</b>';
+options.legend.verticalAlign="bottom";
 {{/partial}}
 
 {{!-- This denotes the template inherits from base-chart-config--}}
-{{> highcharts/config/base-chart-config}} 
+{{> highcharts/config/base/base-chart-config}} 

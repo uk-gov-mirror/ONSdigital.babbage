@@ -1,10 +1,6 @@
-{{#partial "chart-config"}}
-options.series = [{{#each series}}{
-			name: "{{{this}}}",
-			type: "{{#if area}}area{{else}}line{{/if}}",
-			data: [{{#each data}}{{num (get this ..)}},{{/each}}]
-		},{{/each}} ];
-		
+{{#partial "additional-chart-config"}}
+options.chart.type="{{#if area}}area{{else}}line{{/if}}";
+			
 options.xAxis.tickPositioner=function() {
           var positions = [];
           var tick = Math.floor(this.dataMax);
@@ -15,4 +11,4 @@ options.xAxis.tickPositioner=function() {
         }
 {{/partial}}
 {{!-- This denotes the template inherits from base-chart-config--}}
-{{> highcharts/config/base-chart-config}} 
+{{> highcharts/config/base/simple-chart-config}} 

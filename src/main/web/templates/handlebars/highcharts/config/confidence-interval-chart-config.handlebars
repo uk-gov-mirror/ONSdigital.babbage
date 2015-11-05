@@ -1,14 +1,14 @@
 {{#partial "chart-config"}}
 options.series=[{
-			name: "{{{headers.1}}}",
-			type: "column",
+			name: "{{{sub (sup headers.1)}}}",
+			type: "{{#if rotated}}bar{{else}}column{{/if}}",
 			data: [{{#each data}}{{num (get this headers.1)}},{{/each}}]
 	    },{
-	    	name: "{{headers.2}} - {{headers.3}}",
+	    	name: "{{{sub (sup headers.2)}}} - {{sub (sup headers.3)}}",
 	    	type: "errorbar",
 	    	data: [{{#each data}}[{{num (get this headers.2)}},{{num (get this headers.3)}}],{{/each}}]
 	    }];
 {{/partial}}
 
 {{!-- This denotes the template inherits from base-chart-config--}}
-{{> highcharts/config/base-chart-config}} 
+{{> highcharts/config/base/base-chart-config}} 
