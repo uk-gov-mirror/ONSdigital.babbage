@@ -89,16 +89,17 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 
 	var unit = "{{{sub (sup unit)}}}";
 	
-	options.yAxis.title.align="high";
 	options.yAxis.title.text=unit;
-	options.yAxis.align="high";
+	options.yAxis.title.align="high";
 	{{#unless rotated}}
     options.yAxis.title.offset=0;
-	options.yAxis.title.rotation=0;
+    options.yAxis.title.y=-2;
+    {{!-- Setting rotation to 0 causes axis lable push chart to the right for some text (e.g. "GDP growth percentage" ) and shrinks it in size. Funny enough, rotating 360 degrees eliminates this issue and still keeps the label horizontal.  --}}
+	options.yAxis.title.rotation=360;
 	options.yAxis.title.style={
 		left:"0px",
 		right:"0px"
-	}
+	};
 
 	{{/unless}}
 
