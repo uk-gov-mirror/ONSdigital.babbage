@@ -14,16 +14,15 @@
 {{!-- TODO: Add isdatavailable to timeseries to do this check --}}
 	{{#if_any years quarters months}}
 		<div class="wrapper">
-			<h2>Time series data</h2>
 			<div class="col-wrap">
-				<div class="col col--lg-one tiles__item flush-bottom">
+				<div class="col col--lg-one tiles__item margin-top-md--5 flush-bottom">
 
 					{{> partials/highcharts/linechart}}
 
 					{{!-- Chart footer --}}
 					<div class="tiles__content nojs-hidden">
 						<!-- <div class="chart-area__footer nojs-hidden js-enhance--show" data-chart-custom=""> -->
-							<h3>Download this data</h3>
+							<h2>Download this data</h2>
 							<div class="chart-area__footer__actions">
 								<form method="post" action="/chartimage" class="inline dlCustomData">
 								   {{!--  <button id="download-custom-image" type="submit" class="btn btn--primary btn--small download-analytics" target="_blank" name="uri" value="{{uri}}">
@@ -47,7 +46,7 @@
 					</div> {{!-- /tiles__content --}}
 					{{#unless cookies.jsEnhanced}}
 					<div class="tiles__content js-enhance--hide">
-						<h3>Table</h3>
+						<h2>Table</h2>
 						<table class="tablesaw">
 							<thead>
 								<tr>
@@ -88,15 +87,15 @@
 				{{#if_any section.markdown notes}}
 					<div class="col col--lg-two-thirds meta__item">
 						{{md section.markdown}}
-						<h3>Notes</h3>
+						<h2>Notes</h2>
 						{{md notes.0}}
 					</div>
 				{{/if_any}}
 
 				<div class="col col--md-one-third col--lg-one-third {{#if_any section.markdown notes.0}}{{else}}meta__item{{/if_any}}">
-					<h3>
+					<h2>
 						Contact details for this data
-					</h3>
+					</h2>
 					<address>
 						{{#if description.contact.name}}{{description.contact.name}}<br/>{{/if}}
 						<a href="mailto:{{description.contact.email}}">{{description.contact.email}}</a></br>
