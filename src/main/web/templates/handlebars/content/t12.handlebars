@@ -200,8 +200,8 @@
                         <thead>
                         <tr>
                             <th width="15%">Date updated</th>
-                            <th width="65%">Reason for update</th>
-                            <th width="20%">Superseded spreadsheet</th>
+                            <th width="60%">Reason for update</th>
+                            <th width="25%">Superseded spreadsheet</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -231,12 +231,20 @@
 
                                     {{#resolve this.uri}}
 
-                                        <form method="get" action="/file">
-                                            <button type="submit" title="Latest version" class="btn btn--primary btn--thin btn--narrow btn--small btn--full-width download-analytics">
-                                                Download {{fe (lowercase (concat this.uri "/" downloads.0.file))}} ({{fs (lowercase (concat this.uri "/" downloads.0.file))}})
-                                            </button>
-                                            <input type="hidden" name="uri" value="{{absolute (concat this.uri "/" downloads.0.file)}}"/>
-                                        </form>
+                                        {{#each downloads}}
+
+                                            {{#if file}}
+
+                                                <form method="get" action="/file" {{#if_ne downloads.size 1}}class="inline"{{/if_ne}}>
+                                                    <button type="submit" title="Latest version" class="btn btn--primary btn--thin btn--narrow btn--small {{#if_eq downloads.size 1}}btn--full-width{{/if_eq}} download-analytics">
+                                                        {{fe (lowercase (concat uri "/" this.file))}} ({{fs (lowercase (concat uri "/" this.file))}})
+                                                    </button>
+                                                    <input type="hidden" name="uri" value="{{absolute (concat this.uri "/" downloads.0.file)}}"/>
+                                                </form>
+
+                                            {{/if}}
+
+                                        {{/each}}
 
                                     {{/resolve}}
 
