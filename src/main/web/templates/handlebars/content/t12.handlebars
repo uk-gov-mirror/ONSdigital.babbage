@@ -239,7 +239,7 @@
                                                     <button type="submit" title="Latest version" class="btn btn--primary btn--thin btn--narrow btn--small {{#if_eq downloads.size 1}}btn--full-width{{/if_eq}} download-analytics">
                                                         {{fe (lowercase (concat uri "/" this.file))}} ({{fs (lowercase (concat uri "/" this.file))}})
                                                     </button>
-                                                    <input type="hidden" name="uri" value="{{absolute (concat this.uri "/" downloads.0.file)}}"/>
+                                                    <input type="hidden" name="uri" value="{{absolute (concat uri "/" this.file)}}"/>
                                                 </form>
 
                                             {{/if}}
