@@ -47,7 +47,6 @@ public class Search {
             ContentType.static_methodology,
             ContentType.static_qmi,
             ContentType.dataset_landing_page,
-            ContentType.timeseries_dataset,
             ContentType.reference_tables
     };
     private final ContentType[] STATIC_TYPES = {ContentType.static_adhoc, ContentType.static_article, ContentType.static_foi, ContentType.static_page, ContentType.static_landing_page};
