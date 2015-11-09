@@ -27,81 +27,92 @@
 
                 {{!-- Latest data/publication block --}}
                 <div class="page-content padding-left-md--1 padding-bottom-md--2 overflow--hidden js-sticky-scroll">
-                    <h2 id="highlights">Highlights</h2>
-                    <div class="col-wrap margin-left-lg--0">
-                        {{resolve statsBulletins.0.uri filter="description" assign="bulletin"}}
-                        {{#if bulletin}}
-                            {{resolve items.0.uri assign="data"}}
-                            <!-- <div id="latest" class="col col--md-half col--lg-half tiles__item tiles__item--image-type-headline"> -->
+                    <div id="highlights-container" class="section-container">
+                        <h2 id="highlights" class="section-title">Highlights</h2>
+                        <div class="col-wrap margin-left-lg--0">
+                            {{resolve statsBulletins.0.uri filter="description" assign="bulletin"}}
+                            {{#if bulletin}}
+                                {{resolve items.0.uri assign="data"}}
+                                <!-- <div id="latest" class="col col--md-half col--lg-half tiles__item tiles__item--image-type-headline"> -->
 
-                            {{!-- Check for data and print partial --}}
-                            {{#if_any data.years data.quarters data.months}}
-                                <div class="col col--md-36 col--lg-20">
-                                    {{> partials/t3/new-headline-data}}
-                                </div>
-                            {{/if_any}}
-                            <!-- </div> -->
-
-                            {{!-- Latest publication block --}}
-                            <div class="col {{#if_any data.years data.quarters data.months}} col--lg-20 margin-left-md--1{{else}}col--lg-41{{/if_any}}">
-                                <!--<div class="clickable-wrap">-->
-                                    <div class="background--iron-light margin-bottom-md--2">
-                                        <div class="background--abbey height--24 overflow--hidden">
-
-                                            <img src="{{#if_any (eq 'localhost' location.hostname) (eq '127.0.0.1' location.hostname)}}http://localhost:9000/dist/img/latest-publications.png{{else}}/node_modules/sixteens/dist/img/latest-publications.png{{/if_any}}" class="height--24 width--20" alt="" />
-                                        </div>
-                                        <div class="equal-height box__content padding-top-md--2 padding-right-md--1 padding-bottom-md--2 padding-left-md--1">
-                                            <h3>
-                                                <a href="{{bulletin.uri}}">{{bulletin.description.title}}{{#if bulletin.description.edition}}: {{bulletin.description.edition}}{{/if}}</a>
-                                            </h3>
-                                            <h4>{{labels.product-whats-in-bulletin}}</h4>
-                                            <ul>
-                                                {{#if bulletin.description.headline1}}
-                                                    <li>{{bulletin.description.headline1}}</li>
-                                                {{/if}}
-                                                {{#if bulletin.description.headline2}}
-                                                    <li>{{bulletin.description.headline2}}</li>
-                                                {{/if}}
-                                                {{#if bulletin.description.headline3}}
-                                                    <li>{{bulletin.description.headline3}}</li>
-                                                {{/if}}
-                                            </ul>
-                                            </div>
-                                        <div class="background--iron-light box__content height--9 width--50 border-top--iron-sm border-top--iron-md padding-top-md--2 padding-left-md--1">
-                                            <a href="{{bulletin.uri}}" class="block">Read this statistical bulletin</a>
-                                        </div>
+                                {{!-- Check for data and print partial --}}
+                                {{#if_any data.years data.quarters data.months}}
+                                    <div class="col col--md-36 col--lg-20">
+                                        {{> partials/t3/new-headline-data}}
                                     </div>
-                                <!--</div>-->
-                                <a href="#publications" class="btn btn--primary btn--full-width jsEnhanceAnimateScroll">More publications</a>
-                            </div>
-                        {{/if}}
+                                {{/if_any}}
+                                <!-- </div> -->
+
+                                {{!-- Latest publication block --}}
+                                <div class="col {{#if_any data.years data.quarters data.months}} col--lg-20 margin-left-md--1{{else}}col--lg-41{{/if_any}}">
+                                    <!--<div class="clickable-wrap">-->
+                                        <div class="background--iron-light margin-bottom-md--2">
+                                            <div class="background--abbey height--24 overflow--hidden">
+
+                                                <img src="{{#if_any (eq 'localhost' location.hostname) (eq '127.0.0.1' location.hostname)}}http://localhost:9000/dist/img/latest-publications.png{{else}}/node_modules/sixteens/dist/img/latest-publications.png{{/if_any}}" class="height--24 width--20" alt="" />
+                                            </div>
+                                            <div class="equal-height box__content padding-top-md--2 padding-right-md--1 padding-bottom-md--2 padding-left-md--1">
+                                                <h3>
+                                                    <a href="{{bulletin.uri}}">{{bulletin.description.title}}{{#if bulletin.description.edition}}: {{bulletin.description.edition}}{{/if}}</a>
+                                                </h3>
+                                                <h4>{{labels.product-whats-in-bulletin}}</h4>
+                                                <ul>
+                                                    {{#if bulletin.description.headline1}}
+                                                        <li>{{bulletin.description.headline1}}</li>
+                                                    {{/if}}
+                                                    {{#if bulletin.description.headline2}}
+                                                        <li>{{bulletin.description.headline2}}</li>
+                                                    {{/if}}
+                                                    {{#if bulletin.description.headline3}}
+                                                        <li>{{bulletin.description.headline3}}</li>
+                                                    {{/if}}
+                                                </ul>
+                                                </div>
+                                            <div class="background--iron-light box__content height--9 width--50 border-top--iron-sm border-top--iron-md padding-top-md--2 padding-left-md--1">
+                                                <a href="{{bulletin.uri}}" class="block">Read this statistical bulletin</a>
+                                            </div>
+                                        </div>
+                                    <!--</div>-->
+                                    <a href="#publications" class="btn btn--primary btn--full-width jsEnhanceAnimateScroll">More publications</a>
+                                </div>
+                            {{/if}}
+                        </div>
                     </div>
 
                 {{!-- Timeseries list --}}
                 {{#if items}}
+                    <div id="timeseries-container" class="section-container">
                     {{> partials/t3/new-timeseries-list}}
+                    </div>
                 {{/if}}
 
                 {{!-- Datasets list --}}
                 {{#if datasets}}
+                    <div id="datasets-container" class="section-container">
                     {{> partials/t3/new-dataset-list}}
+                    </div>
                 {{/if}}
 
-                    {{!-- Commissioned Statistics --}}
-                    <h2 id="commissioned">Commissioned Statistics</h2>
-                    <div class="background--iron-light margin-bottom-md--2">
 
-                        <div class="box__content padding-top-md--3 padding-right-md--1 padding-bottom-md--2 padding-left-md--1">
-                            <h3>Looking for our user requested data?</h3>
-                            <p><a href="aboutus/whatwedo/statistics/requestingstatistics">We also product statistics not included in our standard publications</a></p>
+                    <div id="commissioned-container" class="section-container">
+                        {{!-- Commissioned Statistics --}}
+                        <h2 id="commissioned" class="section-title">Commissioned Statistics</h2>
+                        <div class="background--iron-light margin-bottom-md--2">
+
+                            <div class="box__content padding-top-md--3 padding-right-md--1 padding-bottom-md--2 padding-left-md--1">
+                                <h3>Looking for our user requested data?</h3>
+                                <p><a href="aboutus/whatwedo/statistics/requestingstatistics">We also product statistics not included in our standard publications</a></p>
+                            </div>
+
                         </div>
-
                     </div>
 
 
                 {{!-- Publications list --}}
                 {{#if_any statsBulletins relatedArticles}}
-                    {{> partials/t3/new-publications-list}}
+                    <div id="publications-container" class="section-container">
+                        {{> partials/t3/new-publications-list}}
+                    </div>
                 {{/if_any}}
 
         {{!-- Related methodology --}}
