@@ -43,31 +43,30 @@
                                             <div class="col col--md-8 col--lg-9">
                                                 <form method="get" action="/file">
                                                     <button type="submit" title="Latest version" class="btn btn--primary btn--thick download-analytics">
-                                                        {{fe (lowercase this.file)}} ({{fs (lowercase this.file)}})
+                                                        {{fe (lowercase (concat uri "/" this.file))}} ({{fs (lowercase (concat uri "/" this.file))}})
                                                     </button>
-                                                    <input type="hidden" name="uri" value="{{this.file}}"/>
+                                                    <input type="hidden" name="uri" value="{{concat uri "/" this.file}}"/>
                                                 </form>
                                             </div>
-
-
-                                            {{#if versions}}
-                                                <p class="flush"><a href="{{uri}}">Previous versions</a> of this data are available</p>
-                                            {{/if}}
-
-                                            {{#if supplementaryFiles}}
-                                                <h4 class="flush-bottom">Supporting files you may find useful</h4>
-                                                <ul class="list--neutral flush-top">
-                                                    {{#each supplementaryFiles}}
-                                                        <li class="flush"><a href="{{file}}">{{title}}</a> ({{fs file}}, {{fe file}})</li>
-                                                    {{/each}}
-                                                </ul>
-                                            {{/if}}
 
                                         {{/if}}
 
                                     {{/each}}
 
                                 </div>
+
+                                {{#if versions}}
+                                    <p class="flush"><a href="{{uri}}">Previous versions</a> of this data are available</p>
+                                {{/if}}
+
+                                {{#if supplementaryFiles}}
+                                    <h4 class="flush-bottom">Supporting files you may find useful</h4>
+                                    <ul class="list--neutral flush-top">
+                                        {{#each supplementaryFiles}}
+                                            <li class="flush"><a href="{{concat uri "/" this.file}}">{{title}}</a> ({{fs (concat uri "/" this.file)}}, {{fe (concat uri "/" this.file)}})</li>
+                                        {{/each}}
+                                    </ul>
+                                {{/if}}
 
                                 {{else}}
 
