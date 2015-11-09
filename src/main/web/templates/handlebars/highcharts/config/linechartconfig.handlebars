@@ -84,9 +84,9 @@ var linechart = {
        x: 10,
        y: -10
      },
-     {{#unless description.isIndex}}
      tickPositioner: function(){
         //Using tickpositioner to set yAxis min
+      if(description.isIndex) {return};
       var min = this.chart.series[0].dataMin;
         if(min < 0) {
           this.chart.yAxis.min = min - 1;
@@ -94,7 +94,6 @@ var linechart = {
             this.chart.yAxis.min = 0;
         }
     },
-    {{/unless}}
     labels: {
       format: '{value:,f}'
     }
