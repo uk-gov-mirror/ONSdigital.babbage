@@ -11,10 +11,11 @@
 {{#partial "block-content"}}
 <div class="wrapper">
 	<div class="col-wrap print--avoid-break">
-		<h2 class="margin-bottom col col--lg-one">{{labels.compendium-whats-in}}</h2>
+        <div class="col col--md-two-thirds col--lg-two-thirds">
+		<h2 class="margin-bottom ">{{labels.compendium-whats-in}}</h2>
 		{{!-- Chapters --}}
 		{{#if chapters}}
-		<section class="col col--lg-one accordion is-collapsed">
+		<section class="accordion is-collapsed">
 			<h3 id="sc-1" class="accordion__title" aria-controls="content-1">
 			{{labels.compendium-chapters}}
 			</h3>
@@ -37,7 +38,7 @@
 		{{!-- /Chapters --}}
 		{{!-- Data --}}
 		{{#if datasets}}
-		<section class="col col--lg-one">
+		<section class="">
 			<h3>{{labels.data}}</h3>
 			<ul class="list--neutral">
 				{{#each datasets}}
@@ -53,18 +54,37 @@
 		{{/if}}
 		{{!-- /Data --}}
 	</div>
-	<div class="col-wrap tiles">
-		{{!-- Methodology --}}
-		{{#if relatedMethodology}}
-		<div class="col col--lg-half col--md-half">
-			{{> partials/related/methodology }}
-		</div>
-		{{/if}}
-		{{!-- Contact details --}}
-		<div class="col col--lg-half col--md-half">
-			{{> partials/contact }}
-		</div>
-	</div>
+    <div class="col col--md-one-third col--lg-one-third padding-top-md--3">
+        {{>partials/contact}}
+    </div>
+
+
+    {{!-- Related boxes --}}
+    {{#if_any relatedDocuments relatedData relatedDatasets relatedMethodology}}
+        <div class="wrapper">
+            <h2>Related</h2>
+            <div class="col-wrap flexbox__item">
+                {{#if_any relatedData relatedDatasets}}
+                    <div class="col {{#if_all relatedDocuments relatedData relatedDatasets relatedMethodology}}col--lg-one-third {{else}}col--lg-half{{/if_all}}">
+                        {{>partials/related/data}}
+                    </div>
+                {{/if_any}}
+                {{#if relatedDocuments}}
+                    <div class="col {{#if_all relatedDocuments relatedData relatedDatasets relatedMethodology}}col--lg-one-third {{else}}col--lg-half{{/if_all}}">
+                        {{>partials/related/documents}}
+                    </div>
+                {{/if}}
+                {{#if relatedMethodology}}
+                    <div class="col {{#if_all relatedDocuments relatedData relatedDatasets relatedMethodology}}col--lg-one-third {{else}}col--lg-half{{/if_all}}">
+                        {{>partials/related/methodology}}
+                    </div>
+                {{/if}}
+            </div>
+        </div>
+    {{/if_any}}
+
+
+
 </div>
 <div id="print-here"></div>
 {{/partial}}
