@@ -106,36 +106,49 @@
 			{{/each}}
 
 			{{!-- Alert block for timeseries --}}
-			{{#if has-corrections}}
+			{{#if_any has-corrections (endsWith (parentPath uri) "previous")}}
 				<div class="alert">
 					<div class="wrapper">
 						<div class="col-wrap">
 							<div class="col">
 								<div class="show-hide show-hide--dark js-show-hide">
-									<div class="js-show-hide__title">
-										<div class="alert--warning__icon">!</div>
-										<h2 class="show-hide__title alert--warning__title">Correction</h2>
-									</div>
 
-									<div class="js-show-hide__content">
-										<section class="show-hide__content alert--warning__content section__content--markdown">
-											{{#each versions}}
-												{{#if correctionNotice}}
-													<p class="alert__date">{{df updateDate}}</p>
-													{{md correctionNotice}}
-													<a class="btn btn--primary margin-bottom-sm--3 margin-bottom-md--3 print--hide"
-													   href="{{uri}}">View previous version</a>
-												{{/if}}
-											{{/each}}
-										</section>
-									</div>
+									{{!-- 'This is an old versions' alert --}}
+									{{#if (endsWith (parentPath uri) "previous")}}
+										<div class="alert--warning">
+											<div class="alert--warning__icon">!</div>
+											<h2 class="alert--warning__title">This has been superseded</h2> <a class="btn btn--primary print--hide alert--warning__content" href="{{parentPath (parentPath uri)}}">View latest version</a>
+										</div>
+									{{/if}}
+
+									{{!-- Corrections --}}
+									{{#if has-corrections}}
+										<div class="js-show-hide__title">
+											<div class="alert--warning__icon">!</div>
+											<h2 class="show-hide__title alert--warning__title">Correction</h2>
+										</div>
+
+										<div class="js-show-hide__content">
+											<section
+													class="show-hide__content alert--warning__content section__content--markdown">
+												{{#each versions}}
+													{{#if correctionNotice}}
+														<p class="alert__date">{{df updateDate}}</p>
+														{{md correctionNotice}}
+														<a class="btn btn--primary margin-bottom-sm--3 margin-bottom-md--3 print--hide"
+														   href="{{uri}}">View previous version</a>
+													{{/if}}
+												{{/each}}
+											</section>
+										</div>
+									{{/if}}
 
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-			{{/if}}
+			{{/if_any}}
 		{{/unless}}
 	{{/if_any}}
 {{/if}}
