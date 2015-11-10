@@ -61,26 +61,26 @@
 
 
     {{!-- Related boxes --}}
-    {{#if_any relatedDocuments relatedData relatedDatasets relatedMethodology}}
+    {{#if_any relatedDocuments relatedData relatedMethodology}}
         <div class="wrapper">
             <h2>Related</h2>
             <div class="col-wrap">
                 {{#if_any relatedData relatedDatasets}}
-                    <div class="col {{#if_all relatedDocuments relatedData relatedDatasets relatedMethodology}}col--lg-one-third {{else}}col--lg-half{{/if_all}}">
+                    <div class="col {{#if_all relatedDocuments relatedData relatedMethodology}}col--lg-one-third {{else}}col--lg-half{{/if_all}}">
                         <div class="equal-height">
                             {{>partials/related/data}}
                         </div>
                     </div>
                 {{/if_any}}
                 {{#if relatedDocuments}}
-                    <div class="col {{#if_all relatedDocuments relatedData relatedDatasets relatedMethodology}}col--lg-one-third {{else}}col--lg-half{{/if_all}}">
+                    <div class="col {{#if_all relatedDocuments relatedData relatedMethodology}}col--lg-one-third {{else}}col--lg-half{{/if_all}}">
                         <div class="equal-height">
                             {{>partials/related/documents}}
                         </div>
                     </div>
                 {{/if}}
                 {{#if relatedMethodology}}
-                    <div class="col {{#if_all relatedDocuments relatedData relatedDatasets relatedMethodology}}col--lg-one-third {{else}}col--lg-half{{/if_all}}">
+                    <div class="col {{#if_all relatedDocuments relatedData relatedMethodology}}col--lg-one-third {{else}}col--lg-half{{/if_all}}">
                         <div class="equal-height">
                             {{>partials/related/methodology}}
                         </div>
