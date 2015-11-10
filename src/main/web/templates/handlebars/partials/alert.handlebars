@@ -55,44 +55,80 @@
 {{else}}
 
 	{{#if_any description.latestRelease versions alerts (eq type "bulletin") (eq type "article") (eq type "compendium_landing_page") (endsWith (parentPath uri) "previous")}} {{!-- Must always show on bulletin & article for 'not latest release' alert or for 'previous versions' alert on dataset-landing-pages --}}
-		<div class="alert">
-			<div class="wrapper">
-				<div class="col-wrap">
-					<div class="col">
+		{{#unless (eq type "timeseries")}} {{!-- Use a different type of alert block if it is a timeseries page --}}
+			<div class="alert">
+				<div class="wrapper">
+					<div class="col-wrap">
+						<div class="col">
 
-						{{!-- Latest info --}}
-						{{> partials/latest-release}}
+							{{!-- Latest info --}}
+							{{> partials/latest-release}}
 
-						{{!-- Corrections & alerts --}}
-						{{#if_any versions alerts}}
-							<div class="show-hide show-hide--dark js-show-hide">
-								<div class="js-show-hide__title">
-									<div class="alert--warning__icon">!</div>
+							{{!-- Corrections & alerts --}}
+							{{#if_any versions alerts}}
+								<div class="show-hide show-hide--dark js-show-hide">
+									<div class="js-show-hide__title">
+										<div class="alert--warning__icon">!</div>
 
-									<h2 class="show-hide__title alert--warning__title">
-										{{!-- Lots of 'if's to handle plurals and combinations of corrections or notices --}}
-										{{#if_all versions alerts}}
-											Corrections and notices
-										{{else}}
-											{{#if versions}}
-												Correction{{#if_ne versions.size 1}}s{{/if_ne}}
+										<h2 class="show-hide__title alert--warning__title">
+											{{!-- Lots of 'if's to handle plurals and combinations of corrections or notices --}}
+											{{#if_all versions alerts}}
+												Corrections and notices
 											{{else}}
-												Notice{{#if_ne alerts.size 1}}s{{/if_ne}}
-											{{/if}}
-										{{/if_all}}
-									</h2>
-								</div>
+												{{#if versions}}
+													Correction{{#if_ne versions.size 1}}s{{/if_ne}}
+												{{else}}
+													Notice{{#if_ne alerts.size 1}}s{{/if_ne}}
+												{{/if}}
+											{{/if_all}}
+										</h2>
+									</div>
 
-								<div class="js-show-hide__content">
-									{{> partials/correction}}
-									{{> partials/notice}}
-								</div>
+									<div class="js-show-hide__content">
+										{{> partials/correction}}
+										{{> partials/notice}}
+									</div>
 
-							</div>
-						{{/if_any}}
+								</div>
+							{{/if_any}}
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>
+
+		{{else}}
+
+			{{!-- Alert block for timeseries --}}
+			{{#if versions.correctionNotice}}
+				<div class="alert">
+					<div class="wrapper">
+						<div class="col-wrap">
+							<div class="col">
+								<div class="show-hide show-hide--dark js-show-hide">
+									<div class="js-show-hide__title">
+										<div class="alert--warning__icon">!</div>
+										<h2 class="show-hide__title alert--warning__title">Correction</h2>
+									</div>
+
+									<div class="js-show-hide__content">
+										<section class="show-hide__content alert--warning__content section__content--markdown">
+											{{#each versions}}
+												{{#if correctionNotice}}
+													<p class="alert__date">{{df updateDate}}</p>
+													{{md correctionNotice}}
+													<a class="btn btn--primary margin-bottom-sm--3 margin-bottom-md--3 print--hide"
+													   href="{{uri}}">View previous version</a>
+												{{/if}}
+											{{/each}}
+										</section>
+									</div>
+
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			{{/if}}
+		{{/unless}}
 	{{/if_any}}
 {{/if}}
