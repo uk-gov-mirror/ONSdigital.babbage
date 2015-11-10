@@ -98,8 +98,15 @@
 
 		{{else}}
 
+			{{!-- Set whether there are any corrections --}}
+			{{#each versions}}
+				{{#if correctionNotice}}
+					{{#assign "has-corrections"}}true{{/assign}}
+				{{/if}}
+			{{/each}}
+
 			{{!-- Alert block for timeseries --}}
-			{{#if versions.correctionNotice}}
+			{{#if has-corrections}}
 				<div class="alert">
 					<div class="wrapper">
 						<div class="col-wrap">
