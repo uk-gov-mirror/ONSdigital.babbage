@@ -62,31 +62,29 @@
 
     {{!-- Related boxes --}}
     {{#if_any relatedDocuments relatedData relatedMethodology}}
-        <div class="wrapper">
-            <h2>Related</h2>
-            <div class="col-wrap">
-                {{#if_any relatedData relatedDatasets}}
-                    <div class="col {{#if_all relatedDocuments relatedData relatedMethodology}}col--lg-one-third {{else}}col--lg-half{{/if_all}}">
-                        <div class="equal-height">
-                            {{>partials/related/data}}
-                        </div>
+        <h2>Related</h2>
+        <div class="col-wrap margin-bottom-sm--2 margin-bottom-md--4">
+            {{#if_any relatedData relatedDatasets}}
+                <div class="col {{#if_all relatedDocuments relatedData relatedMethodology}}col--lg-one-third {{else}}col--lg-half{{/if_all}}">
+                    <div class="equal-height">
+                        {{>partials/related/data}}
                     </div>
-                {{/if_any}}
-                {{#if relatedDocuments}}
-                    <div class="col {{#if_all relatedDocuments relatedData relatedMethodology}}col--lg-one-third {{else}}col--lg-half{{/if_all}}">
-                        <div class="equal-height">
-                            {{>partials/related/documents}}
-                        </div>
+                </div>
+            {{/if_any}}
+            {{#if relatedDocuments}}
+                <div class="col {{#if_all relatedDocuments relatedData relatedMethodology}}col--lg-one-third {{else}}col--lg-half{{/if_all}}">
+                    <div class="equal-height">
+                        {{>partials/related/documents}}
                     </div>
-                {{/if}}
-                {{#if relatedMethodology}}
-                    <div class="col {{#if_all relatedDocuments relatedData relatedMethodology}}col--lg-one-third {{else}}col--lg-half{{/if_all}}">
-                        <div class="equal-height">
-                            {{>partials/related/methodology}}
-                        </div>
+                </div>
+            {{/if}}
+            {{#if relatedMethodology}}
+                <div class="col {{#if_all relatedDocuments relatedData relatedMethodology}}col--lg-one-third {{else}}col--lg-half{{/if_all}}">
+                    <div class="equal-height">
+                        {{>partials/related/methodology}}
                     </div>
-                {{/if}}
-            </div>
+                </div>
+            {{/if}}
         </div>
     {{/if_any}}
 
