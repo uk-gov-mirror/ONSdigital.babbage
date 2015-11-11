@@ -6,7 +6,7 @@
 
             {{!-- On this page side bar--}}
 
-            <div class="col col--md-7 col--lg-17 margin-left-md--1">
+            <div class="col col--md-13 col--lg-17 margin-left-md--1 min-height-md--1">
 
                 <div class="side-bar js-sticky-sidebar">
                     <h2 class="">On this page:</h2>
@@ -23,28 +23,26 @@
 
             {{!-- Page content --}}
 
-            <div class="col col--md-37 col--lg-42 border-left--iron-sm border-left--iron-md border-left--iron-lg">
+            <div class="col col--md-34 col--lg-42 border-left--iron-md border-left--iron-lg">
 
                 {{!-- Latest data/publication block --}}
-                <div class="page-content padding-left-md--1 padding-bottom-md--2 overflow--hidden js-sticky-scroll">
+                <div class="padding-left-md--1 padding-bottom-md--2 margin-left--negative-one-fix overflow--hidden">
                     <div id="highlights-container" class="section-container">
                         <h2 id="highlights" class="section-title">Highlights</h2>
-                        <div class="col-wrap margin-left-lg--0">
+                        <div class="overflow--hidden margin-left-lg--0">
                             {{resolve statsBulletins.0.uri filter="description" assign="bulletin"}}
                             {{#if bulletin}}
                                 {{resolve items.0.uri assign="data"}}
-                                <!-- <div id="latest" class="col col--md-half col--lg-half tiles__item tiles__item--image-type-headline"> -->
 
                                 {{!-- Check for data and print partial --}}
                                 {{#if_any data.years data.quarters data.months}}
-                                    <div class="col col--md-36 col--lg-20">
+                                    <div class="col col--md-16 col--lg-20">
                                         {{> partials/t3/new-headline-data}}
                                     </div>
                                 {{/if_any}}
-                                <!-- </div> -->
 
                                 {{!-- Latest publication block --}}
-                                <div class="col {{#if_any data.years data.quarters data.months}}col--lg-20 margin-left-md--1{{else}}col--lg-41{{/if_any}}">
+                                <div class="col {{#if_any data.years data.quarters data.months}}col--md-16 col--lg-20 margin-left-md--1{{else}}col--md -33 col--lg-41{{/if_any}}">
                                     <!--<div class="clickable-wrap">-->
                                         <div class="background--iron-light margin-bottom-md--2">
                                             <div class="background--abbey height--24 overflow--hidden">
