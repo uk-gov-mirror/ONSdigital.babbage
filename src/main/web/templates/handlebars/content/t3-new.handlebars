@@ -12,11 +12,11 @@
                     <h2 class="">On this page:</h2>
                     <ul class="list--neutral">
                         {{resolve items.0.uri assign="data"}}
-                        <a href="#highlights" class="jsEnhanceAnimateScroll"><li class="side-bar__item" id="high1" >Highlights</li></a>
-                        {{#if items}}<a href="#timeseries" class="jsEnhanceAnimateScroll"><li id="high2" class="side-bar__item">Time series data</li></a>{{/if}}
-                        {{#if datasets}}<a href="#datasets" class="jsEnhanceAnimateScroll"><li id="high3" class="side-bar__item">Spreadsheets</li></a>{{/if}}
-                        <a href="#commissioned" class="jsEnhanceAnimateScroll"><li id="high4" class="side-bar__item">Commissioned Statistics</li></a>
-                        <a href="#publications" class="jsEnhanceAnimateScroll"><li id="high5" class="side-bar__item">Publications</li></a>
+                        <a href="#highlights" class="jsEnhanceAnimateScroll"><li class="side-bar__item" id="highlights-menu-item" >Highlights</li></a>
+                        {{#if items}}<a href="#timeseries" class="jsEnhanceAnimateScroll"><li id="timeseries-menu-item" class="side-bar__item">Time series data</li></a>{{/if}}
+                        {{#if datasets}}<a href="#datasets" class="jsEnhanceAnimateScroll"><li id="datasets-menu-item" class="side-bar__item">Spreadsheets</li></a>{{/if}}
+                        <a href="#commissioned" class="jsEnhanceAnimateScroll"><li id="commissioned-menu-item" class="side-bar__item">Commissioned Statistics</li></a>
+                        <a href="#publications" class="jsEnhanceAnimateScroll"><li id="publications-menu-item" class="side-bar__item">Publications</li></a>
                     </ul>
                 </div>
             </div>
@@ -44,7 +44,7 @@
                                 <!-- </div> -->
 
                                 {{!-- Latest publication block --}}
-                                <div class="col {{#if_any data.years data.quarters data.months}} col--lg-20 margin-left-md--1{{else}}col--lg-41{{/if_any}}">
+                                <div class="col {{#if_any data.years data.quarters data.months}}col--lg-20 margin-left-md--1{{else}}col--lg-41{{/if_any}}">
                                     <!--<div class="clickable-wrap">-->
                                         <div class="background--iron-light margin-bottom-md--2">
                                             <div class="background--abbey height--24 overflow--hidden">
