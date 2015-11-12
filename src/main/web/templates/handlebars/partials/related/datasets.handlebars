@@ -1,4 +1,4 @@
-{{#if_any relatedDatasets (eq type "dataset") (eq type "timeseries_dataset")}}
+{{#if_any relatedDatasets (eq type "dataset_landing_page")}}
 	<div class="tiles__item tiles__item--nav-type flush-col print--hide">
 		<h3 class="tiles__title-h3 tiles__title-h3--nav">Related data</h3>
 
@@ -15,7 +15,7 @@
         {{/if}}
 
 		{{!-- Shows link to view all spreadsheets at that topic level --}}
-		{{#if_any (eq type "dataset") (eq type "timeseries_dataset")}}
+        {{#if_any (eq type "dataset_landing_page")}}
 			<div class="tiles__extra margin-bottom-md--2">
 				<a href="{{parentPath (parentPath uri)}}/datalist?filter=large_dataset">View all data related to {{#each breadcrumb}}
                     {{#if @last}}
