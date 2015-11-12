@@ -1,0 +1,22 @@
+<div class="col-wrap">
+	<div class="col table-of-contents print--avoid-break">
+		<h2 class="table-of-contents__title">{{labels.toc}}</h2>
+		<ol id="toc" class="table-of-contents__list">
+			{{#each sections}}
+			<li class="table-of-contents__item">
+				<a href="#{{slugify title}}" class="jsEnhanceAnimateScroll">{{title}}</a>
+			</li>
+			{{/each}}
+			{{#each accordion}}
+			<li class="table-of-contents__item">
+				<a href="#{{slugify title}}" class="jsEnhanceAnimateScroll expand-accordion">{{title}}</a>
+			</li>
+			{{/each}}
+			{{#if relatedMethodology}}
+			<li class="table-of-contents__item">
+				<a href="#methodology" class="jsEnhanceAnimateScroll expand-accordion">Methodology</a>
+			</li>
+			{{/if}}
+		</ol>
+	</div>
+</div>

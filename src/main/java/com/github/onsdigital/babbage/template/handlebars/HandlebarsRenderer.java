@@ -4,6 +4,7 @@ import com.github.jknack.handlebars.*;
 import com.github.jknack.handlebars.cache.HighConcurrencyTemplateCache;
 import com.github.jknack.handlebars.context.FieldValueResolver;
 import com.github.jknack.handlebars.context.MapValueResolver;
+import com.github.jknack.handlebars.helper.AssignHelper;
 import com.github.jknack.handlebars.helper.StringHelpers;
 import com.github.jknack.handlebars.io.FileTemplateLoader;
 import com.github.onsdigital.babbage.template.handlebars.helpers.base.BabbageHandlebarsHelper;
@@ -36,6 +37,8 @@ public class HandlebarsRenderer {
         StringHelpers.register(handlebars);
         // Humanize helpers
         HumanizeHelper.register(handlebars);
+        //Assign helper
+        handlebars.registerHelper(AssignHelper.NAME, AssignHelper.INSTANCE);
         handlebars.registerHelper("json", Jackson2Helper.INSTANCE);
         registerHelpers();
     }

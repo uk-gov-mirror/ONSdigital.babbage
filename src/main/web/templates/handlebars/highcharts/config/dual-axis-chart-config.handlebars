@@ -2,13 +2,13 @@
 delete options.chart.marginRight;
 
 options.series=[{
-		name: "{{{headers.1}}}",
+		name: "{{{sub (sup headers.1)}}}",
 		type: "{{#if_eq (get  chartTypes headers.1) "bar"}}column{{else}}line{{/if_eq}}",
 		zIndex: {{#if_eq (get  chartTypes headers.1) "line"}}100{{else}}0{{/if_eq}},
 		yAxis: 0,
 		data: [{{#each data}}{{num (get this headers.1)}},{{/each}}]
 	},{
-		name: "{{{headers.2}}}",
+		name: "{{{sub (sup headers.2)}}}",
 		type: "{{#if_eq (get  chartTypes headers.2) "bar"}}column{{else}}line{{/if_eq}}",
 		zIndex: {{#if_eq (get  chartTypes headers.2) "line"}}100{{else}}0{{/if_eq}},
 		yAxis: 1,
@@ -16,12 +16,29 @@ options.series=[{
 	}];
 
 options.yAxis=[
-		{title: {text: "{{{headers.1}}}"},labels: {format: "{value:,f}"}},
-		{title: {text: "{{{headers.2}}}"},labels: {format: "{value:,f}"},opposite:true}
+			{
+				title: {
+					text: "{{{sub (sup headers.1)}}}",
+					useHTML:true
+				},
+				labels: {
+					format: "{value:,f}"
+				}		
+			},
+			{
+				title: {
+					text: "{{{sub (sup headers.2)}}}",
+					useHTML:true
+				},
+				labels: {
+					format: "{value:,f}"
+				},
+				opposite:true	
+			}
 		];
 
 options.xAxis.crossHair=true;
 {{/partial}}
 
 {{!-- This denotes the template inherits from base-chart-config--}}
-{{> highcharts/config/base-chart-config}} 
+{{> highcharts/config/base/base-chart-config}} 

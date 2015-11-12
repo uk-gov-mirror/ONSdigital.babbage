@@ -1,0 +1,5 @@
+{{!-- Release date --}}
+<p class="col col--md-12 col--lg-15 meta__item">
+	<span>{{labels.release-date}}: </span><br/>{{df description.releaseDate}}<br/>
+    {{#if_all (eq type "timeseries") versions}}{{#unless previous}}<a href="{{uri}}/previous">View previous versions</a>{{/unless}}{{/if_all}}
+</p>

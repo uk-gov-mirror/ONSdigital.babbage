@@ -1,141 +1,60 @@
+{{> content/partials/metadata/dataset-id}}
 
-
-{{!-- Page header --}}
-<div class="page-intro">
-	<div class="wrapper">
-		<div class="col-wrap">
-			<div class="col">
-				{{!-- Breadcrumb --}}
-				{{> partials/breadcrumb}}
-
-				{{!-- Title & summary --}}
-				<h1 class="page-intro__title margin-bottom"><span class="page-intro__type">Spreadsheet(s):</span>{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}</h1>
-
-				{{#if description.summary}}
-					<p class="page-intro__content col col--md-47 col--lg-48">{{description.summary}}</p>
-				{{/if}}
-
-			</div>
-		</div>
-	</div> {{!-- /wrapper --}}
-
-	{{!-- TODO Migrated data alert --}}
-	<!-- <div class="alert">
-		<div class="wrapper">
-			<div class="col-wrap">
-				<div class="col">
-
-					{{!-- Alert: migrated data --}}
-					<p>
-						This content has been migrated directly from our previous site for this beta and is currently in a temporary format. We are working to update these to a new format during the course of the beta.
-					</p>
-
-				</div>
-			</div>
-		</div> {{!-- /wrapper --}}
-	</div> {{!-- /slate--ship-gray --}} -->
-
-	<div class="meta-wrap">
-		<div class="wrapper">
-
-			{{!-- Meta info --}}
-			<div class="col-wrap">
-
-				{{!-- Contact & NS logo--}}
-				<p class="col col--md-12 col--lg-15 meta__item">
-					{{#if description.nationalStatistic}}
-					<img class="meta__image" src="/node_modules/ONS-Pattern-Library/dist/img/national-statistics.png" alt="National Statistics logo" />
-					{{/if}}
-					<span>{{labels.meta-contact}}: </span><br/><a href="mailto:{{description.contact.email}}">{{#if description.contact.name}}{{description.contact.name}}{{else}}{{description.contact.email}}{{/if}}</a>
-				</p>
-
-				{{!-- Release date --}}
-				<p class="col col--md-12 col--lg-15 meta__item">
-					<span>{{labels.release-date}}: </span><br/>{{df description.releaseDate}}<br/>
-				</p>
-
-				{{!-- Next release --}}
-				<p class="col col--md-12 col--lg-15 meta__item">
-					<span>{{labels.release-next}}: </span><br/>{{#if description.nextRelease}}{{description.nextRelease}}{{else}}To be announced{{/if}}
-				</p>
-
-				{{!-- Dataset ID --}}
-				{{#if description.datasetId}}
-				<p class="col col--md-12 col--lg-15 meta__item">
-					<span>{{labels.dataset-id}}: </span>{{description.datasetId}}
-	        		<a href="#" class="tooltip" title="This series ID is a unique random identifier for this individual time series. The digits themselves do not have any specific meaning" aria-label="This series ID is a unique random identifier for this individual time series. The digits themselves do not have any specific meaning">{{labels.dataset-what-is}} </a>
-				</p>
-				{{/if}}
-			</div>
-		</div> {{!-- /wrapper --}}
-	</div> {{!-- /meta-wrap --}}
-</div> {{!-- /page-intro --}}
-
-<div class="page-content">
-	<div class="wrapper">
+{{#partial "block-content"}}
+<div class="wrapper">
 		<div class="col-wrap">
 			<div class="col">
 				
 				{{!-- Number of results --}}
 				<p>
 					<span class="stand-out-text">
-					{{#each downloads}}
+						{{#each downloads}}
 						{{#if @last}}
-							{{#if_eq @index_1 '1'}}
-								{{@index_1}}</span> result
-							{{/if_eq}}
-							{{#if_ne @index_1 '1'}}
-								{{@index_1}}</span> results
-							{{/if_ne}}
-						{{/if}}
-					{{/each}}
-				</p>
-			</div>
-		</div>
-
-		<div class="col {{#if_any relatedDatasets relatedDocuments}}col--md-36 col--lg-39{{else}}col--md-47 col--lg-59{{/if_any}}">
-
-            {{!-- LIST OF DOWNLOADS --}}
-			<ul class="list--neutral">
-				{{#each downloads}}
-					<li>
-						<h3><a href="/file?uri={{file}}" title="{{title}}">{{title}}</a></h3>
-						<p class="flush">{{fileDescription}}</p>
-					</li>
+						{{#if_eq @index_1 '1'}}
+					{{@index_1}}</span> result
+					{{/if_eq}}
+					{{#if_ne @index_1 '1'}}
+				{{@index_1}}</span> results
+				{{/if_ne}}
+				{{/if}}
 				{{/each}}
-			</ul>
-
-		</div>
-
-		{{!-- RELATED DATA AND DOCUMENTS --}}
-		<div class="col col--md-11 col--lg-20">
-
-			{{!-- Related data --}}
-			{{> partials/related/datasets }}
-
-			{{!-- Related publications --}}
-			{{> partials/related/documents }}
-
-			{{!-- Local stats tile --}}
-			{{> partials/local-box}}
-
-		</div>
-
-
-		{{!-- METHODOLOGY AND CONTACT DETAILS --}}
-		<div class="col-wrap">
-			{{!-- Related methodology --}}
-			{{#if_any relatedMethodology}}
-				<div class="col col--md-half col--lg-half">
-					{{> partials/related/methodology }}
-				</div>
-			{{/if_any}}
-
-			{{!-- Contact details --}}
-			<div class="col col--md-half col--lg-half">
-				{{> partials/contact }}
-			</div>
+			</p>
 		</div>
 	</div>
-</div>
+	<div class="col {{#if_any relatedDatasets relatedDocuments}}col--md-36 col--lg-39{{else}}col--md-47 col--lg-59{{/if_any}}">
+		{{!-- LIST OF DOWNLOADS --}}
+		<ul class="list--neutral">
+			{{#each downloads}}
+			<li>
+				<h3><a href="/file?uri={{file}}" title="{{title}}">{{title}}</a></h3>
+				<p class="flush">{{fileDescription}}</p>
+			</li>
+			{{/each}}
+		</ul>
+	</div>
+	{{!-- RELATED DATA AND DOCUMENTS --}}
+	<div class="col col--md-11 col--lg-20">
+		{{!-- Related data --}}
+		{{> partials/related/datasets }}
+		{{!-- Related publications --}}
+		{{> partials/related/documents }}
+		{{!-- Local stats tile --}}
+		{{> partials/local-box}}
+	</div>
+	{{!-- METHODOLOGY AND CONTACT DETAILS --}}
+	<div class="col-wrap">
+		{{!-- Related methodology --}}
+		{{#if_any relatedMethodology}}
+		<div class="col col--md-half col--lg-half">
+			{{> partials/related/methodology }}
+		</div>
+		{{/if_any}}
+		{{!-- Contact details --}}
+		<div class="col col--md-half col--lg-half">
+			{{> partials/contact }}
+		</div>
+	</div>
+{{/partial}}
 
+{{!-- Inheriting from statistics template --}}
+{{> content/base/statistics typeLabel="Spreadsheet(s)"}}

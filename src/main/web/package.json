@@ -7,7 +7,7 @@
   "scripts": {
     "clean": "",
     "build": "",
-    "preinstall" : "cd node_modules && rm -rf sixteens",
+    "preinstall" : "rm -rf node_modules/sixteens",
     "postinstall" : "cd node_modules && git clone -b $npm_config_branch --single-branch --depth=1 git://github.com/ONSdigital/sixteens && cd sixteens && npm install --production"
   },
   "repository": {

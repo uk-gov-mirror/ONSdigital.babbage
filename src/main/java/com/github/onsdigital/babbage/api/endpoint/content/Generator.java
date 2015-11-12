@@ -6,7 +6,6 @@ import com.github.onsdigital.babbage.content.client.ContentClient;
 import com.github.onsdigital.babbage.content.client.ContentStream;
 import com.github.onsdigital.babbage.response.BabbageBinaryResponse;
 import com.github.onsdigital.babbage.util.RequestUtil;
-import com.github.onsdigital.content.service.ContentNotFoundException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,7 +21,7 @@ import java.util.Map;
 public class Generator {
 
     @GET
-    public void get(@Context HttpServletRequest request, @Context HttpServletResponse response) throws IOException, ContentNotFoundException {
+    public void get(@Context HttpServletRequest request, @Context HttpServletResponse response) throws IOException {
 
         Map<String, String[]> queryParameters = RequestUtil.getQueryParameters(request);
 

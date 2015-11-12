@@ -1,7 +1,7 @@
 package com.github.onsdigital.api;
 
 import com.github.davidcarboni.restolino.framework.Filter;
-import com.github.onsdigital.util.HostHelper;
+import com.github.onsdigital.api.util.HostHelper;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;

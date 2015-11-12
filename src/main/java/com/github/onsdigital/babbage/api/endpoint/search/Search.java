@@ -16,9 +16,8 @@ import com.github.onsdigital.babbage.search.model.ContentType;
 import com.github.onsdigital.babbage.search.model.field.FilterableField;
 import com.github.onsdigital.babbage.search.model.field.SearchableField;
 import com.github.onsdigital.babbage.template.TemplateService;
+import com.github.onsdigital.babbage.util.URIUtil;
 import com.github.onsdigital.babbage.util.json.JsonUtil;
-import com.github.onsdigital.content.service.ContentNotFoundException;
-import com.github.onsdigital.content.util.URIUtil;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -47,8 +46,7 @@ public class Search {
             ContentType.static_article,
             ContentType.static_methodology,
             ContentType.static_qmi,
-            ContentType.dataset,
-            ContentType.timeseries_dataset,
+            ContentType.dataset_landing_page,
             ContentType.reference_tables
     };
     private final ContentType[] STATIC_TYPES = {ContentType.static_adhoc, ContentType.static_article, ContentType.static_foi, ContentType.static_page, ContentType.static_landing_page};
@@ -56,7 +54,7 @@ public class Search {
     private final String SEARCH_PAGE_TYPE = "search";
 
     @GET
-    public Object get(@Context HttpServletRequest request, @Context HttpServletResponse response) throws IOException, ContentNotFoundException, ContentReadException, URISyntaxException {
+    public Object get(@Context HttpServletRequest request, @Context HttpServletResponse response) throws IOException, ContentReadException, URISyntaxException {
 
         String type = URIUtil.resolveRequestType(request.getRequestURI());
         String query = SearchRequestHelper.extractSearchTerm(request);
@@ -75,7 +73,7 @@ public class Search {
     private void renderEmptyPage(HttpServletResponse response) throws IOException {
         LinkedHashMap<String, Object> searchData = new LinkedHashMap<>();
         searchData.put("type", SEARCH_PAGE_TYPE);
-        String html = TemplateService.getInstance().renderListPage(searchData);
+        String html = TemplateService.getInstance().renderContent(searchData);
         BabbageResponse babbageResponse = new BabbageStringResponse(html, CONTENT_TYPE);
         babbageResponse.apply(response);
     }
@@ -93,7 +91,7 @@ public class Search {
             searchResponse = new BabbageStringResponse(JsonUtil.toJson(searchData));
         } else {
             searchData.put("type", SEARCH_PAGE_TYPE);
-            String html = TemplateService.getInstance().renderListPage(searchData);
+            String html = TemplateService.getInstance().renderContent(searchData);
             searchResponse = new BabbageStringResponse(html, CONTENT_TYPE);
         }
         searchResponse.apply(response);

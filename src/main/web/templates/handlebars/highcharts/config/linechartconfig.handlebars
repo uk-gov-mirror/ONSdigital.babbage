@@ -84,15 +84,6 @@ var linechart = {
        x: 10,
        y: -10
      },
-     tickPositioner: function(){
-        //Using tickpositioner to set yAxis min
-      var min = this.chart.series[0].dataMin;
-        if(min < 0) {
-          this.chart.yAxis.min = min - 1;
-        } else {
-            this.chart.yAxis.min = 0;
-        }
-    },
     labels: {
       format: '{value:,f}'
     }
@@ -217,6 +208,23 @@ var linechart = {
      dashStyle: 'Solid'
    }]
  };
+
+if(!description.isIndex) {
+  var min;
+  for(i = 0; i<series.length; i++) {
+   min = min ? Math.min(min, series[i].y) : series[i].y;
+  }
+       
+  console.log("min", min);
+
+  if(min > 0) {
+   linechart.yAxis.min = 0;
+  } else {
+   linechart.yAxis.min = min - 1;
+  }
+
+ };
+
 
 function numberWithCommas(number) {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");

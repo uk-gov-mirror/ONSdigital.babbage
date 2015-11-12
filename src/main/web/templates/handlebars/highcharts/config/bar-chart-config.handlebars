@@ -1,9 +1,5 @@
-{{#partial "chart-config"}}
-options.series = [{{#each series}}{
-		name: "{{{this}}}",
-		type: "column",
-		data: [{{#each data}}{{num (get this ..)}},{{/each}}]
-	},{{/each}} ];
+{{#partial "additional-chart-config"}}
+options.chart.type={{#if rotated}}"bar"{{else}}"column"{{/if}};
 {{/partial}}
 {{!-- This denotes the template inherits from base-chart-config--}}
-{{> highcharts/config/base-chart-config}} 
+{{> highcharts/config/base/simple-chart-config}} 
