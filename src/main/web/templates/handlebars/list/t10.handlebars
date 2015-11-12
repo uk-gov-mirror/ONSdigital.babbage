@@ -1,3 +1,4 @@
+{{#partial "block-main"}}
 {{!-- {{#if parameters.q.0}} --}}
 {{!-- {{json this}} --}}
 <div class="tab">
@@ -145,7 +146,7 @@
 				{{/if}}
 			{{!-- MAIN RESULTS --}}
 			<!-- /desktop-grid-one-third -->
-			<div class="search-results float-left">
+			<div class="search-results">
 				{{> list/partials/results}}
 			</div>
 			{{> list/partials/paginator}}
@@ -155,3 +156,6 @@
 </div>
 </div>
 {{!-- {{/if}} --}}
+{{/partial}}
+{{!-- Inheriting from base list template --}}
+{{> list/base/list}}

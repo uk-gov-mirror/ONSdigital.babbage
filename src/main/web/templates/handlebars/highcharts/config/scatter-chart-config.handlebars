@@ -3,7 +3,7 @@ options.chart.type="scatter";
 options.xAxis.categories=[]; {{!-- override categories --}}
 options.legend.enabled=false;
 options.series=[{
-	data: [{{#each data}}{label:"{{get categories @index}}",x:{{num (get this headers.1)}},y:{{num (get this headers.2)}} },{{/each}}],
+	data: [{{#each data}}{label:"{{{sup (sub (get categories @index))}}}",x:{{num (get this headers.1)}},y:{{num (get this headers.2)}} },{{/each}}],
 }];
 
 options.plotOptions.scatter= {
@@ -24,11 +24,11 @@ options.plotOptions.scatter= {
         },
         tooltip: {
             headerFormat: '',
-            pointFormat: '<b>{point.label}</b><br/>{{headers.1}}: {point.x} <br/>{{headers.2}}: {point.y}',
+            pointFormat: '<b>{point.label}</b><br/>{{{sub (sup headers.1)}}}: {point.x} <br/>{{{sub (sup headers.2)}}}: {point.y}'
         }
 };
 
 {{/partial}}
 
 {{!-- This denotes the template inherits from base-chart-config--}}
-{{> highcharts/config/base-chart-config}} 
+{{> highcharts/config/base/base-chart-config}} 

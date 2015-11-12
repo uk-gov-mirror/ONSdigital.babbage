@@ -1,6 +1,8 @@
 package com.github.onsdigital.babbage.template.handlebars.helpers.markdown.util;
 
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -9,6 +11,18 @@ import java.util.regex.Pattern;
  */
 public abstract class TagReplacementStrategy {
 
+    private final Path path;
+
+    /**
+     * Create an instance of a tag replacement strategy with the given page path.
+     * <p>
+     * The page path is the path of the page having tags replaced. It is used to resolve links that are relative to the page.
+     *
+     * @param path
+     */
+    public TagReplacementStrategy(String path) {
+        this.path = Paths.get(path);
+    }
 
     public String replaceCustomTags(String input) throws IOException {
 
@@ -23,14 +37,47 @@ public abstract class TagReplacementStrategy {
 
     /**
      * Gets the pattern that this strategy is applied to.
+     *
      * @return
      */
     abstract Pattern getPattern();
 
     /**
      * The function that generates the replacement text for each match.
+     *
      * @param matcher
      * @return
      */
     abstract String replace(Matcher matcher) throws IOException;
+
+    /**
+     * Get the associated path of the page having tags replaced.
+     * @return
+     */
+    public Path getPath() {
+        return path;
+    }
+
+    /**
+     * Resolve the URI using the filename of the markdown tag, and the current page URI.
+     * @param tagPath
+     * @return
+     */
+    public String resolveFigureUri(Path pagePath, Path tagPath) {
+
+        System.out.println("pagePath = " + pagePath);
+        System.out.println("tagPath = " + tagPath);
+
+        String figureUri = pagePath.resolve(tagPath.getFileName()).toString();
+
+        System.out.println("figureUri = " + figureUri);
+
+        if (!figureUri.startsWith("/")) {
+            figureUri = "/" + tagPath;
+        }
+
+        System.out.println("figureUri = " + figureUri);
+
+        return figureUri;
+    }
 }

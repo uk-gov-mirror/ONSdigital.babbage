@@ -1,0 +1,4 @@
+{{!-- Contact --}}
+<p class="col {{#if description.nationalStatistic}}col--md-8 col--lg-11{{else}}col--md-12 col--lg-15{{/if}} meta__item">
+	<span>{{labels.meta-contact}}: </span><br/><a href="mailto:{{description.contact.email}}">{{#if description.contact.name}}{{description.contact.name}}{{else}}{{description.contact.email}}{{/if}}</a>
+</p>

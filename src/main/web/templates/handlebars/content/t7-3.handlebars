@@ -1,161 +1,59 @@
+{{#partial "block-intro-secondary"}}
+<div class="meta-wrap">
+    <div class="wrapper">
+        {{!-- Meta info --}}
+        <div class="col-wrap">
+            {{!-- Release date --}}
+            <p class="col col--md-12 col--lg-15 meta__item">
+                <span>{{labels.release-date}}: </span><br/>{{df description.releaseDate}}<br/>
+            </p>
+        </div>
+    </div> {{!-- /wrapper --}}
+</div> {{!-- /meta-wrapper --}}
+{{/partial}}
 
-
-    <div class="page-intro">
-        <div class="wrapper">
-            <div class="col-wrap">
-                <div class="col">
-                    {{!-- Breadcrumb --}}
-                    {{> partials/breadcrumb}}
-
-                    {{!-- Title --}}
-                    <h1 class="page-intro__title margin-bottom--double"><span class="page-intro__type">Freedom of Information (FOI):</span>{{description.title}}{{#if description.edition}}
-                        : {{description.edition}}{{/if}}</h1>
+{{#partial "block-content"}}
+<div class="wrapper">
+    <div class="col-wrap">
+        <div class="col col--md-two-thirds col--lg-two-thirds margin-bottom">
+            <div class="section__content--static-markdown">
+                {{#each markdown}}
+                {{md this}}
+                {{/each}}
+            </div>
+        </div>
+        <div class="col col--md-one-third col--lg-one-third margin-top">
+            {{!-- DOWNLOADS --}}
+            {{#if downloads}}
+            <div class="tiles__item tiles__item--nav-type">
+                <h2 class="tiles__title-h2 tiles__title-h2--nav">{{#if_eq downloads.size 1}}Download associated
+                with request{{/if_eq}} {{#if_ne downloads.size 1}}Downloads associated with
+                request{{/if_ne}}</h2>
+                <div class="tiles__content tiles__content--nav">
+                    <ul class="list--neutral">
+                        {{#each downloads}}
+                        <li>
+                            <a href="/file?uri={{file}}" title="{{title}}">{{title}}</a>
+                            ({{fs file}} {{fe file}})
+                        </li>
+                        {{/each}}
+                    </ul>
                 </div>
             </div>
-        </div> {{!-- /wrapper --}}
-
-        <div class="meta-wrap">
-            <div class="wrapper">
-
-                {{!-- Meta info --}}
-                <div class="col-wrap">
-
-                    {{!-- Release date --}}
-                    <p class="col col--md-12 col--lg-15 meta__item">
-                        <span>{{labels.release-date}}: </span><br/>{{df description.releaseDate}}<br/>
+            {{/if}}
+            {{!-- FOI INFORMATION TILE --}}
+            <div class="tiles__item tiles__item--nav-type">
+                <h2 class="tiles__title-h2 tiles__title-h2--nav">{{labels.foi-request}}</h2>
+                <div class="tiles__content tiles__content--nav">
+                    <p>
+                        <a href="/aboutus/transparencyandgovernance/freedomofinformationfoi/makingarequest">Everything you need to know about Freedom of
+                        Information and how to go about making a request.</a>
                     </p>
-
                 </div>
-            </div> {{!-- /wrapper --}}
-        </div> {{!-- /meta-wrap --}}
-
-    </div> {{!-- /page-intro --}}
-
-    <div class="page-content">
-    	<div class="wrapper">
-    		<div class="col-wrap">
-    			<div class="col col--md-two-thirds col--lg-two-thirds margin-bottom">
-                    <div class="section__content--static-markdown">
-                    {{#each markdown}}
-                        {{md this}}
-                    {{/each}}
-                    </div>
-    			</div>
-
-                <div class="col col--md-one-third col--lg-one-third margin-top">
-
-                    {{!-- DOWNLOADS --}}
-                    {{#if downloads}}
-                        <div class="tiles__item tiles__item--nav-type">
-                            <h2 class="tiles__title-h2 tiles__title-h2--nav">{{#if_eq downloads.size 1}}Download associated
-                                with request{{/if_eq}} {{#if_ne downloads.size 1}}Downloads associated with
-                                request{{/if_ne}}</h2>
-
-                            <div class="tiles__content tiles__content--nav">
-                                <ul class="list--neutral">
-                                    {{#each downloads}}
-                                        <li>
-                                            <a href="/file?uri={{file}}" title="{{title}}">{{title}}</a>
-                                            ({{fs file}} {{fe file}})
-                                        </li>
-                                    {{/each}}
-                                </ul>
-                            </div>
-                        </div>
-                    {{/if}}
-
-                    {{!-- FOI INFORMATION TILE --}}
-                    <div class="tiles__item tiles__item--nav-type">
-                        <h2 class="tiles__title-h2 tiles__title-h2--nav">{{labels.foi-request}}</h2>
-
-                        <div class="tiles__content tiles__content--nav">
-                            <p>
-                                <a href="/aboutus/transparencyandgovernance/freedomofinformationfoi/makingarequest">Everything you need to know about Freedom of
-                                Information and how to go about making a request.</a>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-    		</div>
-    	</div> {{!-- /wrapper --}}
-    </div> {{!-- /page-intro --}}
-
-
-
-    {{!-- <div class="page-header slate slate--red">
- 		<div class="wrapper">
- 			{{> partials/breadcrumb}}
- 			<p class="page-header__title">
- 				{{labels.foi}}
- 			</p>
- 			<h1 class="page-header__title flush--half--bottom">{{description.title}}</h1>
- 			<div class="grid-wrap">
- 				<p class="grid-col tablet-grid-one-quarter">
- 					<span>{{labels.release-date}}: </span><br/>{{df description.releaseDate}}
- 				</p>
- 			</div>
- 		</div>
- 	</div>
- 	<!-- /page-header 'slate' -->
- 	<div class="wrapper panel--mar print-links">
- 		<div class="grid-wrap">
- 			<article class="grid-col desktop-grid-two-thirds">
- 				{{#each markdown}}
- 					{{md this}}
- 				{{/each}}
- 				{{#if downloads}}
-         <h2>{{#if_eq downloads.size 1}}Download associated with request{{/if_eq}} {{#if_ne downloads.size 1}}Downloads associated with request{{/if_ne}}</h2>
-         <ul class="list--neutral">
- 			{{#each downloads}}
-             <li class="flush--third--bottom">
-               <a href="/file?uri={{file}}" title="{{title}}">{{title}}</a>
-             </li>
- 			{{/each}}
-         </ul>
- 				{{/if}}
- 			</article>
- 			<!-- /desktop-grid-two-thirds -->
- 			<div class="grid-col desktop-grid-one-third">
-         <article>
- 			<!--{{#if downloads}}-->
-             <div class="box solid box--purple--separated--left">
-               <div class="box__inner border box--padded">
-                 <h2 class="box__section__header">
- 					{{#if_eq downloads.size 1}}Download associated with request{{/if_eq}} {{#if_ne downloads.size 1}}Downloads associated with request{{/if_ne}}
-                 </h2>
-                 <!-- /box__header -->
-                 <div class="box__content">
-                   <ul class="list--neutral">
- 						{{#each downloads}}
-                       	<li class="flush--third--bottom">
-                         	<a href="/file?uri={{file}}" title="{{title}}">{{title}}</a>
-                       	</li>
- 						{{/each}}
-                   </ul>
-                 </div>
-                 <!-- /box__content -->
-               </div>
-               <!-- /box__inner -->
-             </div>
-             <!-- /box -->
- 					<!--{{/if}}-->
-         </article>
- 				<article>
- 					<div class="box solid box--purple--separated--left">
- 						<div class="box__inner border box--padded">
- 							<h2 class="box__section__header">
- 								{{labels.foi-request}}
- 							</h2>
- 							<!-- /box__header -->
- 							<div class="box__content">
- 								<a href="about/freedomofinformationact">Everything you need to know about Freedom of Information and how to go about making a request.</a>
- 							</div>
- 							<!-- /box__content -->
- 						</div>
- 						<!-- /box__inner -->
- 					</div>
-         </article>
-       </div>
- 		</div>
- 	</div>
- 	<!-- /wrapper --> --}}
+            </div>
+        </div>
+    </div>
+</div> {{!-- /wrapper --}}
+{{/partial}}
+{{!-- Inheriting from base content template --}}
+{{> content/base/content typeLabel="Freedom of Information (FOI)"}}

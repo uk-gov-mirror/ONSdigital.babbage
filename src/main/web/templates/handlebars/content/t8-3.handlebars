@@ -1,71 +1,231 @@
+{{> content/partials/metadata/dataset-id}}
 
 
+{{#partial "block-intro"}}
+    <h1 class="page-intro__title margin-bottom-sm--4 margin-bottom-md--4"><span class="page-intro__type">Spreadsheet(s):</span>{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}</h1>
+{{/partial}}
 
-{{!-- Page header --}}
-<div class="page-intro">
-    <div class="wrapper">
-        <div class="col-wrap">
-            <div class="col">
-                {{!-- Breadcrumb --}}
-                {{> partials/breadcrumb}}
+{{#partial "block-alert" no-versions=true}}{{/partial}}
 
-                {{!-- Title & summary --}}
-                <h1 class="page-intro__title margin-bottom"><span class="page-intro__type">Spreadsheet(s):</span>{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}</h1>
 
-                {{#if description.summary}}
-                    <p class="page-intro__content col col--md-47 col--lg-48">{{description.summary}}</p>
-                {{/if}}
-
-            </div>
-        </div>
-    </div> {{!-- /wrapper --}}
-
-    <div class="meta-wrap">
-        <div class="wrapper">
-
-            {{!-- Meta info --}}
-            <div class="col-wrap">
-
-                {{!-- Contact & NS logo--}}
-                <p class="col col--md-12 col--lg-15 meta__item">
-                    {{#if description.nationalStatistic}}
-                    <img class="meta__image" src="/node_modules/ONS-Pattern-Library/dist/img/national-statistics.png" alt="National Statistics logo" />
-                    {{/if}}
-                    <span>{{labels.meta-contact}}: </span><br/><a href="mailto:{{description.contact.email}}">{{#if description.contact.name}}{{description.contact.name}}{{else}}{{description.contact.email}}{{/if}}</a>
-                </p>
-
-                {{!-- Release date --}}
-                <p class="col col--md-12 col--lg-15 meta__item">
-                    <span>{{labels.release-date}}: </span><br/>{{df description.releaseDate}}<br/>
-                </p>
-
-                {{!-- Next release --}}
-                <p class="col col--md-12 col--lg-15 meta__item">
-                    <span>{{labels.release-next}}: </span><br/>{{#if description.nextRelease}}{{description.nextRelease}}{{else}}To be announced{{/if}}
-                </p>
-
-                {{!-- Dataset ID --}}
-                {{#if description.datasetId}}
-                <p class="col col--md-12 col--lg-15 meta__item">
-                    <span>{{labels.dataset-id}}: </span>{{description.datasetId}}&nbsp;
-                    <span><a href="#" class="tooltip-npl" title="This series ID is a unique random identifier for this individual time series. The digits themselves do not have any specific meaning" aria-label="This series ID is a unique random identifier for this individual time series. The digits themselves do not have any specific meaning"> {{labels.dataset-what-is}} </a></span>
-                </p>
-                {{/if}}
-            </div>
-        </div> {{!-- /wrapper --}}
-    </div> {{!-- /meta-wrap --}}
-</div> {{!-- /page-intro --}}
-
-<div class="page-content">
+{{#partial "block-content"}}
     <div class="wrapper">
         <div class="col-wrap">
             <div class="col col--lg-two-thirds col--md-two-thirds">
 
+                <div class="col col--md-31 col--lg-39">
 
+                    {{#if description.summary}}
+
+                        <h2>About this spreadsheet(s)</h2>
+                        <p class="margin-top-sm--0 margin-top-md--0">{{description.summary}}</p>
+
+                    {{/if}}
+
+                    {{#if datasets}}
+                        <h2 class="margin-top-sm--0 margin-top-md--0">{{labels.dataset-downloads}}</h2>
+
+                        {{#each datasets}}
+
+                            {{#resolve this.uri}}
+
+                                {{#if timeseries}}
+
+                                <div class="col-wrap margin-left-sm--0 margin-left-md--0">
+
+                                    {{#each downloads}}
+
+                                        {{#if file}}
+
+
+                                            {{!-- TIMESERIES DATASETS --}}
+
+                                            <div class="col col--md-8 col--lg-9">
+                                                <form method="get" action="/file">
+                                                    <button type="submit" title="Latest version" class="btn btn--primary btn--thick download-analytics">
+                                                        {{fe (lowercase (concat uri "/" this.file))}} ({{fs (lowercase (concat uri "/" this.file))}})
+                                                    </button>
+                                                    <input type="hidden" name="uri" value="{{concat uri "/" this.file}}"/>
+                                                </form>
+                                            </div>
+
+                                        {{/if}}
+
+                                    {{/each}}
+
+                                </div>
+
+                                {{#if versions}}
+                                    <p class="flush"><a href="{{uri}}">Previous versions</a> of this data are available</p>
+                                {{/if}}
+
+                                {{#if supplementaryFiles}}
+                                    <h4 class="flush-bottom">Supporting files you may find useful</h4>
+                                    <ul class="list--neutral flush-top">
+                                        {{#each supplementaryFiles}}
+                                            <li class="flush"><a href="{{concat uri "/" this.file}}">{{title}}</a> ({{fs (concat uri "/" this.file)}}, {{fe (concat uri "/" this.file)}})</li>
+                                        {{/each}}
+                                    </ul>
+                                {{/if}}
+
+                                {{else}}
+
+                                    {{#each downloads}}
+
+                                        {{#if file}}
+
+                                            {{!-- NON-TIMESERIES DATASETS --}}
+
+                                            <div class="show-hide show-hide--light border-top--abbey-sm border-top--abbey-md border-top--abbey-lg {{#if ../@last}}border-bottom--abbey-sm border-bottom--abbey-md border-bottom--abbey-lg margin-top--negative-two-fix{{/if}} js-show-hide">
+                                                <div class="js-show-hide__title {{#if ../@first}}is-shown{{/if}}">
+                                                    <h3 class="margin-bottom-md--1">{{description.edition}}</h3>
+                                                </div>
+
+                                                <div class="js-show-hide__content">
+
+                                                    <div class="col-wrap margin-left-sm--0 margin-left-md--0">
+
+                                                        <div class="col col--md-8 col--lg-9 margin-bottom-sm--2 margin-bottom-md--2">
+                                                            <form method="get" action="/file">
+                                                                <button type="submit" title="Latest version" class="btn btn--primary btn--thick download-analytics">
+                                                                    {{fe (lowercase (concat uri "/" this.file))}} ({{fs (lowercase (concat uri "/" this.file))}})
+                                                                </button>
+                                                                <input type="hidden" name="uri" value="{{concat uri "/" this.file}}"/>
+                                                            </form>
+                                                        </div>
+
+                                                    </div>
+
+                                                    {{#if versions}}
+                                                        <p class="margin-top-sm--0 margin-top-md--0"><a href="{{uri}}">Previous versions</a> of this data are available</p>
+                                                    {{/if}}
+
+                                                    {{#if supplementaryFiles}}
+                                                        <h4 class="flush-bottom">Supporting files you may find useful</h4>
+                                                        <ul class="list--neutral flush-top">
+                                                            {{#each supplementaryFiles}}
+                                                                <li class="flush"><a href="{{concat uri "/" this.file}}">{{title}}</a> ({{fs (concat uri "/" this.file)}}, {{fe (concat uri "/" this.file)}})</li>
+                                                            {{/each}}
+                                                        </ul>
+                                                    {{/if}}
+                                                </div>
+
+                                            </div>
+
+                                        {{/if}}
+                                    {{/each}}
+                                {{/if}}
+                            {{/resolve}}
+                        {{/each}}
+                    {{/if}}
+                </div>
+
+
+                {{!-- TIME SERIES DATASETS --}}
+
+                {{!--
+
+                <h2>{{labels.dataset-downloads}}</h2>
+                    <h3 class="flush-bottom">Current</h3>
+                {{#if previousVersions}}
+                        <p class="flush"><a href="#">Previous versions</a> of this data are available</p>
+                {{/if}}
+                    <div class="col-wrap flush">
+                        {{#each downloads}}
+                            {{#if file}}
+                                <div class="col col--md-8 col--lg-9 margin-right-md--1">
+                                    <form method="get" action="/file" class="margin-bottom">
+                                        <button type="submit" title="Latest version" class="btn btn--primary btn--thick download-analytics">
+                                            {{fe (lowercase file)}} ({{fs (lowercase file)}})
+                                        </button>
+                                        <input type="hidden" name="uri" value="{{file}}"/>
+                                    </form>
+                                </div>
+                            {{/if}}
+
+                            {{#if file}}
+                                <div class="col col--md-8 col--lg-9 margin-right">
+                                    <form method="get" action="/file" class="margin-bottom">
+                                        <button type="submit" title="Latest version" class="btn btn--primary btn--thick download-analytics">
+                                            {{fe (lowercase (concat this.uri "/" downloads.0.file))}} ({{fs (lowercase (concat this.uri "/" downloads.0.file))}})
+                                        </button>
+                                        <input type="hidden" name="uri" value="{{concat this.uri "/" file}}"/>
+                                    </form>
+                                </div>
+                            {{/if}}
+
+                            {{/each}}
+                        </div>
+                    {{#if supportingFiles}}
+                            <h5 class="flush-bottom">Supporting files you may find useful</h5>
+                            <ul class="list--neutral flush-top">
+                                {{#each supportingFiles}}
+                                    <li class="flush"><a href="{{uri}}">{{title}}</a> (filesize)</li>
+                                {{/each}}
+                            </ul>
+                    {{/if}}
+
+                {{else}}
+
+
+                    {{#if datasets}}
+                        <h2>{{labels.dataset-downloads}}</h2>
+                        {{#each datasets}}
+                            {{#resolve this.uri}}
+                                {{#if_ne datasets.size 1}}
+                                    <section id="{{description.edition}}" class="accordion {{#if @first}}is-expanded{{else}}is-collapsed{{/if}}">
+                                        <h3 class="accordion__title" aria-controls="content-{{@index}}">
+                                            {{description.edition}} {{#if @first}}(latest){{/if}}
+                                        </h3>
+                                    <div class="accordion__content" aria-labelledby="sc-{{@index}}">
+
+                                {{else}}
+
+                                    <section>
+                                        <h3>{{description.edition}}</h3>
+                                    <div>
+                                {{/if_ne}}
+
+                                {{#if versions}}
+                                    <p class="flush"><a href="{{uri}}">Previous versions</a> of this data are available</p>
+                                {{/if}}
+
+                                <div class="col-wrap flush-col {{#unless supplementaryFiles}}margin-bottom{{/unless}}">
+
+                                    <div class="col col--md-8 col--lg-9 margin-right">
+                                        <form method="get" action="/file">
+                                            <button type="submit" title="Latest version" class="btn btn--primary btn--thick download-analytics">
+                                                {{fe (lowercase (concat this.uri "/" downloads.0.file))}} ({{fs (lowercase (concat this.uri "/" downloads.0.file))}})
+                                            </button>
+                                            <input type="hidden" name="uri" value="{{concat this.uri "/" downloads.0.file}}"/>
+                                        </form>
+                                    </div>
+
+                                </div>
+                                {{#if supplementaryFiles}}
+                                        <h5 class="flush-bottom">Supporting files you may find useful</h5>
+                                        <ul class="list--neutral flush-top">
+                                            {{#each supplementaryFiles}}
+                                                <form method="get" action="/file">
+                                                    <button type="submit" title="Latest version" class="btn btn--simple download-analytics">
+                                                        {{title}} ({{fe (lowercase file)}}, {{fs (lowercase file)}})
+                                                    </button>
+                                                    <input type="hidden" name="uri" value="{{absolute file}}"/>
+                                                </form>
+                                            {{/each}}
+                                        </ul>
+                                {{/if}}
+                                </div>
+                                </section>
+                            {{/resolve}}
+                        {{/each}}
+                    {{/if}}
+
+
+                {{!-- OLD FOR REFERENCE
                 {{#if downloads}}
                     <h2>{{labels.dataset-downloads}}</h2>
                     {{#if downloads.0.cdids}}
-                        {{!-- TIME SERIES DATASETS --}}
                         <h3 class="flush-bottom">Latest</h3>
                         {{#if previousVersions}}
                             <p class="flush"><a href="#">Previous versions</a> of this data are available</p>
@@ -95,7 +255,6 @@
                     {{else}}
                         {{#each downloads}}
                             {{#if file}}
-                            {{!-- NON-TIME SERIES DATASETS --}}
                                 {{#if_ne downloads.size 1}}
 									<section id="{{title}}" class="accordion {{#if @first}}is-expanded{{else}}is-collapsed{{/if}}">
 										<h3 class="accordion__title" aria-controls="content-{{@index}}">
@@ -138,15 +297,15 @@
                             {{/if}}
                         {{/each}}
                     {{/if}}
-                {{/if}}
+                {{/if}} --}}
 
                 {{!-- INFORMATION AND NOTES --}}
                 {{#if section.markdown}}
-                    <div class="section__content--static-markdown">
-						<section>
-							<h3>{{labels.dataset-notes}}</h3>
-							{{md section.markdown}}
-						</section>
+                    <div class="section__content--static-markdown float-left">
+                        <section>
+                            <h3>{{labels.dataset-notes}}</h3>
+                            {{md section.markdown}}
+                        </section>
                     </div>
                 {{/if}}
 
@@ -173,4 +332,7 @@
             </div>
         </div>
     </div>
-</div> {{!-- /page-content --}}
+{{/partial}}
+
+{{!-- Inheriting from statistics template --}}
+{{> content/base/statistics typeLabel="Spreadsheet(s)"}}

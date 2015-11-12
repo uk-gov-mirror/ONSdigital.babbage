@@ -1,0 +1,13 @@
+{{!-- Charts with an array of series data inherits from this base template --}}
+{{#partial "chart-config"}}
+	options.series=[{{#each series}}{
+			name: "{{{sub (sup this)}}}",
+			data: [{{#each data}}{{num (get this ..)}},{{/each}}]
+		},{{/each}} ];
+	{{#block "additional-chart-config"}}
+	{{/block}}
+
+{{/partial}}
+
+{{!-- This denotes the template inherits from base-chart-config--}}
+{{> highcharts/config/base/base-chart-config}} 

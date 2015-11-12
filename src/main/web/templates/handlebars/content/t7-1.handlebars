@@ -8,135 +8,125 @@
     To get some of the borders to line up between the top row and second row we've had to make this mess :'(
     -------------------------------------------------------------- --}}
 
-	<div class="page-intro">
-		<div class="wrapper">
-            <div class="col-wrap">
-                <div class="col">
-                    {{!-- Breadcrumb --}}
-                    {{> partials/breadcrumb}}
-
-                    {{!-- Title --}}
-                    <h1 class="page-intro__title margin-bottom--double"><span class="page-intro__type">Quality and methodology information:</span>{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}</h1>
-                </div>
-            </div>
-        </div> {{!-- /wrapper --}}
-
+        
+{{#partial "block-intro-secondary"}}
         {{!-- METADATA --}}
-        <div class="meta-wrap">
+    <div class="meta-wrap">
+        <div class="wrapper">
+            <div class="col-wrap">
+
+                {{!-- First line of metadata --}}
+                {{#if description.nationalStatistic}}
+                    <p class="col {{#if_all description.surveyName description.frequency description.compilation description.sampleSize description.geographicCoverage}}col--md-12 col--lg-16{{else}}col--md-15 col--lg-18{{/if_all}} meta__item">
+                        <span>{{labels.meta-contact}}: </span></br>
+                        <a href="mailto:{{description.contact.email}}">{{#if description.contact.name}}{{description.contact.name}}{{else}}{{description.contact.email}}{{/if}}</a>
+                    </p>
+
+                    <p class="col col--md-11 {{#if_all description.surveyName description.frequency description.compilation description.sampleSize description.geographicCoverage}}col--lg-15{{else}}col--lg-14{{/if_all}} meta__item">
+                        <span>{{labels.qmi-last-revised}}: </span><br/>{{df description.lastRevised}}
+                    </p>
+
+                    <p class="col col--md-11 {{#if_all description.surveyName description.frequency description.compilation description.sampleSize description.geographicCoverage}}col--lg-15{{else}}col--lg-14{{/if_all}} meta__item">
+                        <a href="/file?uri={{downloads.0.file}}">{{downloads.0.title}}</a>
+                        ({{fs downloads.0.file}} {{fe downloads.0.file}})
+                    </p>
+
+                {{else}}
+
+                    <p class="col col--md-12 col--lg-15 meta__item">
+                        <span>{{labels.meta-contact}}: </span></br>
+                        <a href="mailto:{{description.contact.email}}">{{#if description.contact.name}}{{description.contact.name}}{{else}}{{description.contact.email}}{{/if}}</a>
+                    </p>
+
+                    <p class="col col--md-12 col--lg-15 meta__item">
+                        <span>{{labels.qmi-last-revised}}: </span><br/>{{df description.lastRevised}}
+                    </p>
+
+                    <p class="col col--md-12 col--lg-15 meta__item">
+                        <a href="/file?uri={{downloads.0.file}}">{{downloads.0.title}}</a> ({{fs downloads.0.file}} {{fe downloads.0.file}})
+                    </p>
+                {{/if}}
+
+            </div>
+        </div>
+
+
+        {{!-- Second line of metadata (Methodology background) --}}
+		{{#if_any description.surveyName description.frequency description.compilation description.sampleSize description.geographicCoverage}}
             <div class="wrapper">
+                <h2 class="flush">{{labels.qmi-meth-background}}</h2>
+
                 <div class="col-wrap">
-
-                    {{!-- First line of metadata --}}
                     {{#if description.nationalStatistic}}
-                        <p class="col {{#if_all description.surveyName description.frequency description.compilation description.sampleSize description.geographicCoverage}}col--md-12 col--lg-16{{else}}col--md-15 col--lg-18{{/if_all}} meta__item">
-                            <span>{{labels.meta-contact}}: </span></br>
-                            <a href="mailto:{{description.contact.email}}">{{#if description.contact.name}}{{description.contact.name}}{{else}}{{description.contact.email}}{{/if}}</a>
-                        </p>
 
-                        <p class="col col--md-11 {{#if_all description.surveyName description.frequency description.compilation description.sampleSize description.geographicCoverage}}col--lg-15{{else}}col--lg-14{{/if_all}} meta__item">
-                            <span>{{labels.qmi-last-revised}}: </span><br/>{{df description.lastRevised}}
-                        </p>
-
-                        <p class="col col--md-11 {{#if_all description.surveyName description.frequency description.compilation description.sampleSize description.geographicCoverage}}col--lg-15{{else}}col--lg-14{{/if_all}} meta__item">
-                            <a href="{{downloads.0.file}}">{{downloads.0.title}}</a>
-                            ({{fs downloads.0.file}} {{fe downloads.0.file}})
-                        </p>
+                        <div class="col col--md-4 {{#if_all description.surveyName description.frequency description.compilation description.sampleSize description.geographicCoverage}}col--lg-5{{else}}col--lg-4{{/if_all}}">
+                            <img class="meta__image padding-left padding-top--half" src="/node_modules/ONS-Pattern-Library/ui/img/national-statistics.png" alt="National Statistics logo"/>
+                        </div>
+                        {{#if description.surveyName}}
+                            <p class="col {{#if_all description.surveyName description.frequency description.compilation description.sampleSize description.geographicCoverage}}col--md-8 col--lg-11{{else}}col--md-11 col--lg-14{{/if_all}} meta__item">
+                                <span>{{labels.qmi-survey-name}}: </span><br/>
+                                {{description.surveyName}}
+                            </p>
+                        {{/if}}
+                        {{#if description.frequency}}
+                            <p class="col {{#if_all description.surveyName description.frequency description.compilation description.sampleSize description.geographicCoverage}}col--md-8 col--lg-11{{else}}col--md-11 col--lg-14{{/if_all}} meta__item">
+                                <span>{{labels.qmi-frequency}}: </span><br/>{{description.frequency}}
+                            </p>
+                        {{/if}}
+                        {{#if description.compilation}}
+                            <p class="col {{#if_all description.surveyName description.frequency description.compilation description.sampleSize description.geographicCoverage}}col--md-8 col--lg-11{{else}}col--md-11 col--lg-14{{/if_all}} meta__item">
+                                <span>{{labels.qmi-compiled}}: </span><br/>{{description.compilation}}
+                            </p>
+                        {{/if}}
+                        {{#if description.sampleSize}}
+                            <p class="col {{#if_all description.surveyName description.frequency description.compilation description.sampleSize description.geographicCoverage}}col--md-8 col--lg-11{{else}}col--md-11 col--lg-14{{/if_all}} meta__item">
+                                <span>{{labels.qmi-sample-size}}: </span><br/>
+                                {{description.sampleSize}}
+                            </p>
+                        {{/if}}
+                        {{#if description.geographicCoverage}}
+                            <p class="col {{#if_all description.surveyName description.frequency description.compilation description.sampleSize description.geographicCoverage}}col--md-8 col--lg-11{{else}}col--md-11 col--lg-14{{/if_all}} meta__item"> <span>{{labels.qmi-geog}}: </span><br/>{{description.geographicCoverage}}
+                            </p>
+                        {{/if}}
 
                     {{else}}
 
-                        <p class="col col--md-12 col--lg-15 meta__item">
-                            <span>{{labels.meta-contact}}: </span></br>
-                            <a href="mailto:{{description.contact.email}}">{{#if description.contact.name}}{{description.contact.name}}{{else}}{{description.contact.email}}{{/if}}</a>
-                        </p>
 
-                        <p class="col col--md-12 col--lg-15 meta__item">
-                            <span>{{labels.qmi-last-revised}}: </span><br/>{{df description.lastRevised}}
-                        </p>
-
-                        <p class="col col--md-12 col--lg-15 meta__item">
-                            <a href="{{downloads.0.file}}">{{downloads.0.title}}</a> ({{fs downloads.0.file}} {{fe downloads.0.file}})
-                        </p>
+                        {{#if description.surveyName}}
+                            <p class="col {{#if_all description.surveyName description.frequency description.compilation description.sampleSize description.geographicCoverage}}col--md-10 col--lg-12{{else}}col--md-12 col--lg-15{{/if_all}} meta__item">
+                                <span>{{labels.qmi-survey-name}}: </span><br/>
+                                {{description.surveyName}}
+                            </p>
+                        {{/if}}
+                        {{#if description.frequency}}
+                            <p class="col {{#if_all description.surveyName description.frequency description.compilation description.sampleSize description.geographicCoverage}}col--md-9 col--lg-12{{else}}col--md-12 col--lg-15{{/if_all}} meta__item">
+                                <span>{{labels.qmi-frequency}}: </span><br/>{{description.frequency}}
+                            </p>
+                        {{/if}}
+                        {{#if description.compilation}}
+                            <p class="col {{#if_all description.surveyName description.frequency description.compilation description.sampleSize description.geographicCoverage}}col--md-10 col--lg-12{{else}}col--md-12 col--lg-15{{/if_all}} meta__item">
+                                <span>{{labels.qmi-compiled}}: </span><br/>{{description.compilation}}
+                            </p>
+                        {{/if}}
+                        {{#if description.sampleSize}}
+                            <p class="col {{#if_all description.surveyName description.frequency description.compilation description.sampleSize description.geographicCoverage}}col--md-9 col--lg-12{{else}}col--md-12 col--lg-15{{/if_all}} meta__item">
+                                <span>{{labels.qmi-sample-size}}: </span><br/>
+                                {{description.sampleSize}}
+                            </p>
+                        {{/if}}
+                        {{#if description.geographicCoverage}}
+                            <p class="col {{#if_all description.surveyName description.frequency description.compilation description.sampleSize description.geographicCoverage}}col--md-10 col--lg-12{{else}}col--md-12 col--lg-15{{/if_all}} meta__item"> <span>{{labels.qmi-geog}}: </span><br/>{{description.geographicCoverage}}
+                            </p>
+                        {{/if}}
                     {{/if}}
-
                 </div>
             </div>
-
-
-            {{!-- Second line of metadata (Methodology background) --}}
-			{{#if_any description.surveyName description.frequency description.compilation description.sampleSize description.geographicCoverage}}
-                <div class="wrapper">
-                    <h2 class="flush">{{labels.qmi-meth-background}}</h2>
-
-                    <div class="col-wrap">
-                        {{#if description.nationalStatistic}}
-
-                            <div class="col col--md-4 {{#if_all description.surveyName description.frequency description.compilation description.sampleSize description.geographicCoverage}}col--lg-5{{else}}col--lg-4{{/if_all}}">
-                                <img class="meta__image padding-left padding-top--half" src="/node_modules/ONS-Pattern-Library/ui/img/national-statistics.png" alt="National Statistics logo"/>
-                            </div>
-                            {{#if description.surveyName}}
-                                <p class="col {{#if_all description.surveyName description.frequency description.compilation description.sampleSize description.geographicCoverage}}col--md-8 col--lg-11{{else}}col--md-11 col--lg-14{{/if_all}} meta__item">
-                                    <span>{{labels.qmi-survey-name}}: </span><br/>
-                                    {{description.surveyName}}
-                                </p>
-                            {{/if}}
-                            {{#if description.frequency}}
-                                <p class="col {{#if_all description.surveyName description.frequency description.compilation description.sampleSize description.geographicCoverage}}col--md-8 col--lg-11{{else}}col--md-11 col--lg-14{{/if_all}} meta__item">
-                                    <span>{{labels.qmi-frequency}}: </span><br/>{{description.frequency}}
-                                </p>
-                            {{/if}}
-                            {{#if description.compilation}}
-                                <p class="col {{#if_all description.surveyName description.frequency description.compilation description.sampleSize description.geographicCoverage}}col--md-8 col--lg-11{{else}}col--md-11 col--lg-14{{/if_all}} meta__item">
-                                    <span>{{labels.qmi-compiled}}: </span><br/>{{description.compilation}}
-                                </p>
-                            {{/if}}
-                            {{#if description.sampleSize}}
-                                <p class="col {{#if_all description.surveyName description.frequency description.compilation description.sampleSize description.geographicCoverage}}col--md-8 col--lg-11{{else}}col--md-11 col--lg-14{{/if_all}} meta__item">
-                                    <span>{{labels.qmi-sample-size}}: </span><br/>
-                                    {{description.sampleSize}}
-                                </p>
-                            {{/if}}
-                            {{#if description.geographicCoverage}}
-                                <p class="col {{#if_all description.surveyName description.frequency description.compilation description.sampleSize description.geographicCoverage}}col--md-8 col--lg-11{{else}}col--md-11 col--lg-14{{/if_all}} meta__item"> <span>{{labels.qmi-geog}}: </span><br/>{{description.geographicCoverage}}
-                                </p>
-                            {{/if}}
-
-                        {{else}}
-
-
-                            {{#if description.surveyName}}
-                                <p class="col {{#if_all description.surveyName description.frequency description.compilation description.sampleSize description.geographicCoverage}}col--md-10 col--lg-12{{else}}col--md-12 col--lg-15{{/if_all}} meta__item">
-                                    <span>{{labels.qmi-survey-name}}: </span><br/>
-                                    {{description.surveyName}}
-                                </p>
-                            {{/if}}
-                            {{#if description.frequency}}
-                                <p class="col {{#if_all description.surveyName description.frequency description.compilation description.sampleSize description.geographicCoverage}}col--md-9 col--lg-12{{else}}col--md-12 col--lg-15{{/if_all}} meta__item">
-                                    <span>{{labels.qmi-frequency}}: </span><br/>{{description.frequency}}
-                                </p>
-                            {{/if}}
-                            {{#if description.compilation}}
-                                <p class="col {{#if_all description.surveyName description.frequency description.compilation description.sampleSize description.geographicCoverage}}col--md-10 col--lg-12{{else}}col--md-12 col--lg-15{{/if_all}} meta__item">
-                                    <span>{{labels.qmi-compiled}}: </span><br/>{{description.compilation}}
-                                </p>
-                            {{/if}}
-                            {{#if description.sampleSize}}
-                                <p class="col {{#if_all description.surveyName description.frequency description.compilation description.sampleSize description.geographicCoverage}}col--md-9 col--lg-12{{else}}col--md-12 col--lg-15{{/if_all}} meta__item">
-                                    <span>{{labels.qmi-sample-size}}: </span><br/>
-                                    {{description.sampleSize}}
-                                </p>
-                            {{/if}}
-                            {{#if description.geographicCoverage}}
-                                <p class="col {{#if_all description.surveyName description.frequency description.compilation description.sampleSize description.geographicCoverage}}col--md-10 col--lg-12{{else}}col--md-12 col--lg-15{{/if_all}} meta__item"> <span>{{labels.qmi-geog}}: </span><br/>{{description.geographicCoverage}}
-                                </p>
-                            {{/if}}
-                        {{/if}}
-                    </div>
-                </div>
-            {{/if_any}}
-		</div>
+        {{/if_any}}
 	</div>
+{{/partial}}
 
-    <div class="page-content">
+{{#partial "block-content"}}
+
         <div class="wrapper">
             <div class="col-wrap">
 
@@ -180,4 +170,7 @@
                 {{/if_any}}
             </div>
         </div>
-    </div>
+{{/partial}}
+
+{{!-- Inheriting from base content template --}}
+{{> content/base/content typeLabel="Quality and methodology information"}}

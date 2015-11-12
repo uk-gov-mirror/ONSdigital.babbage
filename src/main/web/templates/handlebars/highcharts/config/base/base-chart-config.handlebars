@@ -32,29 +32,30 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 		},
 		yAxis: {
 			title: {
-				text: ""
+				text: "",
+				useHTML:true
 			},
 			labels: {
-				format: "{value:,f}"
+				format: "{value:,f}",
+				useHTML:true
 			},
 			plotLines: [{color: 'gray',width: 2,value: 0,zIndex: -100}],
 			gridZIndex: -200
 		},
 		xAxis: {
-			categories: [{{#each categories}}"{{{this}}}",{{/each}}],
-			tickInterval: "{{labelInterval}}"
-		},
-		labels: {
-			items: [{
-				html: "{{{unit}}}",
-				style: {
-					left: "0px",
-					top: "0px"
-				}
-			}]
+			categories: [{{#each categories}}'{{{sub (sup this)}}}',{{/each}}],
+			tickInterval: "{{labelInterval}}",
+			labels: {
+				useHTML : true,
+			},
+			title: {
+				useHTML:true,
+				text: "{{{sub (sup xAxisLabel)}}}"
+			}
 		},
 		legend: {
-			verticalAlign: "top"
+			verticalAlign: "top",
+			useHTML:true
 		},
 		plotOptions: {
 			series: {
@@ -75,12 +76,32 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 		},
 		tooltip: {
 			valueDecimals: "{{decimalPlaces}}",
-			shared: true
+			shared: true,
+			useHTML:true
 		},
 		credits: {
 			enabled: false
+		},
+		labels: {
+			useHTML:true
 		}
 	};
+
+	var unit = "{{{sub (sup unit)}}}";
+	
+	options.yAxis.title.text=unit;
+	options.yAxis.title.align="high";
+	{{#unless rotated}}
+    options.yAxis.title.offset=0;
+    options.yAxis.title.y=-2;
+    {{!-- Setting rotation to 0 causes axis lable push chart to the right for some text (e.g. "GDP growth percentage" ) and shrinks it in size. Funny enough, rotating 360 degrees eliminates this issue and still keeps the label horizontal.  --}}
+	options.yAxis.title.rotation=360;
+	options.yAxis.title.style={
+		left:"0px",
+		right:"0px"
+	};
+
+	{{/unless}}
 
 	{{#block "chart-config"}}
 	{{!-- Overridde this block for altering chart configuration for individual chart types --}}

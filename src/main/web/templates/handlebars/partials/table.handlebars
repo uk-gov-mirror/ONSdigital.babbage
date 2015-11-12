@@ -1,20 +1,17 @@
 {{!--Not having line breaks before and after the div markups breaks tables displaying on the page--}}
-
 <div class="markdown-table-container print--avoid-break">
-    <h4>{{title}}</h4>
-
+    <h4>{{{sub (sup title)}}}</h4>
+    {{#resolveResource (concat uri ".html")}}
     <div class="markdown-table-wrap">
-        {{{html}}}
+        {{{resource}}}
     </div>
-
+    {{/resolveResource}}
     <h6 class="print--hide">Download this table</h6>
-
     <form method="get" action="/file" class="inline print--hide">
         <button type="submit" title="Download XLS" class="btn btn--primary btn--thick download-analytics">
-            .xls
+        .xls
         </button>
         <input type="hidden" name="format" value="xls"/>
         <input type="hidden" name="uri" value="{{absolute uri}}.xls"/>
     </form>
-
 </div>

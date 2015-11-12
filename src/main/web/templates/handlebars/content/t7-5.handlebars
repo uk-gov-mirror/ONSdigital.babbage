@@ -1,71 +1,55 @@
-
-
-    {{!-- PAGE INTRO --}}
-	<div class="page-intro">
-		<div class="wrapper">
-            <div class="col-wrap">
-                <div class="col one">
-                    {{> partials/breadcrumb}}
-                    <h1 class="page-intro__title margin-bottom--double">{{description.title}}</h1>
+{{#partial "block-content"}}
+<div class="wrapper">
+    <div class="col-wrap">
+        <article class="col {{#if_any links downloads}}col--lg-two-thirds{{/if_any}}">
+            {{#each markdown}}
+            <section class="section__content--static-markdown">
+                {{md this}}
+            </section>
+            {{/each}}
+        </article>
+        {{#if_any links downloads}}
+        <div class="col col--lg-one-third margin-top">
+            {{!-- RELATED LINKS --}}
+            {{#if links}}
+            <div class="tiles__item tiles__item--nav-type flush-col">
+                <h3 class="tiles__title-h3 tiles__title-h3--nav">
+                You may also be interested in
+                </h3>
+                <div class="tiles__content--nav">
+                    <ul class="list--neutral">
+                        {{#each links}}
+                        <li><a href="{{uri}}">{{title}}</a></li>
+                        {{/each}}
+                    </ul>
                 </div>
             </div>
-		</div>
-	</div>
-
-
-    <div class="page-content">
-        <div class="wrapper">
-            <div class="col-wrap">
-                <article class="col {{#if_any links downloads}}col--lg-two-thirds{{/if_any}}">
-                    {{#each markdown}}
-                        <section class="section__content--static-markdown">
-                            {{md this}}
-                        </section>
-                    {{/each}}
-                </article>
-
-                {{#if_any links downloads}}
-                    <div class="col col--lg-one-third margin-top">
-                        {{!-- RELATED LINKS --}}
-                        {{#if links}}
-                            <div class="tiles__item tiles__item--nav-type flush-col">
-                                <h3 class="tiles__title-h3 tiles__title-h3--nav">
-                                    You may also be interested in
-                                </h3>
-
-                                <div class="tiles__content--nav">
-                                    <ul class="list--neutral">
-                                        {{#each links}}
-                                            <li><a href="{{uri}}">{{title}}</a></li>
-                                        {{/each}}
-                                    </ul>
-                                </div>
-                            </div>
-                        {{/if}}
-
-                        {{!-- RELATED DOWNLOADS --}}
-                        {{#if downloads}}
-                            <div class="tiles__item tiles__item--nav-type flush-col">
-                                <h3 class="tiles__title-h3 tiles__title-h3--nav">
-                                    Related downloads
-                                </h3>
-
-                                <div class="tiles__content--nav">
-                                    <ul class="list--neutral">
-                                        {{#each downloads}}
-                                            <form method="get" action="/file" class="margin-bottom">
-                                                <button type="submit" title="{{title}}" class="btn btn--simple download-analytics">
-                                                    {{title}} ({{fe (lowercase file)}}) [{{fs (lowercase file)}}]
-                                                </button>
-                                                <input type="hidden" name="uri" value="{{lowercase file}}"/>
-                                            </form>
-                                        {{/each}}
-                                    </ul>
-                                </div>
-                            </div>
-                        {{/if}}
-                    </div>
-                {{/if_any}}
+            {{/if}}
+            {{!-- RELATED DOWNLOADS --}}
+            {{#if downloads}}
+            <div class="tiles__item tiles__item--nav-type flush-col">
+                <h3 class="tiles__title-h3 tiles__title-h3--nav">
+                Related downloads
+                </h3>
+                <div class="tiles__content--nav">
+                    <ul class="list--neutral">
+                        {{#each downloads}}
+                        <form method="get" action="/file" class="margin-bottom">
+                            <button type="submit" title="{{title}}" class="btn btn--simple download-analytics">
+                            {{title}} ({{fe (lowercase file)}}) [{{fs (lowercase file)}}]
+                            </button>
+                            <input type="hidden" name="uri" value="{{lowercase file}}"/>
+                        </form>
+                        {{/each}}
+                    </ul>
+                </div>
             </div>
+            {{/if}}
         </div>
+        {{/if_any}}
     </div>
+</div>
+{{/partial}}
+
+{{!-- Inheriting from base content template --}}
+{{> content/base/content}}

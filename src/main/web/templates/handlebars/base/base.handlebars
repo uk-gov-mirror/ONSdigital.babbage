@@ -1,0 +1,24 @@
+{{!-- This is the base template, all other templates inherits from this base template --}}
+
+{{!-- Resolve parents of current uri for and assign to variable breadcrumb for building breadcrumb --}}
+{{resolveParents uri assign="breadcrumb"}}
+{{!-- Resolve navigation fetching children of root uri "/" with depth 2 --}}
+{{resolveTaxonomy depth=2 assign="navigation"}}
+
+{{#block "block-header"}}
+	{{> partials/header}}
+{{/block}}
+<main id="main" role="main" tabindex="-1">
+{{#block "block-main"}}
+{{/block}}
+</main>
+
+{{#block "block-footer"}}
+	{{> partials/footer}}
+{{/block}}
+
+<a id="bugherd-feedback" onclick="_bugHerd.win.bugherd.applicationView.anonymousbar.toggleOptions()" class="mini print--hide">Send Feedback</a>
+<script type="text/javascript">
+var loop11_key = "0104054b3b56d396b42e668dfe096cee161454a8";
+document.write(unescape("%3cscript src='//cdn.loop11.com/my/loop11.js' type='text/javascript'%3e%3c/script%3e"));
+</script>
