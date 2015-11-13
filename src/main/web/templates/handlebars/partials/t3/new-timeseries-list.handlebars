@@ -1,6 +1,6 @@
 <h2 id="timeseries" class="section-title">Time series data related to {{description.title}}</h2>
 
-<div class="background--iron-light padding-top-md--2 padding-bottom-md--2 padding-left-md--1">
+<div class="background--iron-light padding-top-sm--1 padding-bottom-sm--2 padding-left-sm--1 padding-right-sm--1 padding-top-md--2 padding-bottom-md--2 padding-left-md--1 margin-bottom-sm--2">
 
     <ul class="list--neutral margin-top-md--0">
         {{#loop items limit=6}}
@@ -9,7 +9,7 @@
                     <li class="col-wrap padding-top-lg--0 padding-bottom-md-0 margin-top-md--0 margin-left-md--0">
                         <div class="col col--md-31 col--lg-39 background--white">
                             <div class="col col--md-31 col--lg-14">
-                                <div class="box__content padding-top-md--2 padding-bottom-md--1 padding-left-md--1 padding-right-md--1">
+                                <div class="box__content padding-top-sm--0 padding-bottom-sm--0 padding-left-sm--1 padding-right-sm--1 padding-top-md--2 padding-bottom-md--1 padding-left-md--1 padding-right-md--1">
                                     <h4>
                                         <a href="{{uri}}">{{description.title}}</a>
                                     </h4>
@@ -19,14 +19,16 @@
                                 </div>
                             </div>
                             <div class="col col--md-15 col--lg-12">
-                                <a href="{{uri}}">
-                                    <div class="height--12">
-                                        {{>partials/highcharts/sparkline}}
-                                    </div>
-                                </a>
+                                <div class="box__content padding-top-sm--0 padding-bottom-sm--0 padding-left-sm--1 padding-right-sm--1 padding-top-md--2 padding-bottom-md--1 padding-left-md--1 padding-right-md--1">
+                                    <a href="{{uri}}">
+                                        <div class="height--12">
+                                            {{>partials/highcharts/sparkline}}
+                                        </div>
+                                    </a>
+                                </div>
                             </div>
                             <div class="col col--md-16 col--lg-13">
-                                <div class="box__content padding-top-md--2 padding-bottom-md--1 padding-left-md--1 padding-right-md--1">
+                                <div class="box__content padding-top-sm--0 padding-bottom-sm--1 padding-left-sm--1 padding-right-sm--1 padding-top-md--2 padding-bottom-md--1 padding-left-md--1 padding-right-md--1">
 
                                     <p class="stand-out--list margin-bottom-md--0">
                                         {{#if description.preUnit}}

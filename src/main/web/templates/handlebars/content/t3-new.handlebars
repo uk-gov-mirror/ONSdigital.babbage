@@ -12,11 +12,11 @@
                     <h2 class="">On this page:</h2>
                     <ul class="list--neutral">
                         {{resolve items.0.uri assign="data"}}
-                        <a href="#highlights" class="jsEnhanceAnimateScroll"><li class="side-bar__item" id="highlights-menu-item" >Highlights</li></a>
-                        {{#if items}}<a href="#timeseries" class="jsEnhanceAnimateScroll"><li id="timeseries-menu-item" class="side-bar__item">Time series data</li></a>{{/if}}
-                        {{#if datasets}}<a href="#datasets" class="jsEnhanceAnimateScroll"><li id="datasets-menu-item" class="side-bar__item">Spreadsheets</li></a>{{/if}}
-                        <a href="#commissioned" class="jsEnhanceAnimateScroll"><li id="commissioned-menu-item" class="side-bar__item">Commissioned Statistics</li></a>
-                        <a href="#publications" class="jsEnhanceAnimateScroll"><li id="publications-menu-item" class="side-bar__item">Publications</li></a>
+                        <a href="#highlights" class="jsEnhanceAnimateScroll"><li id="highlights-menu-item" class="side-bar__item padding-left-md--1">Highlights</li></a>
+                        {{#if items}}<a href="#timeseries" class="jsEnhanceAnimateScroll"><li id="timeseries-menu-item" class="side-bar__item padding-left-md--1">Time series data</li></a>{{/if}}
+                        {{#if datasets}}<a href="#datasets" class="jsEnhanceAnimateScroll"><li id="datasets-menu-item" class="side-bar__item padding-left-md--1">Spreadsheets</li></a>{{/if}}
+                        <a href="#commissioned" class="jsEnhanceAnimateScroll"><li id="commissioned-menu-item" class="side-bar__item padding-left-md--1">Commissioned Statistics</li></a>
+                        <a href="#publications" class="jsEnhanceAnimateScroll"><li id="publications-menu-item" class="side-bar__item padding-left-md--1">Publications</li></a>
                     </ul>
                 </div>
             </div>
@@ -49,7 +49,7 @@
 
                                                 <img src="{{#if_any (eq 'localhost' location.hostname) (eq '127.0.0.1' location.hostname)}}http://localhost:9000/dist/img/latest-publications.png{{else}}/node_modules/sixteens/dist/img/latest-publications.png{{/if_any}}" class="height--24 width--20" alt="" />
                                             </div>
-                                            <div class="equal-height box__content padding-top-md--2 padding-right-md--1 padding-bottom-md--2 padding-left-md--1">
+                                            <div class="equal-height box__content padding-top-sm--2 padding-right-sm--1 padding-bottom-sm--2 padding-left-sm--1 padding-top-md--2 padding-right-md--1 padding-bottom-md--2 padding-left-md--1">
                                                 <h3>
                                                     <a href="{{bulletin.uri}}">{{bulletin.description.title}}{{#if bulletin.description.edition}}: {{bulletin.description.edition}}{{/if}}</a>
                                                 </h3>
@@ -66,7 +66,7 @@
                                                     {{/if}}
                                                 </ul>
                                                 </div>
-                                            <div class="background--iron-light box__content height--9 width--50 border-top--iron-sm border-top--iron-md padding-top-md--2 padding-left-md--1">
+                                            <div class="background--iron-light box__content height--9 width--50 border-top--iron-sm border-top--iron-md padding-top-sm--2 padding-left-sm--1 padding-top-md--2 padding-left-md--1">
                                                 <a href="{{bulletin.uri}}" class="block">Read this statistical bulletin</a>
                                             </div>
                                         </div>
@@ -97,7 +97,7 @@
                         <h2 id="commissioned" class="section-title">Commissioned Statistics</h2>
                         <div class="background--iron-light margin-bottom-md--2">
 
-                            <div class="box__content padding-top-md--3 padding-right-md--1 padding-bottom-md--2 padding-left-md--1">
+                            <div class="box__content padding-top-sm--3 padding-bottom-sm--2 padding-left-sm--1 padding-right-sm--1 padding-top-md--3 padding-right-md--1 padding-bottom-md--2 padding-left-md--1">
                                 <h3>Looking for our user requested data?</h3>
                                 <p><a href="aboutus/whatwedo/statistics/requestingstatistics">We also product statistics not included in our standard publications</a></p>
                             </div>
