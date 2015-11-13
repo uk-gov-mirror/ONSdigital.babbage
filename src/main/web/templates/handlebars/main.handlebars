@@ -70,6 +70,7 @@
 		
 		{{#if_eq type "bulletin"}}{{> content/t4-1}}{{/if_eq}}
 		{{#if_eq type "article"}}{{> content/t4-2}}{{/if_eq}}
+        {{#if_eq type "article_download"}}{{> content/t4-2}}{{/if_eq}}
 		{{#if_eq type "timeseries"}}
 			{{#if previous}}
 				{{> content/t12-2}}
