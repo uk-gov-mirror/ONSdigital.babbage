@@ -48,10 +48,10 @@
                                 <h2 class="accordion__title" aria-controls="content-{{@index_1}}">
                                     {{!-- Make section number by adding accordion and section size if accordions exist --}}
                                     {{#if accordion}}
-                                        <span class="section__content-number">{{nf (add sections.size (increment accordion.size))}}.</span>
+                                        <span class="section__content-number">{{nf (increment (add sections.size accordion.size))}}.</span>
                                     {{else}}
-                                    {{!-- If no accordions then just add index to number of sections --}}
-                                        <span class="section__content-number">{{nf (add sections.size @index_1)}}.</span>{{title}}
+                                    {{!-- If no accordions then add index to number of sections --}}
+                                        <span class="section__content-number">{{nf (increment sections.size)}}.</span>{{title}}
                                     {{/if}}
 
                                     Methodology
@@ -63,6 +63,12 @@
                                                 <li><a href="{{absolute uri}}">{{description.title}}</a></li>
                                             {{/resolve}}
                                         {{/each}}
+
+										{{#each relatedMethodologyArticle}}
+											{{#resolve this.uri filter="description"}}
+												<li><a href="{{absolute uri}}">{{description.title}}</a></li>
+											{{/resolve}}
+										{{/each}}
                                     </ul>
                                     <a class="print--hide jsEnhanceAnimateScroll" href="#toc" title="{{labels.back-to-toc}}">{{labels.back-to-toc}}</a>
                                 </div>
