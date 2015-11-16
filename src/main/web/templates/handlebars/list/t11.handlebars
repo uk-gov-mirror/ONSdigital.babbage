@@ -99,10 +99,15 @@
 									{{!-- Amended date notice --}}
 									{{#resolve this.uri}}
 										{{#if dateChanges}}
-											<br>
-											<span class="flush">
-											<a href="{{uri}}#datechanges">This release date has been changed</a>
-										</span>
+											{{#each dateChanges}}
+												{{#if @last}}
+													<br>
+        											<span class="flush">
+        												<a href="{{uri}}#datechanges">This date has been changed
+															from {{df previousDate}}</a>
+        											</span>
+												{{/if}}
+											{{/each}}
 										{{/if}}
 									{{/resolve}}
 								</p>
