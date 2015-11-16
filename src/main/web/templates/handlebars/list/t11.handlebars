@@ -61,9 +61,7 @@
 									class="btn btn--primary btn--thick margin-top--double">{{labels.search-filter}}</button>
 						</div>
 					</div>
-					<!-- /box -->
 				</div>
-				<!-- /desktop-grid-one-third -->
 				<div class="results col col--md-34 col--lg-40 margin-left">
 					{{> list/partials/results-text}}
 					<ul class="list--neutral">
@@ -97,13 +95,27 @@
 											{{/if}}
 										{{/if}}
 									</span>
+
+									{{!-- Amended date notice --}}
+									{{#resolve this.uri}}
+										{{#if dateChanges}}
+											{{#each dateChanges}}
+												{{#if @last}}
+													<br>
+        											<span class="flush">
+        												<a href="{{uri}}#datechanges">This date has been changed
+															from {{df previousDate}}</a>
+        											</span>
+												{{/if}}
+											{{/each}}
+										{{/if}}
+									{{/resolve}}
 								</p>
 							</li>
 						{{/each}}
 					</ul>
 					{{> list/partials/paginator}}
 				</div>
-				<!-- /desktop-grid-two-thirds -->
 			</form>
 		</div>
 	</div>
