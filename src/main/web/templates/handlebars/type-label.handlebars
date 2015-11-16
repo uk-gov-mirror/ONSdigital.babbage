@@ -1,6 +1,7 @@
 {{!-- Used on search and list page results to dynamically map type codes in foud results to labels --}}
 {{#if_eq type_code "bulletin"}}statistical bulletin{{/if_eq}}
 {{#if_eq type_code "article"}}article{{#if plural}}s{{/if}}{{/if_eq}}
+{{#if_eq type_code "article_download"}}article{{#if plural}}s{{/if}}{{/if_eq}}
 {{#if_eq type_code "timeseries"}}time series data{{/if_eq}}
 {{#if_eq type_code "data_slice"}}data slice{{#if plural}}s{{/if}}{{/if_eq}}
 {{#if_eq type_code "compendium_landing_page"}}compend{{#if plural}}ia{{else}}ium{{/if}}{{/if_eq}}
@@ -13,7 +14,9 @@
 {{#if_eq type_code "static_landing_page"}}{{/if_eq}}
 {{#if_eq type_code "static_page"}}{{/if_eq}}
 {{#if_eq type_code "static_article"}}article{{#if plural}}s{{/if}}{{/if_eq}}
+{{#if_eq type_code "static_article"}}article{{#if plural}}s{{/if}}{{/if_eq}}
 {{#if_eq type_code "static_methodology"}}methodology{{#if plural}}ies{{else}}y{{/if}}{{/if_eq}}
+{{#if_eq type_code "static_methodology_download"}}methodology{{#if plural}}ies{{else}}y{{/if}}{{/if_eq}}
 {{#if_eq type_code "static_qmi"}}QMI{{/if_eq}}
 {{#if_eq type_code "static_adhoc"}}commissioned data{{/if_eq}}
 {{#if_eq type_code "static_foi"}}FOI{{#if plural}}s{{/if}}{{/if_eq}}

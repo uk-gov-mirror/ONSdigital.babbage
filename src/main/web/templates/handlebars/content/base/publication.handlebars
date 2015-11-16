@@ -1,22 +1,33 @@
+{{#if_any (eq type "article_download") (eq type "static_methodology_download")}}
+    {{#assign "pdf"}}
+        true
+    {{/assign}}
+{{/if_any}}
+
 {{#partial "block-additonal-metadata"}}
+
+    {{#unless pdf}}
 	
-	{{!-- Print and download --}}
-	<p class="col col--md-12 col--lg-15 print--hide meta__item">
-		<a href="" id="jsEnhancePrint" class="link-complex nojs-hidden js-enhance--show">
-			{{!-- <span class="icon icon-print"></span> --}}
-			Print {{> type-label type_code=type}}
-		</a>
-		<br class="nojs-hidden js-enhance--show"/>
-		{{!-- <span class="icon icon-download"></span> --}}
-		<a href="{{uri}}/pdf" class="link-complex">
-			{{labels.dl-pdf}}
-		</a>
-	</p>
+        {{!-- Print and download --}}
+        <p class="col col--md-12 col--lg-15 print--hide meta__item">
+            <a href="" id="jsEnhancePrint" class="link-complex nojs-hidden js-enhance--show">
+                {{!-- <span class="icon icon-print"></span> --}}
+                Print {{> type-label type_code=type}}
+            </a>
+            <br class="nojs-hidden js-enhance--show"/>
+            {{!-- <span class="icon icon-download"></span> --}}
+            <a href="{{uri}}/pdf" class="link-complex">
+                {{labels.dl-pdf}}
+            </a>
+        </p>
+
+    {{/unless}}
+
 {{/partial}}
 
 {{#partial "block-content"}}
     <div class="wrapper">
-        {{#if_ne type "article_download"}}
+        {{#unless pdf}}
             {{> content/partials/toc}}
             {{!-- Content --}}
             <article class="col col--md-36 col--lg-39 page-content__main-content">
@@ -78,24 +89,28 @@
             </div>
         {{else}}
             <article class="col col--md-36 col--lg-39 page-content__main-content">
-                <section class="section__content--static-markdown">
-                    <h2>About this article</h2>
-                    {{md markdown}}
-                </section>
+                {{#if markdown}}
+                    <section class="section__content--static-markdown">
+                        <h2>About this article</h2>
+                        {{md markdown}}
+                    </section>
+                {{/if}}
 
-                <h2>Downloads in this article</h2>
-                <ul class="list--neutral margin-top-md--0">
-                    {{#each downloads}}
-                        <li class="flush">
-                            <form method="get" action="/file">
-                                <button type="submit" title="{{title}}" class="btn btn--simple download-analytics">
-                                    {{title}} ({{fe (lowercase file)}}, {{fs (lowercase file)}})
-                                </button>
-                                <input type="hidden" name="uri" value="{{lowercase file}}"/>
-                            </form>
-                        </li>
-                    {{/each}}
-                </ul>
+                {{#if downloads}}
+                    <h2>Downloads in this article</h2>
+                    <ul class="list--neutral margin-top-md--0">
+                        {{#each downloads}}
+                            <li class="flush">
+                                <form method="get" action="/file">
+                                    <button type="submit" title="{{title}}" class="btn btn--simple download-analytics">
+                                        {{title}} ({{fe (lowercase file)}}, {{fs (lowercase file)}})
+                                    </button>
+                                    <input type="hidden" name="uri" value="{{lowercase file}}"/>
+                                </form>
+                            </li>
+                        {{/each}}
+                    </ul>
+                {{/if}}
 
             </article>
 
@@ -103,7 +118,7 @@
                 {{#block "publication-sidebar"}}
                 {{/block}}
             </div>
-        {{/if_ne}}
+        {{/unless}}
     </div> {{!-- /wrapper --}}
 {{/partial}}
 {{!-- Inheriting from statistics template--}}
