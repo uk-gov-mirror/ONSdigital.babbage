@@ -5,8 +5,8 @@ import com.github.onsdigital.babbage.search.model.ContentType;
 
 public class AboutUsRequestHandler extends ListPageBaseRequestHandler {
 
-    private final static String REQEUST_TYPE = "aboutuslist";
-    private final static ContentType[] ALLOWED_TYPES = {ContentType.static_page, ContentType.static_landing_page};
+    private final static String REQEUST_TYPE = "staticlist";
+    private final static ContentType[] ALLOWED_TYPES = {ContentType.static_page};
 
     @Override
     public String getRequestType() {
