@@ -36,9 +36,9 @@
                         {{#each downloads}}
                         <form method="get" action="/file" class="margin-bottom">
                             <button type="submit" title="{{title}}" class="btn btn--simple download-analytics">
-                            {{title}} ({{fe (lowercase file)}}) [{{fs (lowercase file)}}]
+                            {{title}} ({{fe (lowercase (concat uri "/" file))}}) [{{fs (lowercase (concat uri "/" file))}}]
                             </button>
-                            <input type="hidden" name="uri" value="{{lowercase file}}"/>
+                            <input type="hidden" name="uri" value="{{lowercase (concat uri "/" file)}}"/>
                         </form>
                         {{/each}}
                     </ul>
