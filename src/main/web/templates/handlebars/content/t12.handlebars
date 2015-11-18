@@ -194,20 +194,60 @@
 
                 </div>
 
+                <h3 class="margin-top-md--4">Latest version</h3>
+
+                {{#each downloads}}
+
+                    {{#if file}}
+
+                        <form method="get" action="/file" class="inline">
+                            <button type="submit" title="Latest version" class="tn btn--primary btn--thin btn--narrow btn--small download-analytics">
+                                {{fe (lowercase (concat uri "/" file))}} ({{fs (lowercase (concat uri "/" file))}})
+                            </button>
+                            <input type="hidden" name="uri" value="{{absolute (concat uri "/" file)}}"/>
+                        </form>
+
+                    {{/if}}
+
+                {{/each}}
+
                 {{#if versions}}
 
-                    <table class="table-advanced margin-bottom-md--2">
+                    <h3 class="margin-top-md--5">Previous versions</h3>
+
+                    <table class="table-advanced margin-bottom-sm--4 margin-bottom-md--4">
                         <thead>
                         <tr>
-                            <th width="15%">Date updated</th>
+                            <th width="25%">Superseded files</th>
                             <th width="60%">Reason for update</th>
-                            <th width="25%">Superseded spreadsheet</th>
+                            <th width="15%">Date superseded</th>
                         </tr>
                         </thead>
                         <tbody>
                         {{#loop versions reverse=true}}
                             <tr>
-                                <td>{{df updateDate}}</td>
+                                <td>
+
+                                    {{#resolve this.uri}}
+
+                                        {{#each downloads}}
+
+                                            {{#if file}}
+
+                                                <form method="get" action="/file" {{#if_ne downloads.size 1}}class="inline"{{/if_ne}}>
+                                                    <button type="submit" title="Latest version" class="btn btn--primary btn--thin btn--narrow btn--small download-analytics">
+                                                        {{fe (lowercase (concat uri "/" this.file))}} ({{fs (lowercase (concat uri "/" this.file))}})
+                                                    </button>
+                                                    <input type="hidden" name="uri" value="{{absolute (concat uri "/" this.file)}}"/>
+                                                </form>
+
+                                            {{/if}}
+
+                                        {{/each}}
+
+                                    {{/resolve}}
+
+                                </td>
                                 <td>
                                     {{#if correctionNotice}}
 
@@ -227,28 +267,7 @@
                                         Scheduled update/revision
                                     {{/if}}
                                 </td>
-                                <td>
-
-                                    {{#resolve this.uri}}
-
-                                        {{#each downloads}}
-
-                                            {{#if file}}
-
-                                                <form method="get" action="/file" {{#if_ne downloads.size 1}}class="inline"{{/if_ne}}>
-                                                    <button type="submit" title="Latest version" class="btn btn--primary btn--thin btn--narrow btn--small {{#if_eq downloads.size 1}}btn--full-width{{/if_eq}} download-analytics">
-                                                        {{fe (lowercase (concat uri "/" this.file))}} ({{fs (lowercase (concat uri "/" this.file))}})
-                                                    </button>
-                                                    <input type="hidden" name="uri" value="{{absolute (concat uri "/" this.file)}}"/>
-                                                </form>
-
-                                            {{/if}}
-
-                                        {{/each}}
-
-                                    {{/resolve}}
-
-                                </td>
+                                <td>{{df updateDate}}</td>
                             </tr>
                         {{/loop}}
                         </tbody>

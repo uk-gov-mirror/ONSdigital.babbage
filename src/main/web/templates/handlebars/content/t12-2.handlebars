@@ -41,20 +41,58 @@
 
                 </div>
 
+                <h3 class="margin-top-md--4">Latest version</h3>
+
+                <form method="get" action="/generator" class="inline print--hide">
+                    <button type="submit" title="Download XLS" class="btn btn--primary btn--thin btn--narrow btn--small download-analytics">
+                        Download .xls
+                    </button>
+                    <input type="hidden" name="format" value="xls"/>
+                    <input type="hidden" name="uri" value="{{absolute uri}}"/>
+                </form>
+
+                <form method="get" action="/generator" class="inline print--hide">
+                    <button type="submit" title="Download CSV" class="btn btn--primary btn--thin btn--narrow btn--small download-analytics">
+                        Download .csv
+                    </button>
+                    <input type="hidden" name="format" value="csv"/>
+                    <input type="hidden" name="uri" value="{{absolute uri}}"/>
+                </form>
+
                 {{#if versions}}
 
-                    <table class="table-advanced margin-bottom-md--2">
+                    <h3 class="margin-top-md--5">Previous versions</h3>
+
+                    <table class="table-advanced margin-bottom-sm--4 margin-bottom-md--4">
                         <thead>
                         <tr>
-                            <th width="15%">Date updated</th>
+                            <th width="25%">Superseded files</th>
                             <th width="60%">Reason for update</th>
-                            <th width="25%">Superseded spreadsheet</th>
+                            <th width="15%">Date superseded</th>
                         </tr>
                         </thead>
                         <tbody>
                         {{#loop versions reverse=true}}
                             <tr>
-                                <td>{{df updateDate}}</td>
+                                <td>
+
+                                    <form method="get" action="/generator" class="inline print--hide">
+                                        <button type="submit" title="Download XLS" class="btn btn--primary btn--thin btn--narrow btn--small download-analytics">
+                                            Download .xls
+                                        </button>
+                                        <input type="hidden" name="format" value="xls"/>
+                                        <input type="hidden" name="uri" value="{{absolute uri}}"/>
+                                    </form>
+
+                                    <form method="get" action="/generator" class="inline print--hide">
+                                        <button type="submit" title="Download CSV" class="btn btn--primary btn--thin btn--narrow btn--small download-analytics">
+                                            Download .csv
+                                        </button>
+                                        <input type="hidden" name="format" value="csv"/>
+                                        <input type="hidden" name="uri" value="{{absolute uri}}"/>
+                                    </form>
+
+                                </td>
                                 <td>
                                     {{#if correctionNotice}}
 
@@ -74,25 +112,7 @@
                                         Scheduled update/revision
                                     {{/if}}
                                 </td>
-                                <td>
-
-                                    <form method="get" action="/generator" class="inline print--hide">
-                                        <button type="submit" title="Download XLS" class="btn btn--primary btn--thin btn--narrow btn--small download-analytics">
-                                            Download .xls
-                                        </button>
-                                        <input type="hidden" name="format" value="xls"/>
-                                        <input type="hidden" name="uri" value="{{absolute uri}}"/>
-                                    </form>
-
-                                    <form method="get" action="/generator" class="inline print--hide">
-                                        <button type="submit" title="Download CSV" class="btn btn--primary btn--thin btn--narrow btn--small download-analytics">
-                                            Download .csv
-                                        </button>
-                                        <input type="hidden" name="format" value="csv"/>
-                                        <input type="hidden" name="uri" value="{{absolute  uri}}"/>
-                                    </form>
-
-                                </td>
+                                <td>{{df updateDate}}</td>
                             </tr>
                         {{/loop}}
                         </tbody>
