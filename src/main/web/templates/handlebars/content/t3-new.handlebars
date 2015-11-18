@@ -10,15 +10,25 @@
 
                 <div class="side-bar js-sticky-sidebar">
                     <h2 class="">On this page:</h2>
-                    <ul class="list--neutral">
+                    <ul class="list--neutral border-bottom--iron-sm border-bottom--iron-md border-bottom--iron-lg">
                         {{resolve items.0.uri assign="data"}}
                         <a href="#highlights" class="jsEnhanceAnimateScroll"><li id="highlights-menu-item" class="side-bar__item padding-left-md--1">Highlights</li></a>
                         {{#if items}}<a href="#timeseries" class="jsEnhanceAnimateScroll"><li id="timeseries-menu-item" class="side-bar__item padding-left-md--1">Time series data</li></a>{{/if}}
                         {{#if datasets}}<a href="#datasets" class="jsEnhanceAnimateScroll"><li id="datasets-menu-item" class="side-bar__item padding-left-md--1">Spreadsheets</li></a>{{/if}}
                         <a href="#commissioned" class="jsEnhanceAnimateScroll"><li id="commissioned-menu-item" class="side-bar__item padding-left-md--1">Commissioned Statistics</li></a>
-                        <a href="#publications" class="jsEnhanceAnimateScroll"><li id="publications-menu-item" class="side-bar__item padding-left-md--1">Publications</li></a>
+                        <a href="#publications" class="jsEnhanceAnimateScroll"><li id="publications-menu-item" class="side-bar__item padding-left-md--1 margin-bottom-md--4">Publications</li></a>
                     </ul>
+
+                    <div class="padding-top-sm--2 padding-bottom-sm--2 padding-left-sm--0 padding-right-sm--1 padding-top-md--2 padding-bottom-md--5 padding-left-md--0 padding-right-md--1 border-bottom--iron-sm border-bottom--iron-md">
+                        <h2 class="flush">View all content related to this topic:</h2>
+                        <ul class="nav-secondary__list">
+                            {{#if_any items datasets}}<li class="nav-secondary__item"><a href="{{uri}}/datalist">All data</a></li>{{/if_any}}
+                            <li class="nav-secondary__item"><a href="{{uri}}/publications">All publications</a></li>
+                        </ul>
+                    </div>
+
                 </div>
+
             </div>
 
             {{!-- Page content --}}
