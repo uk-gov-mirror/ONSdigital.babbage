@@ -116,7 +116,7 @@
 								{{#if (endsWith (parentPath uri) "previous")}}
 									<div class="alert--warning">
 										<div class="alert--warning__icon">!</div>
-										<h2 class="alert--warning__title">This has been superseded</h2> <a class="btn btn--primary print--hide alert--warning__content" href="{{parentPath (parentPath uri)}}">View latest version</a>
+										<h2 class="alert--warning__title">This has been superseded</h2> <a class="btn btn--primary print--hide alert--warning__content" href="{{parentPath (parentPath uri)}}">View corrected version</a>
 									</div>
 								{{/if}}
 
@@ -130,14 +130,13 @@
 										</div>
 
 										<div class="js-show-hide__content">
-											<section
-													class="show-hide__content alert--warning__content section__content--markdown">
+											<section class="show-hide__content alert--warning__content section__content--markdown">
 												{{#each versions}}
 													{{#if correctionNotice}}
 														<p class="alert__date">{{df updateDate}}</p>
 														{{md correctionNotice}}
 														<a class="btn btn--primary margin-bottom-sm--3 margin-bottom-md--3 print--hide"
-														   href="{{uri}}">View previous version</a>
+														   href="{{uri}}">View superseded version</a>
 													{{/if}}
 												{{/each}}
 											</section>
