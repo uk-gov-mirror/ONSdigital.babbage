@@ -201,7 +201,7 @@
                     {{#if file}}
 
                         <form method="get" action="/file" class="inline">
-                            <button type="submit" title="Latest version" class="tn btn--primary btn--thin btn--narrow btn--small download-analytics">
+                            <button type="submit" title="Latest version" class="btn btn--primary btn--thin btn--narrow btn--small download-analytics">
                                 {{fe (lowercase (concat uri "/" file))}} ({{fs (lowercase (concat uri "/" file))}})
                             </button>
                             <input type="hidden" name="uri" value="{{absolute (concat uri "/" file)}}"/>
