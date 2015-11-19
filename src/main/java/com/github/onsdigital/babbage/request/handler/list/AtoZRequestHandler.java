@@ -4,12 +4,12 @@ import com.github.onsdigital.babbage.request.handler.base.ListPageBaseRequestHan
 import com.github.onsdigital.babbage.search.model.ContentType;
 
 /**
- * Render a list page for bulletins under the given URI.
+ * Created by bren on 19/11/15.
  */
-public class PublishedRequestsRequestHandler extends ListPageBaseRequestHandler {
+public class AtoZRequestHandler extends ListPageBaseRequestHandler {
 
-    private final static ContentType[] ALLOWED_TYPES = {ContentType.static_foi};
-    private final static String REQUEST_TYPE = "publishedrequests";
+    private final static String REQUEST_TYPE = "atoz";
+    private final static ContentType[] ALLOWED_TYPES = {ContentType.bulletin};
 
     @Override
     public String getRequestType() {

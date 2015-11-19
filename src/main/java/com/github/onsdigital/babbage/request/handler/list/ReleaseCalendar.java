@@ -25,7 +25,7 @@ import static org.elasticsearch.index.query.FilterBuilders.notFilter;
  */
 public class ReleaseCalendar extends ListPageBaseRequestHandler {
     private final static ContentType[] ALLOWED_TYPES = {ContentType.release};
-    private final static String REQEUST_TYPE = "releasecalendar";
+    private final static String REQUEST_TYPE = "releasecalendar";
 
     @Override
     protected ContentType[] getAllowedTypes() {
@@ -44,7 +44,7 @@ public class ReleaseCalendar extends ListPageBaseRequestHandler {
 
     @Override
     public String getRequestType() {
-        return REQEUST_TYPE;
+        return REQUEST_TYPE;
     }
 
     @Override

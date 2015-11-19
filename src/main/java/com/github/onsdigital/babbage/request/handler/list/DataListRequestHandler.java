@@ -8,12 +8,12 @@ import com.github.onsdigital.babbage.search.model.ContentType;
  */
 public class DataListRequestHandler extends ListPageBaseRequestHandler {
 
-    private final static String REQEUST_TYPE = "datalist";
-    private final static ContentType[] ALLOWED_TYPES = {ContentType.dataset_landing_page, ContentType.reference_tables, ContentType.timeseries};
+    private final static String REQUEST_TYPE = "datalist";
+    private final static ContentType[] ALLOWED_TYPES = {ContentType.dataset_landing_page, ContentType.reference_tables, ContentType.timeseries, ContentType.static_adhoc};
 
     @Override
     public String getRequestType() {
-        return REQEUST_TYPE;
+        return REQUEST_TYPE;
     }
 
     @Override

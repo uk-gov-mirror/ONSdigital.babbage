@@ -5,11 +5,11 @@ package com.github.onsdigital.babbage.request.handler.list;
  */
 public class DataExplorer extends DataListRequestHandler {
 
-    private final static String REQEUST_TYPE = "dataexplorer";
+    private final static String REQUEST_TYPE = "dataexplorer";
 
     @Override
     public String getRequestType() {
-        return REQEUST_TYPE;
+        return REQUEST_TYPE;
     }
 
     @Override

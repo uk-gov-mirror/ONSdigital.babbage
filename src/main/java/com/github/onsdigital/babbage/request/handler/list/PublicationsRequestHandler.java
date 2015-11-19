@@ -11,11 +11,11 @@ import javax.servlet.http.HttpServletRequest;
 public class PublicationsRequestHandler extends ListPageBaseRequestHandler {
 
     private final static ContentType[] ALLOWED_TYPES = {ContentType.article, ContentType.bulletin, ContentType.compendium_landing_page};
-    private final static String REQEUST_TYPE = "publications";
+    private final static String REQUEST_TYPE = "publications";
 
     @Override
     public String getRequestType() {
-        return REQEUST_TYPE;
+        return REQUEST_TYPE;
     }
 
     @Override
