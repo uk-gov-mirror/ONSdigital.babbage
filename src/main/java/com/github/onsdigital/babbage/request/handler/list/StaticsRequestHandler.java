@@ -3,7 +3,7 @@ package com.github.onsdigital.babbage.request.handler.list;
 import com.github.onsdigital.babbage.request.handler.base.ListPageBaseRequestHandler;
 import com.github.onsdigital.babbage.search.model.ContentType;
 
-public class AboutUsRequestHandler extends ListPageBaseRequestHandler {
+public class StaticsRequestHandler extends ListPageBaseRequestHandler {
 
     private final static String REQEUST_TYPE = "staticlist";
     private final static ContentType[] ALLOWED_TYPES = {ContentType.static_page};

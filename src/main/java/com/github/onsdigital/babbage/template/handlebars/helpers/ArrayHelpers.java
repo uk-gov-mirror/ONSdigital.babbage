@@ -44,13 +44,13 @@ public enum ArrayHelpers implements BabbageHandlebarsHelper<Object> {
     },
 
     /**
-     * Used to get array element using array index or object property using property name (key)
+     * Used for getting array element using array index or object property using property name (key)
      *
-     * Handlebars lookup helper does the same think, but Handlebars.java implementation is buggy and not exactly compatible with Handlebars.js lookup helper.
+     * Handlebars lookup helper does the same thing, but Handlebars.java implementation is buggy and not exactly compatible with Handlebars.js lookup helper.
      *
-     * Opened an issue regarding this issue: https://github.com/jknack/handlebars.java/issues/418
+     * Opened an issue regarding this on: https://github.com/jknack/handlebars.java/issues/418
      *
-     * In the mean time modified Handlebars helper source code a little to create get helper
+     * In the mean time created get Handlebars helper for this purpose
      */
     get {
         @Override

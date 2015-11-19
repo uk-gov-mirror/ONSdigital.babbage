@@ -99,8 +99,8 @@
 		{{#if_eq type "table"}}{{> table}}{{/if_eq}}
 
 		{{!-- List Pages --}}
-		{{#if_eq type "adhoc"}}{{> list/t9-1}}{{/if_eq}}
 		{{#if_eq type "alladhocs"}}{{> list/t9-12 global=true}}{{/if_eq}}
+		{{#if_eq type "staticlist"}}{{> list/t9-13 global=true}}{{/if_eq}}
 		{{#if_eq type "publishedrequests"}}{{> list/t9-2 global=true}}{{/if_eq}}
 		{{#if_eq type "previousreleases"}}{{> list/t9-6}}{{/if_eq}}
 		{{#if_eq type "topicspecificmethodology"}}{{> list/t9-7}}{{/if_eq}}
