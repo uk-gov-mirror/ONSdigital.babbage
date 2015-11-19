@@ -49,4 +49,9 @@ public class AtoZRequestHandler extends ListPageBaseRequestHandler {
         }
         return prefix;
     }
+
+    @Override
+    protected boolean isFilterLatest(HttpServletRequest request) {
+        return true;
+    }
 }
