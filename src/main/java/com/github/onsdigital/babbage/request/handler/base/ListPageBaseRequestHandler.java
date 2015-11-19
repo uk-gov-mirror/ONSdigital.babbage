@@ -89,7 +89,7 @@ public abstract class ListPageBaseRequestHandler implements RequestHandler {
         return babbageResponse;
     }
 
-    private ONSQuery createQuery(String requestedUri, HttpServletRequest request) {
+    protected ONSQuery createQuery(String requestedUri, HttpServletRequest request) {
         String uri = processUri(requestedUri, request);
         ONSQuery query = new SearchRequestQueryBuilder(request, uri, getAllowedTypes()).buildQuery();
         if (isFilterLatest(request)) {

@@ -1,0 +1,49 @@
+{{#partial "block-main"}}
+<div class="page-content">
+	<div class="wrapper">
+		<form id="filters">
+			<input type="hidden" name="az" value="{{parameters.az.0}}">
+			<div class="col-wrap print-hidden">
+				<div class="col">
+					<div class="col col--md-28 col--lg-38">
+						<h1 class="search-page__title">Browse our statistics by A-Z</h1>
+					</div>
+				</div>
+			</div>
+			<div class="col-wrap print-hidden">
+				<div class="col">
+					<div class="float-right">
+						&nbsp
+					</div>
+				</div>
+			</div>
+			<div class="col col--md-12 col--lg-18 margin-bottom">
+				<div class="tiles__item tiles__item--nav-type flush-col print--hide">
+					<div class="tiles__title-h3 tiles__title-h3--nav">
+						<h3 class="inline">Refine results</h3>
+						<a href="{{location.pathname}}?az={{parameters.az.0}}" value="Reset" class="btn btn--primary btn--thin btn--narrow btn--small float-right">{{labels.search-refine-clear}}</a>
+					</div>
+					<div class="tiles__content tiles__content--nav">
+						<div class="filters">
+							{{> list/filters/keywords}}
+							<h4 class="filters__title">Choose a letter to browse</h4>
+							<div class="tiles__a-z">
+								{{> partials/az}}
+							</div>
+						</div>
+						<button type="submit" class="btn btn--primary btn--thick margin-top--double">Filter</button>
+					</div>
+				</div>
+				{{> partials/archives-box}}
+			</div>
+			<div class="results col col--md-34 col--lg-40 margin-left-md--1">
+				{{> list/partials/results-text}}
+				{{> list/partials/results}}
+				{{> list/partials/paginator}}
+			</div>
+		</form>
+	</div>
+</div>
+{{/partial}}
+{{!-- Inheriting from base list template --}}
+{{> list/base/list}}
