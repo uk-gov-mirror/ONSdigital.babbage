@@ -3,10 +3,10 @@
 		{{#if_all versions alerts}}
 			<h3 class="alert--correction__title">Corrections</h3>
 		{{/if_all}}
-		{{#each versions}}
+		{{#loop versions reverse=true}}
 			<p class="alert__date">{{df updateDate}}</p>
 			{{md correctionNotice}}
-			<a class="btn btn--primary margin-bottom-sm--3 margin-bottom-md--3 print--hide" href="{{uri}}">View previous version</a>
-		{{/each}}
+			<a class="btn btn--primary margin-bottom-sm--3 margin-bottom-md--3 print--hide" href="{{uri}}">View superseded version</a>
+		{{/loop}}
 	</section>
 {{/if}}

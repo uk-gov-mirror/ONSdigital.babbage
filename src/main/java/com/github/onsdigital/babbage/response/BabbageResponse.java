@@ -45,8 +45,9 @@ public abstract class BabbageResponse {
         return mimeType;
     }
 
-    public void setMimeType(String mimeType) {
+    public BabbageResponse setMimeType(String mimeType) {
         this.mimeType = mimeType;
+        return this;
     }
 
     public void addHeader(String key, String value) {
@@ -60,8 +61,9 @@ public abstract class BabbageResponse {
         return header;
     }
 
-    public void setCharEncoding(String charEncoding) {
+    public BabbageResponse setCharEncoding(String charEncoding) {
         this.charEncoding = charEncoding;
+        return this;
     }
 
     public String getCharEncoding() {
@@ -72,7 +74,8 @@ public abstract class BabbageResponse {
         return statusCode;
     }
 
-    public void setStatusCode(int statusCode) {
+    public BabbageResponse setStatusCode(int statusCode) {
         this.statusCode = statusCode;
+        return this;
     }
 }
