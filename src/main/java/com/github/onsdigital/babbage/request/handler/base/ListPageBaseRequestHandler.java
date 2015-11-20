@@ -23,13 +23,12 @@ import java.util.List;
 import java.util.Map;
 
 import static com.github.onsdigital.babbage.util.URIUtil.cleanUri;
+import static javax.ws.rs.core.MediaType.TEXT_HTML;
 
 /**
  * Render a list page for bulletins under the given URI.
  */
-public abstract class ListPageBaseRequestHandler implements RequestHandler {
-
-    public static final String CONTENT_TYPE = "text/html";
+public abstract class ListPageBaseRequestHandler {
 
     /**
      * The type of page to be returned in the list page
@@ -38,6 +37,12 @@ public abstract class ListPageBaseRequestHandler implements RequestHandler {
      */
     protected abstract ContentType[] getAllowedTypes();
 
+    /**
+     * Used as a flag to decide if listed contents should be filtered with latestFlag=true
+     *
+     * @param request
+     * @return
+     */
     protected boolean isFilterLatest(HttpServletRequest request) {
         return false;
     }
@@ -45,6 +50,15 @@ public abstract class ListPageBaseRequestHandler implements RequestHandler {
     protected boolean isListTopics() {
         return isLocalisedUri() == false;
     }
+
+    /**
+     * List page request handler is registered with this request type, requests made ending with request type is delegated to the handler automatically
+     *
+     * e.g.   if request type is publications any http request urls ending in /publications will be delegated to publications handler
+     *
+     * @return
+     */
+    public abstract String getRequestType();
 
     /**
      * Return true if the list page is localised to a uri.
@@ -56,37 +70,44 @@ public abstract class ListPageBaseRequestHandler implements RequestHandler {
     public abstract boolean isLocalisedUri();
 
 
-    public String getData(String requestedUri, HttpServletRequest request) throws Exception {
-
+    public BabbageResponse getData(String requestedUri, HttpServletRequest request) throws Exception {
         System.out.println("List page data request from " + this.getClass().getSimpleName() + " for uri: " + requestedUri);
-        ONSQuery query = createQuery(requestedUri, request);
-
-        SearchResponseHelper responseHelper = doSearch(request, query);
-        Paginator.assertPage(query.getPage(), responseHelper);
-        return JsonUtil.toJson(responseHelper.getResult());
+        LinkedHashMap<String, Object> listData = prepareData(requestedUri, request);
+        return new BabbageStringResponse(JsonUtil.toJson(listData));
     }
 
-    @Override
     public BabbageResponse get(String requestedUri, HttpServletRequest request) throws Exception {
-
         System.out.println("List page request from " + this.getClass().getSimpleName() + " for uri: " + requestedUri);
-        BabbageResponse babbageResponse;
-        String type = URIUtil.resolveRequestType(request.getRequestURI());
+        String html = TemplateService.getInstance().renderContent(prepareData(requestedUri, request));
+        return new BabbageStringResponse(html, TEXT_HTML);
+    }
+
+    protected LinkedHashMap<String, Object> prepareData(String requestedUri, HttpServletRequest request) throws IOException {
         ONSQuery query = createQuery(requestedUri, request);
         SearchResponseHelper responseHelper = doSearch(request, query);
         Paginator.assertPage(query.getPage(), responseHelper);
-
         LinkedHashMap<String, Object> listData = new LinkedHashMap<>();
-        listData.put("type", type);
+        listData.put("result", responseHelper.getResult());
         listData.put("paginator", Paginator.getPaginator(query.getPage(), responseHelper));
-        listData.put("uri", request.getRequestURI());//set full uri in the context
+        listData.putAll(getBaseData(request));
+        return listData;
+    }
+
+    /**
+     *Base data to render the correct template, can be used for rendering empty page with no results
+     *
+     * @return
+     * @throws IOException
+     */
+    protected Map<String, Object> getBaseData(HttpServletRequest request) throws IOException {
+        Map<String, Object> listData = new LinkedHashMap<>();
+        listData.put("type", "list");
+        listData.put("listType", getRequestType());
+        listData.put("uri", URIUtil.cleanUri(request.getRequestURI()));//full uri in the context to resolve breadcrumb
         if (isListTopics()) {
             listData.put("topics", getTopics());
         }
-        listData.put("result", responseHelper.getResult());
-        String html = TemplateService.getInstance().renderContent(listData);
-        babbageResponse = new BabbageStringResponse(html, CONTENT_TYPE);
-        return babbageResponse;
+        return listData;
     }
 
     protected ONSQuery createQuery(String requestedUri, HttpServletRequest request) {
@@ -126,7 +147,6 @@ public abstract class ListPageBaseRequestHandler implements RequestHandler {
         }
         return topics;
     }
-
 
     public class Topic {
         private String uri;

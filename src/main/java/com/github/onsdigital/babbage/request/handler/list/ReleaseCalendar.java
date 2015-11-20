@@ -1,6 +1,7 @@
 package com.github.onsdigital.babbage.request.handler.list;
 
 import com.github.onsdigital.babbage.request.handler.base.ListPageBaseRequestHandler;
+import com.github.onsdigital.babbage.request.handler.base.RequestHandler;
 import com.github.onsdigital.babbage.search.ONSQuery;
 import com.github.onsdigital.babbage.search.helpers.SearchResponseHelper;
 import com.github.onsdigital.babbage.search.model.ContentType;
@@ -23,7 +24,7 @@ import static org.elasticsearch.index.query.FilterBuilders.notFilter;
 /**
  * Created by bren on 22/09/15.
  */
-public class ReleaseCalendar extends ListPageBaseRequestHandler {
+public class ReleaseCalendar extends ListPageBaseRequestHandler implements RequestHandler {
     private final static ContentType[] ALLOWED_TYPES = {ContentType.release};
     private final static String REQUEST_TYPE = "releasecalendar";
 

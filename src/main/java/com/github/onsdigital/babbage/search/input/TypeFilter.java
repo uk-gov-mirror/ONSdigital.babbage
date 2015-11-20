@@ -14,7 +14,9 @@ public enum TypeFilter {
     ADHOCS(ContentType.static_adhoc),
     QMI(ContentType.static_qmi),
     METHODOLOGY(ContentType.static_qmi, ContentType.static_methodology),
-    METHODOLOGY_ARTICLE(ContentType.static_methodology);
+    METHODOLOGY_ARTICLE(ContentType.static_methodology),
+    CORPORATE_INFORMATION(ContentType.static_foi,ContentType.static_page,ContentType.static_landing_page//methodology
+    );
 
     private ContentType[] types;
 

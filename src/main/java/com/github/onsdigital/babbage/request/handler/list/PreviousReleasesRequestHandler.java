@@ -4,12 +4,12 @@ import com.github.onsdigital.babbage.content.client.ContentClient;
 import com.github.onsdigital.babbage.content.client.ContentStream;
 import com.github.onsdigital.babbage.error.ResourceNotFoundException;
 import com.github.onsdigital.babbage.request.handler.base.ListPageBaseRequestHandler;
+import com.github.onsdigital.babbage.request.handler.base.RequestHandler;
 import com.github.onsdigital.babbage.response.BabbageResponse;
 import com.github.onsdigital.babbage.search.ONSQuery;
 import com.github.onsdigital.babbage.search.helpers.SearchResponseHelper;
 import com.github.onsdigital.babbage.search.input.SortBy;
 import com.github.onsdigital.babbage.search.model.ContentType;
-import com.github.onsdigital.babbage.util.URIUtil;
 import com.github.onsdigital.babbage.util.json.JsonUtil;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,7 +22,7 @@ import static com.github.onsdigital.babbage.util.URIUtil.removeLastSegment;
 /**
  * Render a list page for the given URI.
  */
-public class PreviousReleasesRequestHandler extends ListPageBaseRequestHandler {
+public class PreviousReleasesRequestHandler extends ListPageBaseRequestHandler implements RequestHandler {
 
     private static final String REQUEST_TYPE = "previousreleases";
     private final static ContentType[] ALLOWED_TYPES = {ContentType.article, ContentType.bulletin, ContentType.compendium_landing_page};
@@ -55,14 +55,6 @@ public class PreviousReleasesRequestHandler extends ListPageBaseRequestHandler {
 
     private boolean isProductPage(Object type) {
         return ContentType.product_page.name().equals(type);
-    }
-
-    private static ContentType getType(String type) {
-        try {
-            return ContentType.valueOf(type);
-        } catch (IllegalArgumentException e) {
-            return null;
-        }
     }
 
     @Override

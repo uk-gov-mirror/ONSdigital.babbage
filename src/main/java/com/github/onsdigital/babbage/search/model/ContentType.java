@@ -14,7 +14,7 @@ public enum ContentType {
     timeseries,
     data_slice,
     compendium_landing_page,
-    compendium_chapter,//Resolve parent
+    compendium_chapter,
     compendium_data,
     static_landing_page,
     static_article,

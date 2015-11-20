@@ -6,12 +6,17 @@
         <ul class="list--neutral list--inline flush">
             <li>
                 <a href="/search?q={{parameters.q.0}}" class="tab__item tab__item--active">
-                    Search results
+                    ALL results
                 </a>
             </li>
             <li>
-                <a href="/dataexplorer?q={{parameters.q.0}}" class="tab__item">
-                    Explore our data
+                <a href="/searchdata?q={{parameters.q.0}}" class="tab__item">
+                    Data
+                </a>
+            </li>
+            <li>
+                <a href="/searchpublication?q={{parameters.q.0}}" class="tab__item">
+                    Publications
                 </a>
             </li>
         </ul>
@@ -89,6 +94,15 @@
                                     </label>
                                 </div>
                             </li>
+                            <li>
+                                <div class="filters__field">
+                                    <input id="checkbox-adhoc" type="checkbox" name="filter" value="adhocs" {{#contains parameters.filter 'adhocs'}}checked{{/contains}} >
+                                    <label for="checkbox-adhoc">
+                                        Commissioned data
+                                    </label>
+                                </div>
+                            </li>
+
                         </ul>
                         <h5 class="filters__sub-title">Other</h5>
                         <ul class="list--neutral flush-top">
@@ -99,16 +113,15 @@
                                         {{labels.methodology}}
                                     </label>
                                 </div>
-                            <li class="filters__item">
+                                <div class="filters__field">
+                                    <input type="checkbox" name="filter" value="corporate_information" id="checkbox-corporate" {{#contains parameters.filter 'corporate_information'}}checked{{/contains}} >
+                                    <label for="checkbox-corporate">
+                                        {{labels.corporate-information}}</br>
+                                        ({{labels.search-expand-types}})
+                                    </label>
+                                </div>
+                            </li>
                         </ul>
-                        <p class="margin-bottom-sm--1 margin-bottom-md--1">{{labels.search-expand}}:</p>
-                        <div class="filters__field">
-                            <input type="checkbox" name="includeStatics" value="1" id="checkbox-all-content" {{#if parameters.includeStatics.0}}checked{{/if}}>
-                            <label for="checkbox-all-content">
-                                    {{labels.search-expand-all}}</br>
-                                ({{labels.search-expand-types}})
-                            </label>
-                        </div>
 					<button type="submit" class="btn btn--primary btn--thick margin-top-sm--2 margin-top-md--2">{{labels.search-filter}}</button>
 				</div>
 			</div>

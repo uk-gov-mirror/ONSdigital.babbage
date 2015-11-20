@@ -31,7 +31,7 @@ public class DataRequestHandler implements RequestHandler {
 
     @Override
     public BabbageResponse get(String requestedUri, HttpServletRequest request) throws Exception {
-        return new BabbageStringResponse(getData(requestedUri, request));
+        return getData(requestedUri, request);
     }
 
     @Override
@@ -39,7 +39,7 @@ public class DataRequestHandler implements RequestHandler {
         return REQUEST_TYPE;
     }
 
-    public String getData(String uri, HttpServletRequest request) throws Exception {
+    public BabbageResponse getData(String uri, HttpServletRequest request) throws Exception {
 
         String requestType = URIUtil.resolveRequestType(uri);
 
@@ -48,7 +48,7 @@ public class DataRequestHandler implements RequestHandler {
         }
 
         try (ContentStream contentStream = ContentClient.getInstance().getContentStream(uri, getQueryParameters(request))) {
-            return contentStream.getAsString();
+            return new BabbageStringResponse(contentStream.getAsString());
         }
     }
 

@@ -2,6 +2,7 @@ package com.github.onsdigital.babbage.request.handler.list;
 
 import com.github.onsdigital.babbage.error.ResourceNotFoundException;
 import com.github.onsdigital.babbage.request.handler.base.ListPageBaseRequestHandler;
+import com.github.onsdigital.babbage.request.handler.base.RequestHandler;
 import com.github.onsdigital.babbage.search.ONSQuery;
 import com.github.onsdigital.babbage.search.helpers.SearchRequestHelper;
 import com.github.onsdigital.babbage.search.model.ContentType;
@@ -15,7 +16,7 @@ import static com.github.onsdigital.babbage.util.RequestUtil.getParam;
 /**
  * Created by bren on 19/11/15.
  */
-public class AtoZRequestHandler extends ListPageBaseRequestHandler {
+public class AtoZRequestHandler extends ListPageBaseRequestHandler implements RequestHandler {
 
     private final static String REQUEST_TYPE = "atozz";
     private final static ContentType[] ALLOWED_TYPES = {ContentType.bulletin};

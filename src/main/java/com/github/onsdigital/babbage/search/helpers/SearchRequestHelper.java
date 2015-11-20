@@ -1,5 +1,6 @@
 package com.github.onsdigital.babbage.search.helpers;
 
+import com.github.onsdigital.babbage.error.BadRequestException;
 import com.github.onsdigital.babbage.error.ResourceNotFoundException;
 import com.github.onsdigital.babbage.search.ONSQuery;
 import com.github.onsdigital.babbage.search.input.SortBy;
@@ -155,11 +156,9 @@ public class SearchRequestHelper {
             return null;
         }
         if (query.length() > 200) {
-            throw new RuntimeException("Search query contains too many characters");
+            throw new BadRequestException("Search query contains too many characters");
         }
         return query;
-//        String sanitizedQuery = query.replaceAll("[^a-zA-Z0-9 ]+", "");
-//        return sanitizedQuery;
     }
 
 }
