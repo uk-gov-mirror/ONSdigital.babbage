@@ -9,11 +9,11 @@ import com.github.onsdigital.babbage.request.handler.base.ListPageBaseRequestHan
 public class TopicSpecificMethodologyRequestHandler extends ListPageBaseRequestHandler {
 
     private final static ContentType[] ALLOWED_TYPES = {ContentType.static_methodology, ContentType.static_qmi};
-    private final static String REQEUST_TYPE = "topicspecificmethodology";
+    private final static String REQUEST_TYPE = "topicspecificmethodology";
 
     @Override
     public String getRequestType() {
-        return REQEUST_TYPE;
+        return REQUEST_TYPE;
     }
 
     @Override

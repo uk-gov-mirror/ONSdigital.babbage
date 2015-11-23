@@ -8,12 +8,12 @@ import com.github.onsdigital.babbage.request.handler.base.ListPageBaseRequestHan
  */
 public class AdhocsRequestHandler extends ListPageBaseRequestHandler {
 
-    private final static String REQEUST_TYPE = "adhoc";
+    private final static String REQUEST_TYPE = "adhoc";
     private final static ContentType[] ALLOWED_TYPES = {ContentType.static_adhoc};
 
     @Override
     public String getRequestType() {
-        return REQEUST_TYPE;
+        return REQUEST_TYPE;
     }
 
     @Override

@@ -5,11 +5,11 @@ package com.github.onsdigital.babbage.request.handler.list;
  */
 public class AllAdhocsRequestHandler extends AdhocsRequestHandler {
 
-    private final static String REQEUST_TYPE = "alladhocs";
+    private final static String REQUEST_TYPE = "alladhocs";
 
     @Override
     public String getRequestType() {
-        return REQEUST_TYPE;
+        return REQUEST_TYPE;
     }
 
     @Override

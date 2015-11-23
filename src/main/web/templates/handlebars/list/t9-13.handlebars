@@ -3,8 +3,8 @@
 	<div class="wrapper">
 		<div class="col-wrap">
 			<div class="col one">
-				{{> list/partials/list-page-breadcrumb label="Freedom of Information (FOI) previous requests"}}
-				<h1 class="page-intro__title margin-bottom--double">Freedom of Information (FOI) previous requests</h1>
+				{{> list/partials/list-page-breadcrumb label="List"}}
+				<h1 class="page-intro__title margin-bottom--double">List of all {{#each breadcrumb}}{{#if @last}}{{description.title}}{{/if}}{{/each}}</h1>
 			</div>
 		</div>
 	</div>
@@ -27,7 +27,6 @@
 				<div class="tiles__content tiles__content--nav">
 					<div class="filters">
 						{{> list/filters/keywords}}
-						{{> list/filters/publish-date}}
 					</div>
 					<button type="submit" class="btn btn--primary btn--thick margin-top--double">Filter</button>
 				</div>

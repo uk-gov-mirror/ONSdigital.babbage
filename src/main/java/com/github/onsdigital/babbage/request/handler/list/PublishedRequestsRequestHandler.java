@@ -9,11 +9,11 @@ import com.github.onsdigital.babbage.search.model.ContentType;
 public class PublishedRequestsRequestHandler extends ListPageBaseRequestHandler {
 
     private final static ContentType[] ALLOWED_TYPES = {ContentType.static_foi};
-    private final static String REQEUST_TYPE = "publishedrequests";
+    private final static String REQUEST_TYPE = "publishedrequests";
 
     @Override
     public String getRequestType() {
-        return REQEUST_TYPE;
+        return REQUEST_TYPE;
     }
 
     @Override

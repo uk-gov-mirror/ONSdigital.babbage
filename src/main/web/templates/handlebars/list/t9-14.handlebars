@@ -1,21 +1,20 @@
 {{#partial "block-main"}}
-	<div class="page-intro">
-		<div class="wrapper">
-			<div class="col-wrap">
-				<div class="col one">
-					{{> list/partials/list-page-breadcrumb label="Commissioned data"}}
-					<h1 class="page-intro__title margin-bottom--double">Commissioned data</h1>
+<div class="page-content">
+	<div class="wrapper">
+		<form id="filters">
+			<input type="hidden" name="az" value="{{parameters.az.0}}">
+			<div class="col-wrap print-hidden">
+				<div class="col">
+					<div class="col col--md-28 col--lg-38">
+						<h1 class="search-page__title">Browse our statistics by A-Z</h1>
+						<p>You can find all of the statistical releases we produce in this comprehensive list.</p>
+					</div>
 				</div>
 			</div>
-		</div>
-	</div>
-
-	<div class="wrapper print-links">
-    	<form id="filters">
 			<div class="col-wrap print-hidden">
 				<div class="col">
 					<div class="float-right">
-						{{> list/filters/sort}}
+						&nbsp
 					</div>
 				</div>
 			</div>
@@ -23,13 +22,15 @@
 				<div class="tiles__item tiles__item--nav-type flush-col print--hide">
 					<div class="tiles__title-h3 tiles__title-h3--nav">
 						<h3 class="inline">Refine results</h3>
-							<a href="{{location.pathname}}" value="Reset" class="btn btn--primary btn--thin btn--narrow btn--small float-right">{{labels.search-refine-clear}}</a>
+						<a href="{{location.pathname}}?az={{parameters.az.0}}" value="Reset" class="btn btn--primary btn--thin btn--narrow btn--small float-right">{{labels.search-refine-clear}}</a>
 					</div>
 					<div class="tiles__content tiles__content--nav">
 						<div class="filters">
 							{{> list/filters/keywords}}
-							{{> list/filters/publish-date}}
-							{{> list/filters/topics}}
+							<h4 class="filters__title">Choose a letter to browse</h4>
+							<div class="filters__a-z">
+								{{> partials/az parent="filters"}}
+							</div>
 						</div>
 						<button type="submit" class="btn btn--primary btn--thick margin-top--double">Filter</button>
 					</div>
@@ -43,6 +44,8 @@
 			</div>
 		</form>
 	</div>
+</div>
 {{/partial}}
-	{{!-- Inheriting from base list template --}}
-	{{> list/base/list}}
+
+{{!-- Inheriting from base list template --}}
+{{> list/base/list}}
