@@ -86,6 +86,10 @@ public abstract class ListPageBaseRequestHandler {
         ONSQuery query = createQuery(requestedUri, request);
         SearchResponseHelper responseHelper = doSearch(request, query);
         Paginator.assertPage(query.getPage(), responseHelper);
+        return resolveListData(request, query, responseHelper);
+    }
+
+    private LinkedHashMap<String, Object> resolveListData(HttpServletRequest request, ONSQuery query, SearchResponseHelper responseHelper) throws IOException {
         LinkedHashMap<String, Object> listData = new LinkedHashMap<>();
         listData.put("result", responseHelper.getResult());
         listData.put("paginator", Paginator.getPaginator(query.getPage(), responseHelper));

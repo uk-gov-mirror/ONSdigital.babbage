@@ -1,19 +1,20 @@
 package com.github.onsdigital.babbage.api.endpoint.search;
 
 import com.github.davidcarboni.restolino.framework.Api;
+import com.github.onsdigital.babbage.paginator.Paginator;
 import com.github.onsdigital.babbage.request.handler.base.ListPageBaseRequestHandler;
 import com.github.onsdigital.babbage.response.BabbageRedirectResponse;
 import com.github.onsdigital.babbage.response.BabbageResponse;
 import com.github.onsdigital.babbage.response.BabbageStringResponse;
 import com.github.onsdigital.babbage.search.ONSQuery;
 import com.github.onsdigital.babbage.search.SearchService;
-import com.github.onsdigital.babbage.search.helpers.CountResponseHelper;
 import com.github.onsdigital.babbage.search.helpers.SearchRequestHelper;
 import com.github.onsdigital.babbage.search.helpers.SearchResponseHelper;
 import com.github.onsdigital.babbage.search.model.ContentType;
 import com.github.onsdigital.babbage.search.model.field.FilterableField;
 import com.github.onsdigital.babbage.search.model.field.SearchableField;
 import com.github.onsdigital.babbage.template.TemplateService;
+import com.github.onsdigital.babbage.util.URIUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,9 +22,12 @@ import javax.ws.rs.GET;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
-import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.*;
+import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.addTermFilter;
+import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.extractSearchTerm;
 import static com.github.onsdigital.babbage.util.URIUtil.cleanUri;
 import static javax.ws.rs.core.MediaType.TEXT_HTML;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
@@ -48,6 +52,17 @@ public class Search extends ListPageBaseRequestHandler {
     };
 
 
+    @GET
+    public void get(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        String uri = URIUtil.cleanUri(request.getRequestURI());
+        String requestType = URIUtil.resolveRequestType(uri);
+        if ("data".equals(requestType)) {
+            getData(URIUtil.removeLastSegment(uri), request).apply(response);
+        } else {
+            getPage(request, response).apply(response);
+        }
+    }
+
     @Override
     public BabbageResponse getData(String requestedUri, HttpServletRequest request) throws Exception {
         String query = extractSearchTerm(request);
@@ -62,21 +77,18 @@ public class Search extends ListPageBaseRequestHandler {
         }
     }
 
-    @GET
-    public Object get(@Context HttpServletRequest request, @Context HttpServletResponse response) throws Exception {
+    public BabbageResponse getPage(HttpServletRequest request, @Context HttpServletResponse response) throws Exception {
         String query = extractSearchTerm(request);
         if (isEmpty(query)) {
-            renderEmptyPage(request, response);
+            return renderEmptyPage(request);
         } else {
-            BabbageResponse result = getTimeSeriesResponse(query);
-            if (result != null) {
-                result.apply(response);
+            BabbageResponse timeSeriesResponse = getTimeSeriesResponse(query);
+            if (timeSeriesResponse != null) {
+                return timeSeriesResponse;
             } else {
-                result =  super.get(cleanUri(request.getRequestURI()), request);
-                result.apply(response);
+               return  super.get(cleanUri(request.getRequestURI()), request);
             }
         }
-        return null;
     }
 
     /**
@@ -94,20 +106,9 @@ public class Search extends ListPageBaseRequestHandler {
         return null;
     }
 
-    private void renderEmptyPage(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    private BabbageStringResponse renderEmptyPage(HttpServletRequest request) throws IOException {
         String html = TemplateService.getInstance().renderContent(getBaseData(request));
-        BabbageResponse babbageResponse = new BabbageStringResponse(html, TEXT_HTML);
-        babbageResponse.apply(response);
-    }
-
-
-    //Counts time series for featured result
-    private long countTimeSeries(String uri) {
-        System.out.println("Counting time series starting with uri " + uri);
-        ONSQuery query = new ONSQuery(ContentType.timeseries.name());
-        addPrefixFilter(query, FilterableField.uri, uri);
-        CountResponseHelper countResponse = SearchService.getInstance().count(query);
-        return countResponse.getCount();
+        return new BabbageStringResponse(html, TEXT_HTML);
     }
 
     //returns uri for time series if there is a cdid match
@@ -123,6 +124,31 @@ public class Search extends ListPageBaseRequestHandler {
         return null;
     }
 
+    @Override
+    protected LinkedHashMap<String, Object> prepareData(String requestedUri, HttpServletRequest request) throws IOException {
+        SearchResponseHelper contentResponse;
+        SearchResponseHelper featuresResultsResponse = null;
+
+        ONSQuery contentQuery = createQuery(requestedUri, request);
+        if (contentQuery.getPage() == 1 && !isFiltered(request)) {
+            List<SearchResponseHelper> searchResponseHelpers = SearchService.getInstance().searchMultiple(contentQuery, buildFeaturedResultQuery(contentQuery.getSearchTerm()));
+            contentResponse = searchResponseHelpers.get(0);
+            featuresResultsResponse = searchResponseHelpers.get(1);
+        } else {
+            contentResponse = doSearch(request, contentQuery);
+        }
+        Paginator.assertPage(contentQuery.getPage(), contentResponse);
+        LinkedHashMap<String, Object> listData = new LinkedHashMap<>();
+            listData.put("result", contentResponse.getResult());
+        if (featuresResultsResponse != null) {
+            listData.put("featuredResult", featuresResultsResponse.getResult());
+        }
+        listData.put("paginator", Paginator.getPaginator(contentQuery.getPage(), contentResponse));
+        listData.putAll(getBaseData(request));
+        return listData;
+
+    }
+
     private ONSQuery buildFeaturedResultQuery(String query) throws IOException {
         ONSQuery onsquery = new ONSQuery(ContentType.product_page.name())
                 .setSize(1)
@@ -134,14 +160,6 @@ public class Search extends ListPageBaseRequestHandler {
 
     private boolean isFiltered(HttpServletRequest request) {
         return request.getParameterValues("filter") != null;
-    }
-
-    private boolean isTimeSeriesRequested(HttpServletRequest request) {
-        return request.getParameter("time_series") != null;
-    }
-
-    private boolean isStaticsRequested(HttpServletRequest request) {
-        return request.getParameter("includeStatics") != null;
     }
 
     @Override
