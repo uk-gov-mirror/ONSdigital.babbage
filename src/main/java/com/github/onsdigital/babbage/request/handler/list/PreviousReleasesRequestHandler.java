@@ -1,7 +1,6 @@
 package com.github.onsdigital.babbage.request.handler.list;
 
 import com.github.onsdigital.babbage.content.client.ContentClient;
-import com.github.onsdigital.babbage.content.client.ContentReadException;
 import com.github.onsdigital.babbage.content.client.ContentStream;
 import com.github.onsdigital.babbage.error.ResourceNotFoundException;
 import com.github.onsdigital.babbage.request.handler.base.ListPageBaseRequestHandler;
@@ -44,7 +43,7 @@ public class PreviousReleasesRequestHandler extends ListPageBaseRequestHandler i
     }
 
     @Override
-    public BabbageResponse get(String requestedUri, HttpServletRequest request) throws IOException, ContentReadException {
+    public BabbageResponse get(String requestedUri, HttpServletRequest request) throws Exception {
         try (ContentStream stream = ContentClient.getInstance().getContentStream(removeLastSegment(removeLastSegment(requestedUri)))) {
             Map<String, Object> objectMap = JsonUtil.toMap(stream.getDataStream());
             if(!isProductPage(objectMap.get("type"))) {

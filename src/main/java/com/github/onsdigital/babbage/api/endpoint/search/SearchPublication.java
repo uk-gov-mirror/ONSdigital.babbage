@@ -16,4 +16,9 @@ public class SearchPublication extends Search {
         return ALLOWED_TYPES;
     }
 
+    @Override
+    public String getRequestType() {
+        return this.getClass().getSimpleName().toLowerCase();
+    }
+
 }

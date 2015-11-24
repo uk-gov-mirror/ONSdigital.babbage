@@ -40,17 +40,17 @@ public class URIUtil {
 
 
     /**
-     * Extracts last uri segment
+     * Extracts request type from request type suffixed uris (the last uri segment)
      * <p>
      * e.g.
-     * for uri "/economy/inflationandpriceindices/data" returns "data"
+     * for uri "/economy/inflationandpriceindices/data" request type is "data"
      *
-     * for uri "/" returns "/"
-     *
-     * @return last segment, lowercased
+     * @return request type
+     * @throws com.github.onsdigital.content.util.URIUtil.InvalidUriException
      */
-    public static String getLastSegment(String uriString) {
+    public static String resolveRequestType(String uriString) {
         uriString = cleanUri(uriString);
+//        validate(uriString);
         if ("/".equals(uriString)) {
             return uriString;
         }
@@ -76,15 +76,15 @@ public class URIUtil {
 
     }
 
-//
-//    public static void validate(String uriString) {
-//        uriString = StringUtils.defaultIfBlank(uriString, "/");
-//        Matcher matcher = uriPattern.matcher(uriString);
-//
-//        if (!matcher.matches()) {
-//            throw new InvalidUriException(uriString);
-//        }
-//    }
+
+    public static void validate(String uriString) {
+        uriString = StringUtils.defaultIfBlank(uriString, "/");
+        Matcher matcher = uriPattern.matcher(uriString);
+
+        if (!matcher.matches()) {
+            throw new InvalidUriException(uriString);
+        }
+    }
 
     //Remove trailing slash if any and make lowercase
     public static String cleanUri(String uriString) {

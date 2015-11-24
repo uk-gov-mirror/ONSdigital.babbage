@@ -1,7 +1,6 @@
 package com.github.onsdigital.babbage.request.handler.content;
 
 import com.github.onsdigital.babbage.content.client.ContentClient;
-import com.github.onsdigital.babbage.content.client.ContentReadException;
 import com.github.onsdigital.babbage.content.client.ContentStream;
 import com.github.onsdigital.babbage.request.handler.base.ListPageBaseRequestHandler;
 import com.github.onsdigital.babbage.request.handler.base.RequestHandler;
@@ -12,7 +11,6 @@ import org.reflections.Reflections;
 import org.reflections.util.ConfigurationBuilder;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.Map;
@@ -32,7 +30,7 @@ public class DataRequestHandler implements RequestHandler {
 
 
     @Override
-    public BabbageResponse get(String requestedUri, HttpServletRequest request) throws IOException, ContentReadException {
+    public BabbageResponse get(String requestedUri, HttpServletRequest request) throws Exception {
         return getData(requestedUri, request);
     }
 
@@ -41,9 +39,9 @@ public class DataRequestHandler implements RequestHandler {
         return REQUEST_TYPE;
     }
 
-    public BabbageResponse getData(String uri, HttpServletRequest request) throws IOException, ContentReadException {
+    public BabbageResponse getData(String uri, HttpServletRequest request) throws Exception {
 
-        String requestType = URIUtil.getLastSegment(uri);
+        String requestType = URIUtil.resolveRequestType(uri);
 
         if (listPageHandlers.containsKey(requestType)) {
             return listPageHandlers.get(requestType).getData(URIUtil.removeLastSegment(uri), request);

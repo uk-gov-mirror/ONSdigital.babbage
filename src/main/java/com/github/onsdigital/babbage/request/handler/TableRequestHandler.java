@@ -1,17 +1,16 @@
 package com.github.onsdigital.babbage.request.handler;
 
 import com.github.onsdigital.babbage.content.client.ContentClient;
-import com.github.onsdigital.babbage.content.client.ContentReadException;
 import com.github.onsdigital.babbage.content.client.ContentStream;
 import com.github.onsdigital.babbage.request.handler.base.RequestHandler;
 import com.github.onsdigital.babbage.response.BabbageResponse;
 import com.github.onsdigital.babbage.response.BabbageStringResponse;
 import com.github.onsdigital.babbage.template.TemplateService;
 import com.github.onsdigital.babbage.util.URIUtil;
+import com.github.onsdigital.babbage.util.json.JsonUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.MediaType;
-import java.io.IOException;
 import java.util.LinkedHashMap;
 
 /**
@@ -23,7 +22,7 @@ public class TableRequestHandler implements RequestHandler {
     private static final String REQUEST_TYPE = "table";
 
     @Override
-    public BabbageResponse get(String requestedUri, HttpServletRequest request) throws IOException, ContentReadException {
+    public BabbageResponse get(String requestedUri, HttpServletRequest request) throws Exception {
         try (
                 ContentStream json = ContentClient.getInstance().getContentStream(requestedUri);
                 ContentStream html = ContentClient.getInstance().getResource(URIUtil.cleanUri(requestedUri) + ".html")
