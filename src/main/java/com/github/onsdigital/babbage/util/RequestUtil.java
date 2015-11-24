@@ -2,6 +2,7 @@ package com.github.onsdigital.babbage.util;
 
 import com.github.onsdigital.babbage.configuration.Configuration;
 import com.github.onsdigital.babbage.locale.LocaleConfig;
+import com.github.onsdigital.babbage.request.handler.base.json.JsonPageRequestHandler;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -162,6 +163,11 @@ public class RequestUtil {
         return queryParameters;
     }
 
+
+    public static boolean isJsonRequest(HttpServletRequest request) {
+        String lastSegment = URIUtil.getLastSegment(request.getRequestURI());
+        return JsonPageRequestHandler.JSON_ENDPOINT.equals(lastSegment);
+    }
 
     /**
      * Current location information to be extracted from HTTP request

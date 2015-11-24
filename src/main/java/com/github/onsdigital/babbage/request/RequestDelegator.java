@@ -52,7 +52,7 @@ public class RequestDelegator {
         try {
             String uri = URIUtil.cleanUri(request.getRequestURI());
             String fullUri = uri + "?" + StringUtils.lowerCase(request.getQueryString());
-            String requestType = URIUtil.resolveRequestType(uri);
+            String requestType = URIUtil.getLastSegment(uri);
             RequestHandler handler = resolveRequestHandler(requestType);
             BabbageResponse getResponse = null;
             String requestedUri = uri;

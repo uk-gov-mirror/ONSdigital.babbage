@@ -32,7 +32,7 @@ public class PDFRequestHandler implements RequestHandler {
 
     public static final String CONTENT_TYPE = "application/pdf";
 
-    public BabbageResponse get(String requestedUri, HttpServletRequest requests) throws Exception {
+    public BabbageResponse get(String requestedUri, HttpServletRequest requests) throws IOException, ContentReadException {
         String uriPath = StringUtils.removeStart(requestedUri, "/");
         System.out.println("Generating pdf for uri:" + uriPath);
         Path pdfFile = PDFGenerator.generatePdf(requestedUri, getTitle(requestedUri), RequestUtil.getAllCookies(requests));

@@ -2,6 +2,7 @@ package com.github.onsdigital.babbage.request.handler.highcharts.sparkline;
 
 import com.github.onsdigital.babbage.content.client.ContentClient;
 import com.github.onsdigital.babbage.content.client.ContentFilter;
+import com.github.onsdigital.babbage.content.client.ContentReadException;
 import com.github.onsdigital.babbage.content.client.ContentStream;
 import com.github.onsdigital.babbage.request.handler.base.RequestHandler;
 import com.github.onsdigital.babbage.response.BabbageResponse;
@@ -10,6 +11,8 @@ import com.github.onsdigital.babbage.template.TemplateService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.MediaType;
+
+import java.io.IOException;
 
 import static com.github.onsdigital.babbage.content.client.ContentClient.filter;
 
@@ -20,7 +23,7 @@ public class SparklineRequestHandler implements RequestHandler {
     public static final String REQUEST_TYPE = "sparkline";
 
     @Override
-    public BabbageResponse get(String requestedUri, HttpServletRequest request) throws Exception {
+    public BabbageResponse get(String requestedUri, HttpServletRequest request) throws ContentReadException, IOException {
         try (
                 ContentStream series = ContentClient.getInstance().getContentStream(requestedUri, filter(ContentFilter.SERIES))
         ) {

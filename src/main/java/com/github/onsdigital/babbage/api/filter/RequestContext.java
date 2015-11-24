@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * Created by bren on 15/08/15.
+ *
+ * Filters all requests to initialize request context. Saving cookies , parameters, etc. to be accessible when processing this request with this thread
  */
 public class RequestContext implements Filter {
     @Override

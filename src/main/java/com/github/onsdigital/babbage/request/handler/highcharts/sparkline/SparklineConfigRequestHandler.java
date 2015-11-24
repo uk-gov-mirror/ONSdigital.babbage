@@ -21,7 +21,7 @@ public class SparklineConfigRequestHandler implements RequestHandler {
     public static final String REQUEST_TYPE = "sparklineconfig";
 
     @Override
-    public BabbageResponse get(String requestedUri, HttpServletRequest request) throws Exception {
+    public BabbageResponse get(String requestedUri, HttpServletRequest request) throws IOException, ContentReadException {
         return new BabbageStringResponse(getChartConfig(requestedUri).toString());
     }
 

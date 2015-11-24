@@ -23,7 +23,7 @@ public class LineChartConfigRequestHandler implements RequestHandler {
     public static final String REQUEST_TYPE = "linechartconfig";
 
     @Override
-    public BabbageResponse get(String requestedUri, HttpServletRequest request) throws Exception {
+    public BabbageResponse get(String requestedUri, HttpServletRequest request) throws IOException, ContentReadException {
         return new BabbageStringResponse(getChartConfig(requestedUri).toString());
     }
 

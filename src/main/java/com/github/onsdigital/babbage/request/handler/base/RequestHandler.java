@@ -1,8 +1,10 @@
 package com.github.onsdigital.babbage.request.handler.base;
 
+import com.github.onsdigital.babbage.content.client.ContentReadException;
 import com.github.onsdigital.babbage.response.BabbageResponse;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 
 /**
  * Created by bren on 29/05/15.
@@ -13,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
  *
  */
 public interface RequestHandler {
-    BabbageResponse get(String uri, HttpServletRequest request) throws Exception;
+    BabbageResponse get(String requestedUri, HttpServletRequest request) throws IOException, ContentReadException;
 
     /**
      *

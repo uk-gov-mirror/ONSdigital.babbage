@@ -1,6 +1,8 @@
 package com.github.onsdigital.babbage.request.handler.base;
 
+import com.github.onsdigital.babbage.content.client.ContentReadException;
 import com.github.onsdigital.babbage.paginator.Paginator;
+import com.github.onsdigital.babbage.request.handler.base.json.JsonPageRequestHandler;
 import com.github.onsdigital.babbage.response.BabbageResponse;
 import com.github.onsdigital.babbage.response.BabbageStringResponse;
 import com.github.onsdigital.babbage.search.ONSQuery;
@@ -28,7 +30,7 @@ import static javax.ws.rs.core.MediaType.TEXT_HTML;
 /**
  * Render a list page for bulletins under the given URI.
  */
-public abstract class ListPageBaseRequestHandler {
+public abstract class ListPageBaseRequestHandler implements JsonPageRequestHandler {
 
     /**
      * The type of page to be returned in the list page
@@ -70,16 +72,21 @@ public abstract class ListPageBaseRequestHandler {
     public abstract boolean isLocalisedUri();
 
 
-    public BabbageResponse getData(String requestedUri, HttpServletRequest request) throws Exception {
+    public BabbageResponse getData(String requestedUri, HttpServletRequest request) throws IOException {
         System.out.println("List page data request from " + this.getClass().getSimpleName() + " for uri: " + requestedUri);
         LinkedHashMap<String, Object> listData = prepareData(requestedUri, request);
         return new BabbageStringResponse(JsonUtil.toJson(listData));
     }
 
-    public BabbageResponse get(String requestedUri, HttpServletRequest request) throws Exception {
+    @Override
+    public BabbageResponse getPage(String requestedUri, HttpServletRequest request) throws IOException {
         System.out.println("List page request from " + this.getClass().getSimpleName() + " for uri: " + requestedUri);
         String html = TemplateService.getInstance().renderContent(prepareData(requestedUri, request));
         return new BabbageStringResponse(html, TEXT_HTML);
+    }
+
+    public BabbageResponse get(String requestedUri, HttpServletRequest request) throws IOException, ContentReadException {
+        return getPage(requestedUri, request);
     }
 
     protected LinkedHashMap<String, Object> prepareData(String requestedUri, HttpServletRequest request) throws IOException {
