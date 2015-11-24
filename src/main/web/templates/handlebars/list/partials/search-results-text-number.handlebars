@@ -1,4 +1,4 @@
-<h2 class="search-page__results-text">
+<h2 aria-live="assertive" class="search-page__results-text">
 	{{#if_any results showFeaturedResult timeSeriesCount}}
 	<span class="stand-out-text">
 	{{numberOfResults}}</span> results for
@@ -7,9 +7,20 @@
 	{{/if_any}}
 	<strong>‘{{parameters.q.0}}’</strong>
 	{{#if parameters.filter}}
-	showing <strong>{{#each parameters.filter}}{{> filter-label this}}{{!--<span class="icon icon-cancel js-enhance--show" role="presentation"></span> --}} {{#unless @last}},{{/unless}}{{/each}}</strong>
+	showing <strong>{{#each parameters.filter}}{{> filter-label this}}{{#unless @last}},{{/unless}}{{/each}}</strong>
 	{{/if}}
-	.
+
+	{{!-- Show how results are sorted --}}
+	{{#if results}}
+		, sorted by <strong>
+		{{#if parameters.sortBy.0}}
+			{{#if_eq parameters.sortBy.0 "release_date"}}release date{{/if_eq}}
+			{{#if_eq parameters.sortBy.0 "title"}}title{{/if_eq}}
+		{{else}}
+			relevancy
+		{{/if}}
+	</strong>.
+	{{/if}}
 	{{#if_any parameters.fromDate.0 parameters.toDate.0}}
 		You have chosen to show results published
 		{{#if parameters.fromDate.0}}
