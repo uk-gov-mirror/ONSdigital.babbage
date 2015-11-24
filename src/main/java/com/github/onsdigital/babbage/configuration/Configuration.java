@@ -193,6 +193,16 @@ public class Configuration {
         }
     }
 
+    /*Mathjax server side rendering configuration*/
+    public static class MATHJAX {
+               //Trailing slash seems to be important. Export server redirects to trailing slash url if not there
+        private static final String MATHJAX_SERVER_URL = getValue("MATHJAX_EXPORT_SERVER");
+
+        public static String getExportSeverUrl() {
+            return MATHJAX_SERVER_URL;
+        }
+    }
+
     /**
      * Gets a configured value for the given key from either the system
      * properties or an environment variable.
