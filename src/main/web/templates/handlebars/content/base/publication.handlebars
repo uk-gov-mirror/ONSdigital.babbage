@@ -6,7 +6,11 @@
 
 {{#partial "block-additonal-metadata"}}
 
-    {{#unless pdf}}
+    {{#if pdf}}
+
+
+
+    {{else}}
 	
         {{!-- Print and download --}}
         <p class="col col--md-12 col--lg-15 print--hide meta__item">
@@ -21,7 +25,7 @@
             </a>
         </p>
 
-    {{/unless}}
+    {{/if}}
 
 {{/partial}}
 
@@ -103,15 +107,15 @@
                 {{/if}}
 
                 {{#if downloads}}
-                    <h2>Downloads in this article</h2>
+                    <h2>Download this article</h2>
                     <ul class="list--neutral margin-top-md--0">
                         {{#each downloads}}
                             <li class="flush">
                                 <form method="get" action="/file">
                                     <button type="submit" title="{{title}}" class="btn btn--simple download-analytics">
-                                        {{title}} ({{fe (lowercase file)}}, {{fs (lowercase file)}})
+                                        {{title}} ({{fe (lowercase (concat uri "/" this.file))}}, {{fs (lowercase (concat uri "/" this.file))}})
                                     </button>
-                                    <input type="hidden" name="uri" value="{{lowercase file}}"/>
+                                    <input type="hidden" name="uri" value="{{lowercase (concat uri "/" this.file)}}"/>
                                 </form>
                             </li>
                         {{/each}}

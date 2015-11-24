@@ -28,6 +28,14 @@
 
                 <div class="section__content--static-markdown">
 
+                    <p class="print--hide">
+                        {{#each breadcrumb}}
+                            {{#if @last}}
+                                Return to <a href="{{uri}}">{{description.title}}</a>
+                            {{/if}}
+                        {{/each}}
+                    </p>
+
                     <p>Provides files to download data as it existed for this spreadsheet on previous dates. </p>
 
                     <p>Statistics are most often revised for 1 of 2 reasons:</p>
