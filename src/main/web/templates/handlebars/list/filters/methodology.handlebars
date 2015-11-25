@@ -1,0 +1,19 @@
+<h4 class="filters__title">Content types to show</h4>
+<ul class="list--neutral">
+	<li>
+		<div class="filters__field">
+			<input id="checkbox-qmi" type="checkbox" name="filter" value="qmi" {{#contains parameters.filter 'qmi'}}checked{{/contains}} >
+			<label for="checkbox-qmi">
+				Quality and Methodology Information (QMI)
+			</label>
+		</div>
+	</li>
+	<li>
+		<div class="filters__field">
+			<input id="checkbox-methodology" type="checkbox" name="filter" value="methodology_article" {{#contains parameters.filter 'methodology_article'}}checked{{/contains}}>
+			<label for="checkbox-methodology">
+				Article
+			</label>
+		</div>
+	</li>
+</ul>

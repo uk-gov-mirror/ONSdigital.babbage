@@ -1,67 +1,8 @@
-{{#partial "block-main"}}
-	<div class="page-intro">
-		<div class="wrapper">
-			<div class="col-wrap">
-				<div class="col one">
-					{{> list/partials/list-page-breadcrumb label="Published methodologies"}}
-					<h1 class="page-intro__title margin-bottom--double">Published methodologies</h1>
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<div class="wrapper print-links">
-		<form id="filters">
-			<div class="col-wrap print-hidden">
-				<div class="col">
-					<div class="float-right">
-						{{> list/filters/sort}}
-					</div>
-				</div>
-			</div>
-			<div class="col col--md-12 col--lg-18 margin-bottom">
-				<div class="tiles__item tiles__item--nav-type flush-col print--hide">
-					<div class="tiles__title-h3 tiles__title-h3--nav">
-						<h3 class="inline">Refine results</h3>
-						<a href="{{location.pathname}}" value="Reset" class="btn btn--primary btn--thin btn--narrow btn--small float-right">{{labels.search-refine-clear}}</a>
-					</div>
-					<div class="tiles__content tiles__content--nav">
-						<div class="filters">
-							{{> list/filters/keywords}}
-
-							<h4>Content types to show</h4>
-							<ul class="list--neutral">
-								<li>
-									<div class="filters__field">
-										<input id="checkbox-qmi" type="checkbox" name="filter" value="qmi" {{#contains parameters.filter 'qmi'}}checked{{/contains}} >
-										<label for="checkbox-qmi">
-											Quality and Methodology Information (QMI)
-										</label>
-									</div>
-								</li>
-								<li>
-									<div class="filters__field">
-										<input id="checkbox-methodology" type="checkbox" name="filter" value="methodology_article" {{#contains parameters.filter 'methodology_article'}}checked{{/contains}}>
-										<label for="checkbox-methodology">
-											Article
-										</label>
-									</div>
-								</li>
-							</ul>
-							{{> list/filters/topics}}
-						</div>
-						<button type="submit" class="btn btn--primary btn--block btn--thick margin-top">Filter</button>
-					</div>
-				</div>
-				{{> partials/archives-box}}
-			</div>
-			<div class="results col col--md-34 col--lg-40 margin-left-md--1">
-				{{> list/partials/results-text}}
-				{{> list/partials/results}}
-				{{> list/partials/paginator}}
-			</div>
-	</form>
-</div>
+{{#partial "block-filters"}}
+	{{> list/filters/keywords}}
+	{{> list/filters/methodology}}
+	{{> list/filters/topics}}
 {{/partial}}
+
 {{!-- Inheriting from base list template --}}
-{{> list/base/list}}
+{{> list/base/list listPage=false listLabel="Published methodologies"}}
