@@ -38,19 +38,10 @@
  	</div>
  {{/partial}} --}}
 
-{{#partial "block-"}}
-
-{{/partial}}
-
 {{#partial "block-filters"}}
-	<div class="tiles__content tiles__content--nav">
-		<div class="filters">
-			{{> list/filters/keywords}}
-			{{> list/filters/publish-date}}
-			{{> list/filters/topics}}
-		</div>
-		<button type="submit" class="btn btn--primary btn--thick margin-top--double">Filter</button>
-	</div>
+	{{> list/filters/keywords}}
+	{{> list/filters/publish-date}}
+	{{> list/filters/topics}}
 {{/partial}}
 
 {{!-- Inheriting from base list template --}}

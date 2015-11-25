@@ -1,82 +1,8 @@
-{{#partial "block-main"}}
-{{!-- {{#if parameters.q.0}} --}}
-{{!-- {{json this}} --}}
-<div class="page-content">
-	<div class="wrapper">
-		<form id="filters">
-			<div class="col-wrap print-hidden">
-				<div class="col">
-                    <div class="col col--md-28 col--lg-38">
-                        <h1 class="search-page__title">Time series data explorer</h1>
-                        {{> list/partials/search-results-text-number result}}
-                    </div>
-                    {{#if result.results}}
-                        <div class="float-right">
-                            {{> list/filters/sort}}
-                        </div>
-                    {{/if}}
-				</div>
-			</div>
-			{{!-- FILTERS --}}
-            {{#if_any result.results parameters.filter parameters.time_series}}
-			<div class="col col--md-12 col--lg-18 margin-bottom">
-				<input class="sort__input" type="hidden" name="q" value="{{parameters.q.0}}">
-				<div class="tiles__title-h3 tiles__title-h3--nav">
-					<h3 class="inline">Refine results</h3>
-					<a href="{{location.pathname}}?q={{parameters.q.0}}" value="Reset" class="btn btn--primary btn--thin btn--narrow btn--small float-right">{{labels.search-refine-clear}}</a>
-				</div>
-				<div class="tiles__content tiles__content--nav">
-                    <div class="filters">
-                        {{> list/filters/keywords}}
-                        {{> list/filters/topics}}
-                        {{> list/filters/publish-date}}
-					<button type="submit" class="btn btn--primary btn--thick margin-top-sm--2 margin-top-md--2">{{labels.search-filter}}</button>
-				</div>
-			</div>
-		</div>
-        {{/if_any}}
-		{{!-- RESULTS --}}
-            <div class="results col col--md-34 col--lg-40 {{#if_any result.results parameters.filter parameters.time_series}}margin-left-md--1{{/if_any}}">
-            {{> list/partials/search-results-text-help result}}
-
-				{{!-- HEADLINE RESULTS --}}
-				{{#if featuredResult.results.0}}
-                <div class="headline-result clickable-wrap">
-				{{#resolve featuredResult.results.0.uri}}
-				<div class="col col--md-36 col--lg-40 tiles__item flush-col flush-top">
-					{{!-- Sparkline --}}
-					<div class="col col--md-17 col--lg-20">
-						{{#resolve items.0.uri assign="series" filter="series"}}
-						<a href="{{../uri}}">
-							<div class="tiles__image--search-sparkline">
-								{{>partials/highcharts/sparkline}}
-							</div>
-						</a>
-						{{/resolve}}
-					</div>
-					{{!-- Summary --}}
-					<div class="col {{#if series}}col--md-17 col--lg-20 tiles__item--nav-type-fixed{{else}}col--md-34 col--lg-40 tiles__item--nav-type{{/if}}">
-						<h3 class="tiles__title-h3 tiles__title-h3--nav"><a href="{{uri}}">{{{featuredResult.results.0.description.title}}}</a></h3>
-						<div class="tiles__content tiles__content--nav">
-                            <p>{{{featuredResult.results.0.description.summary}}}</p>
-                        </div>
-					</div>
-				</div>
-				{{/resolve}}
-                </div>
-				{{/if}}
-			{{!-- MAIN RESULTS --}}
-			<!-- /desktop-grid-one-third -->
-			<div class="search-results">
-				{{> list/partials/results}}
-			</div>
-			{{> list/partials/paginator}}
-			<!-- /desktop-grid-two-thirds -->
-		</div>
-	</form>
-</div>
-</div>
-{{!-- {{/if}} --}}
+{{#partial "block-filters"}}
+	{{> list/filters/keywords}}
+	{{> list/filters/topics}}
+	{{> list/filters/publish-date}}
 {{/partial}}
+
 {{!-- Inheriting from base list template --}}
-{{> list/base/list}}
+{{> list/base/list listLabel="time series data explorer" }}

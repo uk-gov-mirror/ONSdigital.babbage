@@ -20,5 +20,36 @@
 	{{> list/filters/all-results}}
 {{/partial}}
 
+{{#partial "block-featured-result"}}
+{{!-- HEADLINE RESULTS --}}
+{{#if featuredResult.results.0}}
+	<div class="headline-result clickable-wrap">
+		{{#resolve featuredResult.results.0.uri}}
+			<div class="col col--md-36 col--lg-40 tiles__item flush-col flush-top">
+				{{!-- Sparkline --}}
+				<div class="col col--md-17 col--lg-20">
+					{{#resolve items.0.uri assign="series" filter="series"}}
+						<a href="{{../uri}}">
+							<div class="tiles__image--search-sparkline">
+								{{>partials/highcharts/sparkline}}
+							</div>
+						</a>
+					{{/resolve}}
+				</div>
+				{{!-- Summary --}}
+				<div class="col {{#if series}}col--md-17 col--lg-20 tiles__item--nav-type-fixed{{else}}col--md-34 col--lg-40 tiles__item--nav-type{{/if}}">
+					<h3 class="tiles__title-h3 tiles__title-h3--nav"><a href="{{uri}}">{{{featuredResult.results.0.description.title}}}</a></h3>
+					<div class="tiles__content tiles__content--nav">
+						<p>{{{featuredResult.results.0.description.summary}}}</p>
+					</div>
+				</div>
+			</div>
+		{{/resolve}}
+	</div>
+{{/if}}
+
+{{/partial}}
+
+
 {{!-- Inheriting from base list template --}}
 {{> list/base/list tabs=true listLabel="Search"}}

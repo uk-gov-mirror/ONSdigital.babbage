@@ -4,7 +4,6 @@
 		<div class="wrapper">
 			<div class="col-wrap">
 				<div class="col">
-
 					{{#if listPage}}
 						{{> list/partials/list-page-breadcrumb label=listLabel}}
 						{{#each breadcrumb}}
@@ -19,9 +18,13 @@
 			</div>
 		</div>
 
+		{{#block "block-alert"}}{{/block}}
+
+
 		{{#if tabs}}
 			<div class="tab">
 				<div class="wrapper">
+					{{#block "block-tab-menu"}}{{/block}}
 					<ul class="list--neutral list--inline flush">
 						{{#block "block-list-tabs"}}
 							<li>
@@ -74,8 +77,14 @@
 									<a href="{{location.pathname}}?q={{parameters.q.0}}" value="Reset" class="btn btn--primary btn--thin btn--narrow btn--small float-right">{{labels.search-refine-clear}}</a>
 								{{/unless}}
 							</div>
-							{{#block "block-filters"}}
-							{{/block}}
+
+							<div class="tiles__content tiles__content--nav">
+								<div class="filters">
+									{{#block "block-filters"}}
+									{{/block}}
+								<button type="submit" class="btn btn--primary btn--thick margin-top-sm--2 margin-top-md--2 js-enhance--hide">{{labels.search-filter}}</button>
+								</div>
+							</div>
 						</div>
 						{{> partials/archives-box}}
 					</div>
@@ -84,36 +93,53 @@
 				<div class="results col col--md-34 col--lg-40 margin-left-md--1">
 					{{> list/partials/search-results-text-help result}}
 
-					{{!-- HEADLINE RESULTS --}}
-					{{#if showFeaturedResult}}
-						<div class="headline-result clickable-wrap">
-							{{#resolve featuredResult.results.0.uri}}
-								<div class="col col--md-36 col--lg-40 tiles__item flush-col flush-top">
-									{{!-- Sparkline --}}
-									<div class="col col--md-17 col--lg-20">
-										{{#resolve items.0.uri assign="series" filter="series"}}
-											<a href="{{../uri}}">
-												<div class="tiles__image--search-sparkline">
-													{{>partials/highcharts/sparkline}}
-												</div>
-											</a>
-										{{/resolve}}
-									</div>
-									{{!-- Summary --}}
-									<div class="col {{#if series}}col--md-17 col--lg-20 tiles__item--nav-type-fixed{{else}}col--md-34 col--lg-40 tiles__item--nav-type{{/if}}">
-										<h3 class="tiles__title-h3 tiles__title-h3--nav"><a href="{{uri}}">{{{featuredResult.results.0.description.title}}}</a></h3>
-										<div class="tiles__content tiles__content--nav">
-											<p>{{{featuredResult.results.0.description.summary}}}</p>
-										</div>
-									</div>
-								</div>
-							{{/resolve}}
-						</div>
-					{{/if}}
+					{{#block "block-featured-result"}}
+					{{/block}}
 					{{!-- MAIN RESULTS --}}
 					<!-- /desktop-grid-one-third -->
 					<div class="search-results">
-						{{> list/partials/results}}
+						<ul class="list--neutral">
+							{{#block "block-results"}}
+								{{#each result.results}}
+									<li class="search-results__item">
+										<h3 class="search-results__title">
+										<a href="{{uri}}">{{{description.title}}}
+											{{#if description.edition}}
+												{{#if_all (ne description.edition 'yes') (ne description.edition '<strong>yes</strong>')}}: {{{description.edition}}}{{/if_all}}
+										{{/if}} {{#if description.latestRelease}}(Latest release){{/if}}</a></h3>
+
+										{{#if partOf}}
+										<p>
+											<a href="{{uri}}">{{{description.title}}}</a><span class="icon-search-1"></span>
+										</p>
+										{{/if}}
+
+										<p class="search-results__meta">
+											{{> type-label type_code=this._type }}
+											{{#if description.cdid}}
+											| Series ID: {{description.cdid}}
+											{{/if}}
+											{{#if_any description.releaseDate description.lastRevised}} |
+												{{#if description.releaseDate}}Released on {{df description.releaseDate}}
+												{{else}}Revised on {{df description.lastRevised}}
+												{{/if}}
+											{{/if_any}}
+											{{#if description.reference}}| Ref: {{{description.reference}}}{{/if}}
+										</p>
+
+										<div class="search-results__summary">
+											{{md description.summary}}
+										</div>
+
+										{{#if description.keywords}}
+											<p class="search-results__keywords">
+												Keywords: {{#each description.keywords}}{{{this}}}{{#unless @last}}, {{/unless}}{{/each}}
+											</p>
+										{{/if}}
+									</li>
+								{{/each}}
+							{{/block}}
+						</ul>
 					</div>
 					{{> list/partials/paginator}}
 					<!-- /desktop-grid-two-thirds -->
