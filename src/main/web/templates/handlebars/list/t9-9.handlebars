@@ -12,7 +12,9 @@
 {{/partial}}
 
 {{#partial "block-filters"}}
-	{{> list/filters/publications keywords=true date=true }}
+	{{> list/filters/keywords}}
+	{{> list/filters/data}}
+	{{> list/filters/publish-date }}
 {{/partial}}
 
 {{!-- Inheriting from base list template --}}
