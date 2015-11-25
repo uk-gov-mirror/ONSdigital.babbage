@@ -1,66 +1,65 @@
-		<h4 class="filters__title">{{labels.search-refine-types}}</h4>
-		<h5 class="filters__sub-title">Publications</h5>
-		<ul class="list--neutral flush-top">
-			<li class="filters__item">
-				<div class="filters__field">
-					<input type="checkbox" name="filter" value="bulletin" id="checkbox-statsbulletin" {{#contains parameters.filter 'bulletin'}}checked{{/contains}} >
-					<label for="checkbox-statsbulletin">
-						{{labels.bulletin}}
-					</label>
-				</div>
-			</li>
-			<li class="filters__item">
-				<div class="filters__field">
-					<input type="checkbox" name="filter" value="article" id="checkbox-article" {{#contains parameters.filter 'article'}}checked{{/contains}}>
-					<label for="checkbox-article">
-						{{labels.article}}
-					</label>
-				</div>
-			</li>
-			<li class="filters__item">
-				<div class="filters__field">
-					<input type="checkbox" name="filter" value="compendia" id="checkbox-compendia" {{#contains parameters.filter 'compendia'}}checked{{/contains}}>
-					<label for="checkbox-compendia">
-						Compendia
-					</label>
-				</div>
-			</li>
-		</ul>
-		<h5 class="filters__sub-title">Data</h5>
-		<ul class="list--neutral flush-top">
-			<li class="filters__item">
-				<div class="filters__field">
-					<input type="checkbox" name="time_series" value="1" id="checkbox-timeseries" {{#if parameters.time_series}}checked{{/if}}>
-					<label for="checkbox-timeseries">
-						Time series data
-					</label>
-				</div>
-			</li>
-			<li class="filters__item">
-				<div class="filters__field">
-					<input type="checkbox" name="filter" value="large_dataset" id="checkbox-dataset" {{#contains parameters.filter 'large_dataset'}}checked{{/contains}}>
-					<label for="checkbox-dataset">
-						Spreadsheets
-					</label>
-				</div>
-			</li>
-		</ul>
-		<h5 class="filters__sub-title">Other</h5>
-		<ul class="list--neutral flush-top">
-			<li class="filters__item">
-				<div class="filters__field">
-					<input type="checkbox" name="filter" value="methodology" id="checkbox-methodology" {{#contains parameters.filter 'methodology'}}checked{{/contains}} >
-					<label for="checkbox-methodology">
-						{{labels.methodology}}
-					</label>
-				</div>
-			<li class="filters__item">
-		</ul>
-		<p class="margin-bottom-sm--1 margin-bottom-md--1">{{labels.search-expand}}:</p>
+<h4 class="filters__title">{{labels.search-refine-types}}</h4>
+<h5 class="filters__sub-title">Publications</h5>
+<ul class="list--neutral flush-top">
+	<li class="filters__item">
 		<div class="filters__field">
-			<input type="checkbox" name="includeStatics" value="1" id="checkbox-all-content" {{#if parameters.includeStatics.0}}checked{{/if}}>
-			<label for="checkbox-all-content">
-					{{labels.search-expand-all}}</br>
+			<input type="checkbox" name="filter" value="bulletin" id="checkbox-statsbulletin" {{#contains parameters.filter 'bulletin'}}checked{{/contains}} >
+			<label for="checkbox-statsbulletin">
+				{{labels.bulletin}}
+			</label>
+		</div>
+	</li>
+	<li class="filters__item">
+		<div class="filters__field">
+			<input type="checkbox" name="filter" value="article" id="checkbox-article" {{#contains parameters.filter 'article'}}checked{{/contains}}>
+			<label for="checkbox-article">
+				{{labels.article}}
+			</label>
+		</div>
+	</li>
+	<li class="filters__item">
+		<div class="filters__field">
+			<input type="checkbox" name="filter" value="compendia" id="checkbox-compendia" {{#contains parameters.filter 'compendia'}}checked{{/contains}}>
+			<label for="checkbox-compendia">
+				Compendia
+			</label>
+		</div>
+	</li>
+</ul>
+<h5 class="filters__sub-title">Data</h5>
+<ul class="list--neutral flush-top">
+	<li class="filters__item">
+		<div class="filters__field">
+			<input type="checkbox" name="filter" value="single_time_series" id="checkbox-timeseries" {{#contains parameters.filter single_time_series}}checked{{/contains}}>
+			<label for="checkbox-timeseries">
+				Time series data
+			</label>
+		</div>
+	</li>
+	<li class="filters__item">
+		<div class="filters__field">
+			<input type="checkbox" name="filter" value="large_dataset" id="checkbox-dataset" {{#contains parameters.filter 'large_dataset'}}checked{{/contains}}>
+			<label for="checkbox-dataset">
+				Spreadsheets
+			</label>
+		</div>
+	</li>
+</ul>
+<h5 class="filters__sub-title">Other</h5>
+<ul class="list--neutral flush-top">
+	<li class="filters__item">
+		<div class="filters__field">
+			<input type="checkbox" name="filter" value="methodology" id="checkbox-methodology" {{#contains parameters.filter 'methodology'}}checked{{/contains}} >
+			<label for="checkbox-methodology">
+				{{labels.methodology}}
+			</label>
+		</div>
+		<div class="filters__field">
+			<input type="checkbox" name="filter" value="corporate_information" id="checkbox-corporate" {{#contains parameters.filter 'corporate_information'}}checked{{/contains}} >
+			<label for="checkbox-corporate">
+				{{labels.corporate-information}}</br>
 				({{labels.search-expand-types}})
 			</label>
 		</div>
+	</li>
+</ul>
