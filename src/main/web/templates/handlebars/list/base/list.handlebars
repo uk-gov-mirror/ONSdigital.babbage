@@ -1,2 +1,127 @@
+
+{{#partial "block-main"}}
+	<div class="page-content">
+		<div class="wrapper">
+			<div class="col-wrap">
+				<div class="col">
+
+					{{#if listPage}}
+						{{> list/partials/list-page-breadcrumb label=listLabel}}
+						{{#each breadcrumb}}
+							{{#if @last}}
+								<h1 class="search-page__title">All {{listLabel}} related to {{description.title}}</h1>
+							{{/if}}
+						{{/each}}
+					{{else}}
+						<h1 class="search-page__title">{{listLabel}}</h1>
+					{{/if}}
+				</div>
+			</div>
+		</div>
+
+		{{#if tabs}}
+			<div class="tab">
+				<div class="wrapper">
+					<ul class="list--neutral list--inline flush">
+						{{#block "block-list-tabs"}}
+							<li>
+								<a href="/search?q={{parameters.q.0}}" class="tab__item tab__item--active">
+									All results
+								</a>
+							</li>
+							<li>
+								<a href="/searchdata?q={{parameters.q.0}}" class="tab__item">
+									Data
+								</a>
+							</li>
+							<li>
+								<a href="/searchpublication?q={{parameters.q.0}}" class="tab__item">
+									Publications
+								</a>
+							</li>
+						{{/block}}
+					</ul>
+				</div>
+			</div>
+		{{/if}}
+
+		<div class="wrapper">
+			<form id="form">
+				<div class="col-wrap print-hidden">
+					<div class="col">
+						{{#block "block-results-text"}}
+							<div class="col col--md-28 col--lg-38">
+								{{> list/partials/search-results-text-number result}}
+							</div>
+						{{/block}}
+						{{#block "block-sort"}}
+							{{#if result.results}}
+							<div class="float-right">
+								{{> list/filters/sort}}
+							</div>
+						{{/if}}
+						{{/block}}
+					</div>
+				</div>
+				{{!-- FILTERS --}}
+				{{!-- {{#if_any result.results parameters.filter parameters.time_series}} --}}
+					<div class="col col--md-12 col--lg-18 margin-bottom">
+						<div class="tiles__item tiles__item--nav-type flush-col">
+							<input class="sort__input" type="hidden" name="q" value="{{parameters.q.0}}">
+							<div class="tiles__title-h3 tiles__title-h3--nav">
+								<h3 class="inline">Refine results</h3>
+								{{#unless (eq uri "/atoz")}}
+									<a href="{{location.pathname}}?q={{parameters.q.0}}" value="Reset" class="btn btn--primary btn--thin btn--narrow btn--small float-right">{{labels.search-refine-clear}}</a>
+								{{/unless}}
+							</div>
+							{{#block "block-filters"}}
+							{{/block}}
+						</div>
+						{{> partials/archives-box}}
+					</div>
+				{{!-- {{/if_any}} --}}
+				{{!-- RESULTS --}}
+				<div class="results col col--md-34 col--lg-40 margin-left-md--1">
+					{{> list/partials/search-results-text-help result}}
+
+					{{!-- HEADLINE RESULTS --}}
+					{{#if showFeaturedResult}}
+						<div class="headline-result clickable-wrap">
+							{{#resolve featuredResult.results.0.uri}}
+								<div class="col col--md-36 col--lg-40 tiles__item flush-col flush-top">
+									{{!-- Sparkline --}}
+									<div class="col col--md-17 col--lg-20">
+										{{#resolve items.0.uri assign="series" filter="series"}}
+											<a href="{{../uri}}">
+												<div class="tiles__image--search-sparkline">
+													{{>partials/highcharts/sparkline}}
+												</div>
+											</a>
+										{{/resolve}}
+									</div>
+									{{!-- Summary --}}
+									<div class="col {{#if series}}col--md-17 col--lg-20 tiles__item--nav-type-fixed{{else}}col--md-34 col--lg-40 tiles__item--nav-type{{/if}}">
+										<h3 class="tiles__title-h3 tiles__title-h3--nav"><a href="{{uri}}">{{{featuredResult.results.0.description.title}}}</a></h3>
+										<div class="tiles__content tiles__content--nav">
+											<p>{{{featuredResult.results.0.description.summary}}}</p>
+										</div>
+									</div>
+								</div>
+							{{/resolve}}
+						</div>
+					{{/if}}
+					{{!-- MAIN RESULTS --}}
+					<!-- /desktop-grid-one-third -->
+					<div class="search-results">
+						{{> list/partials/results}}
+					</div>
+					{{> list/partials/paginator}}
+					<!-- /desktop-grid-two-thirds -->
+				</div>
+			</form>
+		</div>
+	</div>
+{{/partial}}
+
 {{!-- Inheriting from base template --}}
 {{> base/base}}

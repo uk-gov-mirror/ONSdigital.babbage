@@ -1,0 +1,39 @@
+<div class="tiles__content tiles__content--nav">
+	<div class="filters">
+		{{#if keywords}}
+			{{> list/filters/keywords}}
+		{{/if}}
+		<h4 class="filters__title">Data format</h4>
+		<ul class="list--neutral">
+			<li class="filters__item">
+				<div class="filters__field">
+					<input id="checkbox-timeseries" type="checkbox" name="filter" value="single_time_series" {{#contains parameters.filter 'single_time_series'}}checked{{/contains}} >
+					<label for="checkbox-timeseries">
+						Time series data
+					</label>
+				</div>
+			</li>
+			<li class="filters__item">
+				<div class="filters__field">
+					<input id="checkbox-dataset" type="checkbox" name="filter" value="large_dataset" {{#contains parameters.filter 'large_dataset'}}checked{{/contains}}>
+					<label for="checkbox-dataset">
+						Spreadsheets
+					</label>
+				</div>
+			</li>
+			<li class="filters__item">
+				<div class="filters__field">
+					<input id="checkbox-adhoc" type="checkbox" name="filter" value="adhocs" {{#contains parameters.filter 'adhocs'}}checked{{/contains}} >
+					<label for="checkbox-adhoc">
+						Commissioned data
+					</label>
+				</div>
+			</li>
+		</ul>
+		{{#if date}}
+			{{> list/filters/publish-date }}
+		{{/if}}
+		<input type="hidden" name="q" value="{{parameters.q.0}}">
+	</div>
+	<button type="submit" class="btn btn--primary btn--thick margin-top-sm--2 margin-top-md--2 js-enhance--hide">{{labels.search-filter}}</button>
+</div>

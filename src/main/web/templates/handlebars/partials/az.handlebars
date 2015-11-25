@@ -1,29 +1,30 @@
-{{!-- Used in .tiles and .filters so {{parent}} passed through so rest of code can be re-used --}}
-<ul class="{{parent}}__a-z-list">
- 	<li class="{{parent}}__a-z-list-item {{#if_eq parameters.az.0 "a"}}{{parent}}__a-z-list-item--active{{/if_eq}}"><a href="/atoz?az=a" >A</a></li>
- 	<li class="{{parent}}__a-z-list-item {{#if_eq parameters.az.0 "b"}}{{parent}}__a-z-list-item--active{{/if_eq}}"><a href="/atoz?az=b" >B</a></li>
- 	<li class="{{parent}}__a-z-list-item {{#if_eq parameters.az.0 "c"}}{{parent}}__a-z-list-item--active{{/if_eq}}"><a href="/atoz?az=c" >C</a></li>
- 	<li class="{{parent}}__a-z-list-item {{#if_eq parameters.az.0 "d"}}{{parent}}__a-z-list-item--active{{/if_eq}}"><a href="/atoz?az=d" >D</a></li>
- 	<li class="{{parent}}__a-z-list-item {{#if_eq parameters.az.0 "e"}}{{parent}}__a-z-list-item--active{{/if_eq}}"><a href="/atoz?az=e" >E</a></li>
- 	<li class="{{parent}}__a-z-list-item {{#if_eq parameters.az.0 "f"}}{{parent}}__a-z-list-item--active{{/if_eq}}"><a href="/atoz?az=f" >F</a></li>
- 	<li class="{{parent}}__a-z-list-item {{#if_eq parameters.az.0 "g"}}{{parent}}__a-z-list-item--active{{/if_eq}}"><a href="/atoz?az=g" >G</a></li>
- 	<li class="{{parent}}__a-z-list-item {{#if_eq parameters.az.0 "h"}}{{parent}}__a-z-list-item--active{{/if_eq}}"><a href="/atoz?az=h" >H</a></li>
- 	<li class="{{parent}}__a-z-list-item {{#if_eq parameters.az.0 "i"}}{{parent}}__a-z-list-item--active{{/if_eq}}"><a href="/atoz?az=i" >I</a></li>
- 	<li class="{{parent}}__a-z-list-item {{#if_eq parameters.az.0 "j"}}{{parent}}__a-z-list-item--active{{/if_eq}}"><a href="/atoz?az=j" >J</a></li>
- 	<li class="{{parent}}__a-z-list-item {{#if_eq parameters.az.0 "k"}}{{parent}}__a-z-list-item--active{{/if_eq}}"><a href="/atoz?az=k" >K</a></li>
- 	<li class="{{parent}}__a-z-list-item {{#if_eq parameters.az.0 "l"}}{{parent}}__a-z-list-item--active{{/if_eq}}"><a href="/atoz?az=l" >L</a></li>
- 	<li class="{{parent}}__a-z-list-item {{#if_eq parameters.az.0 "m"}}{{parent}}__a-z-list-item--active{{/if_eq}}"><a href="/atoz?az=m" >M</a></li>
- 	<li class="{{parent}}__a-z-list-item {{#if_eq parameters.az.0 "n"}}{{parent}}__a-z-list-item--active{{/if_eq}}"><a href="/atoz?az=n" >N</a></li>
- 	<li class="{{parent}}__a-z-list-item {{#if_eq parameters.az.0 "o"}}{{parent}}__a-z-list-item--active{{/if_eq}}"><a href="/atoz?az=o" >O</a></li>
- 	<li class="{{parent}}__a-z-list-item {{#if_eq parameters.az.0 "p"}}{{parent}}__a-z-list-item--active{{/if_eq}}"><a href="/atoz?az=p" >P</a></li>
- 	<li class="{{parent}}__a-z-list-item {{#if_eq parameters.az.0 "q"}}{{parent}}__a-z-list-item--active{{/if_eq}}"><a href="/atoz?az=q" >Q</a></li>
- 	<li class="{{parent}}__a-z-list-item {{#if_eq parameters.az.0 "r"}}{{parent}}__a-z-list-item--active{{/if_eq}}"><a href="/atoz?az=r" >R</a></li>
- 	<li class="{{parent}}__a-z-list-item {{#if_eq parameters.az.0 "s"}}{{parent}}__a-z-list-item--active{{/if_eq}}"><a href="/atoz?az=s" >S</a></li>
- 	<li class="{{parent}}__a-z-list-item {{#if_eq parameters.az.0 "t"}}{{parent}}__a-z-list-item--active{{/if_eq}}"><a href="/atoz?az=t" >T</a></li>
- 	<li class="{{parent}}__a-z-list-item {{#if_eq parameters.az.0 "u"}}{{parent}}__a-z-list-item--active{{/if_eq}}"><a href="/atoz?az=u" >U</a></li>
- 	<li class="{{parent}}__a-z-list-item {{#if_eq parameters.az.0 "v"}}{{parent}}__a-z-list-item--active{{/if_eq}}"><a href="/atoz?az=v" >V</a></li>
- 	<li class="{{parent}}__a-z-list-item {{#if_eq parameters.az.0 "w"}}{{parent}}__a-z-list-item--active{{/if_eq}}"><a href="/atoz?az=w" >W</a></li>
- 	<li class="{{parent}}__a-z-list-item {{#if_eq parameters.az.0 "x"}}{{parent}}__a-z-list-item--active{{/if_eq}}"><a href="/atoz?az=x" >X</a></li>
- 	<li class="{{parent}}__a-z-list-item {{#if_eq parameters.az.0 "y"}}{{parent}}__a-z-list-item--active{{/if_eq}}"><a href="/atoz?az=y" >Y</a></li>
- 	<li class="{{parent}}__a-z-list-item {{#if_eq parameters.az.0 "z"}}{{parent}}__a-z-list-item--active{{/if_eq}}"><a href="/atoz?az=z" >Z</a></li>
+{{!-- Used in .tiles and .filters so {{class}} passed through so rest of code can be re-used --}}
+
+<ul class="{{class}}__a-z-list">
+ 	<li class="{{class}}__a-z-list-item {{#if_eq parameters.az.0 "a"}}{{class}}__a-z-list-item--active{{/if_eq}}"><a href="/atoz?az=a" >A</a></li>
+ 	<li class="{{class}}__a-z-list-item {{#if_eq parameters.az.0 "b"}}{{class}}__a-z-list-item--active{{/if_eq}}"><a href="/atoz?az=b" >B</a></li>
+ 	<li class="{{class}}__a-z-list-item {{#if_eq parameters.az.0 "c"}}{{class}}__a-z-list-item--active{{/if_eq}}"><a href="/atoz?az=c" >C</a></li>
+ 	<li class="{{class}}__a-z-list-item {{#if_eq parameters.az.0 "d"}}{{class}}__a-z-list-item--active{{/if_eq}}"><a href="/atoz?az=d" >D</a></li>
+ 	<li class="{{class}}__a-z-list-item {{#if_eq parameters.az.0 "e"}}{{class}}__a-z-list-item--active{{/if_eq}}"><a href="/atoz?az=e" >E</a></li>
+ 	<li class="{{class}}__a-z-list-item {{#if_eq parameters.az.0 "f"}}{{class}}__a-z-list-item--active{{/if_eq}}"><a href="/atoz?az=f" >F</a></li>
+ 	<li class="{{class}}__a-z-list-item {{#if_eq parameters.az.0 "g"}}{{class}}__a-z-list-item--active{{/if_eq}}"><a href="/atoz?az=g" >G</a></li>
+ 	<li class="{{class}}__a-z-list-item {{#if_eq parameters.az.0 "h"}}{{class}}__a-z-list-item--active{{/if_eq}}"><a href="/atoz?az=h" >H</a></li>
+ 	<li class="{{class}}__a-z-list-item {{#if_eq parameters.az.0 "i"}}{{class}}__a-z-list-item--active{{/if_eq}}"><a href="/atoz?az=i" >I</a></li>
+ 	<li class="{{class}}__a-z-list-item {{#if_eq parameters.az.0 "j"}}{{class}}__a-z-list-item--active{{/if_eq}}"><a href="/atoz?az=j" >J</a></li>
+ 	<li class="{{class}}__a-z-list-item {{#if_eq parameters.az.0 "k"}}{{class}}__a-z-list-item--active{{/if_eq}}"><a href="/atoz?az=k" >K</a></li>
+ 	<li class="{{class}}__a-z-list-item {{#if_eq parameters.az.0 "l"}}{{class}}__a-z-list-item--active{{/if_eq}}"><a href="/atoz?az=l" >L</a></li>
+ 	<li class="{{class}}__a-z-list-item {{#if_eq parameters.az.0 "m"}}{{class}}__a-z-list-item--active{{/if_eq}}"><a href="/atoz?az=m" >M</a></li>
+ 	<li class="{{class}}__a-z-list-item {{#if_eq parameters.az.0 "n"}}{{class}}__a-z-list-item--active{{/if_eq}}"><a href="/atoz?az=n" >N</a></li>
+ 	<li class="{{class}}__a-z-list-item {{#if_eq parameters.az.0 "o"}}{{class}}__a-z-list-item--active{{/if_eq}}"><a href="/atoz?az=o" >O</a></li>
+ 	<li class="{{class}}__a-z-list-item {{#if_eq parameters.az.0 "p"}}{{class}}__a-z-list-item--active{{/if_eq}}"><a href="/atoz?az=p" >P</a></li>
+ 	<li class="{{class}}__a-z-list-item {{#if_eq parameters.az.0 "q"}}{{class}}__a-z-list-item--active{{/if_eq}}"><a href="/atoz?az=q" >Q</a></li>
+ 	<li class="{{class}}__a-z-list-item {{#if_eq parameters.az.0 "r"}}{{class}}__a-z-list-item--active{{/if_eq}}"><a href="/atoz?az=r" >R</a></li>
+ 	<li class="{{class}}__a-z-list-item {{#if_eq parameters.az.0 "s"}}{{class}}__a-z-list-item--active{{/if_eq}}"><a href="/atoz?az=s" >S</a></li>
+ 	<li class="{{class}}__a-z-list-item {{#if_eq parameters.az.0 "t"}}{{class}}__a-z-list-item--active{{/if_eq}}"><a href="/atoz?az=t" >T</a></li>
+ 	<li class="{{class}}__a-z-list-item {{#if_eq parameters.az.0 "u"}}{{class}}__a-z-list-item--active{{/if_eq}}"><a href="/atoz?az=u" >U</a></li>
+ 	<li class="{{class}}__a-z-list-item {{#if_eq parameters.az.0 "v"}}{{class}}__a-z-list-item--active{{/if_eq}}"><a href="/atoz?az=v" >V</a></li>
+ 	<li class="{{class}}__a-z-list-item {{#if_eq parameters.az.0 "w"}}{{class}}__a-z-list-item--active{{/if_eq}}"><a href="/atoz?az=w" >W</a></li>
+ 	<li class="{{class}}__a-z-list-item {{#if_eq parameters.az.0 "x"}}{{class}}__a-z-list-item--active{{/if_eq}}"><a href="/atoz?az=x" >X</a></li>
+ 	<li class="{{class}}__a-z-list-item {{#if_eq parameters.az.0 "y"}}{{class}}__a-z-list-item--active{{/if_eq}}"><a href="/atoz?az=y" >Y</a></li>
+ 	<li class="{{class}}__a-z-list-item {{#if_eq parameters.az.0 "z"}}{{class}}__a-z-list-item--active{{/if_eq}}"><a href="/atoz?az=z" >Z</a></li>
  </ul>

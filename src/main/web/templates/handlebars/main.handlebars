@@ -100,7 +100,7 @@
 
 		{{!-- List Pages --}}
 		{{#if_eq type "list"}}
-			{{#if_eq listType "alladhocs"}}{{> list/t9-12 global=true}}{{/if_eq}}
+			{{#if_eq listType "alladhocs"}}{{> list/t9-12 global=true}}{{/if_eq}} {{!-- Is this still needed? - included in data list now --}}
 			{{#if_eq listType "atoz"}}{{> list/t9-14 global=true}}{{/if_eq}}
 			{{#if_eq listType "staticlist"}}{{> list/t9-13 global=true}}{{/if_eq}}
 			{{#if_eq listType "publishedrequests"}}{{> list/t9-2 global=true}}{{/if_eq}}
