@@ -6,12 +6,12 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.common.text.Text;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
+import org.elasticsearch.search.aggregations.Aggregation;
+import org.elasticsearch.search.aggregations.Aggregations;
+import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.highlight.HighlightField;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by bren on 07/09/15.
@@ -41,14 +41,34 @@ public class SearchResponseHelper {
 
         SearchHits hits = response.getHits();
         for (SearchHit hit : hits) {
-            Map<String, Object> source = new HashMap<>(hit.getSource());
-            source.put("_type", hit.getType());
-            Map<String, HighlightField> highlightFields = new HashMap<>(hit.getHighlightFields());
-                overlayHighlightFields(source, highlightFields);
+            Map<String, Object> source = extractSource(hit);
             searchResult.addResult(source);
         }
 
+        extractDocCounts(searchResult);
+
         return searchResult;
+    }
+
+    private void extractDocCounts(SearchResult searchResult) {
+        Aggregations aggregations = response.getAggregations();
+        if(aggregations != null) {
+            for (Aggregation aggregation : aggregations) {
+                Terms terms = (Terms) aggregation;
+                List<Terms.Bucket> buckets = terms.getBuckets();
+                for (Terms.Bucket bucket : buckets) {
+                    searchResult.addDocCount(bucket.getKey(), bucket.getDocCount());
+                }
+            }
+        }
+    }
+
+    private Map<String, Object> extractSource(SearchHit hit) {
+        Map<String, Object> source = new HashMap<>(hit.getSource());
+        source.put("_type", hit.getType());
+        Map<String, HighlightField> highlightFields = new HashMap<>(hit.getHighlightFields());
+        overlayHighlightFields(source, highlightFields);
+        return source;
     }
 
 

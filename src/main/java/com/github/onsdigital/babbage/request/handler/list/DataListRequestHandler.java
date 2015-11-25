@@ -18,4 +18,10 @@ public class DataListRequestHandler extends ListPageBaseRequestHandler implement
     }
 
     @Override
-    public ContentType[] getAllowedTypes() { return ALLOWED_TYPES; } @Override public boolean isLocalisedUri() { return true; } }
+    public ContentType[] getAllowedTypes() { return ALLOWED_TYPES; } @Override public boolean isLocalisedUri() { return true; }
+
+    @Override
+    protected boolean isAggregateByType() {
+        return true;
+    }
+}

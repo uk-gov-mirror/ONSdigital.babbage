@@ -26,4 +26,5 @@ public class PublishedRequestsRequestHandler extends ListPageBaseRequestHandler 
     public boolean isLocalisedUri() {
         return false;
     }
+
 }

@@ -26,4 +26,9 @@ public class TopicSpecificMethodologyRequestHandler extends ListPageBaseRequestH
     public boolean isLocalisedUri() {
         return true;
     }
+
+    @Override
+    protected boolean isAggregateByType() {
+        return true;
+    }
 }

@@ -51,6 +51,10 @@ public abstract class ListPageBaseRequestHandler {
         return isLocalisedUri() == false;
     }
 
+    protected boolean isAggregateByType() {
+        return false;
+    }
+
     /**
      * List page request handler is registered with this request type, requests made ending with request type is delegated to the handler automatically
      *
@@ -119,6 +123,9 @@ public abstract class ListPageBaseRequestHandler {
         ONSQuery query = new SearchRequestQueryBuilder(request, uri, getAllowedTypes()).buildQuery();
         if (isFilterLatest(request)) {
             SearchRequestHelper.addTermFilter(query, FilterableField.latestRelease, true);
+        }
+        if(isAggregateByType()){
+            SearchRequestHelper.addTermAggregation(query, "count_by_type", FilterableField._type);
         }
         return query;
     }

@@ -6,6 +6,8 @@ import org.elasticsearch.action.count.CountRequestBuilder;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.index.query.*;
+import org.elasticsearch.search.aggregations.AbstractAggregationBuilder;
+import org.elasticsearch.search.aggregations.AggregationBuilder;
 import org.elasticsearch.search.sort.SortBuilder;
 
 import java.util.List;
@@ -33,6 +35,7 @@ class QueryRequestBuilder {
             setHighlights(builder, HighlightField.values());
         }
         addSorts(builder, query.getSorts());
+        addAggregations(builder, query.getAggregations());
         return builder;
     }
 
@@ -83,6 +86,13 @@ class QueryRequestBuilder {
             searchRequestBuilder.addSort(sort);
         }
     }
+
+    private void addAggregations(SearchRequestBuilder builder, List<AggregationBuilder> aggregations) {
+        for (AggregationBuilder aggregation : aggregations) {
+            builder.addAggregation(aggregation);
+        }
+    }
+
 
 
 }

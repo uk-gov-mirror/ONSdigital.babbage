@@ -23,4 +23,5 @@ public class StaticsRequestHandler extends ListPageBaseRequestHandler implements
     public boolean isLocalisedUri() {
         return true;
     }
+
 }

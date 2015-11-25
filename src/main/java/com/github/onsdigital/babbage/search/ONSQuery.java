@@ -2,6 +2,8 @@ package com.github.onsdigital.babbage.search;
 
 import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.index.query.FilterBuilder;
+import org.elasticsearch.search.aggregations.AbstractAggregationBuilder;
+import org.elasticsearch.search.aggregations.AggregationBuilder;
 import org.elasticsearch.search.sort.SortBuilder;
 
 import java.util.*;
@@ -24,6 +26,7 @@ public class ONSQuery {
     private Map<String, Long> fields = new HashMap<>();//fieldName, boostFactor mapping
     private String searchTerm;
     private List<FilterBuilder> filters = new ArrayList<>();
+    private List<AggregationBuilder> aggregations = new ArrayList<>();
     private List<SortBuilder> sorts = new ArrayList<>();
     private boolean highLightFields;
     private Integer page;
@@ -104,6 +107,10 @@ public class ONSQuery {
         return filters;
     }
 
+    public List<AggregationBuilder> getAggregations() {
+        return aggregations;
+    }
+
     /**
      * Adds filter to query, all filters added are added to a single and filter, thus every filter added will narrow the result set down
      *
@@ -112,6 +119,11 @@ public class ONSQuery {
      */
     public ONSQuery addFilter(FilterBuilder filterBuilder) {
         filters.add(filterBuilder);
+        return this;
+    }
+
+    public ONSQuery addAggregation(AggregationBuilder aggregationBuilder) {
+        aggregations.add(aggregationBuilder);
         return this;
     }
 

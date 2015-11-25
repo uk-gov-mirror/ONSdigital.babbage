@@ -11,6 +11,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.index.query.FilterBuilder;
 import org.elasticsearch.index.query.FilterBuilders;
 import org.elasticsearch.index.query.RangeFilterBuilder;
+import org.elasticsearch.search.aggregations.AbstractAggregationBuilder;
+import org.elasticsearch.search.aggregations.bucket.terms.TermsBuilder;
 import org.elasticsearch.search.sort.FieldSortBuilder;
 
 import javax.servlet.http.HttpServletRequest;
@@ -76,6 +78,7 @@ public class SearchRequestHelper {
         }
     }
 
+
     /**
      * Adds range filter to given query, only if any of from or to values are non-null, null values are not added to filter.
      * If both from and to are null this method won't have any affect
@@ -101,6 +104,11 @@ public class SearchRequestHelper {
         query.addFilter(dateFilter);
 
     }
+
+    public static void addTermAggregation(ONSQuery query, String aggregationName, FilterableField field) {
+        query.addAggregation(new TermsBuilder(aggregationName).field(field.name()));
+    }
+
 
     public static void addSort(ONSQuery query, SortBy sortBy) {
         SortField[] sortFields = sortBy.getSortFields();

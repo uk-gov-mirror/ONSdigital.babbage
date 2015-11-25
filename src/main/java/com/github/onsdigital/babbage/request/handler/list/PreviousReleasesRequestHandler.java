@@ -64,4 +64,5 @@ public class PreviousReleasesRequestHandler extends ListPageBaseRequestHandler i
         addSort(query, SortBy.RELEASE_DATE);
         return super.doSearch(request, query);
     }
+
 }

@@ -1,8 +1,8 @@
 package com.github.onsdigital.babbage.request.handler.list;
 
+import com.github.onsdigital.babbage.request.handler.base.ListPageBaseRequestHandler;
 import com.github.onsdigital.babbage.request.handler.base.RequestHandler;
 import com.github.onsdigital.babbage.search.model.ContentType;
-import com.github.onsdigital.babbage.request.handler.base.ListPageBaseRequestHandler;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -32,6 +32,11 @@ public class PublicationsRequestHandler extends ListPageBaseRequestHandler imple
 
     @Override
     public boolean isLocalisedUri() {
+        return true;
+    }
+
+    @Override
+    protected boolean isAggregateByType() {
         return true;
     }
 }

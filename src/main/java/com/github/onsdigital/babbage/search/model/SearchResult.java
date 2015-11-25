@@ -12,6 +12,7 @@ public class SearchResult {
     private Long numberOfResults;
     private long took;
     private List<Map<String, Object>> results = new ArrayList<>();
+    private List<DocCount> docCounts;
 
     public Long getNumberOfResults() {
         return numberOfResults;
@@ -32,8 +33,23 @@ public class SearchResult {
         this.results = results;
     }
 
+    public List<DocCount> getDocCounts() {
+        return docCounts;
+    }
+
+    public void setDocCounts(List<DocCount> docCounts) {
+        this.docCounts = docCounts;
+    }
+
     public void addResult(Map<String, Object> result) {
         results.add(result);
+    }
+
+    public void addDocCount(String key, long number) {
+        if (docCounts == null) {
+            docCounts = new ArrayList<>();
+        }
+        docCounts.add(new DocCount(key, number));
     }
 
     public long getTook() {
@@ -42,5 +58,30 @@ public class SearchResult {
 
     public void setTook(long took) {
         this.took = took;
+    }
+
+    public class DocCount {
+        private String key;
+        private long count;
+        DocCount(String key, long count) {
+            this.key = key;
+            this.count = count;
+        }
+
+        public String getKey() {
+            return key;
+        }
+
+        public void setKey(String key) {
+            this.key = key;
+        }
+
+        public long getCount() {
+            return count;
+        }
+
+        public void setCount(long count) {
+            this.count = count;
+        }
     }
 }

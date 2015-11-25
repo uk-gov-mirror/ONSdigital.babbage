@@ -55,4 +55,5 @@ public class AtoZRequestHandler extends ListPageBaseRequestHandler implements Re
     protected boolean isFilterLatest(HttpServletRequest request) {
         return true;
     }
+
 }

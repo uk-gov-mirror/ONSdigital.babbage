@@ -14,5 +14,6 @@ public enum FilterableField {
     cancelled,
     keywords_raw,//raw means not analyzed, fields analyzed when indexing by default has _raw versions if needs to be filterable
     latestRelease,
-    _score
+    _score,
+    _type
 }
