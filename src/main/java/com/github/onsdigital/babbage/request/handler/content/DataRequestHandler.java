@@ -39,6 +39,10 @@ public class DataRequestHandler implements RequestHandler {
         return REQUEST_TYPE;
     }
 
+    public static String requestType() {
+        return REQUEST_TYPE;
+    }
+
     public BabbageResponse getData(String uri, HttpServletRequest request) throws Exception {
 
         String requestType = URIUtil.resolveRequestType(uri);
