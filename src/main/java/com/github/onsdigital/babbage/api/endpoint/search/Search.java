@@ -181,4 +181,9 @@ public class Search extends ListPageBaseRequestHandler {
     public boolean isLocalisedUri() {
         return false;
     }
+
+    @Override
+    protected boolean isAggregateByType() {
+        return true;
+    }
 }
