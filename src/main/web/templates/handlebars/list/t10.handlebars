@@ -132,7 +132,7 @@
             {{> list/partials/search-results-text-help result}}
 
 				{{!-- HEADLINE RESULTS --}}
-				{{#if showFeaturedResult}}
+				{{#if featuredResult.results.0}}
                 <div class="headline-result clickable-wrap">
 				{{#resolve featuredResult.results.0.uri}}
 				<div class="col col--md-36 col--lg-40 tiles__item flush-col flush-top">
