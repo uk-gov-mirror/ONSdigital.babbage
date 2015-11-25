@@ -1,5 +1,6 @@
 package com.github.onsdigital.babbage.request.handler.base;
 
+import com.github.onsdigital.babbage.content.client.ContentReadException;
 import com.github.onsdigital.babbage.paginator.Paginator;
 import com.github.onsdigital.babbage.response.BabbageResponse;
 import com.github.onsdigital.babbage.response.BabbageStringResponse;
@@ -86,7 +87,7 @@ public abstract class ListPageBaseRequestHandler {
         return new BabbageStringResponse(html, TEXT_HTML);
     }
 
-    protected LinkedHashMap<String, Object> prepareData(String requestedUri, HttpServletRequest request) throws IOException {
+    protected LinkedHashMap<String, Object> prepareData(String requestedUri, HttpServletRequest request) throws IOException, ContentReadException {
         ONSQuery query = createQuery(requestedUri, request);
         SearchResponseHelper responseHelper = doSearch(request, query);
         Paginator.assertPage(query.getPage(), responseHelper);
@@ -118,7 +119,7 @@ public abstract class ListPageBaseRequestHandler {
         return listData;
     }
 
-    protected ONSQuery createQuery(String requestedUri, HttpServletRequest request) {
+    protected ONSQuery createQuery(String requestedUri, HttpServletRequest request) throws IOException, ContentReadException {
         String uri = processUri(requestedUri, request);
         ONSQuery query = new SearchRequestQueryBuilder(request, uri, getAllowedTypes()).buildQuery();
         if (isFilterLatest(request)) {

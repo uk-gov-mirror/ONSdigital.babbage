@@ -1,5 +1,6 @@
 package com.github.onsdigital.babbage.request.handler.list;
 
+import com.github.onsdigital.babbage.content.client.ContentReadException;
 import com.github.onsdigital.babbage.error.ResourceNotFoundException;
 import com.github.onsdigital.babbage.request.handler.base.ListPageBaseRequestHandler;
 import com.github.onsdigital.babbage.request.handler.base.RequestHandler;
@@ -10,6 +11,8 @@ import com.github.onsdigital.babbage.search.model.field.FilterableField;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
+
+import java.io.IOException;
 
 import static com.github.onsdigital.babbage.util.RequestUtil.getParam;
 
@@ -37,7 +40,7 @@ public class AtoZRequestHandler extends ListPageBaseRequestHandler implements Re
     }
 
     @Override
-    protected ONSQuery createQuery(String requestedUri, HttpServletRequest request) {
+    protected ONSQuery createQuery(String requestedUri, HttpServletRequest request) throws IOException, ContentReadException {
         ONSQuery query = super.createQuery(requestedUri, request);
         SearchRequestHelper.addPrefixFilter(query, FilterableField.title_raw, getTitlePrefix(request));
         return query;

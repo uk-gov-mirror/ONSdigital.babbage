@@ -11,7 +11,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.index.query.FilterBuilder;
 import org.elasticsearch.index.query.FilterBuilders;
 import org.elasticsearch.index.query.RangeFilterBuilder;
-import org.elasticsearch.search.aggregations.AbstractAggregationBuilder;
 import org.elasticsearch.search.aggregations.bucket.terms.TermsBuilder;
 import org.elasticsearch.search.sort.FieldSortBuilder;
 
@@ -62,20 +61,33 @@ public class SearchRequestHelper {
     }
 
     /**
-     * Adds term filters to ons query
+     * Adds term filters to ons query, null value will filter null values
+     *
+     * @param query
+     * @param field
+     * @param value
+     */
+    public static void addTermFilter(ONSQuery query, FilterableField field, Object value) {
+        if (value == null) {
+            query.addFilter(FilterBuilders.termFilter(field.name(), null));
+        }
+
+        query.addFilter(FilterBuilders.termFilter(field.name(), value));
+    }
+
+    /**
+     * Adds  terms filter ( not term filter, terms filter matches if any of the filters is available).
+     * See elastic search documentation
      *
      * @param query
      * @param field
      * @param values
      */
-    public static void addTermFilter(ONSQuery query, FilterableField field, Object... values) {
+    public static void addTermsFilter(ONSQuery query, FilterableField field, Object... values) {
         if (values == null) {
             query.addFilter(FilterBuilders.termFilter(field.name(), null));
         }
-
-        for (Object value : values) {
-            query.addFilter(FilterBuilders.termFilter(field.name(), value));
-        }
+        query.addFilter(FilterBuilders.termsFilter(field.name(), values));
     }
 
 

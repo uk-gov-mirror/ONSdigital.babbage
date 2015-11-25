@@ -1,6 +1,7 @@
 package com.github.onsdigital.babbage.api.endpoint.search;
 
 import com.github.davidcarboni.restolino.framework.Api;
+import com.github.onsdigital.babbage.content.client.ContentReadException;
 import com.github.onsdigital.babbage.paginator.Paginator;
 import com.github.onsdigital.babbage.request.handler.base.ListPageBaseRequestHandler;
 import com.github.onsdigital.babbage.response.BabbageRedirectResponse;
@@ -125,7 +126,7 @@ public class Search extends ListPageBaseRequestHandler {
     }
 
     @Override
-    protected LinkedHashMap<String, Object> prepareData(String requestedUri, HttpServletRequest request) throws IOException {
+    protected LinkedHashMap<String, Object> prepareData(String requestedUri, HttpServletRequest request) throws IOException, ContentReadException {
         SearchResponseHelper contentResponse;
         SearchResponseHelper featuresResultsResponse = null;
 

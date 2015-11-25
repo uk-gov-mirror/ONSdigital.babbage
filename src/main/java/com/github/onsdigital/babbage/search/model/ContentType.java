@@ -2,7 +2,7 @@ package com.github.onsdigital.babbage.search.model;
 
 /**
  * Created by bren on 08/09/15.
- *
+ * <p/>
  * Content types.
  */
 public enum ContentType {
@@ -29,5 +29,25 @@ public enum ContentType {
     release,
     reference_tables,
     chart,
-    table
+    table;
+
+
+    /**
+     * Checks to see if type is one of the given content type
+     *
+     * @param type
+     * @return
+     */
+    public static boolean isTypeIn(String type, ContentType... types) {
+        try {
+            ContentType contentType = ContentType.valueOf((String) type);
+            for (ContentType currentType : types) {
+                if (currentType.name().equals(type)) {
+                    return true;
+                }
+            }
+        } catch (IllegalArgumentException e) {
+        }
+        return false;
+    }
 }
