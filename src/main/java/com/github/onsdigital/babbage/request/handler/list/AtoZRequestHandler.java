@@ -18,7 +18,7 @@ import static com.github.onsdigital.babbage.util.RequestUtil.getParam;
  */
 public class AtoZRequestHandler extends ListPageBaseRequestHandler implements RequestHandler {
 
-    private final static String REQUEST_TYPE = "atozz";
+    private final static String REQUEST_TYPE = "atoz";
     private final static ContentType[] ALLOWED_TYPES = {ContentType.bulletin};
 
     @Override
