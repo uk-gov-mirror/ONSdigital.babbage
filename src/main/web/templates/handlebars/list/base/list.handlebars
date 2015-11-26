@@ -4,16 +4,10 @@
 		<div class="wrapper">
 			<div class="col-wrap">
 				<div class="col">
-					{{#if listPage}}
-						{{> list/partials/list-page-breadcrumb label=listLabel}}
-						{{#each breadcrumb}}
-							{{#if @last}}
-								<h1 class="search-page__title">All {{listLabel}} related to {{description.title}}</h1>
-							{{/if}}
-						{{/each}}
-					{{else}}
-						<h1 class="search-page__title">{{listLabel}}</h1>
-					{{/if}}
+						{{#if showBreadcrumb}}
+							{{> list/partials/list-page-breadcrumb label=breadcrumbLabel}}
+						{{/if}}
+						<h1 class="search-page__title">{{#block "block-title"}}{{/block}}</h1>
 				</div>
 			</div>
 		</div>

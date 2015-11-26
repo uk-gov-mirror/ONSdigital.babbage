@@ -1,3 +1,8 @@
+{{#partial "block-title"}}
+	All data related to {{#last breadcrumb}}{{description.title}}{{/last}}
+{{/partial}}
+
+
 {{#partial "block-list-tabs"}}
 	<li>
 		<a href="datalist?query={{parameters.query.0}}" class="tab__item tab__item--active">
@@ -19,4 +24,4 @@
 {{/partial}}
 
 {{!-- Inheriting from base list template --}}
-{{> list/base/list tabs=true listPage=true listLabel="data" }}
+{{> list/base/list tabs=true showBreadcrumb=true breadcrumbLabel="Data"}}

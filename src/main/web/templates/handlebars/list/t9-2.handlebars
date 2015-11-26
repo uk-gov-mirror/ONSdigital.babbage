@@ -1,7 +1,12 @@
+{{#partial "block-title"}}
+	Freedom of Information (FOI) previous requests
+{{/partial}}
+
+
 {{#partial "block-filters"}}
 	{{> list/filters/keywords}}
 	{{> list/filters/publish-date}}
 {{/partial}}
 
 {{!-- Inheriting from base list template --}}
-{{> list/base/list listLabel="Freedom of Information (FOI) previous requests" }}
+{{> list/base/list showBreadcrumb=true breadcrumbLabel="Freedom of Information (FOI) previous requests" }}

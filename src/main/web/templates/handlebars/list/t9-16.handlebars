@@ -1,6 +1,11 @@
+{{#partial "block-title"}}
+	All data related to {{#last breadcrumb}}{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}{{/last}}
+{{/partial}}
+
+
 {{#partial "block-filters"}}
 	{{> list/filters/keywords}}
 {{/partial}}
 
 {{!-- Inheriting from base list template --}}
-{{> list/base/list listPage=true listLabel="related data"}}
+{{> list/base/list showBreadcrumb=true breadcrumbLabel="Related data"}}

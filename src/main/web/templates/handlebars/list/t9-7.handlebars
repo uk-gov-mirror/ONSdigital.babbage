@@ -1,7 +1,12 @@
+{{#partial "block-title"}}
+	{{#last breadcrumb}}{{description.title}}{{/last}} methodology
+{{/partial}}
+
+
 {{#partial "block-filters"}}
 	{{> list/filters/keywords}}
 	{{> list/filters/methodology}}
 {{/partial}}
 
 {{!-- Inheriting from base list template --}}
-{{> list/base/list listPage=true listLabel="methodology"}}
+{{> list/base/list showBreadcrumb=true breadcrumbLabel="Methodology"}}

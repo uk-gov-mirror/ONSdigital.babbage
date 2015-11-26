@@ -1,3 +1,7 @@
+{{#partial "block-title"}}
+	Published methodologies
+{{/partial}}
+
 {{#partial "block-filters"}}
 	{{> list/filters/keywords}}
 	{{> list/filters/methodology}}
@@ -5,4 +9,4 @@
 {{/partial}}
 
 {{!-- Inheriting from base list template --}}
-{{> list/base/list listPage=false listLabel="Published methodologies"}}
+{{> list/base/list showBreadcrumb=true breadcrumbLabel="Published methodologies"}}

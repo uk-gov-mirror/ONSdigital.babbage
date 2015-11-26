@@ -1,5 +1,9 @@
-{{#partial "block-sort"}}
+{{#partial "block-title"}}
+	List of all {{#last breadcrumb}}{{description.title}}{{/last}}
+{{/partial}}
 
+{{#partial "block-sort"}}
+{{!-- Disabling sorting by overwriting this bit--}}
 {{/partial}}
 
 {{#partial "block-filters"}}
@@ -8,4 +12,4 @@
 {{/partial}}
 
 {{!-- Inheriting from base list template --}}
-{{> list/base/list listPage=true listLabel="content"}}
+{{> list/base/list showBreadcrumb=true breadcrumbLabel="List"}}
