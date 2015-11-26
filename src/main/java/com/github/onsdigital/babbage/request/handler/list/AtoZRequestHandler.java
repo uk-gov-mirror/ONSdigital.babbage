@@ -48,7 +48,10 @@ public class AtoZRequestHandler extends ListPageBaseRequestHandler implements Re
     @Override
     protected ONSQuery createQuery(String requestedUri, HttpServletRequest request) throws IOException, ContentReadException {
         ONSQuery query = super.createQuery(requestedUri, request);
-        SearchRequestHelper.addTermFilter(query, FilterableField.title_first_letter, getTitlePrefix(request));
+        String titlePrefix = getTitlePrefix(request);
+        if(titlePrefix != null) {
+            SearchRequestHelper.addTermFilter(query, FilterableField.title_first_letter, titlePrefix);
+        }
         query.addAggregation(buildStartsWithAggregation());
         return query;
     }
@@ -60,10 +63,11 @@ public class AtoZRequestHandler extends ListPageBaseRequestHandler implements Re
 
     private String getTitlePrefix(HttpServletRequest request) {
         String prefix = StringUtils.trim(getParam(request, "az"));
-        if (StringUtils.isEmpty(prefix)) {
-            throw new ResourceNotFoundException("Title prefix is not given");
+        if (!StringUtils.isEmpty(prefix)) {
+            return prefix.toLowerCase();
         }
-        return prefix.toLowerCase();
+        return null;
+
     }
 
     @Override

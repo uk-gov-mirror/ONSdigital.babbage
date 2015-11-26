@@ -1,1 +1,1 @@
-<li class="{{class}} {{#if selected}}{{concat class "--active"}}{{/if}}">{{#if disabled}}<span>{{letter}}<span>{{else}}<a href="/atoz?az={{letter}}" >{{letter}}</a>{{/if}}</li>
+<li class="filters__a-z-list-item {{#if (eq (lowercase parameters.az.0) letter)}}filters__a-z-list-item--active"{{/if}}">{{#if (get result.docCounts letter)}}<a href="/atoz?az={{letter}}" >{{capitalize letter}}</a>{{else}}<span>{{capitalize letter}}</span>{{/if}}</li>
