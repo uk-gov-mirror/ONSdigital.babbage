@@ -2,14 +2,16 @@
 	Browse our statistics by A to Z
 {{/partial}}
 
+{{!-- {{#partial "block-results-text"}}
+ 	<div class="col col--md-28 col--lg-38">
+ 		<p>You can find all of the statistical releases we produce in this comprehensive list.</p>
+ 	</div>
+ {{/partial}} --}}
+
 {{#partial "block-results-text"}}
 	<div class="col col--md-28 col--lg-38">
-		<p>You can find all of the statistical releases we produce in this comprehensive list.</p>
+		{{> list/partials/list-results-text-number result resultsLabel="results"}}
 	</div>
-{{/partial}}
-
-{{#partial "block-sort"}}
-	
 {{/partial}}
 
 {{#partial "block-filters"}}
@@ -45,8 +47,8 @@
 			 	{{> partials/az-letter letter="Z" class="filters__a-z-list-item" selected=(eq parameters.az.0 "Z") disabled=result.docCounts.z}}
 			 </ul>
 		</div>
-		<input type="hidden" name="az" value="{{parameters.az.0}}">
+		{{!-- <input type="hidden" name="az" value="{{parameters.az.0}}"> --}}
 {{/partial}}
 
 {{!-- Inheriting from base list template --}}
-{{> list/base/list}}
+{{> list/base/list hideSort=true}}

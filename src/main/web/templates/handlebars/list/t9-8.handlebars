@@ -5,15 +5,21 @@
 
 {{#partial "block-list-tabs"}}
 	<li>
-		<a href="datalist?query={{parameters.query.0}}" class="tab__item">
+		<a href="datalist{{#if parameters.query.0}}?query={{parameters.query.0}}{{/if}}" class="tab__item">
 			Data
 		</a>
 	</li>
 	<li>
-		<a href="publication?query={{parameters.query.0}}" class="tab__item tab__item--active">
+		<a href="publication{{#if parameters.query.0}}?query={{parameters.query.0}}{{/if}}" class="tab__item tab__item--active">
 			Publications
 		</a>
 	</li>
+{{/partial}}
+
+{{#partial "block-results-text"}}
+	<div class="col col--md-28 col--lg-38">
+		{{> list/partials/list-results-text-number result resultsLabel="publications"}}
+	</div>
 {{/partial}}
 
 {{#partial "block-filters"}}

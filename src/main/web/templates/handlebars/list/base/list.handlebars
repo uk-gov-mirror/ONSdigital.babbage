@@ -51,13 +51,15 @@
 								{{> list/partials/search-results-text-number result}}
 							</div>
 						{{/block}}
-						{{#block "block-sort"}}
+						{{!-- {{#block "block-sort"}} --}}
 							{{#if result.results}}
-							<div class="float-right">
-								{{> list/filters/sort}}
-							</div>
-						{{/if}}
-						{{/block}}
+								{{#unless hideSort}}
+									<div class="float-right">
+										{{> list/filters/sort}}
+									</div>
+								{{/unless}}
+							{{/if}}
+						{{!-- {{/block}} --}}
 					</div>
 				</div>
 				{{!-- FILTERS --}}
@@ -101,12 +103,6 @@
 											{{#if description.edition}}
 												{{#if_all (ne description.edition 'yes') (ne description.edition '<strong>yes</strong>')}}: {{{description.edition}}}{{/if_all}}
 										{{/if}} {{#if description.latestRelease}}(Latest release){{/if}}</a></h3>
-
-										{{#if partOf}}
-										<p>
-											<a href="{{uri}}">{{{description.title}}}</a><span class="icon-search-1"></span>
-										</p>
-										{{/if}}
 
 										<p class="search-results__meta">
 											{{> type-label type_code=this._type }}

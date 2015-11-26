@@ -2,7 +2,6 @@
 Release calendar
 {{/partial}}
 
-
 {{#partial "block-tab-menu"}}
 <p class="float-right flush-bottom">
 	<a href="/calendar{{uri}}">
@@ -13,27 +12,38 @@ Release calendar
 {{/partial}}
 
 {{#partial "block-list-tabs"}}
-<li>
-	<a href="/releasecalendar" class="tab__item {{#unless parameters.view.0}}tab__item--active{{/unless}}">
-		Published releases
-	</a>
-</li>
-<li>
-	<a href="/releasecalendar?view=upcoming" class="tab__item {{#if_eq parameters.view.0 "upcoming"}}tab__item--active{{/if_eq}}">
-		Upcoming releases
-	</a>
-</li>
+	<li>
+		<a href="/releasecalendar" class="tab__item {{#unless parameters.view.0}}tab__item--active{{/unless}}">
+			Published releases
+		</a>
+	</li>
+	<li>
+		<a href="/releasecalendar?view=upcoming" class="tab__item {{#if_eq parameters.view.0 "upcoming"}}tab__item--active{{/if_eq}}">
+			Upcoming releases
+		</a>
+	</li>
 {{/partial}}
+
 {{#partial "block-alert"}}
-<div class="alert">
-	<div class="wrapper">
-		<div class="col-wrap">
-			<div class="col">
-				<p class="alert__content--large flush-bottom">This calendar is not being maintained and should not be used in place of the current one</p>
+	<div class="alert">
+		<div class="wrapper">
+			<div class="col-wrap">
+				<div class="col">
+					<p class="alert__content--large flush-bottom">This calendar is not being maintained and should not be used in place of the current one</p>
+				</div>
 			</div>
 		</div>
 	</div>
-</div>
+{{/partial}}
+
+{{#partial "block-results-text"}}
+	<div class="col col--md-28 col--lg-38">
+		{{> list/partials/list-results-text-number result resultsLabel="releases"}}
+	</div>
+{{/partial}}
+
+{{#partial "block-sort"}}
+
 {{/partial}}
 
 {{#partial "block-filters"}}
@@ -42,54 +52,54 @@ Release calendar
 {{/partial}}
 
 {{#partial "block-results"}}
-<ul class="list--neutral">
-	{{#each result.results}}
-	<li class="search--result-item margin-bottom--double">
-		<h3 class="inline-block">
-		<a href="{{uri}}">{{{description.title}}}
-			{{#if description.edition}}
-			{{#if_all (ne description.edition 'yes') (ne description.edition '<strong>yes</strong>')}}
-			: {{{description.edition}}}
-			{{/if_all}}
-			{{/if}}
-		</a>
-		</h3>
-		<p class="flush">
-			{{#if description.provisionalDate}}
-			{{description.provisionalDate}}
-			{{else}}
-			{{df description.releaseDate}}
-			{{/if}}
-			<span>
-				{{#if description.cancelled}}
-				(cancelled)
+	<ul class="list--neutral">
+		{{#each result.results}}
+		<li class="search--result-item margin-bottom--double">
+			<h3 class="inline-block">
+				<a href="{{uri}}">{{{description.title}}}
+					{{#if description.edition}}
+						{{#if_all (ne description.edition 'yes') (ne description.edition '<strong>yes</strong>')}}
+						: {{{description.edition}}}
+						{{/if_all}}
+					{{/if}}
+				</a>
+			</h3>
+			<p class="flush">
+				{{#if description.provisionalDate}}
+					{{description.provisionalDate}}
 				{{else}}
-				{{#if description.finalised}}
-				(confirmed)
-				{{else}}
-				(provisional)
+					{{df description.releaseDate}}
 				{{/if}}
-				{{/if}}
-			</span>
-			{{!-- Amended date notice --}}
-			{{#resolve this.uri}}
-			{{#if dateChanges}}
-			{{#each dateChanges}}
-			{{#if @last}}
-			<br>
-			<span class="flush">
-				<a href="{{uri}}#datechanges">This date has been changed
-				from {{df previousDate}}</a>
-			</span>
-			{{/if}}
-			{{/each}}
-			{{/if}}
-			{{/resolve}}
-		</p>
-	</li>
-	{{/each}}
-</ul>
+				<span>
+					{{#if description.cancelled}}
+						(cancelled)
+					{{else}}
+						{{#if description.finalised}}
+							(confirmed)
+						{{else}}
+							(provisional)
+						{{/if}}
+					{{/if}}
+				</span>
+				{{!-- Amended date notice --}}
+				{{#resolve this.uri}}
+					{{#if dateChanges}}
+						{{#each dateChanges}}
+							{{#if @last}}
+								<br>
+								<span class="flush">
+									<a href="{{uri}}#datechanges">This date has been changed
+									from {{df previousDate}}</a>
+								</span>
+							{{/if}}
+						{{/each}}
+					{{/if}}
+				{{/resolve}}
+			</p>
+		</li>
+		{{/each}}
+	</ul>
 {{/partial}}
 
 {{!-- Inheriting from base list template --}}
-{{> list/base/list tabs=true showBreadcrumb=true breadcrumbLabel="Release calendar"}}
+{{> list/base/list tabs=true showBreadcrumb=true hideSort=true breadcrumbLabel="Release calendar"}}
