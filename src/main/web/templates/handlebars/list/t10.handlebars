@@ -20,6 +20,7 @@
 
 {{#partial "block-filters"}}
 	{{> list/filters/all-results}}
+	<input class="sort__input" type="hidden" name="q" value="{{parameters.q.0}}">
 {{/partial}}
 
 {{#partial "block-featured-result"}}

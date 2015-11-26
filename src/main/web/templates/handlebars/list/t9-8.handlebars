@@ -1,5 +1,5 @@
 {{#partial "block-title"}}
-	All publications related to {{#last breadcrumb}}{{description.title}}{{/last}}
+	All publications related to {{> partials/location }}
 {{/partial}}
 
 
@@ -18,7 +18,7 @@
 
 {{#partial "block-results-text"}}
 	<div class="col col--md-28 col--lg-38">
-		{{> list/partials/list-results-text-number result resultsLabel="publications"}}
+		{{> list/partials/list-results-text-number result resultsLabel="publications" showLocation=true}}
 	</div>
 {{/partial}}
 
