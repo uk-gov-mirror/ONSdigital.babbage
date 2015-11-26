@@ -22,6 +22,7 @@
 {{#partial "block-filters"}}
 	<h4 class="filters__title">Content types to show</h4>
 	{{> list/filters/publications}}
+	<input class="sort__input" type="hidden" name="q" value="{{parameters.q.0}}">
 {{/partial}}
 
 {{!-- Inheriting from base list template --}}
