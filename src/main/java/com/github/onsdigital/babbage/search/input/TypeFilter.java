@@ -10,12 +10,12 @@ public enum TypeFilter {
     ARTICLE(ContentType.article),
     COMPENDIA(ContentType.compendium_landing_page),
     SINGLE_TIME_SERIES(ContentType.timeseries),
-    LARGE_DATASET(ContentType.dataset_landing_page, ContentType.timeseries_dataset, ContentType.reference_tables),
+    LARGE_DATASET(ContentType.dataset_landing_page, ContentType.reference_tables),
     ADHOCS(ContentType.static_adhoc),
     QMI(ContentType.static_qmi),
     METHODOLOGY(ContentType.static_qmi, ContentType.static_methodology),
     METHODOLOGY_ARTICLE(ContentType.static_methodology),
-    CORPORATE_INFORMATION(ContentType.static_foi,ContentType.static_page,ContentType.static_landing_page//methodology
+    CORPORATE_INFORMATION(ContentType.static_foi,ContentType.static_page,ContentType.static_landing_page
     );
 
     private ContentType[] types;
