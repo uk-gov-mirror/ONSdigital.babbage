@@ -7,5 +7,5 @@
 
 <ul class="list--neutral flush-top">
 	{{>list/partials/filter-item id="methodology" value="methodology" label=labels.methodology docCount=(add result.docCounts.static_qmi result.docCounts.static_methodology)}}
-	{{>list/partials/filter-item id="corporate" value="corporate_information" label=labels.corporate-information  explanation=labels.search-expand-types docCount=(add result.docCounts.static_landing_page (add result.docCounts.static_foi result.docCounts.static_page))}}
+	{{>list/partials/filter-item id="corporate" value="corporate_information" label=labels.corporate-information  explanation=labels.search-expand-types docCount=(add result.docCounts.static_landing_page result.docCounts.static_foi result.docCounts.static_page)}}
 </ul>
