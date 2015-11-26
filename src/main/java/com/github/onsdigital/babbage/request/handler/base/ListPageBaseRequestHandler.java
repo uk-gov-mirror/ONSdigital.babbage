@@ -94,7 +94,7 @@ public abstract class ListPageBaseRequestHandler {
         return resolveListData(request, query, responseHelper);
     }
 
-    private LinkedHashMap<String, Object> resolveListData(HttpServletRequest request, ONSQuery query, SearchResponseHelper responseHelper) throws IOException {
+    protected LinkedHashMap<String, Object> resolveListData(HttpServletRequest request, ONSQuery query, SearchResponseHelper responseHelper) throws IOException {
         LinkedHashMap<String, Object> listData = new LinkedHashMap<>();
         listData.put("result", responseHelper.getResult());
         listData.put("paginator", Paginator.getPaginator(query.getPage(), responseHelper));
@@ -108,8 +108,8 @@ public abstract class ListPageBaseRequestHandler {
      * @return
      * @throws IOException
      */
-    protected Map<String, Object> getBaseData(HttpServletRequest request) throws IOException {
-        Map<String, Object> listData = new LinkedHashMap<>();
+    protected LinkedHashMap<String, Object> getBaseData(HttpServletRequest request) throws IOException {
+        LinkedHashMap<String, Object> listData = new LinkedHashMap<>();
         listData.put("type", "list");
         listData.put("listType", getRequestType());
         listData.put("uri", URIUtil.cleanUri(request.getRequestURI()));//full uri in the context to resolve breadcrumb
