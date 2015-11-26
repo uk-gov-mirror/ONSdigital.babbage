@@ -1,6 +1,7 @@
 package com.github.onsdigital.babbage.search.model;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -12,7 +13,7 @@ public class SearchResult {
     private Long numberOfResults;
     private long took;
     private List<Map<String, Object>> results = new ArrayList<>();
-    private List<DocCount> docCounts;
+    private Map<String,Long> docCounts;
 
     public Long getNumberOfResults() {
         return numberOfResults;
@@ -33,12 +34,8 @@ public class SearchResult {
         this.results = results;
     }
 
-    public List<DocCount> getDocCounts() {
+    public Map<String, Long> getDocCounts() {
         return docCounts;
-    }
-
-    public void setDocCounts(List<DocCount> docCounts) {
-        this.docCounts = docCounts;
     }
 
     public void addResult(Map<String, Object> result) {
@@ -47,9 +44,9 @@ public class SearchResult {
 
     public void addDocCount(String key, long number) {
         if (docCounts == null) {
-            docCounts = new ArrayList<>();
+            docCounts = new LinkedHashMap<>();
         }
-        docCounts.add(new DocCount(key, number));
+        docCounts.put(key, number);
     }
 
     public long getTook() {
@@ -60,28 +57,4 @@ public class SearchResult {
         this.took = took;
     }
 
-    public class DocCount {
-        private String key;
-        private long count;
-        DocCount(String key, long count) {
-            this.key = key;
-            this.count = count;
-        }
-
-        public String getKey() {
-            return key;
-        }
-
-        public void setKey(String key) {
-            this.key = key;
-        }
-
-        public long getCount() {
-            return count;
-        }
-
-        public void setCount(long count) {
-            this.count = count;
-        }
-    }
 }

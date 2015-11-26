@@ -49,7 +49,7 @@ public class Search extends ListPageBaseRequestHandler {
             ContentType.static_article,
             ContentType.static_foi,
             ContentType.static_page,
-            ContentType.static_landing_page//methodology
+            ContentType.static_landing_page
     };
 
 
