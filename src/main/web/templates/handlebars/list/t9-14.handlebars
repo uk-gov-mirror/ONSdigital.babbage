@@ -16,7 +16,34 @@
 		{{> list/filters/keywords}}
 		<h4 class="filters__title">Choose a letter to browse</h4>
 		<div class="filters__a-z">
-			{{> partials/az class="filters"}}
+			<ul class="filters__a-z-list padding-top-md--1 padding-top-sm--1">
+			 	{{> list/partials/az-letter letter="A" class="filters__a-z-list-item" selected=(eq parameters.az.0 "A") disabled=result.docCounts.a}}
+			 	{{> list/partials/az-letter letter="B" class="filters__a-z-list-item" selected=(eq parameters.az.0 "B") disabled=result.docCounts.b}}
+			 	{{> list/partials/az-letter letter="C" class="filters__a-z-list-item" selected=(eq parameters.az.0 "C") disabled=result.docCounts.c}}
+			 	{{> list/partials/az-letter letter="D" class="filters__a-z-list-item" selected=(eq parameters.az.0 "D") disabled=result.docCounts.d}}
+			 	{{> list/partials/az-letter letter="E" class="filters__a-z-list-item" selected=(eq parameters.az.0 "E") disabled=result.docCounts.e}}
+			 	{{> list/partials/az-letter letter="F" class="filters__a-z-list-item" selected=(eq parameters.az.0 "F") disabled=result.docCounts.f}}
+			 	{{> list/partials/az-letter letter="G" class="filters__a-z-list-item" selected=(eq parameters.az.0 "G") disabled=result.docCounts.g}}
+			 	{{> list/partials/az-letter letter="H" class="filters__a-z-list-item" selected=(eq parameters.az.0 "H") disabled=result.docCounts.h}}
+			 	{{> list/partials/az-letter letter="I" class="filters__a-z-list-item" selected=(eq parameters.az.0 "I") disabled=result.docCounts.i}}
+			 	{{> list/partials/az-letter letter="J" class="filters__a-z-list-item" selected=(eq parameters.az.0 "J") disabled=result.docCounts.j}}
+			 	{{> list/partials/az-letter letter="K" class="filters__a-z-list-item" selected=(eq parameters.az.0 "K") disabled=result.docCounts.k}}
+			 	{{> list/partials/az-letter letter="L" class="filters__a-z-list-item" selected=(eq parameters.az.0 "L") disabled=result.docCounts.l}}
+			 	{{> list/partials/az-letter letter="M" class="filters__a-z-list-item" selected=(eq parameters.az.0 "M") disabled=result.docCounts.m}}
+			 	{{> list/partials/az-letter letter="N" class="filters__a-z-list-item" selected=(eq parameters.az.0 "N") disabled=result.docCounts.n}}
+			 	{{> list/partials/az-letter letter="O" class="filters__a-z-list-item" selected=(eq parameters.az.0 "O") disabled=result.docCounts.o}}
+			 	{{> list/partials/az-letter letter="P" class="filters__a-z-list-item" selected=(eq parameters.az.0 "P") disabled=result.docCounts.p}}
+			 	{{> list/partials/az-letter letter="Q" class="filters__a-z-list-item" selected=(eq parameters.az.0 "Q") disabled=result.docCounts.q}}
+			 	{{> list/partials/az-letter letter="R" class="filters__a-z-list-item" selected=(eq parameters.az.0 "R") disabled=result.docCounts.r}}
+			 	{{> list/partials/az-letter letter="S" class="filters__a-z-list-item" selected=(eq parameters.az.0 "S") disabled=result.docCounts.s}}
+			 	{{> list/partials/az-letter letter="T" class="filters__a-z-list-item" selected=(eq parameters.az.0 "T") disabled=result.docCounts.t}}
+			 	{{> list/partials/az-letter letter="U" class="filters__a-z-list-item" selected=(eq parameters.az.0 "U") disabled=result.docCounts.u}}
+			 	{{> list/partials/az-letter letter="V" class="filters__a-z-list-item" selected=(eq parameters.az.0 "V") disabled=result.docCounts.v}}
+			 	{{> list/partials/az-letter letter="W" class="filters__a-z-list-item" selected=(eq parameters.az.0 "W") disabled=result.docCounts.w}}
+			 	{{> list/partials/az-letter letter="X" class="filters__a-z-list-item" selected=(eq parameters.az.0 "X") disabled=result.docCounts.x}}
+			 	{{> list/partials/az-letter letter="Y" class="filters__a-z-list-item" selected=(eq parameters.az.0 "Y") disabled=result.docCounts.y}}
+			 	{{> list/partials/az-letter letter="Z" class="filters__a-z-list-item" selected=(eq parameters.az.0 "Z") disabled=result.docCounts.z}}
+			 </ul>
 		</div>
 		<input type="hidden" name="az" value="{{parameters.az.0}}">
 {{/partial}}

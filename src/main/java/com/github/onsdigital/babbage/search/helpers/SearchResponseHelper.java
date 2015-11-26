@@ -8,6 +8,8 @@ import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.Aggregation;
 import org.elasticsearch.search.aggregations.Aggregations;
+import org.elasticsearch.search.aggregations.bucket.MultiBucketsAggregation;
+import org.elasticsearch.search.aggregations.bucket.SingleBucketAggregation;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.highlight.HighlightField;
 
@@ -53,12 +55,22 @@ public class SearchResponseHelper {
     private void extractDocCounts(SearchResult searchResult) {
         Aggregations aggregations = response.getAggregations();
         if(aggregations != null) {
-            for (Aggregation aggregation : aggregations) {
-                Terms terms = (Terms) aggregation;
-                List<Terms.Bucket> buckets = terms.getBuckets();
-                for (Terms.Bucket bucket : buckets) {
+            addCounts(searchResult, aggregations);
+        }
+    }
+
+
+    /*
+    Flattens and adds bucket results recursively to result as key value pairs
+     */
+    private void addCounts(SearchResult searchResult, Aggregations aggregations) {
+        for (Aggregation aggregation : aggregations) {
+            if (aggregation instanceof MultiBucketsAggregation) {
+                for (MultiBucketsAggregation.Bucket bucket : ((MultiBucketsAggregation) aggregation).getBuckets()) {
                     searchResult.addDocCount(bucket.getKey(), bucket.getDocCount());
                 }
+            } else {
+                addCounts(searchResult, ((SingleBucketAggregation)aggregation).getAggregations());
             }
         }
     }

@@ -9,6 +9,12 @@ import com.github.onsdigital.babbage.search.helpers.SearchRequestHelper;
 import com.github.onsdigital.babbage.search.model.ContentType;
 import com.github.onsdigital.babbage.search.model.field.FilterableField;
 import org.apache.commons.lang3.StringUtils;
+import org.elasticsearch.index.query.TermFilterBuilder;
+import org.elasticsearch.search.aggregations.Aggregation;
+import org.elasticsearch.search.aggregations.AggregationBuilder;
+import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.aggregations.bucket.filter.FilterAggregationBuilder;
+import org.elasticsearch.search.aggregations.bucket.terms.TermsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -42,8 +48,14 @@ public class AtoZRequestHandler extends ListPageBaseRequestHandler implements Re
     @Override
     protected ONSQuery createQuery(String requestedUri, HttpServletRequest request) throws IOException, ContentReadException {
         ONSQuery query = super.createQuery(requestedUri, request);
-        SearchRequestHelper.addPrefixFilter(query, FilterableField.title_raw, getTitlePrefix(request));
+        SearchRequestHelper.addTermFilter(query, FilterableField.title_first_letter, getTitlePrefix(request));
+        query.addAggregation(buildStartsWithAggregation());
         return query;
+    }
+
+    private AggregationBuilder buildStartsWithAggregation() {
+        return AggregationBuilders.global("count_by_starts_with")
+                .subAggregation(new TermsBuilder("starts_with").field(FilterableField.title_first_letter.name()));
     }
 
     private String getTitlePrefix(HttpServletRequest request) {
@@ -51,7 +63,7 @@ public class AtoZRequestHandler extends ListPageBaseRequestHandler implements Re
         if (StringUtils.isEmpty(prefix)) {
             throw new ResourceNotFoundException("Title prefix is not given");
         }
-        return prefix;
+        return prefix.toLowerCase();
     }
 
     @Override
