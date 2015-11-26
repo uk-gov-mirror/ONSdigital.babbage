@@ -118,7 +118,8 @@ public class SearchRequestHelper {
     }
 
     public static void addTermAggregation(ONSQuery query, String aggregationName, FilterableField field) {
-        query.addAggregation(new TermsBuilder(aggregationName).field(field.name()));
+        //Size set to 0 to remove limit on bucket numbers which is 10 by default.
+        query.addAggregation(new TermsBuilder(aggregationName).field(field.name()).size(0));
     }
 
 

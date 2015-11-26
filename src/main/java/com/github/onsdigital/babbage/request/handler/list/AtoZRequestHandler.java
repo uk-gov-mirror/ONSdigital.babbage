@@ -58,7 +58,7 @@ public class AtoZRequestHandler extends ListPageBaseRequestHandler implements Re
 
     private AggregationBuilder buildStartsWithAggregation() {
         return AggregationBuilders.global("count_by_starts_with")
-                .subAggregation(new TermsBuilder("starts_with").field(FilterableField.title_first_letter.name()));
+                .subAggregation(new TermsBuilder("starts_with").field(FilterableField.title_first_letter.name()).size(0));
     }
 
     private String getTitlePrefix(HttpServletRequest request) {
