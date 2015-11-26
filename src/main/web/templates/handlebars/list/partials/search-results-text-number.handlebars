@@ -1,18 +1,11 @@
 <h2 aria-live="assertive" class="search-page__results-text">
 	{{#if_any results showFeaturedResult timeSeriesCount}}
 	<span class="stand-out-text">
-	{{numberOfResults}}</span> results for
+		{{numberOfResults}}</span> {{#if parameters.filter}}<strong>{{#each parameters.filter}}{{#if @first}}{{> filter-label this}}{{else}}{{#if @last}} and {{> filter-label this}}{{else}}, {{> filter-label this}}{{/if}}{{/if}}{{/each}}</strong>{{else}}results{{/if}} containing
 	{{else}}
-	Sorry, no results were found for
+	Sorry, no results were found that contain
 	{{/if_any}}
-	<strong>‘{{parameters.q.0}}’</strong>
-	{{#if parameters.filter}}
-	showing <strong>{{#each parameters.filter}}{{> filter-label this}}{{#unless @last}},{{/unless}}{{/each}}</strong>
-	{{/if}}
-
-	{{!-- Show how results are sorted --}}
-	{{#if results}}
-		, sorted by <strong>
+	<strong>‘{{parameters.q.0}}’</strong>{{!-- Have to put if inline or else spaced added after query --}}{{#if results}}, sorted by <strong>
 		{{#if parameters.sortBy.0}}
 			{{#if_eq parameters.sortBy.0 "release_date"}}release date{{/if_eq}}
 			{{#if_eq parameters.sortBy.0 "title"}}title{{/if_eq}}
@@ -21,16 +14,16 @@
 		{{/if}}
 	</strong>.
 	{{/if}}
-	{{#if_any parameters.fromDate.0 parameters.toDate.0}}
-		You have chosen to show results published
-		{{#if parameters.fromDate.0}}
-		after <strong>{{df parameters.fromDate.0 outputFormat="dd MMMM yyyy" inputFormat="dd/MM/yyyy"}}</strong>
-		{{/if}}
-		{{#if parameters.toDate.0}}
-			{{#if parameters.fromDate.0}}
-			and
-			{{/if}}
-		before <strong>{{df parameters.toDate.0 outputFormat="dd MMMM yyyy" inputFormat="dd/MM/yyyy"}}</strong>
-		{{/if}}
-	{{/if_any}}
+	{{!-- {{#if_any parameters.fromDate.0 parameters.toDate.0}}
+ 		You have chosen to show results published
+ 		{{#if parameters.fromDate.0}}
+ 		after <strong>{{df parameters.fromDate.0 outputFormat="dd MMMM yyyy" inputFormat="dd/MM/yyyy"}}</strong>
+ 		{{/if}}
+ 		{{#if parameters.toDate.0}}
+ 			{{#if parameters.fromDate.0}}
+ 			and
+ 			{{/if}}
+ 		before <strong>{{df parameters.toDate.0 outputFormat="dd MMMM yyyy" inputFormat="dd/MM/yyyy"}}</strong>
+ 		{{/if}}
+ 	{{/if_any}} --}}
 </h2>
