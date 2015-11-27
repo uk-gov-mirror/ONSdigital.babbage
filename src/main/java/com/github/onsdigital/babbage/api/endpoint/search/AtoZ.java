@@ -61,8 +61,10 @@ public class AtoZ extends ListPageBaseRequestHandler  {
     @Override
     protected ONSQuery createQuery(String requestedUri, HttpServletRequest request) throws IOException, ContentReadException {
         ONSQuery query = super.createQuery(requestedUri, request);
-        query.getSorts().clear();
-        addSort(query, SortBy.TITLE);
+        if(StringUtils.isEmpty(query.getSearchTerm())) { // sort by title if no search term available
+            query.getSorts().clear();
+            addSort(query, SortBy.TITLE);
+        }
         String titlePrefix = getTitlePrefix(request);
         if(titlePrefix != null) {
             SearchRequestHelper.addTermFilter(query, FilterableField.title_first_letter, titlePrefix);
