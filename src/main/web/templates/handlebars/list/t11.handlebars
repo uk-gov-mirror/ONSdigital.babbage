@@ -55,15 +55,7 @@ Release calendar
 	<ul class="list--neutral">
 		{{#each result.results}}
 		<li class="search--result-item margin-bottom--double">
-			<h3 class="inline-block">
-				<a href="{{uri}}">{{{description.title}}}
-					{{#if description.edition}}
-						{{#if_all (ne description.edition 'yes') (ne description.edition '<strong>yes</strong>')}}
-						: {{{description.edition}}}
-						{{/if_all}}
-					{{/if}}
-				</a>
-			</h3>
+			{{> list/partials/results-title showEdition=true}}
 			<p class="flush">
 				{{#if description.provisionalDate}}
 					{{description.provisionalDate}}
@@ -83,17 +75,15 @@ Release calendar
 				</span>
 				{{!-- Amended date notice --}}
 				{{#resolve this.uri}}
-					{{#if dateChanges}}
-						{{#each dateChanges}}
-							{{#if @last}}
-								<br>
-								<span class="flush">
-									<a href="{{uri}}#datechanges">This date has been changed
-									from {{df previousDate}}</a>
-								</span>
-							{{/if}}
-						{{/each}}
-					{{/if}}
+					{{!-- {{#if dateChanges}} --}}
+						{{#last dateChanges}}
+							<br>
+							<span class="flush">
+								<a href="{{uri}}#datechanges">This date has been changed
+								from {{df previousDate}}</a>
+							</span>
+						{{/last}}
+					{{!-- {{/if}} --}}
 				{{/resolve}}
 			</p>
 		</li>

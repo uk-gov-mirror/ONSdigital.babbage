@@ -97,34 +97,10 @@
 							{{#block "block-results"}}
 								{{#each result.results}}
 									<li class="search-results__item">
-										<h3 class="search-results__title">
-										<a href="{{uri}}">{{{description.title}}}
-											{{#if description.edition}}
-												{{#if_all (ne description.edition 'yes') (ne description.edition '<strong>yes</strong>')}}: {{{description.edition}}}{{/if_all}}
-										{{/if}} {{#if description.latestRelease}}(Latest release){{/if}}</a></h3>
-
-										<p class="search-results__meta">
-											{{> type-label type_code=this._type }}
-											{{#if description.cdid}}
-											| Series ID: {{description.cdid}}
-											{{/if}}
-											{{#if_any description.releaseDate description.lastRevised}} |
-												{{#if description.releaseDate}}Released on {{df description.releaseDate}}
-												{{else}}Revised on {{df description.lastRevised}}
-												{{/if}}
-											{{/if_any}}
-											{{#if description.reference}}| Ref: {{{description.reference}}}{{/if}}
-										</p>
-
-										<div class="search-results__summary">
-											{{md description.summary}}
-										</div>
-
-										{{#if description.keywords}}
-											<p class="search-results__keywords">
-												Keywords: {{#each description.keywords}}{{{this}}}{{#unless @last}}, {{/unless}}{{/each}}
-											</p>
-										{{/if}}
+										{{> list/partials/results-title showEdition=true}}
+										{{> list/partials/results-meta}}
+										{{> list/partials/results-summary}}
+										{{> list/partials/results-keywords}}
 									</li>
 								{{/each}}
 							{{/block}}

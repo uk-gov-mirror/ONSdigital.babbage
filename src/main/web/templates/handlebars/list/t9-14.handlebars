@@ -8,6 +8,17 @@
  	</div>
  {{/partial}} --}}
 
+ {{#partial "block-results"}}
+ 	{{#each result.results}}
+ 		<li class="search-results__item">
+ 			{{> list/partials/results-title}}
+ 			{{> list/partials/results-meta}}
+ 			{{> list/partials/results-summary}}
+ 			{{> list/partials/results-keywords}}
+ 		</li>
+ 	{{/each}}
+ {{/partial}}
+
 {{#partial "block-results-text"}}
 	<div class="col col--md-28 col--lg-38">
 		{{> list/partials/list-results-text-number result resultsLabel="results"}}
