@@ -28,7 +28,11 @@
 
 {{#partial "publication-sidebar"}}
 {{!-- Related data --}}
-	{{>partials/related/data}}
+    {{#if relatedDatasets}}
+	    {{>partials/related/datasets}}
+    {{else}}
+        {{>partials/related/data}}
+    {{/if}}
 	{{!-- Related publications --}}
 	{{>partials/related/documents}}
 	{{!-- Related articles --}}
