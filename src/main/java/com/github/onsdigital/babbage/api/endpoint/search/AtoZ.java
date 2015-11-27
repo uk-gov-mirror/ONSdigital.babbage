@@ -63,7 +63,7 @@ public class AtoZ extends ListPageBaseRequestHandler  {
         ONSQuery query = super.createQuery(requestedUri, request);
         if(StringUtils.isEmpty(query.getSearchTerm())) { // sort by title if no search term available
             query.getSorts().clear();
-            addSort(query, SortBy.TITLE);
+            addSort(query, SortBy.FIRST_LETTER);
         }
         String titlePrefix = getTitlePrefix(request);
         if(titlePrefix != null) {
