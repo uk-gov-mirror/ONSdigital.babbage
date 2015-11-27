@@ -1,6 +1,3 @@
-{{json}}
-
-
 {{#partial "block-title"}}
 Time series data explorer
 {{/partial}}
@@ -44,34 +41,36 @@ Time series data explorer
 
 
         {{#each result.results}}
-        <div class="col-wrap padding-top-md--2 padding-bottom-md--2">
+        <div class="col-wrap">
 
             <div class="col col--md-2 col--lg-2 margin-left-md--1">
-                <input type="checkbox" name="" value="">
+                <div class="filters__field margin-top-md--2">
+                    <input type="checkbox" name="" value="" class="flush" aria-label="{{description.title}}">
+                </div>
             </div>
 
-            <div class="col col--md-20 col--lg-22">
-                <a href="{{uri}}">{{{description.title}}}</a>
+            <div class="col col--md-20 col--lg-20 padding-right-md--1">
+                <p><a href="{{uri}}">{{{description.title}}}</a></p>
             </div>
 
             <div class="col col--md-3 col--lg-3">
-                {{description.cdid}}
+                <p>{{description.cdid}}</p>
             </div>
 
-            <div class="col col--md-4 col--lg-5">
-                {{#if description.unit}}
+            <div class="col col--md-4 col--lg-4">
+                <p>{{#if description.unit}}
                     {{description.unit}}
                 {{else}}
                     &nbsp;
-                {{/if}}
+                {{/if}}</p>
             </div>
 
-            <div class="col col--md-4 col--lg-6">
-                {{df description.releaseDate}}
+            <div class="col col--md-4 col--lg-8">
+                <p>{{df description.releaseDate}}</p>
             </div>
 
             <div class="col col--md-2 col--lg-2">
-                NEW
+                <p>NEW</p>
             </div>
 
         </div>
