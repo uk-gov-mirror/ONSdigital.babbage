@@ -43,7 +43,7 @@
 		{{/if}}
 
 		<div class="wrapper">
-			<form id="form">
+				<form id="form">
 				<div class="col-wrap print-hidden">
 					<div class="col">
 						{{#block "block-results-text"}}
@@ -64,7 +64,7 @@
 				</div>
 				{{!-- FILTERS --}}
 				{{!-- {{#if_any result.results parameters.filter parameters.time_series}} --}}
-					<div class="col col--md-12 col--lg-18 margin-bottom">
+				<div class="col col--md-12 col--lg-18 margin-bottom">
 						<div class="tiles__item tiles__item--nav-type flush-col">
 							<div class="tiles__title-h3 tiles__title-h3--nav">
 								<h3 class="inline">Refine results</h3>
@@ -82,13 +82,18 @@
 							</div>
 						</div>
 						{{> partials/archives-box}}
-					</div>
+				</div>
+				</form>
 				{{!-- {{/if_any}} --}}
+				
 				{{!-- RESULTS --}}
-				<div class="results col col--md-34 col--lg-40 margin-left-md--1">
+				<div class="col col--md-34 col--lg-40 margin-left-md--1">
 
-                    {{#block "block-featured-result"}}
-                    {{/block}}
+                    {{#block "block-before-results"}}{{/block}}
+					
+					<div class="results">
+
+                    {{#block "block-featured-result"}}{{/block}}
 
 					{{> list/partials/search-results-text-help result}}
                     
@@ -110,8 +115,8 @@
 					</div>
 					{{> list/partials/paginator}}
 					<!-- /desktop-grid-two-thirds -->
+					</div>
 				</div>
-			</form>
 		</div>
 	</div>
 {{/partial}}

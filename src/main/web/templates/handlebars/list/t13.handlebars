@@ -14,28 +14,29 @@ Time series data explorer
 	{{> list/filters/publish-date}}
 {{/partial}}
 
-{{#partial "block-featured-result"}}
+{{#partial "block-before-results"}}
+    
+    <div id="timeseries-list-container"  class="width--md-35 width--lg-41 background--iron-light padding-top-md--3 padding-right--md-1 padding-bottom-md--3 padding-left-md--1" style="display:none" >
 
-    <div class="width--md-35 width--lg-41 background--iron-light padding-top-md--3 padding-right--md-1 padding-bottom-md--3 padding-left-md--1">
+        <ul id="timeseries-list" class="col-wrap border-top--iron-md">
+        </ul>
 
-        <p class="flush inline margin-right-md--1">Download all series</p>
+        <p class="flush inline margin-right-md--1">Download selected time series</p>
 
         {{!-- Excel download --}}
-        <form method="get" action="/generator" class="inline print--hide">
+        <form id="xls-form" method="post" action="/export" class="inline print--hide">
             <button type="submit" title="Download XLS" class="btn btn--primary download-analytics">
                 Download .xls
             </button>
             <input type="hidden" name="format" value="xls"/>
-            <input type="hidden" name="uri" value="{{absolute uri}}"/>
         </form>
 
         {{!-- CSV download --}}
-        <form method="get" action="/generator" class="inline print--hide">
+        <form id="csv-form" method="post" action="/export" class="inline print--hide">
             <button type="submit" title="Download CSV" class="btn btn--primary download-analytics">
                 Download .csv
             </button>
             <input type="hidden" name="format" value="csv"/>
-            <input type="hidden" name="uri" value="{{absolute uri}}"/>
         </form>
 
     </div>
@@ -51,7 +52,7 @@ Time series data explorer
 
                 {{!-- Checkbox --}}
                 <div class="col col--md-3 col--lg-3 margin-left-md--1 padding-left-md--1">
-                    <input type="checkbox" name="" value="" class="timeseriestool-select js-timeseriestool-select" aria-label="{{description.title}}">
+                    <input type="checkbox" name="" data-title="{{description.title}}" data-uri="{{uri}}" data-cdid="{{description.cdid}}" value="" class="timeseriestool-select js-timeseriestool-select" aria-label="{{description.title}}">
                 </div>
 
                 {{!-- Title --}}
