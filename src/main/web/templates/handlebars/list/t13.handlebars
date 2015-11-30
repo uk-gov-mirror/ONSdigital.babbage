@@ -41,39 +41,45 @@ Time series data explorer
 
 
         {{#each result.results}}
-        <div class="col-wrap">
+            <div class="col-wrap {{#unless @first}}border-top--iron-md{{/unless}}">
 
-            <div class="col col--md-2 col--lg-2 margin-left-md--1">
-                <div class="filters__field margin-top-md--2">
-                    <input type="checkbox" name="" value="" class="flush" aria-label="{{description.title}}">
+                {{!-- Checkbox --}}
+                <div class="col col--md-2 col--lg-2 margin-left-md--1">
+                    <div class="filters__field margin-top-md--2">
+                        <input type="checkbox" name="" value="" class="flush js-timeseriestool-select" aria-label="{{description.title}}">
+                    </div>
                 </div>
-            </div>
 
-            <div class="col col--md-20 col--lg-20 padding-right-md--1">
-                <p><a href="{{uri}}">{{{description.title}}}</a></p>
-            </div>
+                {{!-- Title --}}
+                <div class="col col--md-18 col--lg-20 padding-right-md--1">
+                    <p><a href="{{uri}}">{{{description.title}}}</a></p>
+                </div>
 
-            <div class="col col--md-3 col--lg-3">
-                <p>{{description.cdid}}</p>
-            </div>
+                {{!-- CDID --}}
+                <div class="col col--md-3 col--lg-3">
+                    <p>{{description.cdid}}</p>
+                </div>
 
-            <div class="col col--md-4 col--lg-4">
-                <p>{{#if description.unit}}
-                    {{description.unit}}
-                {{else}}
-                    &nbsp;
-                {{/if}}</p>
-            </div>
+                {{!-- Unit --}}
+                <div class="col col--md-4 col--lg-4">
+                    <p>{{#if description.unit}}
+                        {{description.unit}}
+                    {{else}}
+                        &nbsp;
+                    {{/if}}</p>
+                </div>
 
-            <div class="col col--md-4 col--lg-8">
-                <p>{{df description.releaseDate}}</p>
-            </div>
+                {{!-- Release date --}}
+                <div class="col col--md-4 col--lg-8">
+                    <p>{{df description.releaseDate}}</p>
+                </div>
 
-            <div class="col col--md-2 col--lg-2">
-                <p>NEW</p>
-            </div>
+                {{!-- Is new? --}}
+                <div class="col col--md-2 col--lg-2">
+                    <p>NEW</p>
+                </div>
 
-        </div>
+            </div>
         {{/each}}
 
 
