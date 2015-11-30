@@ -86,10 +86,12 @@
 				{{!-- {{/if_any}} --}}
 				{{!-- RESULTS --}}
 				<div class="results col col--md-34 col--lg-40 margin-left-md--1">
-					{{> list/partials/search-results-text-help result}}
 
-					{{#block "block-featured-result"}}
-					{{/block}}
+                    {{#block "block-featured-result"}}
+                    {{/block}}
+
+					{{> list/partials/search-results-text-help result}}
+                    
 					{{!-- MAIN RESULTS --}}
 					<!-- /desktop-grid-one-third -->
 					<div class="search-results">
