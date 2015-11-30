@@ -4,8 +4,9 @@
 <h5 class="filters__sub-title">Data</h5>
 {{> list/filters/data}}
 <h5 class="filters__sub-title">Other</h5>
-
-<ul class="list--neutral flush-top">
-	{{>list/partials/filter-item id="methodology" value="methodology" label=labels.methodology docCount=(add result.docCounts.static_qmi result.docCounts.static_methodology)}}
-	{{>list/partials/filter-item id="corporate" value="corporate_information" label=labels.corporate-information  explanation=labels.search-expand-types docCount=(add result.docCounts.static_landing_page result.docCounts.static_foi result.docCounts.static_page)}}
-</ul>
+<div class="js-checkbox-container">
+	<ul class="list--neutral flush-top">
+		{{>list/partials/filter-item id="methodology" value="methodology" label=labels.methodology docCount=(add result.docCounts.static_qmi result.docCounts.static_methodology)}}
+		{{>list/partials/filter-item id="corporate" value="corporate_information" label=labels.corporate-information  explanation=labels.search-expand-types docCount=(add result.docCounts.static_landing_page result.docCounts.static_foi result.docCounts.static_page)}}
+	</ul>
+</div>
