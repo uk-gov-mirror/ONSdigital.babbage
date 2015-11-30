@@ -1,2 +1,1 @@
-<li class="filters__a-z-list-item"><input name="az" type="radio" id="radio-{{letter}}" value="{{letter}}" {{#if (eq (lowercase parameters.az.0) letter)}}checked{{/if}}{{#unless (get result.docCounts letter)}} disabled{{/unless}}><label for="radio-{{letter}}">{{capitalize letter}}</label>
-</li>
+<input name="az" type="radio" id="radio-{{letter}}" value="{{letter}}" {{#if (eq (lowercase parameters.az.0) letter)}}checked{{/if}}{{#unless (get result.docCounts letter)}} disabled{{/unless}}><label for="radio-{{letter}}">{{capitalize letter}}</label>
