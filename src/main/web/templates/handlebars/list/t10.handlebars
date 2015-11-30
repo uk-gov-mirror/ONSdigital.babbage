@@ -26,9 +26,9 @@
 {{#partial "block-featured-result"}}
 {{!-- HEADLINE RESULTS --}}
 {{#if featuredResult.results.0}}
-	<div class="headline-result clickable-wrap">
+	<div class="headline-result clickable-wrap col-wrap">
 		{{#resolve featuredResult.results.0.uri}}
-			<div class="col col--md-36 col--lg-40 tiles__item flush-col flush-top">
+			<div class="col col--md-36 col--lg-40 tiles__item">
 				{{!-- Sparkline --}}
 				<div class="col col--md-17 col--lg-20">
 					{{#resolve items.0.uri assign="series" filter="series"}}
