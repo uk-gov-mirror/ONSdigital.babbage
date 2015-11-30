@@ -1,5 +1,7 @@
-<ul class="list--neutral flush-top">
-	{{>list/partials/filter-item id="bulletin" value="bulletin" label=labels.bulletin docCount=result.docCounts.bulletin}}
-	{{>list/partials/filter-item id="article" value="article" label=labels.article docCount=result.docCounts.article}}
-	{{>list/partials/filter-item id="compendia" value="compendia" label="Compendia" docCount=result.docCounts.compendium_landing_page}}
-</ul>
+<div class="js-checkbox-container">
+	<ul class="list--neutral flush-top">
+		{{>list/partials/filter-item id="bulletin" value="bulletin" label=labels.bulletin docCount=result.docCounts.bulletin}}
+		{{>list/partials/filter-item id="article" value="article" label=labels.article docCount=result.docCounts.article}}
+		{{>list/partials/filter-item id="compendia" value="compendia" label="Compendia" docCount=result.docCounts.compendium_landing_page}}
+	</ul>
+</div>

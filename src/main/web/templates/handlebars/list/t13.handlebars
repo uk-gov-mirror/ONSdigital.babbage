@@ -2,6 +2,12 @@
 Time series data explorer
 {{/partial}}
 
+{{#partial "block-results-text"}}
+	<div class="col col--md-28 col--lg-38">
+		{{> list/partials/list-results-text-number result resultsLabel="time series data" showTopic=true}}
+	</div>
+{{/partial}}
+
 {{#partial "block-filters"}}
 	{{> list/filters/keywords}}
 	{{> list/filters/topics}}

@@ -1,5 +1,5 @@
 {{#partial "block-title"}}
-	Browse our statistics by A to Z
+	<span class="js-enhance--show">Browse our statistics by A to Z</span>
 {{/partial}}
 
 {{!-- {{#partial "block-results-text"}}
@@ -21,7 +21,7 @@
 
 {{#partial "block-results-text"}}
 	<div class="col col--md-28 col--lg-38">
-		{{> list/partials/list-results-text-number result resultsLabel="results"}}
+		{{> list/partials/list-results-text-number result resultsLabel="statistical bulletins" atoz=true}}
 	</div>
 {{/partial}}
 
@@ -58,7 +58,6 @@
 			 	{{> list/partials/az-letter letter="z"}}
 			 </ul>
 		</div>
-		<input type="hidden" name="az" value="{{parameters.az.0}}">
 {{/partial}}
 
 {{!-- Inheriting from base list template --}}

@@ -7,6 +7,12 @@
 	{{#if showLocation}}
 		that are related to {{> partials/location }}
 	{{/if}}
+	{{#if_all showTopic parameters.topic.0 (ne parameters.topic.0 "Home")}}
+		that are related to {{#resolve parameters.topic.0}}<span class="lowercase"><strong>{{description.title}}</strong></span>{{/resolve}}
+	{{/if_all}}
+	{{#if atoz parameters.az.0}}
+		that begin with the letter <strong>'{{parameters.az.0}}'</strong>
+	{{/if}}
 	{{#if_any parameters.fromDate.0 parameters.toDate.0}} published
 		{{#if parameters.fromDate.0}}
 			after <strong>{{df parameters.fromDate.0 outputFormat="dd MMMM yyyy" inputFormat="dd/MM/yyyy"}}</strong>
@@ -31,6 +37,3 @@
 		{{/unless}}
 	{{/if_any}}
 </h2>
-
-{{!-- TODO ADD LOCATION IF WANTED --}}
-{{!-- TODO ADD A-Z ACTIVE LETTER --}}
