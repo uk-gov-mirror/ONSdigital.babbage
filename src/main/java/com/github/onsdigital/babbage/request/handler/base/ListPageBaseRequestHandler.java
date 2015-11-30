@@ -4,6 +4,7 @@ import com.github.onsdigital.babbage.content.client.ContentReadException;
 import com.github.onsdigital.babbage.paginator.Paginator;
 import com.github.onsdigital.babbage.response.BabbageResponse;
 import com.github.onsdigital.babbage.response.BabbageStringResponse;
+import com.github.onsdigital.babbage.search.AggregateQuery;
 import com.github.onsdigital.babbage.search.ONSQuery;
 import com.github.onsdigital.babbage.search.SearchService;
 import com.github.onsdigital.babbage.search.helpers.SearchRequestHelper;
@@ -15,14 +16,13 @@ import com.github.onsdigital.babbage.search.model.field.FilterableField;
 import com.github.onsdigital.babbage.template.TemplateService;
 import com.github.onsdigital.babbage.util.URIUtil;
 import com.github.onsdigital.babbage.util.json.JsonUtil;
+import org.apache.commons.lang3.ObjectUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
+import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.addTermAggregation;
 import static com.github.onsdigital.babbage.util.URIUtil.cleanUri;
 import static javax.ws.rs.core.MediaType.TEXT_HTML;
 
@@ -58,7 +58,7 @@ public abstract class ListPageBaseRequestHandler {
 
     /**
      * List page request handler is registered with this request type, requests made ending with request type is delegated to the handler automatically
-     *
+     * <p/>
      * e.g.   if request type is publications any http request urls ending in /publications will be delegated to publications handler
      *
      * @return
@@ -89,21 +89,45 @@ public abstract class ListPageBaseRequestHandler {
 
     protected LinkedHashMap<String, Object> prepareData(String requestedUri, HttpServletRequest request) throws IOException, ContentReadException {
         ONSQuery query = createQuery(requestedUri, request);
-        SearchResponseHelper responseHelper = doSearch(request, query);
-        Paginator.assertPage(query.getPage(), responseHelper);
-        return resolveListData(request, query, responseHelper);
+        AggregateQuery aggregateQuery = buildAggregateQuery(query);
+        List<SearchResponseHelper> responseHelpers = aggregateQuery == null ? doSearch(request, query) : doSearch(request,query,aggregateQuery);
+        Iterator<SearchResponseHelper> iterator = responseHelpers.iterator();
+        SearchResponseHelper results = iterator.next();
+        SearchResponseHelper aggregateResults = null;
+        if (iterator.hasNext()) {
+             aggregateResults = iterator.next();
+        }
+        Paginator.assertPage(query.getPage(), results);
+        return resolveListData(request, query, results, aggregateResults);
     }
 
-    protected LinkedHashMap<String, Object> resolveListData(HttpServletRequest request, ONSQuery query, SearchResponseHelper responseHelper) throws IOException {
+    protected AggregateQuery buildAggregateQuery(ONSQuery query) {
+        if (isAggregateByType()) {
+            AggregateQuery aggregateQuery = new AggregateQuery();
+            //Applies aggregations on all types, regardless of filters as counts for all types are needed
+            aggregateQuery.setTypes(ContentType.getNamesOf(getAllowedTypes()))
+                    .setFields(query.getFields())
+                    .setSearchTerm(query.getSearchTerm())
+                    .setFilters(query.getFilters());
+            addTermAggregation(aggregateQuery, "count_by_type", FilterableField._type);
+            return aggregateQuery;
+        }
+        return null;
+    }
+
+    protected LinkedHashMap<String, Object> resolveListData(HttpServletRequest request, ONSQuery query, SearchResponseHelper responseHelper, SearchResponseHelper aggregateResponseHelper) throws IOException {
         LinkedHashMap<String, Object> listData = new LinkedHashMap<>();
         listData.put("result", responseHelper.getResult());
         listData.put("paginator", Paginator.getPaginator(query.getPage(), responseHelper));
         listData.putAll(getBaseData(request));
+        if (aggregateResponseHelper != null) {
+            listData.put("counts", aggregateResponseHelper.getResult());
+        }
         return listData;
     }
 
     /**
-     *Base data to render the correct template, can be used for rendering empty page with no results
+     * Base data to render the correct template, can be used for rendering empty page with no results
      *
      * @return
      * @throws IOException
@@ -125,9 +149,6 @@ public abstract class ListPageBaseRequestHandler {
         if (isFilterLatest(request)) {
             SearchRequestHelper.addTermFilter(query, FilterableField.latestRelease, true);
         }
-        if(isAggregateByType()){
-            SearchRequestHelper.addTermAggregation(query, "count_by_type", FilterableField._type);
-        }
         return query;
     }
 
@@ -137,8 +158,14 @@ public abstract class ListPageBaseRequestHandler {
         return uri;
     }
 
-    protected SearchResponseHelper doSearch(HttpServletRequest request, ONSQuery query) throws IOException {
-        return SearchService.getInstance().search(query);
+    protected List<SearchResponseHelper> doSearch(HttpServletRequest request, ONSQuery... queries) throws IOException {
+        if (queries.length > 1) {
+            return SearchService.getInstance().searchMultiple(queries);
+        } else {
+            ArrayList<SearchResponseHelper> responses = new ArrayList<>();
+            responses.add(SearchService.getInstance().search(queries[0]));
+            return responses;
+        }
     }
 
     private List<Topic> getTopics() throws IOException {

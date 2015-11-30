@@ -50,4 +50,19 @@ public enum ContentType {
         }
         return false;
     }
+
+    /**
+     * Returns given content types' name as a string array
+     *
+     * @param types
+     * @return
+     */
+    public static String[] getNamesOf(ContentType... types) {
+        String[] names = new String[types.length];
+        for (int i = 0; i < types.length; i++) {
+            ContentType type = types[i];
+            names[i] = type.name();
+        }
+        return names;
+    }
 }

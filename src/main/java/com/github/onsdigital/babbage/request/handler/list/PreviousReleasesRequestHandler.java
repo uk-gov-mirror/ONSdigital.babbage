@@ -16,6 +16,7 @@ import com.github.onsdigital.babbage.util.json.JsonUtil;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.addSort;
@@ -61,7 +62,8 @@ public class PreviousReleasesRequestHandler extends ListPageBaseRequestHandler i
     }
 
     @Override
-    protected SearchResponseHelper doSearch(HttpServletRequest request, ONSQuery query) throws IOException {
+    protected List<SearchResponseHelper> doSearch(HttpServletRequest request, ONSQuery... queries) throws IOException {
+        ONSQuery query = queries[0];
         //default sort is relevance, clear before searching
         query.getSorts().clear();
         addSort(query, SortBy.RELEASE_DATE);

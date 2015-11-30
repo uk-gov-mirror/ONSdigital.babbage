@@ -107,6 +107,11 @@ public class ONSQuery {
         return filters;
     }
 
+    public ONSQuery setFilters(List<FilterBuilder> filters) {
+        this.filters = filters;
+        return this;
+    }
+
     public List<AggregationBuilder> getAggregations() {
         return aggregations;
     }

@@ -51,10 +51,12 @@ public class RelatedDataRequestHandler extends ListPageBaseRequestHandler implem
 
             ONSQuery query = createQuery(requestedUri, request);
             SearchRequestHelper.addTermsFilter(query, uri, uriArray);
-            SearchResponseHelper responseHelper = doSearch(request, query);
-            Paginator.assertPage(query.getPage(), responseHelper);
-            return resolveListData(request, query, responseHelper);
+            List<SearchResponseHelper> responseHelpers = doSearch(request, query);
+            SearchResponseHelper responseHelper = responseHelpers.iterator().next();
+            Paginator.assertPage(query.getPage(),  responseHelper );
+            return resolveListData(request, query, responseHelper, null);
         }
+
     }
 
     private boolean isPublication(Object type) {

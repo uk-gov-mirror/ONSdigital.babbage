@@ -1,21 +1,9 @@
 {{#partial "block-title"}}Search{{/partial}}
 
 {{#partial "block-list-tabs"}}
-	<li>
-		<a href="/search?q={{parameters.q.0}}" class="tab__item tab__item--active">
-			All results
-		</a>
-	</li>
-	<li>
-		<a href="/searchdata?q={{parameters.q.0}}" class="tab__item">
-			Data
-		</a>
-	</li>
-	<li>
-		<a href="/searchpublication?q={{parameters.q.0}}" class="tab__item">
-			Publications
-		</a>
-	</li>
+	{{> list/partials/tab name="All results" active=true href="/search"}}
+	{{> list/partials/tab name="Data" active=false href="/searchdata"}}
+	{{> list/partials/tab name="Publications" active=false href="/searchpublication"}}
 {{/partial}}
 
 {{#partial "block-filters"}}

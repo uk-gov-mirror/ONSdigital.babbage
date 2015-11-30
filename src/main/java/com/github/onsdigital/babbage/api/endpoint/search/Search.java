@@ -7,6 +7,7 @@ import com.github.onsdigital.babbage.request.handler.base.ListPageBaseRequestHan
 import com.github.onsdigital.babbage.response.BabbageRedirectResponse;
 import com.github.onsdigital.babbage.response.BabbageResponse;
 import com.github.onsdigital.babbage.response.BabbageStringResponse;
+import com.github.onsdigital.babbage.search.AggregateQuery;
 import com.github.onsdigital.babbage.search.ONSQuery;
 import com.github.onsdigital.babbage.search.SearchService;
 import com.github.onsdigital.babbage.search.helpers.SearchRequestHelper;
@@ -128,21 +129,27 @@ public class Search extends ListPageBaseRequestHandler {
     @Override
     protected LinkedHashMap<String, Object> prepareData(String requestedUri, HttpServletRequest request) throws IOException, ContentReadException {
         SearchResponseHelper contentResponse;
-        SearchResponseHelper featuresResultsResponse = null;
+        SearchResponseHelper aggregateResponseHelper;
+        SearchResponseHelper featuredResultsResponse = null;
 
         ONSQuery contentQuery = createQuery(requestedUri, request);
+        AggregateQuery aggregateQuery = buildAggregateQuery(contentQuery);
+        List<SearchResponseHelper> searchResponseHelpers;
         if (contentQuery.getPage() == 1 && !isFiltered(request)) {
-            List<SearchResponseHelper> searchResponseHelpers = SearchService.getInstance().searchMultiple(contentQuery, buildFeaturedResultQuery(contentQuery.getSearchTerm()));
-            contentResponse = searchResponseHelpers.get(0);
-            featuresResultsResponse = searchResponseHelpers.get(1);
+             searchResponseHelpers = SearchService.getInstance().searchMultiple(contentQuery, aggregateQuery, buildFeaturedResultQuery(contentQuery.getSearchTerm()));
+            featuredResultsResponse = searchResponseHelpers.get(2);
         } else {
-            contentResponse = doSearch(request, contentQuery);
+            searchResponseHelpers = SearchService.getInstance().searchMultiple(contentQuery, aggregateQuery);
         }
+        contentResponse = searchResponseHelpers.get(0);
+        aggregateResponseHelper = searchResponseHelpers.get(1);
+
         Paginator.assertPage(contentQuery.getPage(), contentResponse);
         LinkedHashMap<String, Object> listData = new LinkedHashMap<>();
             listData.put("result", contentResponse.getResult());
-        if (featuresResultsResponse != null) {
-            listData.put("featuredResult", featuresResultsResponse.getResult());
+            listData.put("counts", aggregateResponseHelper.getResult());
+        if (featuredResultsResponse != null) {
+            listData.put("featuredResult", featuredResultsResponse.getResult());
         }
         listData.put("paginator", Paginator.getPaginator(contentQuery.getPage(), contentResponse));
         listData.putAll(getBaseData(request));
