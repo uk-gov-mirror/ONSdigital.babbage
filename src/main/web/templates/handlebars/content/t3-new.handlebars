@@ -16,7 +16,8 @@
                         {{#if items}}<a href="#timeseries" class="jsEnhanceAnimateScroll"><li id="timeseries-menu-item" class="side-bar__item padding-left-md--1">Time series data</li></a>{{/if}}
                         {{#if datasets}}<a href="#datasets" class="jsEnhanceAnimateScroll"><li id="datasets-menu-item" class="side-bar__item padding-left-md--1">Spreadsheets</li></a>{{/if}}
                         <a href="#commissioned" class="jsEnhanceAnimateScroll"><li id="commissioned-menu-item" class="side-bar__item padding-left-md--1">Commissioned Statistics</li></a>
-                        <a href="#publications" class="jsEnhanceAnimateScroll"><li id="publications-menu-item" class="side-bar__item padding-left-md--1 margin-bottom-md--4">Publications</li></a>
+                        <a href="#publications" class="jsEnhanceAnimateScroll"><li id="publications-menu-item" class="side-bar__item padding-left-md--1">Publications</li></a>
+                        {{#if relatedMethodology}}<a href="#methodology" class="jsEnhanceAnimateScroll"><li id="methodology-menu-item" class="side-bar__item padding-left-md--1 margin-bottom-md--4">Methodology</li></a>{{/if}}
                     </ul>
 
                     <div class="padding-top-sm--2 padding-bottom-sm--2 padding-left-sm--0 padding-right-sm--1 padding-top-md--2 padding-bottom-md--5 padding-left-md--0 padding-right-md--1 border-bottom--iron-sm border-bottom--iron-md">
@@ -126,12 +127,12 @@
         {{!-- Related methodology --}}
 		{{#if relatedMethodology}}
         <section class="margin-top">
-            <div class="wrapper">
+            <div id="methodology-container" class="section-container">
+                <h2 id="methodology" class="section-title">Methodology related to {{description.title}}</h2>
                 <div class="col-wrap">
-                    <div class="col col--lg-two-thirds">
-                        <div class="tiles__item tiles__item--nav-type flush-col">
-                            <h3 class="tiles__title-h3 tiles__title-h3--nav">Methodology related to {{description.title}}</h3>
-                                <ul class="tiles__content tiles__content--nav list--neutral">
+                    <div class="col col--lg-41 margin-left-lg--1 margin-bottom-sm--4 margin-bottom-md--4">
+                        <div class="background--iron">
+                                <ul class="list--neutral padding-top-sm--3 padding-bottom-sm--2 padding-left-sm--1 padding-right-sm--1 padding-top-md--3 padding-right-md--1 padding-bottom-md--2 padding-left-md--1  background--mercury flush">
                                     {{#each relatedMethodology}}
                                     {{#resolve this.uri filter="description"}}
                                     <li class="flush-top"><a href="{{absolute uri}}">{{description.title}}</a></li>
@@ -140,7 +141,7 @@
                                 </ul>
                             </div>
                         </div>
-                    <div class="col col--lg-one-third">
+                    <div class="col col--lg-41 margin-left-md--1">
                         {{> partials/local-box}}
                     </div>
                 </div> {{!-- /col-wrap --}}
