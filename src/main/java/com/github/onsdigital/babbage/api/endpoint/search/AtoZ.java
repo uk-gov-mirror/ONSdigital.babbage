@@ -22,6 +22,7 @@ import java.io.IOException;
 
 import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.addSort;
 import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.addTermAggregation;
+import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.addTermFilter;
 import static com.github.onsdigital.babbage.util.RequestUtil.getParam;
 
 /**
@@ -81,14 +82,10 @@ public class AtoZ extends ListPageBaseRequestHandler {
         aggregateQuery.setTypes(query.getTypes())
                 .setFields(query.getFields())
                 .setSearchTerm(query.getSearchTerm());
+        addTermFilter(aggregateQuery, FilterableField.latestRelease, true);
         addTermAggregation(aggregateQuery, "count_by_starts_with", FilterableField.title_first_letter);
         return aggregateQuery;
     }
-
-//    private AggregationBuilder buildStartsWithAggregation() {
-//        return AggregationBuilders.global()
-//                .subAggregation(new TermsBuilder("starts_with").field(FilterableField.title_first_letter.name()).size(0));
-//    }
 
     private String getTitlePrefix(HttpServletRequest request) {
         String prefix = StringUtils.trim(getParam(request, "az"));
