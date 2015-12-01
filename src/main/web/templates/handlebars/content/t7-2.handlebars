@@ -35,7 +35,7 @@
                          {{/each}}
                      </ul> --}}
                     {{#each downloads}}
-                        <p><a href="/file?uri={{file}}" title="{{title}}">{{title}}</a> ({{fs file}} {{fe file}})</p>
+                        <p><a href="/file?uri={{concat uri "/" file}}" title="{{title}}">{{title}}</a> ({{fs (concat uri "/"  file)}} {{fe (concat uri "/"  file)}})</p>
                     {{/each}}
                 </section>
 
