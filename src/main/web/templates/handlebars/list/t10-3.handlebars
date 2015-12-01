@@ -2,21 +2,7 @@
 
 
 {{#partial "block-list-tabs"}}
-	<li>
-		<a href="/search?q={{parameters.q.0}}" class="tab__item">
-			All results
-		</a>
-	</li>
-	<li>
-		<a href="/searchdata?q={{parameters.q.0}}" class="tab__item">
-			Data
-		</a>
-	</li>
-	<li>
-		<a href="/searchpublication?q={{parameters.q.0}}" class="tab__item tab__item--active">
-			Publications
-		</a>
-	</li>
+	{{> list/partials/search-tabs}}
 {{/partial}}
 
 {{#partial "block-filters"}}
