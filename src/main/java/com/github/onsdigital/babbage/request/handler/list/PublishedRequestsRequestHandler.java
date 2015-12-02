@@ -27,4 +27,8 @@ public class PublishedRequestsRequestHandler extends ListPageBaseRequestHandler 
         return false;
     }
 
+    @Override
+    protected boolean isListTopics() {
+        return false;
+    }
 }
