@@ -1,23 +1,4 @@
-{{#partial "block-title"}}
-Time series data explorer
-{{/partial}}
-
-{{#partial "block-results-text"}}
-	<div class="col col--md-28 col--lg-38">
-		{{> list/partials/list-results-text-number result resultsLabel="time series data" showTopic=true}}
-	</div>
-{{/partial}}
-
-{{#partial "block-filters"}}
-	{{> list/filters/keywords}}
-	{{> list/filters/topics}}
-	{{> list/filters/publish-date}}
-{{/partial}}
-
-{{#partial "block-before-results"}}
-    
-    <div id="timeseries-list-container"  class="width--md-35 width--lg-41 background--iron-light padding-top-md--3 padding-right-md--1 padding-bottom-md--3 padding-left-md--1 flush" style="display:none" >
-
+<div id="timeseries-list-container"  class="width--md-35 width--lg-41 background--iron-light padding-top-md--3 padding-right-md--1 padding-bottom-md--3 padding-left-md--1 flush" style="display:none" >
         <ul id="timeseries-list" class="list--neutral margin-top-md--0 margin-left-md--0 border-bottom--silver-md border-bottom--silver-lg">
         </ul>
 
@@ -38,21 +19,38 @@ Time series data explorer
             </button>
             <input type="hidden" name="format" value="csv"/>
         </form>
+</div>
 
-    </div>
-
+{{#partial "block-title"}}
+Time series data explorer
 {{/partial}}
 
+{{#partial "block-results-text"}}
+	<div class="col col--md-28 col--lg-38">
+		{{> list/partials/list-results-text-number result resultsLabel="time series data" showTopic=true}}
+	</div>
+{{/partial}}
+
+{{#partial "block-filters"}}
+	{{> list/filters/keywords}}
+	{{> list/filters/topics}}
+	{{> list/filters/publish-date}}
+{{/partial}}
 
 {{#partial "block-results"}}
-
-
+        
+        
+        {{#if result.results}}
+                <input id="select-all" type="checkbox" name="" data-title="{{description.title}}" data-uri="{{uri}}"  value="" class="timeseriestool-select js-timeseriestool-select-all" aria-label="select all">
+                <label for="select-all">Select all</label>
+        {{/if}}
+        
         {{#each result.results}}
             <div class="col-wrap {{#unless @first}}border-top--iron-md{{/unless}}">
 
                 {{!-- Checkbox --}}
                 <div class="col col--md-3 col--lg-3 margin-left-md--1 padding-left-md--1">
-                    <input type="checkbox" name="" data-title="{{description.title}}" data-uri="{{uri}}" data-cdid="{{description.cdid}}" value="" class="timeseriestool-select js-timeseriestool-select" aria-label="{{description.title}}">
+                    <input  type="checkbox" name="" data-title="{{description.title}}" data-cdid="{{description.cdid}}" data-uri="{{uri}}"  value="" class="timeseriestool-select js-timeseriestool-select" aria-label="{{description.title}}">
                 </div>
 
                 {{!-- Title --}}
@@ -98,3 +96,5 @@ Time series data explorer
 
 {{!-- Inheriting from base list template --}}
 {{> list/base/list }}
+
+
