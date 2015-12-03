@@ -8,6 +8,10 @@
 {{/partial}}
 
 {{#partial "publication-sidebar"}}
+    {{#if_eq type "article"}}
+        {{!-- Print & PDF --}}
+        {{>partials/print-options}}
+    {{/if_eq}}
 	{{!-- Related data --}}
 	{{>partials/related/data}}
 	{{!-- Related publications --}}
@@ -18,4 +22,10 @@
 	{{>partials/contact}}
 {{/partial}}
 
-{{> content/base/publication typeLabel="Article"}}
+{{!-- Inheritence --}}
+
+{{#if_eq type "article"}}
+    {{> content/base/publication typeLabel="Article"}}
+{{else}}
+    {{> content/base/publication-download typeLabel="Article"}}
+{{/if_eq}}
