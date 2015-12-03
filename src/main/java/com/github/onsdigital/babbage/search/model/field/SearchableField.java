@@ -7,7 +7,6 @@ package com.github.onsdigital.babbage.search.model.field;
  */
 public enum SearchableField {
     title_edition(100), //combined title and edition field, analyzed as one single field
-    summary,
     metaDescription,
     keywords,
     type,
