@@ -42,4 +42,8 @@
 {{/partial}}
 
 {{!-- Inheriting from base content template --}}
-{{> content/base/publication typeLabel="Methodology"}}
+{{#if_eq type "static_methodology"}}
+    {{> content/base/publication typeLabel="Methodology"}}
+{{else}}
+    {{> content/base/publication-download typeLabel="Methodology"}}
+{{/if_eq}}
