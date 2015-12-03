@@ -40,10 +40,12 @@ Time series data explorer
 {{#partial "block-results"}}
         
         
+        <div id="select-all-container" class="js-enhance--show">
         {{#if result.results}}
-                <input id="select-all" type="checkbox" name="" data-title="{{description.title}}" data-uri="{{uri}}"  value="" class="timeseriestool-select js-timeseriestool-select-all" aria-label="select all">
-                <label for="select-all">Select all</label>
+            <input id="select-all"  type="checkbox" name="" data-title="{{description.title}}" data-uri="{{uri}}"  value="" class="timeseriestool-select js-timeseriestool-select-all" aria-label="select all">
+            <label for="select-all">Select all</label>
         {{/if}}
+        </div>
         
         {{#each result.results}}
             <div class="col-wrap {{#unless @first}}border-top--iron-md{{/unless}}">
