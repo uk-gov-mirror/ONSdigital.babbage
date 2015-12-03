@@ -1,17 +1,3 @@
-{{#partial "block-additonal-metadata"}}
-	{{!-- Print and download --}}
-	<p class="col col--md-12 col--lg-15 print--hide meta__item">
-		<a href="" id="jsEnhancePrint" class="link-complex nojs-hidden js-enhance--show">
-			Print this chapter
-		</a>
-		<br class="nojs-hidden js-enhance--show"/>
-		<a href="{{uri}}/pdf" class="link-complex">
-			{{labels.dl-pdf}}
-		</a>
-	</p>
-{{/partial}}
-
-
 {{#partial "block-content"}}
 	{{!-- TABLE OF CONTENTS --}}
 	<div class="wrapper">
@@ -83,9 +69,9 @@
 					<div class="accordion__content panel--bottom-mar-small" aria-labelledby="sc-{{@index_1}}">
 						<ul class="list--neutral">
 							{{#each relatedMethodology}}
-							{{#resolve this.uri filter="description"}}
-							<li><a href="{{absolute uri}}">{{description.title}}</a></li>
-							{{/resolve}}
+                                {{#resolve this.uri filter="description"}}
+                                    <li><a href="{{absolute uri}}">{{description.title}}</a></li>
+                                {{/resolve}}
 							{{/each}}
 						</ul>
 						<a class="print--hide jsEnhanceAnimateScroll" href="#toc" title="{{labels.back-to-toc}}">{{labels.back-to-toc}}</a>
@@ -96,7 +82,9 @@
 			{{/if_any}}
 		</article>
 		{{!-- Sidebar --}}
-		<div class="col col--md-11 col--lg-20">
+		<div class="col col--md-11 col--lg-20 margin-top-md--3">
+            {{!-- Print & PDF --}}
+            {{>partials/print-options}}
 			{{!-- Related data --}}
 			{{> partials/related/data }}
 			{{!-- Contact details --}}
