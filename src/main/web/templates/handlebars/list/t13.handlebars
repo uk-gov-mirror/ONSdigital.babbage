@@ -1,7 +1,6 @@
 <div id="timeseries-list-container"  class="width--md-35 width--lg-41 background--iron-light padding-top-md--3 padding-right-md--1 padding-bottom-md--3 padding-left-md--1 flush" style="display:none" >
         <ul id="timeseries-list" class="list--neutral margin-top-md--0 margin-left-md--0 border-bottom--silver-md border-bottom--silver-lg">
         </ul>
-
         <p class="flush inline margin-right-md--1">Download selected time series</p>
 
         {{!-- Excel download --}}
@@ -19,6 +18,13 @@
             </button>
             <input type="hidden" name="format" value="csv"/>
         </form>
+
+
+        <div>
+            <input id="remember-selection"  type="checkbox" name="" data-uri="{{uri}}"  value="" class="timeseriestool-select" aria-label="remember selection">
+            <label for="remember-selection">Remember selection</label>
+        </div>
+        
 </div>
 
 {{#partial "block-title"}}
@@ -42,7 +48,7 @@ Time series data explorer
         
         <div id="select-all-container" class="js-enhance--show">
         {{#if result.results}}
-            <input id="select-all"  type="checkbox" name="" data-title="{{description.title}}" data-uri="{{uri}}"  value="" class="timeseriestool-select js-timeseriestool-select-all" aria-label="select all">
+            <input id="select-all"  type="checkbox" name="" value="" class="timeseriestool-select js-timeseriestool-select-all" aria-label="select all">
             <label for="select-all">Select all</label>
         {{/if}}
         </div>
