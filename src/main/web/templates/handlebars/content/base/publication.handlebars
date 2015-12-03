@@ -1,34 +1,3 @@
-{{#if_any (eq type "article_download") (eq type "static_methodology_download")}}
-    {{#assign "pdf"}}
-        true
-    {{/assign}}
-{{/if_any}}
-
-{{#partial "block-additonal-metadata"}}
-
-    {{#if pdf}}
-
-
-
-    {{else}}
-	
-        {{!-- Print and download --}}
-        <p class="col col--md-12 col--lg-15 print--hide meta__item">
-            <a href="" id="jsEnhancePrint" class="link-complex nojs-hidden js-enhance--show">
-                {{!-- <span class="icon icon-print"></span> --}}
-                Print {{> type-label type_code=type}}
-            </a>
-            <br class="nojs-hidden js-enhance--show"/>
-            {{!-- <span class="icon icon-download"></span> --}}
-            <a href="{{uri}}/pdf" class="link-complex">
-                {{labels.dl-pdf}}
-            </a>
-        </p>
-
-    {{/if}}
-
-{{/partial}}
-
 {{#partial "block-content"}}
     <div class="wrapper">
         {{#unless pdf}}
