@@ -42,25 +42,25 @@
 		{{/if}}
 
 		<div class="wrapper">
-				<form id="form">
-				<div class="col-wrap print-hidden">
-					<div class="col">
-						{{#block "block-results-text"}}
-							<div class="col col--md-28 col--lg-38">
-								{{> list/partials/search-results-text-number result}}
-							</div>
-						{{/block}}
-						{{!-- {{#block "block-sort"}} --}}
-							{{#if result.results}}
-								{{#unless hideSort}}
-									<div class="float-right">
-										{{> list/filters/sort}}
-									</div>
-								{{/unless}}
-							{{/if}}
-						{{!-- {{/block}} --}}
-					</div>
+			<div class="col-wrap print-hidden">
+				<div class="col">
+					{{#block "block-results-text"}}
+						<div class="col col--md-28 col--lg-38">
+							{{> list/partials/search-results-text-number result}}
+						</div>
+					{{/block}}
+					{{!-- {{#block "block-sort"}} --}}
+						{{#if result.results}}
+							{{#unless hideSort}}
+								<div class="float-right">
+									{{> list/filters/sort}}
+								</div>
+							{{/unless}}
+						{{/if}}
+					{{!-- {{/block}} --}}
 				</div>
+			</div>
+			<form id="form">
 				{{!-- FILTERS --}}
 				{{!-- {{#if_any result.results parameters.filter parameters.time_series}} --}}
 				<div class="col col--md-12 col--lg-18 margin-bottom">
@@ -73,12 +73,12 @@
 								<div class="filters">
 									{{#block "block-filters"}}
 									{{/block}}
-								<button type="submit" class="btn btn--primary btn--thick margin-top-sm--2 margin-top-md--2 js-enhance--hide">{{labels.search-filter}}</button>
 								</div>
+								<button type="submit" class="btn btn--primary btn--thick margin-top-sm--2 margin-top-md--2 js-enhance--hide">{{labels.search-filter}}</button>
 							</div>
 						</div>
 						{{> partials/archives-box}}
-				</div>
+					</div>
 				</form>
 				{{!-- {{/if_any}} --}}
 				
