@@ -64,53 +64,53 @@
 				{{!-- FILTERS --}}
 				{{!-- {{#if_any result.results parameters.filter parameters.time_series}} --}}
 				<div class="col col--md-12 col--lg-18 margin-bottom">
-						<div class="tiles__item tiles__item--nav-type flush-col">
-							<div class="tiles__title-h3 tiles__title-h3--nav">
-								<h3 class="inline">Refine results</h3>
-								<a href="{{location.pathname}}{{#if parameters.q.0}}?q={{parameters.q.0}}{{/if}}" value="Reset" class="btn btn--primary btn--thin btn--narrow btn--small float-right">{{labels.search-refine-clear}}</a>
-							</div>
-							<div class="tiles__content tiles__content--nav">
-								<div class="filters">
-									{{#block "block-filters"}}
-									{{/block}}
-								</div>
-								<button type="submit" class="btn btn--primary btn--thick margin-top-sm--2 margin-top-md--2 js-enhance--hide">{{labels.search-filter}}</button>
-							</div>
+					<div class="tiles__item tiles__item--nav-type flush-col">
+						<div class="tiles__title-h3 tiles__title-h3--nav">
+							<h3 class="inline">Refine results</h3>
+							<a href="{{location.pathname}}{{#if parameters.q.0}}?q={{parameters.q.0}}{{/if}}" value="Reset" class="btn btn--primary btn--thin btn--narrow btn--small float-right">{{labels.search-refine-clear}}</a>
 						</div>
-						{{> partials/archives-box}}
+						<div class="tiles__content tiles__content--nav">
+							<div class="filters">
+								{{#block "block-filters"}}
+								{{/block}}
+							</div>
+							<button type="submit" class="btn btn--primary btn--thick margin-top-sm--2 margin-top-md--2 js-enhance--hide">{{labels.search-filter}}</button>
+						</div>
 					</div>
-				</form>
-				{{!-- {{/if_any}} --}}
-				
-				{{!-- RESULTS --}}
-				<div class="col col--md-34 col--lg-40 margin-left-md--1">
-
-					<div id="results" class="results">
-
-                    {{#block "block-featured-result"}}{{/block}}
-
-					{{> list/partials/search-results-text-help result}}
-                    
-					{{!-- MAIN RESULTS --}}
-					<!-- /desktop-grid-one-third -->
-					<div class="search-results">
-						<ul class="list--neutral flush">
-							{{#block "block-results"}}
-								{{#each result.results}}
-									<li class="search-results__item">
-										{{> list/partials/results-title showEdition=true}}
-										{{> list/partials/results-meta}}
-										{{> list/partials/results-summary}}
-										{{> list/partials/results-keywords}}
-									</li>
-								{{/each}}
-							{{/block}}
-						</ul>
-					</div>
-					{{> list/partials/paginator}}
-					<!-- /desktop-grid-two-thirds -->
-					</div>
+					{{> partials/archives-box}}
 				</div>
+			</form>
+			{{!-- {{/if_any}} --}}
+				
+			{{!-- RESULTS --}}
+			<div class="col col--md-34 col--lg-40 margin-left-md--1">
+
+				<div id="results" class="results">
+
+				{{#block "block-featured-result"}}{{/block}}
+
+				{{> list/partials/search-results-text-help result}}
+
+				{{!-- MAIN RESULTS --}}
+				<!-- /desktop-grid-one-third -->
+				<div class="search-results">
+					<ul class="list--neutral flush">
+						{{#block "block-results"}}
+							{{#each result.results}}
+								<li class="search-results__item">
+									{{> list/partials/results-title showEdition=true}}
+									{{> list/partials/results-meta}}
+									{{> list/partials/results-summary}}
+									{{> list/partials/results-keywords}}
+								</li>
+							{{/each}}
+						{{/block}}
+					</ul>
+				</div>
+				{{> list/partials/paginator}}
+				<!-- /desktop-grid-two-thirds -->
+				</div>
+			</div>
 		</div>
 	</div>
 {{/partial}}
