@@ -44,8 +44,7 @@
 		})(document, 'script');
 		</script>
         <!-- Google Analytics Content Experiment code -->
-        {{#if_eq uri "/economy/inflationandpriceindices"}}
-		<script>function utmx_section(){}function utmx(){}(function(){var
+        {{#if_eq uri "/economy/inflationandpriceindices"}}{{#unless (eq parameters.test.0 "B")}}<script>function utmx_section(){}function utmx(){}(function(){var
                 k='104040341-0',d=document,l=d.location,c=d.cookie;
             if(l.search.indexOf('utm_expid='+k)>0)return;
             function f(n){if(c){var i=c.indexOf(n+'=');if(i>-1){var j=c.
@@ -56,7 +55,7 @@
                     '&utmx='+(x?x:'')+'&utmxx='+(xx?xx:'')+'&utmxtime='+new Date().
                             valueOf()+(h?'&utmxhash='+escape(h.substr(1)):'')+
                     '" type="text/javascript" charset="utf-8"><\/sc'+'ript>')})();
-        </script><script>utmx('url','A/B');</script>{{/if_eq}}
+        </script><script>utmx('url','A/B');</script>{{/unless}}{{/if_eq}}
         <!-- End of Google Analytics Content Experiment code -->
 	</head>
 	<body>
