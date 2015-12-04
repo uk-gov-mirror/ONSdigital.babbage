@@ -10,5 +10,9 @@
 	<input class="sort__input" type="hidden" name="q" value="{{parameters.q.0}}">
 {{/partial}}
 
+{{#partial "block-featured-result"}}
+	{{> partials/related/timeseries-tool}}
+{{/partial}}
+
 {{!-- Inheriting from base list template --}}
 {{> list/base/list tabs=true}}

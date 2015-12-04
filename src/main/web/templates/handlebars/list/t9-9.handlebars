@@ -29,5 +29,9 @@
 	{{> list/filters/publish-date }}
 {{/partial}}
 
+{{#partial "block-featured-result"}}
+	{{> partials/related/timeseries-tool}}
+{{/partial}}
+
 {{!-- Inheriting from base list template --}}
 {{> list/base/list tabs=true showBreadcrumb=true breadcrumbLabel="Data"}}
