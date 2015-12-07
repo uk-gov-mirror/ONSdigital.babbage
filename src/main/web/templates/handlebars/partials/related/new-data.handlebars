@@ -1,0 +1,29 @@
+{{#if relatedData}}
+	<div class="tiles__item tiles__item--nav-type flush-col print--hide">
+		{{#if_eq type "dataset_landing_page"}}
+            {{> partials/related/data-list}}
+        {{/if_eq}}
+
+		{{!-- Shows link to view all spreadsheets at that topic level --}}
+	</div>
+{{/if}}
+
+<a class="btn btn--primary btn--full-width margin-bottom-sm--2 margin-bottom-md--2" href="{{relatedUri}}">
+    {{!-- if "parent" get the parent title --}}
+    {{#if_eq relatedTitle "parent"}}
+        {{#last breadcrumb}}
+            View all data related to {{description.title}}
+        {{/last}}
+    {{/if_eq}}
+
+    {{!-- if "self" use page title and edition if one exists --}}
+    {{#if_eq relatedTitle "self"}}
+        View all data related to {{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}
+    {{/if_eq}}
+
+    {{!-- if not "self" or "parent" use custom title --}}
+
+    {{#if_all (ne relatedTitle "parent") (ne relatedTitle "self")}}
+        {{relatedTitle}}
+    {{/if_all}}
+</a>
