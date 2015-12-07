@@ -1,4 +1,4 @@
-from onsdigital/java-node-phantom-component
+FROM onsdigital/java-node-phantom-component
 
 # Add the build artifacts
 WORKDIR /usr/src
@@ -16,5 +16,5 @@ ENTRYPOINT java -Xmx2048m \
           -Drestolino.files=src/main/web \
           -Drestolino.classes=target/classes \
           -Drestolino.packageprefix=com.github.onsdigital \
-          -cp \"target/dependency/*:target/classes/\" \
+          -cp "target/dependency/*:target/classes/" \
           com.github.davidcarboni.restolino.Main
