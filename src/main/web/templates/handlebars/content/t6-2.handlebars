@@ -4,32 +4,16 @@
 		<div class="col-wrap">
 			<div class="col table-of-contents print--avoid-break">
 				<p class="print--hide">
-					{{#each breadcrumb}}
-					{{#if @last}}
-					{{labels.compendium-return}} <a href="{{uri}}">{{description.title}}</a>
-					{{/if}}
-					{{/each}}
+                    {{#last breadcrumb}}
+					    {{labels.compendium-return}} <a class="underline-link" href="{{uri}}">{{description.title}}</a>
+                    {{/last}}
 				</p>
-				<h2 class="table-of-contents__title">{{labels.toc}}</h2>
-				<ol id="toc" class="table-of-contents__list">
-					{{#each sections}}
-					<li class="table-of-contents__item">
-						<a href="#{{slugify title}}" class="jsEnhanceAnimateScroll">{{title}}</a>
-					</li>
-					{{/each}}
-					{{#if accordion}}
-					{{#each accordion}}
-					<li class="table-of-contents__item">
-						<a href="#{{slugify title}}" class="jsEnhanceAnimateScroll expand-accordion">{{title}}</a>
-					</li>
-					{{/each}}
-					{{/if}}
-					{{#if relatedMethodology}}
-					<li class="table-of-contents__item">
-						<a href="#methodology" class="jsEnhanceAnimateScroll expand-accordion">Methodology</a>
-					</li>
-					{{/if}}
-				</ol>
+                <div class="col-wrap border-bottom--iron-md">
+                    {{!--Table of Contents --}}
+                    {{> content/partials/toc}}
+                    {{!-- Print & PDF --}}
+                    {{> partials/print-options}}
+                </div>
 			</div>
 		</div>
 		{{!-- Content --}}
@@ -83,8 +67,6 @@
 		</article>
 		{{!-- Sidebar --}}
 		<div class="col col--md-11 col--lg-20 margin-top-md--3">
-            {{!-- Print & PDF --}}
-            {{>partials/print-options}}
 			{{!-- Related data --}}
 			{{> partials/related/data }}
 			{{!-- Contact details --}}
