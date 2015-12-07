@@ -34,14 +34,19 @@
 
             {{!-- Related data --}}
             {{#if datasets}}
-                <div class="tiles__item tiles__item--nav-type flush-col print--hide">
+                {{!-- <div class="tiles__item tiles__item--nav-type flush-col print--hide">
                     <h3 class="tiles__title-h3 tiles__title-h3--nav">Data in this {{> type-label type_code=type }}</h3>
                     <div class="tiles__extra margin-bottom-md--2">
                         {{#each datasets}}
                             <a href="{{uri}}">View all data in this {{> type-label type_code=type }}</a>
                         {{/each}}
                     </div>
-                </div>
+                </div> --}}
+
+                {{#each datasets}}
+                    {{>partials/related/new-data relatedUri=uri relatedTitle="self"}}
+                {{/each}}
+
             {{/if}}
 
             {{!-- Contact --}}
