@@ -1,12 +1,9 @@
-{{#if relatedData}}
-	<div class="tiles__item tiles__item--nav-type flush-col print--hide">
-		{{#if_eq type "dataset_landing_page"}}
-            {{> partials/related/data-list}}
-        {{/if_eq}}
 
-		{{!-- Shows link to view all spreadsheets at that topic level --}}
+{{#if_all relatedDatasets (eq type "dataset_landing_page")}}
+	<div class="print--hide">
+        {{> partials/related/data-list}}
 	</div>
-{{/if}}
+{{/if_all}}
 
 <a class="btn btn--primary btn--full-width margin-bottom-sm--2 margin-bottom-md--2" href="{{relatedUri}}">
     {{!-- if "parent" get the parent title --}}
