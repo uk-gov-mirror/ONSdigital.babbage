@@ -1,8 +1,6 @@
 {{#partial "publication-sidebar"}}
-    {{!-- Print & PDF --}}
-    {{>partials/print-options}}
     {{!-- Related data --}}
-    {{>partials/related/data}}
+    {{>partials/related/new-data relatedUri=(concat uri "/relateddata") relatedTitle="self"}}
     {{!-- Related publications --}}
     {{>partials/related/documents}}
     {{!-- Related bulletins --}}
