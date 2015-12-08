@@ -1,5 +1,7 @@
 
 {{#partial "block-main"}}
+	{{#block "block-alert"}}{{/block}}
+
 	{{#block "block-title-wrapper"}}
 		<div class="{{background}}">
 			<div class="wrapper">
@@ -18,8 +20,6 @@
 		</div>
 	{{/block}}
 
-	{{#block "block-alert"}}{{/block}}
-
 	<div class="page-content border">
 		<div class="wrapper">
 			<div class="col-wrap print-hidden">
@@ -29,7 +29,7 @@
 							{{> list/partials/search-results-text-number result}}
 						</div>
 					{{/block}}
-					{{!-- {{#block "block-sort"}} --}}
+					{{#block "block-results-extra"}}
 						{{#if result.results}}
 							{{#unless hideSort}}
 								<div class="float-right">
@@ -37,7 +37,7 @@
 								</div>
 							{{/unless}}
 						{{/if}}
-					{{!-- {{/block}} --}}
+					{{/block}}
 				</div>
 			</div>
 			<form id="form">
