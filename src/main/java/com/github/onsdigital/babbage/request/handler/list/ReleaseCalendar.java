@@ -1,6 +1,7 @@
 package com.github.onsdigital.babbage.request.handler.list;
 
 import com.github.onsdigital.babbage.request.handler.base.ListPageBaseRequestHandler;
+import com.github.onsdigital.babbage.request.handler.base.RequestHandler;
 import com.github.onsdigital.babbage.search.ONSQuery;
 import com.github.onsdigital.babbage.search.helpers.SearchResponseHelper;
 import com.github.onsdigital.babbage.search.model.ContentType;
@@ -15,6 +16,7 @@ import org.elasticsearch.search.sort.SortOrder;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 
 import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.addOrFilters;
 import static org.elasticsearch.index.query.FilterBuilders.andFilter;
@@ -23,7 +25,7 @@ import static org.elasticsearch.index.query.FilterBuilders.notFilter;
 /**
  * Created by bren on 22/09/15.
  */
-public class ReleaseCalendar extends ListPageBaseRequestHandler {
+public class ReleaseCalendar extends ListPageBaseRequestHandler implements RequestHandler {
     private final static ContentType[] ALLOWED_TYPES = {ContentType.release};
     private final static String REQUEST_TYPE = "releasecalendar";
 
@@ -48,7 +50,9 @@ public class ReleaseCalendar extends ListPageBaseRequestHandler {
     }
 
     @Override
-    protected SearchResponseHelper doSearch(HttpServletRequest request, ONSQuery query) throws IOException {
+    protected List<SearchResponseHelper> doSearch(HttpServletRequest request, ONSQuery... queries) throws IOException {
+        ONSQuery query = queries[0];
+
         String view = request.getParameter("view");
         boolean upcoming = "upcoming".equals(view);//published releases are requested
 
@@ -56,7 +60,7 @@ public class ReleaseCalendar extends ListPageBaseRequestHandler {
         TermFilterBuilder cancelled = FilterBuilders.termFilter(FilterableField.cancelled.name(), true);
         RangeFilterBuilder due = FilterBuilders.rangeFilter(FilterableField.releaseDate.name()).to(new Date());
 
-        if(upcoming) { //upcoming
+        if (upcoming) { //upcoming
             AndFilterBuilder notPublishedAndNotCancelled = andFilter(notFilter(published), notFilter(cancelled));
             AndFilterBuilder cancelledAndNotDue = andFilter(cancelled, notFilter(due));
             addOrFilters(query, notPublishedAndNotCancelled, cancelledAndNotDue);// not published and not cancelled or cancelled and not due

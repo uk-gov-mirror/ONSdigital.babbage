@@ -9,7 +9,7 @@
 
 {{#partial "publication-sidebar"}}
 	{{!-- Related data --}}
-	{{>partials/related/data}}
+    {{>partials/related/new-data relatedUri=(concat uri "/relateddata") relatedTitle="self"}}
 	{{!-- Related publications --}}
 	{{>partials/related/documents}}
 	{{!-- Related articles --}}
@@ -18,4 +18,10 @@
 	{{>partials/contact}}
 {{/partial}}
 
-{{> content/base/publication typeLabel="Article"}}
+{{!-- Inheritence --}}
+
+{{#if_eq type "article"}}
+    {{> content/base/publication typeLabel="Article"}}
+{{else}}
+    {{> content/base/publication-download typeLabel="Article"}}
+{{/if_eq}}

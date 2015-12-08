@@ -1,51 +1,62 @@
-{{#partial "block-main"}}
-<div class="page-content">
-	<div class="wrapper">
-		<form id="filters">
-			<input type="hidden" name="az" value="{{parameters.az.0}}">
-			<div class="col-wrap print-hidden">
-				<div class="col">
-					<div class="col col--md-28 col--lg-38">
-						<h1 class="search-page__title">Browse our statistics by A-Z</h1>
-						<p>You can find all of the statistical releases we produce in this comprehensive list.</p>
-					</div>
-				</div>
-			</div>
-			<div class="col-wrap print-hidden">
-				<div class="col">
-					<div class="float-right">
-						&nbsp
-					</div>
-				</div>
-			</div>
-			<div class="col col--md-12 col--lg-18 margin-bottom">
-				<div class="tiles__item tiles__item--nav-type flush-col print--hide">
-					<div class="tiles__title-h3 tiles__title-h3--nav">
-						<h3 class="inline">Refine results</h3>
-						<a href="{{location.pathname}}?az={{parameters.az.0}}" value="Reset" class="btn btn--primary btn--thin btn--narrow btn--small float-right">{{labels.search-refine-clear}}</a>
-					</div>
-					<div class="tiles__content tiles__content--nav">
-						<div class="filters">
-							{{> list/filters/keywords}}
-							<h4 class="filters__title">Choose a letter to browse</h4>
-							<div class="filters__a-z">
-								{{> partials/az parent="filters"}}
-							</div>
-						</div>
-						<button type="submit" class="btn btn--primary btn--thick margin-top--double">Filter</button>
-					</div>
-				</div>
-				{{> partials/archives-box}}
-			</div>
-			<div class="results col col--md-34 col--lg-40 margin-left-md--1">
-				{{> list/partials/results-text}}
-				{{> list/partials/results}}
-				{{> list/partials/paginator}}
-			</div>
-		</form>
+{{#partial "block-title"}}
+	<span class="js-enhance--show">Browse our statistics by A to Z</span>
+{{/partial}}
+
+{{!-- {{#partial "block-results-text"}}
+ 	<div class="col col--md-28 col--lg-38">
+ 		<p>You can find all of the statistical releases we produce in this comprehensive list.</p>
+ 	</div>
+ {{/partial}} --}}
+
+ {{#partial "block-results"}}
+ 	{{#each result.results}}
+ 		<li class="search-results__item">
+ 			{{> list/partials/results-title}}
+ 			{{> list/partials/results-meta}}
+ 			{{> list/partials/results-summary}}
+ 			{{> list/partials/results-keywords}}
+ 		</li>
+ 	{{/each}}
+ {{/partial}}
+
+{{#partial "block-results-text"}}
+	<div class="col col--md-28 col--lg-38">
+		{{> list/partials/list-results-text-number result resultsLabel="statistical bulletins" atoz=true}}
 	</div>
-</div>
+{{/partial}}
+
+{{#partial "block-filters"}}
+		{{> list/filters/keywords}}
+		<h4 class="filters__title">Choose a letter to browse</h4>
+		<div class="filters__a-z">
+			{{> list/partials/az-letter letter="a"}}
+			{{> list/partials/az-letter letter="b"}}
+			{{> list/partials/az-letter letter="c"}}
+			{{> list/partials/az-letter letter="d"}}
+			{{> list/partials/az-letter letter="e"}}
+			{{> list/partials/az-letter letter="f"}}
+			{{> list/partials/az-letter letter="g"}}
+			{{> list/partials/az-letter letter="h"}}
+			{{> list/partials/az-letter letter="i"}}
+			{{> list/partials/az-letter letter="j"}}
+			{{> list/partials/az-letter letter="k"}}
+			{{> list/partials/az-letter letter="l"}}
+			{{> list/partials/az-letter letter="m"}}
+			{{> list/partials/az-letter letter="n"}}
+			{{> list/partials/az-letter letter="o"}}
+			{{> list/partials/az-letter letter="p"}}
+			{{> list/partials/az-letter letter="q"}}
+			{{> list/partials/az-letter letter="r"}}
+			{{> list/partials/az-letter letter="s"}}
+			{{> list/partials/az-letter letter="t"}}
+			{{> list/partials/az-letter letter="u"}}
+			{{> list/partials/az-letter letter="v"}}
+			{{> list/partials/az-letter letter="w"}}
+			{{> list/partials/az-letter letter="x"}}
+			{{> list/partials/az-letter letter="y"}}
+			{{> list/partials/az-letter letter="z"}}
+		</div>
 {{/partial}}
 
 {{!-- Inheriting from base list template --}}
-{{> list/base/list}}
+{{> list/base/list hideSort=true}}

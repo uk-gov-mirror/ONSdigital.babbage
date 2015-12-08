@@ -9,15 +9,19 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
+
 /**
  * Created by bren on 08/06/15.
+ *
+ * A successful response for http request
+ *
  */
 public abstract class BabbageResponse {
 
-    private String mimeType = "application/json"; //Default mimetype
+    private String mimeType = APPLICATION_JSON; //Default mimetype
     private String charEncoding = CharEncoding.UTF_8;//Default encoding
     private Map<String, String> header;
-    private int statusCode = HttpServletResponse.SC_OK; //default status code
 
     public BabbageResponse(String mimeType) {
         this.mimeType = mimeType;
@@ -26,7 +30,7 @@ public abstract class BabbageResponse {
     public BabbageResponse() { }
 
     public void apply(HttpServletResponse response) throws IOException {
-        response.setStatus(statusCode);
+        response.setStatus(HttpServletResponse.SC_OK);
         response.setCharacterEncoding(getCharEncoding());
         response.setContentType(getMimeType());
         if (getHeader() != null) {
@@ -70,12 +74,4 @@ public abstract class BabbageResponse {
         return charEncoding;
     }
 
-    public int getStatusCode() {
-        return statusCode;
-    }
-
-    public BabbageResponse setStatusCode(int statusCode) {
-        this.statusCode = statusCode;
-        return this;
-    }
 }

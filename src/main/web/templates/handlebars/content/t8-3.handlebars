@@ -56,7 +56,7 @@
                                 </div>
 
                                 {{#if versions}}
-                                    <p class="flush"><a href="{{uri}}">Previous versions</a> of this data are available</p>
+                                    <p class="flush"><a class="underline-link" href="{{uri}}">Previous versions</a> of this data are available</p>
                                 {{/if}}
 
                                 {{#if supplementaryFiles}}
@@ -78,7 +78,7 @@
 
                                             <div class="show-hide show-hide--light border-top--abbey-sm border-top--abbey-md border-top--abbey-lg {{#if ../@last}}border-bottom--abbey-sm border-bottom--abbey-md border-bottom--abbey-lg margin-top--negative-two-fix{{/if}} js-show-hide">
                                                 <div class="js-show-hide__title {{#if ../@first}}is-shown{{/if}}">
-                                                    <h3 class="margin-bottom-md--1">{{description.edition}}</h3>
+                                                    <h3 class="margin-bottom-md--1">{{description.edition}}{{#if description.versionLabel}}: {{description.versionLabel}}{{/if}}</h3>
                                                 </div>
 
                                                 <div class="js-show-hide__content">
@@ -97,7 +97,7 @@
                                                     </div>
 
                                                     {{#if versions}}
-                                                        <p class="margin-top-sm--0 margin-top-md--0"><a href="{{uri}}">Previous versions</a> of this data are available</p>
+                                                        <p class="margin-top-sm--0 margin-top-md--0"><a class="underline-link" href="{{uri}}">Previous versions</a> of this data are available</p>
                                                     {{/if}}
 
                                                     {{#if supplementaryFiles}}
@@ -315,7 +315,7 @@
             <div class="col col--lg-one-third col--md-one-third margin-top margin-bottom">
 
                 {{!-- Related data --}}
-                {{> partials/related/datasets }}
+                {{> partials/related/new-data relatedUri="../datalist?filter=large_dataset" relatedTitle="parent"}}
 
                 {{!-- Related articles and bulletins --}}
                 {{> partials/related/documents }}

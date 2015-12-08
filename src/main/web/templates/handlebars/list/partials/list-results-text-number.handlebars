@@ -1,0 +1,39 @@
+<h2 aria-live="assertive" class="search-page__results-text">
+	{{#if_any results timeSeriesCount}}
+		<span class="stand-out-text">{{numberOfResults}}</span> {{#if parameters.filter}}<strong>{{> list/filters/filters-type-list}}</strong>{{else}}{{resultsLabel}}{{/if}}{{#if parameters.query.0}} containing <strong>‘{{parameters.query.0}}’</strong>{{/if}}
+	{{else}}
+		There are no {{#if parameters.filter}}<strong>{{> list/filters/filters-type-list}}</strong>{{else}}{{resultsLabel}}{{/if}}{{#if parameters.query.0}} containing <strong>'{{parameters.query.0}}'</strong>{{/if}}
+	{{/if_any}}
+	{{#if showLocation}}
+		that are related to {{> partials/location }}
+	{{/if}}
+	{{#if_all showTopic parameters.topic.0 (ne parameters.topic.0 "Home")}}
+		that are related to {{#resolve parameters.topic.0}}<span class="lowercase"><strong>{{description.title}}</strong></span>{{/resolve}}
+	{{/if_all}}
+	{{#if_all atoz parameters.az.0}}
+		that begin with the letter <strong>'{{parameters.az.0}}'</strong>
+	{{/if_all}}
+	{{#if_any parameters.fromDate.0 parameters.toDate.0}} published
+		{{#if parameters.fromDate.0}}
+			after <strong>{{df parameters.fromDate.0 outputFormat="dd MMMM yyyy" inputFormat="dd/MM/yyyy"}}</strong>
+		{{/if}}
+		{{#if parameters.toDate.0}}
+			{{#if parameters.fromDate.0}}
+				and
+			{{/if}}
+			before <strong>{{df parameters.toDate.0 outputFormat="dd MMMM yyyy" inputFormat="dd/MM/yyyy"}}</strong>
+		{{/if}}
+	{{/if_any}}
+	{{#if_any results}}
+		{{#unless hideSort}}
+			{{#if parameters.sortBy.0}}
+				, sorted by <strong>
+				{{#if_eq parameters.sortBy.0 "release_date"}}release date{{/if_eq}}
+				{{#if_eq parameters.sortBy.0 "title"}}title{{/if_eq}}
+			{{else}}
+				{{#if parameters.query.0}}, sorted by <strong>relevancy{{/if}}
+			{{/if}}
+		</strong>
+		{{/unless}}
+	{{/if_any}}
+</h2>

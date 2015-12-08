@@ -14,19 +14,17 @@ import java.util.Map;
 /**
  * Created by bren on 06/07/15.
  */
-public enum ArrayHelpers implements BabbageHandlebarsHelper<Object> {
+public enum ArrayHelpers implements BabbageHandlebarsHelper<Iterable> {
 
     contains {
         @Override
-        public CharSequence apply(Object context, Options options) throws IOException {
+        public CharSequence apply(Iterable context, Options options) throws IOException {
             Object value = options.param(0);
             if (options.isFalsy(context)) {
                 return options.inverse();
             }
 
-            Collection collection = (Collection) context;
-
-            for (Iterator iterator = collection.iterator(); iterator.hasNext(); ) {
+            for (Iterator iterator = context.iterator(); iterator.hasNext(); ) {
                 Object next = iterator.next();
                 if (HelperUtils.isEqual(next, value)) {
                     return options.fn();
@@ -43,37 +41,35 @@ public enum ArrayHelpers implements BabbageHandlebarsHelper<Object> {
 
     },
 
+
     /**
-     * Used for getting array element using array index or object property using property name (key)
-     *
-     * Handlebars lookup helper does the same thing, but Handlebars.java implementation is buggy and not exactly compatible with Handlebars.js lookup helper.
-     *
-     * Opened an issue regarding this on: https://github.com/jknack/handlebars.java/issues/418
-     *
-     * In the mean time created get Handlebars helper for this purpose
+     * Last element of array
      */
-    get {
+    last {
         @Override
-        public CharSequence apply(Object context, Options options) throws IOException {
-            if (options.params.length <= 0) {
-                return context.toString();
-            }
-            if (context == null) {
-                return null;
+        public CharSequence apply(Iterable context, Options options) throws IOException {
+            if (options.isFalsy(context)) {
+                return options.inverse();
             }
 
-            Object lookup = null;
-            if (context instanceof Map) {
-                lookup = ((Map) context).get(options.param(0));
-            } else if (context instanceof List) {
-                lookup = ((List) context).get(options.<Integer>param(0));
-            } else {
-                throw new RuntimeException("Object property resolution is not supported yet");
+            if (context instanceof List) {
+                List list = (List) context;
+                if (list.isEmpty()) {
+                    return options.inverse();
+                }
+                return options.fn(list.get(list.size() - 1));
             }
-            if (lookup == null) {
-                return null;
+
+            return options.fn(getLast(context.iterator()));
+        }
+
+        private Object getLast(Iterator iterator) {
+            while (true) {
+                Object current = iterator.next();
+                if (!iterator.hasNext()) {
+                    return current;
+                }
             }
-            return lookup.toString();
         }
 
         @Override

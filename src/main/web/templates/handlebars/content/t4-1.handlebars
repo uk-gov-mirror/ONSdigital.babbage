@@ -1,13 +1,13 @@
 {{#partial "publication-sidebar"}}
-		{{!-- Related data --}}
-		{{>partials/related/data}}
-		{{!-- Related publications --}}
-		{{>partials/related/documents}}
-		{{!-- Related bulletins --}}
-		{{>partials/related/bulletins}}
-		{{!-- Contact details --}}
-		{{>partials/contact}}
+    {{!-- Related data --}}
+    {{>partials/related/new-data relatedUri=(concat uri "/relateddata") relatedTitle="self"}}
+    {{!-- Related publications --}}
+    {{>partials/related/documents}}
+    {{!-- Related bulletins --}}
+    {{>partials/related/bulletins}}
+    {{!-- Contact details --}}
+    {{>partials/contact}}
 {{/partial}}
 
-{{!-- Ineriting from publication --}}
+{{!-- Inheriting from publication --}}
 {{> content/base/publication typeLabel="Statistical bulletin"}}

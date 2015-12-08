@@ -1,7 +1,10 @@
 <h4 class="filters__title">Previous releases</h4>
-<div class="filters__field">
-	<input type="checkbox" name="allReleases" value="1" {{#if parameters.allReleases}}checked{{/if}}>
-	<label for="checkbox">
-		Show all releases over time (only showing latest one of each by default)
-	</label>
+<div class="js-checkbox-container">
+	<div class="filters__field">
+		<input type="checkbox" id="checkbox-previous" name="allReleases" value="1"
+			   {{#if parameters.allReleases}}checked{{/if}}>
+		<label for="checkbox-previous">
+			Show all releases over time (only showing latest one of each by default)
+		</label>
+	</div>
 </div>

@@ -20,9 +20,6 @@ import java.util.List;
 
 import static com.github.onsdigital.babbage.configuration.Configuration.ELASTIC_SEARCH.*;
 
-/**
- * Created by bren on 07/09/15.
- */
 public class SearchService {
 
     private Client client;

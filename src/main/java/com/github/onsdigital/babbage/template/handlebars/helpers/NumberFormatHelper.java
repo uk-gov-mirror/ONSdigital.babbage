@@ -23,11 +23,6 @@ public class NumberFormatHelper implements BabbageHandlebarsHelper<Object> {
 
     @Override
     public CharSequence apply(Object context, Options options) throws IOException {
-        if (options.isFalsy(context)) {
-            return null;
-        }
-        String pattern = resolvePattern(options.params);
-        NumberFormat numberFormat = pattern == null ? new DecimalFormat() : new DecimalFormat(pattern);
         Double number = HelperUtils.toNumber(context);
         if (number == null) {
             Object o = options.hash("alt");
@@ -37,6 +32,9 @@ public class NumberFormatHelper implements BabbageHandlebarsHelper<Object> {
                 return null;
             }
         }
+
+        String pattern = resolvePattern(options.params);
+        NumberFormat numberFormat = pattern == null ? new DecimalFormat() : new DecimalFormat(pattern);
         return new Handlebars.SafeString(numberFormat.format(number));
     }
 

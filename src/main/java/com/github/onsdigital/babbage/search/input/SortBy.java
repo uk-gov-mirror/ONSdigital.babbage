@@ -8,6 +8,12 @@ import org.elasticsearch.search.sort.SortOrder;
  * Created by bren on 11/09/15.
  */
 public enum SortBy {
+    //First letter skips non-letter character in the beginning. that's why sorting by first letter and then title
+    FIRST_LETTER(
+            get(FilterableField.title_first_letter, SortOrder.ASC),
+            get(FilterableField.title_raw, SortOrder.ASC),
+            get(FilterableField.releaseDate, SortOrder.ASC)
+    ),
     TITLE(
             get(FilterableField.title_raw, SortOrder.ASC),
             get(FilterableField.releaseDate, SortOrder.DESC)

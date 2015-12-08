@@ -6,12 +6,14 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.common.text.Text;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
+import org.elasticsearch.search.aggregations.Aggregation;
+import org.elasticsearch.search.aggregations.Aggregations;
+import org.elasticsearch.search.aggregations.bucket.MultiBucketsAggregation;
+import org.elasticsearch.search.aggregations.bucket.SingleBucketAggregation;
+import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.highlight.HighlightField;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by bren on 07/09/15.
@@ -41,14 +43,44 @@ public class SearchResponseHelper {
 
         SearchHits hits = response.getHits();
         for (SearchHit hit : hits) {
-            Map<String, Object> source = new HashMap<>(hit.getSource());
-            source.put("_type", hit.getType());
-            Map<String, HighlightField> highlightFields = new HashMap<>(hit.getHighlightFields());
-                overlayHighlightFields(source, highlightFields);
+            Map<String, Object> source = extractSource(hit);
             searchResult.addResult(source);
         }
 
+        extractDocCounts(searchResult);
+
         return searchResult;
+    }
+
+    private void extractDocCounts(SearchResult searchResult) {
+        Aggregations aggregations = response.getAggregations();
+        if(aggregations != null) {
+            addCounts(searchResult, aggregations);
+        }
+    }
+
+
+    /*
+    Flattens and adds bucket results recursively to result as key value pairs
+     */
+    private void addCounts(SearchResult searchResult, Aggregations aggregations) {
+        for (Aggregation aggregation : aggregations) {
+            if (aggregation instanceof MultiBucketsAggregation) {
+                for (MultiBucketsAggregation.Bucket bucket : ((MultiBucketsAggregation) aggregation).getBuckets()) {
+                    searchResult.addDocCount(bucket.getKey(), bucket.getDocCount());
+                }
+            } else {
+                addCounts(searchResult, ((SingleBucketAggregation)aggregation).getAggregations());
+            }
+        }
+    }
+
+    private Map<String, Object> extractSource(SearchHit hit) {
+        Map<String, Object> source = new HashMap<>(hit.getSource());
+        source.put("_type", hit.getType());
+        Map<String, HighlightField> highlightFields = new HashMap<>(hit.getHighlightFields());
+        overlayHighlightFields(source, highlightFields);
+        return source;
     }
 
 

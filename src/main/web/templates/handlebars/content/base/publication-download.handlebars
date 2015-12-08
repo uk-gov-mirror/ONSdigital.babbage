@@ -1,0 +1,37 @@
+{{#partial "block-content"}}
+    <div class="wrapper">
+        <article class="col col--md-36 col--lg-39 page-content__main-content">
+            {{#if markdown.0}}
+                <section class="section__content--static-markdown">
+                    <h2>About this article</h2>
+                    {{md markdown.0}}
+                </section>
+            {{/if}}
+
+            {{#if downloads}}
+                <h2>Download this article</h2>
+                <ul class="list--neutral margin-top-md--0">
+                    {{#each downloads}}
+                        <li class="flush">
+                            <form method="get" action="/file">
+                                <button type="submit" title="{{title}}" class="btn btn--simple download-analytics">
+                                    {{title}} ({{fe (lowercase (concat uri "/" this.file))}}, {{fs (lowercase (concat uri "/" this.file))}})
+                                </button>
+                                <input type="hidden" name="uri" value="{{lowercase (concat uri "/" this.file)}}"/>
+                            </form>
+                        </li>
+                    {{/each}}
+                </ul>
+            {{/if}}
+
+        </article>
+
+        <div class="col col--md-11 col--lg-20 margin-top-md--3">
+            {{#block "publication-sidebar"}}
+            {{/block}}
+        </div>
+
+    </div> {{!-- /wrapper --}}
+{{/partial}}
+{{!-- Inheriting from statistics template--}}
+{{> content/base/statistics}}

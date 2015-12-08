@@ -53,14 +53,15 @@ public enum MathHelpers implements BabbageHandlebarsHelper<Object> {
     add {
         @Override
         public CharSequence apply(Object context, Options options) throws IOException {
-            Double num1 = toNumber(context);
-            Double num2 = toNumber(options.param(0));
-            if (num1 == null || num2 == null) {
-                return null;
+            Double result = toNumber(context);
+            Object[] params = options.params;
+            for (Object param : params) {
+                Double currentNumber = toNumber(param);
+                if (currentNumber != null) {
+                    result = result == null ? currentNumber : (result + currentNumber);
+                }
             }
-
-            double result = num1 + num2;
-            return new Handlebars.SafeString(String.valueOf(result));
+            return result == null ? null : new Handlebars.SafeString(String.valueOf(result));
         }
 
         @Override

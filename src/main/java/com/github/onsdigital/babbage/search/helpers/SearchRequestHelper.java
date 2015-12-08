@@ -1,5 +1,6 @@
 package com.github.onsdigital.babbage.search.helpers;
 
+import com.github.onsdigital.babbage.error.BadRequestException;
 import com.github.onsdigital.babbage.error.ResourceNotFoundException;
 import com.github.onsdigital.babbage.search.ONSQuery;
 import com.github.onsdigital.babbage.search.input.SortBy;
@@ -10,6 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.index.query.FilterBuilder;
 import org.elasticsearch.index.query.FilterBuilders;
 import org.elasticsearch.index.query.RangeFilterBuilder;
+import org.elasticsearch.search.aggregations.bucket.terms.TermsBuilder;
 import org.elasticsearch.search.sort.FieldSortBuilder;
 
 import javax.servlet.http.HttpServletRequest;
@@ -59,21 +61,35 @@ public class SearchRequestHelper {
     }
 
     /**
-     * Adds term filters to ons query
+     * Adds term filters to ons query, null value will filter null values
+     *
+     * @param query
+     * @param field
+     * @param value
+     */
+    public static void addTermFilter(ONSQuery query, FilterableField field, Object value) {
+        if (value == null) {
+            query.addFilter(FilterBuilders.termFilter(field.name(), null));
+        }
+
+        query.addFilter(FilterBuilders.termFilter(field.name(), value));
+    }
+
+    /**
+     * Adds  terms filter ( not term filter, terms filter matches if any of the filters is available).
+     * See elastic search documentation
      *
      * @param query
      * @param field
      * @param values
      */
-    public static void addTermFilter(ONSQuery query, FilterableField field, Object... values) {
+    public static void addTermsFilter(ONSQuery query, FilterableField field, Object... values) {
         if (values == null) {
             query.addFilter(FilterBuilders.termFilter(field.name(), null));
         }
-
-        for (Object value : values) {
-            query.addFilter(FilterBuilders.termFilter(field.name(), value));
-        }
+        query.addFilter(FilterBuilders.termsFilter(field.name(), values));
     }
+
 
     /**
      * Adds range filter to given query, only if any of from or to values are non-null, null values are not added to filter.
@@ -100,6 +116,12 @@ public class SearchRequestHelper {
         query.addFilter(dateFilter);
 
     }
+
+    public static void addTermAggregation(ONSQuery query, String aggregationName, FilterableField field) {
+        //Size set to 0 to remove limit on bucket numbers which is 10 by default.
+        query.addAggregation(new TermsBuilder(aggregationName).field(field.name()).size(0));
+    }
+
 
     public static void addSort(ONSQuery query, SortBy sortBy) {
         SortField[] sortFields = sortBy.getSortFields();
@@ -155,11 +177,9 @@ public class SearchRequestHelper {
             return null;
         }
         if (query.length() > 200) {
-            throw new RuntimeException("Search query contains too many characters");
+            throw new BadRequestException("Search query contains too many characters");
         }
         return query;
-//        String sanitizedQuery = query.replaceAll("[^a-zA-Z0-9 ]+", "");
-//        return sanitizedQuery;
     }
 
 }

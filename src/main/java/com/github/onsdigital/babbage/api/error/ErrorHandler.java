@@ -22,8 +22,6 @@ import java.util.Map;
  */
 public class ErrorHandler implements ServerError {
 
-    private final static String ERROR = "error";
-
     private static void logError(Throwable e) {
         System.err.println(e.getMessage() + ", cause: " + (e.getCause() != null ? e.getCause().getMessage() : ""));
         e.printStackTrace();
@@ -50,11 +48,11 @@ public class ErrorHandler implements ServerError {
     }
 
 
-    public static void renderErrorPage(int statusCode, HttpServletResponse response) throws IOException {
+    private static void renderErrorPage(int statusCode, HttpServletResponse response) throws IOException {
         try {
             response.setStatus(statusCode);
             Map<String, Object> context = new LinkedHashMap<>();
-            context.put("type", ERROR);
+            context.put("type", "error");
             context.put("code", statusCode);
             String errorHtml = TemplateService.getInstance().renderContent(context);
             IOUtils.copy(new StringReader(errorHtml), response.getOutputStream());

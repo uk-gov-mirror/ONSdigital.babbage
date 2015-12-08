@@ -1,8 +1,10 @@
 package com.github.onsdigital.babbage.request.handler.base;
 
+import com.github.onsdigital.babbage.content.client.ContentReadException;
 import com.github.onsdigital.babbage.paginator.Paginator;
 import com.github.onsdigital.babbage.response.BabbageResponse;
 import com.github.onsdigital.babbage.response.BabbageStringResponse;
+import com.github.onsdigital.babbage.search.AggregateQuery;
 import com.github.onsdigital.babbage.search.ONSQuery;
 import com.github.onsdigital.babbage.search.SearchService;
 import com.github.onsdigital.babbage.search.helpers.SearchRequestHelper;
@@ -14,22 +16,20 @@ import com.github.onsdigital.babbage.search.model.field.FilterableField;
 import com.github.onsdigital.babbage.template.TemplateService;
 import com.github.onsdigital.babbage.util.URIUtil;
 import com.github.onsdigital.babbage.util.json.JsonUtil;
+import org.apache.commons.lang3.ObjectUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
+import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.addTermAggregation;
 import static com.github.onsdigital.babbage.util.URIUtil.cleanUri;
+import static javax.ws.rs.core.MediaType.TEXT_HTML;
 
 /**
  * Render a list page for bulletins under the given URI.
  */
-public abstract class ListPageBaseRequestHandler implements RequestHandler {
-
-    public static final String CONTENT_TYPE = "text/html";
+public abstract class ListPageBaseRequestHandler {
 
     /**
      * The type of page to be returned in the list page
@@ -38,6 +38,12 @@ public abstract class ListPageBaseRequestHandler implements RequestHandler {
      */
     protected abstract ContentType[] getAllowedTypes();
 
+    /**
+     * Used as a flag to decide if listed contents should be filtered with latestFlag=true
+     *
+     * @param request
+     * @return
+     */
     protected boolean isFilterLatest(HttpServletRequest request) {
         return false;
     }
@@ -45,6 +51,19 @@ public abstract class ListPageBaseRequestHandler implements RequestHandler {
     protected boolean isListTopics() {
         return isLocalisedUri() == false;
     }
+
+    protected boolean isAggregateByType() {
+        return false;
+    }
+
+    /**
+     * List page request handler is registered with this request type, requests made ending with request type is delegated to the handler automatically
+     * <p/>
+     * e.g.   if request type is publications any http request urls ending in /publications will be delegated to publications handler
+     *
+     * @return
+     */
+    public abstract String getRequestType();
 
     /**
      * Return true if the list page is localised to a uri.
@@ -56,40 +75,75 @@ public abstract class ListPageBaseRequestHandler implements RequestHandler {
     public abstract boolean isLocalisedUri();
 
 
-    public String getData(String requestedUri, HttpServletRequest request) throws Exception {
-
+    public BabbageResponse getData(String requestedUri, HttpServletRequest request) throws Exception {
         System.out.println("List page data request from " + this.getClass().getSimpleName() + " for uri: " + requestedUri);
-        ONSQuery query = createQuery(requestedUri, request);
-
-        SearchResponseHelper responseHelper = doSearch(request, query);
-        Paginator.assertPage(query.getPage(), responseHelper);
-        return JsonUtil.toJson(responseHelper.getResult());
+        LinkedHashMap<String, Object> listData = prepareData(requestedUri, request);
+        return new BabbageStringResponse(JsonUtil.toJson(listData));
     }
 
-    @Override
     public BabbageResponse get(String requestedUri, HttpServletRequest request) throws Exception {
-
         System.out.println("List page request from " + this.getClass().getSimpleName() + " for uri: " + requestedUri);
-        BabbageResponse babbageResponse;
-        String type = URIUtil.resolveRequestType(request.getRequestURI());
-        ONSQuery query = createQuery(requestedUri, request);
-        SearchResponseHelper responseHelper = doSearch(request, query);
-        Paginator.assertPage(query.getPage(), responseHelper);
+        String html = TemplateService.getInstance().renderContent(prepareData(requestedUri, request));
+        return new BabbageStringResponse(html, TEXT_HTML);
+    }
 
+    protected LinkedHashMap<String, Object> prepareData(String requestedUri, HttpServletRequest request) throws IOException, ContentReadException {
+        ONSQuery query = createQuery(requestedUri, request);
+        AggregateQuery aggregateQuery = buildAggregateQuery(query);
+        List<SearchResponseHelper> responseHelpers = aggregateQuery == null ? doSearch(request, query) : doSearch(request,query,aggregateQuery);
+        Iterator<SearchResponseHelper> iterator = responseHelpers.iterator();
+        SearchResponseHelper results = iterator.next();
+        SearchResponseHelper aggregateResults = null;
+        if (iterator.hasNext()) {
+             aggregateResults = iterator.next();
+        }
+        Paginator.assertPage(query.getPage(), results);
+        return resolveListData(request, query, results, aggregateResults);
+    }
+
+    protected AggregateQuery buildAggregateQuery(ONSQuery query) {
+        if (isAggregateByType()) {
+            AggregateQuery aggregateQuery = new AggregateQuery();
+            //Applies aggregations on all types, regardless of filters as counts for all types are needed
+            aggregateQuery.setTypes(ContentType.getNamesOf(getAllowedTypes()))
+                    .setFields(query.getFields())
+                    .setSearchTerm(query.getSearchTerm())
+                    .setFilters(query.getFilters());
+            addTermAggregation(aggregateQuery, "count_by_type", FilterableField._type);
+            return aggregateQuery;
+        }
+        return null;
+    }
+
+    protected LinkedHashMap<String, Object> resolveListData(HttpServletRequest request, ONSQuery query, SearchResponseHelper responseHelper, SearchResponseHelper aggregateResponseHelper) throws IOException {
         LinkedHashMap<String, Object> listData = new LinkedHashMap<>();
-        listData.put("type", type);
+        listData.put("result", responseHelper.getResult());
         listData.put("paginator", Paginator.getPaginator(query.getPage(), responseHelper));
-        listData.put("uri", request.getRequestURI());//set full uri in the context
+        listData.putAll(getBaseData(request));
+        if (aggregateResponseHelper != null) {
+            listData.put("counts", aggregateResponseHelper.getResult());
+        }
+        return listData;
+    }
+
+    /**
+     * Base data to render the correct template, can be used for rendering empty page with no results
+     *
+     * @return
+     * @throws IOException
+     */
+    protected LinkedHashMap<String, Object> getBaseData(HttpServletRequest request) throws IOException {
+        LinkedHashMap<String, Object> listData = new LinkedHashMap<>();
+        listData.put("type", "list");
+        listData.put("listType", getRequestType());
+        listData.put("uri", URIUtil.cleanUri(request.getRequestURI()));//full uri in the context to resolve breadcrumb
         if (isListTopics()) {
             listData.put("topics", getTopics());
         }
-        listData.put("result", responseHelper.getResult());
-        String html = TemplateService.getInstance().renderContent(listData);
-        babbageResponse = new BabbageStringResponse(html, CONTENT_TYPE);
-        return babbageResponse;
+        return listData;
     }
 
-    protected ONSQuery createQuery(String requestedUri, HttpServletRequest request) {
+    protected ONSQuery createQuery(String requestedUri, HttpServletRequest request) throws IOException, ContentReadException {
         String uri = processUri(requestedUri, request);
         ONSQuery query = new SearchRequestQueryBuilder(request, uri, getAllowedTypes()).buildQuery();
         if (isFilterLatest(request)) {
@@ -104,8 +158,14 @@ public abstract class ListPageBaseRequestHandler implements RequestHandler {
         return uri;
     }
 
-    protected SearchResponseHelper doSearch(HttpServletRequest request, ONSQuery query) throws IOException {
-        return SearchService.getInstance().search(query);
+    protected List<SearchResponseHelper> doSearch(HttpServletRequest request, ONSQuery... queries) throws IOException {
+        if (queries.length > 1) {
+            return SearchService.getInstance().searchMultiple(queries);
+        } else {
+            ArrayList<SearchResponseHelper> responses = new ArrayList<>();
+            responses.add(SearchService.getInstance().search(queries[0]));
+            return responses;
+        }
     }
 
     private List<Topic> getTopics() throws IOException {
@@ -126,7 +186,6 @@ public abstract class ListPageBaseRequestHandler implements RequestHandler {
         }
         return topics;
     }
-
 
     public class Topic {
         private String uri;

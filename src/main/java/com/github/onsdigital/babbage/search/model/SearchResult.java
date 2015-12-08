@@ -1,6 +1,7 @@
 package com.github.onsdigital.babbage.search.model;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -12,6 +13,7 @@ public class SearchResult {
     private Long numberOfResults;
     private long took;
     private List<Map<String, Object>> results = new ArrayList<>();
+    private Map<String,Long> docCounts;
 
     public Long getNumberOfResults() {
         return numberOfResults;
@@ -32,8 +34,19 @@ public class SearchResult {
         this.results = results;
     }
 
+    public Map<String, Long> getDocCounts() {
+        return docCounts;
+    }
+
     public void addResult(Map<String, Object> result) {
         results.add(result);
+    }
+
+    public void addDocCount(String key, long number) {
+        if (docCounts == null) {
+            docCounts = new LinkedHashMap<>();
+        }
+        docCounts.put(key, number);
     }
 
     public long getTook() {
@@ -43,4 +56,5 @@ public class SearchResult {
     public void setTook(long took) {
         this.took = took;
     }
+
 }

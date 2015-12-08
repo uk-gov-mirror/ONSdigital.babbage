@@ -1,62 +1,55 @@
 {{#partial "block-alert" no-versions=true}}{{/partial}}
 
-{{#partial "block-additonal-metadata"}}
-{{!-- Print and download --}}
-<p class="col col--md-12 col--lg-15 print--hide meta__item">
-	<a href="" id="jsEnhancePrintCompendium" class="nojs-hidden js-enhance--show">
-		Print all chapters
-	</a>
-</p>
-{{/partial}}
-
 
 {{#partial "block-content"}}
 <div class="wrapper">
 	<div class="col-wrap print--avoid-break">
         <div class="col col--md-two-thirds col--lg-two-thirds">
-		<h2 class="margin-bottom ">{{labels.compendium-whats-in}}</h2>
+		<h2 class="margin-bottom ">Chapters in this compendium:</h2>
 		{{!-- Chapters --}}
 		{{#if chapters}}
-		<section class="accordion is-collapsed">
-			<h3 id="sc-1" class="accordion__title" aria-controls="content-1">
-			{{labels.compendium-chapters}}
-			</h3>
-			<div id="content-1" class="accordion__content" aria-labelledby="sc-1">
-				<ul class="list--neutral">
-					{{#each chapters}}
-					{{#resolve uri filter="description"}}
-					<li class="flush">
-						<h4><a href="{{uri}}" class="chapter">{{description.title}}</a></h4>
-						{{#if description.headline}}
-						<p>{{description.headline}}</p>
-						{{/if}}
-					</li>
-					{{/resolve}}
-					{{/each}}
-				</ul>
-			</div>
-		</section>
+            <ul class="list--neutral">
+            {{#each chapters}}
+                {{#resolve uri filter="description"}}
+                <li class="flush">
+                    <h3><a href="{{uri}}" class="chapter">{{description.title}}</a></h3>
+                    {{#if description.headline}}
+                    <p>{{description.headline}}</p>
+                    {{/if}}
+                </li>
+                {{/resolve}}
+            {{/each}}
+            </ul>
 		{{/if}}
 		{{!-- /Chapters --}}
-		{{!-- Data --}}
-		{{#if datasets}}
-		<section class="">
-			<h3>{{labels.data}}</h3>
-			<ul class="list--neutral">
-				{{#each datasets}}
-				{{#resolve uri filter="title"}}
-				<li>
-					<h4 class="flush-bottom"><a href="{{uri}}">{{description.title}}</a></h4>
-					<p class="flush">{{labels.compendium-time-series}}</p>
-				</li>
-				{{/resolve}}
-				{{/each}}
-			</ul>
-		</section>
-		{{/if}}
-		{{!-- /Data --}}
         </div>
         <div class="col col--md-one-third col--lg-one-third padding-top-md--3">
+            {{!-- Print options --}}
+                <p class="text-right padding-top-md--0 padding-bottom-md--0 height--5 margin-top-md--3 print--hide">
+                    <a href="" id="jsEnhancePrintCompendium" class="nojs-hidden js-enhance--show">
+                        Print all chapters in this compendium
+                    </a>
+                    <span class="icon icon-print--dark-small"></span>
+                </p>
+
+            {{!-- Related data --}}
+            {{#if datasets}}
+                {{!-- <div class="tiles__item tiles__item--nav-type flush-col print--hide">
+                    <h3 class="tiles__title-h3 tiles__title-h3--nav">Data in this {{> type-label type_code=type }}</h3>
+                    <div class="tiles__extra margin-bottom-md--2">
+                        {{#each datasets}}
+                            <a href="{{uri}}">View all data in this {{> type-label type_code=type }}</a>
+                        {{/each}}
+                    </div>
+                </div> --}}
+
+                {{#each datasets}}
+                    {{>partials/related/new-data relatedUri=uri relatedTitle="self"}}
+                {{/each}}
+
+            {{/if}}
+
+            {{!-- Contact --}}
             {{>partials/contact}}
         </div>
     </div>

@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.GET;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
 import java.io.IOException;
 
 import static com.github.onsdigital.babbage.api.endpoint.chart.ChartRequestUtil.getWidth;
@@ -31,7 +32,7 @@ public class Chart {
         }
         uri = URIUtil.cleanUri(uri);
         String html = ChartRenderer.getInstance().renderChart(uri, getWidth(request));
-        new BabbageStringResponse(html,"text/html").apply(response);
+        new BabbageStringResponse(html, MediaType.TEXT_HTML).apply(response);
         return null;
     }
 

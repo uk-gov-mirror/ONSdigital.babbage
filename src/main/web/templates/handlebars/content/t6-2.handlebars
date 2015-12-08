@@ -1,49 +1,19 @@
-{{#partial "block-additonal-metadata"}}
-	{{!-- Print and download --}}
-	<p class="col col--md-12 col--lg-15 print--hide meta__item">
-		<a href="" id="jsEnhancePrint" class="link-complex nojs-hidden js-enhance--show">
-			Print this chapter
-		</a>
-		<br class="nojs-hidden js-enhance--show"/>
-		<a href="{{uri}}/pdf" class="link-complex">
-			{{labels.dl-pdf}}
-		</a>
-	</p>
-{{/partial}}
-
-
 {{#partial "block-content"}}
 	{{!-- TABLE OF CONTENTS --}}
 	<div class="wrapper">
 		<div class="col-wrap">
 			<div class="col table-of-contents print--avoid-break">
 				<p class="print--hide">
-					{{#each breadcrumb}}
-					{{#if @last}}
-					{{labels.compendium-return}} <a href="{{uri}}">{{description.title}}</a>
-					{{/if}}
-					{{/each}}
+                    {{#last breadcrumb}}
+					    {{labels.compendium-return}} <a class="underline-link" href="{{uri}}">{{description.title}}</a>
+                    {{/last}}
 				</p>
-				<h2 class="table-of-contents__title">{{labels.toc}}</h2>
-				<ol id="toc" class="table-of-contents__list">
-					{{#each sections}}
-					<li class="table-of-contents__item">
-						<a href="#{{slugify title}}" class="jsEnhanceAnimateScroll">{{title}}</a>
-					</li>
-					{{/each}}
-					{{#if accordion}}
-					{{#each accordion}}
-					<li class="table-of-contents__item">
-						<a href="#{{slugify title}}" class="jsEnhanceAnimateScroll expand-accordion">{{title}}</a>
-					</li>
-					{{/each}}
-					{{/if}}
-					{{#if relatedMethodology}}
-					<li class="table-of-contents__item">
-						<a href="#methodology" class="jsEnhanceAnimateScroll expand-accordion">Methodology</a>
-					</li>
-					{{/if}}
-				</ol>
+                <div class="col-wrap border-bottom--iron-md">
+                    {{!--Table of Contents --}}
+                    {{> content/partials/toc}}
+                    {{!-- Print & PDF --}}
+                    {{> partials/print-options}}
+                </div>
 			</div>
 		</div>
 		{{!-- Content --}}
@@ -83,9 +53,9 @@
 					<div class="accordion__content panel--bottom-mar-small" aria-labelledby="sc-{{@index_1}}">
 						<ul class="list--neutral">
 							{{#each relatedMethodology}}
-							{{#resolve this.uri filter="description"}}
-							<li><a href="{{absolute uri}}">{{description.title}}</a></li>
-							{{/resolve}}
+                                {{#resolve this.uri filter="description"}}
+                                    <li><a href="{{absolute uri}}">{{description.title}}</a></li>
+                                {{/resolve}}
 							{{/each}}
 						</ul>
 						<a class="print--hide jsEnhanceAnimateScroll" href="#toc" title="{{labels.back-to-toc}}">{{labels.back-to-toc}}</a>
@@ -96,7 +66,7 @@
 			{{/if_any}}
 		</article>
 		{{!-- Sidebar --}}
-		<div class="col col--md-11 col--lg-20">
+		<div class="col col--md-11 col--lg-20 margin-top-md--3">
 			{{!-- Related data --}}
 			{{> partials/related/data }}
 			{{!-- Contact details --}}

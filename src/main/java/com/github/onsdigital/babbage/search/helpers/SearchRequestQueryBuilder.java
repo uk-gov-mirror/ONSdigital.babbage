@@ -13,6 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -68,9 +69,40 @@ public class SearchRequestQueryBuilder {
     }
 
     private void resolveDateFilter(ONSQuery query) {
-        Date fromDate = parseDate(getParam(searchRequest, "fromDate"));
-        Date toDate = parseDate(getParam(searchRequest, "toDate", null));
+        String updated = getParam(searchRequest, "updated");
+        Date fromDate;
+        Date toDate = null;
+
+        if (updated == null) {
+            updated = "";
+        }
+
+        switch (updated) {
+            case "today":
+                fromDate = daysBefore(1);
+                break;
+            case "week":
+                fromDate = daysBefore(7);
+                break;
+            case "month":
+                fromDate = daysBefore(30);
+                break;
+            default:
+                fromDate = parseDate(getParam(searchRequest, "fromDate"));
+                toDate = parseDate(getParam(searchRequest, "toDate"));
+                break;
+        }
         addRangeFilter(query, FilterableField.releaseDate, fromDate, toDate);
+    }
+
+    private Date now() {
+        return new Date();
+    }
+
+    private Date daysBefore(int days) {
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DAY_OF_MONTH, -1 * days);
+        return cal.getTime();
     }
 
     private void resolveSorting(ONSQuery onsQuery) {

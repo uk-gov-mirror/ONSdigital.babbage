@@ -28,7 +28,11 @@
 
 {{#partial "publication-sidebar"}}
 {{!-- Related data --}}
-	{{>partials/related/data}}
+    {{#if relatedDatasets}}
+	    {{>partials/related/datasets}}
+    {{else}}
+        {{>partials/related/data}}
+    {{/if}}
 	{{!-- Related publications --}}
 	{{>partials/related/documents}}
 	{{!-- Related articles --}}
@@ -38,4 +42,8 @@
 {{/partial}}
 
 {{!-- Inheriting from base content template --}}
-{{> content/base/publication typeLabel="Methodology"}}
+{{#if_eq type "static_methodology"}}
+    {{> content/base/publication typeLabel="Methodology"}}
+{{else}}
+    {{> content/base/publication-download typeLabel="Methodology"}}
+{{/if_eq}}

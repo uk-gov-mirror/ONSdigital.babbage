@@ -15,9 +15,11 @@
     <div class="wrapper print-links">
         <div class="col-wrap">
             <div class="col col--md-two-thirds col--lg-two-thirds">
-        		<p>
-        			<strong>Frequency: </strong>{{result.results.0.description.frequency}}
-        		</p>
+				{{#if result.results.0.description.frequency}}
+					<p>
+						<strong>Frequency: </strong>{{result.results.0.description.frequency}}
+					</p>
+				{{/if}}
                 <ul class="list--neutral">
 					{{#each result.results}}
 					<li {{#if @first}}class="margin-bottom--double"{{/if}}>
@@ -47,5 +49,6 @@
         </div>
     </div>
 {{/partial}}
-    {{!-- Inheriting from base list template --}}
-	{{> list/base/list}}
+  
+{{!-- Inheriting from base list template --}}
+{{> base/base}}

@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.InputStream;
 
+import static javax.ws.rs.core.MediaType.TEXT_HTML;
+
 /**
  * Created by bren on 28/05/15.
  * <p>
@@ -20,14 +22,12 @@ public class PageRequestHandler implements RequestHandler {
 
     private static final String REQUEST_TYPE = "/";
 
-    public static final String CONTENT_TYPE = "text/html";
-
     @Override
     public BabbageResponse get(String uri, HttpServletRequest request) throws IOException, ContentReadException {
 
         try (InputStream dataStream = ContentClient.getInstance().getContentStream(uri).getDataStream()) {
             String html = TemplateService.getInstance().renderContent(dataStream);
-            return new BabbageStringResponse(html, CONTENT_TYPE);
+            return new BabbageStringResponse(html, TEXT_HTML);
         }
     }
 

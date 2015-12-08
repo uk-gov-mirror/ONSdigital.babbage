@@ -91,21 +91,21 @@ public class ContentClient {
      */
     public ContentStream getContentStream(String uri, Map<String, String[]> queryParameters) throws ContentReadException {
         System.out.println("getContentStream(): Reading content from content server, uri:" + uri);
-        return sendGet(getPath(getDataEndpoint()), getParameters(uri, queryParameters));
+        return sendGet(getPath(getDataEndpoint()), addUri(uri, getParameters(queryParameters)));
     }
 
     public ContentStream getResource(String uri) throws ContentReadException {
         System.out.println("getResource(): Reading resource from content server, uri:" + uri);
-        return sendGet(getPath(getResourceEndpoint()), getParameters(uri, null));
+        return sendGet(getPath(getResourceEndpoint()), addUri(uri, new ArrayList<>()) );
     }
 
     public ContentStream getFileSize(String uri) throws ContentReadException {
-        return sendGet(getPath(getFileSizeEndpoint()), getParameters(uri, null));
+        return sendGet(getPath(getFileSizeEndpoint()), addUri(uri, new ArrayList<>()));
     }
 
     public ContentStream getTaxonomy(Map<String, String[]> queryParameters) throws ContentReadException {
         System.out.println("getTaxonomy(): Reading taxonomy nodes");
-        return sendGet(getPath(getTaxonomyEndpoint()), getParameters(null, queryParameters));
+        return sendGet(getPath(getTaxonomyEndpoint()),  getParameters(queryParameters));
     }
 
     public ContentStream getTaxonomy() throws ContentReadException {
@@ -113,19 +113,30 @@ public class ContentClient {
     }
 
     public ContentStream getParents(String uri) throws ContentReadException {
-        return sendGet(getPath(getParentsEndpoint()), getParameters(uri, null));
+        return sendGet(getPath(getParentsEndpoint()), addUri(uri, new ArrayList<>()));
     }
 
     public ContentStream getGenerator(String uri, Map<String, String[]> queryParameters) throws ContentReadException {
-        return sendGet(getPath(getGeneratorEndpoint()), getParameters(uri, queryParameters));
+        return sendGet(getPath(getGeneratorEndpoint()), addUri(uri, getParameters(queryParameters)));
     }
 
-    public ContentStream getList(String uri, Map<String, String[]> queryParameters) throws ContentReadException {
-        return sendGet(getListEndpoint(), getParameters(uri, queryParameters));
-    }
-
-    public ContentStream getSearch(String uri, Map<String, String[]> queryParameters) throws ContentReadException {
-        return sendGet(getSearchEndpoint(), getParameters(uri, queryParameters));
+    /**
+     * Calls zebedee to export given time series as uri list
+     *
+     * @param format
+     * @param uriList
+     * @return
+     * @throws ContentReadException
+     */
+    public ContentStream export(String format,  String[] uriList) throws ContentReadException {
+        List<NameValuePair> parameters = new ArrayList<>();
+        parameters.add(new BasicNameValuePair("format", format));
+        if (uriList != null) {
+            for (int i = 0; i < uriList.length; i++) {
+                parameters.add(new BasicNameValuePair("uri", uriList[i]));
+            }
+        }
+        return sendPost(getPath(getExportEndpoint()), parameters );
     }
 
     public ContentStream reIndex(String key, String uri) throws ContentReadException {
@@ -144,7 +155,7 @@ public class ContentClient {
 
     public ContentStream getParents(String uri, Map<String, String[]> queryParameters) throws ContentReadException {
         System.out.println("getParents(): Reading parents, uri:" + uri);
-        return sendGet(getPath(getParentsEndpoint()), getParameters(uri, queryParameters));
+        return sendGet(getPath(getParentsEndpoint()), addUri(uri, getParameters(queryParameters)));
     }
 
     private ContentStream sendGet(String path, List<NameValuePair> getParameters) throws ContentReadException {
@@ -174,16 +185,22 @@ public class ContentClient {
     }
 
 
-    private List<NameValuePair> getParameters(String uri, Map<String, String[]> parametes) {
+    private List<NameValuePair> getParameters(Map<String, String[]> parametes) {
         List<NameValuePair> nameValuePairs = new ArrayList<>();
 
-        uri = StringUtils.isEmpty(uri) ? "/" : uri;
-
-        //uris are requested as get parameter from content service
-        nameValuePairs.add(new BasicNameValuePair("uri", uri));
         nameValuePairs.add(new BasicNameValuePair("lang", (String) ThreadContext.getData("lang")));
         nameValuePairs.addAll(toNameValuePair(parametes));
         return nameValuePairs;
+    }
+
+    private List<NameValuePair> addUri(String uri, List<NameValuePair> parameters) {
+        if (parameters == null) {
+            return null;
+        }
+        uri = StringUtils.isEmpty(uri) ? "/" : uri;
+        //uris are requested as get parameter from content service
+        parameters.add(new BasicNameValuePair("uri", uri));
+        return parameters;
     }
 
     private List<NameValuePair> toNameValuePair(Map<String, String[]> parametes) {

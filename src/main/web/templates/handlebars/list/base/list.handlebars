@@ -1,2 +1,119 @@
+
+{{#partial "block-main"}}
+	<div class="page-content">
+		<div class="wrapper">
+			<div class="col-wrap">
+				<div class="col">
+						{{#if showBreadcrumb}}
+							{{> list/partials/list-page-breadcrumb label=breadcrumbLabel}}
+						{{/if}}
+						<h1 class="search-page__title">{{#block "block-title"}}{{/block}}</h1>
+				</div>
+			</div>
+		</div>
+
+		{{#block "block-alert"}}{{/block}}
+
+		{{#if tabs}}
+			<div class="tab">
+				<div class="wrapper">
+					{{#block "block-tab-menu"}}{{/block}}
+					<ul class="list--neutral list--inline flush">
+						{{#block "block-list-tabs"}}
+							<li>
+								<a href="/search?q={{parameters.q.0}}" class="tab__item tab__item--active">
+									All results
+								</a>
+							</li>
+							<li>
+								<a href="/searchdata?q={{parameters.q.0}}" class="tab__item">
+									Data
+								</a>
+							</li>
+							<li>
+								<a href="/searchpublication?q={{parameters.q.0}}" class="tab__item">
+									Publications
+								</a>
+							</li>
+						{{/block}}
+					</ul>
+				</div>
+			</div>
+		{{/if}}
+
+		<div class="wrapper">
+			<div class="col-wrap print-hidden">
+				<div class="col">
+					{{#block "block-results-text"}}
+						<div class="col col--md-28 col--lg-38">
+							{{> list/partials/search-results-text-number result}}
+						</div>
+					{{/block}}
+					{{!-- {{#block "block-sort"}} --}}
+						{{#if result.results}}
+							{{#unless hideSort}}
+								<div class="float-right">
+									{{> list/filters/sort}}
+								</div>
+							{{/unless}}
+						{{/if}}
+					{{!-- {{/block}} --}}
+				</div>
+			</div>
+			<form id="form">
+				{{!-- FILTERS --}}
+				{{!-- {{#if_any result.results parameters.filter parameters.time_series}} --}}
+				<div class="col col--md-12 col--lg-18 margin-bottom">
+					<div class="tiles__item tiles__item--nav-type flush-col">
+						<div class="tiles__title-h3 tiles__title-h3--nav">
+							<h3 class="inline">Refine results</h3>
+							<a href="{{location.pathname}}{{#if parameters.q.0}}?q={{parameters.q.0}}{{/if}}" value="Reset" class="btn btn--primary btn--thin btn--narrow btn--small float-right">{{labels.search-refine-clear}}</a>
+						</div>
+						<div class="tiles__content tiles__content--nav">
+							<div class="filters">
+								{{#block "block-filters"}}
+								{{/block}}
+							</div>
+							<button type="submit" class="btn btn--primary btn--thick margin-top-sm--2 margin-top-md--2 js-enhance--hide">{{labels.search-filter}}</button>
+						</div>
+					</div>
+					{{> partials/archives-box}}
+				</div>
+			</form>
+			{{!-- {{/if_any}} --}}
+				
+			{{!-- RESULTS --}}
+			<div class="col col--md-34 col--lg-40 margin-left-md--1">
+
+				<div id="results" class="results">
+
+				{{#block "block-featured-result"}}{{/block}}
+
+				{{> list/partials/search-results-text-help result}}
+
+				{{!-- MAIN RESULTS --}}
+				<!-- /desktop-grid-one-third -->
+				<div class="search-results">
+					<ul class="list--neutral flush">
+						{{#block "block-results"}}
+							{{#each result.results}}
+								<li class="search-results__item">
+									{{> list/partials/results-title showEdition=true}}
+									{{> list/partials/results-meta}}
+									{{> list/partials/results-summary}}
+									{{> list/partials/results-keywords}}
+								</li>
+							{{/each}}
+						{{/block}}
+					</ul>
+				</div>
+				{{> list/partials/paginator}}
+				<!-- /desktop-grid-two-thirds -->
+				</div>
+			</div>
+		</div>
+	</div>
+{{/partial}}
+
 {{!-- Inheriting from base template --}}
 {{> base/base}}

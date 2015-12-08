@@ -1,0 +1,104 @@
+{{#partial "block-title"}}
+Time series data explorer
+{{/partial}}
+
+{{#partial "block-results-text"}}
+	<div class="col col--md-28 col--lg-38">
+		{{> list/partials/list-results-text-number result resultsLabel="time series data" showTopic=true}}
+	</div>
+	<div class="col col--md-19 col--lg-21 js-enhance--show">
+		<button class="timeseries__basket" aria-live="assertive">Selection (<span class="timeseries__count">0</span>)</button>
+		<div class="timeseries__list-container">
+			<div class="timeseries__remember">
+				<input id="remember-selection" type="checkbox" name="" data-uri="{{uri}}" value=""
+					   class="btn btn--primary" aria-label="remember-selection">
+				<label for="remember-selection">Remember selection</label>
+			</div>
+			<span class="timeseries__list--exit">&#x2715;</span>
+			<ul class="timeseries__list list--neutral margin-top-md--0 margin-left-md--0">
+			</ul>
+			<div class="timeseries__download">
+				<p class="flush" id="timeseries__download-label">Download selected time
+					series</p>
+
+				{{!-- Excel download --}}
+				<form id="xls-form" method="post" action="/export" class="inline print--hide">
+					<button type="submit" title="Download XLS" aria-labelledby="timeseries__download-label"
+							class="btn btn--primary download-analytics">
+						Download .xls
+					</button>
+					<input type="hidden" name="format" value="xls"/>
+				</form>
+
+				{{!-- CSV download --}}
+				<form id="csv-form" method="post" action="/export" class="inline print--hide">
+					<button type="submit" title="Download CSV" aria-labelledby="timeseries__download-label"
+							class="btn btn--primary download-analytics">
+						Download .csv
+					</button>
+					<input type="hidden" name="format" value="csv"/>
+				</form>
+			</div>
+			<div class="timeseries__empty">
+				<h2>You have no timeseries selected</h2>
+				<p>Check the time series data that you'd like to download</p>
+			</div>
+		</div>
+	</div>
+{{/partial}}
+
+{{#partial "block-filters"}}
+	{{> list/filters/keywords}}
+    {{> list/filters/topics}}
+	{{> list/filters/update-date}}
+{{/partial}}
+
+{{#partial "block-results"}}
+        
+	<div id="select-all-container" class="js-enhance--show col">
+		{{#if result.results}}
+			<input id="select-all"  type="checkbox" name="" value="" class="timeseries__select-all js-timeseriestool-select-all" aria-label="select all">
+			<label for="select-all">Select all</label>
+		{{/if}}
+	</div>
+
+	{{#each result.results}}
+		<div class="col-wrap {{#unless @first}}border-top--iron-sm border-top--iron-md{{/unless}}">
+
+			{{!-- Checkbox --}}
+			<div class="input__wrapper col col--md-3 col--lg-3 margin-left-md--1 padding-left-md--1 padding-bottom-sm" >
+				<input  type="checkbox" name="" data-title="{{description.title}}" data-cdid="{{description.cdid}}" data-uri="{{uri}}"  value="" class="timeseries__select js-timeseriestool-select js-enhance--show" aria-label="{{description.title}}">
+			</div>
+
+			{{!-- Title --}}
+			<div class="col col--md-21 col--lg-25 padding-right-md--1">
+				<p class="margin-bottom-md--0 flush--sm"><a href="{{uri}}">{{{description.title}}}</a></p>
+			</div>
+
+			{{!-- Is new? --}}
+			{{#if (last24hours description.releaseDate)}}
+				<div class="col col--md-2 col--lg-2">
+						<p class="margin-bottom-md--0 flush--sm">NEW</p>
+				</div>
+			{{/if}}
+
+			{{!-- Release date --}}
+			<div class="col {{#if (last24hours description.releaseDate)}}col--md-6 col--lg-8{{else}}col--md-8 col--lg-10{{/if}} padding-right-md--1">
+				<p class="margin-bottom-md--0 text-right--md flush--sm">{{df description.releaseDate}}</p>
+			</div>
+
+			<div class="col-wrap">
+				<div class="col col--md-11 col--lg-11 margin-left-md--5 margin-bottom-md--2">
+					<p class="search-results__meta flush--sm">Series ID: {{description.cdid}}{{#if description.unit}} | Units: {{description.unit}}{{else}}&nbsp;{{/if}}</p>
+				</div>
+			</div>
+
+		</div>
+	{{/each}}
+
+{{/partial}}
+
+{{!-- Inheriting from base list template --}}
+{{> list/base/list hideSort=true}}
+
+

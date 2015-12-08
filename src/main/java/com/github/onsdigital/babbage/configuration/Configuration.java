@@ -49,10 +49,9 @@ public class Configuration {
         private static final String PARENTS_ENDPOINT = "/parents";
         private static final String RESOURCE_ENDPOINT = "/resource";
         private static final String FILE_SIZE_ENDPOINT = "/filesize";
-        private static final String SEARCH_ENDPOINT = "/search";
         private static final String REINDEX_ENDPOINT = "/reindex";
-        private static final String LIST_ENDPOINT = "/list";
         private static final String GENERATOR_ENDPOINT = "/generator";
+        private static final String EXPORT_ENDPOINT = "/export";
         private static final int MAX_CONTENT_SERVICE_CONNECTION = defaultNumberIfBlank(getNumberValue("CONTENT_SERVICE_MAX_CONNECTION"), 50);
         private static final String DEFAULT_CONTENT_DATE_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
 
@@ -80,20 +79,16 @@ public class Configuration {
             return PARENTS_ENDPOINT;
         }
 
-        public static String getSearchEndpoint() {
-            return SEARCH_ENDPOINT;
-        }
-
         public static String getReindexEndpoint() {
             return REINDEX_ENDPOINT;
         }
 
-        public static String getListEndpoint() {
-            return LIST_ENDPOINT;
-        }
-
         public static String getGeneratorEndpoint() {
             return GENERATOR_ENDPOINT;
+        }
+
+        public static String getExportEndpoint() {
+            return EXPORT_ENDPOINT;
         }
 
         public static int getMaxContentServiceConnection() {
@@ -102,13 +97,6 @@ public class Configuration {
 
         public static String getDefaultContentDatePattern() {
             return DEFAULT_CONTENT_DATE_PATTERN;
-        }
-
-        //TODO: get rid of content path, should only be using content service
-        private static final String DEFAULT_CONTENT_DIRECTORY = "target/content";
-
-        public static String getContentPath() {
-            return StringUtils.defaultIfBlank(getValue("CONTENT_DIR"), DEFAULT_CONTENT_DIRECTORY);
         }
 
     }
@@ -190,6 +178,16 @@ public class Configuration {
 
         public static int getMaxHighchartsServerConnection() {
             return MAX_HIGHCHARTS_SERVER_CONNECTION;
+        }
+    }
+
+    /*Mathjax server side rendering configuration*/
+    public static class MATHJAX {
+               //Trailing slash seems to be important. Export server redirects to trailing slash url if not there
+        private static final String MATHJAX_SERVER_URL = getValue("MATHJAX_EXPORT_SERVER");
+
+        public static String getExportSeverUrl() {
+            return MATHJAX_SERVER_URL;
         }
     }
 

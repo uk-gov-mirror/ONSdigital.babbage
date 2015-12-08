@@ -1,0 +1,2 @@
+{{!-- Prints out all active content types from filters --}}
+{{#each parameters.filter}}{{#if @first}}{{> filter-label this}}{{else}}{{#if @last}} and {{> filter-label this}}{{else}}, {{> filter-label this}}{{/if}}{{/if}}{{/each}}

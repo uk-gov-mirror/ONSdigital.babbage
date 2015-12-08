@@ -3,6 +3,11 @@ package com.github.onsdigital.babbage.response;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ *
+ * Sends a redirect to the client
+ *
+ */
 public class BabbageRedirectResponse extends BabbageResponse {
 
     private String redirectUri;
@@ -13,8 +18,7 @@ public class BabbageRedirectResponse extends BabbageResponse {
 
     @Override
     public void apply(HttpServletResponse response) throws IOException {
-        response.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
-        response.setHeader("Location", redirectUri);
+        response.sendRedirect(redirectUri);
     }
 
     @Override
