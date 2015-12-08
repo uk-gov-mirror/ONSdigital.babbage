@@ -134,7 +134,7 @@
 							</ul>
 						</div>
 						<div class="tiles__extra">
-							<a href="{{#each breadcrumb}}{{#if @last}}{{uri}}/datalist?filter=single_time_series{{/if}}{{/each}}">View all related time series data</a>
+							<a href="/timeseriestool?topic{{parentPath (parentPath uri)}}">View all related time series data</a>
 						</div>
 					</div>
 				{{/if_any}}

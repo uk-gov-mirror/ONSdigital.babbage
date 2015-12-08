@@ -32,7 +32,8 @@
 
 {{#partial "block-featured-result"}}
 	{{#if counts.docCounts.timeseries}}
-		{{> partials/related/timeseries-tool}}
+		{{#assign "path"}}/timeseriestool?topic={{parentPath uri}}{{/assign}}
+		{{> partials/related/timeseries-tool href=path}}
 	{{/if}}
 {{/partial}}
 
