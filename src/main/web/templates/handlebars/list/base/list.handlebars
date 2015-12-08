@@ -1,6 +1,6 @@
 
 {{#partial "block-main"}}
-	<div class="page-content">
+	{{#block "block-title-wrapper"}}
 		<div class="wrapper">
 			<div class="col-wrap">
 				<div class="col">
@@ -11,36 +11,38 @@
 				</div>
 			</div>
 		</div>
+	{{/block}}
 
-		{{#block "block-alert"}}{{/block}}
+	{{#block "block-alert"}}{{/block}}
 
-		{{#if tabs}}
-			<div class="tab">
-				<div class="wrapper">
-					{{#block "block-tab-menu"}}{{/block}}
-					<ul class="list--neutral list--inline flush">
-						{{#block "block-list-tabs"}}
-							<li>
-								<a href="/search?q={{parameters.q.0}}" class="tab__item tab__item--active">
-									All results
-								</a>
-							</li>
-							<li>
-								<a href="/searchdata?q={{parameters.q.0}}" class="tab__item">
-									Data
-								</a>
-							</li>
-							<li>
-								<a href="/searchpublication?q={{parameters.q.0}}" class="tab__item">
-									Publications
-								</a>
-							</li>
-						{{/block}}
-					</ul>
-				</div>
+	{{#if tabs}}
+		<div class="tab">
+			<div class="wrapper">
+				{{#block "block-tab-menu"}}{{/block}}
+				<ul class="list--neutral flush">
+					{{#block "block-list-tabs"}}
+						<li>
+							<a href="/search?q={{parameters.q.0}}" class="tab__item tab__item--active">
+								All results
+							</a>
+						</li>
+						<li>
+							<a href="/searchdata?q={{parameters.q.0}}" class="tab__item">
+								Data
+							</a>
+						</li>
+						<li>
+							<a href="/searchpublication?q={{parameters.q.0}}" class="tab__item">
+								Publications
+							</a>
+						</li>
+					{{/block}}
+				</ul>
 			</div>
-		{{/if}}
+		</div>
+	{{/if}}
 
+	<div class="page-content border">
 		<div class="wrapper">
 			<div class="col-wrap print-hidden">
 				<div class="col">

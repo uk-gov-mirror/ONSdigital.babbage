@@ -4,13 +4,13 @@
 
 
 {{#partial "block-list-tabs"}}
-	<li>
-		<a href="datalist{{#if parameters.query.0}}?query={{parameters.query.0}}{{/if}}" class="tab__item">
+	<li class="tab__item">
+		<a href="datalist{{#if parameters.query.0}}?query={{parameters.query.0}}{{/if}}" class="tab__link">
 			Data
 		</a>
 	</li>
-	<li>
-		<a href="publication{{#if parameters.query.0}}?query={{parameters.query.0}}{{/if}}" class="tab__item tab__item--active">
+	<li class="tab__item">
+		<a href="publication{{#if parameters.query.0}}?query={{parameters.query.0}}{{/if}}" class="tab__link tab__link--active">
 			Publications
 		</a>
 	</li>
