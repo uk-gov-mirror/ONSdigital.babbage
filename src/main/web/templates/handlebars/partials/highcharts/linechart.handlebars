@@ -208,11 +208,11 @@
             </tbody>
         </table>
     </div>
-{{#unless cookies.jsEnhanced}}
-<div class="tiles__content">
-    <img class="js-enhance--hide" src="{{uri}}/linechartimage" alt="{{description.title}}" width="875" height="400">
-</div>
-{{/unless}}
+<noscript>
+	<div class="tiles__content">
+	    <img class="js-enhance--hide" src="{{uri}}/linechartimage" alt="{{description.title}}" width="875" height="400">
+	</div>
+</noscript>
 
 
 {{!-- Dynamically generated linechart configuration file --}}
