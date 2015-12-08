@@ -1,46 +1,24 @@
 
 {{#partial "block-main"}}
 	{{#block "block-title-wrapper"}}
-		<div class="wrapper">
-			<div class="col-wrap">
-				<div class="col">
+		<div class="{{background}}">
+			<div class="wrapper">
+				<div class="col-wrap">
+					<div class="col">
 						{{#if showBreadcrumb}}
 							{{> list/partials/list-page-breadcrumb label=breadcrumbLabel}}
 						{{/if}}
-						<h1 class="search-page__title">{{#block "block-title"}}{{/block}}</h1>
+						<h1 class="search-page__title{{#if tabs}} margin-bottom-md--3 margin-bottom-md--2{{/if}}">{{#block "block-title"}}{{/block}}</h1>
+						{{#if tabs}}
+							{{> list/partials/tabs }}
+						{{/if}}
+					</div>
 				</div>
 			</div>
 		</div>
 	{{/block}}
 
 	{{#block "block-alert"}}{{/block}}
-
-	{{#if tabs}}
-		<div class="tab">
-			<div class="wrapper">
-				{{#block "block-tab-menu"}}{{/block}}
-				<ul class="list--neutral flush">
-					{{#block "block-list-tabs"}}
-						<li>
-							<a href="/search?q={{parameters.q.0}}" class="tab__item tab__item--active">
-								All results
-							</a>
-						</li>
-						<li>
-							<a href="/searchdata?q={{parameters.q.0}}" class="tab__item">
-								Data
-							</a>
-						</li>
-						<li>
-							<a href="/searchpublication?q={{parameters.q.0}}" class="tab__item">
-								Publications
-							</a>
-						</li>
-					{{/block}}
-				</ul>
-			</div>
-		</div>
-	{{/if}}
 
 	<div class="page-content border">
 		<div class="wrapper">

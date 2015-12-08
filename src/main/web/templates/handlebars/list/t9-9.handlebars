@@ -1,13 +1,14 @@
+{{#partial "block-title-wrapper" background="background--gallery"}}{{/partial}}
+
 {{#partial "block-title"}}
 	All data related to {{> partials/location }}
 {{/partial}}
 
-
 {{#partial "block-list-tabs"}}
 	<li class="tab__item">
-		<a href="datalist{{#if parameters.query.0}}?query={{parameters.query.0}}{{/if}}" class="tab__link tab__link--active">
+		<span class="tab__link tab__link--active">
 			Data
-		</a>
+		</span>
 	</li>
 	<li class="tab__item">
 		<a href="publications{{#if parameters.query.0}}?query={{parameters.query.0}}{{/if}}" class="tab__link">
