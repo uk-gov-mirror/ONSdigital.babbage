@@ -32,7 +32,7 @@ public class Chart {
         }
         uri = URIUtil.cleanUri(uri);
         String html = ChartRenderer.getInstance().renderChart(uri, getWidth(request));
-        new BabbageStringResponse(html, MediaType.TEXT_HTML).apply(response);
+        new BabbageStringResponse(html, MediaType.TEXT_HTML).apply(request,response);
         return null;
     }
 

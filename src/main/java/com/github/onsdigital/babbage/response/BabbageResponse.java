@@ -2,6 +2,7 @@ package com.github.onsdigital.babbage.response;
 
 import org.apache.commons.lang3.CharEncoding;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
@@ -21,16 +22,22 @@ public abstract class BabbageResponse {
 
     private String mimeType = APPLICATION_JSON; //Default mimetype
     private String charEncoding = CharEncoding.UTF_8;//Default encoding
+    private int status = HttpServletResponse.SC_OK;//Default status
     private Map<String, String> header;
 
     public BabbageResponse(String mimeType) {
         this.mimeType = mimeType;
     }
 
+    public BabbageResponse(String mimeType, int status) {
+        this(mimeType);
+        this.status = status;
+    }
+
     public BabbageResponse() { }
 
-    public void apply(HttpServletResponse response) throws IOException {
-        response.setStatus(HttpServletResponse.SC_OK);
+    public void apply(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setStatus(getStatus());
         response.setCharacterEncoding(getCharEncoding());
         response.setContentType(getMimeType());
         if (getHeader() != null) {
@@ -40,10 +47,7 @@ public abstract class BabbageResponse {
                 response.setHeader(next.getKey(), next.getValue());
             }
         }
-        applyData(response);
     }
-
-    protected abstract void applyData(HttpServletResponse response) throws IOException;
 
     public String getMimeType() {
         return mimeType;
@@ -74,4 +78,11 @@ public abstract class BabbageResponse {
         return charEncoding;
     }
 
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
 }

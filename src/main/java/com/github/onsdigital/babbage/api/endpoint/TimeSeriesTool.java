@@ -22,9 +22,9 @@ public class TimeSeriesTool extends ListPageBaseRequestHandler {
         String uri = URIUtil.cleanUri(request.getRequestURI());
         String requestType = URIUtil.resolveRequestType(uri);
         if ("data".equals(requestType)) {
-            getData(URIUtil.removeLastSegment(uri), request).apply(response);
+            getData(URIUtil.removeLastSegment(uri), request).apply(request, response);
         } else {
-            super.get(uri, request).apply(response);
+            super.get(uri, request).apply(request,response);
         }
     }
 

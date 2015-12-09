@@ -28,7 +28,7 @@ public class Export {
             contentDispositionHeader += contentStream.getName() == null ? "" : "filename=\"" + contentStream.getName() + "\"";
             response.setCharacterEncoding("UTF-8");
             response.setHeader("Content-Disposition", contentDispositionHeader);
-            new BabbageBinaryResponse(contentStream.getDataStream(), contentStream.getMimeType()).applyData(response);
+            new BabbageBinaryResponse(contentStream.getDataStream(), contentStream.getMimeType()).apply(request,response);
         } catch (Throwable t) {
             ErrorHandler.handle(request, response, t);
         }

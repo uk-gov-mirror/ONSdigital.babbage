@@ -26,7 +26,7 @@ public class File {
             String contentDispositionHeader = "attachment; ";
             contentDispositionHeader += contentStream.getName() == null ? "" : "filename=\"" + contentStream.getName() + "\"";
             response.setHeader("Content-Disposition", contentDispositionHeader);
-            new BabbageBinaryResponse(contentStream.getDataStream(), contentStream.getMimeType()).applyData(response);
+            new BabbageBinaryResponse(contentStream.getDataStream(), contentStream.getMimeType()).apply(request,response);
         } catch (Throwable t) {
             ErrorHandler.handle(request, response, t);
         }

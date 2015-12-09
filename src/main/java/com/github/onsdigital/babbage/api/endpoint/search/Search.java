@@ -59,9 +59,9 @@ public class Search extends ListPageBaseRequestHandler {
         String uri = URIUtil.cleanUri(request.getRequestURI());
         String requestType = URIUtil.resolveRequestType(uri);
         if ("data".equals(requestType)) {
-            getData(URIUtil.removeLastSegment(uri), request).apply(response);
+            getData(URIUtil.removeLastSegment(uri), request).apply(request, response);
         } else {
-            getPage(request, response).apply(response);
+            getPage(request, response).apply(request, response);
         }
     }
 

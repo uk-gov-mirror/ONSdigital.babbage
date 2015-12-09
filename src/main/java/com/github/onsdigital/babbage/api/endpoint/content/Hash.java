@@ -33,7 +33,7 @@ public class Hash {
     public void get(@Context HttpServletRequest request, @Context HttpServletResponse response) throws IOException {
         try (ContentStream contentStream = ContentClient.getInstance().getResource(request.getParameter("uri"))) {
             String hash = Hex.encodeHexString(DigestUtils.sha1(contentStream.getDataStream()));
-            new BabbageStringResponse(hash, contentStream.getMimeType()).apply(response);
+            new BabbageStringResponse(hash, contentStream.getMimeType()).apply(request,response);
             return;
         } catch (ContentReadException e) {
             writeError(response, e.getStatusCode());

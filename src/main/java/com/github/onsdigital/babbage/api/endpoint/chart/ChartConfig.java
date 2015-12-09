@@ -32,7 +32,7 @@ public class ChartConfig {
             return "Please specify uri of the chart";
         }
         uri = URIUtil.cleanUri(uri);
-        new BabbageStringResponse(ChartRenderer.getInstance().getChartConfig(uri, getWidth(request))).apply(response);
+        new BabbageStringResponse(ChartRenderer.getInstance().getChartConfig(uri, getWidth(request))).apply(request,response);
         return null;
     }
 
@@ -44,7 +44,7 @@ public class ChartConfig {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return "Please specify chart data to get chart configuration for";
         }
-        new BabbageStringResponse(ChartRenderer.getInstance().getChartConfigFor(data, getWidth(request))).apply(response);
+        new BabbageStringResponse(ChartRenderer.getInstance().getChartConfigFor(data, getWidth(request))).apply(request,response);
         return null;
     }
 

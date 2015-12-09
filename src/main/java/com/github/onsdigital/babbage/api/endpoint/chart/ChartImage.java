@@ -35,7 +35,7 @@ public class ChartImage {
         uri = URIUtil.cleanUri(uri);
         String config = ChartRenderer.getInstance().getChartConfig(uri);
         InputStream stream = HighChartsExportClient.getInstance().getImage(config, getWidth(request));
-        new BabbageBinaryResponse(stream, CONTENT_TYPE).apply(response);
+        new BabbageBinaryResponse(stream, CONTENT_TYPE).apply(request,response);
         return null;
     }
 }

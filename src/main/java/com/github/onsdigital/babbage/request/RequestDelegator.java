@@ -70,7 +70,7 @@ public class RequestDelegator {
                 response.addHeader("cache-control", "public, max-age=300");
             }
 
-            getResponse.apply(response);
+            getResponse.apply(request,response);
         } catch (Throwable t) {
             ErrorHandler.handle(request, response, t);
         }
