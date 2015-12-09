@@ -12,9 +12,9 @@
             {{#each chapters}}
                 {{#resolve uri filter="description"}}
                 <li class="flush">
-                    <h3><a href="{{uri}}" class="chapter">{{description.title}}</a></h3>
-                    {{#if description.headline}}
-                    <p>{{description.headline}}</p>
+                    <h3><a href="{{uri}}" class="chapter font-size--h4">{{description.title}}</a></h3>
+                    {{#if description._abstract}}
+                        {{description._abstract}}
                     {{/if}}
                 </li>
                 {{/resolve}}
