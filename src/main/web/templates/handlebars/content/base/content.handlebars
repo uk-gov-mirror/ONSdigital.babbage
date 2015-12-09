@@ -1,5 +1,5 @@
 {{#partial "block-main"}}
-<div class="page-intro">
+    <div class="page-intro {{#if_eq type "home_page"}}background--astral{{else}}background--gallery{{/if_eq}}">
 	<div class="wrapper">
 		<div class="col-wrap">
 			<div class="col">
@@ -18,7 +18,7 @@
 	
 	{{#block "block-intro-secondary"}}{{/block}}
 </div> {{!-- /page-intro --}}
-<div class="page-content">
+<div class="page-content border-top--iron-sm border-top--iron-md">
 	{{#block "block-content"}}{{/block}}
 </div>
 {{/partial}}

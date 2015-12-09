@@ -12,18 +12,16 @@
 		{{#block "block-metadata"}}
 			<div class="wrapper">
 				<div class="col-wrap">
-					{{> content/partials/metadata/ns-logo}}
-					{{> content/partials/metadata/contact}}
+                    {{!-- {{> content/partials/metadata/ns-logo}} --}}
+					{{> content/partials/metadata/contact class="col--md-16 col--lg-20"}}
 
 					{{#block "block-release-date"}}
-						{{> content/partials/metadata/release-date}}
+						{{> content/partials/metadata/release-date class="col--md-16 col--lg-20"}}
 					{{/block}}
 
 					{{#block "block-next-release"}}
 					{{!-- Next release --}}
-					<p class="col col--md-12 col--lg-15 meta__item">
-						<span>{{labels.release-next}}: </span><br/>{{#if description.nextRelease}}{{description.nextRelease}}{{else}}To be announced{{/if}}
-					</p>
+                        {{> content/partials/metadata/next-release class="col--md-16 col--lg-20"}}
 					{{/block}}
 
 					{{#block "block-additonal-metadata"}}{{/block}}

@@ -1,3 +1,21 @@
+{{#partial "block-metadata"}}
+    <div class="wrapper">
+        <div class="col-wrap">
+            {{> content/partials/metadata/contact class="col--md-12 col--lg-15"}}
+
+            {{#block "block-release-date"}}
+                {{> content/partials/metadata/release-date class="col--md-12 col--lg-15"}}
+            {{/block}}
+
+            {{#block "block-next-release"}}
+                {{> content/partials/metadata/next-release class="col--md-12 col--lg-15"}}
+            {{/block}}
+
+            {{#block "block-additonal-metadata"}}{{/block}}
+        </div>
+    </div>
+{{/partial}}
+
 {{> content/partials/metadata/dataset-id}}
 
 
@@ -315,7 +333,7 @@
             <div class="col col--lg-one-third col--md-one-third margin-top margin-bottom">
 
                 {{!-- Related data --}}
-                {{> partials/related/new-data relatedUri="../datalist?filter=large_dataset" relatedTitle="parent"}}
+                {{> partials/related/new-data showDataList relatedUri="../datalist?filter=large_dataset" relatedTitle="parent"}}
 
                 {{!-- Related articles and bulletins --}}
                 {{> partials/related/documents }}
