@@ -133,8 +133,8 @@
 						</ul>
 					</div>
 				</div>
-
-				{{> partials/related/new-data relatedTitle="View and download all related time series"}}
+				{{#assign "path"}}/timeseriestool?topic={{parentPath (parentPath uri)}}{{/assign}}
+				{{> partials/related/new-data relatedTitle="View and download all related time series" relatedUri=path}}
 				{{> partials/related/documents}}
 			</div>
 		{{/if_any}}
