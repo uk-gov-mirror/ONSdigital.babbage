@@ -5,7 +5,7 @@
 	</div>
 {{/if_all}}
 
-{{#if_any relatedData relatedDatasets datasets (eq type "dataset_landing_page")}}
+{{#if_any relatedData relatedDatasets datasets (eq type "dataset_landing_page") (eq type "timeseries")}}
 	<a class="btn btn--primary btn--full-width margin-bottom-sm--2 margin-bottom-md--2" href="{{relatedUri}}">
 		{{!-- if "parent" get the parent title --}}
 		{{#if_eq relatedTitle "parent"}}
