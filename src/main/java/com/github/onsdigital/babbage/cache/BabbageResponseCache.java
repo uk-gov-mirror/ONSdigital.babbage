@@ -1,7 +1,7 @@
 package com.github.onsdigital.babbage.cache;
 
 import com.github.onsdigital.babbage.configuration.Configuration;
-import com.github.onsdigital.babbage.response.BabbageResponse;
+import com.github.onsdigital.babbage.response.base.BabbageResponse;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 

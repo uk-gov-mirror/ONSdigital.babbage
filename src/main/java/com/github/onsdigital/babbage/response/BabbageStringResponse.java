@@ -1,5 +1,7 @@
 package com.github.onsdigital.babbage.response;
 
+import com.github.onsdigital.babbage.response.base.BabbageResponse;
+import com.github.onsdigital.babbage.response.util.CacheControlHelper;
 import org.apache.commons.io.IOUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -29,10 +31,11 @@ public class BabbageStringResponse extends BabbageResponse {
         // https://acunetix.com/vulnerabilities/web/clickjacking--x-frame-options-header-missing
         addHeader("X-Frame-Options", "SAMEORIGIN"); // DENY | SAMEORIGIN        
         super.apply(request,response);
+        CacheControlHelper.setCacheHeaders(request, response, data);
         writeData(response);
     }
 
-    protected void writeData(HttpServletResponse response) throws IOException {
+    protected void writeData( HttpServletResponse response) throws IOException {
         IOUtils.write(getData(), response.getOutputStream());
     }
 

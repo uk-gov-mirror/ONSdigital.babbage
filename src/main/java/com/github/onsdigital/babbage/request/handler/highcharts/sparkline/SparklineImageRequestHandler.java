@@ -2,7 +2,7 @@ package com.github.onsdigital.babbage.request.handler.highcharts.sparkline;
 
 import com.github.onsdigital.babbage.request.handler.base.RequestHandler;
 import com.github.onsdigital.babbage.response.BabbageBinaryResponse;
-import com.github.onsdigital.babbage.response.BabbageResponse;
+import com.github.onsdigital.babbage.response.base.BabbageResponse;
 import com.github.onsdigital.babbage.highcharts.HighChartsExportClient;
 
 import javax.servlet.http.HttpServletRequest;

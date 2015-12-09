@@ -3,7 +3,7 @@ package com.github.onsdigital.babbage.request.handler.highcharts.linechart;
 import com.github.onsdigital.babbage.highcharts.HighChartsExportClient;
 import com.github.onsdigital.babbage.request.handler.base.RequestHandler;
 import com.github.onsdigital.babbage.response.BabbageBinaryResponse;
-import com.github.onsdigital.babbage.response.BabbageResponse;
+import com.github.onsdigital.babbage.response.base.BabbageResponse;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.InputStream;

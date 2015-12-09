@@ -1,6 +1,6 @@
 package com.github.onsdigital.babbage.request.handler.base;
 
-import com.github.onsdigital.babbage.response.BabbageResponse;
+import com.github.onsdigital.babbage.response.base.BabbageResponse;
 
 import javax.servlet.http.HttpServletRequest;
 

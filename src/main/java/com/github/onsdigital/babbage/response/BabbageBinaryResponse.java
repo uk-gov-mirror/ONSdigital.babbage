@@ -1,5 +1,6 @@
 package com.github.onsdigital.babbage.response;
 
+import com.github.onsdigital.babbage.response.base.BabbageResponse;
 import org.apache.commons.io.IOUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,10 +20,10 @@ public class BabbageBinaryResponse extends BabbageResponse {
     @Override
     public void apply(HttpServletRequest request, HttpServletResponse response) throws IOException {
         super.apply(request, response);
-        applyData(response);
+        writeData(response);
     }
 
-    private void applyData(HttpServletResponse response) throws IOException {
+    private void writeData(HttpServletResponse response) throws IOException {
         IOUtils.write(data, response.getOutputStream());
     }
 }

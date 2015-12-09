@@ -1,5 +1,7 @@
 package com.github.onsdigital.babbage.response;
 
+import com.github.onsdigital.babbage.response.base.BabbageResponse;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;

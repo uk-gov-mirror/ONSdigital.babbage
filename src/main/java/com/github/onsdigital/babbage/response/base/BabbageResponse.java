@@ -1,4 +1,4 @@
-package com.github.onsdigital.babbage.response;
+package com.github.onsdigital.babbage.response.base;
 
 import org.apache.commons.lang3.CharEncoding;
 
