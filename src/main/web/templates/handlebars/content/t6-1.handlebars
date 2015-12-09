@@ -1,14 +1,5 @@
 {{#partial "block-alert" no-versions=true}}{{/partial}}
 
-{{#partial "block-additonal-metadata"}}
-{{!-- Print and download --}}
-<p class="col col--md-12 col--lg-15 print--hide meta__item">
-	<a href="" id="jsEnhancePrintCompendium" class="nojs-hidden js-enhance--show">
-		Print all chapters
-	</a>
-</p>
-{{/partial}}
-
 
 {{#partial "block-content"}}
 <div class="wrapper">
@@ -34,18 +25,28 @@
         </div>
         <div class="col col--md-one-third col--lg-one-third padding-top-md--3">
             {{!-- Print options --}}
-            {{>partials/print-options}}
+                <p class="text-right padding-top-md--0 padding-bottom-md--0 height--5 margin-top-md--3 print--hide">
+                    <a href="" id="jsEnhancePrintCompendium" class="nojs-hidden js-enhance--show">
+                        Print all chapters in this compendium
+                    </a>
+                    <span class="icon icon-print--dark-small"></span>
+                </p>
 
             {{!-- Related data --}}
             {{#if datasets}}
-                <div class="tiles__item tiles__item--nav-type flush-col print--hide">
+                {{!-- <div class="tiles__item tiles__item--nav-type flush-col print--hide">
                     <h3 class="tiles__title-h3 tiles__title-h3--nav">Data in this {{> type-label type_code=type }}</h3>
                     <div class="tiles__extra margin-bottom-md--2">
                         {{#each datasets}}
                             <a href="{{uri}}">View all data in this {{> type-label type_code=type }}</a>
                         {{/each}}
                     </div>
-                </div>
+                </div> --}}
+
+                {{#each datasets}}
+                    {{>partials/related/new-data relatedUri=uri relatedTitle="self"}}
+                {{/each}}
+
             {{/if}}
 
             {{!-- Contact --}}
