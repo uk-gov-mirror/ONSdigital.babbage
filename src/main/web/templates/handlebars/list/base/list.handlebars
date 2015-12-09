@@ -1,46 +1,26 @@
 
 {{#partial "block-main"}}
-	<div class="page-content">
-		<div class="wrapper">
-			<div class="col-wrap">
-				<div class="col">
+	{{#block "block-alert"}}{{/block}}
+
+	{{#block "block-title-wrapper"}}
+		<div class="{{background}}">
+			<div class="wrapper">
+				<div class="col-wrap">
+					<div class="col">
 						{{#if showBreadcrumb}}
 							{{> list/partials/list-page-breadcrumb label=breadcrumbLabel}}
 						{{/if}}
-						<h1 class="search-page__title">{{#block "block-title"}}{{/block}}</h1>
+						<h1 class="search-page__title{{#if tabs}} margin-bottom-md--3 margin-bottom-md--2{{/if}}">{{#block "block-title"}}{{/block}}</h1>
+						{{#if tabs}}
+							{{> list/partials/tabs }}
+						{{/if}}
+					</div>
 				</div>
 			</div>
 		</div>
+	{{/block}}
 
-		{{#block "block-alert"}}{{/block}}
-
-		{{#if tabs}}
-			<div class="tab">
-				<div class="wrapper">
-					{{#block "block-tab-menu"}}{{/block}}
-					<ul class="list--neutral list--inline flush">
-						{{#block "block-list-tabs"}}
-							<li>
-								<a href="/search?q={{parameters.q.0}}" class="tab__item tab__item--active">
-									All results
-								</a>
-							</li>
-							<li>
-								<a href="/searchdata?q={{parameters.q.0}}" class="tab__item">
-									Data
-								</a>
-							</li>
-							<li>
-								<a href="/searchpublication?q={{parameters.q.0}}" class="tab__item">
-									Publications
-								</a>
-							</li>
-						{{/block}}
-					</ul>
-				</div>
-			</div>
-		{{/if}}
-
+	<div class="page-content border">
 		<div class="wrapper">
 			<div class="col-wrap print-hidden">
 				<div class="col">
@@ -49,7 +29,7 @@
 							{{> list/partials/search-results-text-number result}}
 						</div>
 					{{/block}}
-					{{!-- {{#block "block-sort"}} --}}
+					{{#block "block-results-extra"}}
 						{{#if result.results}}
 							{{#unless hideSort}}
 								<div class="float-right">
@@ -57,7 +37,7 @@
 								</div>
 							{{/unless}}
 						{{/if}}
-					{{!-- {{/block}} --}}
+					{{/block}}
 				</div>
 			</div>
 			<form id="form">

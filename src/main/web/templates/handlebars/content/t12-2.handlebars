@@ -8,6 +8,23 @@
     
 {{/partial}}
 
+{{#partial "block-metadata"}}
+    <div class="wrapper">
+        <div class="col-wrap">
+            {{> content/partials/metadata/contact class="col--md-12 col--lg-15"}}
+
+            {{#block "block-release-date"}}
+                {{> content/partials/metadata/release-date class="col--md-12 col--lg-15"}}
+            {{/block}}
+
+            {{#block "block-next-release"}}
+                {{> content/partials/metadata/next-release class="col--md-12 col--lg-15"}}
+            {{/block}}
+
+            {{#block "block-additonal-metadata"}}{{/block}}
+        </div>
+    </div>
+{{/partial}}
 
 {{#partial "block-additonal-metadata"}}
 {{!-- Print and download --}}
@@ -31,7 +48,7 @@
                     <p class="print--hide">
                         {{#each breadcrumb}}
                             {{#if @last}}
-                                Return to <a href="{{uri}}">{{description.title}}</a>
+                                Return to <a class="underline-link" href="{{uri}}">{{description.title}}</a>
                             {{/if}}
                         {{/each}}
                     </p>

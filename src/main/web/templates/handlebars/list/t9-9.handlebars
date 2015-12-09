@@ -1,16 +1,17 @@
+{{#partial "block-title-wrapper" background="background--gallery"}}{{/partial}}
+
 {{#partial "block-title"}}
 	All data related to {{> partials/location }}
 {{/partial}}
 
-
 {{#partial "block-list-tabs"}}
-	<li>
-		<a href="datalist{{#if parameters.query.0}}?query={{parameters.query.0}}{{/if}}" class="tab__item tab__item--active">
+	<li class="tab__item">
+		<span class="tab__link tab__link--active">
 			Data
-		</a>
+		</span>
 	</li>
-	<li>
-		<a href="publications{{#if parameters.query.0}}?query={{parameters.query.0}}{{/if}}" class="tab__item">
+	<li class="tab__item">
+		<a href="publications{{#if parameters.query.0}}?query={{parameters.query.0}}{{/if}}" class="tab__link">
 			Publications
 		</a>
 	</li>
@@ -31,7 +32,8 @@
 
 {{#partial "block-featured-result"}}
 	{{#if counts.docCounts.timeseries}}
-		{{> partials/related/timeseries-tool}}
+		{{#assign "path"}}/timeseriestool?topic={{parentPath uri}}{{/assign}}
+		{{> partials/related/timeseries-tool href=path}}
 	{{/if}}
 {{/partial}}
 
