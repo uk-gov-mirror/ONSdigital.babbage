@@ -8,12 +8,8 @@
 {{/partial}}
 
 {{#partial "publication-sidebar"}}
-    {{#if_eq type "article"}}
-        {{!-- Print & PDF --}}
-        {{>partials/print-options}}
-    {{/if_eq}}
 	{{!-- Related data --}}
-	{{>partials/related/data}}
+    {{>partials/related/new-data relatedUri=(concat uri "/relateddata") relatedTitle="self"}}
 	{{!-- Related publications --}}
 	{{>partials/related/documents}}
 	{{!-- Related articles --}}

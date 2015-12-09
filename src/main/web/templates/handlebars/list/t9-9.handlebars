@@ -30,7 +30,9 @@
 {{/partial}}
 
 {{#partial "block-featured-result"}}
-	{{> partials/related/timeseries-tool}}
+	{{#if counts.docCounts.timeseries}}
+		{{> partials/related/timeseries-tool}}
+	{{/if}}
 {{/partial}}
 
 {{!-- Inheriting from base list template --}}

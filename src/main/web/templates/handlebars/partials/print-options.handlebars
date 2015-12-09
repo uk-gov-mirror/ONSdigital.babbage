@@ -1,28 +1,32 @@
 {{!-- Print and download --}}
 
+<div class="col col--md-15 col--lg-16 margin-top-md--7 margin-bottom-md--2 margin-left-lg--2 padding-bottom-md--1 border-top--iron-md border-right--iron-md border-bottom--iron-md border-left--iron-md ">
+
 {{#if_eq type "compendium_landing_page"}}
 
-    <p class="margin-top-md--2 print--hide">
-        <span class="icon icon-print--dark-small"></span>
+    <p class="text-right padding-top-md--0 padding-bottom-md--0 height--5 margin-top-md--2 print--hide">
         <a href="" id="jsEnhancePrintCompendium" class="nojs-hidden js-enhance--show">
             Print all chapters in this compendium
         </a>
+        <span class="icon icon-print--dark"></span>
     </p>
 
 {{else}}
 
-    <p class="margin-bottom-md--0 print--hide">
-        <span class="icon icon-print--dark-small"></span>
+    <p class="text-right padding-top-md--0 padding-bottom-md--0 height--5 margin-bottom-md--0 print--hide">
         <a href="" id="jsEnhancePrint" class="link-complex nojs-hidden js-enhance--show">
             Print this {{#if_eq type "compendium_chapter"}}chapter{{else}}{{> type-label type_code=type}}{{/if_eq}}
         </a>
+        <span class="icon icon-print--dark"></span>
     </p>
 
-    <p class="margin-top-md--0 print--hide js-enhance--show">
-        <span class="icon icon-download--dark-small"></span>
+    <p class="text-right padding-top-md--0 padding-bottom-md--0 height--5 margin-top-md--0 print--hide js-enhance--show">
         <a href="{{uri}}/pdf" class="link-complex">
             {{labels.dl-pdf}}
         </a>
+        <span class="icon icon-download--dark"></span>
     </p>
 
 {{/if_eq}}
+
+</div>
