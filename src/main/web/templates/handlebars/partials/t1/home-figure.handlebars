@@ -8,12 +8,13 @@
         {{/resolve}}
 
         {{#resolve this.statistics.uri filter="description"}}
-        <dl class="tiles__content">
-            <dt class="tiles__title-dt">
+
+        <dl class="box__content box__content--homepage  padding-top-sm--24 padding-top-md--24 padding-right-md--1 padding-bottom-md--0 padding-left-md--0 height--46">
+            <dt class="tiles__title-dt margin-left-sm--1 margin-left-md--1">
             <a href="{{uri}}">{{description.title}}</a>
             </dt>
             <!-- change to dd's -->
-            <dd>
+            <dd class="margin-left-sm--1 margin-left-md--1">
                 <span class="tiles__preunit--home">{{description.preUnit}}</span>
                 <span class="tiles__figure--home stat__figure-enhance">{{description.number}}</span> 
                 <span class="tiles__unit--home">{{description.unit}}</span>

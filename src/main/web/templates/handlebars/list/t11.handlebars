@@ -1,31 +1,24 @@
+{{#partial "block-title-wrapper" background="background--gallery"}}{{/partial}}
+
 {{#partial "block-title"}}
 Release calendar
 {{/partial}}
 
-{{#partial "block-tab-menu"}}
-<p class="float-right flush-bottom">
-	<a href="/calendar{{uri}}">
-		<span class="icon icon-calendar--dark-small margin-right-md--1"></span>
-		Add releases to your calendar (ICS)
-	</a>
-</p>
-{{/partial}}
-
 {{#partial "block-list-tabs"}}
-	<li>
-		<a href="/releasecalendar" class="tab__item {{#unless parameters.view.0}}tab__item--active{{/unless}}">
+	<li class="tab__item">
+		<a href="/releasecalendar" class="tab__link {{#unless parameters.view.0}}tab__link--active{{/unless}}">
 			Published releases
 		</a>
 	</li>
-	<li>
-		<a href="/releasecalendar?view=upcoming" class="tab__item {{#if_eq parameters.view.0 "upcoming"}}tab__item--active{{/if_eq}}">
+	<li class="tab__item">
+		<a href="/releasecalendar?view=upcoming" class="tab__link {{#if_eq parameters.view.0 "upcoming"}}tab__link--active{{/if_eq}}">
 			Upcoming releases
 		</a>
 	</li>
 {{/partial}}
 
 {{#partial "block-alert"}}
-	<div class="alert">
+	<div class="background--aluminium padding-top-sm--1 padding-top-md--1 padding-bottom-md--1 padding-bottom-sm--1">
 		<div class="wrapper">
 			<div class="col-wrap">
 				<div class="col">
@@ -42,8 +35,13 @@ Release calendar
 	</div>
 {{/partial}}
 
-{{#partial "block-sort"}}
-
+{{#partial "block-results-extra"}}
+	<p class="float-right margin-top-sm--0 margin-top-md--3 margin-bottom-sm--0 margin-bottom-md--0">
+		<a href="/calendar{{uri}}">
+			<span class="icon icon-calendar--dark-small margin-right-md--1"></span>
+			Add releases to your calendar (ICS)
+		</a>
+	</p>
 {{/partial}}
 
 {{#partial "block-filters"}}
