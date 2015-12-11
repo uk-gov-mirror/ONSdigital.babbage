@@ -104,7 +104,7 @@ public abstract class ListPageBaseRequestHandler {
         if (isAggregateByType()) {
             AggregateQuery aggregateQuery = new AggregateQuery();
             //Applies aggregations on all types, regardless of filters as counts for all types are needed
-            aggregateQuery.setTypes(ContentType.getNamesOf(getAllowedTypes()))
+            aggregateQuery.setTypes(ContentType.getNamesOf(getAggregationTypes()))
                     .setFields(query.getFields())
                     .setSearchTerm(query.getSearchTerm())
                     .setFilters(query.getFilters());
@@ -112,6 +112,11 @@ public abstract class ListPageBaseRequestHandler {
             return aggregateQuery;
         }
         return null;
+    }
+
+    //Types to count documents for, by default it is all document types, override for different behaviour
+    protected ContentType[] getAggregationTypes() {
+        return getAllowedTypes();
     }
 
     protected LinkedHashMap<String, Object> resolveListData(HttpServletRequest request, ONSQuery query, SearchResponseHelper responseHelper, SearchResponseHelper aggregateResponseHelper) throws IOException {

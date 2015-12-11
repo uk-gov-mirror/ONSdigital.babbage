@@ -17,6 +17,11 @@ public class SearchPublication extends Search {
     }
 
     @Override
+    protected ContentType[] getAggregationTypes() {
+        return super.getAllowedTypes();//return all searchable types to count the numbers for
+    }
+
+    @Override
     public String getRequestType() {
         return this.getClass().getSimpleName().toLowerCase();
     }
