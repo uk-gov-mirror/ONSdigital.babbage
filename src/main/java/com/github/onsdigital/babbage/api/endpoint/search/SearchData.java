@@ -17,6 +17,11 @@ public class SearchData extends Search {
     }
 
     @Override
+    protected ContentType[] getAggregationTypes() {
+        return super.getAllowedTypes();// count all documents types allowed in search.
+    }
+
+    @Override
     public String getRequestType() {
         return this.getClass().getSimpleName().toLowerCase();
     }
