@@ -4,26 +4,26 @@
 {{#partial "block-content"}}
 <div class="wrapper">
 	<div class="col-wrap print--avoid-break">
-        <div class="col col--md-two-thirds col--lg-two-thirds">
-		<h2 class="margin-bottom ">Chapters in this compendium:</h2>
-		{{!-- Chapters --}}
-		{{#if chapters}}
-            <ul class="list--neutral">
-            {{#each chapters}}
-                {{#resolve uri filter="description"}}
-                <li class="flush">
-                    <h3><a href="{{uri}}" class="chapter">{{description.title}}</a></h3>
-                    {{#if description.headline}}
-                    <p>{{description.headline}}</p>
-                    {{/if}}
-                </li>
-                {{/resolve}}
-            {{/each}}
-            </ul>
-		{{/if}}
-		{{!-- /Chapters --}}
+        <div class="col col--md-two-thirds col--lg-two-thirds padding-md-right--2">
+            <div class="table-of-contents print--avoid-break margin-top--negative-one-fix">
+                <h2 class="table-of-contents__title">Chapters in this compendium:</h2>
+                {{!-- Chapters --}}
+                {{#if chapters}}
+                    <ol class="padding-left-md--0 margin-bottom-md--4">
+                    {{#each chapters}}
+                        {{#resolve uri filter="description"}}
+                        <li class="table-of-contents__item">
+                            <a href="{{uri}}" class="chapter">{{description.title}}</a>
+
+                        </li>
+                        {{/resolve}}
+                    {{/each}}
+                    </ol>
+                {{/if}}
+            </div>
         </div>
-        <div class="col col--md-one-third col--lg-one-third padding-top-md--3">
+        {{!-- /Chapters --}}
+        <div class="col col--md-one-third col--lg-one-third padding-top-md--8">
             {{!-- Print options --}}
                 <p class="text-right padding-top-md--0 padding-bottom-md--0 height--5 margin-top-md--3 print--hide">
                     <a href="" id="jsEnhancePrintCompendium" class="nojs-hidden js-enhance--show">
