@@ -85,12 +85,9 @@ public class RequestDelegator {
         try {
             final String cacheKey = fullUri + "&js=" +  RequestUtil.getCookieValue(request,"jsEnhanced") + "&lang=" + ThreadContext.getData("lang");
             //caching resource with will uri as key
-            return responseCache.get(cacheKey, new Callable<BabbageResponse>() {
-                @Override
-                public BabbageResponse call() throws Exception {
-                    System.out.println("Cache miss for " + cacheKey + " loading ");
-                    return handler.get(requestedUri, request);
-                }
+            return responseCache.get(cacheKey, () -> {
+                System.out.println("Cache miss for " + cacheKey + " loading ");
+                return handler.get(requestedUri, request);
             });
         } catch (ExecutionException e) {
             throw e.getCause();

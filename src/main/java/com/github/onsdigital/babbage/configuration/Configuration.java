@@ -13,6 +13,9 @@ public class Configuration {
         private static final int GLOBAL_CACHE_TIMEOUT = 5;
         private static final int GLOBAL_REQUEST_CACHE_SIZE = 1000;
 
+        //Should be the same as cut off time in Florence publishing system to ensure cache times are correct
+        private static final int CACHE_TIME = 10 * 60; //in seconds, 10 mins by default
+
         public static int getMaxVisiblePaginatorLink() {
             return MAX_VISIBLE_PAGINATOR_LINK;
         }
@@ -30,12 +33,12 @@ public class Configuration {
         }
 
         public static boolean isCacheEnabled() {
-            String enableCache = StringUtils.defaultIfBlank(getValue("ENABLE_CACHE"), "");
+            String enableCache = StringUtils.defaultIfBlank(getValue("ENABLE_CACHE"), "N");
             return "Y".equals(enableCache);
         }
 
         public static boolean isDevEnvironment() {
-            String devEnvironment = StringUtils.defaultIfBlank(getValue("DEV_ENVIRONMENT"), "");
+            String devEnvironment = StringUtils.defaultIfBlank(getValue("DEV_ENVIRONMENT"), "N");
             return "Y".equals(devEnvironment);
         }
 
