@@ -1,8 +1,9 @@
 package com.github.onsdigital.babbage.request.handler;
 
 import com.github.onsdigital.babbage.content.client.ContentClient;
-import com.github.onsdigital.babbage.content.client.ContentStream;
+import com.github.onsdigital.babbage.content.client.ContentResponse;
 import com.github.onsdigital.babbage.request.handler.base.RequestHandler;
+import com.github.onsdigital.babbage.response.BabbageContentBasedStringResponse;
 import com.github.onsdigital.babbage.response.base.BabbageResponse;
 import com.github.onsdigital.babbage.response.BabbageStringResponse;
 import com.github.onsdigital.babbage.template.TemplateService;
@@ -22,17 +23,13 @@ public class TableRequestHandler implements RequestHandler {
 
     @Override
     public BabbageResponse get(String requestedUri, HttpServletRequest request) throws Exception {
-        try (
-                ContentStream json = ContentClient.getInstance().getContentStream(requestedUri);
-                ContentStream html = ContentClient.getInstance().getResource(URIUtil.cleanUri(requestedUri) + ".html")
-        ) {
-
-            LinkedHashMap<String, Object> htmlEntry = new LinkedHashMap<>();
-            htmlEntry.put("html", html.getAsString());
-            String jsonString = json.getAsString();
-            String result = TemplateService.getInstance().renderTemplate("table", jsonString, htmlEntry);
-            return new BabbageStringResponse(result, MediaType.TEXT_HTML);
-        }
+        ContentResponse jsonResponse = ContentClient.getInstance().getContent(requestedUri);
+        ContentResponse html = ContentClient.getInstance().getResource(URIUtil.cleanUri(requestedUri) + ".html");
+        LinkedHashMap<String, Object> htmlEntry = new LinkedHashMap<>();
+        htmlEntry.put("html", html.getAsString());
+        String jsonString = jsonResponse.getAsString();
+        String result = TemplateService.getInstance().renderTemplate("table", jsonString, htmlEntry);
+        return new BabbageContentBasedStringResponse(jsonResponse, result, MediaType.TEXT_HTML);
     }
 
     @Override

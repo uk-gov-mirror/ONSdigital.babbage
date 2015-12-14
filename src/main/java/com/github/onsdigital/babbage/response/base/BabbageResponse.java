@@ -6,7 +6,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -18,7 +17,7 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
  * A successful response for http request
  *
  */
-public abstract class BabbageResponse {
+public abstract class BabbageResponse{
 
     private String mimeType = APPLICATION_JSON; //Default mimetype
     private String charEncoding = CharEncoding.UTF_8;//Default encoding
@@ -42,8 +41,7 @@ public abstract class BabbageResponse {
         response.setContentType(getMimeType());
         if (getHeader() != null) {
             Set<Map.Entry<String, String>> entries = getHeader().entrySet();
-            for (Iterator<Map.Entry<String, String>> iterator = entries.iterator(); iterator.hasNext(); ) {
-                Map.Entry<String, String> next = iterator.next();
+            for (Map.Entry<String, String> next : entries) {
                 response.setHeader(next.getKey(), next.getValue());
             }
         }

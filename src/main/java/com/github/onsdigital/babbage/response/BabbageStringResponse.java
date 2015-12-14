@@ -29,10 +29,14 @@ public class BabbageStringResponse extends BabbageResponse {
     @Override
     public void apply(HttpServletRequest request, HttpServletResponse response) throws IOException {
         // https://acunetix.com/vulnerabilities/web/clickjacking--x-frame-options-header-missing
-        addHeader("X-Frame-Options", "SAMEORIGIN"); // DENY | SAMEORIGIN        
-        super.apply(request,response);
-        CacheControlHelper.setCacheHeaders(request, response, data);
+        addHeader("X-Frame-Options", "SAMEORIGIN"); // DENY | SAMEORIGIN
+        super.apply(request, response);
+        setCacheHeaders(request, response);
         writeData(response);
+    }
+
+    protected void setCacheHeaders(HttpServletRequest request, HttpServletResponse response) {
+        CacheControlHelper.setCacheHeaders(request, response, CacheControlHelper.hashData(data), 0);
     }
 
     protected void writeData( HttpServletResponse response) throws IOException {

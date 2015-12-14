@@ -20,7 +20,12 @@ public class BabbageBinaryResponse extends BabbageResponse {
     @Override
     public void apply(HttpServletRequest request, HttpServletResponse response) throws IOException {
         super.apply(request, response);
+        setCacheHeaders(request, response);
         writeData(response);
+    }
+
+    protected void setCacheHeaders(HttpServletRequest request, HttpServletResponse response) {
+
     }
 
     private void writeData(HttpServletResponse response) throws IOException {

@@ -1,5 +1,6 @@
 package com.github.onsdigital.babbage.content.client;
 
+import com.github.onsdigital.babbage.cache.BabbageCache;
 import com.github.onsdigital.babbage.util.ThreadContext;
 import com.github.onsdigital.babbage.util.http.ClientConfiguration;
 import com.github.onsdigital.babbage.util.http.PooledHttpClient;
@@ -14,6 +15,7 @@ import org.apache.http.message.BasicNameValuePair;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.Callable;
 
 import static com.github.onsdigital.babbage.configuration.Configuration.CONTENT_SERVICE.*;
 
@@ -71,8 +73,8 @@ public class ContentClient {
      * @throws ContentReadException If content read fails due content service error status is set to whatever error is sent back from content service,
      *                              all other IO Exceptions are rethrown with HTTP status 500
      */
-    public ContentStream getContentStream(String uri) throws ContentReadException, IOException {
-        return getContentStream(uri, null);
+    public ContentResponse getContent(String uri) throws ContentReadException, IOException {
+        return getContent(uri, null);
     }
 
     /**
@@ -89,35 +91,41 @@ public class ContentClient {
      * @throws ContentReadException If content read fails due content service error status is set to whatever error is sent back from content service,
      *                              all other IO Exceptions are rethrown with HTTP status 500
      */
-    public ContentStream getContentStream(String uri, Map<String, String[]> queryParameters) throws ContentReadException {
-        System.out.println("getContentStream(): Reading content from content server, uri:" + uri);
-        return sendGet(getPath(getDataEndpoint()), addUri(uri, getParameters(queryParameters)));
+    public ContentResponse getContent(String uri, Map<String, String[]> queryParameters) throws ContentReadException {
+        return getFromContentCache(uri, queryParameters, () -> {
+            System.out.println("getContent(): Reading content from content server, uri:" + uri);
+            return sendGet(getPath(getDataEndpoint()), addUri(uri, getParameters(queryParameters)));
+        });
     }
 
-    public ContentStream getResource(String uri) throws ContentReadException {
-        System.out.println("getResource(): Reading resource from content server, uri:" + uri);
-        return sendGet(getPath(getResourceEndpoint()), addUri(uri, new ArrayList<>()) );
+    public ContentResponse getResource(String uri) throws ContentReadException {
+        return getFromResourceCache(uri, null, () -> {
+            System.out.println("getResource(): Reading resource from content server, uri:" + uri);
+            return sendGet(getPath(getResourceEndpoint()), addUri(uri, new ArrayList<>()));
+        });
     }
 
-    public ContentStream getFileSize(String uri) throws ContentReadException {
+    public ContentResponse getFileSize(String uri) throws ContentReadException {
         return sendGet(getPath(getFileSizeEndpoint()), addUri(uri, new ArrayList<>()));
     }
 
-    public ContentStream getTaxonomy(Map<String, String[]> queryParameters) throws ContentReadException {
+    public ContentResponse getTaxonomy(Map<String, String[]> queryParameters) throws ContentReadException {
         System.out.println("getTaxonomy(): Reading taxonomy nodes");
         return sendGet(getPath(getTaxonomyEndpoint()),  getParameters(queryParameters));
     }
 
-    public ContentStream getTaxonomy() throws ContentReadException {
+    public ContentResponse getTaxonomy() throws ContentReadException {
         return sendGet(getPath(getTaxonomyEndpoint()), null);
     }
 
-    public ContentStream getParents(String uri) throws ContentReadException {
+    public ContentResponse getParents(String uri) throws ContentReadException {
         return sendGet(getPath(getParentsEndpoint()), addUri(uri, new ArrayList<>()));
     }
 
-    public ContentStream getGenerator(String uri, Map<String, String[]> queryParameters) throws ContentReadException {
-        return sendGet(getPath(getGeneratorEndpoint()), addUri(uri, getParameters(queryParameters)));
+    public ContentResponse getGenerator(String uri, Map<String, String[]> queryParameters) throws ContentReadException {
+        return getFromResourceCache(uri, queryParameters, () -> {
+            return sendGet(getPath(getGeneratorEndpoint()), addUri(uri, getParameters(queryParameters)));
+        });
     }
 
     /**
@@ -128,7 +136,7 @@ public class ContentClient {
      * @return
      * @throws ContentReadException
      */
-    public ContentStream export(String format,  String[] uriList) throws ContentReadException {
+    public ContentResponse export(String format,  String[] uriList) throws ContentReadException {
         List<NameValuePair> parameters = new ArrayList<>();
         parameters.add(new BasicNameValuePair("format", format));
         if (uriList != null) {
@@ -139,29 +147,48 @@ public class ContentClient {
         return sendPost(getPath(getExportEndpoint()), parameters );
     }
 
-    public ContentStream reIndex(String key, String uri) throws ContentReadException {
+    public ContentResponse reIndex(String key, String uri) throws ContentReadException {
         List<NameValuePair> parameters = new ArrayList<>();
         parameters.add(new BasicNameValuePair("key", key));
         parameters.add(new BasicNameValuePair("uri", uri));
         return sendPost(getReindexEndpoint(), parameters);
     }
 
-    public ContentStream reIndexAll(String key) throws ContentReadException {
+    public ContentResponse reIndexAll(String key) throws ContentReadException {
         List<NameValuePair> parameters = new ArrayList<>();
         parameters.add(new BasicNameValuePair("key", key));
         parameters.add(new BasicNameValuePair("all", "1"));
         return sendPost(getReindexEndpoint(), parameters);
     }
 
-    public ContentStream getParents(String uri, Map<String, String[]> queryParameters) throws ContentReadException {
-        System.out.println("getParents(): Reading parents, uri:" + uri);
-        return sendGet(getPath(getParentsEndpoint()), addUri(uri, getParameters(queryParameters)));
+
+    private ContentResponse getFromContentCache(String requestedUri, Map<String, String[]> parameters, Callable loader) throws ContentReadException {
+        try {
+            return BabbageCache.getInstance().getContent(requestedUri, parameters, loader);
+        } catch (Exception e) {
+            if (e instanceof ContentReadException) {
+                throw (ContentReadException)e;
+            }
+            throw new RuntimeException(e);
+        }
     }
 
-    private ContentStream sendGet(String path, List<NameValuePair> getParameters) throws ContentReadException {
+    private ContentResponse getFromResourceCache(String requestedUri, Map<String, String[]> parameters, Callable loader) throws ContentReadException {
+        try {
+            return BabbageCache.getInstance().getResource(requestedUri, parameters, loader);
+        } catch (Exception e) {
+            if (e instanceof ContentReadException) {
+                throw (ContentReadException) e;
+            }
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    private ContentResponse sendGet(String path, List<NameValuePair> getParameters) throws ContentReadException {
         CloseableHttpResponse response = null;
         try {
-            return new ContentStream(client.sendGet(path, getHeaders(), getParameters));
+            return new ContentResponse(client.sendGet(path, getHeaders(), getParameters));
         } catch (HttpResponseException e) {
             IOUtils.closeQuietly(response);
             throw wrapException(e);
@@ -171,10 +198,10 @@ public class ContentClient {
         }
     }
 
-    private ContentStream sendPost(String path, List<NameValuePair> postParameters) throws ContentReadException {
+    private ContentResponse sendPost(String path, List<NameValuePair> postParameters) throws ContentReadException {
         CloseableHttpResponse response = null;
         try {
-            return new ContentStream(client.sendPost(path, getHeaders(), postParameters));
+            return new ContentResponse(client.sendPost(path, getHeaders(), postParameters));
         } catch (HttpResponseException e) {
             IOUtils.closeQuietly(response);
             throw wrapException(e);
