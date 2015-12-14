@@ -23,19 +23,27 @@
 						alt="Office for National Statistics">
 					</a>
 				</div>
-				<div class="language col col--lg-two-thirds col--md-two-thirds print--hide">
-					{{!-- Need space to keep secondary links from vertically aligning at top --}}
-					&nbsp;
-					{{!-- <form class="language__form">
-						<label class="language__label" for="lang">Language:</label>
-						<select class="language__select" id="lang" name="lang">
-							<option value="{{domain}}/{{uri}}">English (EN)</option>
-							<option value="cy.{{domain}}/{{uri}}">Cymraeg (CY)</option>
-						</select>
-						TODO enhance input so auto-submits on select
-						<input type="submit" value="Submit">
-					</form> --}}
-				</div>
+				<nav>
+					<div class="col col--lg-two-thirds col--md-two-thirds print--hide">
+						{{!-- Show different block depending on whether JS or not - saves enhancing <dl> to look and behave like a <select> --}}
+						<dl class="language js-enhance--hide">
+							<dt class="language__title">Language: </dt>
+							<dd class="language__item">
+								<a href="{{#if is_dev}}http://{{location.host}}{{else}}https://{{location.hostname}}{{/if}}{{uri}}" class="language__link">English (EN)</a>
+							</dd>
+							<dd class="language__item">
+								<a href="{{#if is_dev}}http://cy.{{location.host}}{{else}}https://cy.{{location.hostname}}{{/if}}{{uri}}" class="language__link icon--hide">Cymraeg (CY)</a>
+							</dd>
+						</dl>
+						<form class="language language--js js-enhance--show">
+							<label class="language--js__label" for="lang">Language:</label>
+							<select class="language--js__select" id="lang" name="lang">
+								<option value="english" class="language-js__option" data-url="{{#if is_dev}}http://{{location.host}}{{else}}https://{{location.hostname}}{{/if}}{{uri}}">English (EN)</option>
+								<option value="welsh" class="language-js__option" data-url="{{#if is_dev}}http://cy.{{location.host}}{{else}}https://cy.{{location.hostname}}{{/if}}{{uri}}">Cymraeg (CY)</option>
+							</select>
+						</form>
+					</div>
+				</nav>
 				<nav class="secondary-nav col col--lg-two-thirds col--md-two-thirds print--hide">
 					<ul class="secondary-nav__list">
 						{{!-- <li class="secondary-nav__item">
