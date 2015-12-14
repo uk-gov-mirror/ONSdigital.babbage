@@ -29,17 +29,17 @@
 						<dl class="language js-enhance--hide">
 							<dt class="language__title">Language: </dt>
 							<dd class="language__item">
-								<a href="https://{{location.hostname}}{{uri}}" class="language__link icon--hide">English (EN)</a>
+								<a href="https://{{replace location.hostname "cy." ""}}{{uri}}" class="language__link icon--hide">English (EN)</a>
 							</dd>
 							<dd class="language__item">
-								<a href="https://cy.{{location.hostname}}{{uri}}" class="language__link icon--hide">Cymraeg (CY)</a>
+								<a href="https://cy.{{replace location.hostname "cy." ""}}{{uri}}" class="language__link icon--hide">Cymraeg (CY)</a>
 							</dd>
 						</dl>
 						<form class="language language--js js-enhance--show">
 							<label class="language--js__label" for="lang">Language:</label>
 							<select class="language--js__select" id="lang" name="lang">
-								<option value="english" class="language-js__option" data-url="https://{{replace location.hostname "cy" ""}}{{uri}}">English (EN)</option>
-								<option value="welsh" class="language-js__option" data-url="https://cy.{{replace location.hostname "cy" ""}}{{uri}}">Cymraeg (CY)</option>
+								<option value="english" class="language-js__option" data-url="https://{{replace location.hostname "cy." ""}}{{uri}}">English (EN)</option>
+								<option value="welsh" class="language-js__option" data-url="https://cy.{{replace location.hostname "cy." ""}}{{uri}}">Cymraeg (CY)</option>
 							</select>
 						</form>
 					</div>
