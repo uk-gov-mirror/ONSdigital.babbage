@@ -32,14 +32,14 @@
 								<a href="{{#if is_dev}}http://{{location.host}}{{else}}https://{{location.hostname}}{{/if}}{{uri}}" class="language__link">English (EN)</a>
 							</dd>
 							<dd class="language__item">
-								<a href="{{#if is_dev}}http://{{location.host}}{{else}}https://{{location.hostname}}{{/if}}{{uri}}" class="language__link icon--hide">Cymraeg (CY)</a>
+								<a href="{{#if is_dev}}http://cy.{{location.host}}{{else}}https://cy.{{location.hostname}}{{/if}}{{uri}}" class="language__link icon--hide">Cymraeg (CY)</a>
 							</dd>
 						</dl>
 						<form class="language language--js js-enhance--show">
 							<label class="language--js__label" for="lang">Language:</label>
 							<select class="language--js__select" id="lang" name="lang">
 								<option value="english" class="language-js__option" data-url="{{#if is_dev}}http://{{location.host}}{{else}}https://{{location.hostname}}{{/if}}{{uri}}">English (EN)</option>
-								<option value="welsh" class="language-js__option" data-url="{{#if is_dev}}http://{{location.host}}{{else}}https://{{location.hostname}}{{/if}}{{uri}}">Cymraeg (CY)</option>
+								<option value="welsh" class="language-js__option" data-url="{{#if is_dev}}http://cy.{{location.host}}{{else}}https://cy.{{location.hostname}}{{/if}}{{uri}}">Cymraeg (CY)</option>
 							</select>
 						</form>
 					</div>
