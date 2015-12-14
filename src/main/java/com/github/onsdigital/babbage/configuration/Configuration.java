@@ -29,47 +29,35 @@ public class Configuration {
 
     /*Ehcache configuration*/
     public static class CACHE {
-        private static final String UPCOMING_PUBLISH_DATES_CACHE_NAME = "UPCOMING PUBLISH DATES CACHE";
         private static final String CONTENT_CACHE_NAME = "CONTENT CACHE";
         private static final String RESOURCE_CACHE_NAME = "RESOURCE CACHE";
         private static final net.sf.ehcache.config.Configuration cacheConFig = new net.sf.ehcache.config.Configuration();
 
         //Should be the same as cut off time in Florence publishing system to ensure cache times are correct
-        private static final long DEFAULT_CACHE_TIME = 10 * 60; //in seconds, 10 mins by default
+        private static final int DEFAULT_CACHE_TIME = 10 * 60; //in seconds, 10 mins by default
 
         static {
             init();
         }
 
         private static void init() {
-            CacheConfiguration upcomingPublishConfig = new CacheConfiguration();
-            upcomingPublishConfig.name(UPCOMING_PUBLISH_DATES_CACHE_NAME);
-            upcomingPublishConfig.eternal(true);//Never evict data automatically, data is evicted from this cache when published
-            upcomingPublishConfig.memoryStoreEvictionPolicy(MemoryStoreEvictionPolicy.LFU);//spool Least Frequently access data to disk
-            upcomingPublishConfig.maxEntriesLocalHeap(1000);
-            cacheConFig.cache(upcomingPublishConfig);
-
             CacheConfiguration generalCache = new CacheConfiguration();
             generalCache.name(getContentCacheName());
             generalCache.eternal(false);//Never evict data automatically, data is evicted from this cache when published
             generalCache.memoryStoreEvictionPolicy(MemoryStoreEvictionPolicy.LFU);//spool Least Frequently access data to disk
-            generalCache.maxEntriesLocalHeap(1000);
+            generalCache.maxEntriesLocalHeap(50000);
             cacheConFig.cache(generalCache);
 
             CacheConfiguration resourceCache = new CacheConfiguration();
             resourceCache.name(getResourceCacheName());
             resourceCache.eternal(false);//Never evict data automatically, data is evicted from this cache when published
             resourceCache.memoryStoreEvictionPolicy(MemoryStoreEvictionPolicy.LFU);//spool Least Frequently access data to disk
-            resourceCache.maxEntriesLocalHeap(1000);
+            resourceCache.maxEntriesLocalHeap(50000);
             cacheConFig.cache(resourceCache);
         }
 
         public static net.sf.ehcache.config.Configuration getCacheConFig() {
             return cacheConFig;
-        }
-
-        public static String getUpcomingPublishDatesCacheName() {
-            return UPCOMING_PUBLISH_DATES_CACHE_NAME;
         }
 
         public static String getContentCacheName() {
@@ -80,7 +68,7 @@ public class Configuration {
             return RESOURCE_CACHE_NAME;
         }
 
-        public static long getDefaultCacheTime() {
+        public static int getDefaultCacheTime() {
             return DEFAULT_CACHE_TIME;
         }
 

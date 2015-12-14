@@ -22,8 +22,8 @@ import static com.github.onsdigital.babbage.configuration.Configuration.ELASTIC_
 
 public class SearchService {
 
-    private Client client;
-    private static SearchService instance = new SearchService();
+    private static Client client;
+    private static SearchService instance;
 
     private SearchService() {
         Settings settings = ImmutableSettings.settingsBuilder()
@@ -73,6 +73,14 @@ public class SearchService {
         return helpers;
     }
 
+
+    public static Client getClient() {
+        return client;
+    }
+
+    public static void init() {
+        instance = new SearchService();
+    }
 
     private SearchRequestBuilder newSearchRequest() {
         return client.prepareSearch(getElasticSearchIndexAlias());

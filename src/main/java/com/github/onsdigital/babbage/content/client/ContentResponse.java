@@ -26,7 +26,7 @@ public class ContentResponse implements Serializable {
     private byte[] data;
     private long size;
     private String name;
-    private long maxAge;//seconds
+    private int maxAge;//seconds
     private Date expireDate;
 
     private String hash;
@@ -77,10 +77,11 @@ public class ContentResponse implements Serializable {
         return hash;
     }
 
-    public long getMaxAge() {
-        Long timeToExpire = null;
+    public int getMaxAge() {
+        Integer timeToExpire = null;
         if (expireDate != null) {
-            timeToExpire = expireDate.getTime() - new Date().getTime();
+            Long time = expireDate.getTime() - new Date().getTime();
+            timeToExpire =  time.intValue();
         }
         if (timeToExpire != null && timeToExpire > 0) {
             return timeToExpire < maxAge ? timeToExpire : maxAge;
@@ -88,7 +89,7 @@ public class ContentResponse implements Serializable {
         return maxAge;
     }
 
-    public void setMaxAge(long maxAge) {
+    public void setMaxAge(int maxAge) {
         this.maxAge = maxAge;
     }
 

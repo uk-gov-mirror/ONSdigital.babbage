@@ -2,11 +2,17 @@ package com.github.onsdigital.babbage.cache;
 
 import com.github.onsdigital.babbage.configuration.Configuration;
 import com.github.onsdigital.babbage.content.client.ContentResponse;
+import com.github.onsdigital.babbage.search.SearchService;
+import com.github.onsdigital.babbage.util.ElasticSearchUtils;
 import com.github.onsdigital.babbage.util.RequestUtil;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Element;
+import org.elasticsearch.client.Client;
+import org.elasticsearch.common.settings.ImmutableSettings;
+import org.elasticsearch.common.settings.Settings;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.Callable;
@@ -19,13 +25,13 @@ import static com.github.onsdigital.babbage.configuration.Configuration.CACHE.is
 public class BabbageCache {
 
     private static BabbageCache instance = new BabbageCache();
-    private static Cache upcomingPublishDates;
     private static Cache contentCache;
     private static Cache resourceCache;
+    private static ElasticSearchUtils elasticSearchUtils;
+    private static final String SEARCH_INDEX = "publishdates";
 
     private BabbageCache() {
     }
-
 
     /**
      * Gets cached response from upcoming cache if available, if not will try general cache, if response not found in both cache will use load function to load and cache it to general cache
@@ -37,14 +43,14 @@ public class BabbageCache {
      * @throws Exception
      */
     public ContentResponse getContent(String requestedUri, Map<String, String[]> parameters, Callable<ContentResponse> loader) throws Exception {
-        return getFromCacche(requestedUri, parameters, loader, contentCache);
+        return getFromCache(requestedUri, parameters, loader, contentCache);
     }
 
     public ContentResponse getResource(String requestedUri, Map<String, String[]> parameters, Callable<ContentResponse> loader) throws Exception {
-        return getFromCacche(requestedUri, parameters, loader, resourceCache);
+        return getFromCache(requestedUri, parameters, loader, resourceCache);
     }
 
-    private ContentResponse getFromCacche(String requestedUri, Map<String, String[]> parameters, Callable<ContentResponse> loader, Cache cache) throws Exception {
+    private ContentResponse getFromCache(String requestedUri, Map<String, String[]> parameters, Callable<ContentResponse> loader, Cache cache) throws Exception {
         if (!isCacheEnabled()) {
             return loader.call();
         }
@@ -59,12 +65,13 @@ public class BabbageCache {
                     } else {
                         response.setMaxAge(Configuration.CACHE.getDefaultCacheTime());
                     }
-                    cache.put(new Element(key, response));
+                    Element element = new Element(key, response);
+                    element.setTimeToLive(response.getMaxAge());
+                    cache.put(element);
                     return response;
                 }
         );
     }
-
 
     //executes chain function if not found in cache
     private Object get(Cache cache, String key, Callable chain) throws Exception {
@@ -83,13 +90,31 @@ public class BabbageCache {
         return instance;
     }
 
-    public static void init() {
+    public static void init() throws IOException {
         if (isCacheEnabled()) {
             System.out.println("Initializing caches");
             CacheManager cacheManager = CacheManager.create(Configuration.CACHE.getCacheConFig());
-            upcomingPublishDates = cacheManager.getCache(Configuration.CACHE.getUpcomingPublishDatesCacheName());
             contentCache = cacheManager.getCache(Configuration.CACHE.getContentCacheName());
             resourceCache = cacheManager.getCache(Configuration.CACHE.getResourceCacheName());
+            initPublishDates();
         }
+    }
+
+    private static void initPublishDates() throws IOException {
+        elasticSearchUtils = new ElasticSearchUtils(SearchService.getClient());
+        if(!elasticSearchUtils.isIndexAvailable(SEARCH_INDEX)) {
+            elasticSearchUtils.createIndex(SEARCH_INDEX);
+        }
+
+
+
+
+        ImmutableSettings.settingsBuilder().put
+    }
+
+    private Settings buildIndexSettings() {
+        new Hash
+
+        ImmutableSettings.settingsBuilder().
     }
 }
