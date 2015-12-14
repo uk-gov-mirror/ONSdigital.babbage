@@ -27,12 +27,13 @@
 					<div class="col col--lg-two-thirds col--md-two-thirds print--hide">
 						{{!-- Show different block depending on whether JS or not - saves enhancing <dl> to look and behave like a <select> --}}
 						<dl class="language js-enhance--hide">
+							{{#if is_dev}}http{{else}}https{{/if}}://{{json location}}{{uri}}
 							<dt class="language__title">Language: </dt>
 							<dd class="language__item">
-								<a href="{{#if is_dev}}http{{else}}https{{/if}}://{{location.host}}{{uri}}" class="language__link">English (EN)</a>
+								<a href="{{#if is_dev}}http://{{location.host}}{{else}}https://{{location.hostname}}{{/if}}{{uri}}" class="language__link">English (EN)</a>
 							</dd>
 							<dd class="language__item">
-								<a href="{{#if is_dev}}http{{else}}https{{/if}}://cy.{{location.host}}{{uri}}" class="language__link icon--hide">Cymraeg (CY)</a>
+								<a href="{{#if is_dev}}http://{{location.host}}{{else}}https://{{location.hostname}}{{/if}}{{uri}}" class="language__link icon--hide">Cymraeg (CY)</a>
 							</dd>
 						</dl>
 						<form class="language language--js js-enhance--show">
