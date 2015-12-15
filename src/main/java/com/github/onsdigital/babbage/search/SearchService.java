@@ -5,6 +5,7 @@ import com.github.onsdigital.babbage.search.helpers.CountResponseHelper;
 import com.github.onsdigital.babbage.search.helpers.SearchResponseHelper;
 import com.github.onsdigital.babbage.util.ElasticSearchUtils;
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.ElasticsearchException;
 import org.elasticsearch.action.count.CountRequestBuilder;
 import org.elasticsearch.action.get.GetRequestBuilder;
@@ -20,6 +21,8 @@ import org.elasticsearch.common.transport.InetSocketTransportAddress;
 import org.elasticsearch.index.query.TermsFilterBuilder;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static com.github.onsdigital.babbage.configuration.Configuration.ELASTIC_SEARCH.*;
@@ -70,9 +73,20 @@ public class SearchService {
     }
 
 
-    public Date getNextPublishDate(String uri) {
+    public Date getNextPublishDate(String uri) throws ParseException {
         GetResponse response = client.prepareGet(PUBLISH_DATES_INDEX, PUBLISH_DATES_TYPE, uri).get();
-        Object publish_date = response.getField("publish_date").getValue();
+        if (response.isExists()) {
+            String publish_date = (String) response.getSource().get("date");
+            if (StringUtils.isNotEmpty(publish_date)) {
+                return new SimpleDateFormat(Configuration.CONTENT_SERVICE.getDefaultContentDatePattern()).parse(publish_date);
+            }
+        }
+        return null;
+    }
+
+    public void setNextPublishDates(String uri, Date date) {
+        String dateString = new SimpleDateFormat(Configuration.CONTENT_SERVICE.getDefaultContentDatePattern()).format(date);
+        searchUtils.createDocument(PUBLISH_DATES_INDEX, PUBLISH_DATES_TYPE, uri, "{ \"date\":\"" + dateString + "\"}");
     }
 
     private List<SearchResponseHelper> doSearchMultiple(MultiSearchRequestBuilder multiSearchRequestBuilder) {
@@ -88,18 +102,17 @@ public class SearchService {
     }
 
 
-
-
-
     public static Client getClient() {
         return client;
     }
 
     public static void init() throws IOException {
+        System.out.println("Initializing Search service");
         instance = new SearchService();
-        if(Configuration.GENERAL.isCacheEnabled()) {
+        if (Configuration.GENERAL.isCacheEnabled()) {
             initPublishDatesIndex();
         }
+        System.out.println("Initialized Search service successfully");
     }
 
     private static void initPublishDatesIndex() throws IOException {
@@ -135,6 +148,14 @@ public class SearchService {
         public void run() {
             client.close();
         }
+    }
+
+    public static void main(String[] args) throws IOException, ParseException {
+        System.setProperty("ENABLE_CACHE", "Y");
+        System.out.println("Cache:" + System.getProperty("ENABLE_CACHE"));
+        SearchService.init();
+        SearchService.getInstance().setNextPublishDates("/economy/test", new Date());
+        System.out.println(SearchService.getInstance().getNextPublishDate("/economy/test"));
     }
 
 }

@@ -1,5 +1,7 @@
 package com.github.onsdigital.babbage.content.client;
 
+import com.github.onsdigital.babbage.configuration.Configuration;
+import com.github.onsdigital.babbage.search.SearchService;
 import com.github.onsdigital.babbage.util.ThreadContext;
 import com.github.onsdigital.babbage.util.http.ClientConfiguration;
 import com.github.onsdigital.babbage.util.http.PooledHttpClient;
@@ -13,6 +15,7 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.message.BasicNameValuePair;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.*;
 
 import static com.github.onsdigital.babbage.configuration.Configuration.CONTENT_SERVICE.*;
@@ -91,16 +94,16 @@ public class ContentClient {
      */
     public ContentResponse getContent(String uri, Map<String, String[]> queryParameters) throws ContentReadException {
         System.out.println("getContent(): Reading content from content server, uri:" + uri);
-        return sendGet(getPath(getDataEndpoint()), addUri(uri, getParameters(queryParameters)));
+        return resolveMaxAge(uri, sendGet(getPath(getDataEndpoint()), addUri(uri, getParameters(queryParameters))));
     }
 
     public ContentResponse getResource(String uri) throws ContentReadException {
         System.out.println("getResource(): Reading resource from content server, uri:" + uri);
-        return sendGet(getPath(getResourceEndpoint()), addUri(uri, new ArrayList<>()));
+        return resolveMaxAge(uri, sendGet(getPath(getResourceEndpoint()), addUri(uri, new ArrayList<>())));
     }
 
     public ContentResponse getFileSize(String uri) throws ContentReadException {
-        return sendGet(getPath(getFileSizeEndpoint()), addUri(uri, new ArrayList<>()));
+        return resolveMaxAge(uri, sendGet(getPath(getFileSizeEndpoint()), addUri(uri, new ArrayList<>()))) ;
     }
 
     public ContentResponse getTaxonomy(Map<String, String[]> queryParameters) throws ContentReadException {
@@ -117,12 +120,33 @@ public class ContentClient {
     }
 
     public ContentResponse getGenerator(String uri, Map<String, String[]> queryParameters) throws ContentReadException {
-        return sendGet(getPath(getGeneratorEndpoint()), addUri(uri, getParameters(queryParameters)));
+        return resolveMaxAge(uri, sendGet(getPath(getGeneratorEndpoint()), addUri(uri, getParameters(queryParameters))));
     }
 
 
-    private void resolveMaxAge(String uri, ContentResponse response) {
+    private ContentResponse resolveMaxAge(String uri, ContentResponse response) {
+        if (!Configuration.GENERAL.isCacheEnabled()) {
+            return response;
+        }
 
+        try {
+            Date nextPublishDate = SearchService.getInstance().getNextPublishDate(uri);
+            int maxAge = Configuration.GENERAL.getDefaultCacheTime();
+            Integer timeToExpire = null;
+            if (nextPublishDate != null) {
+                Long time = nextPublishDate.getTime() - new Date().getTime();
+                timeToExpire = time.intValue();
+            }
+            if (timeToExpire != null && timeToExpire > 0) {
+                response.setMaxAge(timeToExpire < maxAge ? timeToExpire : maxAge);
+            } else {
+                response.setMaxAge(maxAge);
+            }
+        } catch (ParseException e) {
+            System.err.println("!!!!Warning: Invalid publish date");
+            e.printStackTrace();
+        }
+        return response;
     }
 
     /**
