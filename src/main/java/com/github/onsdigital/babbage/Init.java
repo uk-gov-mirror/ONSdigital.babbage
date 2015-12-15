@@ -1,7 +1,6 @@
 package com.github.onsdigital.babbage;
 
 import com.github.davidcarboni.restolino.framework.Startup;
-import com.github.onsdigital.babbage.cache.BabbageCache;
 import com.github.onsdigital.babbage.search.SearchService;
 
 import java.io.IOException;
@@ -17,9 +16,8 @@ public class Init implements Startup {
     public void init() {
         try {
             SearchService.init();
-            BabbageCache.init();
-        } catch (IOException e) {
-            System.err.println("!!!!Failed initializing Babbage");
+        } catch (Exception e) {
+            System.err.println("!!!!Failed initializing publish dates index for caching");
             e.printStackTrace();
             System.exit(1);
         }
