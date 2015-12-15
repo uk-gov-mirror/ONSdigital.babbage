@@ -5,30 +5,26 @@
             {{#each chapters}}
                 {{#if_eq uri ../../../uri}}
 
-                    {{#unless @first}}
-                        <div class="col col--md-one-third col--lg-one-third">
-                            <p class="margin-top-sm--0 margin-bottom-sm--0">
-                                <a href="{{#getBlock ../chapters (decrement @index)}}{{uri}}{{/getBlock}}" class="underline-link">Previous chapter</a>
-                            </p>
-                        </div>
-                    {{/unless}}
-
-                        <div class="col col--md-one-third col--lg-one-third {{#if @first}}col--md-offset-17  col--lg-offset-21{{/if}}">
+                    <div class="col col--md-40 col--lg-45">
                         {{#last breadcrumb}}
-                            <p class="margin-top-sm--0 margin-bottom-sm--0 text-center--md">
+                            <p class="margin-top-sm--0 margin-bottom-sm--0 margin-left-md--1">
                                 {{labels.compendium-return}} <a class="underline-link" href="{{uri}}">{{description.title}}</a>
                             </p>
                         {{/last}}
                     </div>
 
+                    <div class="col col--md-8 col--lg-15">
+                        <p class="margin-top-sm--0 margin-bottom-sm--0 text-right--md">
 
-                    {{#unless @last}}
-                        <div class="col col--md-one-third col--lg-one-third">
-                            <p class="margin-top-sm--0 margin-bottom-sm--0 text-right--md">
+                            {{#unless @first}}
+                                <a href="{{#getBlock ../chapters (decrement @index)}}{{uri}}{{/getBlock}}" class="underline-link">Previous chapter</a>
+                            {{/unless}}
+                            {{#if_all (ne @index_1 1) (ne @index_1  ../chapters.size)}} | {{/if_all}}
+                            {{#unless @last}}
                                 <a href="{{#getBlock ../chapters (increment @index)}}{{uri}}{{/getBlock}}" class="underline-link">Next chapter</a>
-                            </p>
-                        </div>
-                    {{/unless}}
+                            {{/unless}}
+                        </p>
+                    </div>
 
                 {{/if_eq}}
             {{/each}}
@@ -36,3 +32,4 @@
     {{/last}}
     </nav>
 </div>
+
