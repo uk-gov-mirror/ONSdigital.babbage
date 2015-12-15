@@ -1,12 +1,7 @@
 {{!--This file uses filtered time series data, filter a timseries data using series filter--}} 
 (function(){
 
-{{!-- No need to set data, if jsEhanced data will be handled at client side. This is for image rendering on server side --}}
-{{#unless cookies.jsEnhanced}}
 var series = [{{#each series}}{"name":"{{name}}", "y": {{#if y}}{{y}}{{else}}null{{/if}} },{{/each}}]
-{{else}}
-var series = [];
-{{/unless}}
 var description = {{json description}};
 
 var sparkline{{description.cdid}} = {

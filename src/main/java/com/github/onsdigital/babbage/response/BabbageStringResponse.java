@@ -1,10 +1,12 @@
 package com.github.onsdigital.babbage.response;
 
+import com.github.onsdigital.babbage.response.base.BabbageResponse;
+import com.github.onsdigital.babbage.response.util.CacheControlHelper;
 import org.apache.commons.io.IOUtils;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.StringReader;
 
 public class BabbageStringResponse extends BabbageResponse {
 
@@ -24,10 +26,21 @@ public class BabbageStringResponse extends BabbageResponse {
         setCharEncoding(charEncoding);
     }
 
-    protected void applyData(HttpServletResponse response) throws IOException {
+    @Override
+    public void apply(HttpServletRequest request, HttpServletResponse response) throws IOException {
         // https://acunetix.com/vulnerabilities/web/clickjacking--x-frame-options-header-missing
-        response.addHeader("X-Frame-Options", "SAMEORIGIN"); // DENY | SAMEORIGIN
-        IOUtils.copy(new StringReader(getData()), response.getOutputStream());
+        addHeader("X-Frame-Options", "SAMEORIGIN"); // DENY | SAMEORIGIN
+        super.apply(request, response);
+        setCacheHeaders(request, response);
+        writeData(response);
+    }
+
+    protected void setCacheHeaders(HttpServletRequest request, HttpServletResponse response) {
+        CacheControlHelper.setCacheHeaders(request, response, CacheControlHelper.hashData(data), 0);
+    }
+
+    protected void writeData( HttpServletResponse response) throws IOException {
+        IOUtils.write(getData(), response.getOutputStream());
     }
 
     public String getData() {

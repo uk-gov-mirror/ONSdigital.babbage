@@ -2,8 +2,10 @@ package com.github.onsdigital.babbage.request.handler;
 
 import com.github.onsdigital.babbage.content.client.ContentClient;
 import com.github.onsdigital.babbage.content.client.ContentReadException;
+import com.github.onsdigital.babbage.content.client.ContentResponse;
 import com.github.onsdigital.babbage.request.handler.base.RequestHandler;
-import com.github.onsdigital.babbage.response.BabbageResponse;
+import com.github.onsdigital.babbage.response.BabbageContentBasedStringResponse;
+import com.github.onsdigital.babbage.response.base.BabbageResponse;
 import com.github.onsdigital.babbage.response.BabbageStringResponse;
 import com.github.onsdigital.babbage.template.TemplateService;
 
@@ -25,9 +27,10 @@ public class PageRequestHandler implements RequestHandler {
     @Override
     public BabbageResponse get(String uri, HttpServletRequest request) throws IOException, ContentReadException {
 
-        try (InputStream dataStream = ContentClient.getInstance().getContentStream(uri).getDataStream()) {
+        ContentResponse contentResponse = ContentClient.getInstance().getContent(uri);
+        try (InputStream dataStream = contentResponse.getDataStream()){
             String html = TemplateService.getInstance().renderContent(dataStream);
-            return new BabbageStringResponse(html, TEXT_HTML);
+            return new BabbageContentBasedStringResponse(contentResponse,html, TEXT_HTML);
         }
     }
 

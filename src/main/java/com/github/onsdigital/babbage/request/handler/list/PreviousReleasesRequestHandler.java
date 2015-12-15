@@ -2,11 +2,10 @@ package com.github.onsdigital.babbage.request.handler.list;
 
 import com.github.onsdigital.babbage.content.client.ContentClient;
 import com.github.onsdigital.babbage.content.client.ContentReadException;
-import com.github.onsdigital.babbage.content.client.ContentStream;
+import com.github.onsdigital.babbage.content.client.ContentResponse;
 import com.github.onsdigital.babbage.error.ResourceNotFoundException;
 import com.github.onsdigital.babbage.request.handler.base.ListPageBaseRequestHandler;
 import com.github.onsdigital.babbage.request.handler.base.RequestHandler;
-import com.github.onsdigital.babbage.response.BabbageResponse;
 import com.github.onsdigital.babbage.search.ONSQuery;
 import com.github.onsdigital.babbage.search.helpers.SearchResponseHelper;
 import com.github.onsdigital.babbage.search.input.SortBy;
@@ -47,11 +46,10 @@ public class PreviousReleasesRequestHandler extends ListPageBaseRequestHandler i
 
     @Override
     protected LinkedHashMap<String, Object> prepareData(String requestedUri, HttpServletRequest request) throws IOException, ContentReadException {
-        try (ContentStream stream = ContentClient.getInstance().getContentStream(removeLastSegment(removeLastSegment(requestedUri)))) {
-            Map<String, Object> objectMap = JsonUtil.toMap(stream.getDataStream());
-            if (!isProductPage(objectMap.get("type"))) {
-                throw new ResourceNotFoundException("Requested content's previous releases are not available, uri: " + requestedUri + "");
-            }
+        ContentResponse contentResponse = ContentClient.getInstance().getContent(removeLastSegment(removeLastSegment(requestedUri)));
+        Map<String, Object> objectMap = JsonUtil.toMap(contentResponse.getDataStream());
+        if (!isProductPage(objectMap.get("type"))) {
+            throw new ResourceNotFoundException("Requested content's previous releases are not available, uri: " + requestedUri + "");
         }
         return super.prepareData(requestedUri, request);
     }

@@ -1,9 +1,10 @@
 package com.github.onsdigital.babbage.request.handler.highcharts.linechart;
 
 import com.github.onsdigital.babbage.content.client.ContentClient;
-import com.github.onsdigital.babbage.content.client.ContentStream;
+import com.github.onsdigital.babbage.content.client.ContentResponse;
 import com.github.onsdigital.babbage.request.handler.base.RequestHandler;
-import com.github.onsdigital.babbage.response.BabbageResponse;
+import com.github.onsdigital.babbage.response.BabbageContentBasedStringResponse;
+import com.github.onsdigital.babbage.response.base.BabbageResponse;
 import com.github.onsdigital.babbage.response.BabbageStringResponse;
 import com.github.onsdigital.babbage.template.TemplateService;
 
@@ -18,12 +19,9 @@ public class LineChartRequestHandler implements RequestHandler {
 
     @Override
     public BabbageResponse get(String requestedUri, HttpServletRequest request) throws Exception {
-        try (ContentStream series = ContentClient.getInstance().getContentStream(requestedUri)) {
-            String html = TemplateService.getInstance().renderTemplate("highcharts/linechart", series.getDataStream());
-            return new BabbageStringResponse(html, MediaType.TEXT_HTML);
-
-        }
-
+        ContentResponse contentResponse = ContentClient.getInstance().getContent(requestedUri);
+        String html = TemplateService.getInstance().renderTemplate("highcharts/linechart", contentResponse.getDataStream());
+        return new BabbageContentBasedStringResponse(contentResponse, html, MediaType.TEXT_HTML);
     }
 
     @Override

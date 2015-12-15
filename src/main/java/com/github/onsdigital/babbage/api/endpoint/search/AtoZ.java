@@ -11,18 +11,13 @@ import com.github.onsdigital.babbage.search.model.ContentType;
 import com.github.onsdigital.babbage.search.model.field.FilterableField;
 import com.github.onsdigital.babbage.util.URIUtil;
 import org.apache.commons.lang3.StringUtils;
-import org.elasticsearch.search.aggregations.AggregationBuilder;
-import org.elasticsearch.search.aggregations.AggregationBuilders;
-import org.elasticsearch.search.aggregations.bucket.terms.TermsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.GET;
 import java.io.IOException;
 
-import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.addSort;
-import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.addTermAggregation;
-import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.addTermFilter;
+import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.*;
 import static com.github.onsdigital.babbage.util.RequestUtil.getParam;
 
 /**
@@ -40,9 +35,9 @@ public class AtoZ extends ListPageBaseRequestHandler {
         String requestType = URIUtil.resolveRequestType(uri);
         uri = URIUtil.removeLastSegment(uri);
         if ("data".equals(requestType)) {
-            getData(uri, request).apply(response);
+            getData(uri, request).apply(request,response);
         } else {
-            get(uri, request).apply(response);
+            get(uri, request).apply(request,response);
         }
     }
 

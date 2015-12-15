@@ -1,11 +1,11 @@
 package com.github.onsdigital.babbage.request.handler.content;
 
 import com.github.onsdigital.babbage.content.client.ContentClient;
-import com.github.onsdigital.babbage.content.client.ContentStream;
+import com.github.onsdigital.babbage.content.client.ContentResponse;
 import com.github.onsdigital.babbage.request.handler.base.ListPageBaseRequestHandler;
 import com.github.onsdigital.babbage.request.handler.base.RequestHandler;
-import com.github.onsdigital.babbage.response.BabbageResponse;
-import com.github.onsdigital.babbage.response.BabbageStringResponse;
+import com.github.onsdigital.babbage.response.BabbageContentBasedStringResponse;
+import com.github.onsdigital.babbage.response.base.BabbageResponse;
 import com.github.onsdigital.babbage.util.URIUtil;
 import org.reflections.Reflections;
 import org.reflections.util.ConfigurationBuilder;
@@ -51,9 +51,8 @@ public class DataRequestHandler implements RequestHandler {
             return listPageHandlers.get(requestType).getData(URIUtil.removeLastSegment(uri), request);
         }
 
-        try (ContentStream contentStream = ContentClient.getInstance().getContentStream(uri, getQueryParameters(request))) {
-            return new BabbageStringResponse(contentStream.getAsString());
-        }
+        ContentResponse contentResponse = ContentClient.getInstance().getContent(uri, getQueryParameters(request));
+        return new BabbageContentBasedStringResponse(contentResponse, contentResponse.getAsString());
     }
 
     static {

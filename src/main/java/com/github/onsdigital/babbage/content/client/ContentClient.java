@@ -1,5 +1,7 @@
 package com.github.onsdigital.babbage.content.client;
 
+import com.github.onsdigital.babbage.configuration.Configuration;
+import com.github.onsdigital.babbage.search.SearchService;
 import com.github.onsdigital.babbage.util.ThreadContext;
 import com.github.onsdigital.babbage.util.http.ClientConfiguration;
 import com.github.onsdigital.babbage.util.http.PooledHttpClient;
@@ -13,15 +15,16 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.message.BasicNameValuePair;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.*;
 
 import static com.github.onsdigital.babbage.configuration.Configuration.CONTENT_SERVICE.*;
 
 /**
  * Created by bren on 23/07/15.
- * <p>
+ * <p/>
  * Content service reads content from external server over http.
- * <p>
+ * <p/>
  * Using Apache http client with connection pooling.
  */
 //TODO: Get http client use cache headers returned from content service
@@ -61,7 +64,7 @@ public class ContentClient {
     /**
      * Serves requested content data, stream should be closed after use or fully consumed, fully consuming the stream will close the stream automatically
      * Content  client forwards any requests headers and cookies to content service using saved ThreadContext
-     * <p>
+     * <p/>
      * Any request headers like authentication tokens or collection ids should be saved to ThreadContext before calling content service
      *
      * @param uri uri for requested content.
@@ -71,14 +74,14 @@ public class ContentClient {
      * @throws ContentReadException If content read fails due content service error status is set to whatever error is sent back from content service,
      *                              all other IO Exceptions are rethrown with HTTP status 500
      */
-    public ContentStream getContentStream(String uri) throws ContentReadException, IOException {
-        return getContentStream(uri, null);
+    public ContentResponse getContent(String uri) throws ContentReadException, IOException {
+        return getContent(uri, null);
     }
 
     /**
      * Serves requested content data, stream should be closed after use or fully consumed, fully consuming the stream will close the stream automatically
      * Content  client forwards any requests headers and cookies to content service using saved ThreadContext
-     * <p>
+     * <p/>
      * Any request headers like authentication tokens or collection ids should be saved to ThreadContext before calling content client
      *
      * @param uri             uri for requested content.
@@ -89,35 +92,55 @@ public class ContentClient {
      * @throws ContentReadException If content read fails due content service error status is set to whatever error is sent back from content service,
      *                              all other IO Exceptions are rethrown with HTTP status 500
      */
-    public ContentStream getContentStream(String uri, Map<String, String[]> queryParameters) throws ContentReadException {
-        System.out.println("getContentStream(): Reading content from content server, uri:" + uri);
-        return sendGet(getPath(getDataEndpoint()), addUri(uri, getParameters(queryParameters)));
+    public ContentResponse getContent(String uri, Map<String, String[]> queryParameters) throws ContentReadException {
+        System.out.println("getContent(): Reading content from content server, uri:" + uri);
+        return resolveMaxAge(uri, sendGet(getPath(getDataEndpoint()), addUri(uri, getParameters(queryParameters))));
     }
 
-    public ContentStream getResource(String uri) throws ContentReadException {
+    public ContentResponse getResource(String uri) throws ContentReadException {
         System.out.println("getResource(): Reading resource from content server, uri:" + uri);
-        return sendGet(getPath(getResourceEndpoint()), addUri(uri, new ArrayList<>()) );
+        return resolveMaxAge(uri, sendGet(getPath(getResourceEndpoint()), addUri(uri, new ArrayList<>())));
     }
 
-    public ContentStream getFileSize(String uri) throws ContentReadException {
-        return sendGet(getPath(getFileSizeEndpoint()), addUri(uri, new ArrayList<>()));
+    public ContentResponse getFileSize(String uri) throws ContentReadException {
+        return resolveMaxAge(uri, sendGet(getPath(getFileSizeEndpoint()), addUri(uri, new ArrayList<>())));
     }
 
-    public ContentStream getTaxonomy(Map<String, String[]> queryParameters) throws ContentReadException {
+    public ContentResponse getTaxonomy(Map<String, String[]> queryParameters) throws ContentReadException {
         System.out.println("getTaxonomy(): Reading taxonomy nodes");
-        return sendGet(getPath(getTaxonomyEndpoint()),  getParameters(queryParameters));
+        return sendGet(getPath(getTaxonomyEndpoint()), getParameters(queryParameters));
     }
 
-    public ContentStream getTaxonomy() throws ContentReadException {
+    public ContentResponse getTaxonomy() throws ContentReadException {
         return sendGet(getPath(getTaxonomyEndpoint()), null);
     }
 
-    public ContentStream getParents(String uri) throws ContentReadException {
+    public ContentResponse getParents(String uri) throws ContentReadException {
         return sendGet(getPath(getParentsEndpoint()), addUri(uri, new ArrayList<>()));
     }
 
-    public ContentStream getGenerator(String uri, Map<String, String[]> queryParameters) throws ContentReadException {
-        return sendGet(getPath(getGeneratorEndpoint()), addUri(uri, getParameters(queryParameters)));
+    public ContentResponse getGenerator(String uri, Map<String, String[]> queryParameters) throws ContentReadException {
+        return resolveMaxAge(uri, sendGet(getPath(getGeneratorEndpoint()), addUri(uri, getParameters(queryParameters))));
+    }
+
+
+    private ContentResponse resolveMaxAge(String uri, ContentResponse response) {
+        if (!Configuration.GENERAL.isCacheEnabled()) {
+            return response;
+        }
+        Date nextPublishDate = SearchService.getInstance().getNextPublishDate(uri);
+        int maxAge = Configuration.GENERAL.getDefaultCacheTime();
+        Integer timeToExpire = null;
+        if (nextPublishDate != null) {
+            Long time = nextPublishDate.getTime() - new Date().getTime();
+            timeToExpire = time.intValue();
+        }
+        if (timeToExpire != null && timeToExpire > 0) {
+            response.setMaxAge(timeToExpire < maxAge ? timeToExpire : maxAge);
+        } else {
+            response.setMaxAge(maxAge);
+        }
+        return response;
     }
 
     /**
@@ -128,7 +151,7 @@ public class ContentClient {
      * @return
      * @throws ContentReadException
      */
-    public ContentStream export(String format,  String[] uriList) throws ContentReadException {
+    public ContentResponse export(String format, String[] uriList) throws ContentReadException {
         List<NameValuePair> parameters = new ArrayList<>();
         parameters.add(new BasicNameValuePair("format", format));
         if (uriList != null) {
@@ -136,32 +159,27 @@ public class ContentClient {
                 parameters.add(new BasicNameValuePair("uri", uriList[i]));
             }
         }
-        return sendPost(getPath(getExportEndpoint()), parameters );
+        return sendPost(getPath(getExportEndpoint()), parameters);
     }
 
-    public ContentStream reIndex(String key, String uri) throws ContentReadException {
+    public ContentResponse reIndex(String key, String uri) throws ContentReadException {
         List<NameValuePair> parameters = new ArrayList<>();
         parameters.add(new BasicNameValuePair("key", key));
         parameters.add(new BasicNameValuePair("uri", uri));
         return sendPost(getReindexEndpoint(), parameters);
     }
 
-    public ContentStream reIndexAll(String key) throws ContentReadException {
+    public ContentResponse reIndexAll(String key) throws ContentReadException {
         List<NameValuePair> parameters = new ArrayList<>();
         parameters.add(new BasicNameValuePair("key", key));
         parameters.add(new BasicNameValuePair("all", "1"));
         return sendPost(getReindexEndpoint(), parameters);
     }
 
-    public ContentStream getParents(String uri, Map<String, String[]> queryParameters) throws ContentReadException {
-        System.out.println("getParents(): Reading parents, uri:" + uri);
-        return sendGet(getPath(getParentsEndpoint()), addUri(uri, getParameters(queryParameters)));
-    }
-
-    private ContentStream sendGet(String path, List<NameValuePair> getParameters) throws ContentReadException {
+    private ContentResponse sendGet(String path, List<NameValuePair> getParameters) throws ContentReadException {
         CloseableHttpResponse response = null;
         try {
-            return new ContentStream(client.sendGet(path, getHeaders(), getParameters));
+            return new ContentResponse(client.sendGet(path, getHeaders(), getParameters));
         } catch (HttpResponseException e) {
             IOUtils.closeQuietly(response);
             throw wrapException(e);
@@ -171,10 +189,10 @@ public class ContentClient {
         }
     }
 
-    private ContentStream sendPost(String path, List<NameValuePair> postParameters) throws ContentReadException {
+    private ContentResponse sendPost(String path, List<NameValuePair> postParameters) throws ContentReadException {
         CloseableHttpResponse response = null;
         try {
-            return new ContentStream(client.sendPost(path, getHeaders(), postParameters));
+            return new ContentResponse(client.sendPost(path, getHeaders(), postParameters));
         } catch (HttpResponseException e) {
             IOUtils.closeQuietly(response);
             throw wrapException(e);
@@ -272,7 +290,7 @@ public class ContentClient {
         return params(filter.name().toLowerCase(), null);
     }
 
-    /***
+    /**
      * Create query parameters to get depth of taxonomy content request
      *
      * @param depth

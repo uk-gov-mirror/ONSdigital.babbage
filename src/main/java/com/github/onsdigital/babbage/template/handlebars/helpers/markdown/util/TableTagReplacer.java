@@ -2,13 +2,11 @@ package com.github.onsdigital.babbage.template.handlebars.helpers.markdown.util;
 
 import com.github.onsdigital.babbage.content.client.ContentClient;
 import com.github.onsdigital.babbage.content.client.ContentReadException;
-import com.github.onsdigital.babbage.content.client.ContentStream;
+import com.github.onsdigital.babbage.content.client.ContentResponse;
 import com.github.onsdigital.babbage.template.TemplateService;
-import com.github.onsdigital.babbage.util.URIUtil;
 
 import java.io.IOException;
 import java.nio.file.Paths;
-import java.util.LinkedHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -46,8 +44,9 @@ public class TableTagReplacer extends TagReplacementStrategy {
         String tagPath = matcher.group(1);
         String figureUri = resolveFigureUri(this.getPath(), Paths.get(tagPath));
 
-        try (ContentStream json = ContentClient.getInstance().getContentStream(figureUri)) {
-            String result = TemplateService.getInstance().renderTemplate("partials/table", json.getDataStream());
+        try {
+            ContentResponse contentResponse = ContentClient.getInstance().getContent(figureUri);
+            String result = TemplateService.getInstance().renderTemplate("partials/table", contentResponse.getDataStream());
             return result;
         } catch (ContentReadException e) {
             System.err.println("Failed rendering table, uri:" + figureUri);
