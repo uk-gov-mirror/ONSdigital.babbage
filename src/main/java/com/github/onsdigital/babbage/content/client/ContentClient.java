@@ -22,9 +22,9 @@ import static com.github.onsdigital.babbage.configuration.Configuration.CONTENT_
 
 /**
  * Created by bren on 23/07/15.
- * <p>
+ * <p/>
  * Content service reads content from external server over http.
- * <p>
+ * <p/>
  * Using Apache http client with connection pooling.
  */
 //TODO: Get http client use cache headers returned from content service
@@ -64,7 +64,7 @@ public class ContentClient {
     /**
      * Serves requested content data, stream should be closed after use or fully consumed, fully consuming the stream will close the stream automatically
      * Content  client forwards any requests headers and cookies to content service using saved ThreadContext
-     * <p>
+     * <p/>
      * Any request headers like authentication tokens or collection ids should be saved to ThreadContext before calling content service
      *
      * @param uri uri for requested content.
@@ -81,7 +81,7 @@ public class ContentClient {
     /**
      * Serves requested content data, stream should be closed after use or fully consumed, fully consuming the stream will close the stream automatically
      * Content  client forwards any requests headers and cookies to content service using saved ThreadContext
-     * <p>
+     * <p/>
      * Any request headers like authentication tokens or collection ids should be saved to ThreadContext before calling content client
      *
      * @param uri             uri for requested content.
@@ -103,7 +103,7 @@ public class ContentClient {
     }
 
     public ContentResponse getFileSize(String uri) throws ContentReadException {
-        return resolveMaxAge(uri, sendGet(getPath(getFileSizeEndpoint()), addUri(uri, new ArrayList<>()))) ;
+        return resolveMaxAge(uri, sendGet(getPath(getFileSizeEndpoint()), addUri(uri, new ArrayList<>())));
     }
 
     public ContentResponse getTaxonomy(Map<String, String[]> queryParameters) throws ContentReadException {
@@ -128,23 +128,17 @@ public class ContentClient {
         if (!Configuration.GENERAL.isCacheEnabled()) {
             return response;
         }
-
-        try {
-            Date nextPublishDate = SearchService.getInstance().getNextPublishDate(uri);
-            int maxAge = Configuration.GENERAL.getDefaultCacheTime();
-            Integer timeToExpire = null;
-            if (nextPublishDate != null) {
-                Long time = nextPublishDate.getTime() - new Date().getTime();
-                timeToExpire = time.intValue();
-            }
-            if (timeToExpire != null && timeToExpire > 0) {
-                response.setMaxAge(timeToExpire < maxAge ? timeToExpire : maxAge);
-            } else {
-                response.setMaxAge(maxAge);
-            }
-        } catch (ParseException e) {
-            System.err.println("!!!!Warning: Invalid publish date");
-            e.printStackTrace();
+        Date nextPublishDate = SearchService.getInstance().getNextPublishDate(uri);
+        int maxAge = Configuration.GENERAL.getDefaultCacheTime();
+        Integer timeToExpire = null;
+        if (nextPublishDate != null) {
+            Long time = nextPublishDate.getTime() - new Date().getTime();
+            timeToExpire = time.intValue();
+        }
+        if (timeToExpire != null && timeToExpire > 0) {
+            response.setMaxAge(timeToExpire < maxAge ? timeToExpire : maxAge);
+        } else {
+            response.setMaxAge(maxAge);
         }
         return response;
     }
@@ -296,7 +290,7 @@ public class ContentClient {
         return params(filter.name().toLowerCase(), null);
     }
 
-    /***
+    /**
      * Create query parameters to get depth of taxonomy content request
      *
      * @param depth

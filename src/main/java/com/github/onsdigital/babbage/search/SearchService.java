@@ -73,13 +73,21 @@ public class SearchService {
     }
 
 
-    public Date getNextPublishDate(String uri) throws ParseException {
-        GetResponse response = client.prepareGet(PUBLISH_DATES_INDEX, PUBLISH_DATES_TYPE, uri).get();
-        if (response.isExists()) {
-            String publish_date = (String) response.getSource().get("date");
-            if (StringUtils.isNotEmpty(publish_date)) {
-                return new SimpleDateFormat(Configuration.CONTENT_SERVICE.getDefaultContentDatePattern()).parse(publish_date);
+    public Date getNextPublishDate(String uri) {
+        try {
+            GetResponse response = client.prepareGet(PUBLISH_DATES_INDEX, PUBLISH_DATES_TYPE, uri).get();
+            if (response.isExists()) {
+                String publish_date = (String) response.getSource().get("date");
+                if (StringUtils.isNotEmpty(publish_date)) {
+                    return new SimpleDateFormat(Configuration.CONTENT_SERVICE.getDefaultContentDatePattern()).parse(publish_date);
+                }
             }
+        } catch (ParseException e) {
+            System.err.println("!!!!Warning: Invalid publish date format found in publish dates index");
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.err.println("!!!!!!!!!!!!Warning: Reading publish date failed  for uri " + uri + ". This will cause publishing delays");
+            e.printStackTrace();
         }
         return null;
     }
