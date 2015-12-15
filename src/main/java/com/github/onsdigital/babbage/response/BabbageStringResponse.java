@@ -25,6 +25,8 @@ public class BabbageStringResponse extends BabbageResponse {
     }
 
     protected void applyData(HttpServletResponse response) throws IOException {
+        // https://acunetix.com/vulnerabilities/web/clickjacking--x-frame-options-header-missing
+        response.addHeader("X-Frame-Options", "SAMEORIGIN"); // DENY | SAMEORIGIN
         IOUtils.copy(new StringReader(getData()), response.getOutputStream());
     }
 
