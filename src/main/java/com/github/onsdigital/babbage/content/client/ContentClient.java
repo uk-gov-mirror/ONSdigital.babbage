@@ -1,6 +1,5 @@
 package com.github.onsdigital.babbage.content.client;
 
-import com.github.onsdigital.babbage.cache.BabbageCache;
 import com.github.onsdigital.babbage.util.ThreadContext;
 import com.github.onsdigital.babbage.util.http.ClientConfiguration;
 import com.github.onsdigital.babbage.util.http.PooledHttpClient;
@@ -15,7 +14,6 @@ import org.apache.http.message.BasicNameValuePair;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.concurrent.Callable;
 
 import static com.github.onsdigital.babbage.configuration.Configuration.CONTENT_SERVICE.*;
 
@@ -92,17 +90,13 @@ public class ContentClient {
      *                              all other IO Exceptions are rethrown with HTTP status 500
      */
     public ContentResponse getContent(String uri, Map<String, String[]> queryParameters) throws ContentReadException {
-        return getFromContentCache(uri, queryParameters, () -> {
-            System.out.println("getContent(): Reading content from content server, uri:" + uri);
-            return sendGet(getPath(getDataEndpoint()), addUri(uri, getParameters(queryParameters)));
-        });
+        System.out.println("getContent(): Reading content from content server, uri:" + uri);
+        return sendGet(getPath(getDataEndpoint()), addUri(uri, getParameters(queryParameters)));
     }
 
     public ContentResponse getResource(String uri) throws ContentReadException {
-        return getFromResourceCache(uri, null, () -> {
-            System.out.println("getResource(): Reading resource from content server, uri:" + uri);
-            return sendGet(getPath(getResourceEndpoint()), addUri(uri, new ArrayList<>()));
-        });
+        System.out.println("getResource(): Reading resource from content server, uri:" + uri);
+        return sendGet(getPath(getResourceEndpoint()), addUri(uri, new ArrayList<>()));
     }
 
     public ContentResponse getFileSize(String uri) throws ContentReadException {
@@ -111,7 +105,7 @@ public class ContentClient {
 
     public ContentResponse getTaxonomy(Map<String, String[]> queryParameters) throws ContentReadException {
         System.out.println("getTaxonomy(): Reading taxonomy nodes");
-        return sendGet(getPath(getTaxonomyEndpoint()),  getParameters(queryParameters));
+        return sendGet(getPath(getTaxonomyEndpoint()), getParameters(queryParameters));
     }
 
     public ContentResponse getTaxonomy() throws ContentReadException {
@@ -123,9 +117,12 @@ public class ContentClient {
     }
 
     public ContentResponse getGenerator(String uri, Map<String, String[]> queryParameters) throws ContentReadException {
-        return getFromResourceCache(uri, queryParameters, () -> {
-            return sendGet(getPath(getGeneratorEndpoint()), addUri(uri, getParameters(queryParameters)));
-        });
+        return sendGet(getPath(getGeneratorEndpoint()), addUri(uri, getParameters(queryParameters)));
+    }
+
+
+    private void resolveMaxAge(String uri, ContentResponse response) {
+
     }
 
     /**
@@ -136,7 +133,7 @@ public class ContentClient {
      * @return
      * @throws ContentReadException
      */
-    public ContentResponse export(String format,  String[] uriList) throws ContentReadException {
+    public ContentResponse export(String format, String[] uriList) throws ContentReadException {
         List<NameValuePair> parameters = new ArrayList<>();
         parameters.add(new BasicNameValuePair("format", format));
         if (uriList != null) {
@@ -144,7 +141,7 @@ public class ContentClient {
                 parameters.add(new BasicNameValuePair("uri", uriList[i]));
             }
         }
-        return sendPost(getPath(getExportEndpoint()), parameters );
+        return sendPost(getPath(getExportEndpoint()), parameters);
     }
 
     public ContentResponse reIndex(String key, String uri) throws ContentReadException {
@@ -160,30 +157,6 @@ public class ContentClient {
         parameters.add(new BasicNameValuePair("all", "1"));
         return sendPost(getReindexEndpoint(), parameters);
     }
-
-
-    private ContentResponse getFromContentCache(String requestedUri, Map<String, String[]> parameters, Callable loader) throws ContentReadException {
-        try {
-            return BabbageCache.getInstance().getContent(requestedUri, parameters, loader);
-        } catch (Exception e) {
-            if (e instanceof ContentReadException) {
-                throw (ContentReadException)e;
-            }
-            throw new RuntimeException(e);
-        }
-    }
-
-    private ContentResponse getFromResourceCache(String requestedUri, Map<String, String[]> parameters, Callable loader) throws ContentReadException {
-        try {
-            return BabbageCache.getInstance().getResource(requestedUri, parameters, loader);
-        } catch (Exception e) {
-            if (e instanceof ContentReadException) {
-                throw (ContentReadException) e;
-            }
-            throw new RuntimeException(e);
-        }
-    }
-
 
     private ContentResponse sendGet(String path, List<NameValuePair> getParameters) throws ContentReadException {
         CloseableHttpResponse response = null;
