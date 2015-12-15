@@ -1,0 +1,38 @@
+<div class="col-wrap">
+    <nav>
+    {{#last breadcrumb}}
+        {{#resolve uri}}
+            {{#each chapters}}
+                {{#if_eq uri ../../../uri}}
+
+                    {{#unless @first}}
+                        <div class="col col--md-one-third col--lg-one-third">
+                            <p class="margin-top-sm--0 margin-bottom-sm--0">
+                                <a href="{{#getBlock ../chapters (decrement @index)}}{{uri}}{{/getBlock}}" class="underline-link">Previous chapter</a>
+                            </p>
+                        </div>
+                    {{/unless}}
+
+                        <div class="col col--md-one-third col--lg-one-third {{#if @first}}col--md-offset-17  col--lg-offset-21{{/if}}">
+                        {{#last breadcrumb}}
+                            <p class="margin-top-sm--0 margin-bottom-sm--0 text-center--md">
+                                {{labels.compendium-return}} <a class="underline-link" href="{{uri}}">{{description.title}}</a>
+                            </p>
+                        {{/last}}
+                    </div>
+
+
+                    {{#unless @last}}
+                        <div class="col col--md-one-third col--lg-one-third">
+                            <p class="margin-top-sm--0 margin-bottom-sm--0 text-right--md">
+                                <a href="{{#getBlock ../chapters (increment @index)}}{{uri}}{{/getBlock}}" class="underline-link">Next chapter</a>
+                            </p>
+                        </div>
+                    {{/unless}}
+
+                {{/if_eq}}
+            {{/each}}
+        {{/resolve}}
+    {{/last}}
+    </nav>
+</div>
