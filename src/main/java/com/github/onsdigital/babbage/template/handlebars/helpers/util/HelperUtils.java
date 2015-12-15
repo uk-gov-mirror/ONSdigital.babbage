@@ -55,7 +55,7 @@ public class HelperUtils {
 
 
     public static Double toNumber(Object object) {
-        if (Handlebars.Utils.isEmpty(object)) {
+        if (object == null) {
             return null;
         }
         if (object instanceof Number) {
