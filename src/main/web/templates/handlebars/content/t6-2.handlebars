@@ -69,7 +69,13 @@
 		{{!-- Sidebar --}}
 		<div class="col col--md-11 col--lg-20 margin-top-md--3">
 			{{!-- Related data --}}
-			{{> partials/related/data }}
+            {{#last breadcrumb}}
+                {{#resolve uri}}
+                    {{#if datasets}}
+                        <a class="btn btn--primary btn--full-width" href="{{datasets.0.uri}}">View all data in this compendium</a>
+                    {{/if}}
+                {{/resolve}}
+            {{/last}}
 			{{!-- Contact details --}}
 			{{> partials/contact }}
 		</div> {{!-- /col --}}
