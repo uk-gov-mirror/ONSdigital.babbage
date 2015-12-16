@@ -30,15 +30,17 @@
         {{!-- LIST OF DOWNLOADS --}}
         <div class="col col--md-36 col--lg-39">
             <ul class="list--neutral">
-                <h2>Downloads</h2>
-                {{#each downloads}}
-                    <li>
-                        <h3><a href="/file?uri={{concat uri "/" (fn file)}}" title="{{title}}">{{title}}</a> ({{fs (concat uri "/" (fn file))}}, {{fe (concat uri "/" (fn file))}})</h3>
-                        <p class="flush">{{fileDescription}}</p>
-                    </li>
-                {{/each}}
-                <h2>Related data</h2>
+                {{#if downloads}}
+                    <h2>Downloads</h2>
+                    {{#each downloads}}
+                        <li>
+                            <h3><a href="/file?uri={{concat uri "/" (fn file)}}" title="{{title}}">{{title}}</a> ({{fs (concat uri "/" (fn file))}}, {{fe (concat uri "/" (fn file))}})</h3>
+                            <p class="flush">{{fileDescription}}</p>
+                        </li>
+                    {{/each}}
+                {{/if}}
                 {{#if relatedDatasets}}
+                    <h2>Related data</h2>
                     <ul class="list--neutral">
                         {{#each relatedDatasets}}
                             {{#resolve this.uri filter="description"}}
@@ -50,13 +52,11 @@
                 {{/if}}
             </ul>
         </div>
-        {{!-- RELATED DATA AND DOCUMENTS --}}
-        {{#if_any relatedDatasets relatedDocuments}}
+        {{!-- CONTACT --}}
             <div class="col col--md-11 col--lg-20">
                 {{> partials/contact }}
             </div>
-        {{/if_any}}
-        {{!-- METHODOLOGY AND CONTACT DETAILS --}}
+        {{!-- METHODOLOGY AND LOCAL --}}
         <div class="col-wrap">
             {{!-- Related methodology --}}
             {{#if_any relatedMethodology}}
@@ -64,7 +64,7 @@
                     {{> partials/related/methodology }}
                 </div>
             {{/if_any}}
-            {{!-- Contact details --}}
+            {{!-- Local --}}
             <div class="col col--md-half col--lg-one-third">
                 {{> partials/local-box}}
             </div>
