@@ -33,7 +33,7 @@
                 <h2>Downloads</h2>
                 {{#each downloads}}
                     <li>
-                        <h3><a href="/file?uri={{concat uri "/" (fn file)}}" title="{{title}}">{{title}}</a> ({{fs file}}, {{fe file}})</h3>
+                        <h3><a href="/file?uri={{concat uri "/" (fn file)}}" title="{{title}}">{{title}}</a> ({{fs (concat uri "/" (fn file))}}, {{fe (concat uri "/" (fn file))}})</h3>
                         <p class="flush">{{fileDescription}}</p>
                     </li>
                 {{/each}}
