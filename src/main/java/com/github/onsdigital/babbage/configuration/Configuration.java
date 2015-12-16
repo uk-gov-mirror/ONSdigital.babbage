@@ -1,7 +1,5 @@
 package com.github.onsdigital.babbage.configuration;
 
-import net.sf.ehcache.config.CacheConfiguration;
-import net.sf.ehcache.store.MemoryStoreEvictionPolicy;
 import org.apache.commons.lang3.StringUtils;
 
 import static org.apache.commons.lang3.StringUtils.defaultIfBlank;
@@ -13,7 +11,8 @@ public class Configuration {
         private static final int MAX_VISIBLE_PAGINATOR_LINK = 10;
         private static final int RESULTS_PER_PAGE = 10;
         //Should be the same as cut off time in Florence publishing system to ensure cache times are correct
-        private static final int DEFAULT_CACHE_TIME = 10 * 60; //in seconds, 10 mins by default
+        private static int DEFAULT_CACHE_TIME = 15 * 60; //in seconds, 10 mins by default
+        private static int PUBLISH_CACHE_TIMEOUT  = 60 * 60; //If content that should be published is more than an hour due delete publish date to get it caching again
 
 
         public static int getDefaultCacheTime() {
@@ -36,6 +35,10 @@ public class Configuration {
         public static boolean isDevEnvironment() {
             String devEnvironment = StringUtils.defaultIfBlank(getValue("DEV_ENVIRONMENT"), "N");
             return "Y".equals(devEnvironment);
+        }
+
+        public static int getPublishCacheTimeout() {
+            return PUBLISH_CACHE_TIMEOUT;
         }
     }
 

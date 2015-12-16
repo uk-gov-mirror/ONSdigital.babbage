@@ -2,7 +2,6 @@ package com.github.onsdigital.babbage.search;
 
 import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.index.query.FilterBuilder;
-import org.elasticsearch.search.aggregations.AbstractAggregationBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilder;
 import org.elasticsearch.search.sort.SortBuilder;
 

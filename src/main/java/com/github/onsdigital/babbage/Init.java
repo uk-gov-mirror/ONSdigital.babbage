@@ -1,6 +1,8 @@
 package com.github.onsdigital.babbage;
 
 import com.github.davidcarboni.restolino.framework.Startup;
+import com.github.onsdigital.babbage.publishing.PublishingManager;
+import com.github.onsdigital.babbage.search.ElasticSearchClient;
 import com.github.onsdigital.babbage.search.SearchService;
 
 import java.io.IOException;
@@ -15,7 +17,8 @@ public class Init implements Startup {
     @Override
     public void init() {
         try {
-            SearchService.init();
+            ElasticSearchClient.init();
+            PublishingManager.init();
         } catch (Exception e) {
             System.err.println("!!!!Failed initializing publish dates index for caching");
             e.printStackTrace();

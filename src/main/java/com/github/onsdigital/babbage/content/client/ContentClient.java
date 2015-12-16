@@ -1,7 +1,8 @@
 package com.github.onsdigital.babbage.content.client;
 
 import com.github.onsdigital.babbage.configuration.Configuration;
-import com.github.onsdigital.babbage.search.SearchService;
+import com.github.onsdigital.babbage.publishing.PublishingManager;
+import com.github.onsdigital.babbage.publishing.model.PublishInfo;
 import com.github.onsdigital.babbage.util.ThreadContext;
 import com.github.onsdigital.babbage.util.http.ClientConfiguration;
 import com.github.onsdigital.babbage.util.http.PooledHttpClient;
@@ -15,7 +16,6 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.message.BasicNameValuePair;
 
 import java.io.IOException;
-import java.text.ParseException;
 import java.util.*;
 
 import static com.github.onsdigital.babbage.configuration.Configuration.CONTENT_SERVICE.*;
@@ -128,17 +128,30 @@ public class ContentClient {
         if (!Configuration.GENERAL.isCacheEnabled()) {
             return response;
         }
-        Date nextPublishDate = SearchService.getInstance().getNextPublishDate(uri);
-        int maxAge = Configuration.GENERAL.getDefaultCacheTime();
-        Integer timeToExpire = null;
-        if (nextPublishDate != null) {
-            Long time = nextPublishDate.getTime() - new Date().getTime();
-            timeToExpire = time.intValue();
-        }
-        if (timeToExpire != null && timeToExpire > 0) {
-            response.setMaxAge(timeToExpire < maxAge ? timeToExpire : maxAge);
-        } else {
-            response.setMaxAge(maxAge);
+
+        try {
+            PublishInfo nextPublish = PublishingManager.getInstance().getNextPublishInfo(uri);
+            Date nextPublishDate = nextPublish == null ? null : nextPublish.getPublishDate();
+            int maxAge = Configuration.GENERAL.getDefaultCacheTime();
+            Integer timeToExpire = null;
+            if (nextPublishDate != null) {
+                Long time = (nextPublishDate.getTime() - new Date().getTime())/1000;
+                timeToExpire = time.intValue();
+            }
+
+            if(timeToExpire == null) {
+                response.setMaxAge(maxAge);
+            } else if (timeToExpire > 0) {
+                response.setMaxAge(timeToExpire < maxAge ? timeToExpire : maxAge);
+            } else if (timeToExpire < 0 && Math.abs(timeToExpire) > Configuration.GENERAL.getPublishCacheTimeout()) {
+                //if publish is due but there is still a publish date record after an hour drop it
+                System.out.println("Dropping publish date record due to publish wait timeout for " + uri);
+                PublishingManager.getInstance().dropPublishDate(nextPublish);
+                response.setMaxAge(maxAge);
+            }
+        } catch (Exception e) {
+            System.err.println("!!!!!!!!!!!!Warning: Managing publish date failed  for uri " + uri + ". Skipping setting cache times");
+            e.printStackTrace();
         }
         return response;
     }
