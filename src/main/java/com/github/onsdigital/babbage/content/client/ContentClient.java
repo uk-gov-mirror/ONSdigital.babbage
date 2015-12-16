@@ -147,7 +147,7 @@ public class ContentClient {
                 //if publish is due but there is still a publish date record after an hour drop it
                 System.out.println("Dropping publish date record due to publish wait timeout for " + uri);
                 PublishingManager.getInstance().dropPublishDate(nextPublish);
-                response.setMaxAge(maxAge);
+                return resolveMaxAge(uri, response);//resolve for next publish date if any
             }
         } catch (Exception e) {
             System.err.println("!!!!!!!!!!!!Warning: Managing publish date failed  for uri " + uri + ". Skipping setting cache times");
