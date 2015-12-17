@@ -30,20 +30,15 @@ public class Hash {
             response.setContentType(TEXT_PLAIN);
 
             String uri = request.getParameter("uri");
-            ContentResponse contentResponse;
-            if (uri.endsWith(".json")) {
-                contentResponse = ContentClient.getInstance().getContent(PublishingManager.cleanUri(uri));
-            } else {
-                contentResponse = ContentClient.getInstance().getResource(uri);
-            }
+            ContentResponse contentResponse = ContentClient.getInstance().getResource(uri);
             CacheControlHelper.setCacheHeaders(request, response, contentResponse.getHash(), contentResponse.getMaxAge());
             IOUtils.write(contentResponse.getHash(), response.getOutputStream());
         } catch (ContentReadException e) {
-            handleError(response, e.getStatusCode(),e);
+            handleError(response, e.getStatusCode(), e);
         } catch (BabbageException e) {
-            handleError(response, e.getStatusCode(),e);
+            handleError(response, e.getStatusCode(), e);
         } catch (Throwable t) {
-            handleError(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR,t);
+            handleError(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, t);
         }
     }
 
