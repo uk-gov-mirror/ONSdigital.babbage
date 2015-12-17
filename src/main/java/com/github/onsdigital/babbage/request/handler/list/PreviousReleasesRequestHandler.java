@@ -27,7 +27,7 @@ import static com.github.onsdigital.babbage.util.URIUtil.removeLastSegment;
 public class PreviousReleasesRequestHandler extends ListPageBaseRequestHandler implements RequestHandler {
 
     private static final String REQUEST_TYPE = "previousreleases";
-    private final static ContentType[] ALLOWED_TYPES = {ContentType.article, ContentType.bulletin, ContentType.compendium_landing_page};
+    private final static ContentType[] ALLOWED_TYPES = {ContentType.article, ContentType.article_download, ContentType.bulletin, ContentType.compendium_landing_page};
 
     @Override
     public ContentType[] getAllowedTypes() {

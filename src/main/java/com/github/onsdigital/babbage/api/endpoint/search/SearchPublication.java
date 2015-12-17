@@ -9,7 +9,7 @@ import com.github.onsdigital.babbage.search.model.ContentType;
 @Api
 public class SearchPublication extends Search {
 
-    private final static ContentType[] ALLOWED_TYPES = {ContentType.article, ContentType.bulletin, ContentType.compendium_landing_page};
+    private final static ContentType[] ALLOWED_TYPES = {ContentType.article, ContentType.article_download, ContentType.bulletin, ContentType.compendium_landing_page};
 
     @Override
     protected ContentType[] getAllowedTypes() {
