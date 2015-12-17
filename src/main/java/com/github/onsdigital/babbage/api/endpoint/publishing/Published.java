@@ -8,8 +8,14 @@ import com.github.onsdigital.babbage.publishing.model.PublishNotification;
  */
 public class Published extends Upcoming {
 
+    public Published() {
+        super(false);
+    }
+
+
     @Override
     protected void notifyPublishEvent(PublishNotification publishNotification) {
         PublishingManager.getInstance().notifyPublished(publishNotification);
     }
+
 }

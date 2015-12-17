@@ -8,12 +8,11 @@ import com.github.onsdigital.babbage.publishing.model.PublishNotification;
 import com.github.onsdigital.babbage.util.ElasticSearchUtils;
 import com.github.onsdigital.babbage.util.json.JsonUtil;
 import com.google.gson.Gson;
-import org.apache.commons.lang.StringUtils;
 import org.elasticsearch.action.bulk.BulkItemResponse;
 import org.elasticsearch.action.bulk.BulkProcessor;
 import org.elasticsearch.action.bulk.BulkRequest;
 import org.elasticsearch.action.bulk.BulkResponse;
-import org.elasticsearch.action.delete.DeleteRequestBuilder;
+import org.elasticsearch.action.delete.DeleteRequest;
 import org.elasticsearch.action.index.IndexRequestBuilder;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
@@ -21,14 +20,17 @@ import org.elasticsearch.common.settings.ImmutableSettings;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.unit.ByteSizeUnit;
 import org.elasticsearch.common.unit.ByteSizeValue;
+import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.index.query.FilteredQueryBuilder;
 import org.elasticsearch.index.query.TermFilterBuilder;
+import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.sort.FieldSortBuilder;
 
 import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import static com.github.onsdigital.babbage.search.ElasticSearchClient.getElasticsearchClient;
 import static org.apache.commons.lang.StringUtils.removeEnd;
@@ -43,7 +45,7 @@ public class PublishingManager {
     private static PublishingManager instance = new PublishingManager();
     private static ElasticSearchUtils searchUtils;
     private static final String PUBLISH_DATES_INDEX = "publish";
-    private static final String PUBLISH_DATES_TYPE = "dates";
+    private final TimeValue scrollKeepAlive = new TimeValue(60, TimeUnit.SECONDS);
 
     private PublishingManager() {
         searchUtils = new ElasticSearchUtils(getElasticsearchClient());
@@ -53,7 +55,7 @@ public class PublishingManager {
         try (BulkProcessor bulkProcessor = createBulkProcessor()) {
             for (String uri : notification.getUriList()) {
                 uri = cleanUri(uri);
-                IndexRequestBuilder indexRequestBuilder = getElasticsearchClient().prepareIndex(PUBLISH_DATES_INDEX, PUBLISH_DATES_TYPE, notification.getCollectionId() + uri);
+                IndexRequestBuilder indexRequestBuilder = getElasticsearchClient().prepareIndex(PUBLISH_DATES_INDEX, notification.getCollectionId(), uri);
                 indexRequestBuilder.setSource(JsonUtil.toJson(new PublishInfo(uri, notification.getCollectionId(), notification.getPublishDate())));
                 bulkProcessor.add(indexRequestBuilder.request());
             }
@@ -61,44 +63,56 @@ public class PublishingManager {
     }
 
     /**
-     * Deletes collecttion uris from the index and triggers reindex for the uri
+     * Deletes collection uris from the index and triggers reindex for the uri
      *
      * @param notification
      */
     public void notifyPublished(PublishNotification notification) {
-        deletePublishDates(notification, true);
+        deletePublishDates(notification,true);
     }
 
     public void notifyPublishCancel(PublishNotification notification) {
-        deletePublishDates(notification, false);
+        deletePublishDates(notification,false);
     }
 
     private void deletePublishDates(PublishNotification notification, boolean triggerReindex) {
         try (BulkProcessor bulkProcessor = createBulkProcessor()) {
-            for (String uri : notification.getUriList()) {
-                uri = cleanUri(uri);
-                DeleteRequestBuilder deleteRequest = getElasticsearchClient().prepareDelete(PUBLISH_DATES_INDEX, PUBLISH_DATES_TYPE, notification.getCollectionId() + uri);
-                bulkProcessor.add(deleteRequest.request());
-                if (triggerReindex) {
-                    triggerReindex(notification.getKey(), uri);
+            SearchResponse response = readUriList(notification.getCollectionId());
+            while (true) {
+                for (SearchHit hit : response.getHits().getHits()) {
+                    String uri = (String) hit.getSource().get("uri");
+                    bulkProcessor.add(prepareDeleteRequest(notification, uri));
+                    if (triggerReindex) {
+                        triggerReindex(notification.getKey(), uri);
+                    }
+                }
+                response = getElasticsearchClient().prepareSearchScroll(response.getScrollId()).setScroll(scrollKeepAlive).execute().actionGet();
+                //Break condition: No hits are returned
+                if (response.getHits().getHits().length == 0) {
+                    break;
                 }
             }
+        } catch (Exception e) {
+            System.err.println("!!!Warning, re-indexing failed for collection id " + notification.getCollectionId());
+            e.printStackTrace();
         }
     }
 
+    private DeleteRequest prepareDeleteRequest(PublishNotification notification, String uri) {
+        return getElasticsearchClient().prepareDelete(PUBLISH_DATES_INDEX, notification.getCollectionId(), uri).request();
+    }
 
     private void triggerReindex(String key, String uri) {
         try {
             ContentClient.getInstance().reIndex(key, uri);
         } catch (ContentReadException e) {
-            System.err.println("!!!Warning, failed triggering reindex for " + uri);
-            e.printStackTrace();
+            System.err.println("!!!Warning , re-indexing failed for uri " + uri);
         }
     }
 
     public PublishInfo getNextPublishInfo(String uri) {
         FilteredQueryBuilder builder = new FilteredQueryBuilder(null, new TermFilterBuilder("uri", uri));
-        SearchRequestBuilder searchRequestBuilder = getElasticsearchClient().prepareSearch(PUBLISH_DATES_INDEX).setTypes(PUBLISH_DATES_TYPE);
+        SearchRequestBuilder searchRequestBuilder = getElasticsearchClient().prepareSearch(PUBLISH_DATES_INDEX);
         searchRequestBuilder.setSize(1);
         searchRequestBuilder.setQuery(builder).addSort(new FieldSortBuilder("publishDate").ignoreUnmapped(true));
         SearchResponse response = searchRequestBuilder.get();
@@ -110,8 +124,14 @@ public class PublishingManager {
         return null;
     }
 
+    private SearchResponse readUriList(String collectionId) {
+        return getElasticsearchClient().prepareSearch(PUBLISH_DATES_INDEX)
+                .setTypes(collectionId).setSize(100).setScroll(scrollKeepAlive).get();
+
+    }
+
     public void dropPublishDate(PublishInfo info) {
-        getElasticsearchClient().prepareDelete(PUBLISH_DATES_INDEX, PUBLISH_DATES_TYPE, info.getCollectionId() + info.getUri()).get();
+        getElasticsearchClient().prepareDelete(PUBLISH_DATES_INDEX, info.getCollectionId(), info.getUri()).get();
     }
 
     public static PublishingManager getInstance() {

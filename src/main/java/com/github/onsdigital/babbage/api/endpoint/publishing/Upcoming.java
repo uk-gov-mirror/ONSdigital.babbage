@@ -19,17 +19,24 @@ import java.util.List;
 @Api
 public class Upcoming {
 
+    private boolean verifyUriList = true;
+
     //Using same key as reindex
     private static final String REINDEX_KEY_HASH = "5NpB6/uAgk14nYwHzMbIQRnuI2W63MrBOS2279YlcUUY2kNOhrL+R5UFR3O066bQ";
+
+    public Upcoming() {
+
+    }
+
+    public Upcoming(boolean verifyUriList) {
+        this.verifyUriList = verifyUriList;
+    }
+
 
     @POST
     public Object post(HttpServletRequest request, HttpServletResponse response, PublishNotification publishNotification) {
         try {
-            verifyKey(publishNotification);
-            verifyUriList(publishNotification);
-            notifyPublishEvent(publishNotification);
-            response.setStatus(HttpServletResponse.SC_OK);
-            return new ResponseMessage("Successfully processed");
+            return process(response, publishNotification);
         } catch (BabbageException e) {
             response.setStatus(e.getStatusCode());
             return new ResponseMessage(e.getMessage());
@@ -38,6 +45,16 @@ public class Upcoming {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             return new ResponseMessage("Failed processing uri list publish dates");
         }
+    }
+
+    protected Object process(HttpServletResponse response, PublishNotification publishNotification) {
+        verifyKey(publishNotification);
+        if (verifyUriList) {
+            verifyUriList(publishNotification);
+        }
+        notifyPublishEvent(publishNotification);
+        response.setStatus(HttpServletResponse.SC_OK);
+        return new ResponseMessage("Successfully processed");
     }
 
     private void verifyUriList(PublishNotification publishNotification) {

@@ -8,6 +8,10 @@ import com.github.onsdigital.babbage.publishing.model.PublishNotification;
  */
 public class PublishCancelled extends Upcoming {
 
+    public PublishCancelled() {
+        super(false);
+    }
+
     @Override
     protected void notifyPublishEvent(PublishNotification publishNotification) {
         PublishingManager.getInstance().notifyPublishCancel(publishNotification);
