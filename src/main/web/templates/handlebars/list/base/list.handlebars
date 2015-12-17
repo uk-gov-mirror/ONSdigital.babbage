@@ -40,7 +40,7 @@
 					{{/block}}
 				</div>
 			</div>
-			<form id="form">
+			<form id="form" class="js-auto-submit__form">
 				{{!-- FILTERS --}}
 				{{!-- {{#if_any result.results parameters.filter parameters.time_series}} --}}
 				<div class="col col--md-12 col--lg-18 margin-bottom">
@@ -50,7 +50,7 @@
 							<a href="{{location.pathname}}{{#if parameters.q.0}}?q={{parameters.q.0}}{{/if}}" value="Reset" class="btn btn--primary btn--thin btn--narrow btn--small float-right">{{labels.search-refine-clear}}</a>
 						</div>
 						<div class="tiles__content tiles__content--nav">
-							<div class="filters">
+							<div class="filters js-filters">
 								{{#block "block-filters"}}
 								{{/block}}
 							</div>
