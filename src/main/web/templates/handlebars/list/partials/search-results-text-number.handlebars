@@ -1,7 +1,7 @@
 <h2 aria-live="assertive" class="search-page__results-text">
 	{{#if_any results showFeaturedResult timeSeriesCount}}
 	<span class="stand-out-text">
-		{{numberOfResults}}</span> {{#if parameters.filter}}<strong>{{> list/filters/filters-type-list}}</strong>{{else}}results{{/if}} containing
+		{{nf numberOfResults}}</span> {{#if parameters.filter}}<strong>{{> list/filters/filters-type-list}}</strong>{{else}}results{{/if}} containing
 	{{else}}
 	Sorry, no results were found that contain
 	{{/if_any}}
