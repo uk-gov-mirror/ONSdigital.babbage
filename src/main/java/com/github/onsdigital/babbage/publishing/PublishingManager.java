@@ -165,10 +165,9 @@ public class PublishingManager {
     }
 
     //Clears data.json and .json at the end of uri
-    private static String cleanUri(String uri) {
+    public static String cleanUri(String uri) {
         return removeEnd(removeEnd(uri, "/data.json"), ".json");
     }
-
 
     private BulkProcessor createBulkProcessor() {
         BulkProcessor bulkProcessor = BulkProcessor.builder(
