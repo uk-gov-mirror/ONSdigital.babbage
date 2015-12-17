@@ -8,6 +8,7 @@ import com.github.onsdigital.babbage.publishing.model.PublishNotification;
 import com.github.onsdigital.babbage.util.ElasticSearchUtils;
 import com.github.onsdigital.babbage.util.json.JsonUtil;
 import com.google.gson.Gson;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.elasticsearch.action.bulk.BulkItemResponse;
 import org.elasticsearch.action.bulk.BulkProcessor;
 import org.elasticsearch.action.bulk.BulkRequest;
@@ -210,7 +211,7 @@ public class PublishingManager {
     }
 
     public static void main(String[] args) {
-        System.out.println(new Gson().toJson(new Date()));
+        System.out.println(DigestUtils.sha1Hex("test"));
     }
 
 }

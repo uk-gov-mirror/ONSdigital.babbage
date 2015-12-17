@@ -42,6 +42,6 @@ public class CacheControlHelper {
 
     private static String getOldHash(HttpServletRequest request) {
         String hash = request.getHeader("If-None-Match");
-        return StringUtils.removeEnd(hash, "--gzip");//TODO: Restolino does not seem to be removing --gzip flag on etag when request comes in
+        return StringUtils.remove(hash, "--gzip");//TODO: Restolino does not seem to be removing --gzip flag on etag when request comes in
     }
 }
