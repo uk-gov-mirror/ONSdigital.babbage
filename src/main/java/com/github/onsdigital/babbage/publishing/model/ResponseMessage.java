@@ -4,17 +4,17 @@ package com.github.onsdigital.babbage.publishing.model;
  * Created by bren on 16/12/15.
  */
 public class ResponseMessage {
-    private String messsage;
+    private String message;
 
-    public ResponseMessage(String messsage) {
-        this.messsage = messsage;
+    public ResponseMessage(String message) {
+        this.message = message;
     }
 
-    public String getMesssage() {
-        return messsage;
+    public String getMessage() {
+        return message;
     }
 
-    public void setMesssage(String messsage) {
-        this.messsage = messsage;
+    public void setMessage(String message) {
+        this.message = message;
     }
 }

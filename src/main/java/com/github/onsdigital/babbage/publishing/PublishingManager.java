@@ -51,7 +51,8 @@ public class PublishingManager {
         searchUtils = new ElasticSearchUtils(getElasticsearchClient());
     }
 
-    public void notifyUpcoming(PublishNotification notification) {
+    public void notifyUpcoming(PublishNotification notification) throws IOException {
+        initPublishDatesIndex();
         try (BulkProcessor bulkProcessor = createBulkProcessor()) {
             for (String uri : notification.getUriList()) {
                 uri = cleanUri(uri);
@@ -67,15 +68,16 @@ public class PublishingManager {
      *
      * @param notification
      */
-    public void notifyPublished(PublishNotification notification) {
-        deletePublishDates(notification,true);
+    public void notifyPublished(PublishNotification notification) throws IOException {
+        deletePublishDates(notification, true);
     }
 
-    public void notifyPublishCancel(PublishNotification notification) {
+    public void notifyPublishCancel(PublishNotification notification) throws IOException {
         deletePublishDates(notification,false);
     }
 
-    private void deletePublishDates(PublishNotification notification, boolean triggerReindex) {
+    private void deletePublishDates(PublishNotification notification, boolean triggerReindex) throws IOException {
+        initPublishDatesIndex();
         try (BulkProcessor bulkProcessor = createBulkProcessor()) {
             SearchResponse response = readUriList(notification.getCollectionId());
             while (true) {
