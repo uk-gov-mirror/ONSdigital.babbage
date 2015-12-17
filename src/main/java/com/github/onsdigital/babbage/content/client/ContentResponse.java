@@ -38,7 +38,8 @@ public class ContentResponse implements Serializable {
             data = IOUtils.toByteArray(response.getEntity().getContent());
             size = response.getEntity().getContentLength();
             name = extractName(response);
-            hash = DigestUtils.sha1Hex(data);
+            Header etag = response.getFirstHeader("Etag");
+            hash = etag == null ? null : etag.getValue();
         }finally {
             IOUtils.closeQuietly(response);
         }
