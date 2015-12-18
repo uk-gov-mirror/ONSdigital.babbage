@@ -19,9 +19,7 @@ public class CacheControlHelper {
      */
     public static void setCacheHeaders(HttpServletRequest request, HttpServletResponse response, String hash, long maxAge) {
         resolveHash(request, response, hash);
-        if (maxAge > 0) {
-            response.addHeader("cache-control", "public, max-age=" + maxAge);
-        }
+        response.addHeader("cache-control", "public, max-age=" + maxAge);
     }
 
     public static String hashData(String data) {
@@ -42,6 +40,6 @@ public class CacheControlHelper {
 
     private static String getOldHash(HttpServletRequest request) {
         String hash = request.getHeader("If-None-Match");
-        return StringUtils.removeEnd(hash, "--gzip");//TODO: Restolino does not seem to be removing --gzip flag on etag when request comes in
+        return StringUtils.remove(hash, "--gzip");//TODO: Restolino does not seem to be removing --gzip flag on etag when request comes in
     }
 }

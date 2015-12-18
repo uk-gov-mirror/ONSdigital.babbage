@@ -2,6 +2,7 @@ package com.github.onsdigital.babbage.content.client;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.http.Header;
 import org.apache.http.HeaderElement;
 import org.apache.http.HttpResponse;
@@ -38,7 +39,8 @@ public class ContentResponse implements Serializable {
             data = IOUtils.toByteArray(response.getEntity().getContent());
             size = response.getEntity().getContentLength();
             name = extractName(response);
-            hash = DigestUtils.sha1Hex(data);
+            Header etag = response.getFirstHeader("Etag");
+            hash = etag == null ? null : etag.getValue();
         }finally {
             IOUtils.closeQuietly(response);
         }
@@ -73,7 +75,7 @@ public class ContentResponse implements Serializable {
     }
 
     public String getHash() {
-        return hash;
+        return StringUtils.remove(hash, "--gzip");//TODO:Checkout why zip extension is passed back
     }
 
     public int getMaxAge() {
