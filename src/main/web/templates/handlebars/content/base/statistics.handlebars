@@ -13,7 +13,9 @@
 			<div class="wrapper">
 				<div class="col-wrap">
                     {{!-- {{> content/partials/metadata/ns-logo}} --}}
-					{{> content/partials/metadata/contact class="col--md-16 col--lg-20"}}
+                    {{#block "block-ns-contact"}}
+					    {{> content/partials/metadata/contact class="col--md-16 col--lg-20"}}
+                    {{/block}}
 
 					{{#block "block-release-date"}}
 						{{> content/partials/metadata/release-date class="col--md-16 col--lg-20"}}
