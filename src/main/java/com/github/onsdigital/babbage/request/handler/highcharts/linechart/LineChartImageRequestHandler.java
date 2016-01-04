@@ -8,6 +8,7 @@ import com.github.onsdigital.babbage.request.handler.base.RequestHandler;
 import com.github.onsdigital.babbage.response.BabbageContentBasedBinaryResponse;
 import com.github.onsdigital.babbage.response.base.BabbageResponse;
 import com.github.onsdigital.babbage.template.TemplateService;
+import com.github.onsdigital.babbage.util.RequestUtil;
 import com.github.onsdigital.babbage.util.json.JsonUtil;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,7 +27,9 @@ public class LineChartImageRequestHandler implements RequestHandler {
     @Override
     public BabbageResponse get(String requestedUri, HttpServletRequest request) throws Exception {
         System.out.println("Generating linechart image for " + requestedUri);
-        ContentResponse series = ContentClient.getInstance().getContent(requestedUri, ContentClient.filter(ContentFilter.SERIES));
+        Map<String, String[]> queryParameters = ContentClient.filter(ContentFilter.SERIES);
+        queryParameters.putAll(RequestUtil.getQueryParameters(request));
+        ContentResponse series = ContentClient.getInstance().getContent(requestedUri, queryParameters);
         ContentResponse description = ContentClient.getInstance().getContent(requestedUri, ContentClient.filter(ContentFilter.DESCRIPTION));
         Map<String, Object> descriptionMap = new HashMap<>();
         descriptionMap.put("fullDescription", JsonUtil.toMap(description.getDataStream()));

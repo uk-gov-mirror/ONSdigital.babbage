@@ -58,11 +58,11 @@ public class ChartRenderer {
         String uri = request.getParameter("uri");
         if (assertUri(uri, request, response)) {
             ContentResponse contentResponse = ContentClient.getInstance().getContent(uri);
-            LinkedHashMap<String, Object> additionalData = new LinkedHashMap<>();
             Integer width = getWidth(request);
             if (width == null) {
                 width = DEFAULT_CHART_WIDTH;
             }
+            LinkedHashMap<String, Object> additionalData = new LinkedHashMap<>();
             additionalData.put("width", width);
             String chartConfig = TemplateService.getInstance().renderChartConfiguration(contentResponse.getDataStream(),
                     additionalData);
