@@ -162,7 +162,7 @@ public abstract class ListPageBaseRequestHandler {
         return uri;
     }
 
-    protected List<SearchResponseHelper> doSearch(HttpServletRequest request, ONSQuery... queries) throws IOException {
+    protected List<SearchResponseHelper> doSearch(HttpServletRequest request, ONSQuery... queries) throws IOException, ContentReadException {
         if (queries.length > 1) {
             return SearchService.getInstance().searchMultiple(queries);
         } else {

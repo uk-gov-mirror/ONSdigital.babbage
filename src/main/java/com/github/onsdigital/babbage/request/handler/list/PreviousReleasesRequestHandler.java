@@ -60,7 +60,7 @@ public class PreviousReleasesRequestHandler extends ListPageBaseRequestHandler i
     }
 
     @Override
-    protected List<SearchResponseHelper> doSearch(HttpServletRequest request, ONSQuery... queries) throws IOException {
+    protected List<SearchResponseHelper> doSearch(HttpServletRequest request, ONSQuery... queries) throws IOException, ContentReadException {
         ONSQuery query = queries[0];
         //default sort is relevance, clear before searching
         query.getSorts().clear();
