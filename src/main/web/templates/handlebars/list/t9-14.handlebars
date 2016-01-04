@@ -21,15 +21,6 @@
 
 {{#partial "block-results-text"}}
 	<div class="col col--md-28 col--lg-38">
-		{{!-- Show copy denoting all results are shown if there are no results starting with selected letter and page is not filtered with keyword--}}
-		{{#if parameters.az.0}} 
-			{{#unless parameters.query.0}}
-				{{#unless (get counts.docCounts parameters.az.0) }}
-				There are no statistical bulletins starting with <strong>'{{parameters.az.0}}'</strong>. Showing all statistical bulletins.
-				{{/unless}}
-			{{/unless}}
-		{{/if}}
-
 		{{> list/partials/list-results-text-number result resultsLabel="statistical bulletins" atoz=true}}
 	</div>
 {{/partial}}

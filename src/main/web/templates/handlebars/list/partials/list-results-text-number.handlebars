@@ -1,4 +1,13 @@
 <h2 aria-live="assertive" class="search-page__results-text">
+	{{!-- Show copy denoting all results are shown if there are no results starting with selected letter and page is not filtered with keyword--}}
+	{{#if parameters.az.0}} 
+		{{#unless parameters.query.0}}
+			{{#unless (get counts.docCounts parameters.az.0) }}
+			<span>There are no statistical bulletins starting with <strong>'{{parameters.az.0}}'</strong>. Showing all statistical bulletins.<span></br></br>
+			{{/unless}}
+		{{/unless}}
+	{{/if}}
+
 	{{#if_any results timeSeriesCount}}
 		<span class="stand-out-text">{{numberOfResults}}</span> {{#if parameters.filter}}<strong>{{> list/filters/filters-type-list}}</strong>{{else}}{{resultsLabel}}{{/if}}{{#if parameters.query.0}} containing <strong>‘{{parameters.query.0}}’</strong>{{/if}}
 	{{else}}
