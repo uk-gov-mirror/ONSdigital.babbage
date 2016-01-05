@@ -34,12 +34,10 @@
                 <div class="tiles__content--nav">
                     <ul class="list--neutral">
                         {{#each downloads}}
-                        <form method="get" action="/file" class="margin-bottom">
-                            <button type="submit" title="{{title}}" class="btn btn--simple download-analytics">
-                            {{title}} ({{fe (lowercase (concat uri "/" file))}}) [{{fs (lowercase (concat uri "/" file))}}]
-                            </button>
-                            <input type="hidden" name="uri" value="{{lowercase (concat uri "/" file)}}"/>
-                        </form>
+                            <li>
+                                <a href="/file?uri={{concat uri "/" (fn file)}}" title="{{title}}">{{title}}</a>
+                                ({{fs (concat uri "/" (fn file))}} {{fe (concat uri "/" (fn file))}})
+                            </li>
                         {{/each}}
                     </ul>
                 </div>
