@@ -51,6 +51,8 @@ public class ErrorHandler implements ServerError {
     private static void renderErrorPage(int statusCode, HttpServletResponse response) throws IOException {
         try {
             response.setStatus(statusCode);
+            //Prevent error pages being cached by cdn s
+            response.addHeader("cache-control", "public, max-age=0" );
             Map<String, Object> context = new LinkedHashMap<>();
             context.put("type", "error");
             context.put("code", statusCode);
