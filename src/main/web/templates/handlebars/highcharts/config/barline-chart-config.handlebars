@@ -8,6 +8,11 @@
 
 options.plotOptions.bar = {stacking:"normal"};
 options.plotOptions.column = {stacking:"normal"};
+
+{{#if finishAtHundred}}
+options.yAxis.max=100;
+{{/if}}
+
 {{/partial}}
 {{!-- This denotes the template inherits from base-chart-config--}}
 {{> highcharts/config/base/simple-chart-config}} 
