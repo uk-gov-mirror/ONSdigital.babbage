@@ -4,7 +4,9 @@
             {{!--Table of Contents --}}
             {{> content/partials/toc}}
             {{!-- Print & PDF --}}
-            {{> partials/print-options}}
+            {{#unless hidePrint}}
+            	{{> partials/print-options}}
+            {{/unless}}
         </div>
 
 		{{!-- Show extra cta to related data on mobile --}}
