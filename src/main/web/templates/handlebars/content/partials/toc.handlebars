@@ -1,6 +1,6 @@
 <div class="col col--md-31 col--lg-41 margin-left-md--1">
 	<div class="table-of-contents print--avoid-break">
-		<h2 class="table-of-contents__title">{{labels.toc}}</h2>
+		<h2 class="table-of-contents__title">{{#if tocTitle}}{{tocTitle}}{{else}}{{labels.toc}}{{/if}}</h2>
 		<ol id="toc" class="table-of-contents__list">
 			{{#each sections}}
 			<li class="table-of-contents__item">

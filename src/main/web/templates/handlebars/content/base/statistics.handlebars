@@ -8,7 +8,8 @@
 		{{/if}}
 	{{/block}}
 
-	<div class="meta-wrap">
+	{{#unless hideMeta=true}}
+		<div class="meta-wrap">
 		{{#block "block-metadata"}}
 			<div class="wrapper">
 				<div class="col-wrap">
@@ -30,7 +31,8 @@
 				</div>
 			</div>
 		{{/block}}
-	</div> {{!-- /meta-wrap --}}
+	</div>
+	{{/unless}} {{!-- /meta-wrap --}}
 {{/partial}}
 
 {{!-- Inheriting from base content template --}}
