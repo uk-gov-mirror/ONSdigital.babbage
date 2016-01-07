@@ -1,7 +1,7 @@
 <h4 class="filters__title">Content types to show</h4>
 <div class="js-checkbox-container">
 	<ul class="list--neutral flush-top">
-		{{>list/partials/filter-item id="qmi" value="qmi" label="Quality and Methodology Information (QMI)" docCount=result.docCounts.static_qmi}}
-		{{>list/partials/filter-item id="methodology_article" value="methodology_article" label="Article" docCount=(add result.docCounts.static_methodology result.docCounts.static_methodology_download )}}
+		{{>list/partials/filter-item id="qmi" value="qmi" label="Quality and Methodology Information (QMI)" docCount=counts.docCounts.static_qmi}}
+		{{>list/partials/filter-item id="methodology_article" value="methodology_article" label="Article" docCount=(add counts.docCounts.static_methodology count.docCounts.static_methodology_download )}}
 	</ul>
 </div>
