@@ -44,10 +44,8 @@
 	{{#if_any description.contact.email description.contact.telephone description.contact.name}}
 		{{>partials/contact}}
 	{{/if_any}}
-	{{!-- Related external links --}}
-	{{> partials/related/external }}
-	{{!-- Related internal links --}}
-	{{> partials/related/internal }}
+	{{!-- Related links --}}
+	{{> partials/related/related-links }}
 {{/partial}}
 
 {{!-- Inheriting from base content template --}}
