@@ -13,7 +13,7 @@
 		<div class="hide--md margin-top-sm--1">{{> partials/related/new-data relatedUri=(concat uri "/relateddata") relatedTitle="self" }}</div>
 
         {{!-- Content --}}
-        <article class="col col--md-36 col--lg-39 page-content__main-content">
+        <article class="col col--md-36 col--lg-39 page-content__main-content js-sticky-toc__trigger">
             {{#each sections}}
                 <section id="{{slugify title}}" class="section__content--markdown">
                     <header>
