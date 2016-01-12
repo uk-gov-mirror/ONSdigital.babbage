@@ -1,30 +1,32 @@
 
 {{#partial "block-metadata"}}
-	<div class="wrapper">
-		<div class="col-wrap">
+    <div class="meta-wrap">
+        <div class="wrapper">
+            <div class="col-wrap">
 
-			{{!-- Contact --}}
-			{{#if_any description.contact.email description.contact.telephone description.contact.name}}
-				<p class="col col--md-12 col--lg-15 meta__item">
-					<span>{{labels.meta-contact}}: </span><br/><a
-						href="mailto:{{description.contact.email}}">{{#if description.contact.name}}{{description.contact.name}}{{else}}{{description.contact.email}}{{/if}}</a>
-				</p>
-			{{/if_any}}
-			{{!-- Release date --}}
-			{{#if_eq type "static_methodology_download"}}
-				{{#block "block-release-date"}}
-					{{> content/partials/metadata/release-date}}
-				{{/block}}
-			{{else}}
-				<p class="col col--md-12 col--lg-15 meta__item">
-					<span>Last revised: </span><br/>{{df description.releaseDate}}<br/>
-				</p>
-			{{/if_eq}}
+                {{!-- Contact --}}
+                {{#if_any description.contact.email description.contact.telephone description.contact.name}}
+                    <p class="col col--md-12 col--lg-15 meta__item">
+                        <span>{{labels.meta-contact}}: </span><br/><a
+                            href="mailto:{{description.contact.email}}">{{#if description.contact.name}}{{description.contact.name}}{{else}}{{description.contact.email}}{{/if}}</a>
+                    </p>
+                {{/if_any}}
+                {{!-- Release date --}}
+                {{#if_eq type "static_methodology_download"}}
+                    {{#block "block-release-date"}}
+                        {{> content/partials/metadata/release-date}}
+                    {{/block}}
+                {{else}}
+                    <p class="col col--md-12 col--lg-15 meta__item">
+                        <span>Last revised: </span><br/>{{df description.releaseDate}}<br/>
+                    </p>
+                {{/if_eq}}
 
-			{{#block "block-additonal-metadata"}}{{/block}}
+                {{#block "block-additonal-metadata"}}{{/block}}
 
-		</div>
-	</div>
+            </div>
+        </div>
+    </div>
 {{/partial}}
 
 
@@ -56,5 +58,6 @@
     {{> content/base/publication-download typeLabel="Methodology"}}
 {{/if_eq}}
 {{#if_eq type "static_article"}}
-	{{> content/base/publication hidePrint=true tocTitle="In this section"}}
+    {{#partial "block-metadata"}} {{/partial}} {{!-- Remove metadata block --}}
+	{{> content/base/publication hideMeta=true hidePrint=true tocTitle="In this section"}}
 {{/if_eq}}

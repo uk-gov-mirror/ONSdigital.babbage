@@ -139,31 +139,36 @@
 
 {{#partial "block-metadata"}}
 
-    <div class="wrapper">
-        <div class="col-wrap">
+    <div class="meta-wrap">
+        <div class="wrapper">
+            <div class="col-wrap">
 
-            {{#each breadcrumb}}
-                {{#if @last}}
-                    {{#resolve uri}}
+                {{#each breadcrumb}}
+                    {{#if @last}}
+                        {{#resolve uri}}
                         {{!-- Contact & NS logo--}}
-                        {{> content/partials/metadata/contact class="col--md-12 col--lg-15" }}
+                            {{> content/partials/metadata/contact class="col--md-12 col--lg-15" }}
 
-                        {{!-- Release date --}}
-                        {{> content/partials/metadata/release-date class="col--md-12 col--lg-15"}}
+                            {{!-- Release date --}}
+                            {{> content/partials/metadata/release-date class="col--md-12 col--lg-15"}}
 
-                        {{!-- Next release --}}
-                        {{> content/partials/metadata/next-release class="col--md-12 col--lg-15"}}
+                            {{!-- Next release --}}
+                            {{> content/partials/metadata/next-release class="col--md-12 col--lg-15"}}
 
-                        {{!-- Dataset ID --}}
-                        {{#if description.datasetId}}
-                            <p class="col col--md-12 col--lg-15 meta__item">
-                                <span>{{labels.dataset-id}}: </span>{{description.datasetId}}&nbsp;
-                                <span><a href="#" class="tooltip-npl print--hide" title="This series ID is a unique random identifier for this individual time series. The digits themselves do not have any specific meaning" aria-label="This series ID is a unique random identifier for this individual time series. The digits themselves do not have any specific meaning"> {{labels.dataset-what-is}} </a></span>
-                            </p>
-                        {{/if}}
-                    {{/resolve}}
-                {{/if}}
-            {{/each}}
+                            {{!-- Dataset ID --}}
+                            {{#if description.datasetId}}
+                                <p class="col col--md-12 col--lg-15 meta__item">
+                                    <span>{{labels.dataset-id}}: </span>{{description.datasetId}}&nbsp;
+                                    <span><a href="#" class="tooltip-npl print--hide"
+                                             title="This series ID is a unique random identifier for this individual time series. The digits themselves do not have any specific meaning"
+                                             aria-label="This series ID is a unique random identifier for this individual time series. The digits themselves do not have any specific meaning"> {{labels.dataset-what-is}}
+                                         </a></span>
+                                </p>
+                            {{/if}}
+                        {{/resolve}}
+                    {{/if}}
+                {{/each}}
+            </div>
         </div>
     </div>
 

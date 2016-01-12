@@ -1,17 +1,19 @@
 {{#partial "block-metadata"}}
-    <div class="wrapper">
-        <div class="col-wrap">
-            {{> content/partials/metadata/contact class="col--md-12 col--lg-15"}}
+    <div class="meta-wrap">
+        <div class="wrapper">
+            <div class="col-wrap">
+                {{> content/partials/metadata/contact class="col--md-12 col--lg-15"}}
 
-            {{#block "block-release-date"}}
-                {{> content/partials/metadata/release-date class="col--md-12 col--lg-15"}}
-            {{/block}}
+                {{#block "block-release-date"}}
+                    {{> content/partials/metadata/release-date class="col--md-12 col--lg-15"}}
+                {{/block}}
 
-            {{#block "block-next-release"}}
-                {{> content/partials/metadata/next-release class="col--md-12 col--lg-15"}}
-            {{/block}}
+                {{#block "block-next-release"}}
+                    {{> content/partials/metadata/next-release class="col--md-12 col--lg-15"}}
+                {{/block}}
 
-            {{#block "block-additonal-metadata"}}{{/block}}
+                {{#block "block-additonal-metadata"}}{{/block}}
+            </div>
         </div>
     </div>
 {{/partial}}
