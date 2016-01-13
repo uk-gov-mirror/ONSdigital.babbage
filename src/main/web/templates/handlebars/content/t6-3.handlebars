@@ -7,7 +7,7 @@
                 <p>
                     {{#each breadcrumb}}
                         {{#if @last}}
-                            {{labels.compendium-return}} <a class="underline-link" href="{{uri}}">{{description.title}}</a>
+                            <a class="underline-link" href="{{uri}}"><span class="icon icon-return--dark-small margin-right-sm--1 margin-right-md--1"></span>{{labels.compendium-return}} {{description.title}}</a>
                         {{/if}}
                     {{/each}}
                 </p>
