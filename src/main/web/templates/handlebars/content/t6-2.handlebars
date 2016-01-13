@@ -19,7 +19,7 @@
 		</div>
 		{{!-- Content --}}
 		<!-- <div class="col-wrap"> -->
-		<article class="col col--md-36 col--lg-39 page-content__main-content">
+		<article class="col col--md-36 col--lg-39 page-content__main-content js-sticky-toc__trigger">
 			{{#each sections}}
 			<section id="{{slugify title}}" class="section__content--markdown">
 				<header>
@@ -65,6 +65,9 @@
 				{{/if}}
 			</div>
 			{{/if_any}}
+            <div class="margin-bottom-md--3 margin-top-md--4">
+                {{> content/partials/compendium-navigation}}
+            </div>
 		</article>
 		{{!-- Sidebar --}}
 		<div class="col col--md-11 col--lg-20 margin-top-md--3">
@@ -72,7 +75,7 @@
             {{#last breadcrumb}}
                 {{#resolve uri}}
                     {{#if datasets}}
-                        <a class="btn btn--primary btn--full-width margin-bottom-sm--2 margin-bottom-md--2" href="{{datasets.0.uri}}">View all data in this compendium</a>
+                        <a class="btn btn--primary btn--full-width margin-bottom-sm--2 margin-bottom-md--2 border-top--iron-md" href="{{datasets.0.uri}}">View all data in this compendium</a>
                     {{/if}}
                 {{/resolve}}
             {{/last}}
@@ -90,7 +93,6 @@
 				{{> partials/local-box}}
 			</div>
 		</div>
-        {{> content/partials/compendium-navigation}}
 	</div>
 {{/partial}}
 
