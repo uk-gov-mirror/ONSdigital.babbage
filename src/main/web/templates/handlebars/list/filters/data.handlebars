@@ -1,7 +1,7 @@
 <div class="js-checkbox-container">
 	<ul class="list--neutral flush-top">
-		{{>list/partials/filter-item id="timeseries" value="single_time_series" label="Time series data" docCount=counts.docCounts.timeseries}}
-		{{>list/partials/filter-item id="dataset" value="large_dataset" label="Spreadsheets" docCount=(add counts.docCounts.dataset_landing_page counts.docCounts.reference_tables)}}
-		{{>list/partials/filter-item id="adhoc" value="adhocs" label="Commissioned data" docCount=counts.docCounts.static_adhoc}}
+		{{>list/partials/filter-item id="timeseries" value="single_time_series" label="Time series" docCount=counts.docCounts.timeseries}}
+		{{>list/partials/filter-item id="dataset" value="large_dataset" label="Datasets" docCount=(add counts.docCounts.dataset_landing_page counts.docCounts.reference_tables)}}
+		{{>list/partials/filter-item id="adhoc" value="adhocs" label="User requested data" docCount=counts.docCounts.static_adhoc}}
 	</ul>
 </div>
