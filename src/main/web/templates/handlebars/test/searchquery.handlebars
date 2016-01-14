@@ -1,67 +1,122 @@
 {
-    "from":0,
-    "size":50,
-    "query":{
-    	 "function_score": {
-            "query": {  
-                "multi_match": {
-                    "query": "$q",
-                    "type":  "cross_fields",
-                    "fields": [ "title^10", "edition"],
-                    "minimum_should_match":"1<-2 3<80% 5<60% "
+    "from": 0,
+    "size": 50,
+    "query": {
+        "function_score": {
+            "query": {
+                "bool": {
+                    "should": [{
+                        "multi_match": {
+                            "query": "$q",
+                            "type": "cross_fields",
+                            "fields": ["title^10", "edition"],
+                            "minimum_should_match": "1<-2 3<80% 5<60%"
+                        }
+                    }, {
+                        "bool": {
+                            "should": [{
+                                "multi_match": {
+                                    "query": "$q",
+                                    "fields": ["cdid", "datasetId"],
+                                    "operator": "and"
+                                }
+                            }, {
+                                "multi_match": {
+                                    "query": "$q",
+                                    "type": "cross_fields",
+                                    "fields": ["summary^8", "metaDescription^8"],
+                                    "minimum_should_match": "75%"
+                                }
+                            }]
+
+                        }
+                    }]
                 }
+
             },
-            "functions": [
-                {
-                    "filter": {"term" :  {"_type" : "bulletin"}},
-                    "weight": 1.55
+
+            "functions": [{
+                "filter": {
+                    "term": {
+                        "_type": "bulletin"
+                    }
                 },
-                {
-                    "filter": {"term" :  {"_type" : "dataset_landing_page"}},
-                    "weight": 1.35
+                "weight": 1.55
+            }, {
+                "filter": {
+                    "term": {
+                        "_type": "dataset_landing_page"
+                    }
                 },
-                {
-                    "filter": {"term" :  {"_type" : ["article","article_download","compendium_landing_page"]}},
-                    "weight": 1.30
+                "weight": 1.35
+            }, {
+                "filter": {
+                    "term": {
+                        "_type": ["article", "article_download", "compendium_landing_page"]
+                    }
                 },
-                {
-                    "filter": {"term" :  {"_type" : "static_adhoc"}},
-                    "weight": 1.25
+                "weight": 1.30
+            }, {
+                "filter": {
+                    "term": {
+                        "_type": "static_adhoc"
+                    }
                 },
-                {
-                    "filter": {"term" :  {"_type" : "timeseries"}},
-                    "weight": 1.2
-                }
-            ],
+                "weight": 1.25
+            }, {
+                "filter": {
+                    "term": {
+                        "_type": "timeseries"
+                    }
+                },
+                "weight": 1.2
+            }],
             "score_mode": "multiply"
         }
     },
-  "sort" : [ {
-    "_score" : {
-      "order" : "desc",
-      "ignore_unmapped" : true
-    }
-  }, {
-    "releaseDate" : {
-      "order" : "desc",
-      "ignore_unmapped" : true
-    }
-  } ],
-    "highlight":{
-        "pre_tags":[
+
+    "sort": [{
+        "_score": {
+            "order": "desc",
+            "ignore_unmapped": true
+        }
+    }, {
+        "releaseDate": {
+            "order": "desc",
+            "ignore_unmapped": true
+        }
+    }],
+    "highlight": {
+        "pre_tags": [
             "<strong>"
         ],
-        "post_tags":[
+        "post_tags": [
             "</strong>"
         ],
-        "fields":{
-            "title":{
-                "fragment_size":0,
-                "number_of_fragments":0
+        "fields": {
+            "title": {
+                "fragment_size": 0,
+                "number_of_fragments": 0
             },
-            "edition":{
-                "fragment_size":0,
-                "number_of_fragments":0
+            "edition": {
+                "fragment_size": 0,
+                "number_of_fragments": 0
+            },
+            "cdid": {
+                "fragment_size": 0,
+                "number_of_fragments": 0
+            },
+            "datasetId": {
+                "fragment_size": 0,
+                "number_of_fragments": 0
+            },
+            "summary": {
+                "fragment_size": 0,
+                "number_of_fragments": 0
+            },
+            "metaDescription": {
+                "fragment_size": 0,
+                "number_of_fragments": 0
             }
         }
     }
