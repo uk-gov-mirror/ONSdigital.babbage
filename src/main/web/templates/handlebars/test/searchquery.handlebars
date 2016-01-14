@@ -1,0 +1,46 @@
+{
+    "from":0,
+    "size":50,
+    "query":{
+        "multi_match": {
+            "query": "$q",
+            "type":  "cross_fields",
+            "fields": [ "title^10", "edition"],
+            "minimum_should_match":"2<80%"
+        }
+    },
+	"filter" : {
+		"term" : {
+			"_type" : "bulletin"
+		}
+	},
+  "sort" : [ {
+    "_score" : {
+      "order" : "desc",
+      "ignore_unmapped" : true
+    }
+  }, {
+    "releaseDate" : {
+      "order" : "desc",
+      "ignore_unmapped" : true
+    }
+  } ],
+    "highlight":{
+        "pre_tags":[
+            "<strong>"
+        ],
+        "post_tags":[
+            "</strong>"
+        ],
+        "fields":{
+            "title":{
+                "fragment_size":0,
+                "number_of_fragments":0
+            },
+            "edition":{
+                "fragment_size":0,
+                "number_of_fragments":0
+            }
+        }
+    }
+}
