@@ -23,8 +23,8 @@
                             }, {
                                 "multi_match": {
                                     "query": "$q",
-                                    "type": "cross_fields",
-                                    "fields": ["summary^8", "metaDescription^8"],
+                                    "type": "best_fields",
+                                    "fields": ["summary^7", "metaDescription^7"],
                                     "minimum_should_match": "75%"
                                 }
                             }]
