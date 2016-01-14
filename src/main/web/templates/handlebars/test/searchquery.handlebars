@@ -2,18 +2,40 @@
     "from":0,
     "size":50,
     "query":{
-        "multi_match": {
-            "query": "$q",
-            "type":  "cross_fields",
-            "fields": [ "title^10", "edition"],
-            "minimum_should_match":"2<80%"
+    	 "function_score": {
+            "query": {  
+                "multi_match": {
+                    "query": "$q",
+                    "type":  "cross_fields",
+                    "fields": [ "title^10", "edition"],
+                    "minimum_should_match":"2<80%"
+                }
+            },
+            "functions": [
+                {
+                    "filter": {"term" :  {"_type" : "bulletin"}},
+                    "weight": 1.8
+                },
+                {
+                    "filter": {"term" :  {"_type" : "dataset_landing_page"}},
+                    "weight": 1.4
+                },
+                {
+                    "filter": {"term" :  {"_type" : ["article","article_download","compendium_landing_page"]}},
+                    "weight": 1.3
+                },
+                {
+                    "filter": {"term" :  {"_type" : "static_adhoc"}},
+                    "weight": 1.2
+                },
+                {
+                    "filter": {"term" :  {"_type" : "timeseries"}},
+                    "weight": 1.1
+                }
+            ],
+            "score_mode": "multiply"
         }
     },
-	"filter" : {
-		"term" : {
-			"_type" : "bulletin"
-		}
-	},
   "sort" : [ {
     "_score" : {
       "order" : "desc",
