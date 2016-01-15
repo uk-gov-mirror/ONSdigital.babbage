@@ -1,6 +1,6 @@
 {
     "from": 0,
-    "size": 50,
+    "size": 200,
     "query": {
         "function_score": {
             "query": {
@@ -31,6 +31,13 @@
                             "type": "best_fields",
                             "fields": ["summary", "metaDescription"],
                             "minimum_should_match": "75%"
+                        }
+                    }, {
+                        "match": {
+                            "keywords": {
+                                "query": "$q",
+                                "operator": "and"
+                            }
                         }
                     }]
                 }
@@ -116,6 +123,10 @@
                 "number_of_fragments": 0
             },
             "metaDescription": {
+                "fragment_size": 0,
+                "number_of_fragments": 0
+            },
+            "keywords": {
                 "fragment_size": 0,
                 "number_of_fragments": 0
             }
