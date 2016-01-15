@@ -8,22 +8,21 @@
                     "queries": [{
                         "bool": {
                             "should": [{
-                                    "multi_match": {
+                                "match": {
+                                    "title_no_dates": {
                                         "query": "$q",
-                                        "type": "cross_fields",
-                                        "fields": ["title^10", "edition"],
-                                        "minimum_should_match": "1<-2 3<80% 5<60%"
-                                    }
-                                },
-
-                                {
-                                    "multi_match": {
-                                        "query": "$q",
-                                        "fields": ["cdid", "datasetId"],
-                                        "operator": "and"
+                                        "minimum_should_match" : "1<-2 3<80% 5<60%",
+                                        "boost" : 10
                                     }
                                 }
-                            ]
+                            }, {
+                                "multi_match": {
+                                    "query": "$q",
+                                    "type": "cross_fields",
+                                    "fields": ["title^10", "edition"],
+                                    "minimum_should_match": "3<80% 5<60%"
+                                }
+                            }]
                         }
                     }, {
                         "multi_match": {
@@ -38,6 +37,12 @@
                                 "query": "$q",
                                 "operator": "and"
                             }
+                        }
+                    }, {
+                        "multi_match": {
+                            "query": "$q",
+                            "fields": ["cdid", "datasetId"],
+                            "operator": "and"
                         }
                     }]
                 }
