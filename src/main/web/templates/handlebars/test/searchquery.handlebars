@@ -4,35 +4,36 @@
     "query": {
         "function_score": {
             "query": {
-                "bool": {
-                    "should": [{
-                        "multi_match": {
-                            "query": "$q",
-                            "type": "cross_fields",
-                            "fields": ["title^10", "edition"],
-                            "minimum_should_match": "1<-2 3<80% 5<60%"
-                        }
-                    }, {
+                "dis_max": {
+                    "queries": [{
                         "bool": {
                             "should": [{
-                                "multi_match": {
-                                    "query": "$q",
-                                    "fields": ["cdid", "datasetId"],
-                                    "operator": "and"
-                                }
-                            }, {
-                                "multi_match": {
-                                    "query": "$q",
-                                    "type": "best_fields",
-                                    "fields": ["summary^7", "metaDescription^7"],
-                                    "minimum_should_match": "75%"
-                                }
-                            }]
+                                    "multi_match": {
+                                        "query": "$q",
+                                        "type": "cross_fields",
+                                        "fields": ["title^10", "edition"],
+                                        "minimum_should_match": "1<-2 3<80% 5<60%"
+                                    }
+                                },
 
+                                {
+                                    "multi_match": {
+                                        "query": "$q",
+                                        "fields": ["cdid", "datasetId"],
+                                        "operator": "and"
+                                    }
+                                }
+                            ]
+                        }
+                    }, {
+                        "multi_match": {
+                            "query": "$q",
+                            "type": "best_fields",
+                            "fields": ["summary", "metaDescription"],
+                            "minimum_should_match": "75%"
                         }
                     }]
                 }
-
             },
 
             "functions": [{
