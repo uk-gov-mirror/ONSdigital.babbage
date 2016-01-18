@@ -8,10 +8,12 @@ import com.github.onsdigital.babbage.response.BabbageContentBasedStringResponse;
 import com.github.onsdigital.babbage.response.base.BabbageResponse;
 import com.github.onsdigital.babbage.response.BabbageStringResponse;
 import com.github.onsdigital.babbage.template.TemplateService;
+import com.github.onsdigital.babbage.util.RequestUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.LinkedHashMap;
 
 import static javax.ws.rs.core.MediaType.TEXT_HTML;
 
@@ -29,7 +31,11 @@ public class PageRequestHandler implements RequestHandler {
 
         ContentResponse contentResponse = ContentClient.getInstance().getContent(uri);
         try (InputStream dataStream = contentResponse.getDataStream()){
-            String html = TemplateService.getInstance().renderContent(dataStream);
+            LinkedHashMap<String, Object> additionalData = new LinkedHashMap<>();
+            if(RequestUtil.getQueryParameters(request).containsKey("pdf")) {
+                additionalData.put("pdf_style", true);
+            }
+            String html = TemplateService.getInstance().renderContent(dataStream, additionalData);
             return new BabbageContentBasedStringResponse(contentResponse,html, TEXT_HTML);
         }
     }

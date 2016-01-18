@@ -31,6 +31,7 @@
 		{{/if_any}} --}}
 		{{!-- <link rel="stylesheet" href="/node_modules/ONS-Pattern-Library/dist/css/main.min.css"/> --}}
 		<link rel="stylesheet" type="text/css" href="{{#if is_dev}}http://localhost:9000/dist/css/main.css{{else}}/node_modules/sixteens/dist/css/main.css{{/if}}">
+		{{#if pdf_style}}<link rel="stylesheet" type="text/css" href="{{#if is_dev}}http://localhost:9000/dist/css/pdf.css{{else}}/node_modules/sixteens/dist/css/pdf.css{{/if}}">{{/if}}
 		{{!-- <link rel="stylesheet" type"text/css" href="{{#if is_dev}}http://localhost:9000/dist/css/print.css{{else}}/node_modules/sixteens/dist/css/print.css{{/if}}" media="print"> --}}
 
 		{{!-- <link rel="stylesheet" href="/css/js-enhance.css"/> --}}
