@@ -119,13 +119,6 @@
 										: {{/if}}{{description.title}}</a></li>
 								{{/resolve}}
 							{{/each}}
-							{{#each relatedDatasets}}
-								{{#resolve this.uri filter="description"}}
-									<li class="flush"><a
-											href="{{uri}}">{{#if description.datasetId}}{{description.datasetId}}
-										: {{/if}}{{description.title}}</a></li>
-								{{/resolve}}
-							{{/each}}
 						</ul>
 					{{/if_any}}
 					<div class="col col--md-14 col--lg-18">
