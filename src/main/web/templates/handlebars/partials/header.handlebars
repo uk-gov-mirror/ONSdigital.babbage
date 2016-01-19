@@ -10,7 +10,7 @@
 	{{!-- Prototype banner --}}
 	<div class="beta-banner">
 		<div class="wrapper">
-			<p class="beta-banner__content">This is a test website, so may be inaccurate or misleading. The official website remains <a href="http://ons.gov.uk/">ons.gov.uk</a></p>
+			{{#resolve "/"}}{{md serviceMessage}}{{/resolve}}
 		</div>
 	</div>
 	{{!-- LANGUAGE TOGGLE AND SECONDARY NAV - DESKTOP --}}
