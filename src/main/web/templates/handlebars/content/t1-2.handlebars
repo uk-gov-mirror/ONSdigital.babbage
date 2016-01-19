@@ -1,7 +1,182 @@
 {{!-- Used for census landing page --}}
-{{#each sections}}
-    {{@index_1}}
-    {{title}}<br>
-    {{text}}<br>
-    {{uri}}
-{{/each}}
+
+{{#partial "block-main"}}
+    <div class="wrapper">
+        <div class="col-wrap">
+            <div class="">
+                <div class="col">{{> partials/breadcrumb}}</div>
+                <div class="col col--md-47 col--lg-47 margin-left-md--1">
+                    {{>content/partials/intro}}
+                </div>
+                <div class="col col--lg-10 margin-top--2 margin-left-md--2 margin-bottom-sm--2 margin-bottom-md--3 height--22">
+                    <img src="/img/t1-2-census-logo.png" alt="2011 Census logo">
+                </div>
+            </div>
+            <div class="col">
+                <div class="background--indigo nav-secondary--census">
+                    <ul class="list--neutral flush padding-top-sm--1 padding-top--2 padding-right-md--1 padding-bottom--2 padding-left-sm--1">
+                        <li class="flush-top flush-bottom margin-top--sm-2 margin-left-md--1 margin-bottom-sm--2 inline-block--md padding-right--1 border-right--iron-light-md border-right--iron-light-lg">
+                            <a class="jsEnhanceAnimateScroll" href="#news">News and events</a></li>
+                        <li class="flush-top flush-bottom margin-top--sm-2 margin-left-md--1 margin-bottom-sm--2 inline-block--md padding-right--1 border-right--iron-light-md border-right--iron-light-lg">
+                            <a class="jsEnhanceAnimateScroll" href="#2011census">2011 Census</a></li>
+                        <li class="flush-top flush-bottom margin-top--sm-2 margin-left-md--1 margin-bottom-sm--1 inline-block--md"><a class="jsEnhanceAnimateScroll" href="#other">Other stuff</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="news" class="background--prim">
+        <section>
+            <div class="wrapper">
+                <div class="col-wrap">
+                    <h2 class="col margin-bottom--1">News and events</h2>
+                    <div class="col col--md-23 col--lg-29 height-md--42 margin-bottom--2 margin-left-md--1 padding-top-sm--2 padding-top-md--2 padding-right-md--1 padding-bottom-sm--1 padding-bottom-md--1 padding-left-sm--1 padding-left-md--1 background--white js-hover">
+                        {{#if sections.0.title}}
+                            {{!-- Ordinary link --}}
+                            {{#if sections.0.image}}
+                                {{#resolve sections.0.image}}
+                                    <div class="height--19 overflow--hidden">
+                                        <img class="width-sm--21 width-md--21 width-lg--27"
+                                             src="/resource?uri={{uri}}.{{files.0.fileType}}" alt="{{altText}}">
+                                    </div>
+                                {{/resolve}}
+                            {{/if}}
+                            <h3 {{#if sections.0.image}}class="margin-top-md--3"{{/if}}><a
+                                    href="{{sections.0.uri}}">{{sections.0.title}}</a></h3>
+                            <p class="margin-top--0">{{sections.0.text}}</p>
+                        {{else}}
+                            {{!-- Link to timeseries --}}
+                            {{#resolve sections.0.uri filter="description"}}
+                                <dl class="box__content box__content--homepage padding-top-md--19">
+                                    <dt class="tiles__title-dt margin-left-sm--1 margin-left-md--1">
+                                        <a href="{{uri}}">{{description.title}}</a>
+                                    </dt>
+                                    <!-- TODO change to dd's -->
+                                    <dd class="margin-left-sm--1 margin-left-md--1">
+                                        <span class="tiles__preunit--home">{{description.preUnit}}</span>
+                                        <span class="tiles__figure--home stat__figure-enhance">{{description.number}}</span>
+                                        <span class="tiles__unit--home">{{description.unit}}</span>
+                                        <span class="tiles__date--home">
+                                            {{description.date}}
+                                        </span>
+                                        <a class="js-enhance--hide" href="{{statistics.uri}}">More info</a>
+                                        <div class="sparkline-holder">
+                                            {{> partials/highcharts/sparkline}}
+                                        </div>
+                                    </dd>
+                                </dl>
+                            {{/resolve}}
+                        {{/if}}
+                    </div>
+                    <div class="col col--md-23 col--lg-29 height-md--42 margin-bottom--2 margin-left-md--1 padding-top-sm--2 padding-top-md--2  padding-right-sm--1 padding-right-md--1 padding-bottom-sm--1 padding-bottom-md--1 padding-left-sm--1 padding-left-md--1 background--white js-hover">
+                        {{#if sections.1.image}}
+                            {{#resolve sections.1.image}}
+                                <div class="height--19 overflow--hidden">
+                                    <img class="width-sm--21 width-md--21 width-lg--27"
+                                         src="/resource?uri={{uri}}.{{files.0.fileType}}" alt="{{altText}}">
+                                </div>
+                            {{/resolve}}
+                        {{/if}}
+                        <h3 {{#if sections.1.image}}class="margin-top-md--3"{{/if}}><a href="{{sections.1.uri}}">{{sections.1.title}}</a></h3>
+                        <p class="margin-top--0">{{sections.1.text}}</p>
+                    </div>
+                    <div class="col col--md-15 col--lg-19 height-md--42 margin-bottom--2 margin-left-md--1 padding-top-sm--2 padding-top-md--2 padding-right-sm--1  padding-right-md--1 padding-bottom-sm--1 padding-bottom-md--1 padding-left-sm--1 padding-left-md--1 background--white js-hover">
+                        {{#if sections.2.image}}
+                            {{#resolve sections.2.image}}
+                                <div class="height--19 overflow--hidden">
+                                    <img class="width-sm--21 width-md--13 width-lg--17"
+                                         src="/resource?uri={{uri}}.{{files.0.fileType}}" alt="{{altText}}">
+                                </div>
+                            {{/resolve}}
+                        {{/if}}
+                        <h3 {{#if sections.2.image}}class="margin-top-md--3"{{/if}}><a href="{{sections.2.uri}}">{{sections.2.title}}</a></h3>
+                        <p class="margin-top--0">{{sections.2.text}}</p>
+                    </div>
+                    <div class="col col--md-15 col--lg-19 height-md--42 margin-bottom--2 margin-left-md--1 padding-top-sm--2 padding-top-md--2 padding-right-sm--1  padding-right-md--1 padding-bottom-sm--1 padding-bottom-md--1 padding-left-sm--1 padding-left-md--1 background--white js-hover">
+                        {{#if sections.3.image}}
+                            {{#resolve sections.3.image}}
+                                <div class="height-md--19 overflow--hidden">
+                                    <img class="width-md--13 width-lg--17"
+                                         src="/resource?uri={{uri}}.{{files.0.fileType}}" alt="{{altText}}">
+                                </div>
+                            {{/resolve}}
+                        {{/if}}
+                        <h3 {{#if sections.3.image}}class="margin-top-md--3"{{/if}}><a href="{{sections.3.uri}}">{{sections.3.title}}</a></h3>
+                        <p class="margin-top--0">{{sections.3.text}}</p>
+                    </div>
+                    <div class="col col--md-15 col--lg-19 height-md--42 margin-bottom--2 margin-left-md--1 padding-top-sm--2 padding-top-md--2 padding-right-sm--1  padding-right-md--1 padding-bottom-sm--1 padding-bottom-md--1 padding-left-sm--1 padding-left-md--1 background--white js-hover">
+                        {{#if sections.4.image}}
+                            {{#resolve sections.4.image}}
+                                <div class="height-md--19 overflow--hidden">
+                                    <img class="width-md--13 width-lg--17"
+                                         src="/resource?uri={{uri}}.{{files.0.fileType}}" alt="{{altText}}">
+                                </div>
+                            {{/resolve}}
+                        {{/if}}
+                        <h3 {{#if sections.4.image}}class="margin-top-md--3"{{/if}}><a href="{{sections.4.uri}}">{{sections.4.title}}</a></h3>
+                        <p class="margin-top--0">{{sections.4.text}}</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div class="wrapper">
+        <section>
+            <div class="col-wrap">
+                <div id="2011census">
+                    <h2 class="col margin-bottom--1">Previous Census</h2>
+                    <div class="col height-md--27 col--md-15 col--lg-19 margin-left-md--1 margin-bottom--2 padding-top--2 padding-right--1 padding-bottom--2 padding-left--1 background--mercury js-hover">
+                        <h3 class="flush"><a href="/census/2011census">2011 Census</a></h3>
+                        <p class="flush">Nulla quis lorem ut libero malesuada feugiat. Quisque velit nisi, pretium ut lacinia in, elementum id enim.</p>
+                    </div>
+                    <div class="col height-md--27 col--md-15 col--lg-19 margin-left-md--1 margin-bottom--2 padding-top--2 padding-right--1 padding-bottom--2 padding-left--1 background--mercury js-hover">
+                        <h3 class="flush"><a href="/census/2001censusandearlier">2001 Census and earlier</a></h3>
+                        <p class="flush">Nulla quis lorem ut libero malesuada feugiat. Quisque velit nisi, pretium ut lacinia in, elementum id enim.</p>
+                    </div>
+                    <div class="col height-md--27 col--md-15 col--lg-19 margin-left-md--1 margin-bottom--2 padding-top--2 padding-right--1 padding-bottom--2 padding-left--1 background--mercury js-hover">
+                        <h3 class="flush"><a href="https://www.nomisweb.co.uk/">All census data</a></h3>
+                        <p class="flush">Nulla quis lorem ut libero malesuada feugiat. Quisque velit nisi, pretium ut lacinia in, elementum id enim.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <div class="background--mercury">
+        <div class="wrapper">
+            <section>
+                <div class="col-wrap">
+                    <div id="other">
+                        <h2 class="col margin-bottom--1">Other stuff</h2>
+                        <div class="col height-md--23 height-lg--15 col--md-23 col--lg-29 margin-bottom--2 margin-left-md--1 padding-top--2 padding-right--1 padding-bottom--2 padding-left--1 background--white js-hover">
+                            <h3 class="flush"><a href="/census/censustransformationprogramme">Census customer services</a></h3>
+                            <p class="flush">Nulla quis lorem ut libero malesuada feugiat. Quisque velit nisi, pretium ut lacinia in, elementum id enim.</p>
+                        </div>
+                        <div class="col height-md--23 height-lg--15 col--md-23 col--lg-29 margin-bottom--2 margin-left-md--1 padding-top--2 padding-right--1 padding-bottom--2 padding-left--1 background--white js-hover">
+                            <h3 class="flush"><a href="/census/2011census">Stakeholder engagement</a></h3>
+                            <p class="flush">Nulla quis lorem ut libero malesuada feugiat. Quisque velit nisi, pretium ut lacinia in, elementum id enim.</p>
+                        </div>
+                        <div class="col height-md--27 col--md-15 col--lg-19 margin-bottom--2 margin-left-md--1 padding-top--2 padding-right--1 padding-bottom--2 padding-left--1 background--white js-hover">
+                            <h3 class="flush"><a href="/census/censustransformationprogramme/2021census/consultations">Consultations</a></h3>
+                            <p class="flush">Nulla quis lorem ut libero malesuada feugiat. Quisque velit nisi, pretium ut lacinia in, elementum id enim.</p>
+                        </div>
+                        <div class="col height-md--27 col--md-15 col--lg-19 margin-bottom--2 margin-left-md--1 padding-top--2 padding-right--1 padding-bottom--2 padding-left--1 background--white js-hover">
+                            <h3 class="flush"><a href="/census/censustransformationprogramme">Census Transformation Programme</a></h3>
+                            <p class="flush">Nulla quis lorem ut libero malesuada feugiat. Quisque velit nisi, pretium ut lacinia in, elementum id enim.</p>
+                        </div>
+                        <div class="col height-md--27 col--md-15 col--lg-19 margin-bottom--2 margin-left-md--1 padding-top--2 padding-right--1 padding-bottom--2 padding-left--1 background--white js-hover">
+                            <h3 class="flush"><a href="/census/2011census">Reserch projects</a></h3>
+                            <p class="flush">Nulla quis lorem ut libero malesuada feugiat. Quisque velit nisi, pretium ut lacinia in, elementum id enim.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+{{/partial}}
+
+{{!-- Inheriting from base content template --}}
+{{> base/base}}

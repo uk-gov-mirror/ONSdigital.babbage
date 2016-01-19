@@ -49,7 +49,8 @@ Time series explorer
 
 {{#partial "block-filters"}}
 	{{> list/filters/keywords}}
-    {{> list/filters/topics}}
+    {{!-- {{> list/filters/topics}} // DYNAMIC VERSION--}}
+    {{> list/filters/topics-hardcoded}} {{!-- HARDCODED VERSION (FOR GO LIVE) --}}
 	{{> list/filters/update-date}}
 {{/partial}}
 
