@@ -2,22 +2,42 @@ package com.github.onsdigital.babbage.search.helpers;
 
 import com.github.onsdigital.babbage.error.BadRequestException;
 import com.github.onsdigital.babbage.error.ResourceNotFoundException;
-import com.github.onsdigital.babbage.search.ONSQuery;
+import com.github.onsdigital.babbage.response.BabbageRedirectResponse;
+import com.github.onsdigital.babbage.response.BabbageStringResponse;
+import com.github.onsdigital.babbage.response.base.BabbageResponse;
+import com.github.onsdigital.babbage.search.function.SearchFunction;
 import com.github.onsdigital.babbage.search.input.SortBy;
-import com.github.onsdigital.babbage.search.model.field.FilterableField;
-import com.github.onsdigital.babbage.search.model.field.SearchableField;
-import com.github.onsdigital.babbage.search.model.sort.SortField;
+import com.github.onsdigital.babbage.search.input.TypeFilter;
+import com.github.onsdigital.babbage.search.model.ContentType;
+import com.github.onsdigital.babbage.search.model.SearchResult;
+import com.github.onsdigital.babbage.search.model.field.Field;
+import com.github.onsdigital.babbage.template.TemplateService;
+import com.github.onsdigital.babbage.util.json.JsonUtil;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.elasticsearch.index.query.FilterBuilder;
-import org.elasticsearch.index.query.FilterBuilders;
-import org.elasticsearch.index.query.RangeFilterBuilder;
-import org.elasticsearch.search.aggregations.bucket.terms.TermsBuilder;
-import org.elasticsearch.search.sort.FieldSortBuilder;
+import org.elasticsearch.index.query.DisMaxQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.index.query.functionscore.FunctionScoreQueryBuilder;
+import org.elasticsearch.search.aggregations.AggregationBuilders;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.core.MediaType;
+import java.io.IOException;
+import java.util.*;
 
+import static com.github.onsdigital.babbage.api.util.ListUtils.getBaseListTemplate;
+import static com.github.onsdigital.babbage.search.model.field.Field.*;
 import static com.github.onsdigital.babbage.util.RequestUtil.getParam;
+import static com.github.onsdigital.babbage.util.URIUtil.isDataRequest;
+import static org.apache.commons.lang3.EnumUtils.getEnum;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
+import static org.apache.commons.lang3.StringUtils.upperCase;
+import static org.elasticsearch.index.query.MatchQueryBuilder.Operator.AND;
+import static org.elasticsearch.index.query.MultiMatchQueryBuilder.Type.BEST_FIELDS;
+import static org.elasticsearch.index.query.MultiMatchQueryBuilder.Type.CROSS_FIELDS;
+import static org.elasticsearch.index.query.QueryBuilders.*;
+import static org.elasticsearch.index.query.functionscore.ScoreFunctionBuilders.weightFactorFunction;
 
 /**
  * Common utilities to manipulate search request query and extracting common search parameters
@@ -26,109 +46,176 @@ import static org.apache.commons.lang3.StringUtils.isEmpty;
 public class SearchRequestHelper {
 
 
-    /**
-     * Adds given filters to query as or filters. The or filter will simply be a filter in encapsulating and filter, meaning all other filters added to query separately are anded with each other
-     *
-     * @param query
-     * @param filters
-     */
-    public static void addOrFilters(ONSQuery query, FilterBuilder... filters) {
-        query.addFilter(FilterBuilders.orFilter(filters));
-    }
-
-    public static void addFields(ONSQuery query, SearchableField... fields) {
-        for (SearchableField field : fields) {
-            query.addField(field.name(), field.getBoostFactor());
+    public static void get(HttpServletRequest request, HttpServletResponse response, String searchTerm, String listType, SearchFunction search) throws Exception {
+        if (searchTerm == null) {
+            buildResponse(request, response, listType, null);
+        } else {
+            //search time series by cdid, redirect to time series page if found
+            String timeSeriesUri = searchTimeSeriesUri(searchTerm);
+            if (timeSeriesUri != null) {
+                new BabbageRedirectResponse(timeSeriesUri).apply(request, response);
+                return;
+            }
+            buildResponse(request, response, listType, search.search()).apply(request, response);
         }
     }
 
-
-    /**
-     * Adds term filters to ons query
-     *
-     * @param query
-     * @param field
-     * @param values
-     */
-    public static void addPrefixFilter(ONSQuery query, FilterableField field, String... values) {
-        if (values == null) {
-            query.addFilter(FilterBuilders.prefixFilter(field.name(), null));
+    //Send result back to client
+    private static BabbageResponse buildResponse(HttpServletRequest request, HttpServletResponse response, String listType, Map<String, SearchResult> results) throws IOException {
+        LinkedHashMap<String, Object> data = getBaseListTemplate(listType);
+        if (results != null) {
+            for (Map.Entry<String, SearchResult> result : results.entrySet()) {
+                data.put(result.getKey(), result.getValue());
+            }
         }
-
-        for (String value : values) {
-            query.addFilter(FilterBuilders.prefixFilter(field.name(), value));
+        BabbageResponse result;
+        if (isDataRequest(request.getRequestURI())) {
+            result = new BabbageStringResponse(JsonUtil.toJson(data), MediaType.APPLICATION_JSON);
+        } else {
+            result = new BabbageStringResponse(TemplateService.getInstance().renderContent(data), MediaType.TEXT_HTML);
         }
+        return result;
     }
 
-    /**
-     * Adds term filters to ons query, null value will filter null values
-     *
-     * @param query
-     * @param field
-     * @param value
-     */
-    public static void addTermFilter(ONSQuery query, FilterableField field, Object value) {
-        if (value == null) {
-            query.addFilter(FilterBuilders.termFilter(field.name(), null));
-        }
+    private static String searchTimeSeriesUri(String searchTerm) {
+        SearchResponseHelper search = SearchHelper.
+                search(onsQuery(boolQuery().must(termQuery(cdid.fieldName(), searchTerm)), ContentType.timeseries)
+                        .highlight(false).size(1).fetchFields(Field.uri));
 
-        query.addFilter(FilterBuilders.termFilter(field.name(), value));
+        if (search.getNumberOfResults() == 0) {
+            return null;
+        }
+        Map<String, Object> timeSeries = search.getResult().getResults().iterator().next();
+        return (String) timeSeries.get(Field.uri.fieldName());
     }
 
+
+
     /**
-     * Adds  terms filter ( not term filter, terms filter matches if any of the filters is available).
-     * See elastic search documentation
+     * Extracts filter, sort and page information from given client request to initialize query with
      *
-     * @param query
-     * @param field
-     * @param values
+     * @param request
+     * @param queryBuilder
+     * @param defaultFilters
+     * @return
      */
-    public static void addTermsFilter(ONSQuery query, FilterableField field, Object... values) {
-        if (values == null) {
-            query.addFilter(FilterBuilders.termFilter(field.name(), null));
-        }
-        query.addFilter(FilterBuilders.termsFilter(field.name(), values));
+    public static ONSQueryBuilder onsQuery(HttpServletRequest request, QueryBuilder queryBuilder, Set<TypeFilter> defaultFilters) {
+        return new ONSQueryBuilder(queryBuilder, extractTypeNames(request, defaultFilters))
+                .page(extractPage(request))
+                .sortBy(extractSortBy(request));
     }
 
 
     /**
-     * Adds range filter to given query, only if any of from or to values are non-null, null values are not added to filter.
-     * If both from and to are null this method won't have any affect
+     * Extracts sort and page information from given client request to initialize query with
      *
-     * @param query
-     * @param field
-     * @param from
-     * @param to
+     * @param request
+     * @param queryBuilder
+     * @param types types to be queried
+     * @return
      */
-
-    public static void addRangeFilter(ONSQuery query, FilterableField field, Object from, Object to) {
-        if (from == null && to == null) {
-            return;
-        }
-
-        RangeFilterBuilder dateFilter = new RangeFilterBuilder(field.name());
-        if (from != null) {
-            dateFilter.from(from);
-        }
-        if (to != null) {
-            dateFilter.to(to);
-        }
-        query.addFilter(dateFilter);
-
+    public static ONSQueryBuilder onsQuery(HttpServletRequest request, QueryBuilder queryBuilder, ContentType... types) {
+        return new ONSQueryBuilder(queryBuilder, resolveTypeNames(types))
+                .page(extractPage(request))
+                .sortBy(extractSortBy(request));
     }
 
-    public static void addTermAggregation(ONSQuery query, String aggregationName, FilterableField field) {
-        //Size set to 0 to remove limit on bucket numbers which is 10 by default.
-        query.addAggregation(new TermsBuilder(aggregationName).field(field.name()).size(0));
+    /**
+     * Creates query builder filtering only given content types
+     *
+     * @param queryBuilder
+     * @param typeNames
+     * @return
+     */
+    public static ONSQueryBuilder onsQuery(QueryBuilder queryBuilder, String... typeNames) {
+        return new ONSQueryBuilder(queryBuilder, typeNames);
     }
 
+    /**
+     * Creates query builder filtering only given content types
+     *
+     * @param queryBuilder
+     * @param types
+     * @return
+     */
+    public static ONSQueryBuilder onsQuery(QueryBuilder queryBuilder, ContentType... types) {
+        return new ONSQueryBuilder(queryBuilder, resolveTypeNames(types));
+    }
 
-    public static void addSort(ONSQuery query, SortBy sortBy) {
-        SortField[] sortFields = sortBy.getSortFields();
-        for (SortField sortField : sortFields) {
-            query.addSort(new FieldSortBuilder(sortField.getField().name()).order(sortField.getOrder()).ignoreUnmapped(true));
+    /**
+     * Base content query with common fields in all content types as dis max query.
+     *
+     * @param searchTerm
+     * @return
+     */
+    public static DisMaxQueryBuilder buildBaseContentQuery(String searchTerm) {
+        return disMaxQuery()
+                .add(boolQuery()
+                        .should(matchQuery(title_no_dates.fieldName(), searchTerm)
+                                        .boost(title_no_dates.boost())
+                                        .minimumShouldMatch("1<-2 3<80% 5<60%")
+                        )
+                        .should(multiMatchQuery(searchTerm, title.fieldNameBoosted(), edition.fieldNameBoosted())
+                                .type(CROSS_FIELDS).minimumShouldMatch("3<80% 5<60%")))
+                .add(multiMatchQuery(searchTerm, summary.fieldNameBoosted(), metaDescription.fieldNameBoosted())
+                        .type(BEST_FIELDS).minimumShouldMatch("75%"))
+                .add(matchQuery(keywords.fieldNameBoosted(), searchTerm).operator(AND))
+                .add(multiMatchQuery(searchTerm, cdid.fieldNameBoosted(), datasetId.fieldNameBoosted()).operator(AND));
+    }
+
+    public static ONSQueryBuilder countDocTypes(QueryBuilder query, ContentType... types) {
+        return onsQuery(query, types)
+                .size(0).aggregate(AggregationBuilders.terms("docCounts")
+                        .field(Field._type.name())); //aggregating all content types without using selected numbers
+    }
+
+    /**
+     *
+     * Boosts some content types to be more relevant than others
+     *
+     * @return
+     */
+    public static FunctionScoreQueryBuilder boostContentTypes(QueryBuilder query) {
+        FunctionScoreQueryBuilder builder = functionScoreQuery(query);
+        return addContentBoosts(builder);
+    }
+
+    //Adds content type boosts as weight functions if content type is in selected filters
+    private static FunctionScoreQueryBuilder addContentBoosts(FunctionScoreQueryBuilder builder) {
+        for (ContentType contentType : ContentType.values()) {
+            if (contentType.getWeight() != null) {
+                builder.add(termQuery(_type.fieldName(), contentType.name()), weightFactorFunction(contentType.getWeight()));
+            }
         }
+        return builder;
     }
+
+
+    /**
+     * Extracts filter parameters requested, including only filter if given default filters, otherwise ignores.
+     * <p/>
+     * If there are no valid filters will return default filters
+     *
+     * @param request
+     * @param defaultFilters
+     * @return
+     */
+    public static Set<TypeFilter> extractSelectedFilters(HttpServletRequest request, Set<TypeFilter> defaultFilters) {
+        String[] filters = request.getParameterValues("filter");
+        if (filters == null) {
+            return defaultFilters;
+        }
+
+        HashSet<TypeFilter> selectedFilters = new HashSet<>();
+        for (int i = 0; i < filters.length; i++) {
+            TypeFilter typeFilter = getEnum(TypeFilter.class, upperCase(filters[i]));
+            if (defaultFilters.contains(typeFilter)) {
+                selectedFilters.add(typeFilter);
+            }
+        }
+        return selectedFilters.isEmpty() ? defaultFilters : selectedFilters;
+    }
+
 
     public static SortBy extractSortBy(HttpServletRequest request) {
         String sortBy = getParam(request, "sortBy");
@@ -136,7 +223,7 @@ public class SearchRequestHelper {
             return null;
         }
         try {
-            return SortBy.valueOf(sortBy.toUpperCase());
+            return SortBy.valueOf(sortBy.toLowerCase());
         } catch (IllegalArgumentException e) {
             //ignore invalid sort by parameter
             return null;
@@ -182,4 +269,39 @@ public class SearchRequestHelper {
         return query;
     }
 
+    /**
+     * Resolves content types to be queried based on selected filters, if no filters submitted will return default filters
+     */
+    public static String[] extractTypeNames(HttpServletRequest request, Set<TypeFilter> defaultFilters) {
+        Set<TypeFilter> selectedFilters = extractSelectedFilters(request, defaultFilters);
+        return resolveTypeNames(selectedFilters);
+    }
+
+    public static String[] resolveTypeNames(Set<TypeFilter> filters) {
+        String[] types = new String[0];
+        for (TypeFilter selectedFilter : filters) {
+            ContentType[] contentTypes = selectedFilter.getTypes();
+            types = ArrayUtils.addAll(types, resolveTypeNames(contentTypes));
+        }
+        return types;
+    }
+    public static ContentType[] resolveContentTypes(Set<TypeFilter> filters) {
+        return resolveContentTypes(filters.toArray(new TypeFilter[filters.size()]));
+    }
+
+    public static ContentType[] resolveContentTypes(TypeFilter... filters) {
+        ContentType[] contentTypes = new ContentType[0];
+        for (TypeFilter filter : filters) {
+            contentTypes = ArrayUtils.addAll(contentTypes, filter.getTypes());
+        }
+        return contentTypes;
+    }
+
+    private static String[] resolveTypeNames(ContentType... contentTypes) {
+        String[] types = new String[0];
+        for (ContentType type : contentTypes) {
+            types = ArrayUtils.addAll(types, type.name());
+        }
+        return types;
+    }
 }

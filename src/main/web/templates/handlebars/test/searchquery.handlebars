@@ -9,7 +9,7 @@
                         "bool": {
                             "should": [{
                                 "match": {
-                                    "title_no_dates": {
+                                    "description.title.title_no_dates": {
                                         "query": "$q",
                                         "minimum_should_match": "1<-2 3<80% 5<60%",
                                         "boost": 10
@@ -19,14 +19,14 @@
                                 "multi_match": {
                                     "query": "$q",
                                     "type": "cross_fields",
-                                    "fields": ["title^10", "edition"],
+                                    "fields": ["description.title^10", "description.edition"],
                                     "minimum_should_match": "3<80% 5<60%"
                                 }
                             }]
                         }
                     }, {
                         "match": {
-                            "searchBoost": {
+                            "description.searchBoost": {
                                 "query": "$q",
                                 "boost" : 100
                             }
@@ -35,12 +35,12 @@
                         "multi_match": {
                             "query": "$q",
                             "type": "best_fields",
-                            "fields": ["summary", "metaDescription"],
+                            "fields": ["description.summary", "description.metaDescription"],
                             "minimum_should_match": "75%"
                         }
                     }, {
                         "match": {
-                            "keywords": {
+                            "description.keywords": {
                                 "query": "$q",
                                 "operator": "and"
                             }
@@ -48,7 +48,7 @@
                     }, {
                         "multi_match": {
                             "query": "$q",
-                            "fields": ["cdid", "datasetId"],
+                            "fields": ["description.cdid", "description.datasetId"],
                             "operator": "and"
                         }
                     }]
@@ -114,31 +114,31 @@
             "</strong>"
         ],
         "fields": {
-            "title": {
+            "description.title": {
                 "fragment_size": 0,
                 "number_of_fragments": 0
             },
-            "edition": {
+            "description.edition": {
                 "fragment_size": 0,
                 "number_of_fragments": 0
             },
-            "cdid": {
+            "description.cdid": {
                 "fragment_size": 0,
                 "number_of_fragments": 0
             },
-            "datasetId": {
+            "description.datasetId": {
                 "fragment_size": 0,
                 "number_of_fragments": 0
             },
-            "summary": {
+            "description.summary": {
                 "fragment_size": 0,
                 "number_of_fragments": 0
             },
-            "metaDescription": {
+            "description.metaDescription": {
                 "fragment_size": 0,
                 "number_of_fragments": 0
             },
-            "keywords": {
+            "description.keywords": {
                 "fragment_size": 0,
                 "number_of_fragments": 0
             }

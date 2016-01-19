@@ -7,7 +7,6 @@ import com.github.onsdigital.babbage.publishing.model.PublishInfo;
 import com.github.onsdigital.babbage.publishing.model.PublishNotification;
 import com.github.onsdigital.babbage.util.ElasticSearchUtils;
 import com.github.onsdigital.babbage.util.json.JsonUtil;
-import com.google.gson.Gson;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.elasticsearch.action.bulk.BulkItemResponse;
 import org.elasticsearch.action.bulk.BulkProcessor;
@@ -17,13 +16,12 @@ import org.elasticsearch.action.delete.DeleteRequest;
 import org.elasticsearch.action.index.IndexRequestBuilder;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.common.settings.ImmutableSettings;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.unit.ByteSizeUnit;
 import org.elasticsearch.common.unit.ByteSizeValue;
 import org.elasticsearch.common.unit.TimeValue;
-import org.elasticsearch.index.query.FilteredQueryBuilder;
-import org.elasticsearch.index.query.TermFilterBuilder;
+import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.sort.FieldSortBuilder;
 
@@ -74,7 +72,7 @@ public class PublishingManager {
     }
 
     public void notifyPublishCancel(PublishNotification notification) throws IOException {
-        deletePublishDates(notification,false);
+        deletePublishDates(notification, false);
     }
 
     private void deletePublishDates(PublishNotification notification, boolean triggerReindex) throws IOException {
@@ -114,10 +112,10 @@ public class PublishingManager {
     }
 
     public PublishInfo getNextPublishInfo(String uri) {
-        FilteredQueryBuilder builder = new FilteredQueryBuilder(null, new TermFilterBuilder("uri", uri));
+        BoolQueryBuilder builder = QueryBuilders.boolQuery().filter(QueryBuilders.termQuery("uri", uri));
         SearchRequestBuilder searchRequestBuilder = getElasticsearchClient().prepareSearch(PUBLISH_DATES_INDEX);
         searchRequestBuilder.setSize(1);
-        searchRequestBuilder.setQuery(builder).addSort(new FieldSortBuilder("publishDate").ignoreUnmapped(true));
+        searchRequestBuilder.setQuery(builder).addSort(new FieldSortBuilder("publishDate").unmappedType("date"));
         SearchResponse response = searchRequestBuilder.get();
         if (response.getHits().getTotalHits() > 0) {
             Long publishDate = (Long) response.getHits().getAt(0).getSource().get("publishDate");
@@ -160,9 +158,7 @@ public class PublishingManager {
         // default analyzer
         settings.put("analysis.analyzer.default_index.tokenizer", "keyword"); //no analyzing
         settings.put("analysis.analyzer.default_index.filter", "lowercase");
-        ImmutableSettings.Builder builder = ImmutableSettings.settingsBuilder();
-        builder.put(settings);
-        return builder.build();
+        return Settings.builder().put(settings).build();
     }
 
     //Clears data.json and .json at the end of uri

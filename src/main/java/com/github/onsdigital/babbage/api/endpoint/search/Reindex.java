@@ -23,7 +23,7 @@ public class Reindex {
         String key = request.getParameter("key");
         String uri = request.getParameter("uri");
         boolean reindexAll = "1".equals(request.getParameter("all"));
-        ContentResponse contentResponse = null;
+        ContentResponse contentResponse;
         try {
             if (reindexAll) {
                 contentResponse = ContentClient.getInstance().reIndexAll(key);

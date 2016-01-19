@@ -15,7 +15,7 @@
 {{/partial}}
 
 {{#partial "block-filters"}}
-	{{> list/filters/all-results}}
+	{{> list/filters/all-results counts=result.docCounts}}
 	<input class="sort__input" type="hidden" name="q" value="{{parameters.q.0}}">
 {{/partial}}
 

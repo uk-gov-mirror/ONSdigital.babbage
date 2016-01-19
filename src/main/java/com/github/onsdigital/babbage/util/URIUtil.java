@@ -23,13 +23,11 @@ public class URIUtil {
      *
      * @return The URI path, lowercased, without the endpoint title or trailing
      * slash.
-     * @throws com.github.onsdigital.content.util.URIUtil.InvalidUriException
      */
     public static String removeEndpoint(String uriString) {
         uriString = cleanUri(uriString);
         //TODO: Java regex does not return when there are two slashes in the uri cpu usage goes all the way up. Faulty regex ? Reactivate validation handle errors approprieately
 //        validate(uriString);
-
         int indexOfSecondSlash = StringUtils.indexOf(uriString, "/", 1);
         if (indexOfSecondSlash == -1) {
             return "/";
@@ -46,7 +44,6 @@ public class URIUtil {
      * for uri "/economy/inflationandpriceindices/data" request type is "data"
      *
      * @return request type
-     * @throws com.github.onsdigital.content.util.URIUtil.InvalidUriException
      */
     public static String resolveRequestType(String uriString) {
         uriString = cleanUri(uriString);
@@ -57,6 +54,11 @@ public class URIUtil {
 
         int lastSlashIndex = StringUtils.lastIndexOf(uriString, "/");
         return StringUtils.substring(uriString, lastSlashIndex + 1);
+    }
+
+
+    public static boolean isDataRequest(String uriString) {
+        return "data".equals(resolveRequestType(uriString));
     }
 
     /**

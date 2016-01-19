@@ -2,9 +2,10 @@ package com.github.onsdigital.babbage.search;
 
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.transport.TransportClient;
-import org.elasticsearch.common.settings.ImmutableSettings;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
+
+import java.net.InetSocketAddress;
 
 import static com.github.onsdigital.babbage.configuration.Configuration.ELASTIC_SEARCH.*;
 
@@ -25,10 +26,10 @@ public class ElasticSearchClient {
 
     public static void init() {
         if (client == null) {
-            Settings settings = ImmutableSettings.settingsBuilder()
+            Settings settings = Settings.builder()
                     .put("cluster.name", getElasticSearchCluster()).build();
-
-            client = new TransportClient(settings).addTransportAddress(new InetSocketTransportAddress(getElasticSearchServer(), getElasticSearchPort()));
+            client = TransportClient.builder().settings(settings).build()
+                    .addTransportAddress(new InetSocketTransportAddress(new InetSocketAddress(getElasticSearchServer(), getElasticSearchPort())));
             Runtime.getRuntime().addShutdownHook(new ShutDownNodeThread(client));
         }
     }
