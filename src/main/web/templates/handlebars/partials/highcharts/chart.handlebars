@@ -2,9 +2,10 @@
   <h4 class="flush--third--vertical">{{{sub (sup title)}}}</h4>
   <h5 class="flush--third--bottom">{{{sub (sup subtitle)}}}</h5>
   <div id="chart-{{filename}}" data-filename="{{filename}}" data-uri="{{uri}}" class="markdown-chart">
-    <noscript>
-      <img src="/chartimage?uri={{uri}}&width={{width}}" alt="{{alt-text}}">
-    </noscript>    
+
+      <!--[if gt IE 8]><!--><noscript><![endif]-->
+        <img src="/chartimage?uri={{uri}}&width={{width}}" alt="{{alt-text}}">
+      <!--[if gt IE 8]><!--></noscript><![endif]-->
   </div>
   {{#if source}}<h6 class="flush--third--bottom">Source: {{source}}</h6>{{/if}}
   {{#if notes}}

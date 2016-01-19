@@ -149,7 +149,9 @@
 			{{#if_eq code 500}}{{> error/500}}{{/if_eq}}
 		{{/if_eq}}
 
+        <!--[if gt IE 8]><!-->
 		<script type="text/javascript" src="{{#if is_dev}}http://localhost:9000/dist/js/main.js{{else}}/node_modules/sixteens/dist/js/main.js{{/if}}"></script>
+        <![endif]-->
 		{{!-- <link rel="stylesheet" type="text/css" href="{{#if_any (eq 'localhost' location.hostname) (eq '127.0.0.1' location.hostname)}}http://localhost:9000/dist/css/main.css{{else}}/node_modules/sixteens/dist/css/main.css{{/if_any}}"> --}}
 		{{!-- <script type="text/javascript" src="/ui/js/lib/jquery.tooltipster.min.js"></script>
 		<script type="text/javascript" src="/ui/js/lib/highcharts.js"></script>
