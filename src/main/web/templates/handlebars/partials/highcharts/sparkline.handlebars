@@ -1,7 +1,7 @@
 <div class="sparkline" style="height:100%" data-sparkline-{{description.cdid}} data-uri="{{uri}}">
-{{#unless cookies.jsEnhanced}}
-<img class="{{#if_eq type 'home_page'}}stat__image--home{{else}}full-width{{/if_eq}}" class="js-enhance--hide" src="{{uri}}/sparklineimage">
-{{/unless}}
+<noscript>
+	<img class="{{#if_eq type 'home_page'}}stat__image--home{{else}}full-width{{/if_eq}}" class="js-enhance--hide" src="{{uri}}/sparklineimage">
+</noscript>
 </div>
 {{!-- Dynamically generated linechart configuration file --}}
 <script type="text/javascript" src="{{uri}}/sparklineconfig"></script>

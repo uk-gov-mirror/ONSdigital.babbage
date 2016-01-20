@@ -119,7 +119,7 @@
 
     {{!-- Output edition --}}
 
-    {{#if description.edition}}: {{description.edition}}{{/if}}</h1>
+    {{!-- {{#if description.edition}}: {{description.edition}}{{/if}} --}}</h1>
 
     {{!-- Resolve summary from parent --}}
 
@@ -139,31 +139,36 @@
 
 {{#partial "block-metadata"}}
 
-    <div class="wrapper">
-        <div class="col-wrap">
+    <div class="meta-wrap">
+        <div class="wrapper">
+            <div class="col-wrap">
 
-            {{#each breadcrumb}}
-                {{#if @last}}
-                    {{#resolve uri}}
+                {{#each breadcrumb}}
+                    {{#if @last}}
+                        {{#resolve uri}}
                         {{!-- Contact & NS logo--}}
-                        {{> content/partials/metadata/contact class="col--md-12 col--lg-15" }}
+                            {{> content/partials/metadata/contact class="col--md-12 col--lg-15" }}
 
-                        {{!-- Release date --}}
-                        {{> content/partials/metadata/release-date class="col--md-12 col--lg-15"}}
+                            {{!-- Release date --}}
+                            {{> content/partials/metadata/release-date class="col--md-12 col--lg-15"}}
 
-                        {{!-- Next release --}}
-                        {{> content/partials/metadata/next-release class="col--md-12 col--lg-15"}}
+                            {{!-- Next release --}}
+                            {{> content/partials/metadata/next-release class="col--md-12 col--lg-15"}}
 
-                        {{!-- Dataset ID --}}
-                        {{#if description.datasetId}}
-                            <p class="col col--md-12 col--lg-15 meta__item">
-                                <span>{{labels.dataset-id}}: </span>{{description.datasetId}}&nbsp;
-                                <span><a href="#" class="tooltip-npl print--hide" title="This series ID is a unique random identifier for this individual time series. The digits themselves do not have any specific meaning" aria-label="This series ID is a unique random identifier for this individual time series. The digits themselves do not have any specific meaning"> {{labels.dataset-what-is}} </a></span>
-                            </p>
-                        {{/if}}
-                    {{/resolve}}
-                {{/if}}
-            {{/each}}
+                            {{!-- Dataset ID --}}
+                            {{#if description.datasetId}}
+                                <p class="col col--md-12 col--lg-15 meta__item">
+                                    <span>{{labels.dataset-id}}: </span>{{description.datasetId}}&nbsp;
+                                    <span><a href="#" class="tooltip-npl print--hide"
+                                             title="This series ID is a unique random identifier for this individual time series. The digits themselves do not have any specific meaning"
+                                             aria-label="This series ID is a unique random identifier for this individual time series. The digits themselves do not have any specific meaning"> {{labels.dataset-what-is}}
+                                         </a></span>
+                                </p>
+                            {{/if}}
+                        {{/resolve}}
+                    {{/if}}
+                {{/each}}
+            </div>
         </div>
     </div>
 
@@ -195,7 +200,7 @@
                         <li>Revisions may also be made when methods or systems are changed.</li>
                     </ol>
 
-                    <p>These types of planned revisions should not be confused with errors in released statistics, which are genuine mistakes. Despite our best efforts and quality control procedures, mistakes can happen. When they do, corrections are made in a timely manner, announced and clearly explained to users in line with the Code of Practice for Official Statistics (Principle 2, Practice 7).</p>
+                    <p>These types of planned revisions should not be confused with errors in released statistics, which are genuine mistakes. Such mistakes occur rarely and, when they do happen, corrections are made in a timely manner, announced and clearly explained to users in line with the Code of Practice for Official Statistics (Principle 2, Practice 7).</p>
 
                 </div>
 
@@ -272,7 +277,7 @@
                                         Scheduled update/revision
                                     {{/if}}
                                 </td>
-                                <td>{{df updateDate}}</td>
+                                <td>{{df updateDate outputFormat="d MMMM yyyy HH:mm"}}</td>
                             </tr>
                         {{/loop}}
                         </tbody>

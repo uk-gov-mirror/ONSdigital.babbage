@@ -10,10 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 
@@ -138,7 +135,7 @@ public class RequestUtil {
      * Note that a post parameters with the same name might also be included. There should not be parameters with same names in both get and post parameters if not wanted to be extracted
      */
     public static Map<String, String[]> getQueryParameters(HttpServletRequest request) throws UnsupportedEncodingException {
-        Map<String, String[]> queryParameters = new HashMap<>();
+        Map<String, String[]> queryParameters = new TreeMap<>();
 
         if (request == null || request.getQueryString() == null ||
                 request.getQueryString().length() == 0) {
@@ -160,6 +157,29 @@ public class RequestUtil {
             queryParameters.put(keyValuePair[0], values);
         }
         return queryParameters;
+    }
+
+    /*Converts given request parameters to a get query string*/
+    public static String toQueryString(Map<String, String[]> parameters) {
+        if(parameters == null) {
+            return "";
+        }
+
+        Iterator<Map.Entry<String, String[]>> iterator = parameters.entrySet().iterator();
+        StringBuilder builder = new StringBuilder();
+        while (iterator.hasNext()) {
+            Map.Entry<String, String[]> next = iterator.next();
+            if(next.getValue() == null) {
+                builder.append(next.getKey()).append("&");
+                continue;
+            }
+            for (int i = 0; i < next.getValue().length; i++) {
+                String[] values = next.getValue();
+                builder.append(next.getKey()).append("=").append(values[i]).append("&");
+            }
+        }
+
+        return builder.toString();
     }
 
 

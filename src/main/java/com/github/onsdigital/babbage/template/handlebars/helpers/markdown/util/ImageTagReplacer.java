@@ -3,7 +3,7 @@ package com.github.onsdigital.babbage.template.handlebars.helpers.markdown.util;
 import com.github.davidcarboni.restolino.json.Serialiser;
 import com.github.onsdigital.babbage.content.client.ContentClient;
 import com.github.onsdigital.babbage.content.client.ContentReadException;
-import com.github.onsdigital.babbage.content.client.ContentStream;
+import com.github.onsdigital.babbage.content.client.ContentResponse;
 import com.github.onsdigital.babbage.template.TemplateService;
 
 import java.io.IOException;
@@ -44,8 +44,9 @@ public class ImageTagReplacer extends TagReplacementStrategy {
         String tagPath = matcher.group(1);
         String figureUri = resolveFigureUri(this.getPath(), Paths.get(tagPath));
 
-        try (ContentStream stream = ContentClient.getInstance().getContentStream(figureUri)) {
-            return TemplateService.getInstance().renderTemplate("partials/image", stream.getDataStream());
+        try {
+            ContentResponse contentResponse = ContentClient.getInstance().getContent(figureUri);
+            return TemplateService.getInstance().renderTemplate("partials/image", contentResponse.getDataStream());
         } catch (ContentReadException e) {
             return TemplateService.getInstance().renderTemplate("partials/image", Serialiser.serialise(new ImageData(figureUri)));
         }

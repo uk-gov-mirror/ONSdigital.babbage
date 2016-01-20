@@ -3,7 +3,7 @@ package com.github.onsdigital.babbage.api.endpoint.content;
 import com.github.davidcarboni.restolino.framework.Api;
 import com.github.onsdigital.babbage.api.error.ErrorHandler;
 import com.github.onsdigital.babbage.content.client.ContentClient;
-import com.github.onsdigital.babbage.content.client.ContentStream;
+import com.github.onsdigital.babbage.content.client.ContentResponse;
 import com.github.onsdigital.babbage.response.BabbageBinaryResponse;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,12 +23,13 @@ public class Export {
     @POST
     public void post(@Context HttpServletRequest request, @Context HttpServletResponse response) throws IOException {
 
-        try (ContentStream contentStream = ContentClient.getInstance().export(request.getParameter("format"), request.getParameterValues("uri"))) {
+        try {
+            ContentResponse contentResponse = ContentClient.getInstance().export(request.getParameter("format"), request.getParameterValues("uri"));
             String contentDispositionHeader = "attachment; ";
-            contentDispositionHeader += contentStream.getName() == null ? "" : "filename=\"" + contentStream.getName() + "\"";
+            contentDispositionHeader += contentResponse.getName() == null ? "" : "filename=\"" + contentResponse.getName() + "\"";
             response.setCharacterEncoding("UTF-8");
             response.setHeader("Content-Disposition", contentDispositionHeader);
-            new BabbageBinaryResponse(contentStream.getDataStream(), contentStream.getMimeType()).applyData(response);
+            new BabbageBinaryResponse(contentResponse.getDataStream(), contentResponse.getMimeType()).apply(request, response);
         } catch (Throwable t) {
             ErrorHandler.handle(request, response, t);
         }

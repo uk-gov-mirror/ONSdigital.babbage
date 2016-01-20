@@ -1,9 +1,10 @@
 package com.github.onsdigital.babbage.request.handler.content;
 
 import com.github.onsdigital.babbage.content.client.ContentClient;
+import com.github.onsdigital.babbage.content.client.ContentResponse;
 import com.github.onsdigital.babbage.request.handler.base.RequestHandler;
-import com.github.onsdigital.babbage.response.BabbageResponse;
-import com.github.onsdigital.babbage.response.BabbageStringResponse;
+import com.github.onsdigital.babbage.response.BabbageContentBasedStringResponse;
+import com.github.onsdigital.babbage.response.base.BabbageResponse;
 import com.github.onsdigital.babbage.template.TemplateService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,12 +21,13 @@ public class PreviousHandler implements RequestHandler {
     @Override
     public BabbageResponse get(String uri, HttpServletRequest request) throws Exception {
 
-        try (InputStream dataStream = ContentClient.getInstance().getContentStream(uri).getDataStream()) {
+        ContentResponse contentResponse = ContentClient.getInstance().getContent(uri);
+        try (InputStream stream = contentResponse.getDataStream()) {
             LinkedHashMap<String, Object> additionalData = new LinkedHashMap<>();
             //overwriting page type for template rendering
             additionalData.put("previous", true);//Setting previous flag for template context to make use of
-            String html = TemplateService.getInstance().renderContent(dataStream,additionalData );
-            return new BabbageStringResponse(html, "text/html");
+            String html = TemplateService.getInstance().renderContent(stream, additionalData);
+            return new BabbageContentBasedStringResponse(contentResponse, html, "text/html");
         }
 
     }

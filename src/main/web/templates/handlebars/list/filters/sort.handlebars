@@ -1,10 +1,21 @@
 <div class="sort-results">
-	<label for="select" class="sort__label">Sort by
-		<select class="input select select--thin width-auto" id="select" name="sortBy">
-			<option class="sort__option" value="" {{#if_eq parameters.sortBy.0 ""}}selected{{/if_eq}}>Relevance</option>
-			<option class="sort__option" value="release_date" {{#if_eq parameters.sortBy.0 "release_date"}}selected{{/if_eq}} >Release date</option>
-			<option class="sort__option" value="title" {{#if_eq parameters.sortBy.0 "title"}}selected{{/if_eq}}>Title</option>
-		</select>
-		<button type="submit" class="btn btn--primary btn--thin btn--small js-enhance--hide">Sort</button>
-	</label>
+	<form id="form-sort" class="js-auto-submit__form">
+		<input class="visuallyhidden" type="text" name="q" value="{{parameters.q.0}}">
+
+		<div class="js-mobile-filters__sort">
+			<label for="select" class="sort__label">Sort by
+				<select class="input select select--thin width-auto js-auto-submit__input" id="select" name="sortBy">
+					<option class="sort__option" value="" {{#if_eq parameters.sortBy.0 ""}}selected{{/if_eq}}>Relevance
+					</option>
+					<option class="sort__option" value="release_date"
+							{{#if_eq parameters.sortBy.0 "release_date"}}selected{{/if_eq}} >Release date
+					</option>
+					<option class="sort__option" value="title" {{#if_eq parameters.sortBy.0 "title"}}selected{{/if_eq}}>
+						Title
+					</option>
+				</select>
+				<button type="submit" class="btn btn--primary btn--thin btn--small js-enhance--hide">Sort</button>
+			</label>
+		</div>
+	</form>
 </div>

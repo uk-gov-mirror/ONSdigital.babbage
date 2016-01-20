@@ -1,107 +1,74 @@
-{{#partial "block-additonal-metadata"}}
-{{!-- Dataset ID --}}
-<p class="col col--md-12 col--lg-15 meta__item">
-	<span>{{labels.dataset-id}}: </span>{{description.datasetId}}
-	<a href="#" class="tooltip-npl" title="This series ID is a unique random identifier for this individual time series. The digits themselves do not have any specific meaning" aria-label="This series ID is a unique random identifier for this individual time series. The digits themselves do not have any specific meaning">{{labels.dataset-what-is}} </a>
-</p>
-{{/partial}}
 
 {{#partial "block-content"}}
-<div class="wrapper">
-	<div class="col-wrap">
-		<div class="col">
-			{{!-- Return to parent landing page --}}
-			<p>
-				{{#each breadcrumb}}
-				{{#if @last}}
-				{{labels.compendium-return}} <a href="{{uri}}">{{description.title}}</a>
-				{{/if}}
-				{{/each}}
-			</p>
-			{{!-- Number of results --}}
-			<p>
+    <div class="wrapper">
+        <div class="col-wrap">
+            <div class="col">
+                {{!-- Return to parent landing page --}}
+                <p>
+                    {{#each breadcrumb}}
+                        {{#if @last}}
+                            {{labels.compendium-return}} <a class="underline-link" href="{{uri}}">{{description.title}}</a>
+                        {{/if}}
+                    {{/each}}
+                </p>
+                {{!-- Number of results --}}
+                <p>
 				<span class="stand-out-text">
-					{{#each downloads}}
-					{{#if @last}}
-					{{#if_eq @index_1 '1'}}
-				{{@index_1}}</span> result
-				{{/if_eq}}
-				{{#if_ne @index_1 '1'}}
-			{{@index_1}}</span> results
-			{{/if_ne}}
-			{{/if}}
-			{{/each}}
-		</p>
-	</div>
-</div>
-{{!-- LIST OF DOWNLOADS --}}
-<div class="col {{#if_any relatedDatasets relatedDocuments}}col--md-36 col--lg-39{{else}}col--md-47 col--lg-59{{/if_any}}">
-	<ul class="list--neutral">
-		{{#each downloads}}
-		<li>
-			<h3><a href="/file?uri={{concat uri "/" (fn file)}}" title="{{title}}">{{title}}</a> ({{fs file}}, {{fe file}})</h3>
-			<p class="flush">{{fileDescription}}</p>
-		</li>
-		{{/each}}
-	</ul>
-</div>
-{{!-- RELATED DATA AND DOCUMENTS --}}
-{{#if_any relatedDatasets relatedDocuments}}
-<div class="col col--md-11 col--lg-20">
-	{{!-- Related data --}}
-	{{#if relatedDatasets}}
-	<div class="tiles__item tiles__item--nav-type flush-col">
-		<h3 class="tiles__title-h3 tiles__title-h3--nav">Related data</h3>
-		<div class="tiles__content tiles__content--nav">
-			<ul class="list--neutral">
-				{{#each relatedDatasets}}
-				{{#resolve this.uri filter="title"}}
-				<li><a href="{{absolute uri}}" title="{{title}}">{{title}}</a></li>
-				{{/resolve}}
-				{{/each}}
-			</ul>
-		</div>
-	</div>
-	{{/if}}
-	{{!-- Related articles and bulletins --}}
-	{{#if relatedDocuments}}
-	<div class="tiles__item tiles__item--nav-type flush-col">
-		<h3 class="tiles__title-h3 tiles__title-h3--nav">Statistical bulletins and articles that use this data</h3>
-		<div class="tiles__content tiles__content--nav">
-			<ul class="list--neutral">
-				{{#each relatedDocuments}}
-				{{#resolve this.uri filter="title"}}
-				<li>
-					<a href="{{uri}}" title="{{title}}">
-						{{title}}
-						{{#if edition}}
-						{{#if_ne edition 'yes'}}
-						: {{edition}}
-						{{/if_ne}}
-						{{/if}}
-					</a>
-				</li>
-				{{/resolve}}
-				{{/each}}
-			</ul>
-		</div>
-	</div>
-	{{/if}}
-</div>
-{{/if_any}}
-{{!-- METHODOLOGY AND CONTACT DETAILS --}}
-<div class="col-wrap">
-	{{!-- Related methodology --}}
-	{{#if_any relatedMethodology}}
-	<div class="col col--lg-half col--md-half">
-		{{> partials/related/methodology }}
-	</div>
-	{{/if_any}}
-	{{!-- Contact details --}}
-	<div class="col col--lg-half col--md-half">
-		{{> partials/contact }}
-	</div>
-</div>
+                    {{#each downloads}}
+                        {{#if @last}}
+                            {{#if_eq @index_1 '1'}}
+                                {{@index_1}}</span> result
+                            {{/if_eq}}
+                            {{#if_ne @index_1 '1'}}
+                                {{@index_1}}</span> results
+                            {{/if_ne}}
+                        {{/if}}
+                    {{/each}}
+                </p>
+            </div>
+        </div>
+        {{!-- LIST OF DOWNLOADS --}}
+        <div class="col col--md-36 col--lg-39">
+            <ul class="list--neutral">
+                {{#if downloads}}
+                    <h2>Downloads</h2>
+                    {{#each downloads}}
+                        <li>
+                            <h3><a href="/file?uri={{concat uri "/" (fn file)}}" title="{{title}}">{{title}}</a> ({{fs (concat uri "/" (fn file))}}, {{fe (concat uri "/" (fn file))}})</h3>
+                            <p class="flush">{{fileDescription}}</p>
+                        </li>
+                    {{/each}}
+                {{/if}}
+                {{#if relatedDatasets}}
+                    <h2>Related data</h2>
+                    <ul class="list--neutral">
+                        {{#each relatedDatasets}}
+                            {{#resolve this.uri filter="description"}}
+                                <li><h3><a href="{{absolute uri}}" title="{{description.title}}">{{description.title}}</a></h3></li>
+                                <p class="flush">{{description.summary}}</p>
+                            {{/resolve}}
+                        {{/each}}
+                    </ul>
+                {{/if}}
+            </ul>
+        </div>
+        {{!-- CONTACT --}}
+            <div class="col col--md-11 col--lg-20">
+                {{> partials/contact }}
+            </div>
+        {{!-- METHODOLOGY AND LOCAL --}}
+        <div class="col-wrap">
+            {{!-- Related methodology --}}
+            {{#if_any relatedMethodology}}
+                <div class="col col--lg-half col--md-half">
+                    {{> partials/related/methodology }}
+                </div>
+            {{/if_any}}
+            {{!-- Local --}}
+            <div class="col col--md-half col--lg-one-third">
+                {{> partials/local-box}}
+            </div>
+        </div>
 {{/partial}}
 {{!-- Inheriting from statistics template --}}
 {{> content/base/statistics typeLabel="Compendium"}}

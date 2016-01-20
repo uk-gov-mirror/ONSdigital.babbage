@@ -40,17 +40,17 @@
 					{{/block}}
 				</div>
 			</div>
-			<form id="form">
+			<form id="form" class="js-auto-submit__form">
 				{{!-- FILTERS --}}
 				{{!-- {{#if_any result.results parameters.filter parameters.time_series}} --}}
 				<div class="col col--md-12 col--lg-18 margin-bottom">
-					<div class="tiles__item tiles__item--nav-type flush-col">
-						<div class="tiles__title-h3 tiles__title-h3--nav">
-							<h3 class="inline">Refine results</h3>
+					<div class="margin-bottom-md--2 flush-col js-mobile-filters">
+						<div class="background--gallery padding-top-md--2 padding-right-md--1 padding-bottom-md--4 padding-left-sm--1 padding-left-md--1 flush js-mobile-filters__title">
+							<h3 class="inline-block flush">Refine results</h3>
 							<a href="{{location.pathname}}{{#if parameters.q.0}}?q={{parameters.q.0}}{{/if}}" value="Reset" class="btn btn--primary btn--thin btn--narrow btn--small float-right">{{labels.search-refine-clear}}</a>
 						</div>
-						<div class="tiles__content tiles__content--nav">
-							<div class="filters">
+						<div class="background--mercury border-top--iron-md padding-top-sm--2 padding-top-md--1 padding-right-sm--1 padding-right-md--1 padding-bottom-sm--2 padding-bottom-md--2 padding-left-sm--1 padding-left-md--1 js-mobile-filters__contents">
+							<div class="filters js-filters">
 								{{#block "block-filters"}}
 								{{/block}}
 							</div>

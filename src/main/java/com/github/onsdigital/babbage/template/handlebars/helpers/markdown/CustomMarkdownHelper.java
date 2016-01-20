@@ -6,9 +6,12 @@ import com.github.jknack.handlebars.Options;
 import com.github.onsdigital.babbage.template.handlebars.helpers.base.BabbageHandlebarsHelper;
 import com.github.onsdigital.babbage.template.handlebars.helpers.markdown.util.ChartTagReplacer;
 import com.github.onsdigital.babbage.template.handlebars.helpers.markdown.util.ImageTagReplacer;
+import com.github.onsdigital.babbage.template.handlebars.helpers.markdown.util.InteractiveTagReplacer;
 import com.github.onsdigital.babbage.template.handlebars.helpers.markdown.util.TableTagReplacer;
 import com.github.onsdigital.babbage.util.RequestUtil;
 import com.github.onsdigital.babbage.util.ThreadContext;
+import org.pegdown.Extensions;
+import org.pegdown.PegDownProcessor;
 
 import java.io.IOException;
 
@@ -32,12 +35,19 @@ public class CustomMarkdownHelper extends MarkdownHelper implements BabbageHandl
         System.out.println("uri:" + location.getPathname());
 
         String markdown = context.toString();
-        markdown = super.apply(markdown, options).toString();
+
+        // Extensions are defined via a bitmask passed into the pegdown constructor.
+        // To enable further extensions just add the value to the extensions variable.
+        int extensions = Extensions.TABLES;
+        PegDownProcessor processor = new PegDownProcessor(extensions);
+        markdown = processor.markdownToHtml(markdown);
+
         markdown = SubscriptHelper.doSubscript(markdown);
         markdown = SuperscriptHelper.doSuperscript(markdown);
         markdown = new ChartTagReplacer(path).replaceCustomTags(markdown);
         markdown = new TableTagReplacer(path).replaceCustomTags(markdown);
         markdown = new ImageTagReplacer(path).replaceCustomTags(markdown);
+        markdown = new InteractiveTagReplacer(path).replaceCustomTags(markdown);
         //markdown = MathjaxRenderer.render(markdown);
         return new Handlebars.SafeString(markdown) ;
     }

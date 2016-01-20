@@ -2,10 +2,20 @@ package com.github.onsdigital.babbage.highcharts;
 
 import com.github.onsdigital.babbage.content.client.ContentClient;
 import com.github.onsdigital.babbage.content.client.ContentReadException;
-import com.github.onsdigital.babbage.content.client.ContentStream;
+import com.github.onsdigital.babbage.content.client.ContentResponse;
+import com.github.onsdigital.babbage.response.BabbageBinaryResponse;
+import com.github.onsdigital.babbage.response.BabbageContentBasedBinaryResponse;
+import com.github.onsdigital.babbage.response.BabbageContentBasedStringResponse;
+import com.github.onsdigital.babbage.response.BabbageStringResponse;
 import com.github.onsdigital.babbage.template.TemplateService;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.core.MediaType;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.LinkedHashMap;
 
 /**
@@ -24,80 +34,110 @@ public class ChartRenderer {
     }
 
     /**
-     * Fetches configuration from Zebedee Reader and converts it into chart configuration and renders using Handlebars templates for the chart type
-     *
-     * @param uri
-     * @return
-     * @throws IOException
-     * @throws ContentReadException
-     */
-    public String getChartConfig(String uri) throws IOException, ContentReadException {
-        return getChartConfig(uri, null);
-    }
-
-    /**
      * Fetches configuration from Zebedee Reader and converts it into chart configuration and renders using Handlebars templates for the chart type.
-     * <p/>
+     * <p>
      * Optionally takes a width parameter, width is 600 by default, if width exceeds max, max width will be applied, if it is smaller than min, min width will apply
-     *
-     * @param uri
-     * @param width width of the chart, max=1500, min=300, default=600
-     * @return
-     * @throws IOException
-     * @throws ContentReadException
      */
-    public String getChartConfig(String uri, Integer width) throws IOException, ContentReadException {
-        try (ContentStream stream = ContentClient.getInstance().getContentStream(uri)) {
+    public void renderChartConfig(HttpServletRequest request, HttpServletResponse response) throws IOException, ContentReadException {
+        String uri = request.getParameter("uri");
+        if (assertUri(uri, request, response)) {
+            ContentResponse contentResponse = ContentClient.getInstance().getContent(uri);
             LinkedHashMap<String, Object> additionalData = new LinkedHashMap<>();
+            Integer width = getWidth(request);
             if (width == null) {
                 width = DEFAULT_CHART_WIDTH;
             }
             additionalData.put("width", width);
-            String config = TemplateService.getInstance().renderChartConfiguration(stream.getDataStream(), additionalData);
-            return config;
+            String chartConfig = TemplateService.getInstance().renderChartConfiguration(contentResponse.getDataStream(),
+                    additionalData);
+            new BabbageContentBasedStringResponse(contentResponse,chartConfig).apply(request, response);
+        }
+    }
+
+    public void renderChartImage(HttpServletRequest request, HttpServletResponse response) throws IOException, ContentReadException {
+        String uri = request.getParameter("uri");
+        if (assertUri(uri, request, response)) {
+            ContentResponse contentResponse = ContentClient.getInstance().getContent(uri);
+            Integer width = getWidth(request);
+            if (width == null) {
+                width = DEFAULT_CHART_WIDTH;
+            }
+            LinkedHashMap<String, Object> additionalData = new LinkedHashMap<>();
+            additionalData.put("width", width);
+            String chartConfig = TemplateService.getInstance().renderChartConfiguration(contentResponse.getDataStream(),
+                    additionalData);
+            InputStream stream = HighChartsExportClient.getInstance().getImage(chartConfig, getWidth(request));
+            new BabbageContentBasedBinaryResponse(contentResponse,stream, "image/png").apply(request, response);
         }
     }
 
 
     /**
      * Converts given data into chart configuration and renders using Handlebars templates for the chart type.
-     * <p/>
+     * <p>
      * Optionally takes a width parameter, width is 600 by default, if width exceeds max, max width will be applied, if it is smaller than min, min width will apply
-     *
-     * @param data
-     * @param width width of the chart, max=1500, min=300, default=600
-     * @return
-     * @throws IOException
-     * @throws ContentReadException
      */
-    public String getChartConfigFor(String data, Integer width) throws IOException {
+    public void renderChartConfigFor(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String data = request.getParameter("data");
+        if (StringUtils.isEmpty(data)) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            IOUtils.write("Please specify chart data to get chart configuration for", response.getOutputStream());
+        }
         LinkedHashMap<String, Object> additionalData = new LinkedHashMap<>();
+        Integer width = getWidth(request);
         if (width == null) {
             width = DEFAULT_CHART_WIDTH;
         }
         additionalData.put("width", width);
-        String config = TemplateService.getInstance().renderChartConfiguration(data, additionalData);
-        return config;
+        new BabbageStringResponse(TemplateService.getInstance().renderChartConfiguration(data,
+                additionalData)).apply(request, response);
     }
 
     /**
      * Fetches configuration from Zebedee Reader and renders self contained chart html
-     * <p/>
+     * <p>
      * Optionally takes a width parameter, width is 600 by default, if width exceeds max, max width will be applied, if it is smaller than min, min width will apply
-     *
-     * @param uri
-     * @param width width of the chart, max=1500, min=300, default=600
-     * @return
-     * @throws IOException
-     * @throws ContentReadException
      */
-    public String renderChart(String uri, Integer width) throws IOException, ContentReadException {
-        try (ContentStream stream = ContentClient.getInstance().getContentStream(uri)) {
+    public void renderChart(HttpServletRequest request, HttpServletResponse response) throws IOException, ContentReadException {
+        String uri = request.getParameter("uri");
+        if (assertUri(uri, request, response)) {
+            ContentResponse contentResponse = ContentClient.getInstance().getContent(uri);
             LinkedHashMap<String, Object> additionalData = new LinkedHashMap<>();
-            additionalData.put("width", width);
-            String html = TemplateService.getInstance().renderTemplate("highcharts/chart", stream.getDataStream(), additionalData);
-            return html;
+            additionalData.put("width", getWidth(request));
+            new BabbageContentBasedStringResponse(contentResponse, TemplateService.getInstance().renderTemplate("highcharts/chart", contentResponse.getDataStream(), additionalData),
+                    MediaType.TEXT_HTML).apply(request, response);
         }
+    }
+
+    private boolean assertUri(String uri, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        if (StringUtils.isEmpty(uri)) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            IOUtils.write("Please specify uri of the chart", response.getOutputStream());
+            return false;
+        }
+        return true;
+    }
+
+
+    public static Integer getWidth(HttpServletRequest request) {
+        try {
+            String width = request.getParameter("width");
+            if (StringUtils.isNotEmpty(width)) {
+                return calculateWidth(Integer.parseInt(width));
+            }
+        } catch (NumberFormatException e) {
+        }
+        return DEFAULT_CHART_WIDTH;
+    }
+
+    private static int calculateWidth(Integer width) {
+        int w = width == null ? DEFAULT_CHART_WIDTH : width;
+        if (w < 0) {
+            w = DEFAULT_CHART_WIDTH;
+        } else if (w > MAX_CHART_WIDTH) {
+            w = MAX_CHART_WIDTH;
+        }
+        return w;
     }
 
 }

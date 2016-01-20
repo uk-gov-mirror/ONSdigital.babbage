@@ -8,29 +8,18 @@ import org.elasticsearch.action.count.CountRequestBuilder;
 import org.elasticsearch.action.search.MultiSearchRequestBuilder;
 import org.elasticsearch.action.search.MultiSearchResponse;
 import org.elasticsearch.action.search.SearchRequestBuilder;
-import org.elasticsearch.client.Client;
-import org.elasticsearch.client.transport.TransportClient;
-import org.elasticsearch.common.settings.ImmutableSettings;
-import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.common.transport.InetSocketTransportAddress;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.github.onsdigital.babbage.configuration.Configuration.ELASTIC_SEARCH.*;
+import static com.github.onsdigital.babbage.configuration.Configuration.ELASTIC_SEARCH.getElasticSearchIndexAlias;
+import static com.github.onsdigital.babbage.search.ElasticSearchClient.getElasticsearchClient;
 
 public class SearchService {
 
-    private Client client;
     private static SearchService instance = new SearchService();
-
     private SearchService() {
-        Settings settings = ImmutableSettings.settingsBuilder()
-                .put("cluster.name", getElasticSearchCluster()).build();
-
-        client = new TransportClient(settings).addTransportAddress(new InetSocketTransportAddress(getElasticSearchServer(), getElasticSearchPort()));
-        Runtime.getRuntime().addShutdownHook(new ShutDownNodeThread(client));
     }
 
     public static SearchService getInstance() {
@@ -45,21 +34,22 @@ public class SearchService {
 
     public CountResponseHelper count(ONSQuery query) {
         CountRequestBuilder countRequestBuilder =
-                client.prepareCount(getElasticSearchIndexAlias());
+                getElasticsearchClient().prepareCount(getElasticSearchIndexAlias());
         countRequestBuilder = new QueryRequestBuilder().buildCountRequest(countRequestBuilder, query);
         return new CountResponseHelper(countRequestBuilder.get());
     }
 
     public List<SearchResponseHelper> searchMultiple(ONSQuery... queries) throws IOException {
-        MultiSearchRequestBuilder multiSearchRequestBuilder = client.prepareMultiSearch();
+        MultiSearchRequestBuilder multiSearchRequestBuilder = getElasticsearchClient().prepareMultiSearch();
         for (ONSQuery query : queries) {
             SearchRequestBuilder requestBuilder = new QueryRequestBuilder().buildSearchRequest(newSearchRequest(), query);
-            System.out.println("Searching: \ntypes:\n" + ArrayUtils.toString(query.getTypes())+ " \nquery:\n" + requestBuilder.internalBuilder());
+            System.out.println("Searching: \ntypes:\n" + ArrayUtils.toString(query.getTypes()) + " \nquery:\n" + requestBuilder.internalBuilder());
             multiSearchRequestBuilder.add(requestBuilder);
         }
         List<SearchResponseHelper> helpers = doSearchMultiple(multiSearchRequestBuilder);
         return helpers;
     }
+
 
     private List<SearchResponseHelper> doSearchMultiple(MultiSearchRequestBuilder multiSearchRequestBuilder) {
         List<SearchResponseHelper> helpers = new ArrayList<>();
@@ -75,21 +65,8 @@ public class SearchService {
 
 
     private SearchRequestBuilder newSearchRequest() {
-        return client.prepareSearch(getElasticSearchIndexAlias());
+        return getElasticsearchClient().prepareSearch(getElasticSearchIndexAlias());
     }
 
-
-    private static class ShutDownNodeThread extends Thread {
-        private Client client;
-
-        public ShutDownNodeThread(Client client) {
-            this.client = client;
-        }
-
-        @Override
-        public void run() {
-            client.close();
-        }
-    }
 
 }

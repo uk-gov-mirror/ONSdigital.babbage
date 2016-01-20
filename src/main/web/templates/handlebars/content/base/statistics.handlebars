@@ -8,27 +8,29 @@
 		{{/if}}
 	{{/block}}
 
-	<div class="meta-wrap">
-		{{#block "block-metadata"}}
-			<div class="wrapper">
-				<div class="col-wrap">
+    {{#block "block-metadata"}}
+		<div class="meta-wrap">
+            <div class="wrapper">
+                <div class="col-wrap">
                     {{!-- {{> content/partials/metadata/ns-logo}} --}}
-					{{> content/partials/metadata/contact class="col--md-16 col--lg-20"}}
+                    {{#block "block-ns-contact"}}
+                        {{> content/partials/metadata/contact class="col--md-16 col--lg-20"}}
+                    {{/block}}
 
-					{{#block "block-release-date"}}
-						{{> content/partials/metadata/release-date class="col--md-16 col--lg-20"}}
-					{{/block}}
+                    {{#block "block-release-date"}}
+                        {{> content/partials/metadata/release-date class="col--md-16 col--lg-20"}}
+                    {{/block}}
 
-					{{#block "block-next-release"}}
-					{{!-- Next release --}}
+                    {{#block "block-next-release"}}
+                    {{!-- Next release --}}
                         {{> content/partials/metadata/next-release class="col--md-16 col--lg-20"}}
-					{{/block}}
+                    {{/block}}
 
-					{{#block "block-additonal-metadata"}}{{/block}}
-				</div>
-			</div>
-		{{/block}}
-	</div> {{!-- /meta-wrap --}}
+                    {{#block "block-additonal-metadata"}}{{/block}}
+                </div>
+            </div>
+        </div>
+    {{/block}}
 {{/partial}}
 
 {{!-- Inheriting from base content template --}}

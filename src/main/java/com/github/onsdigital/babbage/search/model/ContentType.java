@@ -11,6 +11,7 @@ public enum ContentType {
     product_page,
     bulletin,
     article,
+    article_download,
     timeseries,
     data_slice,
     compendium_landing_page,
@@ -19,6 +20,7 @@ public enum ContentType {
     static_landing_page,
     static_article,
     static_methodology,
+    static_methodology_download,
     static_page, //Pure markdown
     static_qmi,
     static_foi,

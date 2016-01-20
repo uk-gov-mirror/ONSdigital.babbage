@@ -1,213 +1,231 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.github.onsdigital</groupId>
-	<artifactId>babbage</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>Babbage</name>
-	<description>Backend of new ONS website Babbage</description>
-	<url>https://onsbeta.herokuapp.com</url>
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.github.onsdigital</groupId>
+    <artifactId>babbage</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>Babbage</name>
+    <description>Backend of new ONS website Babbage</description>
+    <url>https://onsbeta.herokuapp.com</url>
 
-	<properties>
-		<java.version>1.8</java.version>
+    <properties>
+        <java.version>1.8</java.version>
         <handlebars-java-version>2.2.1</handlebars-java-version>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<powermock.version>1.5.6</powermock.version>
-	</properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <powermock.version>1.5.6</powermock.version>
+    </properties>
 
-	<dependencies>
+    <dependencies>
 
-		<!-- Prototyping framework -->
-		<dependency>
-			<groupId>com.github.davidcarboni</groupId>
-			<artifactId>restolino</artifactId>
-			<version>0.1.8</version>
-		</dependency>
-		<dependency>
-			<groupId>com.github.davidcarboni</groupId>
-			<artifactId>resource-utils</artifactId>
-			<version>1.1.2</version>
-		</dependency>
+        <!-- Prototyping framework -->
+        <dependency>
+            <groupId>com.github.davidcarboni</groupId>
+            <artifactId>restolino</artifactId>
+            <version>0.1.8</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.davidcarboni</groupId>
+            <artifactId>resource-utils</artifactId>
+            <version>1.1.2</version>
+        </dependency>
 
-		<!-- Taxonomy generator -->
-		<dependency>
-			<groupId>net.sf.opencsv</groupId>
-			<artifactId>opencsv</artifactId>
-			<version>2.3</version>
-		</dependency>
+        <!-- Taxonomy generator -->
+        <dependency>
+            <groupId>net.sf.opencsv</groupId>
+            <artifactId>opencsv</artifactId>
+            <version>2.3</version>
+        </dependency>
 
-		<!-- Spreadsheet handling -->
-		<dependency>
-			<groupId>org.apache.poi</groupId>
-			<artifactId>poi-ooxml</artifactId>
-			<version>3.10.1</version>
-		</dependency>
+        <!-- Spreadsheet handling -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>3.10.1</version>
+        </dependency>
 
         <!-- Handlebars Java-->
-		<dependency>
-			<groupId>com.github.jknack</groupId>
-			<artifactId>handlebars</artifactId>
-			<version>${handlebars-java-version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.github.jknack</groupId>
-			<artifactId>handlebars-markdown</artifactId>
-			<version>${handlebars-java-version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.github.jknack</groupId>
-			<artifactId>handlebars-humanize</artifactId>
-			<version>${handlebars-java-version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.github.jknack</groupId>
-			<artifactId>handlebars-helpers</artifactId>
-			<version>${handlebars-java-version}</version>
-		</dependency>
+        <dependency>
+            <groupId>com.github.jknack</groupId>
+            <artifactId>handlebars</artifactId>
+            <version>${handlebars-java-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.jknack</groupId>
+            <artifactId>handlebars-markdown</artifactId>
+            <version>${handlebars-java-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.jknack</groupId>
+            <artifactId>handlebars-humanize</artifactId>
+            <version>${handlebars-java-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.jknack</groupId>
+            <artifactId>handlebars-helpers</artifactId>
+            <version>${handlebars-java-version}</version>
+        </dependency>
         <dependency>
             <groupId>com.github.jknack</groupId>
             <artifactId>handlebars-jackson2</artifactId>
-			<version>${handlebars-java-version}</version>
+            <version>${handlebars-java-version}</version>
         </dependency>
 
-		<!--Handlebars Java markdown uses an older version of pegdown with a peculiar bug, overwriting dependency explicitly-->
-		<dependency>
-			<groupId>org.pegdown</groupId>
-			<artifactId>pegdown</artifactId>
-			<version>1.4.2</version>
-		</dependency>
+        <!--Handlebars Java markdown uses an older version of pegdown with a peculiar bug, overwriting dependency explicitly-->
+        <dependency>
+            <groupId>org.pegdown</groupId>
+            <artifactId>pegdown</artifactId>
+            <version>1.4.2</version>
+        </dependency>
 
-		<!-- Commons -->
-		<dependency>
-			<groupId>commons-lang</groupId>
-			<artifactId>commons-lang</artifactId>
-			<version>2.6</version>
-		</dependency>
+        <!-- Cryptography -->
+        <dependency>
+            <groupId>com.github.davidcarboni</groupId>
+            <artifactId>cryptolite</artifactId>
+            <version>1.3.2</version>
+        </dependency>
 
-		<!-- Elastic Search -->
-		<dependency>
-			<groupId>org.elasticsearch</groupId>
-			<artifactId>elasticsearch</artifactId>
-			<version>1.7.1</version>
-		</dependency>
+        <!-- Commons -->
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+            <version>2.6</version>
+        </dependency>
 
+        <!-- Elastic Search -->
+        <dependency>
+            <groupId>org.elasticsearch</groupId>
+            <artifactId>elasticsearch</artifactId>
+            <version>1.7.1</version>
+        </dependency>
 
-		<!--Using Guava for caching in memory currently-->
-		<dependency>
-			<groupId>com.google.guava</groupId>
-			<artifactId>guava</artifactId>
-			<version>18.0</version>
-		</dependency>
+        <!-- Ical4j-->
+        <dependency>
+            <groupId>org.mnode.ical4j</groupId>
+            <artifactId>ical4j</artifactId>
+            <version>2.0-beta1</version>
+        </dependency>
 
-		<!-- Ical4j-->
-		<dependency>
-			<groupId>org.mnode.ical4j</groupId>
-			<artifactId>ical4j</artifactId>
-			<version>2.0-beta1</version>
-		</dependency>
+        <!-- New Relic -->
+        <dependency>
+            <groupId>com.newrelic.agent.java</groupId>
+            <artifactId>newrelic-java</artifactId>
+            <version>3.24.0</version>
+            <type>zip</type>
+            <scope>runtime</scope>
+        </dependency>
 
+        <!-- Test -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.11</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-all</artifactId>
+            <version>1.9.5</version>
+            <scope>test</scope>
+        </dependency>
 
-		<!-- Test -->
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.11</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.mockito</groupId>
-			<artifactId>mockito-all</artifactId>
-			<version>1.9.5</version>
-			<scope>test</scope>
-		</dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5</version>
+        </dependency>
 
-		<dependency>
-			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>httpclient</artifactId>
-			<version>4.5</version>
-		</dependency>
+        <dependency>
+            <groupId>org.reflections</groupId>
+            <artifactId>reflections</artifactId>
+            <version>0.9.9</version>
+        </dependency>
 
-		<dependency>
-			<groupId>org.reflections</groupId>
-			<artifactId>reflections</artifactId>
-			<version>0.9.9</version>
-		</dependency>
+    </dependencies>
 
-	</dependencies>
+    <build>
+        <resources>
+            <!-- Standard resources -->
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+            <!-- Generated contents-->
+            <resource>
+                <directory>src/main/content</directory>
+                <targetPath>${project.build.directory}/content</targetPath>
+            </resource>
+            <resource>
+                <directory>src/main/web</directory>
+                <targetPath>${project.build.directory}/web</targetPath>
+            </resource>
+        </resources>
+        <plugins>
 
-	<build>
-		<resources>
-			<!-- Standard resources -->
-			<resource>
-				<directory>src/main/resources</directory>
-			</resource>
-			<!-- Generated contents-->
-			<resource>
-				<directory>src/main/content</directory>
-				<targetPath>${project.build.directory}/content</targetPath>
-			</resource>
-			<resource>
-				<directory>src/main/web</directory>
-				<targetPath>${project.build.directory}/web</targetPath>
-			</resource>
-		</resources>
-		<plugins>
-
-			<!-- Needs Java 1.8 -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
+            <!-- Needs Java 1.8 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.1</version>
-				<configuration>
-					<source>${java.version}</source>
-					<target>${java.version}</target>
-					<encoding>UTF-8</encoding>
-				</configuration>
-			</plugin>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
 
-			<!-- An assembly that includes all dependencies for deployment: -->
-			<plugin>
-				<artifactId>maven-assembly-plugin</artifactId>
-				<configuration>
-					<descriptorRefs>
-						<descriptorRef>jar-with-dependencies</descriptorRef>
-					</descriptorRefs>
-					<archive>
-						<manifest>
-							<mainClass>com.github.davidcarboni.restolino.Main</mainClass>
-							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-							<addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
-						</manifest>
-					</archive>
-				</configuration>
-				<executions>
-					<execution>
-						<id>make-assembly</id>
-						<phase>package</phase>
-						<goals>
-							<goal>single</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
+            <!-- An assembly that includes all dependencies for deployment: -->
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                    <archive>
+                        <manifest>
+                            <mainClass>com.github.davidcarboni.restolino.Main</mainClass>
+                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                            <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+                        </manifest>
+                    </archive>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
 
-			<!-- A folder of dependencies is used in development when reloading classes: -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-dependency-plugin</artifactId>
-				<version>2.8</version>
-				<executions>
-					<execution>
-						<id>copy-dependencies</id>
-						<phase>package</phase>
-						<goals>
-							<goal>copy-dependencies</goal>
-						</goals>
-						<!-- Default output folder is ${project.build.api}/dependency -->
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-	</build>
+            <!-- A folder of dependencies is used in development when reloading classes: -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>2.8</version>
+                <executions>
+                    <execution>
+                        <id>copy-dependencies</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <!-- Default output folder is ${project.build.api}/dependency -->
+                    </execution>
+                    <execution>
+                        <id>unpack-newrelic</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>unpack-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <includeGroupIds>com.newrelic.agent.java</includeGroupIds>
+                            <includeArtifactIds>newrelic-java</includeArtifactIds>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

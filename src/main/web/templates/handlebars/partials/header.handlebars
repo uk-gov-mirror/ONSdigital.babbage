@@ -23,19 +23,29 @@
 						alt="Office for National Statistics">
 					</a>
 				</div>
-				<div class="language col col--lg-two-thirds col--md-two-thirds print--hide">
-					{{!-- Need space to keep secondary links from vertically aligning at top --}}
-					&nbsp;
-					{{!-- <form class="language__form">
-						<label class="language__label" for="lang">Language:</label>
-						<select class="language__select" id="lang" name="lang">
-							<option value="{{domain}}/{{uri}}">English (EN)</option>
-							<option value="cy.{{domain}}/{{uri}}">Cymraeg (CY)</option>
-						</select>
-						TODO enhance input so auto-submits on select
-						<input type="submit" value="Submit">
-					</form> --}}
-				</div>
+				{{!-- <nav> --}}
+					<div class="col col--lg-two-thirds col--md-two-thirds hide--mobile print--hide">
+						{{!-- Need space to keep secondary links from vertically aligning at top --}}
+						&nbsp;
+						{{!-- Show different block depending on whether JS or not - saves enhancing <dl> to look and behave like a <select> --}}
+						{{!-- <dl class="language js-enhance--hide">
+ 							<dt class="language__title">Language: </dt>
+ 							<dd class="language__item">
+ 								<a href="https://{{replace location.hostname "cy." ""}}{{uri}}" class="language__link icon--hide">English (EN)</a>
+ 							</dd>
+ 							<dd class="language__item">
+ 								<a href="https://cy.{{replace location.hostname "cy." ""}}{{uri}}" class="language__link icon--hide">Cymraeg (CY)</a>
+ 							</dd>
+ 						</dl>
+ 						<form class="language language--js js-enhance--show">
+ 							<label class="language--js__label" for="lang">Language:</label>
+ 							<select class="language--js__select" id="lang" name="lang">
+ 								<option value="english" class="language-js__option" data-url="https://{{replace location.hostname "cy." ""}}{{uri}}">English (EN)</option>
+ 								<option value="welsh" class="language-js__option" data-url="https://cy.{{replace location.hostname "cy." ""}}{{uri}}">Cymraeg (CY)</option>
+ 							</select>
+ 						</form> --}}
+					</div>
+				{{!-- </nav> --}}
 				<nav class="secondary-nav col col--lg-two-thirds col--md-two-thirds print--hide">
 					<ul class="secondary-nav__list">
 						{{!-- <li class="secondary-nav__item">
@@ -64,7 +74,7 @@
 						<span class="nav--controls__text">{{labels.dropdown-menu}}</span>
 					</a>
 				</li>
-				<li class="nav--controls__item">
+				<li class="nav--controls__item {{#if_any (eq listType "search") (eq listType "searchpublication") (eq listType "searchdata")}}search-is-expanded{{/if_any}}">
 					<a href="#nav-search" id="search-toggle" aria-controls="nav-search" class="nav--controls__search">
 						<span class="nav--controls__text">{{labels.search}}</span>
 					</a>
@@ -91,21 +101,21 @@
 					{{/if_eq}}
 					{{/each}}
 					{{!-- SECONDARY NAV - PRIMARY --}}
-					<li class="primary-nav__item {{#if_eq uri '/about/surveys'}}primary-nav__item--active{{/if_eq}}">
-						<a class="primary-nav__link  col col--md-8 col--lg-10" href="/about/surveys">
+					<li class="primary-nav__item {{#if_eq uri '/surveys'}}primary-nav__item--active{{/if_eq}}">
+						<a class="primary-nav__link  col col--md-8 col--lg-10" href="/surveys">
 							{{labels.survey-respondents}}
 						</a>
 					</li>
 					{{!-- Has to be in individal div so JS adds classes correctly on mobile --}}
 					<div class="primary-nav--secondary__list">
 						{{!-- TODO clean up or remove this content from HTML --}}
-						<!--<li class="primary-nav__item {{#if_eq uri '/about/surveys'}}primary-nav__item--active{{/if_eq}}">-->
+						<!--<li class="primary-nav__item {{#if_eq uri '/about/releasecalendar'}}primary-nav__item--active{{/if_eq}}">-->
 						<!--<a class="primary-nav__link col" href="/about/releasecalendar">{{labels.release-calendar}}</a>-->
 						<!--</li>-->
-						<li class="primary-nav__item {{#if_eq uri '/about/surveys'}}primary-nav__item--active{{/if_eq}}">
+						<li class="primary-nav__item {{#if_eq uri '/methodology'}}primary-nav__item--active{{/if_eq}}">
 							<a class="primary-nav__link col" href="/methodology">{{labels.methodology}}</a>
 						</li>
-						<li class="primary-nav__item {{#if_eq uri '/about/surveys'}}primary-nav__item--active{{/if_eq}}">
+						<li class="primary-nav__item {{#if_eq uri '/aboutus'}}primary-nav__item--active{{/if_eq}}">
 							<a class="primary-nav__link col" href="/aboutus">{{labels.about}}</a>
 						</li>
 					</div>
@@ -117,7 +127,7 @@
 	{{#block "block-search-bar"}}
 		<div class="search nav-search--hidden print--hide" id="searchBar">
 			<div class="wrapper">
-				<form class="col-wrap search__form" id="searchBar" {{#if_any (eq listType "searchdata") (eq listType "searchpublication")}}action="{{location.pathname}}"{{else}}action="/search"{{/if_any}}>
+				<form class="col-wrap search__form" {{#if_any (eq listType "searchdata") (eq listType "searchpublication")}}action="{{location.pathname}}"{{else}}action="/search"{{/if_any}}>
 					<label class="search__label col col--md-24 col--lg-24" for="nav-search">Search for keyword(s) or time series data ID</label>
 					<input type="search" autocomplete="off" class="search__input col col--md-20 col--lg-32" id="nav-search" name="q" value="{{parameters.q.0}}">
 					<button type="submit" class="search__button col--md-3 col--lg-3" id="nav-search-submit">

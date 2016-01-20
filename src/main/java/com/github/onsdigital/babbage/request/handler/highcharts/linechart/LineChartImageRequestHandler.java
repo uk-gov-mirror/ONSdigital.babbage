@@ -1,12 +1,20 @@
 package com.github.onsdigital.babbage.request.handler.highcharts.linechart;
 
+import com.github.onsdigital.babbage.content.client.ContentClient;
+import com.github.onsdigital.babbage.content.client.ContentFilter;
+import com.github.onsdigital.babbage.content.client.ContentResponse;
 import com.github.onsdigital.babbage.highcharts.HighChartsExportClient;
 import com.github.onsdigital.babbage.request.handler.base.RequestHandler;
-import com.github.onsdigital.babbage.response.BabbageBinaryResponse;
-import com.github.onsdigital.babbage.response.BabbageResponse;
+import com.github.onsdigital.babbage.response.BabbageContentBasedBinaryResponse;
+import com.github.onsdigital.babbage.response.base.BabbageResponse;
+import com.github.onsdigital.babbage.template.TemplateService;
+import com.github.onsdigital.babbage.util.RequestUtil;
+import com.github.onsdigital.babbage.util.json.JsonUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by bren on 18/06/15.
@@ -19,9 +27,15 @@ public class LineChartImageRequestHandler implements RequestHandler {
     @Override
     public BabbageResponse get(String requestedUri, HttpServletRequest request) throws Exception {
         System.out.println("Generating linechart image for " + requestedUri);
-        String chartConfig = new LineChartConfigRequestHandler().getChartConfig(requestedUri);
-        try (InputStream stream = HighChartsExportClient.getInstance().getImage(chartConfig, null)) {
-            return new BabbageBinaryResponse(stream, CONTENT_TYPE);
+        Map<String, String[]> queryParameters = ContentClient.filter(ContentFilter.SERIES);
+        queryParameters.putAll(RequestUtil.getQueryParameters(request));
+        ContentResponse series = ContentClient.getInstance().getContent(requestedUri, queryParameters);
+        ContentResponse description = ContentClient.getInstance().getContent(requestedUri, ContentClient.filter(ContentFilter.DESCRIPTION));
+        Map<String, Object> descriptionMap = new HashMap<>();
+        descriptionMap.put("fullDescription", JsonUtil.toMap(description.getDataStream()));
+        String config = TemplateService.getInstance().renderTemplate("highcharts/config/linechartconfig", series.getDataStream(), descriptionMap);
+        try (InputStream stream = HighChartsExportClient.getInstance().getImage(config, null)) {
+            return new BabbageContentBasedBinaryResponse(series, stream, CONTENT_TYPE);
         }
     }
 

@@ -1,6 +1,7 @@
 {{#partial "chart-config"}}
 options.chart.type="pie";
 options.labels={};
+options.legend.enabled={{#if_eq data.size 1}}false{{else}}true{{/if_eq}}; {{!-- Hide legends if only single category on chart--}}
 
 options.series=[{
 		name: "{{{sub (sup headers.1)}}}",

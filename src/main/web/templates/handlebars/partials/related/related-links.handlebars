@@ -1,0 +1,20 @@
+{{#if links}}
+	<div class="tiles__item tiles__item--nav-type flush-col">
+		<h3 class="tiles__title-h3 tiles__title-h3--nav">
+			You might also be interested in:
+		</h3>
+		<div class="tiles__content--nav">
+			<ul class="list--neutral">
+				{{#each links}}
+                    {{#if title}}
+                        <li><a href="{{uri}}">{{title}}</a></li>
+                    {{else}}
+                        {{#resolve this.uri}}
+                            <li><a href="{{uri}}">{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}</a></li>
+                        {{/resolve}}
+                    {{/if}}
+				{{/each}}
+			</ul>
+		</div>
+	</div>
+{{/if}}

@@ -10,35 +10,36 @@ public class Configuration {
     public static class GENERAL {
         private static final int MAX_VISIBLE_PAGINATOR_LINK = 10;
         private static final int RESULTS_PER_PAGE = 10;
-        private static final int GLOBAL_CACHE_TIMEOUT = 5;
-        private static final int GLOBAL_REQUEST_CACHE_SIZE = 1000;
+        //Should be the same as cut off time in Florence publishing system to ensure cache times are correct
+        private static int DEFAULT_CACHE_TIME = 15 * 60; //in seconds, 10 mins by default
+        private static int PUBLISH_CACHE_TIMEOUT  = 60 * 60; //If content that should be published is more than an hour due delete publish date to get it caching again
+
+
+        public static int getDefaultCacheTime() {
+            return DEFAULT_CACHE_TIME;
+        }
+
+        public static boolean isCacheEnabled() {
+            String enableCache = StringUtils.defaultIfBlank(getValue("ENABLE_CACHE"), "N");
+            return "Y".equals(enableCache);
+        }
 
         public static int getMaxVisiblePaginatorLink() {
             return MAX_VISIBLE_PAGINATOR_LINK;
-        }
-
-        public static int getGlobalCacheTimeout() {
-            return GLOBAL_CACHE_TIMEOUT;
-        }
-
-        public static int getGlobalRequestCacheSize() {
-            return Integer.parseInt(StringUtils.defaultIfBlank(getValue("GLOBAL_CACHE_SIZE"), String.valueOf(GLOBAL_REQUEST_CACHE_SIZE)));
         }
 
         public static int getResultsPerPage() {
             return RESULTS_PER_PAGE;
         }
 
-        public static boolean isCacheEnabled() {
-            String enableCache = StringUtils.defaultIfBlank(getValue("ENABLE_CACHE"), "");
-            return "Y".equals(enableCache);
-        }
-
         public static boolean isDevEnvironment() {
-            String devEnvironment = StringUtils.defaultIfBlank(getValue("DEV_ENVIRONMENT"), "");
+            String devEnvironment = StringUtils.defaultIfBlank(getValue("DEV_ENVIRONMENT"), "N");
             return "Y".equals(devEnvironment);
         }
 
+        public static int getPublishCacheTimeout() {
+            return PUBLISH_CACHE_TIMEOUT;
+        }
     }
 
     /*External content server configuration*/
@@ -183,7 +184,7 @@ public class Configuration {
 
     /*Mathjax server side rendering configuration*/
     public static class MATHJAX {
-               //Trailing slash seems to be important. Export server redirects to trailing slash url if not there
+        //Trailing slash seems to be important. Export server redirects to trailing slash url if not there
         private static final String MATHJAX_SERVER_URL = getValue("MATHJAX_EXPORT_SERVER");
 
         public static String getExportSeverUrl() {

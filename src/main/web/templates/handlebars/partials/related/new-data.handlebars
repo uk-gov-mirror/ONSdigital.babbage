@@ -17,7 +17,7 @@
 
 			{{!-- if "self" use page title and edition if one exists --}}
 			{{#if_eq relatedTitle "self"}}
-				View all data used in this {{> type-label}}
+				View all data used in this {{> type-label type_code=type}}
 			{{/if_eq}}
 
 			{{!-- if not "self" or "parent" use custom title --}}

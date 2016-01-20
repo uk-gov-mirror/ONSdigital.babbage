@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class PublicationsRequestHandler extends ListPageBaseRequestHandler implements RequestHandler {
 
-    private final static ContentType[] ALLOWED_TYPES = {ContentType.article, ContentType.bulletin, ContentType.compendium_landing_page};
+    private final static ContentType[] ALLOWED_TYPES = {ContentType.article, ContentType.article_download, ContentType.bulletin, ContentType.compendium_landing_page};
     private final static String REQUEST_TYPE = "publications";
 
     @Override

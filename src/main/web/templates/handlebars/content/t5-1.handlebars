@@ -1,17 +1,19 @@
 {{#partial "block-metadata"}}
-    <div class="wrapper">
-        <div class="col-wrap">
-            {{> content/partials/metadata/contact class="col--md-12 col--lg-15"}}
+    <div class="meta-wrap">
+        <div class="wrapper">
+            <div class="col-wrap">
+                {{> content/partials/metadata/contact class="col--md-12 col--lg-15"}}
 
-            {{#block "block-release-date"}}
-                {{> content/partials/metadata/release-date class="col--md-12 col--lg-15"}}
-            {{/block}}
+                {{#block "block-release-date"}}
+                    {{> content/partials/metadata/release-date class="col--md-12 col--lg-15"}}
+                {{/block}}
 
-            {{#block "block-next-release"}}
-                {{> content/partials/metadata/next-release class="col--md-12 col--lg-15"}}
-            {{/block}}
+                {{#block "block-next-release"}}
+                    {{> content/partials/metadata/next-release class="col--md-12 col--lg-15"}}
+                {{/block}}
 
-            {{#block "block-additonal-metadata"}}{{/block}}
+                {{#block "block-additonal-metadata"}}{{/block}}
+            </div>
         </div>
     </div>
 {{/partial}}
@@ -41,10 +43,10 @@
 					<div class="tiles__content nojs-hidden">
 						<h2>Download this data</h2>
 						<div class="chart-area__footer__actions">
-							<form method="post" action="/chartimage" class="inline dlCustomData">
-							   {{!--  <button id="download-custom-image" type="submit" class="btn btn--primary btn--small download-analytics" target="_blank" name="uri" value="{{uri}}">
+							<form method="get" action="{{uri}}/linechartimage" class="inline dlCustomData">
+							    <button id="download-custom-image" type="submit" class="btn btn--primary btn--small download-analytics" target="_blank">
 								Image
-								</button> --}}
+								</button>
 								<input type="hidden" name="fileName" value="{{description.title}}" />
 							</form>
 							<form method="get" action="/generator" class="inline dlCustomData">
@@ -61,39 +63,39 @@
 						</div>
 						<!-- </div> -->
 					</div> {{!-- /tiles__content --}}
-					{{#unless cookies.jsEnhanced}}
-					<div class="tiles__content js-enhance--hide">
-						<h2>Table</h2>
-						<table class="tablesaw">
-							<thead>
-								<tr>
-									<th>Period</th>
-									<th>Value</th>
-								</tr>
-							</thead>
-							<tbody>
-								{{#each years}}
-								<tr>
-									<td>{{date}}</td>
-									<td>{{value}}</td>
-								</tr>
-								{{/each}}
-								{{#each quarters}}
-								<tr>
-									<td>{{date}}</td>
-									<td>{{value}}</td>
-								</tr>
-								{{/each}}
-								{{#each months}}
-								<tr>
-									<td>{{date}}</td>
-									<td>{{value}}</td>
-								</tr>
-								{{/each}}
-							</tbody>
-						</table>
-					</div>
-					{{/unless}}
+					<noscript>
+						<div class="tiles__content js-enhance--hide">
+							<h2>Table</h2>
+							<table class="tablesaw">
+								<thead>
+									<tr>
+										<th>Period</th>
+										<th>Value</th>
+									</tr>
+								</thead>
+								<tbody>
+									{{#each years}}
+									<tr>
+										<td>{{date}}</td>
+										<td>{{value}}</td>
+									</tr>
+									{{/each}}
+									{{#each quarters}}
+									<tr>
+										<td>{{date}}</td>
+										<td>{{value}}</td>
+									</tr>
+									{{/each}}
+									{{#each months}}
+									<tr>
+										<td>{{date}}</td>
+										<td>{{value}}</td>
+									</tr>
+									{{/each}}
+								</tbody>
+							</table>
+						</div>
+					</noscript>
 				</div> {{!-- /col --}}
 			</div> {{!-- /col-wrap --}}
 		{{/if_any}}

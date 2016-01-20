@@ -1,6 +1,8 @@
 {{#partial "additional-chart-config"}}
 options.chart.type="{{#if area}}area{{else}}line{{/if}}";
-			
+options.xAxis.tickmarkPlacement='on';
+
+
 options.xAxis.tickPositioner=function() {
           var positions = [];
           var tick = Math.floor(this.dataMax);

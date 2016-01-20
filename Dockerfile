@@ -13,8 +13,9 @@ ADD ./src/main/web /usr/src/src/main/web
 
 # Update the entry point script
 ENTRYPOINT java -Xmx2048m \
+          -javaagent:/usr/src/target/dependency/newrelic/newrelic.jar \
           -Drestolino.files=src/main/web \
           -Drestolino.classes=target/classes \
-          -Drestolino.packageprefix=com.github.onsdigital \
+          -Drestolino.packageprefix=com.github.onsdigital.babbage.api \
           -cp "target/dependency/*:target/classes/" \
           com.github.davidcarboni.restolino.Main

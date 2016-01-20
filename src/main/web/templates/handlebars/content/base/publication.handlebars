@@ -4,8 +4,14 @@
             {{!--Table of Contents --}}
             {{> content/partials/toc}}
             {{!-- Print & PDF --}}
-            {{> partials/print-options}}
+            {{#unless hidePrint}}
+            	{{> partials/print-options}}
+            {{/unless}}
         </div>
+
+		{{!-- Show extra cta to related data on mobile --}}
+		<div class="hide--md margin-top-sm--1">{{> partials/related/new-data relatedUri=(concat uri "/relateddata") relatedTitle="self" }}</div>
+
         {{!-- Content --}}
         <article class="col col--md-36 col--lg-39 page-content__main-content">
             {{#each sections}}

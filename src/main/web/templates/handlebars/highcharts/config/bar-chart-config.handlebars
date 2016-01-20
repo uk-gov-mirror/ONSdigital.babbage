@@ -1,5 +1,10 @@
 {{#partial "additional-chart-config"}}
 options.chart.type={{#if rotated}}"bar"{{else}}"column"{{/if}};
+
+{{#if finishAtHundred}}
+options.yAxis.max=100;
+{{/if}}
+
 {{/partial}}
 {{!-- This denotes the template inherits from base-chart-config--}}
 {{> highcharts/config/base/simple-chart-config}} 

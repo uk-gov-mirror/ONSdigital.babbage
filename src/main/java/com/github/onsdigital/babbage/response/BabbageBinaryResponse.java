@@ -1,9 +1,10 @@
 package com.github.onsdigital.babbage.response;
 
+import com.github.onsdigital.babbage.response.base.BabbageResponse;
 import org.apache.commons.io.IOUtils;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -16,9 +17,18 @@ public class BabbageBinaryResponse extends BabbageResponse {
         this.data = IOUtils.toByteArray(data);
     }
 
-    public void applyData(HttpServletResponse response) throws IOException {
-        try(ByteArrayInputStream input = new ByteArrayInputStream(data);) {
-            IOUtils.copy(input, response.getOutputStream());
-        }
+    @Override
+    public void apply(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        super.apply(request, response);
+        setCacheHeaders(request, response);
+        writeData(response);
+    }
+
+    protected void setCacheHeaders(HttpServletRequest request, HttpServletResponse response) {
+
+    }
+
+    private void writeData(HttpServletResponse response) throws IOException {
+        IOUtils.write(data, response.getOutputStream());
     }
 }

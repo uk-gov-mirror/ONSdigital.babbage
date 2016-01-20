@@ -3,10 +3,10 @@ package com.github.onsdigital.babbage.request.handler;
 import com.github.onsdigital.babbage.content.client.ContentClient;
 import com.github.onsdigital.babbage.content.client.ContentFilter;
 import com.github.onsdigital.babbage.content.client.ContentReadException;
-import com.github.onsdigital.babbage.content.client.ContentStream;
+import com.github.onsdigital.babbage.content.client.ContentResponse;
 import com.github.onsdigital.babbage.request.handler.base.RequestHandler;
 import com.github.onsdigital.babbage.response.BabbageBinaryResponse;
-import com.github.onsdigital.babbage.response.BabbageResponse;
+import com.github.onsdigital.babbage.response.base.BabbageResponse;
 import com.github.onsdigital.babbage.util.json.JsonUtil;
 import com.github.onsdigital.babbage.util.RequestUtil;
 import com.github.onsdigital.babbage.pdf.PDFGenerator;
@@ -48,8 +48,8 @@ public class PDFRequestHandler implements RequestHandler {
     }
 
     public String getTitle(String uri) throws IOException, ContentReadException {
-        ContentStream contentStream = ContentClient.getInstance().getContentStream(uri, filter(ContentFilter.TITLE));
-        Map<String, Object> stringObjectMap = JsonUtil.toMap(contentStream.getDataStream());
+        ContentResponse contentResponse = ContentClient.getInstance().getContent(uri, filter(ContentFilter.TITLE));
+        Map<String, Object> stringObjectMap = JsonUtil.toMap(contentResponse.getDataStream());
         return (String) stringObjectMap.get("title");
     }
 

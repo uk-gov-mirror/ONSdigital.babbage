@@ -3,51 +3,55 @@
 	<h1 class="page-intro__title margin-bottom-sm--4 margin-bottom-md--4"><span class="page-intro__type">Release:</span>{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}</h1>
 {{/partial}}
 
+{{#partial "block-ns-contact"}}
+    {{> content/partials/metadata/contact class="col--md-15 col--lg-18"}}
+{{/partial}}
+
 
 {{#partial "block-release-date"}}
-	{{!-- Release date --}}
-	<p class="col {{#if description.nationalStatistic}}col--md-11 col--lg-14{{else}}col--md-12 col--lg-15{{/if}} meta__item">
-		{{#if description.cancelled}}
-			Proposed release date:
-			<br/>
-			{{df description.releaseDate}}
-		{{else}}
-			{{#if description.finalised}}
-				{{labels.release-date}}:
-				<br>
-				{{df description.releaseDate}}
-			{{else}}
-				Provisional release date:
-				<br>
-				{{#if description.provisionalDate}}
-					{{description.provisionalDate}}
-				{{else}}
-					{{df description.releaseDate}}
-				{{/if}}
-			{{/if}}
-		{{/if}}
-	</p>
+    {{!-- Release date --}}
+    <p class="col {{#if description.nationalStatistic}}col--md-11 col--lg-14{{else}}col--md-12 col--lg-15{{/if}} meta__item">
+        {{#if description.cancelled}}
+            Proposed release date:
+            <br/>
+            {{df description.releaseDate}}
+        {{else}}
+            {{#if description.finalised}}
+                {{labels.release-date}}:
+                <br>
+                {{df description.releaseDate}}
+            {{else}}
+                Provisional release date:
+                <br>
+                {{#if description.provisionalDate}}
+                    {{description.provisionalDate}}
+                {{else}}
+                    {{df description.releaseDate}}
+                {{/if}}
+            {{/if}}
+        {{/if}}
+    </p>
 {{/partial}}
 
 
 {{#partial "block-next-release"}}
-	{{!-- Next release --}}
-	{{#unless description.cancelled}}
-		<p class="col {{#if description.nationalStatistic}}col--md-11 col--lg-14{{else}}col--md-12 col--lg-15{{/if}} meta__item">
-				<span>{{labels.release-next}}: </span><br/>{{#if description.nextRelease}}{{description.nextRelease}}{{else}}To be
-			announced{{/if}}
-		</p>
-	{{/unless}}
+    {{!-- Next release --}}
+    {{#unless description.cancelled}}
+        <p class="col {{#if description.nationalStatistic}}col--md-11 col--lg-14{{else}}col--md-12 col--lg-15{{/if}} meta__item">
+                <span>{{labels.release-next}}: </span><br/>{{#if description.nextRelease}}{{description.nextRelease}}{{else}}To be
+            announced{{/if}}
+        </p>
+    {{/unless}}
 {{/partial}}
 
 
 {{#partial "block-additonal-metadata"}}
-	{{#if markdown}}
-		{{!-- Pre-release list link --}}
-		<p class="col {{#if description.nationalStatistic}}col--md-11 col--lg-14{{else}}col--md-12 col--lg-15	{{/if}} print--hide meta__item">
-			<a href="#prereleaseaccesslist" class="jsEnhanceAnimateScroll expand-accordion">Pre-release access list</a>
-		</p>
-	{{/if}}
+    {{#if markdown}}
+        {{!-- Pre-release list link --}}
+        <p class="col {{#if description.nationalStatistic}}col--md-11 col--lg-14{{else}}col--md-12 col--lg-15	{{/if}} print--hide meta__item">
+            <a href="#prereleaseaccesslist" class="jsEnhanceAnimateScroll expand-accordion">Pre-release access list</a>
+        </p>
+    {{/if}}
 {{/partial}}
 
 

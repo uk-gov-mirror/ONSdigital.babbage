@@ -13,7 +13,10 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 		chart: {
 			height: {{width}} * {{aspectRatio}},
 			width: {{width}},
-			marginRight: 35
+			marginRight: 35,
+			style: {
+				fontFamily: 'inherit'
+			}
 		},
 		colors: [
 			"#274796",
@@ -55,7 +58,8 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 		},
 		legend: {
 			verticalAlign: "top",
-			useHTML:true
+			useHTML:true,
+			enabled:{{#if_eq series.size 1}}false{{else}}true{{/if_eq}}
 		},
 		plotOptions: {
 			series: {
@@ -93,7 +97,8 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 	options.yAxis.title.align="high";
 	{{#unless rotated}}
     options.yAxis.title.offset=0;
-    options.yAxis.title.y=-2;
+    
+    {{#if options.legend.enabled}}options.yAxis.title.y=-2;{{/if}}
     {{!-- Setting rotation to 0 causes axis lable push chart to the right for some text (e.g. "GDP growth percentage" ) and shrinks it in size. Funny enough, rotating 360 degrees eliminates this issue and still keeps the label horizontal.  --}}
 	options.yAxis.title.rotation=360;
 	options.yAxis.title.style={

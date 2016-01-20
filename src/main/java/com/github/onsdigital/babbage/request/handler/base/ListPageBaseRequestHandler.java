@@ -2,7 +2,7 @@ package com.github.onsdigital.babbage.request.handler.base;
 
 import com.github.onsdigital.babbage.content.client.ContentReadException;
 import com.github.onsdigital.babbage.paginator.Paginator;
-import com.github.onsdigital.babbage.response.BabbageResponse;
+import com.github.onsdigital.babbage.response.base.BabbageResponse;
 import com.github.onsdigital.babbage.response.BabbageStringResponse;
 import com.github.onsdigital.babbage.search.AggregateQuery;
 import com.github.onsdigital.babbage.search.ONSQuery;
@@ -16,7 +16,6 @@ import com.github.onsdigital.babbage.search.model.field.FilterableField;
 import com.github.onsdigital.babbage.template.TemplateService;
 import com.github.onsdigital.babbage.util.URIUtil;
 import com.github.onsdigital.babbage.util.json.JsonUtil;
-import org.apache.commons.lang3.ObjectUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -105,7 +104,7 @@ public abstract class ListPageBaseRequestHandler {
         if (isAggregateByType()) {
             AggregateQuery aggregateQuery = new AggregateQuery();
             //Applies aggregations on all types, regardless of filters as counts for all types are needed
-            aggregateQuery.setTypes(ContentType.getNamesOf(getAllowedTypes()))
+            aggregateQuery.setTypes(ContentType.getNamesOf(getAggregationTypes()))
                     .setFields(query.getFields())
                     .setSearchTerm(query.getSearchTerm())
                     .setFilters(query.getFilters());
@@ -113,6 +112,11 @@ public abstract class ListPageBaseRequestHandler {
             return aggregateQuery;
         }
         return null;
+    }
+
+    //Types to count documents for, by default it is all document types, override for different behaviour
+    protected ContentType[] getAggregationTypes() {
+        return getAllowedTypes();
     }
 
     protected LinkedHashMap<String, Object> resolveListData(HttpServletRequest request, ONSQuery query, SearchResponseHelper responseHelper, SearchResponseHelper aggregateResponseHelper) throws IOException {
@@ -158,7 +162,7 @@ public abstract class ListPageBaseRequestHandler {
         return uri;
     }
 
-    protected List<SearchResponseHelper> doSearch(HttpServletRequest request, ONSQuery... queries) throws IOException {
+    protected List<SearchResponseHelper> doSearch(HttpServletRequest request, ONSQuery... queries) throws IOException, ContentReadException {
         if (queries.length > 1) {
             return SearchService.getInstance().searchMultiple(queries);
         } else {

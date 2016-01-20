@@ -3,15 +3,7 @@
 
 {{!-- No need to set data, if jsEhanced data will be handled at client side. This is for image rendering on server side --}}
 {{!-- Can not set series directly sincce if y value is not available highcharts does not connect the lines --}}
-{{#unless cookies.jsEnhanced}}
 var series = [{{#each series}}{"name":"{{name}}", "y": {{#if y}}{{y}}{{else}}null{{/if}} },{{/each}}]
-{{else}}
-{{#if parameters.download.0}}
-var series = [{{#each series}}{"name":"{{name}}", "y": {{#if y}}{{y}}{{else}}null{{/if}} },{{/each}}]
-{{else}}
-var series = [];
-{{/if}}
-{{/unless}}
 
 var description = {{json fullDescription.description}};
 var linechart = {
@@ -215,8 +207,6 @@ if(!description.isIndex) {
    min = min ? Math.min(min, series[i].y) : series[i].y;
   }
        
-  console.log("min", min);
-
   if(min > 0) {
    linechart.yAxis.min = 0;
   } else {

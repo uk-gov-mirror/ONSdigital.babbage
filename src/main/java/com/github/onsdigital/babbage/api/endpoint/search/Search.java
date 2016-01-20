@@ -5,7 +5,7 @@ import com.github.onsdigital.babbage.content.client.ContentReadException;
 import com.github.onsdigital.babbage.paginator.Paginator;
 import com.github.onsdigital.babbage.request.handler.base.ListPageBaseRequestHandler;
 import com.github.onsdigital.babbage.response.BabbageRedirectResponse;
-import com.github.onsdigital.babbage.response.BabbageResponse;
+import com.github.onsdigital.babbage.response.base.BabbageResponse;
 import com.github.onsdigital.babbage.response.BabbageStringResponse;
 import com.github.onsdigital.babbage.search.AggregateQuery;
 import com.github.onsdigital.babbage.search.ONSQuery;
@@ -40,12 +40,14 @@ public class Search extends ListPageBaseRequestHandler {
     private final static ContentType[] ALLOWED_TYPES = {
             ContentType.bulletin,
             ContentType.article,
+            ContentType.article_download,
             ContentType.compendium_landing_page,
             ContentType.timeseries,
             ContentType.dataset_landing_page,
             ContentType.reference_tables,
             ContentType.static_adhoc,
             ContentType.static_methodology,
+            ContentType.static_methodology_download,
             ContentType.static_qmi,
             ContentType.static_article,
             ContentType.static_foi,
@@ -59,9 +61,9 @@ public class Search extends ListPageBaseRequestHandler {
         String uri = URIUtil.cleanUri(request.getRequestURI());
         String requestType = URIUtil.resolveRequestType(uri);
         if ("data".equals(requestType)) {
-            getData(URIUtil.removeLastSegment(uri), request).apply(response);
+            getData(URIUtil.removeLastSegment(uri), request).apply(request, response);
         } else {
-            getPage(request, response).apply(response);
+            getPage(request, response).apply(request, response);
         }
     }
 

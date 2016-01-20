@@ -1,13 +1,14 @@
 {{#partial "block-content"}}
 	{{!-- TABLE OF CONTENTS --}}
 	<div class="wrapper">
+        {{> content/partials/compendium-navigation}}
 		<div class="col-wrap">
 			<div class="col table-of-contents print--avoid-break">
-				<p class="print--hide">
-                    {{#last breadcrumb}}
-					    {{labels.compendium-return}} <a class="underline-link" href="{{uri}}">{{description.title}}</a>
-                    {{/last}}
-				</p>
+				<!--<p class="print--hide">-->
+                    <!--{{#last breadcrumb}}-->
+					    <!--{{labels.compendium-return}} <a class="underline-link" href="{{uri}}">{{description.title}}</a>-->
+                    <!--{{/last}}-->
+				<!--</p>-->
                 <div class="col-wrap border-bottom--iron-md">
                     {{!--Table of Contents --}}
                     {{> content/partials/toc}}
@@ -68,7 +69,13 @@
 		{{!-- Sidebar --}}
 		<div class="col col--md-11 col--lg-20 margin-top-md--3">
 			{{!-- Related data --}}
-			{{> partials/related/data }}
+            {{#last breadcrumb}}
+                {{#resolve uri}}
+                    {{#if datasets}}
+                        <a class="btn btn--primary btn--full-width margin-bottom-sm--2 margin-bottom-md--2" href="{{datasets.0.uri}}">View all data in this compendium</a>
+                    {{/if}}
+                {{/resolve}}
+            {{/last}}
 			{{!-- Contact details --}}
 			{{> partials/contact }}
 		</div> {{!-- /col --}}
@@ -83,6 +90,7 @@
 				{{> partials/local-box}}
 			</div>
 		</div>
+        {{> content/partials/compendium-navigation}}
 	</div>
 {{/partial}}
 
