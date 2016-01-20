@@ -47,72 +47,258 @@
         <div class="tiles">
             <h2>Latest news, figures and releases</h2>
             <div class="col-wrap tiles__block tiles__block-no-mar-bottom">
-                {{!-- Dynamic stastical highlights --}}
-                <div class="col col--md-full-width col--lg-45">
-                    <div class="col col--md-23 col--lg-14 background--white height--46 margin-left-md--1 margin-bottom-sm--2 margin-bottom-md--2 js-hover">
-                        {{>partials/t1/home-figure sections.0}}
-                    </div>
-                    <div class="col col--md-23 col--lg-29 background--white height--46 margin-left-md--1 margin-bottom-sm--2 margin-bottom-md--2 js-hover">
-                        {{>partials/t1/home-figure sections.1}}
-                    </div>
-                    <div class="col col--md-15 col--lg-14 background--white height--46 margin-left-md--1 margin-bottom-sm--2 margin-bottom-md--2 js-hover">
-                        {{>partials/t1/home-figure sections.2}}
-                    </div>
-                    <div class="col col--md-15 col--lg-14 background--white height--46 margin-left-md--1 margin-bottom-sm--2 margin-bottom-md--2 js-hover">
-                        {{>partials/t1/home-figure sections.3}}
-                    </div>
-                    <div class="col col--md-15 col--lg-14 background--white height--46 margin-left-md--1 margin-bottom-sm--2 margin-bottom-md--2 js-hover">
-                        {{>partials/t1/home-figure sections.4}}
+                <div class="col col--md-23 col--lg-14 height-sm--48 height-md--48 height-lg--48 background--white margin-left-md--1 margin-bottom--2 js-hover">
+                    {{>partials/t1/home-figure sections.0 ratio="1:2"}}
+                </div>
+                <div class="col col--md-23 col--lg-29 height-sm--48 height-md--48 height-lg--23 background--white margin-left-md--1 margin-bottom--2 js-hover">
+                    {{>partials/t1/home-figure sections.1 ratio="2:1"}}
+                </div>
+                <div class="col height-sm--23 col--md-23 col--lg-14 height--23 background--white margin-left-md--1 margin-bottom--2 js-hover">
+                    <div class="padding-left--1 padding-right--1 padding-top--2 padding-bottom--2">
+                        <div class="box__content box__content--homepage">
+                            <h2 class="tiles__title-h2--home"><a href="/timeseriestool">Looking to download time series?</a></h2>
+                            <p class="margin-top--1">Try our time series explorer</p>
+                        </div>
                     </div>
                 </div>
-                <div class="col col--md-full-width col--lg-15">
-                    <div class="col col--lg-14 height-sm--32 height--30 background--white margin-left-md--1 margin-bottom-sm--2 margin-bottom-md--2 padding-left-sm--1 padding-left-md--1 padding-right-sm--1 padding-right-md--1 padding-top-sm--2 padding-top-md--2 js-hover">
-                        <article>
-                            <div class="box__content box__content--homepage padding-top-sm--20 padding-top-md--14">
-                                {{!-- <h2 class="tiles__title tiles__title-h2--home"><a href="/releasecalendar">{{labels.homepage-calendar}}<span class="image-holder"><img src="../../img/t1-cal.png" alt=""></span></a></h2>
-                                <p class="tiles__content">Find out when our statistics are released and sign-up to receive notifications.</p> --}}
-                                <h2 class="tiles__title-h2--home"><a href="/help/onsreleasecalendar">Release calendar<span class="image-holder"><img src="../../img/t1-cal.png" alt=""></span></a></h2>
-                                <p>Find out when our statistics are released and sign-up to receive notifications.</p>
-                            </div>
-                        </article>
-                    </div>
-                    <div class="col col--lg-14 height-sm--32 height--30 background--white margin-left-md--1 margin-bottom-sm--2 margin-bottom-md--2 padding-left-sm--1 padding-left-md--1 padding-right-sm--1 padding-right-md--1 padding-top-sm--2 padding-top-md--2 js-hover">
-                        <article>
-                            <div class="box__content box__content--homepage padding-top-sm--20 padding-top-md--14">
-                                <h2 class="tiles__title tiles__title-h2--home"><a class="icon--hide" href="https://www.gov.uk/government/statistics">{{labels.homepage-other-stats}}<span class="image-holder"><img src="../../img/t1-gov-uk--black.png" alt="GOV.UK logo" class="no-border"></span></a></h2>
-                                <p>Find official statistics produced by other government departments.</p>
-                            </div>
-                        </article>
-                    </div>
-                    <div class="col col--lg-14 height-sm--32 height--30 background--white margin-left-md--1 margin-bottom-sm--2 margin-bottom-md--2 padding-left-sm--1 padding-left-md--1 padding-right-sm--1 padding-right-md--1 padding-top-sm--2 padding-top-md--2 js-hover">
-                        <article>
-                            <div class="box__content box__content--homepage padding-top-sm--20 padding-top-md--14">
-                                <h2 class="tiles__title tiles__title-h2--home"><a href="/help/localstatistics">{{labels.local-stats-header}}<span class="image-holder"><img src="../../img/t1-local.png" alt="" class="no-border"></span></a></h2>
-                                <p>{{labels.local-stats-text}}</p>
-                            </div>
-                        </article>
+                <div class="col col--md-23 col--lg-29 height-sm--48 height-md--23 background--white margin-left-md--1 margin-bottom--2 js-hover">
+                    <article class="">
+
+                        <div class="">
+                            {{#resolve sections.2 filter="title"}}
+                            {{!-- <h2 class="tiles__title-h2"><a href="{{uri}}">{{title}}</a></h2> --}}
+                            {{!-- <h2 class="tiles__title-h2">{{title}}</h2> --}}
+                            {{/resolve}}
+
+                            {{#resolve sections.2.statistics.uri filter="description"}}
+
+                                <dl class="box__content box__content--homepage height-md--23 padding-top-sm--24 padding-right-md--1 padding-bottom-md--0 padding-left-md--11 padding-left-lg--14">
+                                    <dt class="tiles__title-dt margin-left-sm--1 margin-left-md--1">
+                                        <a href="{{uri}}">{{description.title}}</a>
+                                    </dt>
+                                    <!-- change to dd's -->
+                                    <dd class="margin-left-sm--1 margin-left-md--1">
+                                        <span class="tiles__preunit--home">{{description.preUnit}}</span>
+                                        <span class="tiles__figure--home stat__figure-enhance">{{description.number}}</span>
+                                        <span class="tiles__unit--home">{{description.unit}}</span>
+                                        </span>
+                                        <span class="tiles__date--home">
+                                            {{description.date}}
+                                        </span>
+                                        <a class="js-enhance--hide" href="{{statistics.uri}}">More info</a>
+                                        <div class="sparkline-holder width-md--11 width-lg--14">
+                                            {{> partials/highcharts/sparkline}}
+                                        </div>
+                                    </dd>
+                                </dl>
+                            {{/resolve}}
+                        </div>
+                    </article>
+                    {{!-- {{>partials/t1/home-figure sections.2 ratio="2:1"}} --}}
+                </div>
+                <div class="col col--md-11 col--lg-14 height-sm--23 height-md--23 background--white margin-left-md--1 margin-bottom--2 js-hover">
+                    <div class="padding-left--1 padding-right--1 padding-top--2 padding-bottom--1">
+                        <div class="box__content box__content--homepage height--23 padding-top-sm--11 padding-top-md--11 padding-top-lg--14">
+                            <h2 class="tiles__title tiles__title-h2--home"><a class="icon--hide" href="https://www.gov.uk/government/statistics" target="_blank">Other official statistics<span class="image-holder width-sm--9 width-md--9 width-lg--12"><img src="../../img/t1-gov-uk--black.png" alt="GOV.UK logo" class="no-border"></span></a></h2>
+                        </div>
                     </div>
                 </div>
-                <div class="col col--lg-29 height--30 background--white margin-left-md--1 margin-bottom-sm--2 margin-bottom-md--2 padding-left-sm--1 padding-left-md--1 padding-right-sm--1 padding-right-md--1 padding-top-sm--2 padding-top-md--2 js-hover">
+                <div class="col col--md-35 col--lg-29 height-sm--48 height-md--23 background--white margin-left-md--1 margin-bottom--2 js-hover">
                     <article>
-                        <div class="box__content box__content--homepage padding-left-sm--15 padding-left-md--15 height--26">
+                        {{#resolve sections.3.statistics.uri filter="description"}}
+                            <dl class="box__content box__content--homepage height-md--23 padding-top-sm--24 padding-right-md--1 padding-bottom-md--0 padding-left-md--13 padding-left-lg--14">
+                                <dt class="tiles__title-dt margin-left-sm--1 margin-left-md--1">
+                                    <a href="{{uri}}">{{description.title}}</a>
+                                </dt>
+                                <!-- change to dd's -->
+                                <dd class="margin-left-sm--1 margin-left-md--1">
+                                    <span class="tiles__preunit--home">{{description.preUnit}}</span>
+                                    <span class="tiles__figure--home stat__figure-enhance">{{description.number}}</span>
+                                    <span class="tiles__unit--home">{{description.unit}}</span>
+                                    <span class="tiles__date--home">
+                                        {{description.date}}
+                                    </span>
+                                    <a class="js-enhance--hide" href="{{statistics.uri}}">More info</a>
+                                    <div class="sparkline-holder width-md--13 width-lg--14">
+                                        {{> partials/highcharts/sparkline}}
+                                    </div>
+                                </dd>
+                            </dl>
+                        {{/resolve}}
+                    </article>
+                    {{!-- {{>partials/t1/home-figure sections.3 ratio="2:1"}} --}}
+                </div>
+                <div class="col height-sm--23 col--md-23 col--lg-14 height--23 background--white margin-left-md--1 margin-bottom--2 js-hover">
+                    <div class="padding-left--1 padding-right--1 padding-top--2 padding-bottom--1">
+                        <div class="box__content box__content--homepage">
+                            {{!-- {{#resolve "/peoplepopulationandcommunity/householdcharacteristics/homeinternetandsocialmediausage/bulletins/internetaccesshouseholdsandindividuals/2015-08-06"}}
+                                 <h2 class="tiles__title tiles__title-h2--home"><a
+                                         href="{{uri}}">{{description.title}}</a></h2>
+                                 <p>Estimates about how adults use the internet</p>
+                             {{/resolve}} --}}
+                            <h2 class="tiles__title tiles__title-h2--home"><a href="/peoplepopulationandcommunity/populationandmigration/populationestimates/bulletins/annualmidyearpopulationestimates/latest">Annual mid-year population estimates</a></h2>
+                            <p>Estimates of the usual resident population in the United Kingdom and its constituent counties</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col height-sm--23 col--md-23 col--lg-14 height--23 background--white margin-left-md--1 margin-bottom--2 js-hover">
+                    <div class="padding-left--1 padding-right--1 padding-top--2 padding-bottom--2">
+                         <div class="box__content box__content--homepage padding-top-sm--11 padding-top-lg--14 padding-left-md--12 padding-left-lg--0">
+                             <h2 class="tiles__title-h2--home"><a href="/about/calendar">Release calendar<span
+                                     class="image-holder width-sm--9 width-md--11 width-lg--12"><img src="../../img/t1-cal.png" alt=""></span></a></h2>
+                             <p class="hide--lg">Find out when our statistics are released and sign-up to receive notifications.</p>
+                         </div>
+                     </div>
+                </div>
+                <div class="col height-sm--23 col--md-23 col--lg-29 height--48 background--white margin-left-md--1 margin-bottom--2 js-hover">
+                    {{>partials/t1/home-figure sections.4 ratio="2:2"}}
+                </div>
+                <div class="col height-sm--23 col--md-23 col--lg-29 height--23 background--white margin-left-md--1 margin-bottom--2 js-hover">
+                    <div class="padding-left--1 padding-right--1 padding-top--2 padding-bottom--1">
+                        <div class="box__content box__content--homepage">
+                            {{!-- {{#resolve "/businessindustryandtrade/constructionindustry/bulletins/outputintheconstructionindustry/2015-07-10"}}
+                                 <h2 class="tiles__title tiles__title-h2--home"><a
+                                         href="{{uri}}">{{description.title}}</a></h2>
+                                 <p class="margin-top--1">{{description.summary}}</p>
+                             {{/resolve}} --}}
+                            <h2 class="tiles__title tiles__title-h2--home"><a
+                                    href="/employmentandlabourmarket/peopleinwork/employmentandemployeetypes/bulletins/uklabourmarket/latest">UK labour market</a></h2>
+                            <p class="margin-top--1">Estimates of employment, unemployment, economic inactivity and other employment-related statistics for the UK</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col height-sm--23 col--md-23 col--lg-14 height--23 background--white margin-left-md--1 margin-bottom--2 js-hover">
+                    <div class="padding-left--1 padding-right--1 padding-top--2 padding-bottom--1">
+                        <div class="box__content box__content--homepage">
+                            <h2 class="tiles__title tiles__title-h2--home"><a href="/economy/grossdomesticproductgdp/bulletins/secondestimateofgdp/latest">GDP preliminary estimate</a></h2>
+                            <p>First estimate of quarterly GDP, providing an early indicator of economic growth</p>
+                            {{!-- {{#resolve "/economy/environmentalaccounts/bulletins/ukenvironmentalaccounts/2015-07-09"}}
+                                 <h2 class="tiles__title tiles__title-h2--home"><a
+                                         href="{{uri}}">{{description.title}}</a></h2>
+                                 <p>The contribution of the environment to the economy and the impacts the economy has on the environment</p>
+                             {{/resolve}} --}}
+                        </div>
+                    </div>
+                </div>
+                <div class="col height-sm--23 col--md-23 col--lg-14 height--23 background--white margin-left-md--1 margin-bottom--2 js-hover">
+                    <div class="padding-left--1 padding-right--1 padding-top--2 padding-bottom--1">
+                        <div class="box__content box__content--homepage">
+{{!-- {{#resolve "/economy/inflationandpriceindices/bulletins/consumerpriceinflation/latest"}}
+                                <h2 class="tiles__title tiles__title-h2--home"><a
+                                        href="{{uri}}">{{description.title}}</a></h2>--}}
+                                <h2 class="tiles__title tiles__title-h2--home"><a href="/economy/inflationandpriceindices/bulletins/consumerpriceinflation/latest">Consumer price inflation</a></h2>
+                                <p>Change in the prices of goods and services bought by UK households</p>
+                            {{!-- {{/resolve}} --}}
+                        </div>
+                    </div>
+                </div>
+                <div class="col height-sm--23 col--md-23 col--lg-14 height-md--23 height-lg--48 background--white margin-left-md--1 margin-bottom--2 js-hover">
+                    <div class="padding-left--1 padding-right--1 padding-top--2 padding-bottom--2">
+                        <div class="box__content box__content--homepage padding-top-sm--11 padding-top-lg--16 padding-left-md--12 padding-left-lg--0">
+                            <h2 class="tiles__title tiles__title-h2--home"><a href="/help/localstatistics">Looking for local statistics?<span class="image-holder width-sm--9 width-md--11 width-lg--12"><img src="../../img/t1-local.png" alt="" class="no-border"></span></a></h2>
+                            <p class="margin-top-lg--1">A handy guide to let you know where to find local statistics.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col height-sm--23 col--lg-44 height--23 background--white margin-left-md--1 margin-bottom--2 js-hover">
+                    <div class="padding-left--1 padding-right--1 padding-top--2 padding-bottom--2">
+                        <div class="box__content box__content--homepage padding-left-sm--10 padding-left-md--15 height--19">
                             <a href="http://www.ons.gov.uk/ons/guide-method/census/index.html">
-                                <h2 class="tiles__title-h2--home">{{labels.homepage-census}}</a>
-                            </h2>
-                            <span class="image-holder width--13"><img src="../../img/t1-census.png" alt="" class="no-border width-auto height--26"></span>
-                            <p class="tiles__content">{{labels.homepage-census-sum}}</p>
+                            </a>
+                            <h2 class="tiles__title-h2--home"><a
+                                    href="http://www.ons.gov.uk/ons/guide-method/census/index.html">Census</a></h2>
+                            <span class="image-holder width-sm--9 width-md--13"><img src="../../img/t1-census.png" alt=""
+                                                                      class="no-border width-auto height--26"></span>
+                            <p class="tiles__content">Discover how our census statistics help paint a picture of the
+                                nation and how we live.</p>
                         </div>
-                    </article>
+                    </div>
                 </div>
-                <div class="col col--lg-29 height--30 background--white margin-left-md--1 margin-bottom-sm--2 margin-bottom-md--2 padding-left-sm--1 padding-left-md--1 padding-right-sm--1 padding-right-md--1 padding-top-sm--2 padding-top-md--2 js-hover">
-                    <article>
-                        <div class="box__content box__content--homepage padding-left-sm--15 padding-left-md--15 height--26">
-                            <a href="http://visual.ons.gov.uk"><h2 class="tiles__title-h2--home">{{labels.homepage-visual}}</a></h2>
-                            <span class="image-holder width--13"><img src="../../img/t1-visual-ons.png" alt="Example of interactive data visualisation" class="no-border width-auto height--26"></span>
-                            <p class="tiles__content">{{labels.homepage-visual-sum}}</p>
+                <div class="col height-sm--23 col--lg-44 height--23 background--white margin-left-md--1 margin-bottom--2 js-hover">
+                    <div class="padding-left--1 padding-right--1 padding-top--2 padding-bottom--2">
+                        <div class="box__content box__content--homepage padding-left-sm--10 padding-left-md--15 height--19">
+                            <a href="http://visual.ons.gov.uk"></a>
+                            <h2 class="tiles__title-h2--home"><a href="http://visual.ons.gov.uk">Visual.ONS</a></h2>
+                            <span class="image-holder width-sm--9 width-md--13"><img src="../../img/t1-visual-ons.png"
+                                                                      alt="Example of interactive data visualisation"
+                                                                      class="no-border width-auto height--26"></span>
+                            <p class="tiles__content">Visual.ONS is a website exploring new approaches to making ONS
+                                statistics accessible and relevant to a wide public audience.</p>
                         </div>
-                    </article>
+                    </div>
                 </div>
+
+
+                {{!-- Dynamic stastical highlights --}}
+                <!--<div class="col col--md-23 col--lg-14 background--white height--48 margin-left-md--1 margin-bottom-sm--2 margin-bottom-md--2 padding-left-md--1 padding-right-md--1 js-hover">-->
+                    <!--<article>-->
+                        <!--<div class="box__content box__content--homepage padding-top-sm--20 padding-top-md--14">-->
+                            <!--<h2 class="tiles__title tiles__title-h2--home"><a href="/about/localstatistics">Data explorer<span class="image-holder"><img src="" alt="" class="no-border"></span></a></h2>-->
+                            <!--<p>Try our time series explorer tool</p>-->
+                        <!--</div>-->
+                    <!--</article>-->
+                <!--</div>-->
+                <!--<div class="col col--md-15 col--lg-14 background--white height--48 margin-left-md--1 margin-bottom-sm--2 margin-bottom-md--2 js-hover">-->
+                {{!-- <!--{{>partials/t1/home-figure sections.2}}--> --}}
+                <!--</div>-->
+                <!--<div class="col col--md-15 col--lg-14 background--white height--48 margin-left-md--1 margin-bottom-sm--2 margin-bottom-md--2 js-hover">-->
+                {{!-- <!--{{>partials/t1/home-figure sections.3}}--> --}}
+                <!--</div>-->
+                <!--<div class="col col--md-15 col--lg-14 background--white height--48 margin-left-md--1 margin-bottom-sm--2 margin-bottom-md--2 js-hover">-->
+                {{!-- <!--{{>partials/t1/home-figure sections.4}}--> --}}
+                <!--</div>-->
+                <!--<div class="col col--md-23 col--lg-14 background--white height--48 margin-left-md--1 margin-bottom-sm--2 margin-bottom-md--2 js-hover">-->
+                {{!-- {{>partials/t1/home-figure sections.0}} --}}
+                <!--</div>-->
+                <!--<div class="col col--lg-14 height-sm--32 height--23 background--white margin-left-md--1 margin-bottom-sm--2 margin-bottom-md--2 padding-left-sm--1 padding-left-md--1 padding-right-sm--1 padding-right-md--1 padding-top-sm--2 padding-top-md--2 js-hover">-->
+                    <!--<article>-->
+                        <!--<div class="box__content box__content--homepage padding-top-sm--20 padding-top-md--14">-->
+                            <!--{{!-- <h2 class="tiles__title tiles__title-h2--home"><a href="/releasecalendar">{{labels.homepage-calendar}}<span class="image-holder"><img src="../../img/t1-cal.png" alt=""></span></a></h2>-->
+                            <!--<p class="tiles__content">Find out when our statistics are released and sign-up to receive notifications.</p> --}}-->
+                            <!--<h2 class="tiles__title-h2--home"><a href="/about/calendar">Release calendar<span class="image-holder"><img src="../../img/t1-cal.png" alt=""></span></a></h2>-->
+                            <!--{{!-- <p>Find out when our statistics are released and sign-up to receive notifications.</p> --}}-->
+                        <!--</div>-->
+                    <!--</article>-->
+                <!--</div>-->
+                <!--<div class="col col--lg-14 height-sm--32 height--23 background--white margin-left-md--1 margin-bottom-sm--2 margin-bottom-md--2 padding-left-sm--1 padding-left-md--1 padding-right-sm--1 padding-right-md--1 padding-top-sm--2 padding-top-md--2 js-hover">-->
+                    <!--<article>-->
+                        <!--<div class="box__content box__content--homepage padding-top-sm--20 padding-top-md--14">-->
+                            <!--<h2 class="tiles__title tiles__title-h2--home"><a class="icon--hide" href="https://www.gov.uk/government/statistics">{{labels.homepage-other-stats}}<span class="image-holder"><img src="../../img/t1-gov-uk--black.png" alt="GOV.UK logo" class="no-border"></span></a></h2>-->
+                            <!--{{!-- <p>Find official statistics produced by other government departments.</p> --}}-->
+                        <!--</div>-->
+                    <!--</article>-->
+                <!--</div>-->
+                <!--<div class="col col--md-23 col--lg-29 background--white height--48 margin-left-md--1 margin-bottom-sm--2 margin-bottom-md--2 js-hover">-->
+                {{!-- <!--{{>partials/t1/home-figure sections.1}}--> --}}
+                <!--</div>-->
+                <!--<div class="col col--lg-14 height-sm--32 height--30 background--white margin-left-md--1 margin-bottom-sm--2 margin-bottom-md--2 padding-left-sm--1 padding-left-md--1 padding-right-sm--1 padding-right-md--1 padding-top-sm--2 padding-top-md--2 js-hover">-->
+                    <!--<article>-->
+                        <!--<div class="box__content box__content--homepage padding-top-sm--20 padding-top-md--14">-->
+                            <!--<h2 class="tiles__title tiles__title-h2--home"><a href="/about/localstatistics">{{labels.local-stats-header}}<span class="image-holder"><img src="../../img/t1-local.png" alt="" class="no-border"></span></a></h2>-->
+                            <!--<p>{{labels.local-stats-text}}</p>-->
+                        <!--</div>-->
+                    <!--</article>-->
+                <!--</div>-->
+                <!--<div class="col col--lg-29 height--30 background--white margin-left-md--1 margin-bottom-sm--2 margin-bottom-md--2 padding-left-sm--1 padding-left-md--1 padding-right-sm--1 padding-right-md--1 padding-top-sm--2 padding-top-md--2 js-hover">-->
+                    <!--<article>-->
+                        <!--<div class="box__content box__content--homepage padding-left-sm--15 padding-left-md--15 height--26">-->
+                            <!--<a href="http://www.ons.gov.uk/ons/guide-method/census/index.html">-->
+                                <!--<h2 class="tiles__title-h2--home">{{labels.homepage-census}}</a>-->
+                            <!--</h2>-->
+                            <!--<span class="image-holder width--13"><img src="../../img/t1-census.png" alt="" class="no-border width-auto height--26"></span>-->
+                            <!--<p class="tiles__content">{{labels.homepage-census-sum}}</p>-->
+                        <!--</div>-->
+                    <!--</article>-->
+                <!--</div>-->
+                <!--<div class="col col--lg-29 height--30 background--white margin-left-md--1 margin-bottom-sm--2 margin-bottom-md--2 padding-left-sm--1 padding-left-md--1 padding-right-sm--1 padding-right-md--1 padding-top-sm--2 padding-top-md--2 js-hover">-->
+                    <!--<article>-->
+                        <!--<div class="box__content box__content--homepage padding-left-sm--15 padding-left-md--15 height--26">-->
+                            <!--<a href="http://visual.ons.gov.uk"><h2 class="tiles__title-h2--home">{{labels.homepage-visual}}</a></h2>-->
+                            <!--<span class="image-holder width--13"><img src="../../img/t1-visual-ons.png" alt="Example of interactive data visualisation" class="no-border width-auto height--26"></span>-->
+                            <!--<p class="tiles__content">{{labels.homepage-visual-sum}}</p>-->
+                        <!--</div>-->
+                    <!--</article>-->
+                <!--</div>-->
             </div>
         </div>
     </div>

@@ -186,12 +186,12 @@
                     <p class="print--hide">
                         {{#each breadcrumb}}
                             {{#if @last}}
-                                Return to <a class="underline-link" href="{{uri}}">{{description.title}}</a>
+                                <a class="underline-link" href="{{uri}}"><span class="icon icon-return--dark-small margin-right-sm--1 margin-right-md--1"></span>Return to '{{description.title}}'</a>
                             {{/if}}
                         {{/each}}
                     </p>
 
-                    <p>Provides files to download data as it existed for this spreadsheet on previous dates. </p>
+                    <p>Provides files to download data as it existed for this dataset on previous dates. </p>
 
                     <p>Statistics are most often revised for 1 of 2 reasons:</p>
 
@@ -308,4 +308,4 @@
 
 </div> {{!-- /page-content --}}
 {{/partial}}
-{{> content/base/statistics typeLabel="Spreadsheet(s)"}}
+{{> content/base/statistics typeLabel="Dataset(s)"}}

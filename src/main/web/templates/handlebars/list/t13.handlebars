@@ -1,5 +1,5 @@
 {{#partial "block-title"}}
-Time series data explorer
+Time series explorer
 {{/partial}}
 
 {{#partial "block-results-text"}}
@@ -41,7 +41,7 @@ Time series data explorer
 			</div>
 			<div class="timeseries__empty">
 				<h2>You have no timeseries selected</h2>
-				<p>Check the time series data that you'd like to download</p>
+				<p>Check the time series that you'd like to download</p>
 			</div>
 		</div>
 	</div>
@@ -49,7 +49,8 @@ Time series data explorer
 
 {{#partial "block-filters"}}
 	{{> list/filters/keywords}}
-    {{> list/filters/topics}}
+    {{!-- {{> list/filters/topics}} // DYNAMIC VERSION--}}
+    {{> list/filters/topics-hardcoded}} {{!-- HARDCODED VERSION (FOR GO LIVE) --}}
 	{{> list/filters/update-date}}
 {{/partial}}
 

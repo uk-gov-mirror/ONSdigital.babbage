@@ -1,4 +1,4 @@
-<h2 aria-live="assertive" class="search-page__results-text">
+<h2 aria-live="assertive" class="search-page__results-text {{#if_eq listType "timeseriestool"}}search-page__results-text--timeseries{{/if_eq}}">
 	{{!-- Show copy denoting all results are shown if there are no results starting with selected letter and page is not filtered with keyword--}}
 	{{#if parameters.az.0}} 
 		{{#unless parameters.query.0}}
@@ -9,7 +9,7 @@
 	{{/if}}
 
 	{{#if_any results timeSeriesCount}}
-		<span class="stand-out-text">{{numberOfResults}}</span> {{#if parameters.filter}}<strong>{{> list/filters/filters-type-list}}</strong>{{else}}{{resultsLabel}}{{/if}}{{#if parameters.query.0}} containing <strong>‘{{parameters.query.0}}’</strong>{{/if}}
+		<span class="stand-out-text">{{numberOfResults}}</span> {{#if parameters.filter}}<strong>{{> list/filters/filters-type-list}}</strong>{{else}}{{resultsLabel}}{{/if}}{{#if parameters.query.0}} containing <strong>'{{parameters.query.0}}'</strong>{{/if}}
 	{{else}}
 		There are no {{#if parameters.filter}}<strong>{{> list/filters/filters-type-list}}</strong>{{else}}{{resultsLabel}}{{/if}}{{#if parameters.query.0}} containing <strong>'{{parameters.query.0}}'</strong>{{/if}}
 	{{/if_any}}

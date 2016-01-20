@@ -63,7 +63,7 @@
 						</div>
 						<!-- </div> -->
 					</div> {{!-- /tiles__content --}}
-					<noscript>
+                    <!--[if gt IE 8]><!--><noscript><![endif]-->
 						<div class="tiles__content js-enhance--hide">
 							<h2>Table</h2>
 							<table class="tablesaw">
@@ -95,7 +95,7 @@
 								</tbody>
 							</table>
 						</div>
-					</noscript>
+                        <!--[if gt IE 8]><!--></noscript><![endif]-->
 				</div> {{!-- /col --}}
 			</div> {{!-- /col-wrap --}}
 		{{/if_any}}
@@ -116,13 +116,6 @@
 							{{#each relatedData}}
 								{{#resolve this.uri filter="description"}}
 									<li class="flush"><a href="{{uri}}">{{#if description.cdid}}{{description.cdid}}
-										: {{/if}}{{description.title}}</a></li>
-								{{/resolve}}
-							{{/each}}
-							{{#each relatedDatasets}}
-								{{#resolve this.uri filter="description"}}
-									<li class="flush"><a
-											href="{{uri}}">{{#if description.datasetId}}{{description.datasetId}}
 										: {{/if}}{{description.title}}</a></li>
 								{{/resolve}}
 							{{/each}}
@@ -185,4 +178,4 @@
 	</div>
 {{/partial}}
 
-{{> content/base/statistics typeLabel="Time series data"}}
+{{> content/base/statistics typeLabel="Time series"}}

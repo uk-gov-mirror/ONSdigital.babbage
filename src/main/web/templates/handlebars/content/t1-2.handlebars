@@ -1,0 +1,110 @@
+{{!-- Used for census landing page --}}
+
+{{#partial "block-main"}}
+    <div class="wrapper">
+        <div class="col-wrap">
+            <div class="">
+                <div class="col">{{> partials/breadcrumb}}</div>
+                <div class="col col--md-37 col--lg-42 margin-left-md--1">
+                    {{>content/partials/intro}}
+                </div>
+                <div class="col col--md-7 col--lg-10 margin-top-md--6 margin-top-lg--2 margin-left-md--3 margin-left-lg--7 margin-bottom-sm--2  margin-bottom-md--2">
+                    <img class="width-sm--7 width-md--7 width-lg--10" src="/img/t1-2-census-logo.png" alt="2011 Census logo">
+                </div>
+            </div>
+            <div class="col">
+                <div class="background--indigo nav-secondary--census">
+                    <ul class="list--neutral flush padding-top-sm--1 padding-top--2 padding-right-md--1 padding-bottom--2 padding-left-sm--1">
+                        <li class="flush-top flush-bottom margin-top--sm-2 margin-left-md--1 margin-bottom-sm--2 inline-block--md padding-right--1 border-right--iron-light-md border-right--iron-light-lg">
+                            <a class="jsEnhanceAnimateScroll" href="#news">News and events</a></li>
+                        <li class="flush-top flush-bottom margin-top--sm-2 margin-left-md--1 margin-bottom-sm--2 inline-block--md padding-right--1 border-right--iron-light-md border-right--iron-light-lg">
+                            <a class="jsEnhanceAnimateScroll" href="#2011census">2011 Census</a></li>
+                        <li class="flush-top flush-bottom margin-top--sm-2 margin-left-md--1 margin-bottom-sm--1 inline-block--md"><a class="jsEnhanceAnimateScroll" href="#other">Other stuff</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="news" class="background--prim">
+        <section>
+            <div class="wrapper">
+                <div class="col-wrap">
+                    <h2 class="col margin-bottom--1">News and events</h2>
+                    <div class="col col--md-23 col--lg-29 height-md--42 margin-bottom--2 margin-left-md--1 padding-top-sm--2 padding-top-md--2 padding-right-md--1 padding-bottom-sm--1 padding-bottom-md--1 padding-left-sm--1 padding-left-md--1 background--white js-hover">
+                        {{> partials/t1/census-tile sections.0 width="half"}}
+                    </div>
+                    <div class="col col--md-23 col--lg-29 height-md--42 margin-bottom--2 margin-left-md--1 padding-top-sm--2 padding-top-md--2  padding-right-sm--1 padding-right-md--1 padding-bottom-sm--1 padding-bottom-md--1 padding-left-sm--1 padding-left-md--1 background--white js-hover">
+                        {{> partials/t1/census-tile sections.1 width="half" }}
+                    </div>
+                    <div class="col col--md-15 col--lg-19 height-md--42 margin-bottom--2 margin-left-md--1 padding-top-sm--2 padding-top-md--2 padding-right-sm--1  padding-right-md--1 padding-bottom-sm--1 padding-bottom-md--1 padding-left-sm--1 padding-left-md--1 background--white js-hover">
+                        {{> partials/t1/census-tile sections.2 width="third" }}
+                    </div>
+                    <div class="col col--md-15 col--lg-19 height-md--42 margin-bottom--2 margin-left-md--1 padding-top-sm--2 padding-top-md--2 padding-right-sm--1  padding-right-md--1 padding-bottom-sm--1 padding-bottom-md--1 padding-left-sm--1 padding-left-md--1 background--white js-hover">
+                        {{> partials/t1/census-tile sections.3 width="third" }}
+                    </div>
+                    <div class="col col--md-15 col--lg-19 height-md--42 margin-bottom--2 margin-left-md--1 padding-top-sm--2 padding-top-md--2 padding-right-sm--1  padding-right-md--1 padding-bottom-sm--1 padding-bottom-md--1 padding-left-sm--1 padding-left-md--1 background--white js-hover">
+                        {{> partials/t1/census-tile sections.4 width="third" }}
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div class="wrapper">
+        <section>
+            <div class="col-wrap">
+                <div id="2011census">
+                    <h2 class="col margin-bottom--1">Previous Census</h2>
+                    <div class="col height-md--27 col--md-15 col--lg-19 margin-left-md--1 margin-bottom--2 padding-top--2 padding-right--1 padding-bottom--2 padding-left--1 background--mercury js-hover">
+                        <h3 class="flush"><a href="/census/2011census">2011 Census</a></h3>
+                        <p class="flush">Nulla quis lorem ut libero malesuada feugiat. Quisque velit nisi, pretium ut lacinia in, elementum id enim.</p>
+                    </div>
+                    <div class="col height-md--27 col--md-15 col--lg-19 margin-left-md--1 margin-bottom--2 padding-top--2 padding-right--1 padding-bottom--2 padding-left--1 background--mercury js-hover">
+                        <h3 class="flush"><a href="/census/2001censusandearlier">2001 Census and earlier</a></h3>
+                        <p class="flush">Nulla quis lorem ut libero malesuada feugiat. Quisque velit nisi, pretium ut lacinia in, elementum id enim.</p>
+                    </div>
+                    <div class="col height-md--27 col--md-15 col--lg-19 margin-left-md--1 margin-bottom--2 padding-top--2 padding-right--1 padding-bottom--2 padding-left--1 background--mercury js-hover">
+                        <h3 class="flush"><a href="https://www.nomisweb.co.uk/">All census data</a></h3>
+                        <p class="flush">Nulla quis lorem ut libero malesuada feugiat. Quisque velit nisi, pretium ut lacinia in, elementum id enim.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <div class="background--mercury">
+        <div class="wrapper">
+            <section>
+                <div class="col-wrap">
+                    <div id="other">
+                        <h2 class="col margin-bottom--1">Other stuff</h2>
+                        <div class="col height-md--23 height-lg--15 col--md-23 col--lg-29 margin-bottom--2 margin-left-md--1 padding-top--2 padding-right--1 padding-bottom--2 padding-left--1 background--white js-hover">
+                            <h3 class="flush"><a href="/census/censustransformationprogramme">Census customer services</a></h3>
+                            <p class="flush">Nulla quis lorem ut libero malesuada feugiat. Quisque velit nisi, pretium ut lacinia in, elementum id enim.</p>
+                        </div>
+                        <div class="col height-md--23 height-lg--15 col--md-23 col--lg-29 margin-bottom--2 margin-left-md--1 padding-top--2 padding-right--1 padding-bottom--2 padding-left--1 background--white js-hover">
+                            <h3 class="flush"><a href="/census/2011census">Stakeholder engagement</a></h3>
+                            <p class="flush">Nulla quis lorem ut libero malesuada feugiat. Quisque velit nisi, pretium ut lacinia in, elementum id enim.</p>
+                        </div>
+                        <div class="col height-md--27 col--md-15 col--lg-19 margin-bottom--2 margin-left-md--1 padding-top--2 padding-right--1 padding-bottom--2 padding-left--1 background--white js-hover">
+                            <h3 class="flush"><a href="/census/censustransformationprogramme/2021census/consultations">Consultations</a></h3>
+                            <p class="flush">Nulla quis lorem ut libero malesuada feugiat. Quisque velit nisi, pretium ut lacinia in, elementum id enim.</p>
+                        </div>
+                        <div class="col height-md--27 col--md-15 col--lg-19 margin-bottom--2 margin-left-md--1 padding-top--2 padding-right--1 padding-bottom--2 padding-left--1 background--white js-hover">
+                            <h3 class="flush"><a href="/census/censustransformationprogramme">Census Transformation Programme</a></h3>
+                            <p class="flush">Nulla quis lorem ut libero malesuada feugiat. Quisque velit nisi, pretium ut lacinia in, elementum id enim.</p>
+                        </div>
+                        <div class="col height-md--27 col--md-15 col--lg-19 margin-bottom--2 margin-left-md--1 padding-top--2 padding-right--1 padding-bottom--2 padding-left--1 background--white js-hover">
+                            <h3 class="flush"><a href="/census/2011census">Reserch projects</a></h3>
+                            <p class="flush">Nulla quis lorem ut libero malesuada feugiat. Quisque velit nisi, pretium ut lacinia in, elementum id enim.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+{{/partial}}
+
+{{!-- Inheriting from base content template --}}
+{{> base/base}}

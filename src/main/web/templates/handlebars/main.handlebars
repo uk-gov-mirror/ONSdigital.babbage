@@ -18,6 +18,7 @@
 	    <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
+
 		<!--[if IE]><![endif]-->
 		<!--[if lte IE 8]>
 		<link rel="stylesheet" href="{{#if_any (eq 'localhost' location.hostname) (eq '127.0.0.1' location.hostname)}}http://localhost:9000/dist/css/old-ie.css{{else}}/node_modules/sixteens/dist/css/old-ie.css{{/if_any}}"/>
@@ -30,8 +31,9 @@
 		{{/if_any}} --}}
 		{{!-- <link rel="stylesheet" href="/node_modules/ONS-Pattern-Library/dist/css/main.min.css"/> --}}
 		<link rel="stylesheet" type="text/css" href="{{#if is_dev}}http://localhost:9000/dist/css/main.css{{else}}/node_modules/sixteens/dist/css/main.css{{/if}}">
+		{{#if pdf_style}}<link rel="stylesheet" type="text/css" href="{{#if is_dev}}http://localhost:9000/dist/css/pdf.css{{else}}/node_modules/sixteens/dist/css/pdf.css{{/if}}">{{/if}}
 		{{!-- <link rel="stylesheet" type"text/css" href="{{#if is_dev}}http://localhost:9000/dist/css/print.css{{else}}/node_modules/sixteens/dist/css/print.css{{/if}}" media="print"> --}}
-		<![endif]-->
+
 		{{!-- <link rel="stylesheet" href="/css/js-enhance.css"/> --}}
 		{{!-- <link rel="stylesheet" href="/css/c3.css"/> --}}
 		{{!-- <script src="/node_modules/ONS-Pattern-Library/dist/js/header.js"></script> --}}
@@ -46,6 +48,7 @@
 		s.parentNode.insertBefore(bh, s);
 		})(document, 'script');
 		</script>
+        <![endif]-->
         <!-- Google Analytics Content Experiment code -->
         {{#if_eq uri "/economy/inflationandpriceindices"}}{{#unless (eq parameters.test.0 "B")}}<script>function utmx_section(){}function utmx(){}(function(){var
                 k='104040341-0',d=document,l=d.location,c=d.cookie;
@@ -62,8 +65,10 @@
         <!-- End of Google Analytics Content Experiment code -->
 	</head>
 	<body>
+        <!--[if gt IE 8]><!-->
 		<script type="text/javascript" src="/js/js-enhance-loading.js"></script>
 
+        <![endif]-->
 		{{!-- Main handlebars is the main file rendered by handlebars.
 		performs type check on content type and decides which template to render  --}}
 
@@ -75,6 +80,7 @@
 
 		{{!-- Content --}}
 		{{#if_eq type "home_page"}}{{> content/t1}}{{/if_eq}}
+		{{#if_eq type "home_page_census"}}{{> content/t1-2}}{{/if_eq}}
 		{{#if_eq type "taxonomy_landing_page"}}{{> content/t2}}{{/if_eq}}
 
 		{{#if_eq type "product_page"}}
@@ -143,7 +149,9 @@
 			{{#if_eq code 500}}{{> error/500}}{{/if_eq}}
 		{{/if_eq}}
 
+        <!--[if gt IE 8]><!-->
 		<script type="text/javascript" src="{{#if is_dev}}http://localhost:9000/dist/js/main.js{{else}}/node_modules/sixteens/dist/js/main.js{{/if}}"></script>
+        <![endif]-->
 		{{!-- <link rel="stylesheet" type="text/css" href="{{#if_any (eq 'localhost' location.hostname) (eq '127.0.0.1' location.hostname)}}http://localhost:9000/dist/css/main.css{{else}}/node_modules/sixteens/dist/css/main.css{{/if_any}}"> --}}
 		{{!-- <script type="text/javascript" src="/ui/js/lib/jquery.tooltipster.min.js"></script>
 		<script type="text/javascript" src="/ui/js/lib/highcharts.js"></script>
@@ -151,21 +159,21 @@
 		<script type="text/javascript" src="/js/sparkline.js"></script>
 		<script type="text/javascript" src="/js/chartRenderer.js"></script>
 		<script type="text/javascript" src="/js/js-enhance.js"></script> --}}
-		<script>
-		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-		ga('create', 'UA-56892037-3', {'allowAnchor': true});
-		ga('send', 'pageview', {'page': location.pathname + getSearch() + location.hash});
-		function getSearch(){
-			if(location.pathname === '/search'){
-				var numberOfResults = {{#if numberOfResults}} {{numberOfResults}} {{else}} 0 {{/if}};
-				return location.search + '&numberOfResults=' + numberOfResults;
-			} else {
-				return location.search;
-			}
-		}
-		</script>
+            <script>
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+            ga('create', 'UA-56892037-3', {'allowAnchor': true});
+            ga('send', 'pageview', {'page': location.pathname + getSearch() + location.hash});
+            function getSearch(){
+                if(location.pathname === '/search'){
+                    var numberOfResults = {{#if numberOfResults}} {{numberOfResults}} {{else}} 0 {{/if}};
+                    return location.search + '&numberOfResults=' + numberOfResults;
+                } else {
+                    return location.search;
+                }
+            }
+            </script>
 	</body>
 </html>

@@ -208,14 +208,14 @@
             </tbody>
         </table>
     </div>
-<noscript>
+    <!--[if gt IE 8]><!--><noscript><![endif]-->
 	<div class="tiles__content">
 	    <img class="js-enhance--hide" src="{{uri}}/linechartimage" alt="{{description.title}}" width="875" height="400">
 	</div>
-</noscript>
+    <!--[if gt IE 8]><!--></noscript><![endif]-->
 
 
 {{!-- Dynamically generated linechart configuration file --}}
-<script type="text/javascript" src="{{uri}}/linechartconfig"></script>
+<!--[if gt IE 8]><!--><script type="text/javascript" src="{{uri}}/linechartconfig"></script><![endif]-->
 
 </div>
