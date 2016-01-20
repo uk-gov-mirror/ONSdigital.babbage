@@ -14,14 +14,12 @@ import org.elasticsearch.index.query.functionscore.FunctionScoreQueryBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.HashSet;
+import javax.ws.rs.GET;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Set;
 
 import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.*;
-import static com.github.onsdigital.babbage.search.input.TypeFilter.*;
-import static java.util.Collections.addAll;
 import static org.apache.commons.lang3.ArrayUtils.addAll;
 
 /**
@@ -31,22 +29,15 @@ import static org.apache.commons.lang3.ArrayUtils.addAll;
 public class SearchPublication {
 
     //available allFilters on the page
-    private static Set<TypeFilter> allFilters = new HashSet<>();
+    private static Set<TypeFilter> publicationFilters = TypeFilter.getPublicationFilters();
     //Counting both data and publication types to show counts on tabs
-    static ContentType[] contentTypesToCount = addAll(resolveContentTypes(allFilters), SearchData.contentTypesToCount) ;
+    private static ContentType[] contentTypesToCount = addAll(resolveContentTypes(publicationFilters), resolveContentTypes(TypeFilter.getDataFilters()));
 
-    static {
-        addAll(allFilters,
-                BULLETIN,
-                ARTICLE,
-                COMPENDIA
-        );
-    }
-
+    @GET
     public void get(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String searchTerm = extractSearchTerm(request);
-        SearchRequestHelper.get(request, response, getClass().getSimpleName(), searchTerm, () -> {
-            Set<TypeFilter> selectedFilters = extractSelectedFilters(request, allFilters);
+        SearchRequestHelper.get(request, response, searchTerm, getClass().getSimpleName(), () -> {
+            Set<TypeFilter> selectedFilters = extractSelectedFilters(request, publicationFilters);
             ContentType[] selectedContentTypes = resolveContentTypes(selectedFilters);
 
             DisMaxQueryBuilder baseContentQuery = buildBaseContentQuery(searchTerm);
@@ -61,10 +52,9 @@ public class SearchPublication {
 
             List<SearchResponseHelper> searchResponseHelpers = SearchHelper.searchMultiple(contentSearch, counts);
             LinkedHashMap<String, SearchResult> results = new LinkedHashMap<>();
-            results.put("result", searchResponseHelpers.get(1).getResult());
-            results.put("counts", searchResponseHelpers.get(2).getResult());
+            results.put("result", searchResponseHelpers.get(0).getResult());
+            results.put("counts", searchResponseHelpers.get(1).getResult());
             return results;
         });
     }
-
 }

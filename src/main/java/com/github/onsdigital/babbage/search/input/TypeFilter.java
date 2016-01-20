@@ -2,6 +2,10 @@ package com.github.onsdigital.babbage.search.input;
 
 import com.github.onsdigital.babbage.search.model.ContentType;
 
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Created by bren on 16/09/15.
  * <p/>
@@ -21,11 +25,42 @@ public enum TypeFilter {
 
     private ContentType[] types;
 
+    private static Set<TypeFilter> allFilters;
+    private static Set<TypeFilter> publicationFilters;
+    private static Set<TypeFilter> dataFilters;
+    private static Set<TypeFilter> methodologyFilters;
+
     TypeFilter(ContentType... types) {
         this.types = types;
     }
 
+    public static Set<TypeFilter> getAllFilters() {
+        return initialize(allFilters, TypeFilter.values());
+    }
+
+    public static Set<TypeFilter> getPublicationFilters() {
+        return initialize(publicationFilters, BULLETIN, ARTICLE, COMPENDIA);
+
+    }
+
+    public static Set<TypeFilter> getDataFilters() {
+        return initialize(dataFilters, TIME_SERIES, DATASETS, USER_REQUESTED_DATA);
+
+    }
+
     public ContentType[] getTypes() {
         return types;
+    }
+
+    private static Set<TypeFilter> initialize(Set<TypeFilter> filterSet, TypeFilter... types) {
+        if (filterSet == null) {
+            synchronized (TypeFilter.class) {
+                if (filterSet == null) {
+                    filterSet = new HashSet<>();
+                    Collections.addAll(filterSet, types);
+                }
+            }
+        }
+        return filterSet;
     }
 }

@@ -9,46 +9,30 @@ import com.github.onsdigital.babbage.search.input.SortBy;
 import com.github.onsdigital.babbage.search.input.TypeFilter;
 import com.github.onsdigital.babbage.search.model.ContentType;
 import com.github.onsdigital.babbage.search.model.SearchResult;
-import com.github.onsdigital.babbage.search.model.field.Field;
 import org.elasticsearch.index.query.DisMaxQueryBuilder;
 import org.elasticsearch.index.query.functionscore.FunctionScoreQueryBuilder;
-import org.elasticsearch.search.aggregations.AggregationBuilders;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.GET;
-import java.util.*;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Set;
 
 import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.*;
-import static com.github.onsdigital.babbage.search.input.TypeFilter.*;
-import static java.util.Collections.addAll;
-import static org.elasticsearch.index.query.QueryBuilders.functionScoreQuery;
 
 @Api
 public class Search {
 
     //available allFilters on the page
-    private static Set<TypeFilter> allFilters = new HashSet<>();
-    private static ContentType[] contentTypesToCount = resolveContentTypes(TypeFilter.values());
-
-    static {
-        addAll(allFilters,
-                BULLETIN,
-                ARTICLE,
-                COMPENDIA,
-                TIME_SERIES,
-                DATASETS,
-                USER_REQUESTED_DATA,
-                METHODOLOGY,
-                CORPORATE_INFORMATION
-        );
-    }
+    private static Set<TypeFilter> allFilters = TypeFilter.getAllFilters();
+    private static ContentType[] contentTypesToCount = resolveContentTypes(allFilters);
 
     @GET
     public void get(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String searchTerm = extractSearchTerm(request);
 
-        SearchRequestHelper.get(request, response, getClass().getSimpleName(), searchTerm, () -> {
+        SearchRequestHelper.get(request, response, searchTerm, getClass().getSimpleName(), () -> {
             Set<TypeFilter> selectedFilters = extractSelectedFilters(request, allFilters);
             ContentType[] selectedContentTypes = resolveContentTypes(selectedFilters);
 
