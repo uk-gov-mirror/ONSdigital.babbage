@@ -45,7 +45,7 @@ public class ONSQueryBuilders {
      * @param queryBuilder
      * @return
      */
-    public static QueryBuilder typeBoostedContentQuery(QueryBuilder queryBuilder) {
+    public static QueryBuilder typeBoostedQuery(QueryBuilder queryBuilder) {
         FunctionScoreQueryBuilder builder = functionScoreQuery(queryBuilder);
         for (ContentType contentType : ContentType.values()) {
             if (contentType.getWeight() != null) {

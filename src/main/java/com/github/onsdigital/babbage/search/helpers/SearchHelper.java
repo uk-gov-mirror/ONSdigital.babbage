@@ -1,7 +1,6 @@
 package com.github.onsdigital.babbage.search.helpers;
 
 import com.github.onsdigital.babbage.paginator.Paginator;
-import com.github.onsdigital.babbage.search.input.SortBy;
 import com.github.onsdigital.babbage.search.input.TypeFilter;
 import com.github.onsdigital.babbage.search.model.ContentType;
 import com.github.onsdigital.babbage.search.model.field.Field;
@@ -13,7 +12,6 @@ import org.elasticsearch.action.search.MultiSearchResponse;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.search.aggregations.AbstractAggregationBuilder;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -40,13 +38,13 @@ public class SearchHelper {
         return requestBuilder;
     }
 
-    public static SearchResponseHelper search(ONSQuery queries) {
+    public static ONSSearchResponse search(ONSQuery queries) {
         SearchRequestBuilder searchRequestBuilder = prepare(queries);
         System.out.println("Searching with query:\n" + searchRequestBuilder.internalBuilder());
-        return resolveDetails(queries, new SearchResponseHelper(searchRequestBuilder.get()));
+        return resolveDetails(queries, new ONSSearchResponse(searchRequestBuilder.get()));
     }
 
-    public static List<SearchResponseHelper> searchMultiple(List<ONSQuery> queries) {
+    public static List<ONSSearchResponse> searchMultiple(List<ONSQuery> queries) {
         MultiSearchRequestBuilder multiSearchRequestBuilder = getElasticsearchClient().prepareMultiSearch();
         for (ONSQuery builder : queries) {
             SearchRequestBuilder searchRequestBuilder = prepare(builder);
@@ -54,7 +52,7 @@ public class SearchHelper {
             multiSearchRequestBuilder.add(searchRequestBuilder);
         }
 
-        List<SearchResponseHelper> helpers = new ArrayList<>();
+        List<ONSSearchResponse> helpers = new ArrayList<>();
         MultiSearchResponse response = multiSearchRequestBuilder.get();
         {
             int i = 0;
@@ -62,7 +60,7 @@ public class SearchHelper {
                 if (item.isFailure()) {
                     throw new ElasticsearchException(item.getFailureMessage());
                 }
-                helpers.add(resolveDetails(queries.get(i), new SearchResponseHelper(item.getResponse())));
+                helpers.add(resolveDetails(queries.get(i), new ONSSearchResponse(item.getResponse())));
                 i++;
             }
         }
@@ -113,11 +111,11 @@ public class SearchHelper {
         }
     }
 
-    private static SearchResponseHelper resolveDetails(ONSQuery queryBuilder, SearchResponseHelper response) {
+    private static ONSSearchResponse resolveDetails(ONSQuery queryBuilder, ONSSearchResponse response) {
         return resolveSortBy(queryBuilder, resolvePaginator(queryBuilder, response));
     }
 
-    private static SearchResponseHelper resolveSortBy(ONSQuery queryBuilder, SearchResponseHelper response) {
+    private static ONSSearchResponse resolveSortBy(ONSQuery queryBuilder, ONSSearchResponse response) {
         if (queryBuilder.sortBy() == null) {
             return response;
         }
@@ -125,7 +123,7 @@ public class SearchHelper {
         return response;
     }
 
-    private static SearchResponseHelper resolvePaginator(ONSQuery queryBuilder, SearchResponseHelper response) {
+    private static ONSSearchResponse resolvePaginator(ONSQuery queryBuilder, ONSSearchResponse response) {
         if (queryBuilder.page() == null) { // if page not set , don't resolve pagination
             return response;
         }

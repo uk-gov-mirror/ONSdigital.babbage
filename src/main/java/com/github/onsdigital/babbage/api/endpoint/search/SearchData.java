@@ -2,22 +2,12 @@ package com.github.onsdigital.babbage.api.endpoint.search;
 
 import com.github.davidcarboni.restolino.framework.Api;
 import com.github.onsdigital.babbage.api.util.SearchUtils;
-import com.github.onsdigital.babbage.search.helpers.ONSQuery;
-import com.github.onsdigital.babbage.search.helpers.SearchHelper;
-import com.github.onsdigital.babbage.search.helpers.SearchRequestHelper;
-import com.github.onsdigital.babbage.search.helpers.SearchResponseHelper;
-import com.github.onsdigital.babbage.search.input.SortBy;
 import com.github.onsdigital.babbage.search.input.TypeFilter;
 import com.github.onsdigital.babbage.search.model.ContentType;
-import com.github.onsdigital.babbage.search.model.SearchResult;
-import org.elasticsearch.index.query.DisMaxQueryBuilder;
-import org.elasticsearch.index.query.functionscore.FunctionScoreQueryBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.GET;
-import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Set;
 
 import static com.github.onsdigital.babbage.search.helpers.SearchHelper.resolveContentTypes;

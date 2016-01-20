@@ -5,6 +5,8 @@ import com.github.onsdigital.babbage.error.ResourceNotFoundException;
 import com.github.onsdigital.babbage.search.input.SortBy;
 import com.github.onsdigital.babbage.search.input.TypeFilter;
 import org.apache.commons.lang3.StringUtils;
+import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
@@ -24,22 +26,6 @@ import static org.apache.commons.lang3.StringUtils.*;
  */
 
 public class SearchRequestHelper {
-
-    /**
-     * Builds search query by resolving search term, page and sort parameters
-     *
-     * @param request
-     * @param searchTerm
-     * @return ONSQuery, null if no search term given
-     */
-    public static ONSQuery buildSearchQuery(HttpServletRequest request, String searchTerm) {
-        if (StringUtils.isEmpty(searchTerm)) {
-            return null;
-        }
-        int page = extractPage(request);
-        SortBy sortBy = extractSortBy(request, SortBy.relevance);
-        return onsQuery(typeBoostedContentQuery(contentQuery(searchTerm))).page(page).sortBy(sortBy).highlight(true);
-    }
 
     public static Date[] extractPublishDates(HttpServletRequest request) {
         String updated = request.getParameter("updated");

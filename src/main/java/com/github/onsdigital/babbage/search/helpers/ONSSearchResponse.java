@@ -20,12 +20,12 @@ import java.util.Map;
 /**
  * Created by bren on 07/09/15.
  */
-public class SearchResponseHelper {
+public class ONSSearchResponse {
 
     SearchResponse response;
     SearchResult result;
 
-    public SearchResponseHelper(SearchResponse response) {
+    public ONSSearchResponse(SearchResponse response) {
         this.response = response;
         this.result = buildResult();
     }

@@ -3,7 +3,7 @@ package com.github.onsdigital.babbage.api.endpoint.search;
 import com.github.davidcarboni.restolino.framework.Api;
 import com.github.onsdigital.babbage.configuration.Configuration;
 import com.github.onsdigital.babbage.search.ElasticSearchClient;
-import com.github.onsdigital.babbage.search.helpers.SearchResponseHelper;
+import com.github.onsdigital.babbage.search.helpers.ONSSearchResponse;
 import com.github.onsdigital.babbage.template.TemplateService;
 import com.github.onsdigital.babbage.util.json.JsonUtil;
 import org.apache.commons.io.IOUtils;
@@ -55,8 +55,8 @@ public class SearchTest {
 
             SearchResponse topics = searchResponses.getResponses()[0].getResponse();
             SearchResponse contents = searchResponses.getResponses()[1].getResponse();
-            SearchResponseHelper topicResponse = new SearchResponseHelper(topics);
-            SearchResponseHelper contentResponse = new SearchResponseHelper(contents);
+            ONSSearchResponse topicResponse = new ONSSearchResponse(topics);
+            ONSSearchResponse contentResponse = new ONSSearchResponse(contents);
 
             Map<String, Object> templateData = new LinkedHashMap<>();
             templateData.put("contents", contentResponse.getResult());
