@@ -7,6 +7,20 @@ import java.util.LinkedHashMap;
  */
 public class ListUtils {
 
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
     public static LinkedHashMap<String, Object> getBaseListTemplate(String listType) {
         LinkedHashMap<String, Object> baseData = new LinkedHashMap<>();
         baseData.put("type", "list");

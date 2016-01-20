@@ -2,42 +2,22 @@ package com.github.onsdigital.babbage.search.helpers;
 
 import com.github.onsdigital.babbage.error.BadRequestException;
 import com.github.onsdigital.babbage.error.ResourceNotFoundException;
-import com.github.onsdigital.babbage.response.BabbageRedirectResponse;
-import com.github.onsdigital.babbage.response.BabbageStringResponse;
-import com.github.onsdigital.babbage.response.base.BabbageResponse;
-import com.github.onsdigital.babbage.search.function.SearchFunction;
 import com.github.onsdigital.babbage.search.input.SortBy;
 import com.github.onsdigital.babbage.search.input.TypeFilter;
-import com.github.onsdigital.babbage.search.model.ContentType;
-import com.github.onsdigital.babbage.search.model.SearchResult;
-import com.github.onsdigital.babbage.search.model.field.Field;
-import com.github.onsdigital.babbage.template.TemplateService;
-import com.github.onsdigital.babbage.util.json.JsonUtil;
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.elasticsearch.index.query.DisMaxQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilder;
-import org.elasticsearch.index.query.functionscore.FunctionScoreQueryBuilder;
-import org.elasticsearch.search.aggregations.AggregationBuilders;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.core.MediaType;
-import java.io.IOException;
-import java.util.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
-import static com.github.onsdigital.babbage.api.util.ListUtils.getBaseListTemplate;
-import static com.github.onsdigital.babbage.search.model.field.Field.*;
+import static com.github.onsdigital.babbage.search.helpers.ONSQueryBuilders.*;
 import static com.github.onsdigital.babbage.util.RequestUtil.getParam;
-import static com.github.onsdigital.babbage.util.URIUtil.isDataRequest;
 import static org.apache.commons.lang3.EnumUtils.getEnum;
-import static org.apache.commons.lang3.StringUtils.isEmpty;
-import static org.apache.commons.lang3.StringUtils.upperCase;
-import static org.elasticsearch.index.query.MatchQueryBuilder.Operator.AND;
-import static org.elasticsearch.index.query.MultiMatchQueryBuilder.Type.BEST_FIELDS;
-import static org.elasticsearch.index.query.MultiMatchQueryBuilder.Type.CROSS_FIELDS;
-import static org.elasticsearch.index.query.QueryBuilders.*;
-import static org.elasticsearch.index.query.functionscore.ScoreFunctionBuilders.weightFactorFunction;
+import static org.apache.commons.lang3.StringUtils.*;
 
 /**
  * Common utilities to manipulate search request query and extracting common search parameters
@@ -45,151 +25,69 @@ import static org.elasticsearch.index.query.functionscore.ScoreFunctionBuilders.
 
 public class SearchRequestHelper {
 
-
-    public static void get(HttpServletRequest request, HttpServletResponse response, String searchTerm, String listType, SearchFunction search) throws Exception {
-        if (searchTerm == null) {
-            buildResponse(request, response, listType, null);
-        } else {
-            //search time series by cdid, redirect to time series page if found
-            String timeSeriesUri = searchTimeSeriesUri(searchTerm);
-            if (timeSeriesUri != null) {
-                new BabbageRedirectResponse(timeSeriesUri).apply(request, response);
-                return;
-            }
-            buildResponse(request, response, listType, search.search()).apply(request, response);
-        }
-    }
-
-    //Send result back to client
-    private static BabbageResponse buildResponse(HttpServletRequest request, HttpServletResponse response, String listType, Map<String, SearchResult> results) throws IOException {
-        LinkedHashMap<String, Object> data = getBaseListTemplate(listType);
-        if (results != null) {
-            for (Map.Entry<String, SearchResult> result : results.entrySet()) {
-                data.put(result.getKey(), result.getValue());
-            }
-        }
-        BabbageResponse result;
-        if (isDataRequest(request.getRequestURI())) {
-            result = new BabbageStringResponse(JsonUtil.toJson(data), MediaType.APPLICATION_JSON);
-        } else {
-            result = new BabbageStringResponse(TemplateService.getInstance().renderContent(data), MediaType.TEXT_HTML);
-        }
-        return result;
-    }
-
-    private static String searchTimeSeriesUri(String searchTerm) {
-        SearchResponseHelper search = SearchHelper.
-                search(onsQuery(boolQuery().must(termQuery(cdid.fieldName(), searchTerm)), ContentType.timeseries)
-                        .highlight(false).size(1).fetchFields(Field.uri));
-
-        if (search.getNumberOfResults() == 0) {
+    /**
+     * Builds search query by resolving search term, page and sort parameters
+     *
+     * @param request
+     * @param searchTerm
+     * @return ONSQuery, null if no search term given
+     */
+    public static ONSQuery buildSearchQuery(HttpServletRequest request, String searchTerm) {
+        if (StringUtils.isEmpty(searchTerm)) {
             return null;
         }
-        Map<String, Object> timeSeries = search.getResult().getResults().iterator().next();
-        return (String) timeSeries.get(Field.uri.fieldName());
+        int page = extractPage(request);
+        SortBy sortBy = extractSortBy(request, SortBy.relevance);
+        return onsQuery(typeBoostedContentQuery(contentQuery(searchTerm))).page(page).sortBy(sortBy).highlight(true);
     }
 
+    public static ONSQuery buildGlobalListQuery()
 
+    public static Date[] extractPublishDates(HttpServletRequest request) {
+        String updated = request.getParameter("updated");
+        Date fromDate;
+        Date toDate = null;
 
-    /**
-     * Extracts filter, sort and page information from given client request to initialize query with
-     *
-     * @param request
-     * @param queryBuilder
-     * @param defaultFilters
-     * @return
-     */
-    public static ONSQueryBuilder onsQuery(HttpServletRequest request, QueryBuilder queryBuilder, Set<TypeFilter> defaultFilters) {
-        return new ONSQueryBuilder(queryBuilder, extractTypeNames(request, defaultFilters))
-                .page(extractPage(request))
-                .sortBy(extractSortBy(request));
+        if (updated == null) {
+            updated = "";
+        }
+
+        switch (updated) {
+            case "today":
+                fromDate = daysBefore(1);
+                break;
+            case "week":
+                fromDate = daysBefore(7);
+                break;
+            case "month":
+                fromDate = daysBefore(30);
+                break;
+            default:
+                fromDate = parseDate(request.getParameter("fromDate"));
+                toDate = parseDate(request.getParameter("toDate"));
+                break;
+        }
+        return new Date[]{fromDate, toDate};
     }
 
-
-    /**
-     * Extracts sort and page information from given client request to initialize query with
-     *
-     * @param request
-     * @param queryBuilder
-     * @param types types to be queried
-     * @return
-     */
-    public static ONSQueryBuilder onsQuery(HttpServletRequest request, QueryBuilder queryBuilder, ContentType... types) {
-        return new ONSQueryBuilder(queryBuilder, resolveTypeNames(types))
-                .page(extractPage(request))
-                .sortBy(extractSortBy(request));
-    }
-
-    /**
-     * Creates query builder filtering only given content types
-     *
-     * @param queryBuilder
-     * @param typeNames
-     * @return
-     */
-    public static ONSQueryBuilder onsQuery(QueryBuilder queryBuilder, String... typeNames) {
-        return new ONSQueryBuilder(queryBuilder, typeNames);
-    }
-
-    /**
-     * Creates query builder filtering only given content types
-     *
-     * @param queryBuilder
-     * @param types
-     * @return
-     */
-    public static ONSQueryBuilder onsQuery(QueryBuilder queryBuilder, ContentType... types) {
-        return new ONSQueryBuilder(queryBuilder, resolveTypeNames(types));
-    }
-
-    /**
-     * Base content query with common fields in all content types as dis max query.
-     *
-     * @param searchTerm
-     * @return
-     */
-    public static DisMaxQueryBuilder buildBaseContentQuery(String searchTerm) {
-        return disMaxQuery()
-                .add(boolQuery()
-                        .should(matchQuery(title_no_dates.fieldName(), searchTerm)
-                                        .boost(title_no_dates.boost())
-                                        .minimumShouldMatch("1<-2 3<80% 5<60%")
-                        )
-                        .should(multiMatchQuery(searchTerm, title.fieldNameBoosted(), edition.fieldNameBoosted())
-                                .type(CROSS_FIELDS).minimumShouldMatch("3<80% 5<60%")))
-                .add(multiMatchQuery(searchTerm, summary.fieldNameBoosted(), metaDescription.fieldNameBoosted())
-                        .type(BEST_FIELDS).minimumShouldMatch("75%"))
-                .add(matchQuery(keywords.fieldNameBoosted(), searchTerm).operator(AND))
-                .add(multiMatchQuery(searchTerm, cdid.fieldNameBoosted(), datasetId.fieldNameBoosted()).operator(AND));
-    }
-
-    public static ONSQueryBuilder countDocTypes(QueryBuilder query, ContentType... types) {
-        return onsQuery(query, types)
-                .size(0).aggregate(AggregationBuilders.terms("docCounts")
-                        .field(Field._type.name())); //aggregating all content types without using selected numbers
-    }
-
-    /**
-     *
-     * Boosts some content types to be more relevant than others
-     *
-     * @return
-     */
-    public static FunctionScoreQueryBuilder boostContentTypes(QueryBuilder query) {
-        FunctionScoreQueryBuilder builder = functionScoreQuery(query);
-        return addContentBoosts(builder);
-    }
-
-    //Adds content type boosts as weight functions if content type is in selected filters
-    private static FunctionScoreQueryBuilder addContentBoosts(FunctionScoreQueryBuilder builder) {
-        for (ContentType contentType : ContentType.values()) {
-            if (contentType.getWeight() != null) {
-                builder.add(termQuery(_type.fieldName(), contentType.name()), weightFactorFunction(contentType.getWeight()));
+    private static Date parseDate(String date) {
+        if (isNotEmpty(date)) {
+            date = date.trim();
+            try {
+                return new SimpleDateFormat("dd/MM/yyyy").parse(date);
+            } catch (ParseException e) {
+                //ignore invalid date input
             }
         }
-        return builder;
+        return null;
     }
 
+
+    private static Date daysBefore(int days) {
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DAY_OF_MONTH, -1 * days);
+        return cal.getTime();
+    }
 
     /**
      * Extracts filter parameters requested, including only filter if given default filters, otherwise ignores.
@@ -217,16 +115,15 @@ public class SearchRequestHelper {
     }
 
 
-    public static SortBy extractSortBy(HttpServletRequest request) {
+    public static SortBy extractSortBy(HttpServletRequest request, SortBy defaultSort) {
         String sortBy = getParam(request, "sortBy");
         if (isEmpty(sortBy)) {
-            return null;
+            return defaultSort;
         }
         try {
             return SortBy.valueOf(sortBy.toLowerCase());
         } catch (IllegalArgumentException e) {
-            //ignore invalid sort by parameter
-            return null;
+            return defaultSort;
         }
     }
 
@@ -269,39 +166,5 @@ public class SearchRequestHelper {
         return query;
     }
 
-    /**
-     * Resolves content types to be queried based on selected filters, if no filters submitted will return default filters
-     */
-    public static String[] extractTypeNames(HttpServletRequest request, Set<TypeFilter> defaultFilters) {
-        Set<TypeFilter> selectedFilters = extractSelectedFilters(request, defaultFilters);
-        return resolveTypeNames(selectedFilters);
-    }
 
-    public static String[] resolveTypeNames(Set<TypeFilter> filters) {
-        String[] types = new String[0];
-        for (TypeFilter selectedFilter : filters) {
-            ContentType[] contentTypes = selectedFilter.getTypes();
-            types = ArrayUtils.addAll(types, resolveTypeNames(contentTypes));
-        }
-        return types;
-    }
-    public static ContentType[] resolveContentTypes(Set<TypeFilter> filters) {
-        return resolveContentTypes(filters.toArray(new TypeFilter[filters.size()]));
-    }
-
-    public static ContentType[] resolveContentTypes(TypeFilter... filters) {
-        ContentType[] contentTypes = new ContentType[0];
-        for (TypeFilter filter : filters) {
-            contentTypes = ArrayUtils.addAll(contentTypes, filter.getTypes());
-        }
-        return contentTypes;
-    }
-
-    private static String[] resolveTypeNames(ContentType... contentTypes) {
-        String[] types = new String[0];
-        for (ContentType type : contentTypes) {
-            types = ArrayUtils.addAll(types, type.name());
-        }
-        return types;
-    }
 }

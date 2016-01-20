@@ -2,17 +2,21 @@ package com.github.onsdigital.babbage.search.helpers;
 
 import com.github.onsdigital.babbage.paginator.Paginator;
 import com.github.onsdigital.babbage.search.input.SortBy;
+import com.github.onsdigital.babbage.search.input.TypeFilter;
+import com.github.onsdigital.babbage.search.model.ContentType;
 import com.github.onsdigital.babbage.search.model.field.Field;
 import com.github.onsdigital.babbage.search.model.sort.SortField;
+import org.apache.commons.lang3.ArrayUtils;
 import org.elasticsearch.ElasticsearchException;
 import org.elasticsearch.action.search.MultiSearchRequestBuilder;
 import org.elasticsearch.action.search.MultiSearchResponse;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.search.aggregations.AbstractAggregationBuilder;
-import org.elasticsearch.search.aggregations.AggregationBuilders;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import static com.github.onsdigital.babbage.configuration.Configuration.ELASTIC_SEARCH.getElasticSearchIndexAlias;
 import static com.github.onsdigital.babbage.configuration.Configuration.GENERAL.getMaxVisiblePaginatorLink;
@@ -20,38 +24,31 @@ import static com.github.onsdigital.babbage.search.ElasticSearchClient.getElasti
 
 public class SearchHelper {
 
-    private static SearchRequestBuilder prepare(ONSQueryBuilder queryBuilder) {
-        SearchRequestBuilder searchRequestBuilder = getElasticsearchClient()
+    private static SearchRequestBuilder prepare(ONSQuery query) {
+        SearchRequestBuilder requestBuilder = getElasticsearchClient()
                 .prepareSearch(getElasticSearchIndexAlias())
-                .setTypes(queryBuilder.types())
-                .setQuery(queryBuilder.query())
-                .setFrom(queryBuilder.from())
-                .setSize(queryBuilder.size())
-                .setFetchSource(queryBuilder.fetchFields(), null);
+                .setQuery(query.query())
+                .setFrom(query.from())
+                .setSize(query.size());
 
-        if (queryBuilder.highlight()) {
-            addHighlights(searchRequestBuilder);
-        }
-        if (queryBuilder.sortBy() != null) {
-            addSorts(searchRequestBuilder, queryBuilder.sortBy());
-        }
+        addTypes(requestBuilder, query);
+        addHighlights(requestBuilder, query);
+        addSorts(requestBuilder, query);
+        addAggregations(requestBuilder, query);
+        addFetchFields(requestBuilder, query);
 
-        if (queryBuilder.aggregate() != null) {
-            addAggregations(searchRequestBuilder, queryBuilder.aggregate());
-        }
-
-        return searchRequestBuilder;
+        return requestBuilder;
     }
 
-    public static SearchResponseHelper search(ONSQueryBuilder queryBuilder) {
-        SearchRequestBuilder searchRequestBuilder = prepare(queryBuilder);
+    public static SearchResponseHelper search(ONSQuery queries) {
+        SearchRequestBuilder searchRequestBuilder = prepare(queries);
         System.out.println("Searching with query:\n" + searchRequestBuilder.internalBuilder());
-        return resolveDetails(queryBuilder, new SearchResponseHelper(searchRequestBuilder.get()));
+        return resolveDetails(queries, new SearchResponseHelper(searchRequestBuilder.get()));
     }
 
-    public static List<SearchResponseHelper> searchMultiple(ONSQueryBuilder... queryBuilders) {
+    public static List<SearchResponseHelper> searchMultiple(List<ONSQuery> queries) {
         MultiSearchRequestBuilder multiSearchRequestBuilder = getElasticsearchClient().prepareMultiSearch();
-        for (ONSQueryBuilder builder : queryBuilders) {
+        for (ONSQuery builder : queries) {
             SearchRequestBuilder searchRequestBuilder = prepare(builder);
             System.out.println("Searching with query:\n" + searchRequestBuilder.internalBuilder());
             multiSearchRequestBuilder.add(searchRequestBuilder);
@@ -65,7 +62,7 @@ public class SearchHelper {
                 if (item.isFailure()) {
                     throw new ElasticsearchException(item.getFailureMessage());
                 }
-                helpers.add(resolveDetails(queryBuilders[i], new SearchResponseHelper(item.getResponse())));
+                helpers.add(resolveDetails(queries.get(i), new SearchResponseHelper(item.getResponse())));
                 i++;
             }
         }
@@ -73,34 +70,54 @@ public class SearchHelper {
     }
 
 
-    private static SearchRequestBuilder addHighlights(SearchRequestBuilder builder) {
+    private static void addTypes(SearchRequestBuilder builder, ONSQuery query) {
+        if (query.types() == null) {
+            return;
+        }
+        builder.setTypes(resolveTypeNames(query.types()));
+    }
+
+    private static void addFetchFields(SearchRequestBuilder builder, ONSQuery query) {
+        if (query.fetchFields() == null) {
+            return;
+        }
+        builder.setFetchSource(resolveFieldNames(query.fetchFields()), null);
+    }
+
+    private static void addHighlights(SearchRequestBuilder builder, ONSQuery query) {
+        if (!query.highlight()) {
+            return;
+        }
         builder.setHighlighterPreTags("<strong>");
         builder.setHighlighterPostTags("</strong>");
         for (String fieldName : Field.highlightedFieldNames()) {
             builder.addHighlightedField(fieldName, 0, 0);
         }
-        return builder;
     }
 
-    private static SearchRequestBuilder addSorts(SearchRequestBuilder builder, SortBy sortBy) {
-        for (SortField sortField : sortBy.getSortFields()) {
+    private static void addSorts(SearchRequestBuilder builder, ONSQuery query) {
+        if (query.sortBy() == null) {
+            return;
+        }
+        for (SortField sortField : query.sortBy().getSortFields()) {
             builder.addSort(sortField.getField().fieldName(), sortField.getOrder());
         }
-        return builder;
     }
 
-    private static SearchRequestBuilder addAggregations(SearchRequestBuilder builder, AbstractAggregationBuilder... aggregates) {
-        for (AbstractAggregationBuilder aggregate : aggregates) {
+    private static void addAggregations(SearchRequestBuilder builder, ONSQuery query) {
+        if (query.aggregate() == null) {
+            return;
+        }
+        for (AbstractAggregationBuilder aggregate : query.aggregate()) {
             builder.addAggregation(aggregate);
         }
-        return builder;
     }
 
-    private static SearchResponseHelper resolveDetails(ONSQueryBuilder queryBuilder, SearchResponseHelper response) {
+    private static SearchResponseHelper resolveDetails(ONSQuery queryBuilder, SearchResponseHelper response) {
         return resolveSortBy(queryBuilder, resolvePaginator(queryBuilder, response));
     }
 
-    private static SearchResponseHelper resolveSortBy(ONSQueryBuilder queryBuilder, SearchResponseHelper response) {
+    private static SearchResponseHelper resolveSortBy(ONSQuery queryBuilder, SearchResponseHelper response) {
         if (queryBuilder.sortBy() == null) {
             return response;
         }
@@ -108,13 +125,50 @@ public class SearchHelper {
         return response;
     }
 
-    private static SearchResponseHelper resolvePaginator(ONSQueryBuilder queryBuilder, SearchResponseHelper response) {
+    private static SearchResponseHelper resolvePaginator(ONSQuery queryBuilder, SearchResponseHelper response) {
         if (queryBuilder.page() == null) { // if page not set , don't resolve pagination
             return response;
         }
         Paginator.assertPage(queryBuilder.page(), response);
         response.getResult().setPaginator(new Paginator(response.getNumberOfResults(), getMaxVisiblePaginatorLink(), queryBuilder.page(), queryBuilder.size()));
         return response;
+    }
+
+    public static String[] resolveTypeNames(Set<TypeFilter> filters) {
+        String[] types = new String[0];
+        for (TypeFilter selectedFilter : filters) {
+            ContentType[] contentTypes = selectedFilter.getTypes();
+            types = ArrayUtils.addAll(types, resolveTypeNames(contentTypes));
+        }
+        return types;
+    }
+
+    public static ContentType[] resolveContentTypes(Set<TypeFilter> filters) {
+        return resolveContentTypes(filters.toArray(new TypeFilter[filters.size()]));
+    }
+
+    public static ContentType[] resolveContentTypes(TypeFilter... filters) {
+        ContentType[] contentTypes = new ContentType[0];
+        for (TypeFilter filter : filters) {
+            contentTypes = ArrayUtils.addAll(contentTypes, filter.getTypes());
+        }
+        return contentTypes;
+    }
+
+    private static String[] resolveTypeNames(ContentType... contentTypes) {
+        String[] types = new String[0];
+        for (ContentType type : contentTypes) {
+            types = ArrayUtils.addAll(types, type.name());
+        }
+        return types;
+    }
+
+    private static String[] resolveFieldNames(Field... fields) {
+        String[] types = new String[0];
+        for (Field field : fields) {
+            types = ArrayUtils.addAll(types, field.fieldName());
+        }
+        return types;
     }
 
 }

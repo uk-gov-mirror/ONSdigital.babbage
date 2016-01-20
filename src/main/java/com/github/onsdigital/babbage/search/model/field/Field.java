@@ -25,7 +25,8 @@ public enum Field {
     _type("_type", false),
     cdid("description.cdid"),
     datasetId("description.datasetId"),
-    searchBoost("description.searchBoost", false);
+    searchBoost("description.searchBoost", false),
+    latestRelease("description.latestRelease", false);
 
     private String fieldName;
     private long boost;

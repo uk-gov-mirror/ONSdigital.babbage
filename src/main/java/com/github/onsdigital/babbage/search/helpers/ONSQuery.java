@@ -1,6 +1,7 @@
 package com.github.onsdigital.babbage.search.helpers;
 
 import com.github.onsdigital.babbage.search.input.SortBy;
+import com.github.onsdigital.babbage.search.model.ContentType;
 import com.github.onsdigital.babbage.search.model.field.Field;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.search.aggregations.AbstractAggregationBuilder;
@@ -9,20 +10,23 @@ import static com.github.onsdigital.babbage.configuration.Configuration.GENERAL.
 
 /**
  * Created by bren on 19/01/16.
+ *
+ * ONS Content query encapsulating common parameters for search and list pages
+ *
  */
-public class ONSQueryBuilder {
+public class ONSQuery {
 
     private QueryBuilder builder;
     private AbstractAggregationBuilder[] aggregationBuilders;
     private int from;
     private int size = getResultsPerPage();//default size is in configuration
     private Integer page;
-    private String[] types;
+    private ContentType[] types;
     private SortBy sortBy;
-    private boolean highlight = true;
-    private String[] fetchSource;
+    private boolean highlight = false;
+    private Field[] fetchFields;
 
-    public ONSQueryBuilder(QueryBuilder builder, String... types) {
+    public ONSQuery(QueryBuilder builder, ContentType... types) {
         this.types = types;
         query(builder);
     }
@@ -31,7 +35,7 @@ public class ONSQueryBuilder {
         return builder;
     }
 
-    public ONSQueryBuilder query(QueryBuilder builder) {
+    public ONSQuery query(QueryBuilder builder) {
         this.builder = builder;
         return this;
     }
@@ -44,13 +48,13 @@ public class ONSQueryBuilder {
         return size;
     }
 
-    public ONSQueryBuilder size(int size) {
+    public ONSQuery size(int size) {
         this.size = size;
         page(page);
         return this;
     }
 
-    public ONSQueryBuilder page(Integer page) {
+    public ONSQuery page(Integer page) {
         this.page = page;
         if (page == null) {
             return this;
@@ -66,32 +70,29 @@ public class ONSQueryBuilder {
         return this.page;
     }
 
-    public String[] types() {
+    public ContentType[] types() {
         return types;
     }
 
-    public ONSQueryBuilder types(String[] types) {
+    public ONSQuery types(ContentType... types) {
         this.types = types;
         return this;
     }
 
-    public ONSQueryBuilder fetchFields(Field... fields) {
-        fetchSource = new String[fields.length];
-        for (int i = 0; i < fields.length; i++) {
-            fetchSource[i] = fields[i].fieldName();
-        }
+    public ONSQuery fetchFields(Field... fields) {
+        this.fetchFields = fields;
         return this;
     }
 
-    String[] fetchFields() {
-        return fetchSource;
+    Field[] fetchFields() {
+        return fetchFields;
     }
 
     public SortBy sortBy() {
         return sortBy;
     }
 
-    public ONSQueryBuilder sortBy(SortBy sortBy) {
+    public ONSQuery sortBy(SortBy sortBy) {
         this.sortBy = sortBy;
         return this;
     }
@@ -100,7 +101,7 @@ public class ONSQueryBuilder {
         return highlight;
     }
 
-    public ONSQueryBuilder highlight(boolean highlight) {
+    public ONSQuery highlight(boolean highlight) {
         this.highlight = highlight;
         return this;
     }
@@ -109,7 +110,7 @@ public class ONSQueryBuilder {
         return aggregationBuilders;
     }
 
-    public ONSQueryBuilder aggregate(AbstractAggregationBuilder... aggregations) {
+    public ONSQuery aggregate(AbstractAggregationBuilder... aggregations) {
         this.aggregationBuilders = aggregations;
         return this;
     }
