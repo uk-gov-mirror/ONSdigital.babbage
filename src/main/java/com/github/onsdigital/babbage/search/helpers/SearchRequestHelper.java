@@ -41,8 +41,6 @@ public class SearchRequestHelper {
         return onsQuery(typeBoostedContentQuery(contentQuery(searchTerm))).page(page).sortBy(sortBy).highlight(true);
     }
 
-    public static ONSQuery buildGlobalListQuery()
-
     public static Date[] extractPublishDates(HttpServletRequest request) {
         String updated = request.getParameter("updated");
         Date fromDate;
