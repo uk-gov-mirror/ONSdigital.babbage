@@ -27,8 +27,8 @@
                     </p>
 
                     <p class="col col--md-11 {{#if_all description.surveyName description.frequency description.compilation description.sampleSize description.geographicCoverage}}col--lg-15{{else}}col--lg-14{{/if_all}} meta__item">
-                        <a href="/file?uri={{downloads.0.file}}">{{downloads.0.title}}</a>
-                        ({{fs downloads.0.file}} {{fe downloads.0.file}})
+                        <a href="/file?uri={{concat uri "/" (fn downloads.0.file)}}">{{downloads.0.title}}</a>
+                        ({{fs (concat uri "/" (fn downloads.0.file))}} {{fe (concat uri "/" (fn downloads.0.file))}})
                     </p>
 
                 {{else}}
@@ -43,7 +43,8 @@
                     </p>
 
                     <p class="col col--md-12 col--lg-15 meta__item">
-                        <a href="/file?uri={{downloads.0.file}}">{{downloads.0.title}}</a> ({{fs downloads.0.file}} {{fe downloads.0.file}})
+                        <a href="/file?uri={{concat uri "/" (fn downloads.0.file)}}">{{downloads.0.title}}</a>
+                        ({{fs (concat uri "/" (fn downloads.0.file))}} {{fe (concat uri "/" (fn downloads.0.file))}})
                     </p>
                 {{/if}}
 
@@ -145,7 +146,7 @@
                             <ul class="list--neutral">
                                 {{#each downloads}}
                                     <li class="flush--third--bottom">
-                                        <a href="/file?uri={{concat uri "/" file}}" title="{{title}}">{{title}}</a> ({{fs (concat uri "/" file)}} {{fe (concat uri "/" file)}})
+                                        <a href="/file?uri={{concat uri "/" (fn file)}}" title="{{title}}">{{title}}</a> ({{fs (concat uri "/" (fn file))}} {{fe (concat uri "/" (fn file))}})
                                     </li>
                                 {{/each}}
                             </ul>
