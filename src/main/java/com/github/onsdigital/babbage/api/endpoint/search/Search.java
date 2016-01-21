@@ -32,8 +32,8 @@ public class Search {
     private SearchQueries queries(HttpServletRequest request, String searchTerm) {
         return () -> combine(
                 bestTopicMatchQuery(searchTerm).name("featuredResult"),
-                buildSearchQuery(request, searchTerm, allFilters).name("result"),
-                docCountsQuery(contentQuery(searchTerm)).name("counts").types(contentTypesToCount)
+                buildSearchQuery(request, searchTerm, allFilters),
+                typeCountsQuery(contentQuery(searchTerm)).types(contentTypesToCount)
         );
     }
 

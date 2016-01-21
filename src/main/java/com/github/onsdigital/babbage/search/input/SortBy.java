@@ -27,6 +27,10 @@ public enum SortBy {
     release_date(
             get(Field.releaseDate, SortOrder.DESC),
             get(Field._score, SortOrder.DESC)
+    ),
+    release_date_asc(
+            get(Field.releaseDate, SortOrder.ASC),
+            get(Field._score, SortOrder.DESC)
     );
 
     private SortField[] sortFields;

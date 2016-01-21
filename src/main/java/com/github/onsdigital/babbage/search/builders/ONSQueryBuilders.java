@@ -2,6 +2,7 @@ package com.github.onsdigital.babbage.search.builders;
 
 import com.github.onsdigital.babbage.search.helpers.ONSQuery;
 import com.github.onsdigital.babbage.search.helpers.base.SearchFilter;
+import com.github.onsdigital.babbage.search.input.SortBy;
 import com.github.onsdigital.babbage.search.model.ContentType;
 import com.github.onsdigital.babbage.search.model.field.Field;
 import org.elasticsearch.index.query.BoolQueryBuilder;
@@ -80,21 +81,36 @@ public class ONSQueryBuilders {
                 .size(1);
     }
 
+    public static ONSQuery topicListQuery() {
+        return onsQuery(matchAllQuery())
+                .types(ContentType.product_page)
+                .sortBy(SortBy.title)
+                .fetchFields(Field.title, Field.uri)
+                .name("topics")
+                .size(10000);//how to set max value ? No paging or filtering on front-end for topic drop down list. Elasticsearch 2.1.1 max window is 10000
+    }
+
     /**
      * Counts documents based on _type field.
-     * <p>
+     * <p/>
      * Applies documents counts aggregation to given query. Counts will be aggregated within the matching documents list.
      *
      * @return
      */
-    public static ONSQuery docCountsQuery(QueryBuilder queryBuilder) {
-        return docCountsQuery(queryBuilder, null);
+    public static ONSQuery typeCountsQuery(QueryBuilder queryBuilder) {
+        return typeCountsQuery(queryBuilder, null).name("counts");
     }
 
-    public static ONSQuery docCountsQuery(QueryBuilder queryBuilder, SearchFilter filter) {
+    public static ONSQuery typeCountsQuery(QueryBuilder queryBuilder, SearchFilter filter) {
         return onsQuery(queryBuilder, filter)
                 .size(0).aggregate(AggregationBuilders.terms("docCounts")
-                        .field(Field._type.name())); //aggregating all content types without using selected numbers
+                        .field(Field._type.fieldName())); //aggregating all content types without using selected numbers
+    }
+
+    public static ONSQuery firstLetterCounts(QueryBuilder queryBuilder) {
+        return onsQuery(queryBuilder)
+                .size(0).aggregate(AggregationBuilders.terms("docCounts")
+                        .field(Field.title_first_letter.fieldName())); //aggregating all content types without using selected numbers
     }
 
     public static ONSQuery onsQuery(QueryBuilder queryBuilder) {
@@ -116,7 +132,6 @@ public class ONSQueryBuilders {
         }
         return list;
     }
-
 
     private static QueryBuilder appyFilter(BoolQueryBuilder queryBuilder, SearchFilter filter) {
         filter.filter(queryBuilder);

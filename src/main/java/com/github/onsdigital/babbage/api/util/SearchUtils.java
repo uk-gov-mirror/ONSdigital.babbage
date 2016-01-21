@@ -15,6 +15,7 @@ import com.github.onsdigital.babbage.search.model.SearchResult;
 import com.github.onsdigital.babbage.search.model.field.Field;
 import com.github.onsdigital.babbage.template.TemplateService;
 import com.github.onsdigital.babbage.util.json.JsonUtil;
+import org.elasticsearch.index.query.QueryBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.MediaType;
@@ -30,13 +31,11 @@ import static com.github.onsdigital.babbage.search.input.TypeFilter.contentTypes
 import static com.github.onsdigital.babbage.search.model.field.Field.cdid;
 import static com.github.onsdigital.babbage.util.URIUtil.isDataRequest;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
-import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
-import static org.elasticsearch.index.query.QueryBuilders.matchAllQuery;
-import static org.elasticsearch.index.query.QueryBuilders.termQuery;
+import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * Created by bren on 20/01/16.
- * <p>
+ * <p/>
  * Commons search functionality for search, search publications and search data pages.
  */
 public class SearchUtils {
@@ -44,7 +43,7 @@ public class SearchUtils {
     /**
      * Performs search for requested search term against filtered content types and counts contents types.
      * Content results are serialised into json with key "result" and document counts are serialised as "counts".
-     * <p>
+     * <p/>
      * Accepts extra searches to perform along with content search and document counts.
      *
      * @param request
@@ -63,7 +62,11 @@ public class SearchUtils {
         }
     }
 
-    public static BabbageResponse list(String listType, SearchQueries queries) throws IOException {
+    public static BabbageResponse list(HttpServletRequest request, String listType, SearchQueries queries) throws IOException {
+        return buildResponse(request, listType, searchAll(queries));
+    }
+
+    public static BabbageResponse listPage(String listType, SearchQueries queries) throws IOException {
         return buildPageResponse(listType, searchAll(queries));
     }
 
@@ -71,7 +74,7 @@ public class SearchUtils {
         return buildDataResponse(listType, searchAll(queries));
     }
 
-    private static LinkedHashMap<String, SearchResult> searchAll(SearchQueries searchQueries) {
+    public static LinkedHashMap<String, SearchResult> searchAll(SearchQueries searchQueries) {
         List<ONSQuery> queries = searchQueries.buildQueries();
         return doSearch(queries);
     }
@@ -85,25 +88,59 @@ public class SearchUtils {
      */
     public static ONSQuery buildSearchQuery(HttpServletRequest request, String searchTerm, Set<TypeFilter> defaultFilters) {
         SortBy sortBy = extractSortBy(request, SortBy.relevance);
-        return buildBaseQuery(request, searchTerm, defaultFilters, sortBy, null);
+        return buildONSQuery(request, contentQuery(searchTerm), sortBy, null, contentTypes(extractSelectedFilters(request, defaultFilters)));
     }
 
-    public static ONSQuery buildListQuery(HttpServletRequest request, String searchTerm, Set<TypeFilter> defaultFilters, SearchFilter filter) {
-        SortBy sortBy = extractSortBy(request, isNotEmpty(searchTerm) ? SortBy.relevance : SortBy.release_date);
-        if (isNotEmpty(searchTerm)) {
-            return buildBaseQuery(request, searchTerm, defaultFilters, sortBy, filter);
-        } else {
-            int page = extractPage(request);
-            return onsQuery(matchAllQuery(), filter).page(page).sortBy(sortBy);//match all
+    public static ONSQuery buildListQuery(HttpServletRequest request, Set<TypeFilter> defaultFilters, SearchFilter filter) {
+        return buildListQuery(request, defaultFilters, filter, null);
+    }
+
+    public static ONSQuery buildListQuery(HttpServletRequest request, SearchFilter filter) {
+        return buildListQuery(request, null, filter, null);
+    }
+
+    public static ONSQuery buildListQuery(HttpServletRequest request, SearchFilter filter, SortBy defaultSort) {
+        return buildListQuery(request, null, filter, defaultSort);
+    }
+
+    public static ONSQuery buildListQuery(HttpServletRequest request) {
+        return buildListQuery(request, null, null,null);
+    }
+
+    public static ONSQuery buildListQuery(HttpServletRequest request, Set<TypeFilter> defaultFilters) {
+        return buildListQuery(request, defaultFilters, null, null);
+    }
+
+
+    private static ONSQuery buildListQuery(HttpServletRequest request, Set<TypeFilter> defaultFilters, SearchFilter filter, SortBy defaultSort) {
+        String searchTerm = extractSearchTerm(request);
+        boolean hasSearchTerm = isNotEmpty(searchTerm);
+        if (defaultSort == null) {
+            defaultSort = hasSearchTerm ? SortBy.relevance : SortBy.release_date;
         }
+        QueryBuilder query = buildBaseListQuery(searchTerm);
+        ContentType[] contentTypes = defaultFilters == null ? null : contentTypes(extractSelectedFilters(request, defaultFilters));
+        return buildONSQuery(request, query, defaultSort, filter, contentTypes);
     }
 
-    private static ONSQuery buildBaseQuery(HttpServletRequest request, String searchTerm, Set<TypeFilter> defaultFilters, SortBy sortBy, SearchFilter filter) {
+    private static QueryBuilder buildBaseListQuery(String searchTerm) {
+        QueryBuilder query;
+        if (isNotEmpty(searchTerm)) {
+            query = contentQuery(searchTerm);
+        } else {
+            query = matchAllQuery();
+        }
+        return query;
+    }
+
+    private static ONSQuery buildONSQuery(HttpServletRequest request, QueryBuilder builder, SortBy defaultSort, SearchFilter filter, ContentType... contentTypes) {
         int page = extractPage(request);
-        return onsQuery(typeBoostedQuery(contentQuery(searchTerm)), filter)
-                .types(contentTypes(extractSelectedFilters(request, defaultFilters)))
+        SortBy sort = extractSortBy(request, defaultSort);
+        return onsQuery(typeBoostedQuery(builder), filter)
+                .types(contentTypes)
                 .page(page)
-                .sortBy(sortBy)
+                .sortBy(sort)
+                .name("result")
                 .highlight(true);
     }
 
@@ -132,7 +169,7 @@ public class SearchUtils {
     }
 
     //Send result back to client
-    private static BabbageResponse buildResponse(HttpServletRequest request, String listType, Map<String, SearchResult> results) throws IOException {
+    public static BabbageResponse buildResponse(HttpServletRequest request, String listType, Map<String, SearchResult> results) throws IOException {
         if (isDataRequest(request.getRequestURI())) {
             return buildDataResponse(listType, results);
         } else {

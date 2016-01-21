@@ -1,30 +1,53 @@
-//package com.github.onsdigital.babbage.request.handler.list;
-//
-//import com.github.onsdigital.babbage.request.handler.base.ListPageBaseRequestHandler;
-//import com.github.onsdigital.babbage.request.handler.base.RequestHandler;
-//import com.github.onsdigital.babbage.search.model.ContentType;
-//
-///**
-// * Created by bren on 06/10/15.
-// */
-//public class AllAdhocsRequestHandler extends ListPageBaseRequestHandler implements RequestHandler {
-//
-//    private final static String REQUEST_TYPE = "alladhocs";
-//
-//    private final static ContentType[] ALLOWED_TYPES = {ContentType.static_adhoc};
-//
-//    @Override
-//    protected ContentType[] getAllowedTypes() {
-//        return ALLOWED_TYPES;
-//    }
-//
-//    @Override
-//    public String getRequestType() {
-//        return REQUEST_TYPE;
-//    }
-//
-//    @Override
-//    public boolean isLocalisedUri() {
-//        return false;
-//    }
-//}
+package com.github.onsdigital.babbage.request.handler.list;
+
+import com.github.onsdigital.babbage.api.util.SearchUtils;
+import com.github.onsdigital.babbage.request.handler.base.ListRequestHandler;
+import com.github.onsdigital.babbage.response.base.BabbageResponse;
+import com.github.onsdigital.babbage.search.helpers.base.SearchFilter;
+import com.github.onsdigital.babbage.search.helpers.base.SearchQueries;
+import com.github.onsdigital.babbage.search.model.ContentType;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+
+import static com.github.onsdigital.babbage.api.util.SearchUtils.listPage;
+import static com.github.onsdigital.babbage.api.util.SearchUtils.listJson;
+import static com.github.onsdigital.babbage.search.builders.ONSFilterBuilders.filterDates;
+import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.combine;
+
+/**
+ * Created by bren on 06/10/15.
+ */
+public class AllAdhocsRequestHandler implements ListRequestHandler {
+
+    private final static String REQUEST_TYPE = "alladhocs";
+
+    @Override
+    public BabbageResponse get(String uri, HttpServletRequest request) throws Exception {
+        return listPage(REQUEST_TYPE, queries(request));
+    }
+
+    @Override
+    public BabbageResponse getData(String uri, HttpServletRequest request) throws IOException {
+        return listJson(REQUEST_TYPE, queries(request));
+    }
+
+    private SearchQueries queries(HttpServletRequest request) {
+        return () -> combine(
+                SearchUtils
+                        .buildListQuery(request, filters(request))
+                        .types(ContentType.static_adhoc)
+        );
+    }
+
+    private SearchFilter filters(HttpServletRequest request) {
+        return (listQuery) -> filterDates(request, listQuery);
+    }
+
+    @Override
+    public String getRequestType() {
+        return REQUEST_TYPE;
+    }
+
+
+}

@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 import static org.apache.commons.lang3.StringUtils.endsWith;
+import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
@@ -28,6 +29,13 @@ public class ONSFilterBuilders {
     public static void filterLatest(HttpServletRequest request, BoolQueryBuilder listQuery) {
         if (request.getParameter("allReleases") == null) {
             listQuery.filter(termQuery(Field.latestRelease.fieldName(), true));
+        }
+    }
+
+    public static void filterTopic(HttpServletRequest request, BoolQueryBuilder listQuery) {
+        String topic = request.getParameter("topic");
+        if (isNotEmpty(topic)) {
+            filterUriPrefix(topic, listQuery);
         }
     }
 }

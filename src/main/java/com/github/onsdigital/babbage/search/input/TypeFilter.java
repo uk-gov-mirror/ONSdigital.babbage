@@ -50,6 +50,11 @@ public enum TypeFilter {
 
     }
 
+    public static Set<TypeFilter> getMethodologyFilters() {
+        return initialize(methodologyFilters, QMI, METHODOLOGY_ARTICLE);
+
+    }
+
     public ContentType[] getTypes() {
         return types;
     }

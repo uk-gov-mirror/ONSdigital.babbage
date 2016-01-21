@@ -35,8 +35,8 @@ public class SearchData {
 
     private SearchQueries queries(HttpServletRequest request, String searchTerm) {
         return () -> combine(
-                buildSearchQuery(request, searchTerm, dataFilters).name("result"),
-                docCountsQuery(contentQuery(searchTerm)).types(contentTypesToCount).name("counts")
+                buildSearchQuery(request, searchTerm, dataFilters),
+                typeCountsQuery(contentQuery(searchTerm)).types(contentTypesToCount)
         );
     }
 

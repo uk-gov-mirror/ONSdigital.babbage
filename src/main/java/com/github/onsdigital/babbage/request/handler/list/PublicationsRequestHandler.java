@@ -15,8 +15,8 @@ import java.util.Set;
 import static com.github.onsdigital.babbage.api.util.SearchUtils.*;
 import static com.github.onsdigital.babbage.search.builders.ONSFilterBuilders.filterLatest;
 import static com.github.onsdigital.babbage.search.builders.ONSFilterBuilders.filterUriPrefix;
-import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.*;
-import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.extractSearchTerm;
+import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.combine;
+import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.typeCountsQuery;
 
 /**
  * Render a list page for bulletins under the given URI.
@@ -31,19 +31,19 @@ public class PublicationsRequestHandler implements ListRequestHandler {
 
     @Override
     public BabbageResponse get(String uri, HttpServletRequest request) throws Exception {
-        return list(REQUEST_TYPE, queries(request, extractSearchTerm(request), uri));
+        return listPage(REQUEST_TYPE, queries(request, uri));
     }
 
     @Override
     public BabbageResponse getData(String uri, HttpServletRequest request) throws IOException {
-        return listJson(REQUEST_TYPE, queries(request, extractSearchTerm(request), uri));
+        return listJson(REQUEST_TYPE, queries(request, uri));
     }
 
-    private SearchQueries queries(HttpServletRequest request, String searchTerm, String uri) {
-        ONSQuery listQuery = buildListQuery(request, searchTerm, publicationFilters, filters(request, uri)).name("result");
+    private SearchQueries queries(HttpServletRequest request, String uri) {
+        ONSQuery listQuery = buildListQuery(request, publicationFilters, filters(request, uri));
         return () -> combine(
                 listQuery,
-                docCountsQuery(listQuery.query()).types(contentTypesToCount).name("counts")
+                typeCountsQuery(listQuery.query()).types(contentTypesToCount)
         );
     }
 

@@ -125,7 +125,10 @@ public class SearchHelper {
             return response;
         }
         Paginator.assertPage(queryBuilder.page(), response);
-        response.getResult().setPaginator(new Paginator(response.getNumberOfResults(), getMaxVisiblePaginatorLink(), queryBuilder.page(), queryBuilder.size()));
+        Paginator paginator = new Paginator(response.getNumberOfResults(), getMaxVisiblePaginatorLink(), queryBuilder.page(), queryBuilder.size());
+        if (paginator.getNumberOfPages() > 1) {
+            response.getResult().setPaginator(paginator);
+        }
         return response;
     }
 

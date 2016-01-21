@@ -4,7 +4,6 @@ import com.github.davidcarboni.restolino.framework.Api;
 import com.github.onsdigital.babbage.api.error.ErrorHandler;
 import com.github.onsdigital.babbage.content.client.ContentClient;
 import com.github.onsdigital.babbage.content.client.ContentResponse;
-import com.github.onsdigital.babbage.response.BabbageBinaryResponse;
 import com.github.onsdigital.babbage.response.BabbageContentBasedBinaryResponse;
 
 import javax.servlet.http.HttpServletRequest;

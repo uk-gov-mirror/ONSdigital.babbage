@@ -29,15 +29,15 @@ public class SearchPublication {
     @GET
     public void get(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String searchTerm = extractSearchTerm(request);
-        search(request,getClass().getSimpleName(),searchTerm,queries(request,searchTerm))
+        search(request, getClass().getSimpleName(), searchTerm, queries(request, searchTerm))
                 .apply(request, response);
 
     }
 
     private SearchQueries queries(HttpServletRequest request, String searchTerm) {
         return () -> combine(
-                buildSearchQuery(request, searchTerm, publicationFilters).name("result"),
-                docCountsQuery(contentQuery(searchTerm)).types(contentTypesToCount).name("counts")
+                buildSearchQuery(request, searchTerm, publicationFilters),
+                typeCountsQuery(contentQuery(searchTerm)).types(contentTypesToCount)
         );
     }
 }

@@ -47,6 +47,7 @@ Release calendar
 {{#partial "block-filters"}}
 	{{> list/filters/keywords}}
 	{{> list/filters/publish-date}}
+	<input type="hidden" name="view" value="{{parameters.view.0}}">
 {{/partial}}
 
 {{#partial "block-results"}}

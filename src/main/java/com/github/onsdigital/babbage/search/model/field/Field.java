@@ -13,10 +13,10 @@ import org.apache.commons.lang3.ArrayUtils;
 public enum Field {
     uri("uri"),
     _score("_score", false), //elastic search internal search score field in results
-    title_no_dates("description.title.title_no_dates",10,false),
-    title_first_letter("description.title.title_first_letter",false),
+    title_no_dates("description.title.title_no_dates", 10, false),
+    title_first_letter("description.title.title_first_letter", false),
     title_raw("description.title.title_raw", false),
-    title("description.title",10),
+    title("description.title", 10),
     edition("description.edition"),
     summary("description.summary"),
     releaseDate("description.releaseDate", false),
@@ -26,13 +26,15 @@ public enum Field {
     cdid("description.cdid"),
     datasetId("description.datasetId"),
     searchBoost("description.searchBoost", false),
-    latestRelease("description.latestRelease", false);
+    latestRelease("description.latestRelease", false),
+    published("description.published"),
+    cancelled("description.cancelled");
 
     private String fieldName;
     private long boost;
     private static String[] highlightedFields;
 
-    Field(String fieldName , long boost, boolean highlight) {
+    Field(String fieldName, long boost, boolean highlight) {
         this(fieldName);
         this.boost = boost;
         if (highlight) {
