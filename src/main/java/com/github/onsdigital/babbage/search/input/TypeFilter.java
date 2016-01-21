@@ -1,6 +1,8 @@
 package com.github.onsdigital.babbage.search.input;
 
 import com.github.onsdigital.babbage.search.model.ContentType;
+import com.github.onsdigital.babbage.search.model.field.Field;
+import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -63,4 +65,28 @@ public enum TypeFilter {
         }
         return filterSet;
     }
+
+
+    public static String[] typeNames(Set<TypeFilter> filters) {
+        String[] types = new String[0];
+        for (TypeFilter selectedFilter : filters) {
+            ContentType[] contentTypes = selectedFilter.getTypes();
+            types = ArrayUtils.addAll(types, ContentType.typeNames(contentTypes));
+        }
+        return types;
+    }
+
+    public static ContentType[] contentTypes(Set<TypeFilter> filters) {
+        return resolveContentTypes(filters.toArray(new TypeFilter[filters.size()]));
+    }
+
+    public static ContentType[] resolveContentTypes(TypeFilter... filters) {
+        ContentType[] contentTypes = new ContentType[0];
+        for (TypeFilter filter : filters) {
+            contentTypes = ArrayUtils.addAll(contentTypes, filter.getTypes());
+        }
+        return contentTypes;
+    }
+
+
 }

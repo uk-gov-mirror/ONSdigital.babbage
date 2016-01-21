@@ -1,5 +1,7 @@
 package com.github.onsdigital.babbage.search.model;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 /**
  * Created by bren on 08/09/15.
  * <p/>
@@ -48,5 +50,13 @@ public enum ContentType {
 
     public Float getWeight() {
         return weight;
+    }
+
+    public static String[] typeNames(ContentType... contentTypes) {
+        String[] types = new String[0];
+        for (ContentType type : contentTypes) {
+            types = ArrayUtils.addAll(types, type.name());
+        }
+        return types;
     }
 }

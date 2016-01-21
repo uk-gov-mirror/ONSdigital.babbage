@@ -1,11 +1,9 @@
 package com.github.onsdigital.babbage.search.helpers;
 
 import com.github.onsdigital.babbage.paginator.Paginator;
-import com.github.onsdigital.babbage.search.input.TypeFilter;
 import com.github.onsdigital.babbage.search.model.ContentType;
 import com.github.onsdigital.babbage.search.model.field.Field;
 import com.github.onsdigital.babbage.search.model.sort.SortField;
-import org.apache.commons.lang3.ArrayUtils;
 import org.elasticsearch.ElasticsearchException;
 import org.elasticsearch.action.search.MultiSearchRequestBuilder;
 import org.elasticsearch.action.search.MultiSearchResponse;
@@ -14,7 +12,6 @@ import org.elasticsearch.search.aggregations.AbstractAggregationBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import static com.github.onsdigital.babbage.configuration.Configuration.ELASTIC_SEARCH.getElasticSearchIndexAlias;
 import static com.github.onsdigital.babbage.configuration.Configuration.GENERAL.getMaxVisiblePaginatorLink;
@@ -72,14 +69,14 @@ public class SearchHelper {
         if (query.types() == null) {
             return;
         }
-        builder.setTypes(resolveTypeNames(query.types()));
+        builder.setTypes(ContentType.typeNames(query.types()));
     }
 
     private static void addFetchFields(SearchRequestBuilder builder, ONSQuery query) {
         if (query.fetchFields() == null) {
             return;
         }
-        builder.setFetchSource(resolveFieldNames(query.fetchFields()), null);
+        builder.setFetchSource(Field.fieldNames(query.fetchFields()), null);
     }
 
     private static void addHighlights(SearchRequestBuilder builder, ONSQuery query) {
@@ -132,41 +129,5 @@ public class SearchHelper {
         return response;
     }
 
-    public static String[] resolveTypeNames(Set<TypeFilter> filters) {
-        String[] types = new String[0];
-        for (TypeFilter selectedFilter : filters) {
-            ContentType[] contentTypes = selectedFilter.getTypes();
-            types = ArrayUtils.addAll(types, resolveTypeNames(contentTypes));
-        }
-        return types;
-    }
-
-    public static ContentType[] resolveContentTypes(Set<TypeFilter> filters) {
-        return resolveContentTypes(filters.toArray(new TypeFilter[filters.size()]));
-    }
-
-    public static ContentType[] resolveContentTypes(TypeFilter... filters) {
-        ContentType[] contentTypes = new ContentType[0];
-        for (TypeFilter filter : filters) {
-            contentTypes = ArrayUtils.addAll(contentTypes, filter.getTypes());
-        }
-        return contentTypes;
-    }
-
-    private static String[] resolveTypeNames(ContentType... contentTypes) {
-        String[] types = new String[0];
-        for (ContentType type : contentTypes) {
-            types = ArrayUtils.addAll(types, type.name());
-        }
-        return types;
-    }
-
-    private static String[] resolveFieldNames(Field... fields) {
-        String[] types = new String[0];
-        for (Field field : fields) {
-            types = ArrayUtils.addAll(types, field.fieldName());
-        }
-        return types;
-    }
 
 }

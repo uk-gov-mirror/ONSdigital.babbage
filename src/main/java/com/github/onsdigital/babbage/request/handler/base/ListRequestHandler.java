@@ -9,5 +9,5 @@ import java.io.IOException;
  * Created by bren on 20/01/16.
  */
 public interface ListRequestHandler extends RequestHandler {
-    BabbageResponse getData(String data, HttpServletRequest request) throws IOException;
+    BabbageResponse getData(String uri, HttpServletRequest request) throws IOException;
 }

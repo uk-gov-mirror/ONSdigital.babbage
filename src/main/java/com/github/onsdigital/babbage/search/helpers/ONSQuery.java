@@ -10,12 +10,12 @@ import static com.github.onsdigital.babbage.configuration.Configuration.GENERAL.
 
 /**
  * Created by bren on 19/01/16.
- *
+ * <p>
  * ONS Content query encapsulating common parameters for search and list pages
- *
  */
 public class ONSQuery {
 
+    private String name;
     private QueryBuilder builder;
     private AbstractAggregationBuilder[] aggregationBuilders;
     private int from;
@@ -26,10 +26,24 @@ public class ONSQuery {
     private boolean highlight = false;
     private Field[] fetchFields;
 
-    public ONSQuery(QueryBuilder builder, ContentType... types) {
-        this.types = types;
+    public ONSQuery(String name, QueryBuilder builder) {
+        name(name);
         query(builder);
     }
+
+    public ONSQuery(QueryBuilder builder) {
+        this(null, builder);
+    }
+
+    public String name() {
+        return this.name;
+    }
+
+    public ONSQuery name(String name) {
+        this.name = name;
+        return this;
+    }
+
 
     public QueryBuilder query() {
         return builder;

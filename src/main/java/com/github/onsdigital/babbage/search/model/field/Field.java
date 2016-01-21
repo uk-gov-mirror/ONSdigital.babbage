@@ -77,4 +77,12 @@ public enum Field {
         return highlightedFields;
     }
 
+    public static String[] fieldNames(Field... fields) {
+        String[] types = new String[0];
+        for (Field field : fields) {
+            types = ArrayUtils.addAll(types, field.fieldName());
+        }
+        return types;
+    }
+
 }
