@@ -4,10 +4,7 @@ import com.github.jknack.handlebars.Handlebars;
 import com.github.jknack.handlebars.MarkdownHelper;
 import com.github.jknack.handlebars.Options;
 import com.github.onsdigital.babbage.template.handlebars.helpers.base.BabbageHandlebarsHelper;
-import com.github.onsdigital.babbage.template.handlebars.helpers.markdown.util.ChartTagReplacer;
-import com.github.onsdigital.babbage.template.handlebars.helpers.markdown.util.ImageTagReplacer;
-import com.github.onsdigital.babbage.template.handlebars.helpers.markdown.util.InteractiveTagReplacer;
-import com.github.onsdigital.babbage.template.handlebars.helpers.markdown.util.TableTagReplacer;
+import com.github.onsdigital.babbage.template.handlebars.helpers.markdown.util.*;
 import com.github.onsdigital.babbage.util.RequestUtil;
 import com.github.onsdigital.babbage.util.ThreadContext;
 import org.pegdown.Extensions;
@@ -48,7 +45,7 @@ public class CustomMarkdownHelper extends MarkdownHelper implements BabbageHandl
         markdown = new TableTagReplacer(path).replaceCustomTags(markdown);
         markdown = new ImageTagReplacer(path).replaceCustomTags(markdown);
         markdown = new InteractiveTagReplacer(path).replaceCustomTags(markdown);
-        //markdown = MathjaxRenderer.render(markdown);
+        markdown = MathjaxRenderer.render(markdown);
         return new Handlebars.SafeString(markdown) ;
     }
 
