@@ -109,13 +109,17 @@ public class ONSQueryBuilders {
 
     public static TermsBuilder typeCountsAggregate() {
         return AggregationBuilders.terms("docCounts")
+                .size(0)//if more than zero will only return counts for 10
                 .field(Field._type.fieldName());
     }
 
-    public static ONSQuery firstLetterCounts(QueryBuilder queryBuilder) {
-        return onsQuery(queryBuilder)
-                .size(0).aggregate(AggregationBuilders.terms("docCounts")
-                        .field(Field.title_first_letter.fieldName())); //aggregating all content types without using selected numbers
+    public static ONSQuery firstLetterCounts(ONSQuery query) {
+        return query.aggregate(
+                AggregationBuilders
+                .terms("docCounts")
+                .size(0)
+                .field(Field.title_first_letter.fieldName())
+        ).size(0).name("counts"); //aggregating all content types without using selected numbers
     }
 
     public static ONSQuery onsQuery(QueryBuilder queryBuilder) {
@@ -138,7 +142,7 @@ public class ONSQueryBuilders {
         return list;
     }
 
-    private static QueryBuilder appyFilter(BoolQueryBuilder queryBuilder, SearchFilter filter) {
+    public static QueryBuilder appyFilter(BoolQueryBuilder queryBuilder, SearchFilter filter) {
         filter.filter(queryBuilder);
         return queryBuilder;
     }
