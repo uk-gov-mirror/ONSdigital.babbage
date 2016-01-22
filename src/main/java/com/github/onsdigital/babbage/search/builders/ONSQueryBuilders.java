@@ -44,8 +44,9 @@ public class ONSQueryBuilders {
                                 .type(CROSS_FIELDS).minimumShouldMatch("3<80% 5<60%")))
                 .add(multiMatchQuery(searchTerm, summary.fieldNameBoosted(), metaDescription.fieldNameBoosted())
                         .type(BEST_FIELDS).minimumShouldMatch("75%"))
-                .add(matchQuery(keywords.fieldNameBoosted(), searchTerm).operator(AND))
-                .add(multiMatchQuery(searchTerm, cdid.fieldNameBoosted(), datasetId.fieldNameBoosted()).operator(AND));
+                .add(matchQuery(keywords.fieldName(), searchTerm).operator(AND))
+                .add(multiMatchQuery(searchTerm, cdid.fieldNameBoosted(), datasetId.fieldNameBoosted()).operator(AND)).
+                add(matchQuery(searchBoost.fieldName(), searchTerm).boost(searchBoost.boost()));
 
         if (filter != null) {
             query = appyFilter(QueryBuilders.boolQuery().must(query), filter);
