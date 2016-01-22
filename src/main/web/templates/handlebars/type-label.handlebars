@@ -1,5 +1,5 @@
 {{!-- Used on search and list page results to dynamically map type codes in foud results to labels --}}
-{{#if_eq type_code "bulletin"}}statistical bulletin{{/if_eq}}
+{{#if_eq type_code "bulletin"}}statistical bulletin{{#if plural}}s{{/if}}{{/if_eq}}
 {{#if_eq type_code "article"}}article{{#if plural}}s{{/if}}{{/if_eq}}
 {{#if_eq type_code "article_download"}}article{{#if plural}}s{{/if}}{{/if_eq}}
 {{#if_eq type_code "timeseries"}}time series{{/if_eq}}
