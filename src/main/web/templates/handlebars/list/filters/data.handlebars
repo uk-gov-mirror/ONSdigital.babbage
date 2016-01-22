@@ -1,5 +1,5 @@
 <div class="js-checkbox-container">
-	<ul class="list--neutral flush-top">
+	<ul class="list--neutral margin-top--0 margin-bottom--0">
 		{{>list/partials/filter-item id="timeseries" value="time_series" label="Time series" docCount=docCounts.timeseries}}
 		{{>list/partials/filter-item id="dataset" value="datasets" label="Datasets" docCount=(add docCounts.dataset_landing_page docCounts.reference_tables)}}
 		{{>list/partials/filter-item id="adhoc" value="user_requested_data" label="User requested data" docCount=docCounts.static_adhoc}}
