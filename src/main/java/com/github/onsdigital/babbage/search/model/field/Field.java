@@ -25,7 +25,7 @@ public enum Field {
     _type("_type"),
     cdid("description.cdid",true),
     datasetId("description.datasetId",true),
-    searchBoost("description.searchBoost"),
+    searchBoost("description.searchBoost",100),
     latestRelease("description.latestRelease"),
     published("description.published"),
     cancelled("description.cancelled"),
