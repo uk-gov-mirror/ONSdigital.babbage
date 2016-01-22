@@ -26,7 +26,7 @@
 {{#partial "block-filters"}}
 	{{> list/filters/keywords}}
 	<h4 class="filters__title">Content types to show</h4>
-	{{> list/filters/data}}
+	{{> list/filters/data docCounts=counts.docCounts}}
 	{{> list/filters/publish-date }}
 {{/partial}}
 

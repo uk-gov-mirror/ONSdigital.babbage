@@ -8,6 +8,7 @@ import org.elasticsearch.ElasticsearchException;
 import org.elasticsearch.action.search.MultiSearchRequestBuilder;
 import org.elasticsearch.action.search.MultiSearchResponse;
 import org.elasticsearch.action.search.SearchRequestBuilder;
+import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.search.aggregations.AbstractAggregationBuilder;
 
 import java.util.ArrayList;
@@ -24,7 +25,7 @@ public class SearchHelper {
                 .prepareSearch(getElasticSearchIndexAlias())
                 .setQuery(query.query())
                 .setFrom(query.from())
-                .setSize(query.size());
+                .setSize(query.size()).setSearchType(SearchType.DFS_QUERY_THEN_FETCH);
 
         addTypes(requestBuilder, query);
         addHighlights(requestBuilder, query);
