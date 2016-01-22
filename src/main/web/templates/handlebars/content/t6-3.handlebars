@@ -34,7 +34,7 @@
                     <h2>Downloads</h2>
                     {{#each downloads}}
                         <li>
-                            <h3><a href="/file?uri={{concat uri "/" (fn file)}}" title="{{title}}">{{title}}</a> ({{fs (concat uri "/" (fn file))}}, {{fe (concat uri "/" (fn file))}})</h3>
+                            <h3><a href="/file?uri={{concat uri "/" (fn file)}}">{{title}}</a> ({{fs (concat uri "/" (fn file))}}, {{fe (concat uri "/" (fn file))}})</h3>
                             <p class="flush">{{fileDescription}}</p>
                         </li>
                     {{/each}}
@@ -44,7 +44,7 @@
                     <ul class="list--neutral">
                         {{#each relatedDatasets}}
                             {{#resolve this.uri filter="description"}}
-                                <li><h3><a href="{{absolute uri}}" title="{{description.title}}">{{description.title}}</a></h3></li>
+                                <li><h3><a href="{{absolute uri}}">{{description.title}}</a></h3></li>
                                 <p class="flush">{{description.summary}}</p>
                             {{/resolve}}
                         {{/each}}

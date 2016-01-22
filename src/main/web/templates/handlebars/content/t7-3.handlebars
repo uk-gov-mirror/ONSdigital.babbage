@@ -33,7 +33,7 @@
                     <ul class="list--neutral">
                         {{#each downloads}}
                         <li>
-                            <a href="/file?uri={{concat uri "/" (fn file)}}" title="{{title}}">{{title}}</a>
+                            <a href="/file?uri={{concat uri "/" (fn file)}}">{{title}}</a>
                             ({{fs (concat uri "/" (fn file))}} {{fe (concat uri "/" (fn file))}})
                         </li>
                         {{/each}}

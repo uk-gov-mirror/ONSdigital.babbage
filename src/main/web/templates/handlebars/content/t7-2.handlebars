@@ -37,7 +37,7 @@
                          {{/each}}
                      </ul> --}}
                     {{#each downloads}}
-                        <p><a href="/file?uri={{concat uri "/" (fn file)}}" title="{{title}}">{{title}}</a> ({{fs (concat uri "/"  (fn file))}} {{fe (concat uri "/" (fn file))}})</p>
+                        <p><a href="/file?uri={{concat uri "/" (fn file)}}">{{title}}</a> ({{fs (concat uri "/"  (fn file))}} {{fe (concat uri "/" (fn file))}})</p>
                     {{/each}}
                 </section>
 
@@ -51,7 +51,7 @@
                         <ul class="list--neutral">
                             {{#each downloads}}
                                 <li class="flush--third--bottom">
-                                    <a href="/file?uri={{concat uri "/" (fn file)}}" title="{{title}}">{{title}}</a> ({{fs (concat uri "/"  (fn file))}} {{fe (concat uri "/" (fn file))}})
+                                    <a href="/file?uri={{concat uri "/" (fn file)}}">{{title}}</a> ({{fs (concat uri "/"  (fn file))}} {{fe (concat uri "/" (fn file))}})
                                 </li>
                             {{/each}}
                         </ul>
