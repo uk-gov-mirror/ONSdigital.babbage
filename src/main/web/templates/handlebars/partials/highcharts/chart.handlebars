@@ -1,6 +1,8 @@
 <div class="markdown-chart-container panel--bottom-mar print--avoid-break">
   <h4 class="flush--third--vertical">{{{sub (sup title)}}}</h4>
-  <h5 class="flush--third--bottom">{{{sub (sup subtitle)}}}</h5>
+    {{#if subtitle}}
+        <h5 class="flush--third--bottom">{{{sub (sup subtitle)}}}</h5>
+    {{/if}}
   <div id="chart-{{filename}}" data-filename="{{filename}}" data-uri="{{uri}}" class="markdown-chart">
 
       <!--[if gt IE 8]><!--><noscript><![endif]-->
@@ -9,8 +11,8 @@
   </div>
   {{#if source}}<h6 class="flush--third--bottom">Source: {{source}}</h6>{{/if}}
   {{#if notes}}
-  <h6 class="flush--third--bottom">Notes:</h6>
-  {{md notes}}
+      <h6 class="flush--third--bottom">Notes:</h6>
+      {{md notes}}
   {{/if}}
   
     <h6 class="print--hide">Download this chart</h6>
