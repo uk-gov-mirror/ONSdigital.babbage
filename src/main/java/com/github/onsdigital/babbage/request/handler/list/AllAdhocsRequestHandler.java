@@ -13,7 +13,7 @@ import java.io.IOException;
 import static com.github.onsdigital.babbage.api.util.SearchUtils.listPage;
 import static com.github.onsdigital.babbage.api.util.SearchUtils.listJson;
 import static com.github.onsdigital.babbage.search.builders.ONSFilterBuilders.filterDates;
-import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.combine;
+import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.toList;
 
 /**
  * Created by bren on 06/10/15.
@@ -33,7 +33,7 @@ public class AllAdhocsRequestHandler implements ListRequestHandler {
     }
 
     private SearchQueries queries(HttpServletRequest request) {
-        return () -> combine(
+        return () -> toList(
                 SearchUtils
                         .buildListQuery(request, filters(request))
                         .types(ContentType.static_adhoc)

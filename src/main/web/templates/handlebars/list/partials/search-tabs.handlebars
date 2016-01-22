@@ -1,3 +1,3 @@
-{{> list/partials/tab-item name="All results" active=(eq location.pathname "/search") href="/search" count=counts.numberOfResults}}
-{{> list/partials/tab-item name="Data" active=(eq location.pathname "/searchdata") href="/searchdata" count=(add counts.docCounts.timeseries counts.docCounts.dataset_landing_page counts.docCounts.reference_tables counts.docCounts.static_adhoc)}}
-{{> list/partials/tab-item name="Publications" active=(eq location.pathname "/searchpublication") href="/searchpublication" count=(add counts.docCounts.bulletin counts.docCounts.article counts.docCounts.article_download counts.docCounts.compendium_landing_page)}}
+{{> list/partials/tab-item name="All results" active=(eq location.pathname "/search") href="/search" count=total}}
+{{> list/partials/tab-item name="Data" active=(eq location.pathname "/searchdata") href="/searchdata" count=(add docCounts.timeseries docCounts.dataset_landing_page docCounts.reference_tables docCounts.static_adhoc)}}
+{{> list/partials/tab-item name="Publications" active=(eq location.pathname "/searchpublication") href="/searchpublication" count=(add docCounts.bulletin docCounts.article docCounts.article_download docCounts.compendium_landing_page)}}

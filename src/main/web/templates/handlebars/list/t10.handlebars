@@ -11,11 +11,11 @@
 {{/partial}}
 
 {{#partial "block-list-tabs"}}
-	{{> list/partials/search-tabs}}
+	{{> list/partials/search-tabs docCounts=result.docCounts total=result.numberOfResults}}
 {{/partial}}
 
 {{#partial "block-filters"}}
-	{{> list/filters/all-results counts=result.docCounts}}
+	{{> list/filters/all-results docCounts=result.docCounts}}
 	<input class="sort__input" type="hidden" name="q" value="{{parameters.q.0}}">
 {{/partial}}
 

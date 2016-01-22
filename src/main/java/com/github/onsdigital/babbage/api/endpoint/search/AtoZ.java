@@ -23,7 +23,7 @@
 //import static com.github.onsdigital.babbage.api.util.SearchUtils.buildListQuery;
 //import static com.github.onsdigital.babbage.api.util.SearchUtils.buildResponse;
 //import static com.github.onsdigital.babbage.api.util.SearchUtils.searchAll;
-//import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.combine;
+//import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.toList;
 //import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.firstLetterCounts;
 //import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.extractSearchTerm;
 //import static com.github.onsdigital.babbage.util.RequestUtil.getParam;
@@ -55,7 +55,7 @@
 //    }
 //
 //    private SearchQueries queries(HttpServletRequest request,  String firstLetter, SortBy sortBy) {
-//        return () -> combine(
+//        return () -> toList(
 //                buildListQuery(request, filters()).types(ContentType.bulletin).sortBy(sortBy),
 //                firstLetterCounts(query.query()).types(ContentType.bulletin)
 //        );

@@ -18,9 +18,7 @@ import java.io.IOException;
 import java.util.Date;
 
 import static com.github.onsdigital.babbage.api.util.SearchUtils.buildListQuery;
-import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.combine;
-import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.extractSearchTerm;
-import static org.apache.commons.lang3.StringUtils.isNotEmpty;
+import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.toList;
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
@@ -42,10 +40,10 @@ public class ReleaseCalendar implements ListRequestHandler {
     }
 
     private SearchQueries queries(HttpServletRequest request) {
-        boolean hasSearchTerm = isNotEmpty(extractSearchTerm(request));
         boolean upcoming = "upcoming".equals(request.getParameter("view"));//published releases are requested
-        return () -> combine(
-                buildListQuery(request, filters(request, upcoming), resolveSorting(hasSearchTerm, upcoming))
+        SortBy defaultSort = upcoming ? SortBy.release_date_asc : SortBy.release_date;
+        return () -> toList(
+                buildListQuery(request, filters(request, upcoming), defaultSort)
                         .types(ContentType.release)
         );
     }
@@ -71,16 +69,6 @@ public class ReleaseCalendar implements ListRequestHandler {
         QueryBuilder publishedNotCancelled = and(published(), not(cancelled()));
         QueryBuilder cancelledAndDue = and(cancelled(), due());
         query.filter(or(publishedNotCancelled, cancelledAndDue));
-    }
-
-    private SortBy resolveSorting(boolean hasSearchTerm, boolean upcoming) {
-        SortBy sortBy;
-        if (hasSearchTerm) {
-            sortBy = SortBy.relevance;
-        } else {
-            sortBy = upcoming ? SortBy.release_date_asc : SortBy.release_date;
-        }
-        return sortBy;
     }
 
 

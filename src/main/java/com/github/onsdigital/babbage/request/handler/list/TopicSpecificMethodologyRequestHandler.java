@@ -2,7 +2,6 @@ package com.github.onsdigital.babbage.request.handler.list;
 
 import com.github.onsdigital.babbage.request.handler.base.ListRequestHandler;
 import com.github.onsdigital.babbage.response.base.BabbageResponse;
-import com.github.onsdigital.babbage.search.helpers.ONSQuery;
 import com.github.onsdigital.babbage.search.helpers.base.SearchFilter;
 import com.github.onsdigital.babbage.search.helpers.base.SearchQueries;
 import com.github.onsdigital.babbage.search.input.TypeFilter;
@@ -14,8 +13,8 @@ import java.util.Set;
 
 import static com.github.onsdigital.babbage.api.util.SearchUtils.*;
 import static com.github.onsdigital.babbage.search.builders.ONSFilterBuilders.filterUriPrefix;
-import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.combine;
-import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.typeCountsQuery;
+import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.toList;
+import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.typeCountsAggregate;
 import static com.github.onsdigital.babbage.search.input.TypeFilter.contentTypes;
 
 /**
@@ -24,7 +23,6 @@ import static com.github.onsdigital.babbage.search.input.TypeFilter.contentTypes
 public class TopicSpecificMethodologyRequestHandler implements ListRequestHandler {
 
     private static Set<TypeFilter> methodologyFilters = TypeFilter.getMethodologyFilters();
-    //    private static ContentType[] contentTypesToCount = addAll(resolveContentTypes(publicationFilters), resolveContentTypes(TypeFilter.getDataFilters()));
     private static ContentType[] contentTypesToCount = contentTypes(methodologyFilters);
 
 
@@ -42,10 +40,8 @@ public class TopicSpecificMethodologyRequestHandler implements ListRequestHandle
     }
 
     private SearchQueries queries(String uri, HttpServletRequest request) {
-        ONSQuery listQuery = buildListQuery(request, methodologyFilters, filters(uri));
-        return () -> combine(
-                listQuery,
-                typeCountsQuery(listQuery.query()).types(contentTypesToCount)
+        return () -> toList(
+                buildListQuery(request, methodologyFilters, filters(uri)).aggregate(typeCountsAggregate())
         );
     }
 

@@ -3,7 +3,6 @@ package com.github.onsdigital.babbage.api.endpoint.search;
 import com.github.davidcarboni.restolino.framework.Api;
 import com.github.onsdigital.babbage.search.helpers.base.SearchQueries;
 import com.github.onsdigital.babbage.search.input.TypeFilter;
-import com.github.onsdigital.babbage.search.model.ContentType;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,7 +19,6 @@ public class Search {
 
     //available allFilters on the page
     private static Set<TypeFilter> allFilters = TypeFilter.getAllFilters();
-    private static ContentType[] contentTypesToCount = TypeFilter.contentTypes(allFilters);
 
     @GET
     public void get(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -30,10 +28,9 @@ public class Search {
     }
 
     private SearchQueries queries(HttpServletRequest request, String searchTerm) {
-        return () -> combine(
+        return () -> toList(
                 bestTopicMatchQuery(searchTerm).name("featuredResult"),
-                buildSearchQuery(request, searchTerm, allFilters),
-                typeCountsQuery(contentQuery(searchTerm)).types(contentTypesToCount)
+                buildSearchQuery(request, searchTerm, allFilters).aggregate(typeCountsAggregate())
         );
     }
 

@@ -1,6 +1,7 @@
 package com.github.onsdigital.babbage.search.helpers;
 
 import com.github.onsdigital.babbage.search.model.SearchResult;
+import com.github.onsdigital.babbage.search.model.field.Field;
 import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.common.text.Text;
@@ -101,7 +102,7 @@ public class ONSSearchResponse {
                     saveIfNested(nestedObjects, o);
                 }
             }
-            HighlightField highlightedField = highlightedFields.remove(sourceEntry.getKey());
+            HighlightField highlightedField = highlightedFields.remove(getFieldName(sourceEntry.getKey()));
             if (highlightedField == null) {//not found
                 continue;
             } else {
@@ -144,6 +145,14 @@ public class ONSSearchResponse {
             return true;
         }
         return false;
+    }
+
+    private String getFieldName(String fieldKey) {
+        try {
+            return Field.valueOf(fieldKey).fieldName();
+        } catch (IllegalArgumentException e) {
+            return fieldKey;
+        }
     }
 
 }

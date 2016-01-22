@@ -6,7 +6,7 @@
 <h5 class="filters__sub-title">Other</h5>
 <div class="js-checkbox-container">
 	<ul class="list--neutral flush-top">
-		{{>list/partials/filter-item id="methodology" value="methodology" label=labels.methodology docCount=(add counts.docCounts.static_qmi counts.docCounts.static_methodology)}}
-		{{>list/partials/filter-item id="corporate" value="corporate_information" label=labels.corporate-information  explanation=labels.search-expand-types docCount=(add counts.docCounts.static_landing_page counts.docCounts.static_foi counts.docCounts.static_page)}}
+		{{>list/partials/filter-item id="methodology" value="methodology" label=labels.methodology docCount=(add docCounts.static_qmi docCounts.static_methodology)}}
+		{{>list/partials/filter-item id="corporate" value="corporate_information" label=labels.corporate-information  explanation=labels.search-expand-types docCount=(add docCounts.static_landing_page docCounts.static_foi docCounts.static_page)}}
 	</ul>
 </div>

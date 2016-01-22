@@ -14,8 +14,9 @@ import java.util.Set;
 
 import static com.github.onsdigital.babbage.api.util.SearchUtils.*;
 import static com.github.onsdigital.babbage.search.builders.ONSFilterBuilders.filterLatest;
+import static com.github.onsdigital.babbage.search.builders.ONSFilterBuilders.filterUriAndTopics;
 import static com.github.onsdigital.babbage.search.builders.ONSFilterBuilders.filterUriPrefix;
-import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.combine;
+import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.toList;
 import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.typeCountsQuery;
 
 /**
@@ -41,7 +42,7 @@ public class PublicationsRequestHandler implements ListRequestHandler {
 
     private SearchQueries queries(HttpServletRequest request, String uri) {
         ONSQuery listQuery = buildListQuery(request, publicationFilters, filters(request, uri));
-        return () -> combine(
+        return () -> toList(
                 listQuery,
                 typeCountsQuery(listQuery.query()).types(contentTypesToCount)
         );
@@ -49,7 +50,7 @@ public class PublicationsRequestHandler implements ListRequestHandler {
 
     private SearchFilter filters(HttpServletRequest request, String uri) {
         return (listQuery) -> {
-            filterUriPrefix(uri, listQuery);
+            filterUriAndTopics(uri, listQuery);
             filterLatest(request, listQuery);
         };
     }

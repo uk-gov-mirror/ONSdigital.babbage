@@ -11,12 +11,12 @@
 {{/partial}}
 
 {{#partial "block-list-tabs"}}
-	{{> list/partials/search-tabs}}
+	{{> list/partials/search-tabs docCounts=counts.docCounts total=counts.numberOfResults}}
 {{/partial}}
 
 {{#partial "block-filters"}}
 	<h4 class="filters__title">Content types to show</h4>
-	{{> list/filters/publications}}
+	{{> list/filters/publications docCounts=counts.docCounts}}
 	<input class="sort__input" type="hidden" name="q" value="{{parameters.q.0}}">
 {{/partial}}
 

@@ -13,7 +13,7 @@ import java.io.IOException;
 import static com.github.onsdigital.babbage.api.util.SearchUtils.listPage;
 import static com.github.onsdigital.babbage.api.util.SearchUtils.listJson;
 import static com.github.onsdigital.babbage.search.builders.ONSFilterBuilders.filterDates;
-import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.combine;
+import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.toList;
 
 /**
  * Render a list page for bulletins under the given URI.
@@ -33,7 +33,7 @@ public class PublishedRequestsRequestHandler implements ListRequestHandler {
     }
 
     private SearchQueries queries(HttpServletRequest request) {
-        return () -> combine(
+        return () -> toList(
                 SearchUtils
                         .buildListQuery(request, filters(request))
                         .types(ContentType.static_foi)

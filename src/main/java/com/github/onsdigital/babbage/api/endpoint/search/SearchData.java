@@ -34,7 +34,7 @@ public class SearchData {
     }
 
     private SearchQueries queries(HttpServletRequest request, String searchTerm) {
-        return () -> combine(
+        return () -> toList(
                 buildSearchQuery(request, searchTerm, dataFilters),
                 typeCountsQuery(contentQuery(searchTerm)).types(contentTypesToCount)
         );

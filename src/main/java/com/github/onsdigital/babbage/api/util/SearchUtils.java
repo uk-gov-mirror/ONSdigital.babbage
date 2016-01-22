@@ -14,6 +14,8 @@ import com.github.onsdigital.babbage.search.model.ContentType;
 import com.github.onsdigital.babbage.search.model.SearchResult;
 import com.github.onsdigital.babbage.search.model.field.Field;
 import com.github.onsdigital.babbage.template.TemplateService;
+import com.github.onsdigital.babbage.util.RequestUtil;
+import com.github.onsdigital.babbage.util.ThreadContext;
 import com.github.onsdigital.babbage.util.json.JsonUtil;
 import org.elasticsearch.index.query.QueryBuilder;
 
@@ -115,12 +117,16 @@ public class SearchUtils {
     private static ONSQuery buildListQuery(HttpServletRequest request, Set<TypeFilter> defaultFilters, SearchFilter filter, SortBy defaultSort) {
         String searchTerm = extractSearchTerm(request);
         boolean hasSearchTerm = isNotEmpty(searchTerm);
-        if (defaultSort == null) {
-            defaultSort = hasSearchTerm ? SortBy.relevance : SortBy.release_date;
+        SortBy sortBy;
+        if (hasSearchTerm) {
+            sortBy = SortBy.relevance;
+        } else {
+            sortBy = defaultSort == null ? SortBy.release_date : defaultSort;
         }
+
         QueryBuilder query = buildBaseListQuery(searchTerm);
         ContentType[] contentTypes = defaultFilters == null ? null : contentTypes(extractSelectedFilters(request, defaultFilters));
-        return buildONSQuery(request, query, defaultSort, filter, contentTypes);
+        return buildONSQuery(request, query, sortBy, filter, contentTypes);
     }
 
     private static QueryBuilder buildBaseListQuery(String searchTerm) {
@@ -177,12 +183,12 @@ public class SearchUtils {
         }
     }
 
-    static BabbageResponse buildDataResponse(String listType, Map<String, SearchResult> results) {
+    public static BabbageResponse buildDataResponse(String listType, Map<String, SearchResult> results) {
         LinkedHashMap<String, Object> data = buildResults(listType, results);
         return new BabbageStringResponse(JsonUtil.toJson(data), MediaType.APPLICATION_JSON);
     }
 
-    static BabbageResponse buildPageResponse(String listType, Map<String, SearchResult> results) throws IOException {
+    public static BabbageResponse buildPageResponse(String listType, Map<String, SearchResult> results) throws IOException {
         LinkedHashMap<String, Object> data = buildResults(listType, results);
         return new BabbageStringResponse(TemplateService.getInstance().renderContent(data), MediaType.TEXT_HTML);
     }
@@ -201,6 +207,7 @@ public class SearchUtils {
         LinkedHashMap<String, Object> baseData = new LinkedHashMap<>();
         baseData.put("type", "list");
         baseData.put("listType", listType.toLowerCase());
+        baseData.put("uri", ((RequestUtil.Location) ThreadContext.getData("location")).getPathname());
         return baseData;
     }
 

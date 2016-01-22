@@ -26,6 +26,17 @@ public class ONSFilterBuilders {
         listQuery.filter(prefixQuery(Field.uri.fieldName(), uri));
     }
 
+    /**
+     * Includes documents with uris starting with given uri and has topics containing given uri
+     */
+    public static void filterUriAndTopics(String uri, BoolQueryBuilder listQuery) {
+        listQuery.filter(
+                boolQuery().should(termQuery(Field.topics.fieldName(), uri))
+                .should(prefixQuery(Field.uri.fieldName(), endsWith(uri, "/") ? uri : uri + "/"))
+        );
+
+    }
+
     public static void filterLatest(HttpServletRequest request, BoolQueryBuilder listQuery) {
         if (request.getParameter("allReleases") == null) {
             listQuery.filter(termQuery(Field.latestRelease.fieldName(), true));

@@ -11,7 +11,7 @@ import java.io.IOException;
 
 import static com.github.onsdigital.babbage.api.util.SearchUtils.listPage;
 import static com.github.onsdigital.babbage.api.util.SearchUtils.listJson;
-import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.combine;
+import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.toList;
 
 public class StaticsRequestHandler implements ListRequestHandler {
 
@@ -28,7 +28,7 @@ public class StaticsRequestHandler implements ListRequestHandler {
     }
 
     private SearchQueries queries(HttpServletRequest request) {
-        return () -> combine(
+        return () -> toList(
                 SearchUtils
                         .buildListQuery(request)
                         .types(ContentType.static_page)

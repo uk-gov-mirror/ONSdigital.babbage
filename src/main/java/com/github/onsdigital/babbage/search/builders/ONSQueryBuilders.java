@@ -10,6 +10,7 @@ import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.functionscore.FunctionScoreQueryBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.aggregations.bucket.terms.TermsBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -103,8 +104,12 @@ public class ONSQueryBuilders {
 
     public static ONSQuery typeCountsQuery(QueryBuilder queryBuilder, SearchFilter filter) {
         return onsQuery(queryBuilder, filter)
-                .size(0).aggregate(AggregationBuilders.terms("docCounts")
-                        .field(Field._type.fieldName())); //aggregating all content types without using selected numbers
+                .size(0).aggregate(typeCountsAggregate()); //aggregating all content types without using selected numbers
+    }
+
+    public static TermsBuilder typeCountsAggregate() {
+        return AggregationBuilders.terms("docCounts")
+                .field(Field._type.fieldName());
     }
 
     public static ONSQuery firstLetterCounts(QueryBuilder queryBuilder) {
@@ -125,7 +130,7 @@ public class ONSQueryBuilders {
     }
 
 
-    public static List<ONSQuery> combine(ONSQuery... queries) {
+    public static List<ONSQuery> toList(ONSQuery... queries) {
         ArrayList<ONSQuery> list = new ArrayList<>();
         for (ONSQuery query : queries) {
             list.add(query);

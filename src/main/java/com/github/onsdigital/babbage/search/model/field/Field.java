@@ -12,23 +12,24 @@ import org.apache.commons.lang3.ArrayUtils;
 // It is not longer possible to use name of the enum field as it would have dots in it. So added a name field and getter method fieldName for it.
 public enum Field {
     uri("uri"),
-    _score("_score", false), //elastic search internal search score field in results
-    title_no_dates("description.title.title_no_dates", 10, false),
-    title_first_letter("description.title.title_first_letter", false),
-    title_raw("description.title.title_raw", false),
-    title("description.title", 10),
-    edition("description.edition"),
-    summary("description.summary"),
-    releaseDate("description.releaseDate", false),
-    metaDescription("description.metaDescription"),
-    keywords("description.keywords"),
-    _type("_type", false),
-    cdid("description.cdid"),
-    datasetId("description.datasetId"),
-    searchBoost("description.searchBoost", false),
-    latestRelease("description.latestRelease", false),
+    _score("_score"), //elastic search internal search score field in results
+    title_no_dates("description.title.title_no_dates", 10),
+    title_first_letter("description.title.title_first_letter"),
+    title_raw("description.title.title_raw"),
+    title("description.title", 10,true),
+    edition("description.edition",true),
+    summary("description.summary",true),
+    releaseDate("description.releaseDate"),
+    metaDescription("description.metaDescription",true),
+    keywords("description.keywords",true),
+    _type("_type"),
+    cdid("description.cdid",true),
+    datasetId("description.datasetId",true),
+    searchBoost("description.searchBoost"),
+    latestRelease("description.latestRelease"),
     published("description.published"),
-    cancelled("description.cancelled");
+    cancelled("description.cancelled"),
+    topics("topics");
 
     private String fieldName;
     private long boost;
@@ -43,7 +44,7 @@ public enum Field {
     }
 
     Field(String fieldName, long boost) {
-        this(fieldName, boost, true);
+        this(fieldName, boost, false);
     }
 
     Field(String fieldName, boolean highlight) {

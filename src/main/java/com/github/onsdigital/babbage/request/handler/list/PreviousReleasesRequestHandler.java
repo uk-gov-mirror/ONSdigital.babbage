@@ -19,7 +19,7 @@ import java.util.Set;
 
 import static com.github.onsdigital.babbage.api.util.SearchUtils.*;
 import static com.github.onsdigital.babbage.search.builders.ONSFilterBuilders.filterUriPrefix;
-import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.combine;
+import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.toList;
 import static com.github.onsdigital.babbage.util.URIUtil.removeLastSegment;
 
 /**
@@ -44,7 +44,7 @@ public class PreviousReleasesRequestHandler implements ListRequestHandler {
     }
 
     private SearchQueries queries(HttpServletRequest request, String uri) {
-        return () -> combine(
+        return () -> toList(
                 buildListQuery(request, publicationFilters, filters(uri))
         );
     }

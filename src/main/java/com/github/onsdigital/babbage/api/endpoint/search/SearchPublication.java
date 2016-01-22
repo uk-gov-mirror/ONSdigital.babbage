@@ -35,7 +35,7 @@ public class SearchPublication {
     }
 
     private SearchQueries queries(HttpServletRequest request, String searchTerm) {
-        return () -> combine(
+        return () -> toList(
                 buildSearchQuery(request, searchTerm, publicationFilters),
                 typeCountsQuery(contentQuery(searchTerm)).types(contentTypesToCount)
         );
