@@ -15,6 +15,8 @@ import static com.github.onsdigital.babbage.configuration.Configuration.GENERAL.
  */
 public class ONSQuery {
 
+    //Search and list templates are not order based, they resolve result based on their keys in json mapping. That's why using name to serialise result into json.
+    //Changing templates would probably be a real headache
     private String name;
     private QueryBuilder builder;
     private AbstractAggregationBuilder[] aggregationBuilders;
