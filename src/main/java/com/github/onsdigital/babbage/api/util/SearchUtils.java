@@ -1,5 +1,6 @@
 package com.github.onsdigital.babbage.api.util;
 
+import com.github.onsdigital.babbage.configuration.Configuration;
 import com.github.onsdigital.babbage.response.BabbageRedirectResponse;
 import com.github.onsdigital.babbage.response.BabbageStringResponse;
 import com.github.onsdigital.babbage.response.base.BabbageResponse;
@@ -27,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import static com.github.onsdigital.babbage.configuration.Configuration.GENERAL.getSearchResponseCacheTime;
 import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.*;
 import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.*;
 import static com.github.onsdigital.babbage.search.input.TypeFilter.contentTypes;
@@ -58,7 +60,7 @@ public class SearchUtils {
             //search time series by cdid, redirect to time series page if found
             String timeSeriesUri = searchTimeSeriesUri(searchTerm);
             if (timeSeriesUri != null) {
-                return new BabbageRedirectResponse(timeSeriesUri);
+                return new BabbageRedirectResponse(timeSeriesUri, Configuration.GENERAL.getSearchResponseCacheTime());
             }
             return buildResponse(request, listType, searchAll(queries));
         }
@@ -185,12 +187,12 @@ public class SearchUtils {
 
     public static BabbageResponse buildDataResponse(String listType, Map<String, SearchResult> results) {
         LinkedHashMap<String, Object> data = buildResults(listType, results);
-        return new BabbageStringResponse(JsonUtil.toJson(data), MediaType.APPLICATION_JSON);
+        return new BabbageStringResponse(JsonUtil.toJson(data), MediaType.APPLICATION_JSON, getSearchResponseCacheTime());
     }
 
     public static BabbageResponse buildPageResponse(String listType, Map<String, SearchResult> results) throws IOException {
         LinkedHashMap<String, Object> data = buildResults(listType, results);
-        return new BabbageStringResponse(TemplateService.getInstance().renderContent(data), MediaType.TEXT_HTML);
+        return new BabbageStringResponse(TemplateService.getInstance().renderContent(data), MediaType.TEXT_HTML, getSearchResponseCacheTime());
     }
 
     private static LinkedHashMap<String, Object> buildResults(String listType, Map<String, SearchResult> results) {

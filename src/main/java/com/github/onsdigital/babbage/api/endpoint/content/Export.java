@@ -2,6 +2,7 @@ package com.github.onsdigital.babbage.api.endpoint.content;
 
 import com.github.davidcarboni.restolino.framework.Api;
 import com.github.onsdigital.babbage.api.error.ErrorHandler;
+import com.github.onsdigital.babbage.configuration.Configuration;
 import com.github.onsdigital.babbage.content.client.ContentClient;
 import com.github.onsdigital.babbage.content.client.ContentResponse;
 import com.github.onsdigital.babbage.response.BabbageBinaryResponse;
@@ -29,7 +30,8 @@ public class Export {
             contentDispositionHeader += contentResponse.getName() == null ? "" : "filename=\"" + contentResponse.getName() + "\"";
             response.setCharacterEncoding("UTF-8");
             response.setHeader("Content-Disposition", contentDispositionHeader);
-            new BabbageBinaryResponse(contentResponse.getDataStream(), contentResponse.getMimeType()).apply(request, response);
+            new BabbageBinaryResponse(contentResponse.getDataStream(), contentResponse.getMimeType(), Configuration.GENERAL.getSearchResponseCacheTime())
+                    .apply(request, response);
         } catch (Throwable t) {
             ErrorHandler.handle(request, response, t);
         }

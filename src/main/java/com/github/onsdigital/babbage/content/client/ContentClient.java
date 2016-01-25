@@ -132,7 +132,7 @@ public class ContentClient {
         try {
             PublishInfo nextPublish = PublishingManager.getInstance().getNextPublishInfo(uri);
             Date nextPublishDate = nextPublish == null ? null : nextPublish.getPublishDate();
-            int maxAge = Configuration.GENERAL.getDefaultCacheTime();
+            int maxAge = Configuration.GENERAL.getDefaultContentCacheTime();
             Integer timeToExpire = null;
             if (nextPublishDate != null) {
                 Long time = (nextPublishDate.getTime() - new Date().getTime())/1000;
