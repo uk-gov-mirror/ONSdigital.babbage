@@ -1,4 +1,4 @@
-FROM onsdigital/java-node-phantom-component
+FROM onsdigital/java-node-phantom-ghostscript-component
 
 # Add the build artifacts
 WORKDIR /usr/src
