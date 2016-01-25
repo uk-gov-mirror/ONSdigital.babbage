@@ -38,5 +38,4 @@ public class Search {
                 typeCountsQuery(contentQuery(searchTerm)).types(contentTypesToCount)
         );
     }
-
 }
