@@ -1,27 +1,43 @@
 package com.github.onsdigital.babbage.request.handler.list;
 
-import com.github.onsdigital.babbage.request.handler.base.ListPageBaseRequestHandler;
-import com.github.onsdigital.babbage.request.handler.base.RequestHandler;
+import com.github.onsdigital.babbage.api.util.SearchUtils;
+import com.github.onsdigital.babbage.request.handler.base.ListRequestHandler;
+import com.github.onsdigital.babbage.response.base.BabbageResponse;
+import com.github.onsdigital.babbage.search.helpers.base.SearchQueries;
 import com.github.onsdigital.babbage.search.model.ContentType;
 
-public class StaticsRequestHandler extends ListPageBaseRequestHandler implements RequestHandler {
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+
+import static com.github.onsdigital.babbage.api.util.SearchUtils.listPage;
+import static com.github.onsdigital.babbage.api.util.SearchUtils.listJson;
+import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.toList;
+
+public class StaticsRequestHandler implements ListRequestHandler {
 
     private final static String REQUEST_TYPE = "staticlist";
-    private final static ContentType[] ALLOWED_TYPES = {ContentType.static_page};
+
+    @Override
+    public BabbageResponse get(String uri, HttpServletRequest request) throws Exception {
+        return listPage(REQUEST_TYPE, queries(request));
+    }
+
+    @Override
+    public BabbageResponse getData(String uri, HttpServletRequest request) throws IOException {
+        return listJson(REQUEST_TYPE, queries(request));
+    }
+
+    private SearchQueries queries(HttpServletRequest request) {
+        return () -> toList(
+                SearchUtils
+                        .buildListQuery(request)
+                        .types(ContentType.static_page)
+        );
+    }
 
     @Override
     public String getRequestType() {
         return REQUEST_TYPE;
-    }
-
-    @Override
-    public ContentType[] getAllowedTypes() {
-        return ALLOWED_TYPES;
-    }
-
-    @Override
-    public boolean isLocalisedUri() {
-        return true;
     }
 
 }

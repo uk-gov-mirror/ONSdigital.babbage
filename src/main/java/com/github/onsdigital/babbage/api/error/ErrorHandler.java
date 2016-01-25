@@ -6,6 +6,7 @@ import com.github.onsdigital.babbage.content.client.ContentReadException;
 import com.github.onsdigital.babbage.template.TemplateService;
 import com.github.onsdigital.babbage.error.ResourceNotFoundException;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.exception.ExceptionUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,7 +25,7 @@ public class ErrorHandler implements ServerError {
 
     private static void logError(Throwable e) {
         System.err.println(e.getMessage() + ", cause: " + (e.getCause() != null ? e.getCause().getMessage() : ""));
-        e.printStackTrace();
+        ExceptionUtils.printRootCauseStackTrace(e);
     }
 
     @Override

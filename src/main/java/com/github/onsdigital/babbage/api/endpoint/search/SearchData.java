@@ -1,29 +1,43 @@
 package com.github.onsdigital.babbage.api.endpoint.search;
 
 import com.github.davidcarboni.restolino.framework.Api;
+import com.github.onsdigital.babbage.search.helpers.base.SearchQueries;
+import com.github.onsdigital.babbage.search.input.TypeFilter;
 import com.github.onsdigital.babbage.search.model.ContentType;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.GET;
+import java.util.Set;
+
+import static com.github.onsdigital.babbage.api.util.SearchUtils.buildSearchQuery;
+import static com.github.onsdigital.babbage.api.util.SearchUtils.search;
+import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.*;
+import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.extractSearchTerm;
 
 /**
  * Created by bren on 21/09/15.
  */
 @Api
-public class SearchData extends Search {
+public class SearchData {
 
-    private final static ContentType[] ALLOWED_TYPES = {ContentType.dataset_landing_page, ContentType.reference_tables, ContentType.timeseries, ContentType.static_adhoc};
+    //available dataFilters on the page
+    private static Set<TypeFilter> dataFilters = TypeFilter.getDataFilters();
+    //Counting all types to show counts on tabs
+    private static ContentType[] contentTypesToCount = TypeFilter.contentTypes(TypeFilter.getAllFilters());
 
-    @Override
-    protected ContentType[] getAllowedTypes() {
-        return ALLOWED_TYPES;
+    @GET
+    public void get(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        String searchTerm = extractSearchTerm(request);
+        search(request, getClass().getSimpleName(), searchTerm, queries(request, searchTerm))
+                .apply(request, response);
     }
 
-    @Override
-    protected ContentType[] getAggregationTypes() {
-        return super.getAllowedTypes();// count all documents types allowed in search.
-    }
-
-    @Override
-    public String getRequestType() {
-        return this.getClass().getSimpleName().toLowerCase();
+    private SearchQueries queries(HttpServletRequest request, String searchTerm) {
+        return () -> toList(
+                buildSearchQuery(request, searchTerm, dataFilters),
+                typeCountsQuery(contentQuery(searchTerm)).types(contentTypesToCount)
+        );
     }
 
 }

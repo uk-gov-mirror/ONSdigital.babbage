@@ -2,22 +2,21 @@ package com.github.onsdigital.babbage.search.helpers;
 
 import com.github.onsdigital.babbage.error.BadRequestException;
 import com.github.onsdigital.babbage.error.ResourceNotFoundException;
-import com.github.onsdigital.babbage.search.ONSQuery;
 import com.github.onsdigital.babbage.search.input.SortBy;
-import com.github.onsdigital.babbage.search.model.field.FilterableField;
-import com.github.onsdigital.babbage.search.model.field.SearchableField;
-import com.github.onsdigital.babbage.search.model.sort.SortField;
+import com.github.onsdigital.babbage.search.input.TypeFilter;
 import org.apache.commons.lang3.StringUtils;
-import org.elasticsearch.index.query.FilterBuilder;
-import org.elasticsearch.index.query.FilterBuilders;
-import org.elasticsearch.index.query.RangeFilterBuilder;
-import org.elasticsearch.search.aggregations.bucket.terms.TermsBuilder;
-import org.elasticsearch.search.sort.FieldSortBuilder;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import static com.github.onsdigital.babbage.util.RequestUtil.getParam;
-import static org.apache.commons.lang3.StringUtils.isEmpty;
+import static org.apache.commons.lang3.EnumUtils.getEnum;
+import static org.apache.commons.lang3.StringUtils.*;
 
 /**
  * Common utilities to manipulate search request query and extracting common search parameters
@@ -25,121 +24,87 @@ import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 public class SearchRequestHelper {
 
+    public static Date[] extractPublishDates(HttpServletRequest request) {
+        String updated = request.getParameter("updated");
+        Date fromDate;
+        Date toDate = null;
 
-    /**
-     * Adds given filters to query as or filters. The or filter will simply be a filter in encapsulating and filter, meaning all other filters added to query separately are anded with each other
-     *
-     * @param query
-     * @param filters
-     */
-    public static void addOrFilters(ONSQuery query, FilterBuilder... filters) {
-        query.addFilter(FilterBuilders.orFilter(filters));
+        if (updated == null) {
+            updated = "";
+        }
+
+        switch (updated) {
+            case "today":
+                fromDate = daysBefore(1);
+                break;
+            case "week":
+                fromDate = daysBefore(7);
+                break;
+            case "month":
+                fromDate = daysBefore(30);
+                break;
+            default:
+                fromDate = parseDate(request.getParameter("fromDate"));
+                toDate = parseDate(request.getParameter("toDate"));
+                break;
+        }
+        return new Date[]{fromDate, toDate};
     }
 
-    public static void addFields(ONSQuery query, SearchableField... fields) {
-        for (SearchableField field : fields) {
-            query.addField(field.name(), field.getBoostFactor());
+    private static Date parseDate(String date) {
+        if (isNotEmpty(date)) {
+            date = date.trim();
+            try {
+                return new SimpleDateFormat("dd/MM/yyyy").parse(date);
+            } catch (ParseException e) {
+                //ignore invalid date input
+            }
         }
+        return null;
     }
 
 
-    /**
-     * Adds term filters to ons query
-     *
-     * @param query
-     * @param field
-     * @param values
-     */
-    public static void addPrefixFilter(ONSQuery query, FilterableField field, String... values) {
-        if (values == null) {
-            query.addFilter(FilterBuilders.prefixFilter(field.name(), null));
-        }
-
-        for (String value : values) {
-            query.addFilter(FilterBuilders.prefixFilter(field.name(), value));
-        }
-    }
-
-    /**
-     * Adds term filters to ons query, null value will filter null values
-     *
-     * @param query
-     * @param field
-     * @param value
-     */
-    public static void addTermFilter(ONSQuery query, FilterableField field, Object value) {
-        if (value == null) {
-            query.addFilter(FilterBuilders.termFilter(field.name(), null));
-        }
-
-        query.addFilter(FilterBuilders.termFilter(field.name(), value));
+    private static Date daysBefore(int days) {
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DAY_OF_MONTH, -1 * days);
+        return cal.getTime();
     }
 
     /**
-     * Adds  terms filter ( not term filter, terms filter matches if any of the filters is available).
-     * See elastic search documentation
+     * Extracts filter parameters requested, including only filter if given default filters, otherwise ignores.
+     * <p/>
+     * If there are no valid filters will return default filters
      *
-     * @param query
-     * @param field
-     * @param values
+     * @param request
+     * @param defaultFilters
+     * @return
      */
-    public static void addTermsFilter(ONSQuery query, FilterableField field, Object... values) {
-        if (values == null) {
-            query.addFilter(FilterBuilders.termFilter(field.name(), null));
+    public static Set<TypeFilter> extractSelectedFilters(HttpServletRequest request, Set<TypeFilter> defaultFilters) {
+        String[] filters = request.getParameterValues("filter");
+        if (filters == null) {
+            return defaultFilters;
         }
-        query.addFilter(FilterBuilders.termsFilter(field.name(), values));
+
+        HashSet<TypeFilter> selectedFilters = new HashSet<>();
+        for (int i = 0; i < filters.length; i++) {
+            TypeFilter typeFilter = getEnum(TypeFilter.class, upperCase(filters[i]));
+            if (defaultFilters.contains(typeFilter)) {
+                selectedFilters.add(typeFilter);
+            }
+        }
+        return selectedFilters.isEmpty() ? defaultFilters : selectedFilters;
     }
 
 
-    /**
-     * Adds range filter to given query, only if any of from or to values are non-null, null values are not added to filter.
-     * If both from and to are null this method won't have any affect
-     *
-     * @param query
-     * @param field
-     * @param from
-     * @param to
-     */
-
-    public static void addRangeFilter(ONSQuery query, FilterableField field, Object from, Object to) {
-        if (from == null && to == null) {
-            return;
-        }
-
-        RangeFilterBuilder dateFilter = new RangeFilterBuilder(field.name());
-        if (from != null) {
-            dateFilter.from(from);
-        }
-        if (to != null) {
-            dateFilter.to(to);
-        }
-        query.addFilter(dateFilter);
-
-    }
-
-    public static void addTermAggregation(ONSQuery query, String aggregationName, FilterableField field) {
-        //Size set to 0 to remove limit on bucket numbers which is 10 by default.
-        query.addAggregation(new TermsBuilder(aggregationName).field(field.name()).size(0));
-    }
-
-
-    public static void addSort(ONSQuery query, SortBy sortBy) {
-        SortField[] sortFields = sortBy.getSortFields();
-        for (SortField sortField : sortFields) {
-            query.addSort(new FieldSortBuilder(sortField.getField().name()).order(sortField.getOrder()).ignoreUnmapped(true));
-        }
-    }
-
-    public static SortBy extractSortBy(HttpServletRequest request) {
+    public static SortBy extractSortBy(HttpServletRequest request, SortBy defaultSort) {
         String sortBy = getParam(request, "sortBy");
         if (isEmpty(sortBy)) {
-            return null;
+            return defaultSort;
         }
         try {
-            return SortBy.valueOf(sortBy.toUpperCase());
+            return SortBy.valueOf(sortBy.toLowerCase());
         } catch (IllegalArgumentException e) {
-            //ignore invalid sort by parameter
-            return null;
+            return defaultSort;
         }
     }
 
@@ -181,5 +146,6 @@ public class SearchRequestHelper {
         }
         return query;
     }
+
 
 }

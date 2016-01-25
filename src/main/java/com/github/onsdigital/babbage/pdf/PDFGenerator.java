@@ -22,6 +22,10 @@ public class PDFGenerator {
     //Phantom js export code
 
     public static Path generatePdf(String uri, String fileName, Map<String, String> cookies) {
+        return generatePdf(uri, fileName, cookies, null);
+    }
+
+    public static Path generatePdf(String uri, String fileName, Map<String, String> cookies, String pdfTable) {
         String[] command = {
                 Configuration.PHANTOMJS.getPhantomjsPath(), "src/main/web/js/generatepdf.js", URL + uri + "?pdf=1", "" + TEMP_DIRECTORY_PATH + "/" + fileName + ".pdf"
         };
@@ -50,6 +54,40 @@ public class PDFGenerator {
             if (!Files.exists(pdfFile)) {
                 throw new RuntimeException("Failed generating pdf, file not created");
             }
+
+            if(pdfTable != null) {
+                String[] gsCommand = {
+                        Configuration.GHOSTSCRIPT.getGhostscriptPath(),
+                        "-dBATCH", "-dNOPAUSE", "-q", "-sDEVICE=pdfwrite", "-dPDFSETTINGS=/prepress",
+                        "-sOutputFile=" + TEMP_DIRECTORY_PATH + "/" + fileName + "-merged.pdf",
+                        TEMP_DIRECTORY_PATH + "/" + fileName + ".pdf", pdfTable
+                };
+
+                Process gsProcess = new ProcessBuilder(gsCommand).redirectErrorStream(true).start();
+                System.out.println(ArrayUtils.toString(gsCommand));
+                int gsExitStatus = gsProcess.waitFor();
+
+                BufferedReader gsBufferedReader = new BufferedReader(new InputStreamReader(gsProcess.getInputStream()));
+                String gsCurrentLine;
+                StringBuilder gsStringBuilder = new StringBuilder(gsExitStatus == 0 ? "SUCCESS:" : "ERROR:");
+                gsCurrentLine = bufferedReader.readLine();
+                while (gsCurrentLine != null) {
+                    gsStringBuilder.append(gsCurrentLine);
+                    gsCurrentLine = gsBufferedReader.readLine();
+                }
+                System.out.println(gsStringBuilder.toString());
+
+                Path gsPdfFile = FileSystems.getDefault().getPath(TEMP_DIRECTORY_PATH).resolve(fileName + "-merged.pdf");
+                if (!Files.exists(gsPdfFile)) {
+                    throw new RuntimeException("Failed generating pdf, file not created");
+                }
+
+                Files.delete(pdfFile);
+                Files.move(gsPdfFile, pdfFile);
+
+                return pdfFile;
+            }
+
             return pdfFile;
         } catch (Exception ex) {
             ex.printStackTrace();

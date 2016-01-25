@@ -1,42 +1,63 @@
 package com.github.onsdigital.babbage.request.handler.list;
 
-import com.github.onsdigital.babbage.request.handler.base.ListPageBaseRequestHandler;
-import com.github.onsdigital.babbage.request.handler.base.RequestHandler;
+import com.github.onsdigital.babbage.request.handler.base.ListRequestHandler;
+import com.github.onsdigital.babbage.response.base.BabbageResponse;
+import com.github.onsdigital.babbage.search.helpers.ONSQuery;
+import com.github.onsdigital.babbage.search.helpers.base.SearchFilter;
+import com.github.onsdigital.babbage.search.helpers.base.SearchQueries;
+import com.github.onsdigital.babbage.search.input.TypeFilter;
 import com.github.onsdigital.babbage.search.model.ContentType;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.util.Set;
+
+import static com.github.onsdigital.babbage.api.util.SearchUtils.*;
+import static com.github.onsdigital.babbage.search.builders.ONSFilterBuilders.filterLatest;
+import static com.github.onsdigital.babbage.search.builders.ONSFilterBuilders.filterUriAndTopics;
+import static com.github.onsdigital.babbage.search.builders.ONSFilterBuilders.filterUriPrefix;
+import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.toList;
+import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.typeCountsQuery;
 
 /**
  * Render a list page for bulletins under the given URI.
  */
-public class PublicationsRequestHandler extends ListPageBaseRequestHandler implements RequestHandler {
+public class PublicationsRequestHandler implements ListRequestHandler {
 
-    private final static ContentType[] ALLOWED_TYPES = {ContentType.article, ContentType.article_download, ContentType.bulletin, ContentType.compendium_landing_page};
+    private static Set<TypeFilter> publicationFilters = TypeFilter.getPublicationFilters();
+    //    private static ContentType[] contentTypesToCount = addAll(resolveContentTypes(publicationFilters), resolveContentTypes(TypeFilter.getDataFilters()));
+    private static ContentType[] contentTypesToCount = TypeFilter.contentTypes(publicationFilters);
+
     private final static String REQUEST_TYPE = "publications";
+
+    @Override
+    public BabbageResponse get(String uri, HttpServletRequest request) throws Exception {
+        return listPage(REQUEST_TYPE, queries(request, uri));
+    }
+
+    @Override
+    public BabbageResponse getData(String uri, HttpServletRequest request) throws IOException {
+        return listJson(REQUEST_TYPE, queries(request, uri));
+    }
+
+    private SearchQueries queries(HttpServletRequest request, String uri) {
+        ONSQuery listQuery = buildListQuery(request, publicationFilters, filters(request, uri));
+        return () -> toList(
+                listQuery,
+                typeCountsQuery(listQuery.query()).types(contentTypesToCount)
+        );
+    }
+
+    private SearchFilter filters(HttpServletRequest request, String uri) {
+        return (listQuery) -> {
+            filterUriAndTopics(uri, listQuery);
+            filterLatest(request, listQuery);
+        };
+    }
 
     @Override
     public String getRequestType() {
         return REQUEST_TYPE;
     }
 
-    @Override
-    public ContentType[] getAllowedTypes() {
-        return ALLOWED_TYPES;
-    }
-
-    @Override
-    protected boolean isFilterLatest(HttpServletRequest request) {
-        //filter if not wanted to be included specifically
-        return request.getParameter("allReleases") == null;
-    }
-
-    @Override
-    public boolean isLocalisedUri() {
-        return true;
-    }
-
-    @Override
-    protected boolean isAggregateByType() {
-        return true;
-    }
 }

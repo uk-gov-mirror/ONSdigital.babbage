@@ -8,7 +8,7 @@
 	<!--<![endif]-->
 	<head>
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-		<title>{{#if description.title}}{{description.title}}{{else}}{{{sub (sup title clear=true) clear=true}}}{{/if}}</title>
+		<title>{{> partials/page-title }} - Office for National Statistics</title>
 		<meta charset="utf-8" />
 		<meta content="width=device-width,initial-scale=1.0" name="viewport" />
 		<meta content="on" http-equiv="cleartype" />
@@ -124,12 +124,12 @@
 		{{!-- List Pages --}}
 		{{#if_eq type "list"}}
 			{{#if_eq listType "alladhocs"}}{{> list/t9-12}}{{/if_eq}}
+			{{#if_eq listType "allmethodologies"}}{{> list/t9-11}}{{/if_eq}}
 			{{#if_eq listType "atoz"}}{{> list/t9-14}}{{/if_eq}}
 			{{#if_eq listType "staticlist"}}{{> list/t9-13}}{{/if_eq}}
 			{{#if_eq listType "publishedrequests"}}{{> list/t9-2}}{{/if_eq}}
 			{{#if_eq listType "previousreleases"}}{{> list/t9-6}}{{/if_eq}}
 			{{#if_eq listType "topicspecificmethodology"}}{{> list/t9-7}}{{/if_eq}}
-			{{#if_eq listType "allmethodologies"}}{{> list/t9-11}}{{/if_eq}}
 			{{#if_eq listType "publications"}}{{> list/t9-8}}{{/if_eq}}
 			{{#if_eq listType "datalist"}}{{> list/t9-9}}{{/if_eq}}
 			{{#if_eq listType "search"}}{{> list/t10}}{{/if_eq}}

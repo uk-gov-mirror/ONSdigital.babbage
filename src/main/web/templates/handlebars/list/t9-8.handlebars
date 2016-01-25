@@ -1,18 +1,18 @@
 {{#partial "block-title-wrapper" background="background--gallery"}}{{/partial}}
 
-{{#partial "block-title"}}
-	All publications related to {{> partials/location }}
-{{/partial}}
+{{!-- {{#partial "block-title"}}
+ 	All publications related to {{> partials/location }}
+ {{/partial}} --}}
 
 {{#partial "block-list-tabs"}}
 	<li class="tab__item">
 		<a href="datalist{{#if parameters.query.0}}?query={{parameters.query.0}}{{/if}}" class="tab__link">
-			Data {{!-- ({{nf (add counts.docCounts.timeseries counts.docCounts.dataset_landing_page counts.docCounts.reference_tables counts.docCounts.static_adhoc) alt=0}}) --}}
+			Data  {{!-- ({{nf (add counts.docCounts.timeseries counts.docCounts.dataset_landing_page counts.docCounts.reference_tables counts.docCounts.static_adhoc) alt=0}}) --}}
 		</a>
 	</li>
 	<li class="tab__item">
 		<span class="tab__link tab__link--active">
-			Publications {{!-- ({{nf (add counts.docCounts.bulletin counts.docCounts.article counts.docCounts.compendium_landing_page) alt=0}}) --}}
+			Publications {{!-- ({{nf (add counts.docCounts.bulletin counts.docCounts.article counts.docCounts.article_download counts.docCounts.compendium_landing_page) alt=0}}) --}}
 		</span>
 	</li>
 {{/partial}}
@@ -25,8 +25,10 @@
 
 {{#partial "block-filters"}}
 	{{> list/filters/keywords}}
-	<h4 class="filters__title">Content types to show</h4>
-	{{> list/filters/publications}}
+    <fieldset class="filters__fieldset">
+        <legend class="filters__title">Content types to show</legend>
+        {{> list/filters/publications docCounts=counts.docCounts}}
+    </fieldset>
 	{{> list/filters/all-releases }}
 {{/partial}}
 

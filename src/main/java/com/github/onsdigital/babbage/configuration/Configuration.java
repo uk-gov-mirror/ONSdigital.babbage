@@ -11,12 +11,17 @@ public class Configuration {
         private static final int MAX_VISIBLE_PAGINATOR_LINK = 10;
         private static final int RESULTS_PER_PAGE = 10;
         //Should be the same as cut off time in Florence publishing system to ensure cache times are correct
-        private static int DEFAULT_CACHE_TIME = 15 * 60; //in seconds, 10 mins by default
+        private static int DEFAULT_CACHE_TIME = 15 * 60; //in seconds, to be set as HTTP max age header
         private static int PUBLISH_CACHE_TIMEOUT  = 60 * 60; //If content that should be published is more than an hour due delete publish date to get it caching again
+        private static long SEARCH_RESPONSE_CACHE_TIME = 5; //in seconds , search results max age header
 
 
-        public static int getDefaultCacheTime() {
+        public static int getDefaultContentCacheTime() {
             return DEFAULT_CACHE_TIME;
+        }
+
+        public static long getSearchResponseCacheTime() {
+            return SEARCH_RESPONSE_CACHE_TIME;
         }
 
         public static boolean isCacheEnabled() {
@@ -162,6 +167,12 @@ public class Configuration {
         public static String getPhantomjsPath() {
             return PHANTOMJS_PATH;
         }
+    }
+
+    public static class GHOSTSCRIPT {
+        private static final String GHOSTSCRIPT_PATH = StringUtils.defaultIfBlank(getValue("GHOSTSCRIPT_PATH"), "/usr/local/bin/gs");
+
+        public static String getGhostscriptPath() { return GHOSTSCRIPT_PATH; }
     }
 
 

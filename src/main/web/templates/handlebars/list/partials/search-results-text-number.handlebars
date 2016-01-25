@@ -1,4 +1,4 @@
-<h2 aria-live="assertive" class="search-page__results-text">
+<h2 aria-live="polite" class="search-page__results-text">
 	{{#if_any results showFeaturedResult timeSeriesCount}}
 	<span class="stand-out-text">
 		{{nf numberOfResults}}</span> {{#if parameters.filter}}<strong>{{> list/filters/filters-type-list}}</strong>{{else}}results{{/if}} containing
@@ -6,11 +6,10 @@
 	Sorry, no results were found that contain
 	{{/if_any}}
 	<strong>‘{{parameters.q.0}}’</strong>{{!-- Have to put if inline or else spaced added after query --}}{{#if results}}, sorted by <strong>
-		{{#if parameters.sortBy.0}}
-			{{#if_eq parameters.sortBy.0 "release_date"}}release date{{/if_eq}}
-			{{#if_eq parameters.sortBy.0 "title"}}title{{/if_eq}}
-		{{else}}
-			relevancy
+		{{#if result.sortBy}}
+			{{#if_eq result.sortBy "release_date"}}release date{{/if_eq}}
+			{{#if_eq result.sortBy "title"}}title{{/if_eq}}
+			{{#if_eq result.sortBy "relevance"}}relevancy{{/if_eq}}
 		{{/if}}
 	</strong>.
 	{{/if}}

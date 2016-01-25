@@ -1,25 +1,25 @@
 package com.github.onsdigital.babbage.search.model.sort;
 
-import com.github.onsdigital.babbage.search.model.field.FilterableField;
+import com.github.onsdigital.babbage.search.model.field.Field;
 import org.elasticsearch.search.sort.SortOrder;
 
 /**
  * Created by bren on 16/09/15.
  */
 public class SortField {
-    private FilterableField field;
+    private Field field;
     private SortOrder order;
 
-    public SortField(FilterableField field, SortOrder order) {
+    public SortField(Field field, SortOrder order) {
         this.field = field;
         this.order = order;
     }
 
-    public FilterableField getField() {
+    public Field getField() {
         return field;
     }
 
-    public void setField(FilterableField field) {
+    public void setField(Field field) {
         this.field = field;
     }
 

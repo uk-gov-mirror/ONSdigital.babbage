@@ -1,72 +1,87 @@
 package com.github.onsdigital.babbage.request.handler.list;
 
+import com.github.onsdigital.babbage.api.util.SearchUtils;
 import com.github.onsdigital.babbage.content.client.ContentClient;
 import com.github.onsdigital.babbage.content.client.ContentReadException;
 import com.github.onsdigital.babbage.content.client.ContentResponse;
 import com.github.onsdigital.babbage.error.ResourceNotFoundException;
-import com.github.onsdigital.babbage.paginator.Paginator;
-import com.github.onsdigital.babbage.request.handler.base.ListPageBaseRequestHandler;
-import com.github.onsdigital.babbage.request.handler.base.RequestHandler;
-import com.github.onsdigital.babbage.search.ONSQuery;
-import com.github.onsdigital.babbage.search.helpers.SearchRequestHelper;
-import com.github.onsdigital.babbage.search.helpers.SearchResponseHelper;
+import com.github.onsdigital.babbage.request.handler.base.ListRequestHandler;
+import com.github.onsdigital.babbage.response.base.BabbageResponse;
+import com.github.onsdigital.babbage.search.helpers.base.SearchFilter;
+import com.github.onsdigital.babbage.search.helpers.base.SearchQueries;
+import com.github.onsdigital.babbage.search.input.SortBy;
+import com.github.onsdigital.babbage.search.input.TypeFilter;
 import com.github.onsdigital.babbage.search.model.ContentType;
-import com.github.onsdigital.babbage.search.model.field.SearchableField;
+import com.github.onsdigital.babbage.search.model.field.Field;
 import com.github.onsdigital.babbage.util.json.JsonUtil;
+import org.elasticsearch.index.query.QueryBuilders;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.github.onsdigital.babbage.search.model.field.FilterableField.uri;
+import static com.github.onsdigital.babbage.api.util.SearchUtils.*;
+import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.toList;
 
 /**
  * Created by bren on 25/11/15.
  */
-public class RelatedDataRequestHandler extends ListPageBaseRequestHandler implements RequestHandler {
-
-    private final static ContentType[] ALLOWED_TYPES = {
-            ContentType.dataset_landing_page,
-            ContentType.reference_tables};
+public class RelatedDataRequestHandler implements ListRequestHandler {
 
 
-    @Override
-    protected LinkedHashMap<String, Object> prepareData(String requestedUri, HttpServletRequest request) throws IOException, ContentReadException {
-        ContentResponse contentResponse = ContentClient.getInstance().getContent(requestedUri);
-        Map<String, Object> objectMap = JsonUtil.toMap(contentResponse.getDataStream());
-        if (!isPublication(objectMap.get(SearchableField.type.name()))) {
-            throw new ResourceNotFoundException("Requested content's previous releases are not available, uri: " + requestedUri + "");
-        }
-        List<Map> list = (List) objectMap.get("relatedData");
-        if (list == null || list.isEmpty()) {
-            return getBaseData(request);//render empty page without search
-        }
-        String[] uriArray = new String[list.size()];
-        for (int i = 0; i < list.size(); i++) {
-            uriArray[i] = (String) list.get(i).get(uri.name());
-
-        }
-
-        ONSQuery query = createQuery(requestedUri, request);
-        SearchRequestHelper.addTermsFilter(query, uri, uriArray);
-        List<SearchResponseHelper> responseHelpers = doSearch(request, query);
-        SearchResponseHelper responseHelper = responseHelpers.iterator().next();
-        Paginator.assertPage(query.getPage(), responseHelper);
-        return resolveListData(request, query, responseHelper, null);
-    }
-
-    private boolean isPublication(Object type) {
-        if (type == null) {
+    private boolean isPublication(Object typeName) {
+        if (typeName == null) {
             return false;
         }
-        return ContentType.isTypeIn(String.valueOf(type), ContentType.article, ContentType.bulletin);
+        ContentType contentType;
+        try {
+            contentType = ContentType.valueOf(String.valueOf(typeName));
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
+
+        TypeFilter.getPublicationFilters();
+        for (TypeFilter typeFilter : TypeFilter.getPublicationFilters()) {
+            for (ContentType type : typeFilter.getTypes()) {
+                if (type == contentType) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     @Override
-    protected ContentType[] getAllowedTypes() {
-        return ALLOWED_TYPES;
+    public BabbageResponse get(String uri, HttpServletRequest request) throws Exception {
+        List<Map> uriList = getRelatedDataUris(uri);
+        return isEmpty(uriList) ? buildPageResponse(getRequestType(), null) : listPage(getRequestType(), queries(uriList, request));
+    }
+
+
+    @Override
+    public BabbageResponse getData(String uri, HttpServletRequest request) throws IOException, ContentReadException {
+        List<Map> uriList = getRelatedDataUris(uri);
+        return isEmpty(uriList) ? buildDataResponse(getRequestType(), null) : listJson(getRequestType(), queries(uriList, request));
+    }
+
+    private SearchQueries queries(List<Map> uriList, HttpServletRequest request) throws IOException, ContentReadException {
+        String[] uriArray = new String[uriList.size()];
+        for (int i = 0; i < uriList.size(); i++) {
+            uriArray[i] = (String) uriList.get(i).get(Field.uri.name());
+
+        }
+        return () -> toList(
+                SearchUtils.buildListQuery(request, filters(uriArray), SortBy.title).types(ContentType.dataset_landing_page, ContentType.reference_tables)
+        );
+    }
+
+    private SearchFilter filters(String[] uriArray) {
+        return (query) -> query.filter(QueryBuilders.termsQuery(Field.uri.fieldName(), uriArray));
+    }
+
+    private boolean isEmpty(List<Map> relatedDataUris) {
+        return relatedDataUris == null || relatedDataUris.isEmpty();
     }
 
     @Override
@@ -74,13 +89,14 @@ public class RelatedDataRequestHandler extends ListPageBaseRequestHandler implem
         return "relateddata";
     }
 
-    @Override
-    public boolean isLocalisedUri() {
-        return false;
+
+    private List<Map> getRelatedDataUris(String requestedUri) throws ContentReadException, IOException {
+        ContentResponse contentResponse = ContentClient.getInstance().getContent(requestedUri);
+        Map<String, Object> objectMap = JsonUtil.toMap(contentResponse.getDataStream());
+        if (!isPublication(objectMap.get("type"))) {
+            throw new ResourceNotFoundException();
+        }
+        return (List) objectMap.get("relatedData");
     }
 
-    @Override
-    protected boolean isListTopics() {
-        return false;
-    }
 }

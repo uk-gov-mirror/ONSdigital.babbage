@@ -1,7 +1,7 @@
 package com.github.onsdigital.babbage.paginator;
 
 import com.github.onsdigital.babbage.error.ResourceNotFoundException;
-import com.github.onsdigital.babbage.search.helpers.SearchResponseHelper;
+import com.github.onsdigital.babbage.search.helpers.ONSSearchResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,7 +64,7 @@ public class Paginator {
         return pageList;
     }
 
-    public static Paginator getPaginator(long page, SearchResponseHelper responseHelper) {
+    public static Paginator getPaginator(long page, ONSSearchResponse responseHelper) {
         Paginator paginator = new Paginator(responseHelper.getNumberOfResults(), getMaxVisiblePaginatorLink(), page, getResultsPerPage());
         if (paginator.getNumberOfPages() > 1) {
             return paginator;
@@ -72,7 +72,7 @@ public class Paginator {
         return null;
     }
 
-    public static void assertPage(int page, SearchResponseHelper responseHelper) {
+    public static void assertPage(int page, ONSSearchResponse responseHelper) {
         if (page != 1 && responseHelper.getResult().getResults().size() == 0) {
             throw new ResourceNotFoundException("Non-existing page request");
         }

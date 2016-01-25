@@ -1,5 +1,7 @@
 package com.github.onsdigital.babbage.search.model;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 /**
  * Created by bren on 08/09/15.
  * <p/>
@@ -9,24 +11,24 @@ public enum ContentType {
     home_page,
     taxonomy_landing_page,
     product_page,
-    bulletin,
-    article,
-    article_download,
-    timeseries,
+    bulletin(1.55f),
+    article(1.30f),
+    article_download(1.30f),
+    timeseries(1.2f),
     data_slice,
-    compendium_landing_page,
+    compendium_landing_page(1.30f),
     compendium_chapter,
     compendium_data,
     static_landing_page,
     static_article,
     static_methodology,
     static_methodology_download,
-    static_page, //Pure markdown
+    static_page,
     static_qmi,
     static_foi,
-    static_adhoc,
+    static_adhoc(1.25f),
     dataset,
-    dataset_landing_page,
+    dataset_landing_page(1.35f),
     timeseries_dataset,
     release,
     reference_tables,
@@ -34,37 +36,27 @@ public enum ContentType {
     table;
 
 
-    /**
-     * Checks to see if type is one of the given content type
-     *
-     * @param type
-     * @return
-     */
-    public static boolean isTypeIn(String type, ContentType... types) {
-        try {
-            ContentType contentType = ContentType.valueOf((String) type);
-            for (ContentType currentType : types) {
-                if (currentType.name().equals(type)) {
-                    return true;
-                }
-            }
-        } catch (IllegalArgumentException e) {
-        }
-        return false;
+    //Content type boost in search results
+    private Float weight;
+
+    ContentType(float weight) {
+        this.weight = weight;
     }
 
-    /**
-     * Returns given content types' name as a string array
-     *
-     * @param types
-     * @return
-     */
-    public static String[] getNamesOf(ContentType... types) {
-        String[] names = new String[types.length];
-        for (int i = 0; i < types.length; i++) {
-            ContentType type = types[i];
-            names[i] = type.name();
+    ContentType() {
+
+    }
+
+
+    public Float getWeight() {
+        return weight;
+    }
+
+    public static String[] typeNames(ContentType... contentTypes) {
+        String[] types = new String[0];
+        for (ContentType type : contentTypes) {
+            types = ArrayUtils.addAll(types, type.name());
         }
-        return names;
+        return types;
     }
 }

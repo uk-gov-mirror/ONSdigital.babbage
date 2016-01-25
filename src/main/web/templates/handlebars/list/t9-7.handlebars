@@ -1,6 +1,6 @@
-{{#partial "block-title"}}
-	{{#last breadcrumb}}{{description.title}}{{/last}} methodology
-{{/partial}}
+{{!-- {{#partial "block-title"}}
+ 	{{#last breadcrumb}}{{description.title}}{{/last}} methodology
+ {{/partial}} --}}
 
 {{#partial "block-results-text"}}
 	<div class="col col--md-28 col--lg-38">
@@ -10,7 +10,7 @@
 
 {{#partial "block-filters"}}
 	{{> list/filters/keywords}}
-	{{> list/filters/methodology}}
+	{{> list/filters/methodology docCounts=result.docCounts}}
 {{/partial}}
 
 {{!-- Inheriting from base list template --}}

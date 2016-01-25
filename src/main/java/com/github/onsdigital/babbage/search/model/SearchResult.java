@@ -1,5 +1,8 @@
 package com.github.onsdigital.babbage.search.model;
 
+import com.github.onsdigital.babbage.paginator.Paginator;
+import com.github.onsdigital.babbage.search.input.SortBy;
+
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -14,6 +17,8 @@ public class SearchResult {
     private long took;
     private List<Map<String, Object>> results = new ArrayList<>();
     private Map<String,Long> docCounts;
+    private Paginator paginator;
+    private String sortBy;
 
     public Long getNumberOfResults() {
         return numberOfResults;
@@ -57,4 +62,19 @@ public class SearchResult {
         this.took = took;
     }
 
+    public Paginator getPaginator() {
+        return paginator;
+    }
+
+    public void setPaginator(Paginator paginator) {
+        this.paginator = paginator;
+    }
+
+    public String getSortBy() {
+        return sortBy;
+    }
+
+    public void setSortBy(String sortBy) {
+        this.sortBy = sortBy;
+    }
 }

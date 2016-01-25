@@ -1,20 +1,20 @@
-{{#partial "block-title"}}
-Time series explorer
-{{/partial}}
+{{!-- {{#partial "block-title"}}
+ Time series explorer
+ {{/partial}} --}}
 
 {{#partial "block-results-text"}}
 	<div class="col col--md-28 col--lg-38">
 		{{> list/partials/list-results-text-number result resultsLabel="time series data" showTopic=true}}
 	</div>
 	<div class="col col--md-19 col--lg-21 js-enhance--show">
-		<button class="timeseries__basket" aria-live="assertive">Selection (<span class="timeseries__count">0</span>)</button>
+		<button class="timeseries__basket" aria-live="polite">Selection (<span class="timeseries__count">0</span>)</button>
 		<div class="timeseries__list-container">
 			<div class="timeseries__remember">
 				<input id="remember-selection" type="checkbox" name="" data-uri="{{uri}}" value=""
 					   class="btn btn--primary" aria-label="remember-selection">
 				<label for="remember-selection">Remember selection</label>
 			</div>
-			<span class="timeseries__list--exit">&#x2715;</span>
+			<div class="timeseries__list--exit" tabindex="0">&#x2715;</div>
 			<ul class="timeseries__list list--neutral margin-top-md--0 margin-left-md--0">
 			</ul>
 			<div class="timeseries__download">

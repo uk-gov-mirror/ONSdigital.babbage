@@ -2,18 +2,17 @@ package com.github.onsdigital.babbage.api.endpoint;
 
 import com.github.davidcarboni.restolino.framework.Api;
 import com.github.onsdigital.babbage.configuration.Configuration;
-import com.github.onsdigital.babbage.search.ONSQuery;
-import com.github.onsdigital.babbage.search.SearchService;
-import com.github.onsdigital.babbage.search.helpers.SearchRequestHelper;
-import com.github.onsdigital.babbage.search.helpers.SearchResponseHelper;
+import com.github.onsdigital.babbage.search.helpers.ONSSearchResponse;
+import com.github.onsdigital.babbage.search.helpers.SearchHelper;
 import com.github.onsdigital.babbage.search.model.ContentType;
-import com.github.onsdigital.babbage.search.model.field.FilterableField;
+import com.github.onsdigital.babbage.search.model.field.Field;
 import com.github.onsdigital.babbage.util.ThreadContext;
 import net.fortuna.ical4j.data.CalendarOutputter;
 import net.fortuna.ical4j.model.PropertyList;
 import net.fortuna.ical4j.model.ValidationException;
 import net.fortuna.ical4j.model.component.VEvent;
 import net.fortuna.ical4j.model.property.*;
+import org.elasticsearch.index.query.BoolQueryBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,6 +23,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
+import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.onsQuery;
+import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
+import static org.elasticsearch.index.query.QueryBuilders.rangeQuery;
 
 
 /**
@@ -60,9 +63,13 @@ public class Calendar {
 
 
     public void addReleaseEvents(net.fortuna.ical4j.model.Calendar calendar) throws IOException {
-        ONSQuery releasesQuery = new ONSQuery(ContentType.release.name()).setSize(Integer.MAX_VALUE);
-        SearchRequestHelper.addRangeFilter(releasesQuery, FilterableField.releaseDate, getThreeMonthsAgo(), null);
-        SearchResponseHelper searchResponse = SearchService.getInstance().search(releasesQuery);
+        BoolQueryBuilder releaseQuery = boolQuery()
+                .filter(rangeQuery(Field.releaseDate.fieldName())
+                .from(getThreeMonthsAgo()));
+        ONSSearchResponse searchResponse = SearchHelper
+                .search(onsQuery(releaseQuery)
+                        .fetchFields(Field.title,Field.edition,Field.releaseDate, Field.summary)
+                        .types(ContentType.release).size(10000));
         List<Map<String, Object>> releases = searchResponse.getResult().getResults();
         for (Map<String, Object> release : releases) {
             calendar.getComponents().add(toEvent(release));
@@ -77,7 +84,7 @@ public class Calendar {
         }
 
         try {
-            String title = (String) description.get("title");
+            String title = (String) description.get("title") + description.get("edition");
             Date date = new SimpleDateFormat(Configuration.CONTENT_SERVICE.getDefaultContentDatePattern()).parse((String) description.get("releaseDate"));
             net.fortuna.ical4j.model.Date eventDate = new net.fortuna.ical4j.model.DateTime(date.getTime());
             VEvent event = new VEvent(eventDate, eventDate, title);

@@ -10,7 +10,7 @@
 						{{#if showBreadcrumb}}
 							{{> list/partials/list-page-breadcrumb label=breadcrumbLabel}}
 						{{/if}}
-						<h1 class="search-page__title{{#if tabs}} margin-bottom-md--3 margin-bottom-md--2{{/if}}">{{#block "block-title"}}{{/block}}</h1>
+						<h1 class="search-page__title{{#if tabs}} margin-bottom-md--3 margin-bottom-md--2{{/if}}">{{!-- {{#block "block-title"}}{{/block}} --}}{{> partials/page-title }}</h1>
 						{{#if tabs}}
 							{{> list/partials/tabs }}
 						{{/if}}
@@ -87,7 +87,7 @@
 						{{/block}}
 					</ul>
 				</div>
-				{{> list/partials/paginator}}
+				{{> list/partials/paginator paginator=result.paginator}}
 				<!-- /desktop-grid-two-thirds -->
 				</div>
 			</div>

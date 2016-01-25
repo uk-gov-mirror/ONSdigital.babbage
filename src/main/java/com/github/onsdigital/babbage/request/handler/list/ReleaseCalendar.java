@@ -1,79 +1,106 @@
 package com.github.onsdigital.babbage.request.handler.list;
 
+import com.github.onsdigital.babbage.api.util.SearchUtils;
 import com.github.onsdigital.babbage.content.client.ContentReadException;
-import com.github.onsdigital.babbage.request.handler.base.ListPageBaseRequestHandler;
-import com.github.onsdigital.babbage.request.handler.base.RequestHandler;
-import com.github.onsdigital.babbage.search.ONSQuery;
-import com.github.onsdigital.babbage.search.helpers.SearchResponseHelper;
+import com.github.onsdigital.babbage.request.handler.base.ListRequestHandler;
+import com.github.onsdigital.babbage.response.base.BabbageResponse;
+import com.github.onsdigital.babbage.search.builders.ONSFilterBuilders;
+import com.github.onsdigital.babbage.search.helpers.base.SearchFilter;
+import com.github.onsdigital.babbage.search.helpers.base.SearchQueries;
+import com.github.onsdigital.babbage.search.input.SortBy;
 import com.github.onsdigital.babbage.search.model.ContentType;
-import com.github.onsdigital.babbage.search.model.field.FilterableField;
-import org.elasticsearch.index.query.AndFilterBuilder;
-import org.elasticsearch.index.query.FilterBuilders;
-import org.elasticsearch.index.query.RangeFilterBuilder;
-import org.elasticsearch.index.query.TermFilterBuilder;
-import org.elasticsearch.search.sort.FieldSortBuilder;
-import org.elasticsearch.search.sort.SortOrder;
+import com.github.onsdigital.babbage.search.model.field.Field;
+import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.Date;
-import java.util.List;
 
-import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.addOrFilters;
-import static org.elasticsearch.index.query.FilterBuilders.andFilter;
-import static org.elasticsearch.index.query.FilterBuilders.notFilter;
+import static com.github.onsdigital.babbage.api.util.SearchUtils.buildListQuery;
+import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.toList;
+import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * Created by bren on 22/09/15.
  */
-public class ReleaseCalendar extends ListPageBaseRequestHandler implements RequestHandler {
-    private final static ContentType[] ALLOWED_TYPES = {ContentType.release};
+public class ReleaseCalendar implements ListRequestHandler {
     private final static String REQUEST_TYPE = "releasecalendar";
 
-    @Override
-    protected ContentType[] getAllowedTypes() {
-        return ALLOWED_TYPES;
-    }
 
     @Override
-    public boolean isLocalisedUri() {
-        return false;
+    public BabbageResponse get(String uri, HttpServletRequest request) throws Exception {
+        return SearchUtils.listPage(getClass().getSimpleName(), queries(request));
     }
 
+
     @Override
-    protected boolean isListTopics() {
-        return false;
+    public BabbageResponse getData(String uri, HttpServletRequest request) throws IOException, ContentReadException {
+        return SearchUtils.listJson(getClass().getSimpleName(), queries(request));
     }
+
+    private SearchQueries queries(HttpServletRequest request) {
+        boolean upcoming = "upcoming".equals(request.getParameter("view"));//published releases are requested
+        SortBy defaultSort = upcoming ? SortBy.release_date_asc : SortBy.release_date;
+        return () -> toList(
+                buildListQuery(request, filters(request, upcoming), defaultSort)
+                        .types(ContentType.release)
+        );
+    }
+
+    private SearchFilter filters(HttpServletRequest request, boolean upcoming) {
+        return (query) -> {
+            ONSFilterBuilders.filterDates(request, query);
+            if (upcoming) {
+                filterUpcoming(query);
+            } else {//published
+                filterPublished(query);
+            }
+        };
+    }
+
+    private void filterUpcoming(BoolQueryBuilder query) {
+        QueryBuilder notPublishedNotCancelled = and(not(published()), not(cancelled()));
+        QueryBuilder cancelledButNotDue = and(cancelled(), not(due()));
+        query.filter(or(notPublishedNotCancelled, cancelledButNotDue));
+    }
+
+    private void filterPublished(BoolQueryBuilder query) {
+        QueryBuilder publishedNotCancelled = and(published(), not(cancelled()));
+        QueryBuilder cancelledAndDue = and(cancelled(), due());
+        query.filter(or(publishedNotCancelled, cancelledAndDue));
+    }
+
 
     @Override
     public String getRequestType() {
         return REQUEST_TYPE;
     }
 
-    @Override
-    protected List<SearchResponseHelper> doSearch(HttpServletRequest request, ONSQuery... queries) throws IOException, ContentReadException {
-        ONSQuery query = queries[0];
 
-        String view = request.getParameter("view");
-        boolean upcoming = "upcoming".equals(view);//published releases are requested
-
-        TermFilterBuilder published = FilterBuilders.termFilter(FilterableField.published.name(), true);
-        TermFilterBuilder cancelled = FilterBuilders.termFilter(FilterableField.cancelled.name(), true);
-        RangeFilterBuilder due = FilterBuilders.rangeFilter(FilterableField.releaseDate.name()).to(new Date());
-
-        if (upcoming) { //upcoming
-            AndFilterBuilder notPublishedAndNotCancelled = andFilter(notFilter(published), notFilter(cancelled));
-            AndFilterBuilder cancelledAndNotDue = andFilter(cancelled, notFilter(due));
-            addOrFilters(query, notPublishedAndNotCancelled, cancelledAndNotDue);// not published and not cancelled or cancelled and not due
-            query.getSorts().clear();
-            query.addSort(new FieldSortBuilder(FilterableField._score.name()).order(SortOrder.DESC));
-            query.addSort(new FieldSortBuilder(FilterableField.releaseDate.name()).order(SortOrder.ASC).ignoreUnmapped(true));
-        } else {//published
-            AndFilterBuilder publishedAndNotCancelled = andFilter(published, notFilter(cancelled));
-            AndFilterBuilder cancelledAndDue = andFilter(cancelled, due);
-            addOrFilters(query, publishedAndNotCancelled, cancelledAndDue);// published and not cancelled or cancelled and due
-        }
-
-        return super.doSearch(request, query);
+    private QueryBuilder published() {
+        return termQuery(Field.published.fieldName(), true);
     }
+
+    private QueryBuilder cancelled() {
+        return termQuery(Field.cancelled.fieldName(), true);
+    }
+
+    private QueryBuilder due() {
+        return rangeQuery(Field.releaseDate.fieldName()).to(new Date());
+    }
+
+    private QueryBuilder not(QueryBuilder query) {
+        return boolQuery().mustNot(query);
+    }
+
+    //Or query for given two queries. Database would help a lot , wouldn't it ?
+    private QueryBuilder or(QueryBuilder q1, QueryBuilder q2) {
+        return boolQuery().should(q1).should(q2);
+    }
+
+    private QueryBuilder and(QueryBuilder q1, QueryBuilder q2) {
+        return boolQuery().must(q1).must(q2);
+    }
+
 }

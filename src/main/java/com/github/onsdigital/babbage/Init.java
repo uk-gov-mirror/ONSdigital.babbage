@@ -3,9 +3,6 @@ package com.github.onsdigital.babbage;
 import com.github.davidcarboni.restolino.framework.Startup;
 import com.github.onsdigital.babbage.publishing.PublishingManager;
 import com.github.onsdigital.babbage.search.ElasticSearchClient;
-import com.github.onsdigital.babbage.search.SearchService;
-
-import java.io.IOException;
 
 /**
  * Created by bren on 13/12/15.

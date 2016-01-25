@@ -1,34 +1,57 @@
 package com.github.onsdigital.babbage.request.handler.list;
 
-import com.github.onsdigital.babbage.request.handler.base.RequestHandler;
+import com.github.onsdigital.babbage.request.handler.base.ListRequestHandler;
+import com.github.onsdigital.babbage.response.base.BabbageResponse;
+import com.github.onsdigital.babbage.search.helpers.base.SearchFilter;
+import com.github.onsdigital.babbage.search.helpers.base.SearchQueries;
+import com.github.onsdigital.babbage.search.input.TypeFilter;
 import com.github.onsdigital.babbage.search.model.ContentType;
-import com.github.onsdigital.babbage.request.handler.base.ListPageBaseRequestHandler;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.util.Set;
+
+import static com.github.onsdigital.babbage.api.util.SearchUtils.*;
+import static com.github.onsdigital.babbage.search.builders.ONSFilterBuilders.filterUriPrefix;
+import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.toList;
+import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.typeCountsAggregate;
+import static com.github.onsdigital.babbage.search.input.TypeFilter.contentTypes;
 
 /**
  * Render a list page for bulletins under the given URI.
  */
-public class TopicSpecificMethodologyRequestHandler extends ListPageBaseRequestHandler implements RequestHandler {
+public class TopicSpecificMethodologyRequestHandler implements ListRequestHandler {
 
-    private final static ContentType[] ALLOWED_TYPES = {ContentType.static_methodology, ContentType.static_methodology_download, ContentType.static_qmi};
+    private static Set<TypeFilter> methodologyFilters = TypeFilter.getMethodologyFilters();
+    private static ContentType[] contentTypesToCount = contentTypes(methodologyFilters);
+
+
     private final static String REQUEST_TYPE = "topicspecificmethodology";
+
+
+    @Override
+    public BabbageResponse get(String uri, HttpServletRequest request) throws Exception {
+        return listPage(REQUEST_TYPE, queries(uri, request));
+    }
+
+    @Override
+    public BabbageResponse getData(String uri, HttpServletRequest request) throws IOException {
+        return listJson(REQUEST_TYPE, queries(uri, request));
+    }
+
+    private SearchQueries queries(String uri, HttpServletRequest request) {
+        return () -> toList(
+                buildListQuery(request, methodologyFilters, filters(uri)).aggregate(typeCountsAggregate())
+        );
+    }
+
+    private SearchFilter filters(String uri) {
+        return (listQuery) -> filterUriPrefix(uri, listQuery);
+    }
 
     @Override
     public String getRequestType() {
         return REQUEST_TYPE;
     }
 
-    @Override
-    public ContentType[] getAllowedTypes() {
-        return ALLOWED_TYPES;
-    }
-
-    @Override
-    public boolean isLocalisedUri() {
-        return true;
-    }
-
-    @Override
-    protected boolean isAggregateByType() {
-        return true;
-    }
 }

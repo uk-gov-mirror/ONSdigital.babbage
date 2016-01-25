@@ -1,5 +1,7 @@
 package com.github.onsdigital.babbage.response.base;
 
+import com.github.onsdigital.babbage.configuration.Configuration;
+import com.github.onsdigital.babbage.response.util.CacheControlHelper;
 import org.apache.commons.lang3.CharEncoding;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,6 +24,7 @@ public abstract class BabbageResponse{
     private String mimeType = APPLICATION_JSON; //Default mimetype
     private String charEncoding = CharEncoding.UTF_8;//Default encoding
     private int status = HttpServletResponse.SC_OK;//Default status
+    private Long maxAge;
     private Map<String, String> header;
 
     public BabbageResponse(String mimeType) {
@@ -31,6 +34,16 @@ public abstract class BabbageResponse{
     public BabbageResponse(String mimeType, int status) {
         this(mimeType);
         this.status = status;
+    }
+
+    public BabbageResponse(String mimeType, Long maxAge) {
+        this(mimeType);
+        setMaxAge(maxAge);
+    }
+
+    public BabbageResponse(String mimeType, int status, Long maxAge) {
+        this(mimeType, status);
+        setMaxAge(maxAge);
     }
 
     public BabbageResponse() { }
@@ -45,7 +58,15 @@ public abstract class BabbageResponse{
                 response.setHeader(next.getKey(), next.getValue());
             }
         }
+        setCacheHeaders(request, response);
     }
+
+    protected void setCacheHeaders(HttpServletRequest request, HttpServletResponse response) {
+        if (maxAge != null) {
+            CacheControlHelper.setCacheHeaders(response, maxAge);
+        }
+    }
+
 
     public String getMimeType() {
         return mimeType;
@@ -82,5 +103,15 @@ public abstract class BabbageResponse{
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public Long getMaxAge() {
+        return maxAge;
+    }
+
+    public void setMaxAge(Long maxAge) {
+        if (Configuration.GENERAL.isCacheEnabled()) {
+            this.maxAge = maxAge;
+        }
     }
 }

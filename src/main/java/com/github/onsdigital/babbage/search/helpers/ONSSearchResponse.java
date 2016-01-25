@@ -1,6 +1,7 @@
 package com.github.onsdigital.babbage.search.helpers;
 
 import com.github.onsdigital.babbage.search.model.SearchResult;
+import com.github.onsdigital.babbage.search.model.field.Field;
 import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.common.text.Text;
@@ -10,20 +11,22 @@ import org.elasticsearch.search.aggregations.Aggregation;
 import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.aggregations.bucket.MultiBucketsAggregation;
 import org.elasticsearch.search.aggregations.bucket.SingleBucketAggregation;
-import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.highlight.HighlightField;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by bren on 07/09/15.
  */
-public class SearchResponseHelper {
+public class ONSSearchResponse {
 
     SearchResponse response;
     SearchResult result;
 
-    public SearchResponseHelper(SearchResponse response) {
+    public ONSSearchResponse(SearchResponse response) {
         this.response = response;
         this.result = buildResult();
     }
@@ -54,7 +57,7 @@ public class SearchResponseHelper {
 
     private void extractDocCounts(SearchResult searchResult) {
         Aggregations aggregations = response.getAggregations();
-        if(aggregations != null) {
+        if (aggregations != null) {
             addCounts(searchResult, aggregations);
         }
     }
@@ -67,10 +70,10 @@ public class SearchResponseHelper {
         for (Aggregation aggregation : aggregations) {
             if (aggregation instanceof MultiBucketsAggregation) {
                 for (MultiBucketsAggregation.Bucket bucket : ((MultiBucketsAggregation) aggregation).getBuckets()) {
-                    searchResult.addDocCount(bucket.getKey(), bucket.getDocCount());
+                    searchResult.addDocCount(bucket.getKeyAsString(), bucket.getDocCount());
                 }
             } else {
-                addCounts(searchResult, ((SingleBucketAggregation)aggregation).getAggregations());
+                addCounts(searchResult, ((SingleBucketAggregation) aggregation).getAggregations());
             }
         }
     }
@@ -99,7 +102,7 @@ public class SearchResponseHelper {
                     saveIfNested(nestedObjects, o);
                 }
             }
-            HighlightField highlightedField = highlightedFields.remove(sourceEntry.getKey());
+            HighlightField highlightedField = highlightedFields.remove(getFieldName(sourceEntry.getKey()));
             if (highlightedField == null) {//not found
                 continue;
             } else {
@@ -138,10 +141,18 @@ public class SearchResponseHelper {
 
     private boolean saveIfNested(ArrayList list, Object field) {
         if (field instanceof Map) {
-            list.add((Map) field);
+            list.add(field);
             return true;
         }
         return false;
+    }
+
+    private String getFieldName(String fieldKey) {
+        try {
+            return Field.valueOf(fieldKey).fieldName();
+        } catch (IllegalArgumentException e) {
+            return fieldKey;
+        }
     }
 
 }
