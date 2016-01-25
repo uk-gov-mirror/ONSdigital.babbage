@@ -55,7 +55,7 @@
                                 {{!-- Latest publication block --}}
                                 <div class="col {{#if_any data.years data.quarters data.months}}col--md-16 col--lg-20 margin-left-md--1{{else}}col--md -33 col--lg-41{{/if_any}}">
                                     <!--<div class="clickable-wrap">-->
-                                        <div class="background--iron-light margin-bottom-md--2 js-hover">
+                                        <div class="background--iron-light margin-bottom-md--2 js-hover-click">
                                             <div class="background--abbey height--24 overflow--hidden">
 
                                                 <img src="{{#if_any (eq 'localhost' location.hostname) (eq '127.0.0.1' location.hostname)}}http://localhost:9000/dist/img/latest-publications.png{{else}}/node_modules/sixteens/dist/img/latest-publications.png{{/if_any}}" class="height--24 width--20" alt="" />
@@ -106,7 +106,7 @@
                     <div id="user-requested-container" class="section-container">
                         {{!-- User requested data --}}
                         <h2 id="user-requested" class="section-title">User requested data</h2>
-                        <div class="background--iron-light margin-bottom-md--2 js-hover">
+                        <div class="background--iron-light margin-bottom-md--2 js-hover-click">
 
                             <div class="box__content padding-top-sm--3 padding-bottom-sm--2 padding-left-sm--1 padding-right-sm--1 padding-top-md--3 padding-right-md--1 padding-bottom-md--2 padding-left-md--1">
 								<span class="icon icon-arrow-right--dark float-right margin-top-md--2 margin-top-sm--2"></span>

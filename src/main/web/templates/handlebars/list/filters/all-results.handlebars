@@ -1,12 +1,18 @@
 <h4 class="filters__title">{{labels.search-refine-types}}</h4>
-<h5 class="filters__sub-title">Publications</h5>
-{{> list/filters/publications}}
-<h5 class="filters__sub-title">Data</h5>
-{{> list/filters/data}}
-<h5 class="filters__sub-title">Other</h5>
-<div class="js-checkbox-container">
-	<ul class="list--neutral flush-top">
-		{{>list/partials/filter-item id="methodology" value="methodology" label=labels.methodology docCount=(add docCounts.static_qmi docCounts.static_methodology)}}
-		{{>list/partials/filter-item id="corporate" value="corporate_information" label=labels.corporate-information  explanation=labels.search-expand-types docCount=(add docCounts.static_landing_page docCounts.static_foi docCounts.static_page)}}
-	</ul>
-</div>
+<fieldset class="filters__fieldset">
+    <legend class="filters__sub-title">Publications</legend>
+    {{> list/filters/publications}}
+</fieldset>
+<fieldset class="filters__fieldset">
+    <legend class="filters__sub-title">Data</legend>
+    {{> list/filters/data}}
+</fieldset>
+<fieldset class="filters__fieldset">
+    <legend class="filters__sub-title">Other</legend>
+    <div class="js-checkbox-container">
+        <ul class="list--neutral flush-top">
+            {{>list/partials/filter-item id="methodology" value="methodology" label=labels.methodology docCount=(add docCounts.static_qmi docCounts.static_methodology)}}
+            {{>list/partials/filter-item id="corporate" value="corporate_information" label=labels.corporate-information  explanation=labels.search-expand-types docCount=(add docCounts.static_landing_page docCounts.static_foi docCounts.static_page)}}
+        </ul>
+    </div>
+</fieldset>

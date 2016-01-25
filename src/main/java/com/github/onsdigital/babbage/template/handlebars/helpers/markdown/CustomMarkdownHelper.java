@@ -45,7 +45,7 @@ public class CustomMarkdownHelper extends MarkdownHelper implements BabbageHandl
         markdown = new TableTagReplacer(path).replaceCustomTags(markdown);
         markdown = new ImageTagReplacer(path).replaceCustomTags(markdown);
         markdown = new InteractiveTagReplacer(path).replaceCustomTags(markdown);
-        markdown = MathjaxRenderer.render(markdown);
+       // markdown = MathjaxRenderer.render(markdown);
         return new Handlebars.SafeString(markdown) ;
     }
 

@@ -25,8 +25,10 @@
 
 {{#partial "block-filters"}}
 	{{> list/filters/keywords}}
-	<h4 class="filters__title">Content types to show</h4>
-	{{> list/filters/data docCounts=counts.docCounts}}
+    <fieldset class="filters__fieldset">
+        <legend class="filters__title">Content types to show</legend>
+        {{> list/filters/data docCounts=counts.docCounts}}
+    </fieldset>
 	{{> list/filters/publish-date }}
 {{/partial}}
 

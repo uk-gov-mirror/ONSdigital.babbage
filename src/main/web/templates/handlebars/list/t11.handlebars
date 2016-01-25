@@ -6,14 +6,18 @@
 
 {{#partial "block-list-tabs"}}
 	<li class="tab__item">
-		<a href="/releasecalendar" class="tab__link {{#unless parameters.view.0}}tab__link--active{{/unless}}">
-			Published releases
-		</a>
+        {{#unless parameters.view.0}}
+            <span class="tab__link tab__link--active">Published releases</span>
+        {{else}}
+		    <a href="/releasecalendar" class="tab__link">Published releases</a>
+        {{/unless}}
 	</li>
 	<li class="tab__item">
-		<a href="/releasecalendar?view=upcoming" class="tab__link {{#if_eq parameters.view.0 "upcoming"}}tab__link--active{{/if_eq}}">
-			Upcoming releases
-		</a>
+        {{#if_eq parameters.view.0 "upcoming"}}
+            <span class="tab__link tab__link--active">Upcoming releases</span>
+        {{else}}
+		    <a href="/releasecalendar?view=upcoming" class="tab__link">Upcoming releases</a>
+        {{/if_eq}}
 	</li>
 {{/partial}}
 

@@ -7,7 +7,7 @@
                 <ul class="list--neutral">
                         {{#each relatedDatasets}}
                             {{#resolve this.uri filter="title"}}
-                                    <li><a href="{{absolute uri}}" title="{{title}}">{{title}}</a></li>
+                                    <li><a href="{{absolute uri}}">{{title}}</a></li>
                             {{/resolve}}
                         {{/each}}
                 </ul>

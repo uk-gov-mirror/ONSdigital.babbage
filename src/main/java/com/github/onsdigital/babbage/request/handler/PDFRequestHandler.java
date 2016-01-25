@@ -10,13 +10,17 @@ import com.github.onsdigital.babbage.response.base.BabbageResponse;
 import com.github.onsdigital.babbage.util.json.JsonUtil;
 import com.github.onsdigital.babbage.util.RequestUtil;
 import com.github.onsdigital.babbage.pdf.PDFGenerator;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static com.github.onsdigital.babbage.content.client.ContentClient.filter;
@@ -35,7 +39,11 @@ public class PDFRequestHandler implements RequestHandler {
     public BabbageResponse get(String requestedUri, HttpServletRequest requests) throws Exception {
         String uriPath = StringUtils.removeStart(requestedUri, "/");
         System.out.println("Generating pdf for uri:" + uriPath);
-        Path pdfFile = PDFGenerator.generatePdf(requestedUri, getTitle(requestedUri), RequestUtil.getAllCookies(requests));
+        String pdfTable = getPDFTables(uriPath);
+        if(pdfTable != null) {
+            System.out.println("Using pdfTable: " + pdfTable);
+        }
+        Path pdfFile = PDFGenerator.generatePdf(requestedUri, getTitle(requestedUri), RequestUtil.getAllCookies(requests), pdfTable);
         InputStream fin = Files.newInputStream(pdfFile);
         BabbageBinaryResponse response = new BabbageBinaryResponse(fin, CONTENT_TYPE);
         response.addHeader("Content-Disposition", "attachment; filename=\"" + pdfFile.getFileName() + "\"");
@@ -51,6 +59,24 @@ public class PDFRequestHandler implements RequestHandler {
         ContentResponse contentResponse = ContentClient.getInstance().getContent(uri, filter(ContentFilter.TITLE));
         Map<String, Object> stringObjectMap = JsonUtil.toMap(contentResponse.getDataStream());
         return (String) stringObjectMap.get("title");
+    }
+
+    public String getPDFTables(String uri) throws IOException, ContentReadException {
+        ContentResponse contentResponse = ContentClient.getInstance().getContent(uri);
+        Map<String, Object> stringObjectMap = JsonUtil.toMap(contentResponse.getDataStream());
+
+        List<Map<String, Object>> o = (List<Map<String, Object>>) stringObjectMap.get("pdfTable");
+
+        if(o != null && o.size() > 0) {
+            String filename = (String)o.get(0).get("file");
+            String file = uri + "/" + filename;
+            ContentResponse pdfTableContentResponse = ContentClient.getInstance().getResource(file);
+            File targetFile = new File(FileUtils.getTempDirectoryPath() + "/" + filename);
+            FileUtils.copyInputStreamToFile(pdfTableContentResponse.getDataStream(), targetFile);
+            return targetFile.getAbsolutePath();
+        }
+
+        return null;
     }
 
 }

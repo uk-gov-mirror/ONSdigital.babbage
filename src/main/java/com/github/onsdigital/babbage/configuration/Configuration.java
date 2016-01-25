@@ -169,6 +169,12 @@ public class Configuration {
         }
     }
 
+    public static class GHOSTSCRIPT {
+        private static final String GHOSTSCRIPT_PATH = StringUtils.defaultIfBlank(getValue("GHOSTSCRIPT_PATH"), "/usr/local/bin/gs");
+
+        public static String getGhostscriptPath() { return GHOSTSCRIPT_PATH; }
+    }
+
 
     /*Highcharts Image rendering configuration*/
     public static class HIGHCHARTS {
