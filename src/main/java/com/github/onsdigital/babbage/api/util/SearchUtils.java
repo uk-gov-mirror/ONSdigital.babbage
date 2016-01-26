@@ -131,7 +131,7 @@ public class SearchUtils {
         return buildONSQuery(request, query, sortBy, filter, contentTypes);
     }
 
-    private static QueryBuilder buildBaseListQuery(String searchTerm) {
+    public static QueryBuilder buildBaseListQuery(String searchTerm) {
         QueryBuilder query;
         if (isNotEmpty(searchTerm)) {
             query = contentQuery(searchTerm);
