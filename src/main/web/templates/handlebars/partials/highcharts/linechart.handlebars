@@ -9,11 +9,11 @@
                     <div role="radiogroup" aria-labelledby="data-type">
                         <label for="type-chart" class="btn btn--secondary btn--chart-control">
                             Chart
-                            <input id="type-chart" type="radio" name="type" data-chart-controls-type="chart" checked>
+                            <input id="type-chart" type="radio" name="type" data-chart-controls-type="chart" aria-controls="data" checked>
                         </label>
                         <label for="type-table" class="btn btn--secondary btn--chart-control">
                             Table
-                            <input id="type-table" type="radio" name="type" data-chart-controls-type="table">
+                            <input id="type-table" type="radio" name="type" data-chart-controls-type="table" aria-controls="data">
                         </label>
                     </div>
                 </fieldset>
@@ -48,15 +48,15 @@
 					<div role="radiogroup" aria-labelledby="period">
 						<label class="btn btn--secondary btn--chart-control btn--chart-control--all btn--secondary--active">
 							All
-							<input type="radio" name="range" data-chart-controls-range="all" checked>
+							<input type="radio" name="range" data-chart-controls-range="all" aria-controls="data" checked>
 						</label>
 						<label class="btn btn--secondary btn--chart-control">
 							10yrs
-							<input type="radio" name="range" data-chart-controls-range="10yr">
+							<input type="radio" name="range" data-chart-controls-range="10yr" aria-controls="data">
 						</label>
 						<label class="btn btn--secondary btn--chart-control">
 							5yrs
-							<input type="radio" name="range" data-chart-controls-range="5yr">
+							<input type="radio" name="range" data-chart-controls-range="5yr" aria-controls="data">
 						</label>
 						<label class="btn btn--secondary btn--chart-control">
 							Custom
@@ -65,7 +65,7 @@
 					</div>
 				</fieldset>
 
-				<div class="chart-area__controls__custom js-hidden" id="customControls" aria-live="polite" role="region" aria-hidden="">
+				<div class="chart-area__controls__custom js-hidden" id="customControls">
 					<div class="chart-area__controls__custom__container">
 						<div class="chart-area__controls__dropdowns">
 							<p>Custom time period</p>
@@ -73,7 +73,7 @@
 								<legend class="chart-area__controls__date__legend" id="from">From</legend>
 								<label class="visuallyhidden" for="from-month-1">Month</label>
 								<select class="chart-area__controls__month" id="from-month-1" name="from-month"
-										data-chart-controls-from-month="">
+										data-chart-controls-from-month="" aria-controls="data">
 									<option value="01">Jan</option>
 									<option value="02">Feb</option>
 									<option value="03">Mar</option>
@@ -89,7 +89,7 @@
 								</select>
 								<label class="visuallyhidden" for="from-quarter-1">Quarter</label>
 								<select class="chart-area__controls__quarter" id="from-quarter-1" name="from-quarter"
-										data-chart-controls-from-quarter="">
+										data-chart-controls-from-quarter="" aria-controls="data">
 									<option value="1" selected>Q1</option>
 									<option value="2">Q2</option>
 									<option value="3">Q3</option>
@@ -97,14 +97,14 @@
 								</select>
 								<label class="visuallyhidden" for="from-year-1">Year</label>
 								<select class="chart-area__controls__year" id="from-year-1" name="from-year"
-										data-chart-controls-from-year="">
+										data-chart-controls-from-year="" aria-controls="data">
 								</select>
 							</fieldset>
 							<fieldset class="chart-area__controls__date">
 								<legend class="chart-area__controls__date__legend" id="to">To</legend>
 								<label class="visuallyhidden" for="to-month-2">Month</label>
 								<select class="chart-area__controls__month" id="to-month-2" name="to-month"
-										data-chart-controls-to-month="" aria-describedby="to">
+										data-chart-controls-to-month="" aria-describedby="to" aria-controls="data">
 									<option value="01">Jan</option>
 									<option value="02">Feb</option>
 									<option value="03">Mar</option>
@@ -120,7 +120,7 @@
 								</select>
 								<label class="visuallyhidden" for="to-quarter-2">Quarter</label>
 								<select class="chart-area__controls__quarter" id="to-quarter-2" name="to-quarter"
-										data-chart-controls-to-quarter="">
+										data-chart-controls-to-quarter="" aria-controls="data">
 									<option value="1" selected>Q1</option>
 									<option value="2">Q2</option>
 									<option value="3">Q3</option>
@@ -128,7 +128,7 @@
 								</select>
 								<label class="visuallyhidden" for="to-year-2">Year</label>
 								<select class="chart-area__controls__year" id="to-year-2" name="to-year"
-										data-chart-controls-to-year="">
+										data-chart-controls-to-year="" aria-controls="data">
 								</select>
 							</fieldset>
 						</div>
@@ -193,7 +193,7 @@
 		</div>
 	</div>
 </form>
-<div class="timeseries__chart">
+<div class="timeseries__chart" id="data">
     <h2 id="title-type" class="tiles__title-h2">Chart</h2>
     <div class="col col--md-45 col--lg-57 margin-left chart-area__timeseries">
         <div class="js-enhance--show nojs-hidden chart linechart" data-chart="" data-uri="{{uri}}" ></div>
@@ -201,8 +201,8 @@
         <table class="table-advanced js-table-sort nojs-hidden" data-table="">
             <thead>
                 <tr>
-                    <th class="table-advanced__header js-table-sort__header sorted-desc">Period</th>
-                    <th class="table-advanced__header js-table-sort__header">Value</th>
+                    <th class="table-advanced__header js-table-sort__header sorted-desc" scope="col">Period</th>
+                    <th class="table-advanced__header js-table-sort__header" scope="col">Value</th>
                 </tr>
             </thead>
             <tbody>

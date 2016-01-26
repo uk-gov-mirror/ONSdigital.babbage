@@ -5,8 +5,7 @@
 </div>
 <ul class="tiles__list margin-top--half">
 	{{#loop datasets limit=6}}
-	<div class="clickable-wrap">
-		<li class="col-wrap tiles__item tiles__item--list-type tiles__item--list-type-mercury flush-col">
+		<li class="col-wrap tiles__item tiles__item--list-type tiles__item--list-type-mercury flush-col js-hover-click">
 			{{#resolve (absolute this.uri) filter="description"}}
 			<div class="col col--lg-38">
 				<h4 class="tiles__title tiles__title-h4">
@@ -24,7 +23,6 @@
 			</div>
 			{{/resolve}}
 		</li>
-	</div>
 	{{/loop}}
 </ul>
 <a href="{{uri}}/datalist?filter=large_dataset" class="btn btn--primary btn--full-width">View all datasets related to {{description.title}}</a>
