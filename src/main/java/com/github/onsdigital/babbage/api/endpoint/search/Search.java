@@ -1,7 +1,7 @@
 package com.github.onsdigital.babbage.api.endpoint.search;
 
 import com.github.davidcarboni.restolino.framework.Api;
-import com.github.onsdigital.babbage.search.builders.ONSQueryBuilders;
+import com.github.onsdigital.babbage.search.helpers.ONSQuery;
 import com.github.onsdigital.babbage.search.helpers.base.SearchQueries;
 import com.github.onsdigital.babbage.search.input.TypeFilter;
 import com.github.onsdigital.babbage.search.model.ContentType;
@@ -9,11 +9,13 @@ import com.github.onsdigital.babbage.search.model.ContentType;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.GET;
+import java.util.List;
 import java.util.Set;
 
 import static com.github.onsdigital.babbage.api.util.SearchUtils.buildSearchQuery;
 import static com.github.onsdigital.babbage.api.util.SearchUtils.search;
 import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.*;
+import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.extractPage;
 import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.extractSearchTerm;
 
 @Api
@@ -32,11 +34,14 @@ public class Search {
     }
 
     private SearchQueries queries(HttpServletRequest request, String searchTerm) {
-        return () -> toList(
-                bestTopicMatchQuery(searchTerm).name("featuredResult"),
+        List<ONSQuery> queries = toList(
                 buildSearchQuery(request, searchTerm, allFilters),
                 typeCountsQuery(contentQuery(searchTerm)).types(contentTypesToCount)
         );
+        if (extractPage(request) == 1) {
+            queries.add(bestTopicMatchQuery(searchTerm).name("featuredResult"));
+        }
+        return () -> queries;
     }
 
 }
