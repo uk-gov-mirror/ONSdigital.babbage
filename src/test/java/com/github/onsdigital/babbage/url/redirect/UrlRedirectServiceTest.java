@@ -51,7 +51,11 @@ public class UrlRedirectServiceTest {
 
 	@Before
 	public void setUp() throws Exception {
-		service = new UrlRedirectService();
+		service = UrlRedirectService.getInstance();
+
+		// Singleton instance so explicitly set these values to null for each test,
+		TestsUtil.setPrivateField(service, "taxonomyMappings", null);
+		TestsUtil.setPrivateField(service, "generalMappings", null);
 
 		MockitoAnnotations.initMocks(this);
 		TestsUtil.setPrivateField(service, "urlRedirectCSVFactory", csvFactoryMock);
@@ -124,16 +128,18 @@ public class UrlRedirectServiceTest {
 				.thenReturn(DATA_EXPLORER_REDIRECT);
 		when(urlRedirectPropertiesServiceMock.getProperty("data_explorer_domain"))
 				.thenReturn("data_explorer_domain");
+		when(redirectURLMock.getOriginalRequestedResource())
+				.thenReturn(requestedURL.getFile());
 
 		String result = service.convertToDataExplorerFormat(redirectURLMock);
-		String expected = "data_explorer_domain" + requestedURL.getPath();
+		String expected = "data_explorer_domain" + requestedURL.getFile();
 
 		assertThat("Incorrect redirect value.", result, equalTo(expected));
 		verify(urlRedirectPropertiesServiceMock, times(1)).getProperty("data_explorer_domain");
 		verifyZeroInteractions(csvFactoryMock);
 	}
 
-	@Test (expected = RedirectException.class)
+	@Test(expected = RedirectException.class)
 	public void testConvertToDataExplorerFormatSuccessInvalidCategory() throws Exception {
 		URL requestedURL = new URL("http://www.ons.gov.uk/ons/taxonomy/index.html?some-param=true");
 
@@ -151,11 +157,11 @@ public class UrlRedirectServiceTest {
 		}
 	}
 
-	/**
+/*	*//**
 	 * Test verifies behaviour is correct for case where the csv file is invalid.
 	 *
 	 * @throws Exception expected.
-	 */
+	 *//*
 	@Test(expected = RedirectException.class)
 	public void testFindRedirectMissingValue() throws Exception {
 		when(csvReaderMock.readNext())
@@ -176,7 +182,7 @@ public class UrlRedirectServiceTest {
 			verifyZeroInteractions(urlRedirectPropertiesServiceMock);
 			throw ex;
 		}
-	}
+	}*/
 
 	/**
 	 * Test verifies behaviour is correct for cases where no redirect mapping is found.
@@ -243,6 +249,8 @@ public class UrlRedirectServiceTest {
 				.thenReturn("national_archive_timestamp");
 		when(urlRedirectPropertiesServiceMock.getProperty("ons_domain"))
 				.thenReturn("ons_domain");
+		when(redirectURLMock.getOriginalRequestedResource())
+				.thenReturn(url.getFile());
 
 		String result = service.convertToNationalArchiveFormat(redirectURLMock);
 		String expected = "national_archive_url/national_archive_timestamp/ons_domain/ons/taxonomy/index.html?nscl=Farm+Businesses";

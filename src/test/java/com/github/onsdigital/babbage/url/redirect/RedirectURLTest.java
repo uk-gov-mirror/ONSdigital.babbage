@@ -6,6 +6,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import javax.servlet.http.HttpServletRequest;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,6 +23,7 @@ public class RedirectURLTest {
 
 	private static final String REQUEST_URI = "/ons/taxonomy/index.html";
 	private static final String BASE_URL_STRING = "http://www.ons.gov.uk" + REQUEST_URI;
+	private static final String TAXONOMY_PARAM = RedirectCategory.TAXONOMY_REDIRECT.getParameterName();
 
 	@Mock
 	private HttpServletRequest mockRequest;
@@ -49,7 +51,7 @@ public class RedirectURLTest {
 
 		assertThat("Incorrect toString value.", result.toString(), equalTo(BASE_URL_STRING));
 		assertThat("Incorrect category.", result.getCategory(), equalTo(TAXONOMY_REDIRECT));
-		assertThat("Incorrect 'contains parameter' result.", result.containsParameter(), is(false));
+		assertThat("Incorrect 'contains parameter' result.", result.containsParameter(TAXONOMY_PARAM), is(false));
 		assertThat("Incorrect parameter value", result.getParameter(), equalTo(null));
 	}
 
@@ -68,9 +70,9 @@ public class RedirectURLTest {
 
 		result = new RedirectURL.Builder().build(mockRequest);
 
-		assertThat("Incorrect toString value.", result.toString(), equalTo(BASE_URL_STRING + "?nscl=farming+methods"));
+		assertThat("Incorrect toString value.", result.toString(), equalTo(BASE_URL_STRING + "?nscl=" + URLEncoder.encode("farming+methods")));
 		assertThat("Incorrect category.", result.getCategory(), equalTo(TAXONOMY_REDIRECT));
-		assertThat("Incorrect 'contains parameter' result.", result.containsParameter(), is(true));
+		assertThat("Incorrect 'contains parameter' result.", result.containsParameter(TAXONOMY_PARAM), is(true));
 		assertThat("Incorrect parameter value", result.getParameter(), equalTo("farming+methods"));
 	}
 
@@ -94,9 +96,9 @@ public class RedirectURLTest {
 
 		result = new RedirectURL.Builder().build(mockRequest);
 
-		assertThat("Incorrect toString value.", result.toString(), equalTo(BASE_URL_STRING + "?nscl=farming+methods"));
+		assertThat("Incorrect toString value.", result.toString(), equalTo(BASE_URL_STRING + "?nscl=" + URLEncoder.encode("farming+methods")));
 		assertThat("Incorrect category.", result.getCategory(), equalTo(TAXONOMY_REDIRECT));
-		assertThat("Incorrect 'contains parameter' result.", result.containsParameter(), is(true));
+		assertThat("Incorrect 'contains parameter' result.", result.containsParameter(TAXONOMY_PARAM), is(true));
 		assertThat("Incorrect parameter value", result.getParameter(), equalTo("farming+methods"));
 	}
 }
