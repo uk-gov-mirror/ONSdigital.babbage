@@ -51,9 +51,12 @@
  							<a class="secondary-nav__link"
  							href="/releasecalendar">{{labels.release-calendar}}</a>
  						</li> --}}
-						<li class="secondary-nav__item">
-							<a class="secondary-nav__link" href="/methodology">{{labels.methodology}}</a>
-						</li>
+                        {{!-- <li class="secondary-nav__item">
+                             <a class="secondary-nav__link" href="/methodology">{{labels.methodology}}</a>
+                         </li> --}}
+                        <li class="secondary-nav__item">
+                            <a class="secondary-nav__link" href="/news">News</a>
+                        </li>
 						<li class="secondary-nav__item">
 							<a class="secondary-nav__link" href="/aboutus">{{labels.about}}</a>
 						</li>
@@ -110,12 +113,15 @@
 						<!--<li class="primary-nav__item {{#if_eq uri '/about/releasecalendar'}}primary-nav__item--active{{/if_eq}}">-->
 						<!--<a class="primary-nav__link col" href="/about/releasecalendar">{{labels.release-calendar}}</a>-->
 						<!--</li>-->
-						<li class="primary-nav__item {{#if_eq uri '/methodology'}}primary-nav__item--active{{/if_eq}}">
-							<a class="primary-nav__link col" href="/methodology">{{labels.methodology}}</a>
-						</li>
-						<li class="primary-nav__item {{#if_eq uri '/aboutus'}}primary-nav__item--active{{/if_eq}}">
-							<a class="primary-nav__link col" href="/aboutus">{{labels.about}}</a>
-						</li>
+                        {{!-- <li class="primary-nav__item {{#if_eq uri '/methodology'}}primary-nav__item--active{{/if_eq}}">
+                              <a class="primary-nav__link col" href="/methodology">{{labels.methodology}}</a>
+                          </li> --}}
+                        <li class="primary-nav__item {{#if_eq uri '/news'}}primary-nav__item--active{{/if_eq}}">
+                            <a class="primary-nav__link col" href="/news">News</a>
+                        </li>
+                         <li class="primary-nav__item {{#if_eq uri '/aboutus'}}primary-nav__item--active{{/if_eq}}">
+                             <a class="primary-nav__link col" href="/aboutus">{{labels.about}}</a>
+                         </li>
 					</div>
 				</ul>
 			</div>
