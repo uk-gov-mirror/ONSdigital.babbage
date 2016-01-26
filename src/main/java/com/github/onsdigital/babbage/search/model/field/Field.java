@@ -17,6 +17,7 @@ public enum Field {
     title_first_letter("description.title.title_first_letter"),
     title_raw("description.title.title_raw"),
     title("description.title", 10,true),
+    title_no_stem("description.title.title_no_stem", 10),
     edition("description.edition",true),
     summary("description.summary",true),
     releaseDate("description.releaseDate"),
