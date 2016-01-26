@@ -5,6 +5,7 @@ import com.github.onsdigital.babbage.api.util.SearchUtils;
 import com.github.onsdigital.babbage.search.helpers.ONSQuery;
 import com.github.onsdigital.babbage.search.helpers.ONSSearchResponse;
 import com.github.onsdigital.babbage.search.helpers.SearchHelper;
+import com.github.onsdigital.babbage.search.helpers.SearchRequestHelper;
 import com.github.onsdigital.babbage.search.helpers.base.SearchFilter;
 import com.github.onsdigital.babbage.search.helpers.base.SearchQueries;
 import com.github.onsdigital.babbage.search.input.SortBy;
@@ -21,11 +22,15 @@ import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import static com.github.onsdigital.babbage.api.util.SearchUtils.buildBaseListQuery;
 import static com.github.onsdigital.babbage.api.util.SearchUtils.buildListQuery;
 import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.firstLetterCounts;
+import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.onsQuery;
 import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.toList;
+import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.extractSearchTerm;
 import static com.github.onsdigital.babbage.util.RequestUtil.getParam;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
+import static org.elasticsearch.index.query.QueryBuilders.matchAllQuery;
 import static org.elasticsearch.index.query.QueryBuilders.termQuery;
 
 /**
@@ -37,7 +42,7 @@ public class AtoZ {
     @GET
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String firstLetter = getFirstLetter(request);
-        ONSQuery countsByFirstLetter = firstLetterCounts(buildListQuery(request, filterLatest()).types(ContentType.bulletin).highlight(false));
+        ONSQuery countsByFirstLetter = firstLetterCounts(onsQuery(buildBaseListQuery(extractSearchTerm(request)), filterLatest()).types(ContentType.bulletin));
         ONSSearchResponse countResults = SearchHelper.search(countsByFirstLetter);
         Map<String, SearchResult> results;
         Long count = countResults.getResult().getDocCounts().get(firstLetter);
