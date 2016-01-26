@@ -41,7 +41,7 @@ public class Search {
         );
         String[] filter = request.getParameterValues("filter");
         if (extractPage(request) == 1 && isEmpty(filter)) {
-            queries.add(bestTopicMatchQuery(searchTerm).name("featuredResult"));
+            queries.add(bestTopicMatchQuery(searchTerm).name("featuredResult").highlight(true));
         }
         return () -> queries;
     }
