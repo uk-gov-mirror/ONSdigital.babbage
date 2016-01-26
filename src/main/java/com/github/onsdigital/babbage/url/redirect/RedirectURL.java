@@ -1,7 +1,10 @@
 package com.github.onsdigital.babbage.url.redirect;
 
+import org.apache.http.client.utils.URIBuilder;
+
 import javax.servlet.http.HttpServletRequest;
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Map;
@@ -17,26 +20,49 @@ import static com.github.onsdigital.babbage.url.redirect.RedirectException.Error
 public class RedirectURL {
 
 	private final URL url;
-	private final boolean containsParameter;
-	private final StringBuilder urlString;
 	private String parameterValue = null;
 	private final RedirectCategory category;
+	private final Map<String, String[]> sanitiseParameters;
+	private final HttpServletRequest originalRequest;
+
 
 	private RedirectURL(HttpServletRequest request) throws RedirectException {
-		this.urlString = new StringBuilder(request.getRequestURL());
-		this.category = RedirectCategory.getCategoryFromURI(request);
+		this.originalRequest = request;
+		this.sanitiseParameters = sanitiseParameterKeys(request.getParameterMap());
+		this.category = RedirectCategory.getCategoryFromURI(originalRequest);
 
-		Map<String, String[]> sanitiseParameters = sanitiseParameterKeys(request.getParameterMap());
-		this.containsParameter = containsParameter(sanitiseParameters, getParameterName());
-
-		if (containsParameter) {
-			this.urlString.append("?" + category.getParameterName() + "=");
-			this.parameterValue = getFormattedParam(sanitiseParameters, getParameterName());
-			this.urlString.append(parameterValue);
-		}
 		try {
-			this.url = new URL(urlString.toString());
-		} catch (MalformedURLException ex) {
+			String parsedRequestedURLString;
+
+			switch (category) {
+				case TAXONOMY_REDIRECT:
+					/**
+					 * Taxonomy redirects only require the URI and nscl param - the rest is ignored for the lookup.
+					 */
+					URIBuilder uriBuilder = new URIBuilder(originalRequest.getRequestURL().toString());
+
+					if (containsParameter(TAXONOMY_REDIRECT.getParameterName())) {
+						this.parameterValue = getFormattedParam(sanitiseParameters, getParameterName());
+						uriBuilder.addParameter(category.getParameterName(), this.parameterValue);
+					}
+					parsedRequestedURLString = uriBuilder.build().toString();
+					break;
+				case DATA_EXPLORER_REDIRECT:
+					/**
+					 * Data explorer redirects simply change the domain name of the original request - the URI and
+					 * param String is does not change.
+					 */
+					parsedRequestedURLString = getOriginalRequestedResource();
+					break;
+				default:
+					/**
+					 * General Redirects - only requires onyl the original URI for the lookup. The Query string is ignored.
+					 */
+					parsedRequestedURLString = originalRequest.getRequestURL().toString();
+			}
+
+			this.url = new URL(parsedRequestedURLString);
+		} catch (MalformedURLException | URISyntaxException ex) {
 			throw new RedirectException(ex, REDIRECT_URL_EXCEPTION);
 		}
 	}
@@ -44,8 +70,8 @@ public class RedirectURL {
 	/**
 	 * @return true if the {@link HttpServletRequest} contains the required parameter for this type of redirect.
 	 */
-	public boolean containsParameter() {
-		return this.containsParameter;
+	public boolean containsParameter(String param) {
+		return this.sanitiseParameters.containsKey(param);
 	}
 
 	/**
@@ -76,6 +102,10 @@ public class RedirectURL {
 		return this.category;
 	}
 
+	public boolean hasParameters() {
+		return !originalRequest.getParameterMap().isEmpty();
+	}
+
 	/**
 	 * @return the term to use while searching for the redirect mapping for this redirect.
 	 */
@@ -93,11 +123,32 @@ public class RedirectURL {
 	}
 
 	private boolean containsParameter(Map<String, String[]> params, final String name) {
-		return !params.isEmpty() && params.containsKey(name);
+		if (this.category.equals(TAXONOMY_REDIRECT)) {
+			return !params.isEmpty() && params.containsKey(name);
+		}
+		return false;
 	}
 
 	private String getFormattedParam(Map<String, String[]> params, final String name) {
 		return URLEncoder.encode(params.get(name)[0]).toLowerCase();
+	}
+
+	/**
+	 * @return the URI & Query string that was originally requested.
+	 * @throws RedirectException
+	 */
+	public String getOriginalRequestedResource() throws RedirectException {
+		try {
+			URIBuilder uriBuilder = new URIBuilder(originalRequest.getRequestURI());
+			if (!sanitiseParameters.isEmpty()) {
+				sanitiseParameters.forEach((key, value) -> {
+					uriBuilder.addParameter(key, value[0]);
+				});
+			}
+			return uriBuilder.toString();
+		} catch (Exception ex) {
+			throw new RedirectException(REDIRECT_URL_EXCEPTION, new Object[] { ex });
+		}
 	}
 
 	@Override
@@ -109,7 +160,8 @@ public class RedirectURL {
 	 * Builder for creating {@link RedirectURL} objects.
 	 */
 	public static class Builder {
-		/**2a3
+		/**
+		 * 2a3
 		 * Build a new {@link RedirectURL}.
 		 *
 		 * @param request the {@link HttpServletRequest} to use when building the {@link RedirectURL}. <b>Cannot be null.</b>

@@ -4,9 +4,13 @@ import au.com.bytecode.opencsv.CSVReader;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Map;
+import java.util.TreeMap;
 
-import static com.github.onsdigital.babbage.url.redirect.RedirectException.ErrorType.MAPPING_IO_ERROR;
 import static com.github.onsdigital.babbage.url.redirect.RedirectCategory.DATA_EXPLORER_REDIRECT;
+import static com.github.onsdigital.babbage.url.redirect.RedirectCategory.GENERAL_REDIRECT;
+import static com.github.onsdigital.babbage.url.redirect.RedirectCategory.TAXONOMY_REDIRECT;
+import static com.github.onsdigital.babbage.url.redirect.RedirectException.ErrorType.MAPPING_IO_ERROR;
 
 /**
  * Service provides functionality required for redirect URLs:
@@ -18,6 +22,8 @@ import static com.github.onsdigital.babbage.url.redirect.RedirectCategory.DATA_E
  * </ul>
  */
 public class UrlRedirectService {
+
+	private static UrlRedirectService instance = null;
 
 	private static final int MAPPING_LENGTH = 2;
 
@@ -37,8 +43,30 @@ public class UrlRedirectService {
 	private static final String INVALID_CATEGORY_DATA_EXPLORER_MSG = "Unable to convert %s to Data Explorer request." +
 			" Identified RedirectCategory is not Data Explorer.";
 
-	private UrlRedirectCSVFactory urlRedirectCSVFactory = new UrlRedirectCSVFactory();
-	private UrlRedirectPropertiesService urlRedirectPropertiesService = new UrlRedirectPropertiesService();
+	private final UrlRedirectCSVFactory urlRedirectCSVFactory;
+	private final UrlRedirectPropertiesService urlRedirectPropertiesService;
+	private Map<String, String> taxonomyMappings;
+	private Map<String, String> generalMappings;
+
+	/**
+	 * @return singleton instance of the {@link UrlRedirectService}.
+	 */
+	public static UrlRedirectService getInstance() {
+		if (instance == null) {
+			instance = new UrlRedirectService();
+		}
+		return instance;
+	}
+
+	/**
+	 * Constructs a new Services object and initialises the fields.
+	 */
+	private UrlRedirectService() {
+		this.urlRedirectCSVFactory = new UrlRedirectCSVFactory();
+		this.urlRedirectPropertiesService = new UrlRedirectPropertiesService();
+		this.taxonomyMappings = null;
+		this.generalMappings = null;
+	}
 
 	/**
 	 * Returns the URL redirect value if one exists for the supplied {@link RedirectURL}. If no redirect mapping exists
@@ -49,22 +77,59 @@ public class UrlRedirectService {
 	 * @throws RedirectException problem trying to find the redirect value.
 	 */
 	public String findRedirect(final RedirectURL url) throws RedirectException {
-		try (CSVReader reader = urlRedirectCSVFactory.getReader(url.getCategory())) {
+		RedirectCategory category = url.getCategory();
+		Map<String, String> mapping = null;
+
+		switch (category) {
+			case TAXONOMY_REDIRECT:
+				mapping = getTaxonomyMapping();
+				break;
+			case GENERAL_REDIRECT:
+				mapping = getGeneralMapping();
+				break;
+		}
+		return mapping != null ? mapping.get(url.getSearchTerm()) : null;
+	}
+
+	/**
+	 * Get a populated Taxonomy Redirect Mapping Map.
+	 */
+	private Map<String, String> getTaxonomyMapping() throws RedirectException {
+		if (taxonomyMappings == null) {
+			this.taxonomyMappings = loadMappings(TAXONOMY_REDIRECT);
+		}
+		return taxonomyMappings;
+	}
+
+	/**
+	 * Get a populated General Redirect Mapping Map.
+	 */
+	private Map<String, String> getGeneralMapping() throws RedirectException {
+		if (generalMappings == null) {
+			this.generalMappings = loadMappings(GENERAL_REDIRECT);
+		}
+		return generalMappings;
+	}
+
+	/**
+	 * Load the Redirect Mappings into Memory from the csv file.
+	 *
+	 * @param category the {@link RedirectCategory} to load the mapping for.
+	 */
+	private Map<String, String> loadMappings(RedirectCategory category) throws RedirectException {
+		try (CSVReader reader = urlRedirectCSVFactory.getReader(category)) {
+			Map<String, String> mappings = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 			String[] redirectPair;
 			while ((redirectPair = reader.readNext()) != null) {
-				String redirectKey = redirectPair[0];
-
-				if (url.getSearchTerm().equalsIgnoreCase(redirectKey)) {
-					if (redirectPair.length != MAPPING_LENGTH) {
-						throw new RedirectException(MAPPING_IO_ERROR, null);
-					}
-					return redirectPair[1];
+				if (redirectPair.length != MAPPING_LENGTH) {
+					throw new RedirectException(MAPPING_IO_ERROR, null);
 				}
+				mappings.put(redirectPair[0], redirectPair[1]);
 			}
+			return mappings;
 		} catch (IOException io) {
 			throw new RedirectException(io, MAPPING_IO_ERROR, null);
 		}
-		return null;
 	}
 
 	/**
@@ -79,16 +144,23 @@ public class UrlRedirectService {
 				urlRedirectPropertiesService.getProperty(NA_URL_KEY),
 				urlRedirectPropertiesService.getProperty(NA_TIMESTAMP_KEY),
 				urlRedirectPropertiesService.getProperty(ONS_DOMAIN_KEY),
-				url.getUrl().getFile());
+				url.getOriginalRequestedResource());
 	}
 
+	/**
+	 * Convert the Requested URL to the Data Explorer redirect format.
+	 *
+	 * @param url the {@link RedirectURL} to convert.
+	 * @return the converted value for the original url.
+	 * @throws RedirectException problem converting the url.
+	 */
 	public String convertToDataExplorerFormat(RedirectURL url) throws RedirectException {
 		if (DATA_EXPLORER_REDIRECT.equals(url.getCategory())) {
 			return String.format(DATA_EXPLORER_URL_FORMAT,
 					urlRedirectPropertiesService.getProperty(DATA_EXPLORER_DOMAIN_KEY),
-					url.getUrl().getPath());
+					url.getOriginalRequestedResource());
 		}
 		throw new RedirectException(RedirectException.ErrorType.REDIRECT_URL_EXCEPTION,
-				new Object[] {String.format(INVALID_CATEGORY_DATA_EXPLORER_MSG, url.getUrl().getPath())});
+				new Object[]{String.format(INVALID_CATEGORY_DATA_EXPLORER_MSG, url.getUrl().getPath())});
 	}
 }

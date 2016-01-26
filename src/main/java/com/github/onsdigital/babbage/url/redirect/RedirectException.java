@@ -39,7 +39,9 @@ public class RedirectException extends Exception {
 		 * Failed to classify which {@link RedirectCategory} the request URI belongs to.
 		 */
 		UNKNOWN_REDIRECT_CATEGORY("Invalid redirect URL. Could not determined redirect category for request URI '%s'. " +
-				"A Redirect URL must start with '/ons'.");
+				"A Redirect URL must start with '/ons'."),
+
+		INVALID_REDIRECT_CATEGORY("Unexpected error. Expected Redirect category '%s' but was actually '%s'");
 
 		private final String message;
 

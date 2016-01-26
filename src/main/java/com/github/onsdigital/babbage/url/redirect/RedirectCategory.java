@@ -26,9 +26,9 @@ public enum RedirectCategory {
 	 */
 	GENERAL_REDIRECT();
 
-	private static final String TAXONOMY_PREFIX = "/ons/taxonomy";
-	private static final String GENERAL_PREFIX = "/ons";
-	private static final String DATA_EXPLORER_PREFIX = "/ons/data";
+	private static final String TAXONOMY_URI = "/ons/taxonomy";
+	private static final String DATA_EXPLORER_URI = "/ons/data/";
+	private static final String GENERAL_URI = "/ons/";
 
 	private final String parameter;
 
@@ -40,7 +40,7 @@ public enum RedirectCategory {
 		this.parameter = null;
 	}
 
-	String getParameterName() {
+	public String getParameterName() {
 		return this.parameter;
 	}
 
@@ -55,13 +55,13 @@ public enum RedirectCategory {
 	public static RedirectCategory getCategoryFromURI(HttpServletRequest request) throws RedirectException {
 		requireNonNull(request, "request is a required parameter and cannot be null");
 		String requestURI = request.getRequestURI().toLowerCase();
-		if (requestURI.startsWith(TAXONOMY_PREFIX)) {
+		if (requestURI.startsWith(TAXONOMY_URI)) {
 			return TAXONOMY_REDIRECT;
 		}
-		if (requestURI.startsWith(DATA_EXPLORER_PREFIX)) {
+		if (requestURI.startsWith(DATA_EXPLORER_URI)) {
 			return DATA_EXPLORER_REDIRECT;
 		}
-		if (requestURI.startsWith(GENERAL_PREFIX)) {
+		if (requestURI.startsWith(GENERAL_URI)) {
 			return GENERAL_REDIRECT;
 		}
 
