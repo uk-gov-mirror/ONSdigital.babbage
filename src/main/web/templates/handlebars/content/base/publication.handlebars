@@ -25,49 +25,53 @@
             {{/each}}
             <!-- Accordion -->
             {{#if_any accordion relatedMethodology}}
-                <div class="accordion__container"> {{!-- TODO Reliant on empty div for first accordion to have top border --}}
-                    {{#each accordion}}
-                        <section id="{{slugify title}}" class="accordion is-collapsed section__content--markdown">
-                            <h2 class="accordion__title" aria-controls="content-{{@index_1}}">
-                                <span class="section__content-number">{{nf (add sections.size @index_1)}}.</span>{{title}}
-                            </h2>
-                            <div class="accordion__content" aria-labelledby="sc-{{@index_1}}">
-                                {{md markdown}}
-                                <a class="print--hide jsEnhanceAnimateScroll" href="#toc" class="">{{labels.back-to-toc}}</a>
-                            </div>
-                        </section>
-                    {{/each}}
-                    {{#if relatedMethodology}}
-                        <section id="methodology" class="accordion is-collapsed section__content--markdown">
-                            <h2 class="accordion__title" aria-controls="content-{{@index_1}}">
-                                {{!-- Make section number by adding accordion and section size if accordions exist --}}
-                                {{#if accordion}}
-                                    <span class="section__content-number">{{nf (increment (add sections.size accordion.size))}}.</span>
-                                {{else}}
-                                {{!-- If no accordions then add index to number of sections --}}
-                                    <span class="section__content-number">{{nf (increment sections.size)}}.</span>{{title}}
-                                {{/if}}
+            <div class="accordion__container">
+                {{#each accordion}}
+                    <section id="{{slugify title}}" class="accordion is-collapsed section__content--markdown">
+                    <h2 class="accordion__title" aria-controls="content-{{@index_1}}">
+                            <span class="section__content-number">{{nf (add sections.size @index_1)}}
+                                .</span>{{title}}
+                    </h2>
+                    <div class="accordion__content" aria-labelledby="sc-{{@index_1}}">
+                        {{md markdown}}
+                        <a class="print--hide jsEnhanceAnimateScroll" href="#toc"
+                           class="">{{labels.back-to-toc}}</a>
+                    </div>
+                </section>
+                {{/each}}
+                {{#if relatedMethodology}}
+                    <section id="methodology" class="accordion is-collapsed section__content--markdown">
+                        <h2 class="accordion__title" aria-controls="content-{{@index_1}}">
+                            {{!-- Make section number by adding accordion and section size if accordions exist --}}
+                            {{#if accordion}}
+                                <span class="section__content-number">{{nf (increment (add sections.size accordion.size))}}
+                                    .</span>
+                            {{else}}
+                            {{!-- If no accordions then add index to number of sections --}}
+                                <span class="section__content-number">{{nf (increment sections.size)}}
+                                    .</span>{{title}}
+                            {{/if}}
 
-                                Methodology
-                            </h2>
-                            <div class="accordion__content" aria-labelledby="sc-{{@index_1}}">
-                                <ul class="list--neutral">
-                                    {{#each relatedMethodology}}
-                                        {{#resolve this.uri filter="description"}}
-                                            <li><a href="{{absolute uri}}">{{description.title}}</a></li>
-                                        {{/resolve}}
-                                    {{/each}}
+                            Methodology
+                        </h2>
+                        <div class="accordion__content" aria-labelledby="sc-{{@index_1}}">
+                            <ul class="list--neutral">
+                                {{#each relatedMethodology}}
+                                    {{#resolve this.uri filter="description"}}
+                                        <li><a href="{{absolute uri}}">{{description.title}}</a></li>
+                                    {{/resolve}}
+                                {{/each}}
 
-                                    {{#each relatedMethodologyArticle}}
-                                        {{#resolve this.uri filter="description"}}
-                                            <li><a href="{{absolute uri}}">{{description.title}}</a></li>
-                                        {{/resolve}}
-                                    {{/each}}
-                                </ul>
-                                <a class="print--hide jsEnhanceAnimateScroll" href="#toc"">{{labels.back-to-toc}}</a>
-                            </div>
-                        </section>
-                    {{/if}}
+                                {{#each relatedMethodologyArticle}}
+                                    {{#resolve this.uri filter="description"}}
+                                        <li><a href="{{absolute uri}}">{{description.title}}</a></li>
+                                    {{/resolve}}
+                                {{/each}}
+                            </ul>
+                            <a class="print--hide jsEnhanceAnimateScroll" href="#toc">{{labels.back-to-toc}}</a>
+                        </div>
+                    </section>
+                {{/if}}
                 </div>
             {{/if_any}}
         </article>

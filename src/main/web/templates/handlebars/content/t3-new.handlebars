@@ -12,12 +12,12 @@
                     <h2 class="">On this page:</h2>
                     <ul class="list--neutral border-bottom--iron-sm border-bottom--iron-md border-bottom--iron-lg">
                         {{resolve items.0.uri assign="data"}}
-                        <a href="#highlights" class="jsEnhanceAnimateScroll"><li id="highlights-menu-item" class="side-bar__item padding-left-md--1">Highlights</li></a>
-                        {{#if items}}<a href="#timeseries" class="jsEnhanceAnimateScroll"><li id="timeseries-menu-item" class="side-bar__item padding-left-md--1">Time series</li></a>{{/if}}
-                        {{#if datasets}}<a href="#datasets" class="jsEnhanceAnimateScroll"><li id="datasets-menu-item" class="side-bar__item padding-left-md--1">Dataset(s)</li></a>{{/if}}
-                        <a href="#user-requested" class="jsEnhanceAnimateScroll"><li id="user-requested-menu-item" class="side-bar__item padding-left-md--1">User requested data</li></a>
-                        <a href="#publications" class="jsEnhanceAnimateScroll"><li id="publications-menu-item" class="side-bar__item padding-left-md--1">Publications</li></a>
-                        {{#if relatedMethodology}}<a href="#methodology" class="jsEnhanceAnimateScroll"><li id="methodology-menu-item" class="side-bar__item padding-left-md--1 margin-bottom-md--4">Methodology</li></a>{{/if}}
+                        <li id="highlights-menu-item" class="side-bar__item"><a href="#highlights" class="jsEnhanceAnimateScroll side-bar__link">Highlights</a></li>
+                        {{#if items}}<li id="timeseries-menu-item" class="side-bar__item"><a href="#timeseries" class="jsEnhanceAnimateScroll side-bar__link">Time series</a></li>{{/if}}
+                        {{#if datasets}}<li id="datasets-menu-item" class="side-bar__item"><a href="#datasets" class="jsEnhanceAnimateScroll side-bar__link">Dataset(s)</a></li>{{/if}}
+                        <li id="user-requested-menu-item" class="side-bar__item"><a href="#user-requested" class="jsEnhanceAnimateScroll side-bar__link">User requested data</a></li>
+                        <li id="publications-menu-item" class="side-bar__item"><a href="#publications" class="jsEnhanceAnimateScroll side-bar__link">Publications</a></li>
+                        {{#if relatedMethodology}}<li id="methodology-menu-item" class="side-bar__item padding-left-md--1 margin-bottom-md--4"><a href="#methodology" class="jsEnhanceAnimateScroll side-bar__link">Methodology</a></li>{{/if}}
                     </ul>
 
                     <div class="padding-top-sm--2 padding-bottom-sm--2 padding-left-sm--0 padding-right-sm--1 padding-top-md--2 padding-bottom-md--5 padding-left-md--0 padding-right-md--1 border-bottom--iron-sm border-bottom--iron-md">

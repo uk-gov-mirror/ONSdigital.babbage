@@ -9,7 +9,7 @@
 	{{/if}}
 
 	{{#if_any results timeSeriesCount}}
-		<span class="stand-out-text">{{numberOfResults}}</span> {{#if parameters.filter}}<strong>{{> list/filters/filters-type-list}}</strong>{{else}}{{resultsLabel}}{{/if}}{{#if parameters.query.0}} containing <strong>'{{parameters.query.0}}'</strong>{{/if}}
+		<span class="stand-out-text">{{nf numberOfResults}}</span> {{#if parameters.filter}}<strong>{{> list/filters/filters-type-list}}</strong>{{else}}{{resultsLabel}}{{/if}}{{#if parameters.query.0}} containing <strong>'{{parameters.query.0}}'</strong>{{/if}}
 	{{else}}
 		There are no {{#if parameters.filter}}<strong>{{> list/filters/filters-type-list}}</strong>{{else}}{{resultsLabel}}{{/if}}{{#if parameters.query.0}} containing <strong>'{{parameters.query.0}}'</strong>{{/if}}
 	{{/if_any}}
