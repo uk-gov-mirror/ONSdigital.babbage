@@ -17,6 +17,7 @@ import static com.github.onsdigital.babbage.api.util.SearchUtils.search;
 import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.*;
 import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.extractPage;
 import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.extractSearchTerm;
+import static org.apache.commons.lang.ArrayUtils.isEmpty;
 
 @Api
 public class Search {
@@ -38,7 +39,8 @@ public class Search {
                 buildSearchQuery(request, searchTerm, allFilters),
                 typeCountsQuery(contentQuery(searchTerm)).types(contentTypesToCount)
         );
-        if (extractPage(request) == 1) {
+        String[] filter = request.getParameterValues("filter");
+        if (extractPage(request) == 1 && isEmpty(filter)) {
             queries.add(bestTopicMatchQuery(searchTerm).name("featuredResult"));
         }
         return () -> queries;
