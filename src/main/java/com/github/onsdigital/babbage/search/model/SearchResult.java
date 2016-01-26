@@ -16,7 +16,7 @@ public class SearchResult {
     private Long numberOfResults;
     private long took;
     private List<Map<String, Object>> results = new ArrayList<>();
-    private Map<String,Long> docCounts;
+    private Map<String,Long> docCounts = new LinkedHashMap<>();
     private Paginator paginator;
     private String sortBy;
 
