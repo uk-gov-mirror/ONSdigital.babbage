@@ -1,16 +1,19 @@
 package com.github.onsdigital.babbage.publishing.model;
 
+import com.github.onsdigital.babbage.configuration.Configuration;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
 /**
- * Created by bren on 16/12/15.
  */
 public class PublishNotification {
     private String key;
     private String collectionId;
     private List<String> uriList;
-    private Date publishDate;
+    private String publishDate;
 
     public String getKey() {
         return key;
@@ -28,11 +31,21 @@ public class PublishNotification {
         this.uriList = uriList;
     }
 
-    public Date getPublishDate() {
+    public String getPublishDate() {
         return publishDate;
     }
 
-    public void setPublishDate(Date publishDate) {
+    public Date getDate(){
+        try {
+            return new SimpleDateFormat(Configuration.CONTENT_SERVICE.getDefaultContentDatePattern()).parse(publishDate);
+        } catch (ParseException e) {
+            System.err.println("Warning!!!!!!!! Publish date for publish notification is invalid, can not parse to date");
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public void setPublishDate(String publishDate) {
         this.publishDate = publishDate;
     }
 

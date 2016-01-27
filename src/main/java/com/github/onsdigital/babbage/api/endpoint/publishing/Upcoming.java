@@ -8,6 +8,7 @@ import com.github.onsdigital.babbage.error.BadRequestException;
 import com.github.onsdigital.babbage.publishing.PublishingManager;
 import com.github.onsdigital.babbage.publishing.model.ResponseMessage;
 import com.github.onsdigital.babbage.publishing.model.PublishNotification;
+import com.github.onsdigital.babbage.util.json.JsonUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -36,8 +37,9 @@ public class Upcoming {
 
 
     @POST
-    public Object post(HttpServletRequest request, HttpServletResponse response, PublishNotification publishNotification) {
+    public Object post(HttpServletRequest request, HttpServletResponse response) {
         try {
+            PublishNotification publishNotification = JsonUtil.fromJson(request.getInputStream(), PublishNotification.class);
             return process(response, publishNotification);
         } catch (BabbageException e) {
             response.setStatus(e.getStatusCode());
