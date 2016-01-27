@@ -56,7 +56,7 @@ public class PublishingManager {
             for (String uri : notification.getUriList()) {
                 uri = cleanUri(uri);
                 IndexRequestBuilder indexRequestBuilder = getElasticsearchClient().prepareIndex(PUBLISH_DATES_INDEX, notification.getCollectionId(), uri);
-                indexRequestBuilder.setSource(JsonUtil.toJson(new PublishInfo(uri, notification.getCollectionId(), notification.getPublishDate())));
+                indexRequestBuilder.setSource(JsonUtil.toJson(new PublishInfo(uri, notification.getCollectionId(), notification.getDate())));
                 bulkProcessor.add(indexRequestBuilder.request());
             }
         }
