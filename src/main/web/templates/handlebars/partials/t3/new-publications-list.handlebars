@@ -11,12 +11,12 @@
                             <p class="search-results__meta  margin-top-md--0 margin-bottom-md--0">
                                 {{> type-label type_code=this.type }}:
                             </p>
-                            <h4>
+                            <h3 class="font-size--h4">
                                 <a href="{{uri}}">
                                     {{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}
                                 </a>
-                            </h4>
-                            <p ">
+                            </h3>
+                            <p>
                                 {{description.summary}}
                             </p>
                         </div>
@@ -32,11 +32,11 @@
                             <p class="search-results__meta margin-top-md--0 margin-bottom-md--0">
                             {{> type-label type_code=this.type }}:
                             </p>
-                            <h4>
+                            <h3 class="font-size--h4">
                                 <a href="{{uri}}">
                                     {{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}
                                 </a>
-                            </h4>
+                            </h3>
                             <p>
                                 {{#if description._abstract}}{{description._abstract}}{{else}}{{description.summary}}{{/if}}
                             </p>
