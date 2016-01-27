@@ -130,7 +130,7 @@
 	{{!-- SEARCH BAR --}}
 	{{#block "block-search-bar"}}
 		<div class="search nav-search--hidden print--hide" id="searchBar">
-			<div class="wrapper">
+			<div class="wrapper" role="search">
 				<form class="col-wrap search__form" {{#if_any (eq listType "searchdata") (eq listType "searchpublication")}}action="{{location.pathname}}"{{else}}action="/search"{{/if_any}}>
 					<label class="search__label col col--md-23 col--lg-24" for="nav-search">Search for keyword(s) or time series ID</label>
 					<input type="search" autocomplete="off" class="search__input col col--md-21 col--lg-32" id="nav-search" name="q" value="{{parameters.q.0}}">
