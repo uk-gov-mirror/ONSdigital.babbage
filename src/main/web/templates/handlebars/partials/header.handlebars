@@ -132,8 +132,8 @@
 		<div class="search nav-search--hidden print--hide" id="searchBar">
 			<div class="wrapper">
 				<form class="col-wrap search__form" {{#if_any (eq listType "searchdata") (eq listType "searchpublication")}}action="{{location.pathname}}"{{else}}action="/search"{{/if_any}}>
-					<label class="search__label col col--md-24 col--lg-24" for="nav-search">Search for keyword(s) or time series ID</label>
-					<input type="search" autocomplete="off" class="search__input col col--md-20 col--lg-32" id="nav-search" name="q" value="{{parameters.q.0}}">
+					<label class="search__label col col--md-23 col--lg-24" for="nav-search">Search by keyword(s) or time series ID</label>
+					<input type="search" autocomplete="off" class="search__input col col--md-21 col--lg-32" id="nav-search" name="q" value="{{parameters.q.0}}">
 					<button type="submit" class="search__button col--md-3 col--lg-3" id="nav-search-submit">
 					<span class="visuallyhidden">{{labels.search}}</span>
 					<span class="icon icon-search--light"></span>
