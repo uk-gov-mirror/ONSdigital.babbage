@@ -48,8 +48,8 @@ public class ONSQueryBuilders {
                 .add(multiMatchQuery(searchTerm, summary.fieldNameBoosted(), metaDescription.fieldNameBoosted())
                         .type(BEST_FIELDS).minimumShouldMatch("75%"))
                 .add(matchQuery(keywords.fieldName(), searchTerm).operator(AND))
-                .add(multiMatchQuery(searchTerm, cdid.fieldNameBoosted(), datasetId.fieldNameBoosted()).operator(AND)).
-                add(matchQuery(searchBoost.fieldName(), searchTerm).boost(searchBoost.boost()));
+                .add(multiMatchQuery(searchTerm, cdid.fieldNameBoosted(), datasetId.fieldNameBoosted())).
+                add(matchQuery(searchBoost.fieldName(), searchTerm).boost(searchBoost.boost()).operator(AND));
 
         if (filter != null) {
             query = appyFilter(QueryBuilders.boolQuery().must(query), filter);
