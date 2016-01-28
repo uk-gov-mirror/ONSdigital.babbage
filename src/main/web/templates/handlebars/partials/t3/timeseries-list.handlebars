@@ -6,49 +6,45 @@
 
 <ul class="tiles__list margin-top--half">
 	{{#loop items limit=6}}
-	{{#resolve this.uri filter="description"}}
-	<div class="clickable-wrap">
-		<li class="col-wrap tiles__item tiles__item--list-type flush-col">
-			<div class="col col--md-15 col--lg-27">
-				<h4 class="tiles__title tiles__title-h4">
-					<a href="{{uri}}">{{description.title}}</a>
-				</h4>
-				{{#if description.keyNote}}
-				<div class="tiles__content">
-                    <p class="flush">{{description.keyNote}}</p>
-				</div>
-				{{/if}}
-			</div>
-			<div class="col col--md-15 col--lg-14">
-				<a href="{{uri}}">
-					<div style="height:96px;">
-					{{>partials/highcharts/sparkline}}
-					</div>
-				</a>
-			</div>
-			<div class="col col--md-13 col--lg-18">
-				<div class="tiles__content">
-					{{#if description.preUnit}}
-					<span class="tiles__preunit tiles__preunit--list">{{description.preUnit}}</span>
-					{{/if}}
-					<span class="tiles__figure tiles__figure--list">{{nf description.number}}</span>
-					{{#if description.unit}}
-					<span class="tiles__unit tiles__unit--list"> {{description.unit}}</span>
-					{{/if}}
-					{{#if description.date}}
-					<span class="stat__description">{{description.date}}</span>
-					{{/if}}
-                    <dl class="tiles__dl">
-                        <dt class="tiles__dt">{{labels.release-date}}:</dt>
-                        <dd class="flush">{{df description.releaseDate}}</dd>
-                        <dt class="tiles__dt">{{labels.release-next}}:</dt>
-                        <dd class="flush">{{description.nextRelease}}</dd>
-                    </dl>
-				</div>
-			</div>
-		</li>
-	</div>
-	{{/resolve}}
+        {{#resolve this.uri}}
+            <li class="col-wrap tiles__item tiles__item--list-type flush-col js-hover-click">
+                <div class="col col--md-15 col--lg-27">
+                    <h4 class="tiles__title tiles__title-h4">
+                        <a href="{{uri}}">{{description.title}}</a>
+                    </h4>
+                    {{#if description.keyNote}}
+                    <div class="tiles__content">
+                        <p class="flush">{{description.keyNote}}</p>
+                    </div>
+                    {{/if}}
+                </div>
+                <div class="col col--md-15 col--lg-14">
+                    <div style="height:96px;">
+                    {{>partials/highcharts/sparkline}}
+                    </div>
+                </div>
+                <div class="col col--md-13 col--lg-18">
+                    <div class="tiles__content">
+                        {{#if description.preUnit}}
+                        <span class="tiles__preunit tiles__preunit--list">{{description.preUnit}}</span>
+                        {{/if}}
+                        <span class="tiles__figure tiles__figure--list">{{nf description.number}}</span>
+                        {{#if description.unit}}
+                        <span class="tiles__unit tiles__unit--list"> {{description.unit}}</span>
+                        {{/if}}
+                        {{#if description.date}}
+                        <span class="stat__description">{{description.date}}</span>
+                        {{/if}}
+                        <dl class="tiles__dl">
+                            <dt class="tiles__dt">{{labels.release-date}}:</dt>
+                            <dd class="flush">{{df description.releaseDate}}</dd>
+                            <dt class="tiles__dt">{{labels.release-next}}:</dt>
+                            <dd class="flush">{{description.nextRelease}}</dd>
+                        </dl>
+                    </div>
+                </div>
+            </li>
+        {{/resolve}}
 	{{/loop}}
 </ul>
 <a href="/timeseriestool?topic={{uri}}" class="btn btn--primary btn--full-width">View all time series related to {{description.title}}</a>

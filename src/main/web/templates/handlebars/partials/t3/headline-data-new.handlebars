@@ -1,38 +1,34 @@
-<div class="clickable-wrap">
-	<div class="tiles__item tiles__item margin-left-md--0">
-		<div class="tiles__image--headline-sparkline height--24 overflow--hidden">
-			<a href="{{data.uri}}">
-			{{> partials/highcharts/sparkline data}}
-			</a>
-		</div>
-		<div class="equal-height margin-top--negative-one-fix">
-			<h3 class="tiles__title tiles__title-h3">
-				<a href="{{data.uri}}">{{data.description.title}}</a>
-			</h3>
-			<div class="tiles__content">
-				{{#if data.description.keyNote}}
-					<div class="tiles__keynote">{{data.description.keyNote}}</div>
-				{{/if}}
-				{{#if data.description.preUnit}}
-				<span class="tiles__preunit">{{data.description.preUnit}}</span>
-				{{/if}}
-				<span class="tiles__figure">{{nf data.description.number}}</span>
-				{{#if data.description.unit}}
-				<span class="tiles__unit"> {{data.description.unit}}</span>
-				{{/if}}
-				{{#if data.description.date}}<div class="tiles__date">{{data.description.date}}</div>{{/if}}
-				<dl class="margin-top margin-bottom">
-					<dt>{{labels.product-last-updated}}</dt>
-					<dd class="flush">{{df data.description.releaseDate}}</dd>
-					<dt>{{labels.product-next-update}}</dt>
-					<dd class="flush">{{data.description.nextRelease}}</dd>
-				</dl>
-			</div>
-		</div>
 
-		<a href="{{data.uri}}" class="tiles__extra">View this data in more detail</a>
+<div class="tiles__item tiles__item margin-left-md--0 js-hover-click">
+    <div class="tiles__image--headline-sparkline height--24 overflow--hidden">
+        {{> partials/highcharts/sparkline data}}
+    </div>
+    <div class="equal-height margin-top--negative-one-fix">
+        <h3 class="tiles__title tiles__title-h3">
+            <a href="{{data.uri}}">{{data.description.title}}</a>
+        </h3>
+        <div class="tiles__content">
+            {{#if data.description.keyNote}}
+                <div class="tiles__keynote">{{data.description.keyNote}}</div>
+            {{/if}}
+            {{#if data.description.preUnit}}
+            <span class="tiles__preunit">{{data.description.preUnit}}</span>
+            {{/if}}
+            <span class="tiles__figure">{{nf data.description.number}}</span>
+            {{#if data.description.unit}}
+            <span class="tiles__unit"> {{data.description.unit}}</span>
+            {{/if}}
+            {{#if data.description.date}}<div class="tiles__date">{{data.description.date}}</div>{{/if}}
+            <dl class="margin-top margin-bottom">
+                <dt>{{labels.product-last-updated}}</dt>
+                <dd class="flush">{{df data.description.releaseDate}}</dd>
+                <dt>{{labels.product-next-update}}</dt>
+                <dd class="flush">{{data.description.nextRelease}}</dd>
+            </dl>
+        </div>
+    </div>
 
-	</div>
+    <a href="{{data.uri}}" class="tiles__extra">View this data in more detail</a>
 
 </div>
 

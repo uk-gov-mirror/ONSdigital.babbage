@@ -1,39 +1,49 @@
-<div class="clickable-wrap">
-	<div class="tiles__item tiles__item--image-type-headline flush-col">
-		<div class="tiles__image tiles__image--headline-sparkline">
-			<a href="{{data.uri}}">
-			{{> partials/highcharts/sparkline data}}
-			</a>
-		</div>
-		<div class="equal-height">
-			<h3 class="tiles__title tiles__title-h3">
-				<a href="{{data.uri}}">{{data.description.title}}</a>
-			</h3>
-			<div class="tiles__content">
-				{{#if data.description.keyNote}}
-					<div class="tiles__keynote">{{data.description.keyNote}}</div>
-				{{/if}}
-				{{#if data.description.preUnit}}
-				<span class="tiles__preunit">{{data.description.preUnit}}</span>
-				{{/if}}
-				<span class="tiles__figure">{{nf data.description.number}}</span>
-				{{#if data.description.unit}}
-				<span class="tiles__unit"> {{data.description.unit}}</span>
-				{{/if}}
-				{{#if data.description.date}}<div class="tiles__date">{{data.description.date}}</div>{{/if}}
-				<dl class="margin-top margin-bottom">
-					<dt>{{labels.product-last-updated}}</dt>
-					<dd class="flush">{{df data.description.releaseDate}}</dd>
-					<dt>{{labels.product-next-update}}</dt>
-					<dd class="flush">{{data.description.nextRelease}}</dd>
-				</dl>
-			</div>
-		</div>
 
-		<a href="{{data.uri}}" class="tiles__extra">View this data in more detail</a>
+<div class="background--iron-light margin-top-md--1 margin-bottom-md--2 js-hover-click">
+    <div class="background--white width-md--23 width-lg--29 height-md--35 height-lg--35 margin-top-sm--0 margin-top-md--0 overflow--hidden">
+        <div class="width-md--23 width-lg--29 height-md--35 box__timeseries">
+            {{> partials/highcharts/sparkline data}}
+        </div>
+    </div>
+    <div class="equal-height box__content padding-top-sm--2 padding-right-sm--1 padding-bottom-sm--2 padding-left-sm--1 padding-top-md--2 padding-right-md--1 padding-bottom-md--2 padding-left-md--1">
+        <h3>
+            <a href="{{data.uri}}">{{data.description.title}}</a>
+        </h3>
+        <p class="margin-bottom-md--1">
+            {{#if data.description.keyNote}}
+                {{data.description.keyNote}}
+            {{/if}}
+        </p>
+        <p  class="stand-out">
+            {{#if data.description.preUnit}}
+                {{data.description.preUnit}}
+            {{/if}}
 
-	</div>
+            {{nf data.description.number}}
+
+            {{#if data.description.unit}}
+                {{data.description.unit}}
+            {{/if}}
+        </p>
+        {{#if data.description.date}}
+            <p class="stand-out--list">
+                {{data.description.date}}
+            </p>
+        {{/if}}
+
+        <dl>
+            <dt>{{labels.product-last-updated}}</dt>
+            <dd>{{df data.description.releaseDate}}</dd>
+            <dt>{{labels.product-next-update}}</dt>
+            <dd>{{data.description.nextRelease}}</dd>
+        </dl>
+    </div>
+
+    <div class="background--iron-light box__content height--7 width--50 border-top--iron-sm border-top--iron-md padding-top-sm--1 padding-left-sm--1 padding-top-md--1 padding-left-md--1 more-link">
+        <a href="{{bulletin.uri}}" class="block">Read this statistical bulletin</a>
+    </div>
 
 </div>
 
-<a href="#timeseries" class="btn btn--primary btn--full-width margin-top jsEnhanceAnimateScroll">More data</a>
+<a href="#timeseries" class="btn btn--primary btn--full-width margin-top margin-bottom-sm--4 jsEnhanceAnimateScroll">More data</a>
+

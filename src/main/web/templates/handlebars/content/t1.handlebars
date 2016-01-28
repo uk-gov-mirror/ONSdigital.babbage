@@ -70,7 +70,7 @@
                             {{!-- <h2 class="tiles__title-h2">{{title}}</h2> --}}
                             {{/resolve}}
 
-                            {{#resolve sections.2.statistics.uri filter="description"}}
+                            {{#resolve sections.2.statistics.uri}}
 
                                 <dl class="box__content box__content--homepage height-md--23 padding-top-sm--24 padding-right-md--1 padding-bottom-md--0 padding-left-md--11 padding-left-lg--14">
                                     <dt class="tiles__title-dt margin-left-sm--1 margin-left-md--1">
@@ -105,7 +105,7 @@
                 </div>
                 <div class="col col--md-35 col--lg-29 height-sm--48 height-md--23 background--white margin-left-md--1 margin-bottom--2 js-hover-click">
                     <article>
-                        {{#resolve sections.3.statistics.uri filter="description"}}
+                        {{#resolve sections.3.statistics.uri}}
                             <dl class="box__content box__content--homepage height-md--23 padding-top-sm--24 padding-right-md--1 padding-bottom-md--0 padding-left-md--13 padding-left-lg--14">
                                 <dt class="tiles__title-dt margin-left-sm--1 margin-left-md--1">
                                     <a href="{{uri}}">{{description.title}}</a>

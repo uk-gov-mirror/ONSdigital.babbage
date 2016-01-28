@@ -49,35 +49,33 @@
 							<!-- </div> -->
 							{{!-- Latest publication block --}}
 							<div class="col {{#if_any data.years data.quarters data.months}}col--md-half col--lg-half{{/if_any}}">
-								<div class="clickable-wrap">
-									<div class="tiles__item tiles__item--image-type-headline flush-col">
-										<div class="tiles__image tiles__image--headline">
-											<img src="{{#if_any (eq 'localhost' location.hostname) (eq '127.0.0.1' location.hostname)}}http://localhost:9000/dist/img/latest-publications.png{{else}}/node_modules/sixteens/dist/img/latest-publications.png{{/if_any}}"
-												 alt=""/>
-										</div>
-										<div class="equal-height">
-											<h3 class="tiles__title tiles__title-h3">
-												<a href="{{bulletin.uri}}">{{bulletin.description.title}}{{#if bulletin.description.edition}}
-													: {{bulletin.description.edition}}{{/if}}</a>
-											</h3>
-											<h4 class="tiles__title-h4">{{labels.product-whats-in-bulletin}}</h4>
-											<ul class="tiles__content-list">
-												{{#if bulletin.description.headline1}}
-													<li>{{bulletin.description.headline1}}</li>
-												{{/if}}
-												{{#if bulletin.description.headline2}}
-													<li>{{bulletin.description.headline2}}</li>
-												{{/if}}
-												{{#if bulletin.description.headline3}}
-													<li>{{bulletin.description.headline3}}</li>
-												{{/if}}
-											</ul>
-										</div>
-										<a href="{{bulletin.uri}}" class="tiles__extra">Read this statistical
-											bulletin</a>
-									</div>
-								</div>
-								<a href="#publications" class="btn btn--primary btn--full-width jsEnhanceAnimateScroll">More
+                                <div class="background--iron-light margin-top-md--1 margin-bottom-md--2 js-hover-click">
+                                    <div class="background--abbey height--35 overflow--hidden">
+
+                                        <img src="{{#if_any (eq 'localhost' location.hostname) (eq '127.0.0.1' location.hostname)}}http://localhost:9000/dist/img/latest-publications.png{{else}}/node_modules/sixteens/dist/img/latest-publications.png{{/if_any}}" class="width-md--23 width-lg--29 height-md--35" alt="" />
+                                    </div>
+                                    <div class="equal-height box__content test--1 test--2 padding-top-sm--2 padding-right-sm--1 padding-bottom-sm--2 padding-left-sm--1 padding-top-md--2 padding-right-md--1 padding-bottom-md--2 padding-left-md--1">
+                                        <h3>
+                                            <a href="{{bulletin.uri}}">{{bulletin.description.title}}{{#if bulletin.description.edition}}: {{bulletin.description.edition}}{{/if}}</a>
+                                        </h3>
+                                        <h4>{{labels.product-whats-in-bulletin}}</h4>
+                                        <ul>
+                                            {{#if bulletin.description.headline1}}
+                                                <li>{{bulletin.description.headline1}}</li>
+                                            {{/if}}
+                                            {{#if bulletin.description.headline2}}
+                                                <li>{{bulletin.description.headline2}}</li>
+                                            {{/if}}
+                                            {{#if bulletin.description.headline3}}
+                                                <li>{{bulletin.description.headline3}}</li>
+                                            {{/if}}
+                                        </ul>
+                                    </div>
+                                    <div class="background--iron-light box__content height--7 width--50 border-top--iron-sm border-top--iron-md padding-top-sm--1 padding-left-sm--1 padding-top-md--1 padding-left-md--1">
+                                        <a href="{{bulletin.uri}}" class="block">Read this statistical bulletin</a>
+                                    </div>
+                                </div>
+								<a href="#publications" class="btn btn--primary btn--full-width margin-top--2 jsEnhanceAnimateScroll">More
 									publications</a>
 							</div>
 						{{/if}}
@@ -113,7 +111,7 @@
                     <div class="box__content padding-top-sm--3 padding-bottom-sm--2 padding-left-sm--1 padding-right-sm--1 padding-top-md--3 padding-right-md--1 padding-bottom-md--2 padding-left-md--1">
                         <span class="icon icon-arrow-right--dark float-right margin-top-md--2 margin-top-sm--2"></span>
                         <h3>Looking for our user requested data?</h3>
-                        <p><a href="{{uri}}/alladhocs">We also produce statistics not included in our standard publications</a></p>
+                        <p><a href="{{uri}}/datalist?sortBy=release_date&filter=user_requested_data">We also produce statistics not included in our standard publications</a></p>
                     </div>
 
                 </div>
