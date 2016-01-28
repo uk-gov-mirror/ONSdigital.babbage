@@ -166,7 +166,7 @@
             ga('send', 'pageview', {'page': location.pathname + getSearch() + location.hash});
             function getSearch(){
                 if(location.pathname === '/search'){
-                    var numberOfResults = {{#if numberOfResults}} {{numberOfResults}} {{else}} 0 {{/if}};
+                    var numberOfResults = {{#if result.numberOfResults}} {{result.numberOfResults}} {{else}} 0 {{/if}};
                     return location.search + '&numberOfResults=' + numberOfResults;
                 } else {
                     return location.search;
