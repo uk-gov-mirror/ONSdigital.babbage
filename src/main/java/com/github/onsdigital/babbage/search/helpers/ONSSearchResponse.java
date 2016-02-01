@@ -12,11 +12,10 @@ import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.aggregations.bucket.MultiBucketsAggregation;
 import org.elasticsearch.search.aggregations.bucket.SingleBucketAggregation;
 import org.elasticsearch.search.highlight.HighlightField;
+import org.elasticsearch.search.suggest.Suggest;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by bren on 07/09/15.
@@ -51,8 +50,31 @@ public class ONSSearchResponse {
         }
 
         extractDocCounts(searchResult);
+        extractSuggestions(searchResult);
 
         return searchResult;
+    }
+
+    private void extractSuggestions(SearchResult searchResult) {
+        Suggest suggest = response.getSuggest();
+        if (suggest == null) {
+            return;
+        }
+        Suggest.Suggestion<? extends Suggest.Suggestion.Entry<? extends Suggest.Suggestion.Entry.Option>> suggestion = suggest.getSuggestion("search_suggest");
+        if (suggestion == null) {
+            return;
+        }
+
+
+        List<String> suggestions = new ArrayList<>();
+        Iterator<? extends Suggest.Suggestion.Entry<? extends Suggest.Suggestion.Entry.Option>> iterator = suggestion.getEntries().iterator();
+        while (iterator.hasNext()) {
+            Suggest.Suggestion.Entry<? extends Suggest.Suggestion.Entry.Option> entry = iterator.next();
+            suggestions.addAll(entry.getOptions().stream().map(option -> option.getText().string()).collect(Collectors.toList()));
+        }
+        if (!suggestions.isEmpty()) {
+            searchResult.setSuggestions(suggestions);
+        }
     }
 
     private void extractDocCounts(SearchResult searchResult) {

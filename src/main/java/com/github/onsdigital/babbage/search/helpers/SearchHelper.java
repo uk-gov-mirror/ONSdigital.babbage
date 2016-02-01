@@ -10,6 +10,7 @@ import org.elasticsearch.action.search.MultiSearchResponse;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.search.aggregations.AbstractAggregationBuilder;
+import org.elasticsearch.search.suggest.SuggestBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,10 +32,12 @@ public class SearchHelper {
         addHighlights(requestBuilder, query);
         addSorts(requestBuilder, query);
         addAggregations(requestBuilder, query);
+        addSuggestions(requestBuilder, query);
         addFetchFields(requestBuilder, query);
 
         return requestBuilder;
     }
+
 
     public static ONSSearchResponse search(ONSQuery queries) {
         SearchRequestBuilder searchRequestBuilder = prepare(queries);
@@ -106,6 +109,15 @@ public class SearchHelper {
         }
         for (AbstractAggregationBuilder aggregate : query.aggregate()) {
             builder.addAggregation(aggregate);
+        }
+    }
+
+    private static void addSuggestions(SearchRequestBuilder requestBuilder, ONSQuery query) {
+        if (query.suggest() == null) {
+            return;
+        }
+        for (SuggestBuilder.SuggestionBuilder suggestion : query.suggest()) {
+            requestBuilder.addSuggestion(suggestion);
         }
     }
 

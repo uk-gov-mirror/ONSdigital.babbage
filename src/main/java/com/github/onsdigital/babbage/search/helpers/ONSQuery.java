@@ -5,6 +5,7 @@ import com.github.onsdigital.babbage.search.model.ContentType;
 import com.github.onsdigital.babbage.search.model.field.Field;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.search.aggregations.AbstractAggregationBuilder;
+import org.elasticsearch.search.suggest.SuggestBuilder;
 
 import static com.github.onsdigital.babbage.configuration.Configuration.GENERAL.getResultsPerPage;
 
@@ -20,6 +21,7 @@ public class ONSQuery {
     private String name;
     private QueryBuilder builder;
     private AbstractAggregationBuilder[] aggregationBuilders;
+    private SuggestBuilder.SuggestionBuilder[] suggestionBuilders;
     private int from;
     private int size = getResultsPerPage();//default size is in configuration
     private Integer page;
@@ -128,6 +130,15 @@ public class ONSQuery {
 
     public ONSQuery aggregate(AbstractAggregationBuilder... aggregations) {
         this.aggregationBuilders = aggregations;
+        return this;
+    }
+
+    SuggestBuilder.SuggestionBuilder[] suggest() {
+        return suggestionBuilders;
+    }
+
+    public ONSQuery suggest(SuggestBuilder.SuggestionBuilder... suggestions) {
+        this.suggestionBuilders = suggestions;
         return this;
     }
 }
