@@ -19,6 +19,7 @@ import com.github.onsdigital.babbage.util.RequestUtil;
 import com.github.onsdigital.babbage.util.ThreadContext;
 import com.github.onsdigital.babbage.util.json.JsonUtil;
 import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.search.suggest.SuggestBuilders;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.MediaType;
@@ -36,6 +37,7 @@ import static com.github.onsdigital.babbage.search.model.field.Field.cdid;
 import static com.github.onsdigital.babbage.util.URIUtil.isDataRequest;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 import static org.elasticsearch.index.query.QueryBuilders.*;
+import static org.elasticsearch.search.suggest.SuggestBuilders.phraseSuggestion;
 
 /**
  * Created by bren on 20/01/16.
@@ -92,7 +94,9 @@ public class SearchUtils {
      */
     public static ONSQuery buildSearchQuery(HttpServletRequest request, String searchTerm, Set<TypeFilter> defaultFilters) {
         SortBy sortBy = extractSortBy(request, SortBy.relevance);
-        return buildONSQuery(request, contentQuery(searchTerm), sortBy, null, contentTypes(extractSelectedFilters(request, defaultFilters)));
+        ONSQuery query = buildONSQuery(request, contentQuery(searchTerm), sortBy, null, contentTypes(extractSelectedFilters(request, defaultFilters)));
+        query.suggest(phraseSuggestion("search_suggest").field(Field.title_no_synonym_no_stem.fieldName()).text(searchTerm));
+        return query;
     }
 
     public static ONSQuery buildListQuery(HttpServletRequest request, Set<TypeFilter> defaultFilters, SearchFilter filter) {
@@ -108,7 +112,7 @@ public class SearchUtils {
     }
 
     public static ONSQuery buildListQuery(HttpServletRequest request) {
-        return buildListQuery(request, null, null,null);
+        return buildListQuery(request, null, null, null);
     }
 
     public static ONSQuery buildListQuery(HttpServletRequest request, Set<TypeFilter> defaultFilters) {

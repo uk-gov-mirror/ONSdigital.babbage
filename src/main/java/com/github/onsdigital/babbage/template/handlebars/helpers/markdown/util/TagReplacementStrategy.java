@@ -65,18 +65,11 @@ public abstract class TagReplacementStrategy {
      */
     public String resolveFigureUri(Path pagePath, Path tagPath) {
 
-        System.out.println("pagePath = " + pagePath);
-        System.out.println("tagPath = " + tagPath);
-
         String figureUri = pagePath.resolve(tagPath.getFileName()).toString();
-
-        System.out.println("figureUri = " + figureUri);
 
         if (!figureUri.startsWith("/")) {
             figureUri = "/" + tagPath;
         }
-
-        System.out.println("figureUri = " + figureUri);
 
         return figureUri;
     }

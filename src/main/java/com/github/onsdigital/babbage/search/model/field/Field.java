@@ -18,6 +18,7 @@ public enum Field {
     title_raw("description.title.title_raw"),
     title("description.title", 10,true),
     title_no_stem("description.title.title_no_stem", 10),
+    title_no_synonym_no_stem("description.title.title_no_synonym_no_stem"), //used for suggestions
     edition("description.edition",true),
     summary("description.summary",true),
     releaseDate("description.releaseDate"),

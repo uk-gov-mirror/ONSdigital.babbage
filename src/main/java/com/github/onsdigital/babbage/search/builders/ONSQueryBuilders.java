@@ -82,7 +82,7 @@ public class ONSQueryBuilders {
 
     public static ONSQuery bestTopicMatchQuery(String searchTerm) {
         return onsQuery(contentQuery(searchTerm))
-                .types(ContentType.product_page)
+                .types(ContentType.product_page, ContentType.home_page_census)
                 .size(1);
     }
 

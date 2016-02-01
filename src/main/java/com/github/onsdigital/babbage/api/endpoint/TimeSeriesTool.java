@@ -30,8 +30,7 @@ public class TimeSeriesTool {
     private SearchQueries queries(HttpServletRequest request) {
         return () -> ONSQueryBuilders.toList(
                 buildListQuery(request, filters(request))
-                        .types(ContentType.timeseries),
-                topicListQuery()
+                        .types(ContentType.timeseries)
         );
     }
 
