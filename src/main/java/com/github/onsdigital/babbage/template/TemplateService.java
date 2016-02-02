@@ -10,8 +10,7 @@ import java.io.InputStream;
 import java.util.Collections;
 import java.util.Map;
 
-import static com.github.onsdigital.babbage.configuration.Configuration.HANDLEBARS.getMainChartConfigTemplateName;
-import static com.github.onsdigital.babbage.configuration.Configuration.HANDLEBARS.getMainContentTemplateName;
+import static com.github.onsdigital.babbage.configuration.Configuration.HANDLEBARS.*;
 import static com.github.onsdigital.babbage.util.json.JsonUtil.toMap;
 
 /**
@@ -23,7 +22,7 @@ public class TemplateService {
 
     private static TemplateService instance = new TemplateService();
 
-    private static HandlebarsRenderer renderer = new HandlebarsRenderer(Configuration.HANDLEBARS.getTemplatesDirectory(), Configuration.HANDLEBARS.getTemplatesSuffix());
+    private static HandlebarsRenderer renderer = new HandlebarsRenderer(getTemplatesDirectory(), getTemplatesSuffix(), isReloadTemplateChanges());
 
     private TemplateService() {
     }
@@ -64,7 +63,7 @@ public class TemplateService {
      * @throws IOException
      */
     public String renderTemplate(String templateName) throws IOException {
-        return renderer.render(templateName, Collections.emptyMap() , ThreadContext.getAllData());
+        return renderer.render(templateName, Collections.emptyMap(), ThreadContext.getAllData());
     }
 
     /**
@@ -76,7 +75,7 @@ public class TemplateService {
      * @return
      * @throws IOException
      */
-    public String renderTemplate(String templateName, Object data, Map<String,Object>... additionalData) throws IOException {
+    public String renderTemplate(String templateName, Object data, Map<String, Object>... additionalData) throws IOException {
         return renderer.render(templateName, sanitize(data), addThreadContext(additionalData));
     }
 
@@ -86,7 +85,7 @@ public class TemplateService {
             return toMap((String) data);
         } else if (data instanceof InputStream) {
             return toMap((InputStream) data);
-        }else {
+        } else {
             return data;
         }
     }

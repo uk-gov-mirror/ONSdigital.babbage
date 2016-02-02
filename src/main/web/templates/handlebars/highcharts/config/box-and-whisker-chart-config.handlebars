@@ -2,7 +2,7 @@
 options.chart.type="boxplot";
 options.series= [{
 	    	name: "{{{sub (sup headers.0)}}}",
-	    	data: [{{#each data}}[{{num (get this headers.1)}},{{num (get this headers.2)}},{{num (get this headers.3)}},{{num (get this headers.4)}},{{num (get this headers.5)}}],{{/each}}]
+	    	data: [{{#each data}}[{{num (lookup this headers.1)}},{{num (lookup this headers.2)}},{{num (lookup this headers.3)}},{{num (lookup this headers.4)}},{{num (lookup this headers.5)}}],{{/each}}]
 	    }];
 
 options.tooltip.formatter=function() {

@@ -70,82 +70,69 @@
 		{{!-- Main handlebars is the main file rendered by handlebars.
 		performs type check on content type and decides which template to render  --}}
 
-		{{!-- TODO: --}}
-		{{!-- In order to keep the code cleaner if statements are used for all cases rather than indented if else statements.
-		This means the comparison actually happens for all conditions listed below.
-		Handlebars 3.0.0 supports chained else if statements which is a syntactic sugar for indented if else statements, as soon as Handlebars.java 3.0 comes out an update and using chained if statements would be nice.
-		Follow on:   --}}
-
 		{{!-- Content --}}
-		{{#if_eq type "home_page"}}{{> content/t1}}{{/if_eq}}
-		{{#if_eq type "home_page_census"}}{{> content/t1-2}}{{/if_eq}}
-		{{#if_eq type "taxonomy_landing_page"}}{{> content/t2}}{{/if_eq}}
-
-		{{#if_eq type "product_page"}}
-			{{#if_eq parameters.test.0 "B"}}
-				{{> content/t3-new}}
+		{{#if_eq type "home_page"}} 						{{> content/t1}}
+		{{else if_eq type "home_page_census"}} 				{{> content/t1-2}}
+		{{else if_eq type "taxonomy_landing_page"}} 		{{> content/t2}}
+		{{else if_eq type "product_page"}}
+			{{#if_eq parameters.test.0 "B"}} 				{{> content/t3-new}}
+			{{else}} 						 				{{> content/t3}}
+			{{/if_eq}}
+		{{else if_eq type "bulletin"}} 						{{> content/t4-1}}
+		{{else if_eq type "article"}} 						{{> content/t4-2}}
+        {{else if_eq type "article_download"}} 				{{> content/t4-2}}
+		{{else if_eq type "timeseries"}}
+			{{#if previous}} 								{{> content/t12-2}}
 			{{else}}
-				{{> content/t3}}
+															{{> content/t5-1}}
+			{{/if}}
+		{{else if_eq type "compendium_landing_page"}} 		{{> content/t6-1}}
+		{{else if_eq type "compendium_chapter"}} 			{{> content/t6-2}}
+		{{else if_eq type "compendium_data"}} 				{{> content/t6-3}}
+		{{else if_eq type "reference_tables"}} 				{{> content/t8-1}}
+		{{else if_eq type "dataset_landing_page"}} 			{{> content/t8-3}}
+		{{else if_eq type "dataset"}} 						{{> content/t12}}
+		{{else if_eq type "timeseries_dataset"}} 			{{> content/t12}}
+		{{else if_eq type "static_landing_page"}} 			{{> content/t7-4-1}}
+		{{else if_eq type "static_page"}} 					{{> content/t7-5}}
+		{{else if_eq type "static_article"}} 				{{> content/t7-6}}
+		{{else if_eq type "static_methodology"}} 			{{> content/t7-6}}
+        {{else if_eq type "static_methodology_download"}} 	{{> content/t7-6}}
+		{{else if_eq type "static_qmi"}} 					{{> content/t7-1}}
+		{{else if_eq type "static_adhoc"}} 					{{> content/t7-2}}
+		{{else if_eq type "static_foi"}} 					{{> content/t7-3}}
+		{{else if_eq type "release"}} 						{{> content/t16}}
+		{{!-- Charts and tables and images--}}
+		{{else if_eq type "chart"}} 						{{> highcharts/chart}}
+		{{else if_eq type "table"}} 						{{> table}}
+
+		{{!-- List Pages --}}
+		{{else if_eq type "list"}}
+			{{#if_eq listType "alladhocs"}} 						{{> list/t9-12}}
+				{{else if_eq listType "allmethodologies"}} 			{{> list/t9-11}}
+				{{else if_eq listType "atoz"}} 						{{> list/t9-14}}
+				{{else if_eq listType "staticlist"}} 				{{> list/t9-13}}
+				{{else if_eq listType "publishedrequests"}} 		{{> list/t9-2}}
+				{{else if_eq listType "previousreleases"}} 			{{> list/t9-6}}
+				{{else if_eq listType "topicspecificmethodology"}} 	{{> list/t9-7}}
+				{{else if_eq listType "publications"}} 				{{> list/t9-8}}
+				{{else if_eq listType "datalist"}} 					{{> list/t9-9}}
+				{{else if_eq listType "search"}} 					{{> list/t10}}
+				{{else if_eq listType "searchdata"}} 				{{> list/t10-2}}
+				{{else if_eq listType "searchpublication"}} 		{{> list/t10-3}}
+				{{else if_eq listType "relateddata"}} 				{{> list/t9-16}}
+				{{else if_eq listType "releasecalendar"}} 			{{> list/t11}}
+				{{else if_eq listType "timeseriestool"}} 			{{> list/t13}}
+			{{/if_eq}}
+
+		{{!-- Error pages --}}
+		{{else if_eq type "error"}}
+			{{#if_eq code 404}}{{> error/404}}
+				{{else if_eq code 401}}{{> error/401}}
+				{{else if_eq code 500}}{{> error/500}}
 			{{/if_eq}}
 		{{/if_eq}}
 
-		{{#if_eq type "bulletin"}}{{> content/t4-1}}{{/if_eq}}
-		{{#if_eq type "article"}}{{> content/t4-2}}{{/if_eq}}
-        {{#if_eq type "article_download"}}{{> content/t4-2}}{{/if_eq}}
-		{{#if_eq type "timeseries"}}
-			{{#if previous}}
-				{{> content/t12-2}}
-			{{else}}
-				{{> content/t5-1}}
-			{{/if}}
-		{{/if_eq}}
-		{{#if_eq type "compendium_landing_page"}}{{> content/t6-1}}{{/if_eq}}
-		{{#if_eq type "compendium_chapter"}}{{> content/t6-2}}{{/if_eq}}
-		{{#if_eq type "compendium_data"}}{{> content/t6-3}}{{/if_eq}}
-		{{#if_eq type "reference_tables"}}{{> content/t8-1}}{{/if_eq}}
-		{{#if_eq type "dataset_landing_page"}}{{> content/t8-3}}{{/if_eq}}
-		{{#if_eq type "dataset"}}{{> content/t12}}{{/if_eq}}
-		{{#if_eq type "timeseries_dataset"}}{{> content/t12}}{{/if_eq}}
-		{{#if_eq type "static_landing_page"}}{{> content/t7-4-1}}{{/if_eq}}
-		{{#if_eq type "static_page"}}{{> content/t7-5}}{{/if_eq}}
-		{{#if_eq type "static_article"}}{{> content/t7-6}}{{/if_eq}}
-		{{#if_eq type "static_methodology"}}{{> content/t7-6}}{{/if_eq}}
-        {{#if_eq type "static_methodology_download"}}{{> content/t7-6}}{{/if_eq}}
-		{{#if_eq type "static_qmi"}}{{> content/t7-1}}{{/if_eq}}
-		{{#if_eq type "static_adhoc"}}{{> content/t7-2}}{{/if_eq}}
-		{{#if_eq type "static_foi"}}{{> content/t7-3}}{{/if_eq}}
-		{{#if_eq type "release"}}{{> content/t16}}{{/if_eq}}
-		{{!-- Charts and tables and images--}}
-		{{#if_eq type "chart"}}{{> highcharts/chart}}{{/if_eq}}
-		{{#if_eq type "table"}}{{> table}}{{/if_eq}}
-
-		{{!-- List Pages --}}
-		{{#if_eq type "list"}}
-			{{#if_eq listType "alladhocs"}}{{> list/t9-12}}{{/if_eq}}
-			{{#if_eq listType "allmethodologies"}}{{> list/t9-11}}{{/if_eq}}
-			{{#if_eq listType "atoz"}}{{> list/t9-14}}{{/if_eq}}
-			{{#if_eq listType "staticlist"}}{{> list/t9-13}}{{/if_eq}}
-			{{#if_eq listType "publishedrequests"}}{{> list/t9-2}}{{/if_eq}}
-			{{#if_eq listType "previousreleases"}}{{> list/t9-6}}{{/if_eq}}
-			{{#if_eq listType "topicspecificmethodology"}}{{> list/t9-7}}{{/if_eq}}
-			{{#if_eq listType "publications"}}{{> list/t9-8}}{{/if_eq}}
-			{{#if_eq listType "datalist"}}{{> list/t9-9}}{{/if_eq}}
-			{{#if_eq listType "search"}}{{> list/t10}}{{/if_eq}}
-			{{#if_eq listType "searchdata"}}{{> list/t10-2}}{{/if_eq}}
-			{{#if_eq listType "searchpublication"}}{{> list/t10-3}}{{/if_eq}}
-			{{#if_eq listType "relateddata"}}{{> list/t9-16}}{{/if_eq}}
-			{{#if_eq listType "releasecalendar"}}{{> list/t11}}{{/if_eq}}
-			{{#if_eq listType "timeseriestool"}}{{> list/t13}}{{/if_eq}}
-		{{/if_eq}}
-
-
-
-		{{!-- Error pages --}}
-		{{#if_eq type "error"}}
-			{{#if_eq code 404}}{{> error/404}}{{/if_eq}}
-			{{#if_eq code 401}}{{> error/401}}{{/if_eq}}
-			{{#if_eq code 500}}{{> error/500}}{{/if_eq}}
-		{{/if_eq}}
 
         <!--[if gt IE 8]><!-->
 		<script type="text/javascript" src="{{#if is_dev}}http://localhost:9000/dist/js/main.js{{else}}/node_modules/sixteens/dist/js/main.js{{/if}}"></script>

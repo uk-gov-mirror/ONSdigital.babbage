@@ -2,7 +2,7 @@
 {{#partial "chart-config"}}
 	options.series=[{{#each series}}{
 			name: "{{{sub (sup this)}}}",
-			data: [{{#each data}}{{num (get this ..)}},{{/each}}]
+			data: [{{#each data}}{{num (lookup this ../this)}},{{/each}}]
 		},{{/each}} ];
 	{{#block "additional-chart-config"}}
 	{{/block}}
