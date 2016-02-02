@@ -25,9 +25,7 @@
 			<div class="col-wrap print-hidden">
 				<div class="col">
 					{{#block "block-results-text"}}
-						<div class="col col--md-28 col--lg-38">
-							{{#if result.suggestions}}Did you mean <a href="{{location.pathname}}?q={{result.suggestions.0}}">{{{result.suggestions.0}}}</a>?{{/if}}
-						</div>
+
 						<div class="col col--md-28 col--lg-38">
 							{{> list/partials/search-results-text-number result}}
 						</div>
