@@ -1,8 +1,8 @@
 {{#partial "additional-chart-config"}}
 
 {{#each series}}
-	options.series[{{@index}}].type="{{#if_eq (get  chartTypes this) "bar"}}{{#if rotated}}bar{{else}}column{{/if}}{{else}}line{{/if_eq}}";
-	options.series[{{@index}}].zIndex={{#if_eq (get  chartTypes this) "line"}}100{{else}}0{{/if_eq}};
+	options.series[{{@index}}].type="{{#if_eq (lookup  chartTypes this) "bar"}}{{#if rotated}}bar{{else}}column{{/if}}{{else}}line{{/if_eq}}";
+	options.series[{{@index}}].zIndex={{#if_eq (lookup chartTypes this) "line"}}100{{else}}0{{/if_eq}};
 	options.series[{{@index}}].stack="{{#contains groups.0 this}}group1{{else}}{{this}}{{/contains}}";
 {{/each}}
 

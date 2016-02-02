@@ -31,4 +31,8 @@ public class BabbageBinaryResponse extends BabbageResponse {
     private void writeData(HttpServletResponse response) throws IOException {
         IOUtils.write(data, response.getOutputStream());
     }
+
+    protected byte[] getData() {
+        return data;
+    }
 }
