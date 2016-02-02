@@ -1,0 +1,85 @@
+<style>
+	
+.aside-logo {
+    margin-right: 10em;
+    float: left;
+    margin-bottom: 0.7em;
+}
+</style>
+
+{{!-- Based on search query shows an external department link --}}
+{{#if (containsAny parameters.q.0 "dfe" "education" "gcse" "a level" "degree" "nvq" "school" "college" "university" "national curriculum" "qualification" "teacher training" "pupil absence" "exclusions" "school workforce" "key stage")}}
+{{> list/partials/department department="The Department for Education and Pensions" img-src="../../img/dfe.png" link="https://www.gov.uk/government/statistics?keywords=&topics%5B%5D=all&departments%5B%5D=department-for-education"}}
+{{/if}}
+
+{{#if (containsAny parameters.q.0 "bis" "business" "apprenticeship" "building" "construction" "higher education" "trade union" "enterprise")}}
+{{> list/partials/department department="The Department for Business Innovation & Skills" img-src="../../img/bis.png" link="https://www.gov.uk/government/statistics?keywords=&topics%5B%5D=all&departments%5B%5D=department-for-business-innovation-skills"}}
+{{/if}}
+
+{{#if (containsAny parameters.q.0  "decc" "energy" "solar" "coal" "oil" "gas" "electricity" "fuel poverty" "renewables" "greenhouse gas")}}
+{{> list/partials/department department="The Department of Energy & Climate Change" img-src="../../img/decc.png" link="https://www.gov.uk/government/statistics?keywords=&topics%5B%5D=all&departments%5B%5D=department-of-energy-climate-change"}}
+{{/if}}
+
+{{#if (containsAny parameters.q.0  "defra" "agriculture" "farming" "air quality" "emissions" "recycling" "food" "conservation" "biodiversity" "animals" "wildlife" "ecosystem")}}
+{{> list/partials/department department="The Department for Environment Food & Rural Affairs" img-src="../../img/defra.png" link="https://www.gov.uk/government/statistics?keywords=&topics%5B%5D=all&departments%5B%5D=department-for-environment-food-rural-affairs"}}
+{{/if}}
+
+{{#if (containsAny parameters.q.0  "hmrc" "tax" "benefit" "paye" "national insurance" "vat" "tabacco")}}
+{{> list/partials/department department="HM Revenue & Customs" img-src="../../img/hmrc.png" link="https://www.gov.uk/government/statistics?keywords=&topics%5B%5D=all&departments%5B%5D=hm-revenue-customs"}}
+{{/if}}
+
+{{#if (containsAny parameters.q.0  "ho" "arrests" "asylum" "immigration" "firearm" "crime" "visa" "police" "terrorism" "detention")}}
+{{> list/partials/department department="The Home Office" img-src="../../img/ho.png" link="https://www.gov.uk/government/statistics?keywords=&topics%5B%5D=all&departments%5B%5D=home-office"}}
+{{/if}}
+
+{{#if (containsAny parameters.q.0  "dclg" "revenue expenditure" "local authority" "council tax" "homelessness" "social housing" "help to buy")}}
+{{> list/partials/department department="The Department for Communities & Local Government" img-src="../../img/dclg.png" link="https://www.gov.uk/government/statistics?keywords=&topics%5B%5D=all&departments%5B%5D=department-for-communities-and-local-government"}}
+{{/if}}
+
+{{#if (containsAny parameters.q.0  "dcms" "charitable giving")}}
+{{> list/partials/department department="The Department for Culture, Media & Sports" img-src="../../img/dcms.png" link="https://www.gov.uk/government/statistics?keywords=&topics%5B%5D=all&departments%5B%5D=department-for-culture-media-sport"}}
+{{/if}}
+
+{{#if (containsAny parameters.q.0  "dft" "bus" "vehicle" "driver" "rider" "freight" "vehicle licensing" "road" "biofuel" "road casualties" "traffic congestion" "road conditions")}}
+{{> list/partials/department department="The Department for Transport" img-src="../../img/dft.png" link="https://www.gov.uk/government/statistics?keywords=&topics%5B%5D=all&departments%5B%5D=department-for-transport"}}
+{{/if}}
+
+{{#if (containsAny parameters.q.0  "dwp" "national insurance" "social fund" "child maintenance" "lone parents" "child support agency" "benefit fraud" "universal credit")}}
+{{> list/partials/department department="The Department for Work & Pensions" img-src="../../img/dwp.png" link="https://www.gov.uk/government/statistics?keywords=&topics%5B%5D=all&departments%5B%5D=department-for-work-pensions"}}
+{{/if}}
+
+{{#if (containsAny parameters.q.0  "dh" "abortion")}}
+{{> list/partials/department department="The Department of Health" img-src="../../img/dh.png" link="https://www.gov.uk/government/statistics?keywords=&topics%5B%5D=all&departments%5B%5D=department-of-health"}}
+{{/if}}
+
+{{#if (containsAny parameters.q.0  "fc" "woodland" "timber" "forestry" "nursery")}}
+{{> list/partials/department department="The Forestry Commission" img-src="../../img/fc.png" link="http://www.forestry.gov.uk/"}}
+{{/if}}
+
+{{#if (containsAny parameters.q.0  "mod" "defence" "armed forces" "military" "veterans" "reserves" "war pensions")}}
+{{> list/partials/department department="The Ministry of Defence" img-src="../../img/mod.png" link="https://www.gov.uk/government/statistics?keywords=&topics%5B%5D=all&departments%5B%5D=home-office"}}
+{{/if}}
+
+{{#if (containsAny parameters.q.0  "moj" "criminal justice" "prison" "offender" "civil justice" "knife possession" "legal aid" "youth custody" "probation" "reoffence" "asbo" "prison population")}}
+{{> list/partials/department department="The Ministry of Justice" img-src="../../img/moj.png" link="https://www.gov.uk/government/statistics?keywords=&topics%5B%5D=all&departments%5B%5D=ministry-of-defence"}}
+{{/if}}
+
+{{#if (containsAny parameters.q.0 "nhs" "a&e" "dementia" "waiting times" "hospital" "critical care" "inpatient" "outpatient" "ambulance")}}
+{{> list/partials/department department="The NHS" img-src="../../img/nhs.png" link="https://www.gov.uk/government/statistics?departments%5B%5D=national-health-service"}}
+{{/if}}
+
+{{#if (containsAny parameters.q.0 "tis" "insolvency")}}
+{{> list/partials/department department="The Insolvency Service" img-src="../../img/tis.png" link="https://www.gov.uk/government/statistics?departments%5B%5D=insolvency-service"}}
+{{/if}}
+
+{{#if (containsAny parameters.q.0 "wg" "wales" "welsh")}}
+{{> list/partials/department department="The Welsh Government" img-src="../../img/wg.png" link="http://wales.gov.uk"}}
+{{/if}}
+
+{{#if (containsAny parameters.q.0 "sg" "scotland" "scottish")}}
+{{> list/partials/department department="The Scottish Government" img-src="../../img/sg.png" link="http://www.scotland.gov.uk/Topics/Statistics"}}
+{{/if}}
+
+{{#if (containsAny parameters.q.0 "nie" "northern ireland" "irish")}}
+{{> list/partials/department department="The Northern Ireland Executive" img-src="../../img/nie.png" link="http://www.northernireland.gov.uk/"}}
+{{/if}}
