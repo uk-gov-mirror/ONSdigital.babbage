@@ -9,13 +9,13 @@
         <img src="/chartimage?uri={{uri}}&width={{width}}" alt="{{alt-text}}">
       <!--[if gt IE 8]><!--></noscript><![endif]-->
   </div>
-  {{#if source}}<h6 class="flush--third--bottom">Source: {{source}}</h6>{{/if}}
+  {{#if source}}<h5 class="flush--third--bottom font-size--h6">Source: {{source}}</h5>{{/if}}
   {{#if notes}}
       <h6 class="flush--third--bottom">Notes:</h6>
       {{md notes}}
   {{/if}}
   
-    <h6 class="print--hide">Download this chart</h6>
+    <h5 class="print--hide font-size--h6">Download this chart</h5>
 
     <form method="get" action="/chartimage" class="inline print--hide">
         <button type="submit" title="Download chart image" class="btn btn--primary btn--thick download-analytics">
