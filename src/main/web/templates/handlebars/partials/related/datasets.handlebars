@@ -17,7 +17,7 @@
 		{{!-- Shows link to view all spreadsheets at that topic level --}}
         {{#if_any (eq type "dataset_landing_page")}}
 			<div class="tiles__extra margin-bottom-md--2">
-				<a href="{{parentPath (parentPath uri)}}/datalist?filter=large_dataset">View all data related to {{#each breadcrumb}}
+				<a href="{{parentPath (parentPath uri)}}/datalist?filter=datasets">View all data related to {{#each breadcrumb}}
                     {{#if @last}}
                         {{description.title}}
                     {{/if}}
