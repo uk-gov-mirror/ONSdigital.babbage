@@ -3,12 +3,12 @@
 <nav id="js-pagination-container">
 	<ul class="list--neutral list--inline margin-right-sm--1 margin-right-md--1 margin-bottom-sm--7 margin-bottom-md--7">
 		{{#if_ne paginator.currentPage paginator.start}}
-		<li class="flush">
+		<li class="margin-top-sm--0 margin-top-md--0">
 			<a href="{{location.pathname}}{{query_string exclude="page"}}page={{decrement paginator.currentPage}}" class="page-link btn btn--plain">Prev</a>
 		</li>
 		{{/if_ne}}
 		{{#each paginator.pages}}
-		<li class="flush">
+		<li class="margin-top-sm--0 margin-top-md--0">
 			{{#if_eq this paginator.currentPage}}
 			<span class="page-link btn btn--plain btn--plain__active btn--block">{{this}}</span>
 			{{else}}
@@ -17,7 +17,7 @@
 		</li>
 		{{/each}}
 		{{#if_ne paginator.currentPage paginator.end}}
-		<li class="flush">
+		<li class="margin-top-sm--0 margin-top-md--0">
 			<a href="{{location.pathname}}{{query_string exclude="page"}}page={{increment paginator.currentPage}}" class="page-link btn btn--plain">Next</a>
 		</li>
 		{{/if_ne}}
