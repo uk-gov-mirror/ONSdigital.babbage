@@ -98,6 +98,14 @@
             <version>2.1.1</version>
         </dependency>
 
+        <!-- Elastic search multicast, used for discovering elastic search  instances-->
+        <dependency>
+            <groupId>org.elasticsearch.plugin</groupId>
+            <artifactId>discovery-multicast</artifactId>
+            <version>2.1.1</version>
+        </dependency>
+
+
         <!-- Ical4j-->
         <dependency>
             <groupId>org.mnode.ical4j</groupId>
