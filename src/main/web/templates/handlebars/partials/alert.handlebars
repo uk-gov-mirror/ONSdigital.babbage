@@ -23,9 +23,9 @@
 				<div class="col-wrap">
 					<div class="col">
 
-						<div class="show-hide show-hide--dark background--astral margin-top-sm--1 margin-top-md--1 js-show-hide">
+						<div class="show-hide show-hide--dark info-box margin-top-sm--1 margin-top-md--1 js-show-hide">
 							<div class="js-show-hide__title">
-								<div class="alert--warning__icon"></div>
+                                <span class="icon icon-info icon-info--info-box"></span>
 								<h2 class="show-hide__title alert--warning__title">
 
 									{{!-- Lots of 'if's to handle combinations of corrections or notices --}}
@@ -66,9 +66,9 @@
 
 							{{!-- Corrections & alerts --}}
 							{{#if_any versions alerts}}
-								<div class="show-hide show-hide--dark background--astral margin-top-sm--3 margin-top-md--3 js-show-hide">
+								<div class="show-hide show-hide--dark info-box margin-top-sm--3 margin-top-md--3 js-show-hide">
 									<div class="js-show-hide__title">
-										<div class="alert--warning__icon"></div>
+                                        <span class="icon icon-info icon-info--info-box"></span>
 
 										<h2 class="show-hide__title alert--warning__title">
 											{{!-- Lots of 'if's to handle plurals and combinations of corrections or notices --}}
@@ -123,9 +123,10 @@
 
 								{{!-- Corrections --}}
 								{{#if has-corrections}}
-									<div class="show-hide show-hide--dark background--astral {{#if (endsWith (parentPath uri) "previous")}}margin-top-sm--3 margin-top-md--3{{else}}margin-top-sm--1 margin-top-md--1{{/if}} js-show-hide">
+									<div class="show-hide show-hide--dark info-box {{#if (endsWith (parentPath uri) "previous")}}margin-top-sm--3 margin-top-md--3{{else}}margin-top-sm--1 margin-top-md--1{{/if}} js-show-hide">
 										<div class="js-show-hide__title">
-											<div class="alert--warning__icon"></div>
+
+                                            <span class="icon icon-info icon-info--info-box"></span>
 											<h2 class="show-hide__title alert--warning__title">Correction</h2>
 										</div>
 
