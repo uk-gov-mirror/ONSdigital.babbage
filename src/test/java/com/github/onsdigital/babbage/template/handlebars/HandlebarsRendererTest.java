@@ -10,7 +10,7 @@ public class HandlebarsRendererTest {
 
     @Test
     public void testRenderTemplate() throws Exception {
-        new HandlebarsRenderer("","", true);
+        new HandlebarsRenderer("","", false);
     }
 
     public void testRenderTemplate1() throws Exception {
