@@ -40,16 +40,17 @@
 					{{> partials/highcharts/linechart}}
 
 					{{!-- Chart footer --}}
-					<div class="tiles__content nojs-hidden">
+					<div class="tiles__content">
 						<h2>Download this data</h2>
 						<div class="chart-area__footer__actions">
-							<form method="get" action="{{uri}}/linechartimage" class="inline dlCustomData">
-							    <button id="download-custom-image" type="submit" class="btn btn--primary btn--small download-analytics" target="_blank">
+                            {{!-- Show JS downloads options --}}
+							<form method="get" action="{{uri}}/linechartimage" class="inline nojs-hidden dlCustomData">
+							    <button id="download-custom-image" type="submit" class="btn btn--primary btn--small download-analytics">
 								Image
 								</button>
 								<input type="hidden" name="fileName" value="{{description.title}}" />
 							</form>
-							<form method="get" action="/generator" class="inline dlCustomData">
+							<form method="get" action="/generator" class="inline nojs-hidden dlCustomData">
 								<button id="download-custom-csv" type="submit" name="format" value="csv" class="btn btn--primary btn--small download-analytics">
 								.csv
 								</button>
@@ -60,7 +61,13 @@
 								{{!-- Series filter input --}}
 								<input type="hidden" name="series" value="" />
 							</form>
-						</div>
+                            {{!-- Show no-JS download options --}}
+                            <div class="js-enhance--hide">
+                                <a href="{{uri}}/linechartimage" class="btn btn--primary btn--small">Image</a>
+                                <a class="btn btn--primary btn--small" href="/generator?format=csv&uri={{uri}}">.csv</a>
+                                <a class="btn btn--primary btn--small" href="/generator?format=xls&uri={{uri}}">.xls</a>
+                            </div>
+                        </div>
 						<!-- </div> -->
 					</div> {{!-- /tiles__content --}}
                     <!--[if gt IE 8]><!--><noscript><![endif]-->
