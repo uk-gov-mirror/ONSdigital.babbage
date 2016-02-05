@@ -34,6 +34,7 @@ public class ElasticSearchClient {
             Settings settings = Settings.builder().put("http.enabled", false)
                     .put("cluster.name", getElasticSearchCluster())
                     .put("discovery.zen.ping.multicast.enabled", true)
+                    .put("network.host", "_non_loopback_")
                     .put("path.home", searchHome).build();
             Node node =
                     nodeBuilder()
