@@ -29,7 +29,7 @@ public class SearchData {
     @GET
     public void get(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String searchTerm = extractSearchTerm(request);
-        search(request, getClass().getSimpleName(), searchTerm, queries(request, searchTerm))
+        search(request, getClass().getSimpleName(), searchTerm, queries(request, searchTerm), false)
                 .apply(request, response);
     }
 

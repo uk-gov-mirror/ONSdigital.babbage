@@ -51,14 +51,7 @@
 {{/if}}
 
 {{!-- External departments link --}}
-{{!-- Show if there is only one page --}}
-{{#unless result.paginator}}
-    {{> list/partials/search-handoff}}
-{{/unless}}
-{{!-- Show on first page if multiple pages exist --}}
-{{#if_eq result.paginator.currentPage 1}}
-    {{> list/partials/search-handoff}}
-{{/if_eq}}
+{{> list/partials/department}}
 
 {{/partial}}
 

@@ -5,10 +5,7 @@ import com.github.onsdigital.babbage.search.model.ContentType;
 import com.github.onsdigital.babbage.search.model.field.Field;
 import com.github.onsdigital.babbage.search.model.sort.SortField;
 import org.elasticsearch.ElasticsearchException;
-import org.elasticsearch.action.search.MultiSearchRequestBuilder;
-import org.elasticsearch.action.search.MultiSearchResponse;
-import org.elasticsearch.action.search.SearchRequestBuilder;
-import org.elasticsearch.action.search.SearchType;
+import org.elasticsearch.action.search.*;
 import org.elasticsearch.search.aggregations.AbstractAggregationBuilder;
 import org.elasticsearch.search.suggest.SuggestBuilder;
 
@@ -18,12 +15,17 @@ import java.util.List;
 import static com.github.onsdigital.babbage.configuration.Configuration.ELASTIC_SEARCH.getElasticSearchIndexAlias;
 import static com.github.onsdigital.babbage.configuration.Configuration.GENERAL.getMaxVisiblePaginatorLink;
 import static com.github.onsdigital.babbage.search.ElasticSearchClient.getElasticsearchClient;
+import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 public class SearchHelper {
 
     private static SearchRequestBuilder prepare(ONSQuery query) {
+        return prepare(query, null);
+    }
+
+    private static SearchRequestBuilder prepare(ONSQuery query, String index) {
         SearchRequestBuilder requestBuilder = getElasticsearchClient()
-                .prepareSearch(getElasticSearchIndexAlias())
+                .prepareSearch(isNotEmpty(index) ? index : getElasticSearchIndexAlias())
                 .setQuery(query.query())
                 .setFrom(query.from())
                 .setSize(query.size()).setSearchType(SearchType.DFS_QUERY_THEN_FETCH);
@@ -38,6 +40,10 @@ public class SearchHelper {
         return requestBuilder;
     }
 
+    public static ONSSearchResponse search(ONSQuery queries, String index) {
+        SearchResponse response = prepare(queries, index).get();
+        return resolveDetails(queries, new ONSSearchResponse(response));
+    }
 
     public static ONSSearchResponse search(ONSQuery queries) {
         SearchRequestBuilder searchRequestBuilder = prepare(queries);

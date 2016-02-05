@@ -49,7 +49,7 @@ public class ONSQueryBuilders {
                         .type(BEST_FIELDS).minimumShouldMatch("75%"))
                 .add(matchQuery(keywords.fieldName(), searchTerm).operator(AND))
                 .add(multiMatchQuery(searchTerm, cdid.fieldNameBoosted(), datasetId.fieldNameBoosted())).
-                add(matchQuery(searchBoost.fieldName(), searchTerm).boost(searchBoost.boost()).operator(AND));
+                        add(matchQuery(searchBoost.fieldName(), searchTerm).boost(searchBoost.boost()).operator(AND));
 
         if (filter != null) {
             query = appyFilter(QueryBuilders.boolQuery().must(query), filter);
@@ -58,9 +58,12 @@ public class ONSQueryBuilders {
         return query;
     }
 
+    public static QueryBuilder departmentQuery(String searchTerm) {
+        return matchQuery("terms", searchTerm);
+    }
+
     public static QueryBuilder contentQuery(String searchTerm) {
         return contentQuery(searchTerm, null);
-
     }
 
 
@@ -120,9 +123,9 @@ public class ONSQueryBuilders {
     public static ONSQuery firstLetterCounts(ONSQuery query) {
         return query.aggregate(
                 AggregationBuilders
-                .terms("docCounts")
-                .size(0)
-                .field(Field.title_first_letter.fieldName())
+                        .terms("docCounts")
+                        .size(0)
+                        .field(Field.title_first_letter.fieldName())
         ).size(0).name("counts"); //aggregating all content types without using selected numbers
     }
 

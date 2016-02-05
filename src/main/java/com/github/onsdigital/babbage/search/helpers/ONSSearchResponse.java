@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 /**
  * Created by bren on 07/09/15.
  */
-public class ONSSearchResponse {
+public class    ONSSearchResponse {
 
     SearchResponse response;
     SearchResult result;

@@ -4,6 +4,7 @@ import com.github.onsdigital.babbage.configuration.Configuration;
 import com.github.onsdigital.babbage.response.BabbageRedirectResponse;
 import com.github.onsdigital.babbage.response.BabbageStringResponse;
 import com.github.onsdigital.babbage.response.base.BabbageResponse;
+import com.github.onsdigital.babbage.search.ElasticSearchClient;
 import com.github.onsdigital.babbage.search.helpers.ONSQuery;
 import com.github.onsdigital.babbage.search.helpers.ONSSearchResponse;
 import com.github.onsdigital.babbage.search.helpers.SearchHelper;
@@ -18,8 +19,11 @@ import com.github.onsdigital.babbage.template.TemplateService;
 import com.github.onsdigital.babbage.util.RequestUtil;
 import com.github.onsdigital.babbage.util.ThreadContext;
 import com.github.onsdigital.babbage.util.json.JsonUtil;
+import org.elasticsearch.action.search.SearchRequestBuilder;
+import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.common.text.Text;
 import org.elasticsearch.index.query.QueryBuilder;
-import org.elasticsearch.search.suggest.SuggestBuilders;
+import org.elasticsearch.search.SearchHit;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.MediaType;
@@ -46,6 +50,8 @@ import static org.elasticsearch.search.suggest.SuggestBuilders.phraseSuggestion;
  */
 public class SearchUtils {
 
+    private static final String DEPARTMENTS_INDEX = "departments";
+
     /**
      * Performs search for requested search term against filtered content types and counts contents types.
      * Content results are serialised into json with key "result" and document counts are serialised as "counts".
@@ -55,7 +61,7 @@ public class SearchUtils {
      * @param request
      * @return
      */
-    public static BabbageResponse search(HttpServletRequest request, String listType, String searchTerm, SearchQueries queries) throws IOException {
+    public static BabbageResponse search(HttpServletRequest request, String listType, String searchTerm, SearchQueries queries, boolean searchDeparments) throws IOException {
         if (searchTerm == null) {
             return buildResponse(request, listType, null);
         } else {
@@ -64,7 +70,11 @@ public class SearchUtils {
             if (timeSeriesUri != null) {
                 return new BabbageRedirectResponse(timeSeriesUri, Configuration.GENERAL.getSearchResponseCacheTime());
             }
-            return buildResponse(request, listType, searchAll(queries));
+            LinkedHashMap<String, SearchResult> results = searchAll(queries);
+            if (searchDeparments) {
+                searchDeparments(searchTerm, results);
+            }
+            return buildResponse(request, listType, results);
         }
     }
 
@@ -178,6 +188,27 @@ public class SearchUtils {
         }
         Map<String, Object> timeSeries = search.getResult().getResults().iterator().next();
         return (String) timeSeries.get(Field.uri.fieldName());
+    }
+
+    private static void searchDeparments(String searchTerm, LinkedHashMap<String, SearchResult> results) {
+        QueryBuilder departmentsQuery = departmentQuery(searchTerm);
+        SearchRequestBuilder departmentsSearch = ElasticSearchClient.getElasticsearchClient().prepareSearch(DEPARTMENTS_INDEX);
+        departmentsSearch.setQuery(departmentsQuery);
+        departmentsSearch.setSize(1);
+        departmentsSearch.addHighlightedField("terms", 0, 0);
+        departmentsSearch.setHighlighterPreTags("<strong>");
+        departmentsSearch.setHighlighterPostTags("</strong>");
+        SearchResponse response = departmentsSearch.get();
+        ONSSearchResponse onsSearchResponse = new ONSSearchResponse(response);
+        if (onsSearchResponse.getNumberOfResults() == 0) {
+            return;
+        }
+        Map<String, Object> hit = onsSearchResponse.getResult().getResults().get(0);
+        Text[] highlightedFragments = response.getHits().getAt(0).getHighlightFields().get("terms").getFragments();
+        if (highlightedFragments != null && highlightedFragments.length > 0) {
+            hit.put("match", highlightedFragments[0].toString());
+        }
+        results.put("departments", onsSearchResponse.getResult());
     }
 
     //Send result back to client
