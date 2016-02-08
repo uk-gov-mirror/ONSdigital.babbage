@@ -74,7 +74,7 @@ public class ONSQueryBuilders {
                         )
                         .should(multiMatchQuery(searchTerm, title.fieldNameBoosted(), edition.fieldNameBoosted())
                                 .type(CROSS_FIELDS).minimumShouldMatch("3<80% 5<60%"))
-                        .should(matchPhrasePrefixQuery(Field.title.fieldName(), searchTerm))
+                        .should(matchPhrasePrefixQuery(Field.title.fieldName(), searchTerm).maxExpansions(10))
                 )
                 .add(multiMatchQuery(searchTerm, summary.fieldNameBoosted(), metaDescription.fieldNameBoosted())
                         .type(BEST_FIELDS).minimumShouldMatch("75%"))
