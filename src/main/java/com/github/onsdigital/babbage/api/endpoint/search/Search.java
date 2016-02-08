@@ -40,9 +40,10 @@ public class Search {
     }
 
     private SearchQueries queries(HttpServletRequest request, String searchTerm, boolean searchAdditionalContent) {
+        ONSQuery query = buildSearchQuery(request, searchTerm, allFilters);
         List<ONSQuery> queries = toList(
-                buildSearchQuery(request, searchTerm, allFilters),
-                typeCountsQuery(contentQuery(searchTerm)).types(contentTypesToCount)
+                query,
+                typeCountsQuery(query.query()).types(contentTypesToCount)
         );
         if (searchAdditionalContent) {
             queries.add(bestTopicMatchQuery(searchTerm).name("featuredResult").highlight(true));

@@ -1,6 +1,7 @@
 package com.github.onsdigital.babbage.api.endpoint.search;
 
 import com.github.davidcarboni.restolino.framework.Api;
+import com.github.onsdigital.babbage.search.helpers.ONSQuery;
 import com.github.onsdigital.babbage.search.helpers.base.SearchQueries;
 import com.github.onsdigital.babbage.search.input.TypeFilter;
 import com.github.onsdigital.babbage.search.model.ContentType;
@@ -12,7 +13,8 @@ import java.util.Set;
 
 import static com.github.onsdigital.babbage.api.util.SearchUtils.buildSearchQuery;
 import static com.github.onsdigital.babbage.api.util.SearchUtils.search;
-import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.*;
+import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.toList;
+import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.typeCountsQuery;
 import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.extractSearchTerm;
 
 /**
@@ -34,10 +36,13 @@ public class SearchData {
     }
 
     private SearchQueries queries(HttpServletRequest request, String searchTerm) {
-        return () -> toList(
-                buildSearchQuery(request, searchTerm, dataFilters),
-                typeCountsQuery(contentQuery(searchTerm)).types(contentTypesToCount)
-        );
+        return () -> {
+            ONSQuery query = buildSearchQuery(request, searchTerm, dataFilters);
+            return toList(
+                    query,
+                    typeCountsQuery(query.query()).types(contentTypesToCount)
+            );
+        };
     }
 
 }

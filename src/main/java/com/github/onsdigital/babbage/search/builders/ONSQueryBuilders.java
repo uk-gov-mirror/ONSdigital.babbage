@@ -62,19 +62,31 @@ public class ONSQueryBuilders {
         return contentQuery(searchTerm, null);
     }
 
+    public static QueryBuilder advancedSearchQuery(String searchQuery) {
+        return simpleQueryStringQuery(searchQuery)
+                .field(title_no_stem.fieldName())
+                .field(edition.fieldName())
+                .field(summary.fieldName())
+                .field(metaDescription.fieldName())
+                .field(keywords.fieldName())
+                .field(cdid.fieldName())
+                .field(datasetId.fieldName())
+                .lowercaseExpandedTerms(true);
+    }
+
     public static QueryBuilder listQuery(String searchTerm) {
         QueryBuilder query = disMaxQuery()
                 .add(boolQuery()
-                        .should(matchQuery(title_no_dates.fieldName(), searchTerm)
-                                        .boost(title_no_dates.boost())
-                                        .minimumShouldMatch("1<-2 3<80% 5<60%")
-                        ).should(matchQuery(title_no_stem.fieldName(), searchTerm)
-                                        .boost(title_no_stem.boost())
-                                        .minimumShouldMatch("1<-2 3<80% 5<60%")
-                        )
-                        .should(multiMatchQuery(searchTerm, title.fieldNameBoosted(), edition.fieldNameBoosted())
-                                .type(CROSS_FIELDS).minimumShouldMatch("3<80% 5<60%"))
-                        .should(matchPhrasePrefixQuery(Field.title_no_synonym_no_stem.fieldName(), searchTerm).maxExpansions(10))
+                                .should(matchQuery(title_no_dates.fieldName(), searchTerm)
+                                                .boost(title_no_dates.boost())
+                                                .minimumShouldMatch("1<-2 3<80% 5<60%")
+                                ).should(matchQuery(title_no_stem.fieldName(), searchTerm)
+                                                .boost(title_no_stem.boost())
+                                                .minimumShouldMatch("1<-2 3<80% 5<60%")
+                                )
+                                .should(multiMatchQuery(searchTerm, title.fieldNameBoosted(), edition.fieldNameBoosted())
+                                        .type(CROSS_FIELDS).minimumShouldMatch("3<80% 5<60%"))
+                                .should(matchPhrasePrefixQuery(Field.title_no_synonym_no_stem.fieldName(), searchTerm).maxExpansions(10))
                 )
                 .add(multiMatchQuery(searchTerm, summary.fieldNameBoosted(), metaDescription.fieldNameBoosted())
                         .type(BEST_FIELDS).minimumShouldMatch("75%"))

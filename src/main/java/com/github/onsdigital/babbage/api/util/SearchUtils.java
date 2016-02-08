@@ -19,6 +19,7 @@ import com.github.onsdigital.babbage.template.TemplateService;
 import com.github.onsdigital.babbage.util.RequestUtil;
 import com.github.onsdigital.babbage.util.ThreadContext;
 import com.github.onsdigital.babbage.util.json.JsonUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.common.text.Text;
@@ -61,7 +62,7 @@ public class SearchUtils {
      * @param request
      * @return
      */
-    public static BabbageResponse search(HttpServletRequest request, String listType, String searchTerm, SearchQueries queries, boolean searchDeparments) throws IOException {
+    public static BabbageResponse search(HttpServletRequest request, String listType, String searchTerm, SearchQueries queries, boolean searchDepartments) throws IOException {
         if (searchTerm == null) {
             return buildResponse(request, listType, null);
         } else if(!isFiltered(request)) { //only search for time series when new search made through search input
@@ -72,7 +73,7 @@ public class SearchUtils {
             }
         }
         LinkedHashMap<String, SearchResult> results = searchAll(queries);
-        if (searchDeparments) {
+        if (searchDepartments) {
             searchDeparments(searchTerm, results);
         }
         return buildResponse(request, listType, results);
@@ -103,12 +104,31 @@ public class SearchUtils {
      * @return ONSQuery, null if no search term given
      */
     public static ONSQuery buildSearchQuery(HttpServletRequest request, String searchTerm, Set<TypeFilter> defaultFilters) {
+        boolean advanced = isAdvancedSearchQuery(searchTerm);
         SortBy sortBy = extractSortBy(request, SortBy.relevance);
-        ONSQuery query = buildONSQuery(request, contentQuery(searchTerm), sortBy, null, contentTypes(extractSelectedFilters(request, defaultFilters)));
-        query.suggest(phraseSuggestion("search_suggest").field(Field.title_no_synonym_no_stem.fieldName()).text(searchTerm));
+        QueryBuilder contentQuery;
+        contentQuery = advanced ? advancedSearchQuery(searchTerm) : contentQuery(searchTerm);
+        ONSQuery query = buildONSQuery(request, contentQuery, sortBy, null, contentTypes(extractSelectedFilters(request, defaultFilters)));
+        if (!advanced) {
+            query.suggest(phraseSuggestion("search_suggest").field(Field.title_no_synonym_no_stem.fieldName()).text(searchTerm));
+        }
         return query;
     }
 
+    private static boolean isAdvancedSearchQuery(String searchTerm) {
+        return StringUtils.containsAny(searchTerm, "+", "|", "-", "\"", "*", "~");
+    }
+
+    /**
+     * Advanced search query corresponds to elastic search simple query string query, allowing user to control search results using special characters (+ for AND, | for OR etc)
+     *
+     * @return
+     */
+    public static ONSQuery buildAdvancedSearchQuery(HttpServletRequest request, String searchTerm, Set<TypeFilter> defaultFilters) {
+        SortBy sortBy = extractSortBy(request, SortBy.relevance);
+        ONSQuery query = buildONSQuery(request, advancedSearchQuery(searchTerm), sortBy, null, contentTypes(extractSelectedFilters(request, defaultFilters)));
+        return query;
+    }
     public static ONSQuery buildListQuery(HttpServletRequest request, Set<TypeFilter> defaultFilters, SearchFilter filter) {
         return buildListQuery(request, defaultFilters, filter, null);
     }
