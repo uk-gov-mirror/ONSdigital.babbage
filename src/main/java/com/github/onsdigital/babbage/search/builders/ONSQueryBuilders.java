@@ -64,7 +64,8 @@ public class ONSQueryBuilders {
 
     public static QueryBuilder advancedSearchQuery(String searchQuery) {
         return simpleQueryStringQuery(searchQuery)
-                .field(title_no_stem.fieldName())
+                .field(title.fieldName())
+                .field(title_no_synonym_no_stem.fieldName())
                 .field(edition.fieldName())
                 .field(summary.fieldName())
                 .field(metaDescription.fieldName())
