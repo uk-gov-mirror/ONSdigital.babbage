@@ -38,6 +38,7 @@ import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.*
 import static com.github.onsdigital.babbage.search.input.TypeFilter.contentTypes;
 import static com.github.onsdigital.babbage.search.model.field.Field.cdid;
 import static com.github.onsdigital.babbage.util.URIUtil.isDataRequest;
+import static org.apache.commons.lang.ArrayUtils.isEmpty;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 import static org.elasticsearch.index.query.QueryBuilders.*;
 import static org.elasticsearch.search.suggest.SuggestBuilders.phraseSuggestion;
@@ -63,18 +64,18 @@ public class SearchUtils {
     public static BabbageResponse search(HttpServletRequest request, String listType, String searchTerm, SearchQueries queries, boolean searchDeparments) throws IOException {
         if (searchTerm == null) {
             return buildResponse(request, listType, null);
-        } else {
+        } else if(!isFiltered(request)) { //only search for time series when new search made through search input
             //search time series by cdid, redirect to time series page if found
             String timeSeriesUri = searchTimeSeriesUri(searchTerm);
             if (timeSeriesUri != null) {
                 return new BabbageRedirectResponse(timeSeriesUri, Configuration.GENERAL.getSearchResponseCacheTime());
             }
-            LinkedHashMap<String, SearchResult> results = searchAll(queries);
-            if (searchDeparments) {
-                searchDeparments(searchTerm, results);
-            }
-            return buildResponse(request, listType, results);
         }
+        LinkedHashMap<String, SearchResult> results = searchAll(queries);
+        if (searchDeparments) {
+            searchDeparments(searchTerm, results);
+        }
+        return buildResponse(request, listType, results);
     }
 
     public static BabbageResponse list(HttpServletRequest request, String listType, SearchQueries queries) throws IOException {
@@ -237,6 +238,14 @@ public class SearchUtils {
             }
         }
         return data;
+    }
+
+    private static boolean isFiltered(HttpServletRequest request) {
+        String[] filter = request.getParameterValues("filter");
+        if (extractPage(request) == 1 && isEmpty(filter)) {
+            return false;
+        }
+        return true;
     }
 
     private static LinkedHashMap<String, Object> getBaseListTemplate(String listType) {
