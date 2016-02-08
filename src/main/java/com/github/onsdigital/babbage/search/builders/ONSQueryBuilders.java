@@ -58,14 +58,37 @@ public class ONSQueryBuilders {
         return query;
     }
 
-    public static QueryBuilder departmentQuery(String searchTerm) {
-        return matchQuery("terms", searchTerm);
-    }
-
     public static QueryBuilder contentQuery(String searchTerm) {
         return contentQuery(searchTerm, null);
     }
 
+    public static QueryBuilder listQuery(String searchTerm) {
+        QueryBuilder query = disMaxQuery()
+                .add(boolQuery()
+                        .should(matchQuery(title_no_dates.fieldName(), searchTerm)
+                                        .boost(title_no_dates.boost())
+                                        .minimumShouldMatch("1<-2 3<80% 5<60%")
+                        ).should(matchQuery(title_no_stem.fieldName(), searchTerm)
+                                        .boost(title_no_stem.boost())
+                                        .minimumShouldMatch("1<-2 3<80% 5<60%")
+                        )
+                        .should(multiMatchQuery(searchTerm, title.fieldNameBoosted(), edition.fieldNameBoosted())
+                                .type(CROSS_FIELDS).minimumShouldMatch("3<80% 5<60%"))
+                        .should(matchPhrasePrefixQuery(Field.title.fieldName(), searchTerm))
+                )
+                .add(multiMatchQuery(searchTerm, summary.fieldNameBoosted(), metaDescription.fieldNameBoosted())
+                        .type(BEST_FIELDS).minimumShouldMatch("75%"))
+                .add(matchQuery(keywords.fieldName(), searchTerm).operator(AND))
+                .add(multiMatchQuery(searchTerm, cdid.fieldNameBoosted(), datasetId.fieldNameBoosted())).
+                        add(matchQuery(searchBoost.fieldName(), searchTerm).boost(searchBoost.boost()).operator(AND));
+
+        return query;
+    }
+
+
+    public static QueryBuilder departmentQuery(String searchTerm) {
+        return matchQuery("terms", searchTerm);
+    }
 
     /**
      * Boosts content types based on content type weights defined in {@link ContentType}

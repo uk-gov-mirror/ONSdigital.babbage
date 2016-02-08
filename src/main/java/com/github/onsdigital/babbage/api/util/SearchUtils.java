@@ -23,7 +23,6 @@ import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.common.text.Text;
 import org.elasticsearch.index.query.QueryBuilder;
-import org.elasticsearch.search.SearchHit;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.MediaType;
@@ -148,7 +147,7 @@ public class SearchUtils {
     public static QueryBuilder buildBaseListQuery(String searchTerm) {
         QueryBuilder query;
         if (isNotEmpty(searchTerm)) {
-            query = contentQuery(searchTerm);
+            query = listQuery(searchTerm);
         } else {
             query = matchAllQuery();
         }
