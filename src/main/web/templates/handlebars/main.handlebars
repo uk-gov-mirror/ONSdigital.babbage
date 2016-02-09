@@ -65,11 +65,11 @@
         <!-- End of Google Analytics Content Experiment code -->
 	</head>
 	<body>
-		{{#unless is_dev}}
+		{{#if is_dev}}
 			<script>
-				document.secureCookies = true;
+				document.secureCookies = false;
 			</script>
-		{{/unless}}
+		{{/if}}
 
         <!--[if gt IE 8]><!-->
 		<script type="text/javascript" src="/js/js-enhance-loading.js"></script>
