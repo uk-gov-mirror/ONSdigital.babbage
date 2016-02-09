@@ -114,7 +114,7 @@
                 {{#each downloads}}
 
                     {{#if file}}
-                        <a href="/file?uri={{absolute (concat uri "/" file)}}" title="Download as {{fe (lowercase (concat uri "/" file))}}" class="btn btn--primary btn--thin btn--narrow btn--small">
+                        <a href="/file?uri={{absolute (concat uri "/" file)}}" title="Download as {{fe (lowercase (concat uri "/" file))}}" class="btn btn--primary btn--thin btn--narrow btn--small float-left {{#if @last}}margin-left--1{{/if}}">
                             {{fe (lowercase (concat uri "/" file))}} ({{fs (lowercase (concat uri "/" file))}})
                         </a>
                     {{!-- <form method="get" action="/file" class="inline">
@@ -136,8 +136,8 @@
                         <thead>
                         <tr>
                             <th width="25%">Superseded files</th>
-                            <th width="60%">Reason for update</th>
-                            <th width="15%">Date superseded</th>
+                            <th width="55%">Reason for update</th>
+                            <th width="20%">Date superseded</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -150,7 +150,7 @@
                                         {{#each downloads}}
 
                                             {{#if file}}
-                                                <a href="/file?uri={{absolute (concat uri "/" this.file)}}" title="Download as {{fe (lowercase (concat uri "/" this.file))}}" class="btn btn--primary btn--thin btn--narrow btn--small">
+                                                <a href="/file?uri={{absolute (concat uri "/" this.file)}}" title="Download as {{fe (lowercase (concat uri "/" this.file))}}" class="btn btn--primary btn--thin btn--narrow btn--small float-left {{#if @last}}margin-left--1{{/if}}">
                                                     {{fe (lowercase (concat uri "/" this.file))}} ({{fs (lowercase (concat uri "/" this.file))}})
                                                 </a>
                                             {{!-- <form method="get" action="/file" {{#if_ne downloads.size 1}}class="inline"{{/if_ne}}>

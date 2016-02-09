@@ -49,7 +49,7 @@
                     <p class="print--hide">
                         {{#each breadcrumb}}
                             {{#if @last}}
-                            {{!-- <span class="icon icon-return--dark-small margin-right-sm--1 margin-right-md--1"></span> --}}Return to <a class="underline-link" href="{{uri}}">{{description.title}}</a>
+                                <a class="underline-link" href="{{uri}}"><span class="icon icon-return--dark-small margin-right-sm--1 margin-right-md--1"></span>Return to {{description.title}}</a>
                             {{/if}}
                         {{/each}}
                     </p>
@@ -94,8 +94,8 @@
                         <thead>
                         <tr>
                             <th width="25%">Superseded files</th>
-                            <th width="60%">Reason for update</th>
-                            <th width="15%">Date superseded</th>
+                            <th width="55%">Reason for update</th>
+                            <th width="20%">Date superseded</th>
                         </tr>
                         </thead>
                         <tbody>
