@@ -40,7 +40,6 @@
 
 
 {{#partial "block-content"}}
-<div class="page-content">
     <div class="wrapper">
         <div class="col-wrap">
             <div class="col col--lg-one col--md-two-one">
@@ -50,7 +49,7 @@
                     <p class="print--hide">
                         {{#each breadcrumb}}
                             {{#if @last}}
-                                Return to <a class="underline-link" href="{{uri}}">{{description.title}}</a>
+                            {{!-- <span class="icon icon-return--dark-small margin-right-sm--1 margin-right-md--1"></span> --}}Return to <a class="underline-link" href="{{uri}}">{{description.title}}</a>
                             {{/if}}
                         {{/each}}
                     </p>
@@ -69,22 +68,23 @@
                 </div>
 
                 <h3 class="margin-top-md--4">Latest version</h3>
+                <a href="/generator?format=xls&uri={{absolute uri}}" class="btn btn--primary btn--thin btn--narrow btn--small">Download .xls</a>
+                <a href="/generator?format=csv&uri={{absolute uri}}" class="btn btn--primary btn--thin btn--narrow btn--small">Download .csv</a>
+                {{!-- <form method="get" action="/generator" class="inline print--hide">
+                     <button type="submit" title="Download XLS" class="btn btn--primary btn--thin btn--narrow btn--small download-analytics">
+                         Download .xls
+                     </button>
+                     <input type="hidden" name="format" value="xls"/>
+                     <input type="hidden" name="uri" value="{{absolute uri}}"/>
+                 </form> --}}
 
-                <form method="get" action="/generator" class="inline print--hide">
-                    <button type="submit" title="Download XLS" class="btn btn--primary btn--thin btn--narrow btn--small download-analytics">
-                        Download .xls
-                    </button>
-                    <input type="hidden" name="format" value="xls"/>
-                    <input type="hidden" name="uri" value="{{absolute uri}}"/>
-                </form>
-
-                <form method="get" action="/generator" class="inline print--hide">
-                    <button type="submit" title="Download CSV" class="btn btn--primary btn--thin btn--narrow btn--small download-analytics">
-                        Download .csv
-                    </button>
-                    <input type="hidden" name="format" value="csv"/>
-                    <input type="hidden" name="uri" value="{{absolute uri}}"/>
-                </form>
+                {{!-- <form method="get" action="/generator" class="inline print--hide">
+                     <button type="submit" title="Download CSV" class="btn btn--primary btn--thin btn--narrow btn--small download-analytics">
+                         Download .csv
+                     </button>
+                     <input type="hidden" name="format" value="csv"/>
+                     <input type="hidden" name="uri" value="{{absolute uri}}"/>
+                 </form> --}}
 
                 {{#if versions}}
 
@@ -102,22 +102,27 @@
                         {{#loop versions reverse=true}}
                             <tr>
                                 <td>
+                                    <a href="/generator?format=xls&uri={{absolute uri}}" class="btn btn--primary btn--thin btn--narrow btn--small">
+                                        Download .xls
+                                    </a>
+                                    <a href="/generator?format=csv&uri={{absolute uri}}" class="btn btn--primary btn--thin btn--narrow btn--small">
+                                        Download .csv
+                                    </a>
+                                    {{!-- <form method="get" action="/generator" class="inline print--hide">
+                                         <button type="submit" title="Download XLS" class="btn btn--primary btn--thin btn--narrow btn--small download-analytics">
+                                             Download .xls
+                                         </button>
+                                         <input type="hidden" name="format" value="xls"/>
+                                         <input type="hidden" name="uri" value="{{absolute uri}}"/>
+                                     </form> --}}
 
-                                    <form method="get" action="/generator" class="inline print--hide">
-                                        <button type="submit" title="Download XLS" class="btn btn--primary btn--thin btn--narrow btn--small download-analytics">
-                                            Download .xls
-                                        </button>
-                                        <input type="hidden" name="format" value="xls"/>
-                                        <input type="hidden" name="uri" value="{{absolute uri}}"/>
-                                    </form>
-
-                                    <form method="get" action="/generator" class="inline print--hide">
-                                        <button type="submit" title="Download CSV" class="btn btn--primary btn--thin btn--narrow btn--small download-analytics">
-                                            Download .csv
-                                        </button>
-                                        <input type="hidden" name="format" value="csv"/>
-                                        <input type="hidden" name="uri" value="{{absolute uri}}"/>
-                                    </form>
+                                    {{!-- <form method="get" action="/generator" class="inline print--hide">
+                                         <button type="submit" title="Download CSV" class="btn btn--primary btn--thin btn--narrow btn--small download-analytics">
+                                             Download .csv
+                                         </button>
+                                         <input type="hidden" name="format" value="csv"/>
+                                         <input type="hidden" name="uri" value="{{absolute uri}}"/>
+                                     </form> --}}
 
                                 </td>
                                 <td>
@@ -165,7 +170,5 @@
             </div>
         </div>
     </div>
-
-</div> {{!-- /page-content --}}
 {{/partial}}
 {{> content/base/statistics typeLabel="Time series data"}}

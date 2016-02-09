@@ -1,98 +1,3 @@
-{{!-- Page header
-<div class="page-intro">
-    <div class="wrapper">
-        <div class="col-wrap">
-            <div class="col">
-                {{!-- Breadcrumb
-                {{> list/partials/list-page-breadcrumb label=description.edition}}
-
-                {{!-- Title & summary
-                <h1 class="page-intro__title {{#unless description.summary}}margin-bottom{{/unless}}">
-                    <span class="page-intro__type">Spreadsheet version:</span>
-                    {{#each breadcrumb}}
-                        {{#if @last}}
-                            {{description.title}}
-                        {{/if}}
-                    {{/each}}
-                    {{#if description.edition}}: {{description.edition}}{{/if}}
-                </h1>
-
-                {{#if description.summary}}
-                    <p class="page-intro__content col col--md-47 col--lg-48">{{description.summary}}</p>
-                {{/if}}
-				{{meta}}
-            </div>
-        </div>
-    </div> {{!-- /wrapper
-
-	{{!-- Notices
-	{{#if alerts}}
-		<div class="alert">
-			<div class="wrapper">
-				<div class="col-wrap">
-					<div class="col">
-						<div class="show-hide js-show-hide">
-							<div class="js-show-hide__title">
-								<div class="alert--warning__icon">!</div>
-
-								<h2 class="show-hide__title alert--warning__title inline-block">
-									Notice{{#if_ne alerts.size 1}}s{{/if_ne}}
-								</h2>
-							</div>
-
-							<div class="js-show-hide__content">
-								{{> partials/notice}}
-							</div>
-
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	{{/if}}
-
-    <div class="meta-wrap">
-        <div class="wrapper">
-
-            {{!-- Meta info
-            <div class="col-wrap">
-
-                {{#each breadcrumb}}
-                    {{#if @last}}
-                        {{#resolve uri assign="parent"}}
-                            {{!-- Contact & NS logo
-                            <p class="col col--md-12 col--lg-15 meta__item">
-                                {{#if parent.description.nationalStatistic}}
-                                    <img class="meta__image" src="/node_modules/ONS-Pattern-Library/dist/img/national-statistics.png" alt="National Statistics logo" />
-                                {{/if}}
-                                <span>{{labels.meta-contact}}: </span><br/><a href="mailto:{{parent.description.contact.email}}">{{#if parent.description.contact.name}}{{parent.description.contact.name}}{{else}}{{parent.description.contact.email}}{{/if}}</a>
-                            </p>
-
-                            {{!-- Release date
-                            <p class="col col--md-12 col--lg-15 meta__item">
-                                <span>{{labels.release-date}}: </span><br/>{{df parent.description.releaseDate}}<br/>
-                            </p>
-
-                            {{!-- Next release -
-                            <p class="col col--md-12 col--lg-15 meta__item">
-                                <span>{{labels.release-next}}: </span><br/>{{#if parent.description.nextRelease}}{{parent.description.nextRelease}}{{else}}To be announced{{/if}}
-                            </p>
-
-                            {{!-- Dataset ID
-                            {{#if parent.description.datasetId}}
-                                <p class="col col--md-12 col--lg-15 meta__item">
-                                    <span>{{labels.dataset-id}}: </span>{{parent.description.datasetId}}&nbsp;
-                                    <span><a href="#" class="tooltip-npl" title="This series ID is a unique random identifier for this individual time series. The digits themselves do not have any specific meaning" aria-label="This series ID is a unique random identifier for this individual time series. The digits themselves do not have any specific meaning"> {{labels.dataset-what-is}} </a></span>
-                                </p>
-                            {{/if}}
-                        {{/resolve}}
-                    {{/if}}
-                {{/each}}
-            </div>
-        </div> {{!-- /wrapper
-    </div> {{!-- /meta-wrap
-</div> {{!-- /page-intro --}}
-
 {{#partial "block-breadcrumb"}}
     {{> list/partials/list-page-breadcrumb label=description.edition}}
 {{/partial}}
@@ -209,13 +114,15 @@
                 {{#each downloads}}
 
                     {{#if file}}
-
-                        <form method="get" action="/file" class="inline">
-                            <button type="submit" title="Latest version" class="btn btn--primary btn--thin btn--narrow btn--small download-analytics">
-                                {{fe (lowercase (concat uri "/" file))}} ({{fs (lowercase (concat uri "/" file))}})
-                            </button>
-                            <input type="hidden" name="uri" value="{{absolute (concat uri "/" file)}}"/>
-                        </form>
+                        <a href="/file?uri={{absolute (concat uri "/" file)}}" title="Download as {{fe (lowercase (concat uri "/" file))}}" class="btn btn--primary btn--thin btn--narrow btn--small">
+                            {{fe (lowercase (concat uri "/" file))}} ({{fs (lowercase (concat uri "/" file))}})
+                        </a>
+                    {{!-- <form method="get" action="/file" class="inline">
+                         <button type="submit" title="Latest version" class="btn btn--primary btn--thin btn--narrow btn--small download-analytics">
+                             {{fe (lowercase (concat uri "/" file))}} ({{fs (lowercase (concat uri "/" file))}})
+                         </button>
+                         <input type="hidden" name="uri" value="{{absolute (concat uri "/" file)}}"/>
+                     </form> --}}
 
                     {{/if}}
 
@@ -243,13 +150,15 @@
                                         {{#each downloads}}
 
                                             {{#if file}}
-
-                                                <form method="get" action="/file" {{#if_ne downloads.size 1}}class="inline"{{/if_ne}}>
-                                                    <button type="submit" title="Latest version" class="btn btn--primary btn--thin btn--narrow btn--small download-analytics">
-                                                        {{fe (lowercase (concat uri "/" this.file))}} ({{fs (lowercase (concat uri "/" this.file))}})
-                                                    </button>
-                                                    <input type="hidden" name="uri" value="{{absolute (concat uri "/" this.file)}}"/>
-                                                </form>
+                                                <a href="/file?uri={{absolute (concat uri "/" this.file)}}" title="Download as {{fe (lowercase (concat uri "/" this.file))}}" class="btn btn--primary btn--thin btn--narrow btn--small">
+                                                    {{fe (lowercase (concat uri "/" this.file))}} ({{fs (lowercase (concat uri "/" this.file))}})
+                                                </a>
+                                            {{!-- <form method="get" action="/file" {{#if_ne downloads.size 1}}class="inline"{{/if_ne}}>
+                                                 <button type="submit" title="Latest version" class="btn btn--primary btn--thin btn--narrow btn--small download-analytics">
+                                                     {{fe (lowercase (concat uri "/" this.file))}} ({{fs (lowercase (concat uri "/" this.file))}})
+                                                 </button>
+                                                 <input type="hidden" name="uri" value="{{absolute (concat uri "/" this.file)}}"/>
+                                             </form> --}}
 
                                             {{/if}}
 
