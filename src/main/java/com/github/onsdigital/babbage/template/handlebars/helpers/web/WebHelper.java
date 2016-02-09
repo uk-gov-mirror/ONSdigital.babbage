@@ -36,7 +36,7 @@ public enum WebHelper implements BabbageHandlebarsHelper<Object> {
 
             String queryString = builder.toString();
             queryString = "?" + queryString;
-            return new Handlebars.SafeString(queryString);
+            return queryString;
         }
 
         @Override
