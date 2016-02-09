@@ -62,5 +62,27 @@ public enum StringHelper implements BabbageHandlebarsHelper<String> {
         public void register(Handlebars handlebars) {
             handlebars.registerHelper(this.name(), this);
         }
+    },
+
+    containsAny {
+        @Override
+        public CharSequence apply(String context, Options options) throws IOException {
+            if (options.isFalsy(context) || options.params == null) {
+                return null;
+            }
+
+            String text = context.toLowerCase();
+            for (Object param : options.params) {
+                if (param != null && text.contains(param.toString().toLowerCase())) {
+                    return "true";
+                }
+            }
+            return null;
+        }
+
+        @Override
+        public void register(Handlebars handlebars) {
+            handlebars.registerHelper(this.name(), this);
+        }
     }
 }

@@ -1,6 +1,7 @@
 package com.github.onsdigital.babbage.api.endpoint.search;
 
 import com.github.davidcarboni.restolino.framework.Api;
+import com.github.onsdigital.babbage.search.helpers.ONSQuery;
 import com.github.onsdigital.babbage.search.helpers.base.SearchQueries;
 import com.github.onsdigital.babbage.search.input.TypeFilter;
 import com.github.onsdigital.babbage.search.model.ContentType;
@@ -12,7 +13,8 @@ import java.util.Set;
 
 import static com.github.onsdigital.babbage.api.util.SearchUtils.buildSearchQuery;
 import static com.github.onsdigital.babbage.api.util.SearchUtils.search;
-import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.*;
+import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.toList;
+import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.typeCountsQuery;
 import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.extractSearchTerm;
 
 /**
@@ -29,15 +31,18 @@ public class SearchPublication {
     @GET
     public void get(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String searchTerm = extractSearchTerm(request);
-        search(request, getClass().getSimpleName(), searchTerm, queries(request, searchTerm))
+        search(request, getClass().getSimpleName(), searchTerm, queries(request, searchTerm), false)
                 .apply(request, response);
 
     }
 
     private SearchQueries queries(HttpServletRequest request, String searchTerm) {
-        return () -> toList(
-                buildSearchQuery(request, searchTerm, publicationFilters),
-                typeCountsQuery(contentQuery(searchTerm)).types(contentTypesToCount)
-        );
+        return () -> {
+            ONSQuery query = buildSearchQuery(request, searchTerm, publicationFilters);
+            return toList(
+                    query,
+                    typeCountsQuery(query.query()).types(contentTypesToCount)
+            );
+        };
     }
 }

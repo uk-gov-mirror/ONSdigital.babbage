@@ -19,6 +19,9 @@
 
 {{#partial "block-results-text"}}
 	<div class="col col--md-28 col--lg-38">
+        <div>
+            <a id="rss-link" href="feed://{{location.host}}/rss?uri={{uri}}{{#if parameters.query.0}}?query={{parameters.query.0}}{{/if}}{{#each parameters.filter}}&filter={{this}}{{/each}}">RSS Feed</a>
+        </div>
 		{{> list/partials/list-results-text-number result resultsLabel="data results" showLocation=true}}
 	</div>
 {{/partial}}

@@ -43,8 +43,14 @@
 					<div class="tiles__content">
 						<h2>Download this data</h2>
 						<div class="chart-area__footer__actions">
+							<div class="nojs-hidden">
+								<a href="{{uri}}/linechartimage" class="btn btn--primary btn--small dlCustomData">Image</a>
+	                            <a class="btn btn--primary btn--small dlCustomData" href="/generator?format=csv&uri={{uri}}">.csv</a>
+	                            <a class="btn btn--primary btn--small dlCustomData" href="/generator?format=xls&uri={{uri}}">.xls</a>
+                            </div>
+
                             {{!-- Show JS downloads options --}}
-							<form method="get" action="{{uri}}/linechartimage" class="inline nojs-hidden dlCustomData">
+							{{!-- <form method="get" action="{{uri}}/linechartimage" class="inline nojs-hidden dlCustomData">
 							    <button id="download-custom-image" type="submit" class="btn btn--primary btn--small download-analytics">
 								Image
 								</button>
@@ -58,9 +64,9 @@
 								.xls
 								</button>
 								<input type="hidden" name="uri" value="{{uri}}" />
-								{{!-- Series filter input --}}
+								Series filter input
 								<input type="hidden" name="series" value="" />
-							</form>
+							</form> --}}
                             {{!-- Show no-JS download options --}}
                             <div class="js-enhance--hide">
                                 <a href="{{uri}}/linechartimage" class="btn btn--primary btn--small">Image</a>

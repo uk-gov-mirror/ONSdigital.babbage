@@ -1,10 +1,14 @@
 package com.github.onsdigital.babbage.search;
 
+import com.github.onsdigital.babbage.configuration.Configuration;
 import org.elasticsearch.client.Client;
+import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.Settings;
+import org.elasticsearch.common.transport.InetSocketTransportAddress;
 import org.elasticsearch.node.Node;
 
 import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -30,20 +34,34 @@ public class ElasticSearchClient {
 
     public static void init() throws IOException {
         if (client == null) {
-            searchHome = Files.createTempDirectory("babbage_search_client");
-            Settings settings = Settings.builder().put("http.enabled", false)
-                    .put("cluster.name", getElasticSearchCluster())
-                    .put("discovery.zen.ping.multicast.enabled", true)
-                    .put("path.home", searchHome).build();
-            Node node =
-                    nodeBuilder()
-                            .settings(settings)
-                            .client(true)
-                            .node();
-
-            client = node.client();
-            Runtime.getRuntime().addShutdownHook(new ShutDownNodeThread(client));
+            initTransportClient();
+//            initNodeClient();
         }
+    }
+
+    protected static void initTransportClient() throws IOException {
+        Settings settings = Settings.builder()
+                .put("cluster.name", getElasticSearchCluster()).build();
+        client = TransportClient.builder().settings(settings).build()
+                .addTransportAddress(new InetSocketTransportAddress(new InetSocketAddress(getElasticSearchServer(), Configuration.ELASTIC_SEARCH.getElasticSearchPort())));
+    }
+
+
+    protected static void initNodeClient() throws IOException {
+        searchHome = Files.createTempDirectory("babbage_search_client");
+        Settings settings = Settings.builder().put("http.enabled", false)
+                .put("cluster.name", getElasticSearchCluster())
+                .put("discovery.zen.ping.multicast.enabled", true)
+                .put("network.host", "_non_loopback_")
+                .put("path.home", searchHome).build();
+        Node node =
+                nodeBuilder()
+                        .settings(settings)
+                        .data(false)
+                        .node();
+
+        client = node.client();
+        Runtime.getRuntime().addShutdownHook(new ShutDownNodeThread(client));
     }
 
     private static class ShutDownNodeThread extends Thread {

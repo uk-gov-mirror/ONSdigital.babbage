@@ -34,7 +34,8 @@ public enum ContentType {
     release,
     reference_tables,
     chart,
-    table;
+    table,
+    departments; //departments type is index under departments index, not a part of ons index which has usual content
 
 
     //Content type boost in search results

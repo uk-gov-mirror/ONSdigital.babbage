@@ -4,6 +4,7 @@ import com.github.onsdigital.babbage.configuration.Configuration;
 import com.github.onsdigital.babbage.response.BabbageRedirectResponse;
 import com.github.onsdigital.babbage.response.BabbageStringResponse;
 import com.github.onsdigital.babbage.response.base.BabbageResponse;
+import com.github.onsdigital.babbage.search.ElasticSearchClient;
 import com.github.onsdigital.babbage.search.helpers.ONSQuery;
 import com.github.onsdigital.babbage.search.helpers.ONSSearchResponse;
 import com.github.onsdigital.babbage.search.helpers.SearchHelper;
@@ -18,8 +19,11 @@ import com.github.onsdigital.babbage.template.TemplateService;
 import com.github.onsdigital.babbage.util.RequestUtil;
 import com.github.onsdigital.babbage.util.ThreadContext;
 import com.github.onsdigital.babbage.util.json.JsonUtil;
+import org.apache.commons.lang3.StringUtils;
+import org.elasticsearch.action.search.SearchRequestBuilder;
+import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.common.text.Text;
 import org.elasticsearch.index.query.QueryBuilder;
-import org.elasticsearch.search.suggest.SuggestBuilders;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.MediaType;
@@ -35,6 +39,7 @@ import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.*
 import static com.github.onsdigital.babbage.search.input.TypeFilter.contentTypes;
 import static com.github.onsdigital.babbage.search.model.field.Field.cdid;
 import static com.github.onsdigital.babbage.util.URIUtil.isDataRequest;
+import static org.apache.commons.lang.ArrayUtils.isEmpty;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 import static org.elasticsearch.index.query.QueryBuilders.*;
 import static org.elasticsearch.search.suggest.SuggestBuilders.phraseSuggestion;
@@ -46,6 +51,8 @@ import static org.elasticsearch.search.suggest.SuggestBuilders.phraseSuggestion;
  */
 public class SearchUtils {
 
+    private static final String DEPARTMENTS_INDEX = "departments";
+
     /**
      * Performs search for requested search term against filtered content types and counts contents types.
      * Content results are serialised into json with key "result" and document counts are serialised as "counts".
@@ -55,17 +62,21 @@ public class SearchUtils {
      * @param request
      * @return
      */
-    public static BabbageResponse search(HttpServletRequest request, String listType, String searchTerm, SearchQueries queries) throws IOException {
+    public static BabbageResponse search(HttpServletRequest request, String listType, String searchTerm, SearchQueries queries, boolean searchDepartments) throws IOException {
         if (searchTerm == null) {
             return buildResponse(request, listType, null);
-        } else {
+        } else if(!isFiltered(request)) { //only search for time series when new search made through search input
             //search time series by cdid, redirect to time series page if found
             String timeSeriesUri = searchTimeSeriesUri(searchTerm);
             if (timeSeriesUri != null) {
                 return new BabbageRedirectResponse(timeSeriesUri, Configuration.GENERAL.getSearchResponseCacheTime());
             }
-            return buildResponse(request, listType, searchAll(queries));
         }
+        LinkedHashMap<String, SearchResult> results = searchAll(queries);
+        if (searchDepartments) {
+            searchDeparments(searchTerm, results);
+        }
+        return buildResponse(request, listType, results);
     }
 
     public static BabbageResponse list(HttpServletRequest request, String listType, SearchQueries queries) throws IOException {
@@ -93,12 +104,31 @@ public class SearchUtils {
      * @return ONSQuery, null if no search term given
      */
     public static ONSQuery buildSearchQuery(HttpServletRequest request, String searchTerm, Set<TypeFilter> defaultFilters) {
+        boolean advanced = isAdvancedSearchQuery(searchTerm);
         SortBy sortBy = extractSortBy(request, SortBy.relevance);
-        ONSQuery query = buildONSQuery(request, contentQuery(searchTerm), sortBy, null, contentTypes(extractSelectedFilters(request, defaultFilters)));
-        query.suggest(phraseSuggestion("search_suggest").field(Field.title_no_synonym_no_stem.fieldName()).text(searchTerm));
+        QueryBuilder contentQuery;
+        contentQuery = advanced ? advancedSearchQuery(searchTerm) : contentQuery(searchTerm);
+        ONSQuery query = buildONSQuery(request, contentQuery, sortBy, null, contentTypes(extractSelectedFilters(request, defaultFilters)));
+        if (!advanced) {
+            query.suggest(phraseSuggestion("search_suggest").field(Field.title_no_synonym_no_stem.fieldName()).text(searchTerm));
+        }
         return query;
     }
 
+    private static boolean isAdvancedSearchQuery(String searchTerm) {
+        return StringUtils.containsAny(searchTerm, "+", "|", "-", "\"", "*", "~");
+    }
+
+    /**
+     * Advanced search query corresponds to elastic search simple query string query, allowing user to control search results using special characters (+ for AND, | for OR etc)
+     *
+     * @return
+     */
+    public static ONSQuery buildAdvancedSearchQuery(HttpServletRequest request, String searchTerm, Set<TypeFilter> defaultFilters) {
+        SortBy sortBy = extractSortBy(request, SortBy.relevance);
+        ONSQuery query = buildONSQuery(request, advancedSearchQuery(searchTerm), sortBy, null, contentTypes(extractSelectedFilters(request, defaultFilters)));
+        return query;
+    }
     public static ONSQuery buildListQuery(HttpServletRequest request, Set<TypeFilter> defaultFilters, SearchFilter filter) {
         return buildListQuery(request, defaultFilters, filter, null);
     }
@@ -138,7 +168,7 @@ public class SearchUtils {
     public static QueryBuilder buildBaseListQuery(String searchTerm) {
         QueryBuilder query;
         if (isNotEmpty(searchTerm)) {
-            query = contentQuery(searchTerm);
+            query = listQuery(searchTerm);
         } else {
             query = matchAllQuery();
         }
@@ -180,6 +210,27 @@ public class SearchUtils {
         return (String) timeSeries.get(Field.uri.fieldName());
     }
 
+    private static void searchDeparments(String searchTerm, LinkedHashMap<String, SearchResult> results) {
+        QueryBuilder departmentsQuery = departmentQuery(searchTerm);
+        SearchRequestBuilder departmentsSearch = ElasticSearchClient.getElasticsearchClient().prepareSearch(DEPARTMENTS_INDEX);
+        departmentsSearch.setQuery(departmentsQuery);
+        departmentsSearch.setSize(1);
+        departmentsSearch.addHighlightedField("terms", 0, 0);
+        departmentsSearch.setHighlighterPreTags("<strong>");
+        departmentsSearch.setHighlighterPostTags("</strong>");
+        SearchResponse response = departmentsSearch.get();
+        ONSSearchResponse onsSearchResponse = new ONSSearchResponse(response);
+        if (onsSearchResponse.getNumberOfResults() == 0) {
+            return;
+        }
+        Map<String, Object> hit = onsSearchResponse.getResult().getResults().get(0);
+        Text[] highlightedFragments = response.getHits().getAt(0).getHighlightFields().get("terms").getFragments();
+        if (highlightedFragments != null && highlightedFragments.length > 0) {
+            hit.put("match", highlightedFragments[0].toString());
+        }
+        results.put("departments", onsSearchResponse.getResult());
+    }
+
     //Send result back to client
     public static BabbageResponse buildResponse(HttpServletRequest request, String listType, Map<String, SearchResult> results) throws IOException {
         if (isDataRequest(request.getRequestURI())) {
@@ -207,6 +258,14 @@ public class SearchUtils {
             }
         }
         return data;
+    }
+
+    private static boolean isFiltered(HttpServletRequest request) {
+        String[] filter = request.getParameterValues("filter");
+        if (extractPage(request) == 1 && isEmpty(filter)) {
+            return false;
+        }
+        return true;
     }
 
     private static LinkedHashMap<String, Object> getBaseListTemplate(String listType) {
