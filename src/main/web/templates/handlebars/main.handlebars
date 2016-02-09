@@ -63,6 +63,12 @@
         <!-- End of Google Analytics Content Experiment code -->
 	</head>
 	<body>
+		{{#if is_dev}}
+			<script>
+				document.secureCookies = false;
+			</script>
+		{{/if}}
+
         <!--[if gt IE 8]><!-->
 		<script type="text/javascript" src="/js/js-enhance-loading.js"></script>
 
