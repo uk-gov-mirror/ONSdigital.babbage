@@ -44,9 +44,9 @@
 						<h2>Download this data</h2>
 						<div class="chart-area__footer__actions">
 							<div class="nojs-hidden">
-								<a href="{{uri}}/linechartimage" class="btn btn--primary btn--small dlCustomData">Image</a>
-	                            <a class="btn btn--primary btn--small dlCustomData" href="/generator?format=csv&uri={{uri}}">.csv</a>
-	                            <a class="btn btn--primary btn--small dlCustomData" href="/generator?format=xls&uri={{uri}}">.xls</a>
+								<a href="{{uri}}/linechartimage" class="btn btn--primary dlCustomData">Image</a>
+	                            <a class="btn btn--primary dlCustomData" href="/generator?format=csv&uri={{uri}}">.csv</a>
+	                            <a class="btn btn--primary dlCustomData" href="/generator?format=xls&uri={{uri}}">.xls</a>
                             </div>
 
                             {{!-- Show JS downloads options --}}
@@ -69,9 +69,9 @@
 							</form> --}}
                             {{!-- Show no-JS download options --}}
                             <div class="js-enhance--hide">
-                                <a href="{{uri}}/linechartimage" class="btn btn--primary btn--small">Image</a>
-                                <a class="btn btn--primary btn--small" href="/generator?format=csv&uri={{uri}}">.csv</a>
-                                <a class="btn btn--primary btn--small" href="/generator?format=xls&uri={{uri}}">.xls</a>
+                                <a href="{{uri}}/linechartimage" title="Download as image" class="btn btn--primary">Image</a>
+                                {{> partials/highcharts/download format='csv'}}
+                                {{> partials/highcharts/download format='xls'}}
                             </div>
                         </div>
 						<!-- </div> -->

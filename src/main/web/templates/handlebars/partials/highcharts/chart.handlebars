@@ -17,27 +17,31 @@
   
     <h5 class="print--hide font-size--h6">Download this chart</h5>
 
-    <form method="get" action="/chartimage" class="inline print--hide">
-        <button type="submit" title="Download chart image" class="btn btn--primary btn--thick download-analytics">
-            Image
-        </button>
-        <input type="hidden" name="uri" value="{{absolute  uri}}"/>
-    </form>
+    <a class="btn btn--primary" href="/chartimage?uri={{uri}}">Image</a>
+    {{> partials/highcharts/download format='csv'}}
+    {{> partials/highcharts/download format='xls'}}
 
-    <form method="get" action="/generator" class="inline print--hide">
-        <button type="submit" title="Download CSV" class="btn btn--primary btn--thick download-analytics">
-            .csv
-        </button>
-        <input type="hidden" name="format" value="csv"/>
-        <input type="hidden" name="uri" value="{{absolute  uri}}"/>
-    </form>
+    {{!-- <form method="get" action="/chartimage" class="inline print--hide">
+         <button type="submit" title="Download chart image" class="btn btn--primary btn--thick download-analytics">
+             Image
+         </button>
+         <input type="hidden" name="uri" value="{{absolute  uri}}"/>
+     </form> --}}
 
-    <form method="get" action="/generator" class="inline print--hide">
-        <button type="submit" title="Download XLS" class="btn btn--primary btn--thick download-analytics">
-            .xls
-        </button>
-        <input type="hidden" name="format" value="xls"/>
-        <input type="hidden" name="uri" value="{{absolute uri}}"/>
-    </form>
+    {{!-- <form method="get" action="/generator" class="inline print--hide">
+         <button type="submit" title="Download CSV" class="btn btn--primary btn--thick download-analytics">
+             .csv
+         </button>
+         <input type="hidden" name="format" value="csv"/>
+         <input type="hidden" name="uri" value="{{absolute  uri}}"/>
+     </form> --}}
+
+    {{!-- <form method="get" action="/generator" class="inline print--hide">
+         <button type="submit" title="Download XLS" class="btn btn--primary btn--thick download-analytics">
+             .xls
+         </button>
+         <input type="hidden" name="format" value="xls"/>
+         <input type="hidden" name="uri" value="{{absolute uri}}"/>
+     </form> --}}
 
 </div>
