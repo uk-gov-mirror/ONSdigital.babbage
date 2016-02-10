@@ -161,23 +161,29 @@
         <resources>
             <!-- Standard resources -->
             <resource>
-                <directory>src/main/resources</directory>
+                <directory>${basedir}/src/main/resources</directory>
             </resource>
             <!-- Generated contents-->
             <resource>
-                <directory>src/main/content</directory>
+                <directory>${basedir}/src/main/content</directory>
                 <targetPath>${project.build.directory}/content</targetPath>
             </resource>
+            <!-- Copy Sixteens to both source (for development) and target (for deployment) -->
+            <resource>
+                <directory>${basedir}/src/main/web/node_modules/sixteens/dist</directory>
+                <targetPath>${basedir}/src/main/web/assets</targetPath>
+            </resource>
+            <resource>
+                <directory>${basedir}/src/main/web/node_modules/sixteens/dist</directory>
+                <targetPath>${project.build.directory}/web/assets</targetPath>
+            </resource>
+            <!-- Filter out node_modules for deployment -->
             <resource>
                 <directory>src/main/web</directory>
                 <targetPath>${project.build.directory}/web</targetPath>
                 <excludes>
                     <exclude>node_modules/**</exclude>
                 </excludes>
-            </resource>
-            <resource>
-                <directory>src/main/web/node_modules/sixteens/dist</directory>
-                <targetPath>${project.build.directory}/web/assets</targetPath>
             </resource>
         </resources>
         <plugins>
