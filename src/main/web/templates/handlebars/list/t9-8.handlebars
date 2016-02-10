@@ -19,11 +19,15 @@
 
 {{#partial "block-results-text"}}
 	<div class="col col--md-28 col--lg-38">
-        <div>
-            <a id="rss-link" href="feed://{{location.host}}/rss?uri={{uri}}{{#if parameters.query.0}}?query={{parameters.query.0}}{{/if}}{{#each parameters.filter}}&filter={{this}}{{/each}}">RSS Feed</a>
-        </div>
 		{{> list/partials/list-results-text-number result resultsLabel="publications" showLocation=true}}
 	</div>
+{{/partial}}
+
+{{#partial "block-results-extra"}}
+    <div class="float-right">
+        <a id="rss-link" class="margin-right--2" href="feed://{{location.host}}/rss?uri={{uri}}{{#if parameters.query.0}}?query={{parameters.query.0}}{{/if}}{{#each parameters.filter}}&filter={{this}}{{/each}}"><span class="icon icon-rss--dark-small"></span>RSS Feed</a>
+        {{> list/filters/sort }}
+    </div>
 {{/partial}}
 
 {{#partial "block-filters"}}
