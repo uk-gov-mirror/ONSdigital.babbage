@@ -61,6 +61,7 @@ export PACKAGE_PREFIX=com.github.onsdigital
 export PHANTOMJS_PATH=`which phantomjs`
 export DEV_ENVIRONMENT="Y"
 export RELOAD_TEMPLATES="Y"
+export TEMPLATES_DIR=src/main/web/templates/handlebars
 
 # Development: reloadable
 $JAVA_HOME/bin/java $JAVA_OPTS \
