@@ -171,6 +171,13 @@
             <resource>
                 <directory>src/main/web</directory>
                 <targetPath>${project.build.directory}/web</targetPath>
+                <excludes>
+                    <exclude>node_modules/**</exclude>
+                </excludes>
+            </resource>
+            <resource>
+                <directory>src/main/web/node_modules/sixteens/dist</directory>
+                <targetPath>${project.build.directory}/web/assets</targetPath>
             </resource>
         </resources>
         <plugins>
