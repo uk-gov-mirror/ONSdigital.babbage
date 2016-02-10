@@ -19,6 +19,11 @@ import static org.apache.commons.lang3.StringUtils.isEmpty;
  */
 public class RequestUtil {
 
+    public static final String LOCATION_KEY = "location";
+    public static final String LABELS_KEY = "labels";
+    public static final String LANG_KEY = "lang";
+    public static final String IS_DEV_KEY = "is_dev";
+
     /**
      * Saves Authentication token and collection id to thread context if available when a request is made to babbage,
      * this ensures all data requests from content service can be authorized both  when data is requested for any purpose on Babbage ( rendering page, sending data back etc. )
@@ -31,10 +36,10 @@ public class RequestUtil {
             throw new RuntimeException("Failed saving request context");
         }
         Locale locale = resolveLocale(request);
-        ThreadContext.addData("labels", LocaleConfig.getLabels(locale));
-        ThreadContext.addData("lang", locale.getLanguage());
-        ThreadContext.addData("location", getLocation(request));
-        ThreadContext.addData("is_dev", Configuration.GENERAL.isDevEnvironment());
+        ThreadContext.addData(LABELS_KEY, LocaleConfig.getLabels(locale));
+        ThreadContext.addData(LANG_KEY, locale.getLanguage());
+        ThreadContext.addData(LOCATION_KEY, getLocation(request));
+        ThreadContext.addData(IS_DEV_KEY, Configuration.GENERAL.isDevEnvironment());
     }
 
     public static void clearContext() {
@@ -75,7 +80,7 @@ public class RequestUtil {
     private static Locale resolveLocale(HttpServletRequest request) {
 
         //Decide language from cookie first, if not there check subdomain
-        String languageSegment = getCookieValue(request, "lang");
+        String languageSegment = getCookieValue(request, LANG_KEY);
         if (StringUtils.isEmpty(languageSegment)) {
             languageSegment = request.getServerName();
         } else {

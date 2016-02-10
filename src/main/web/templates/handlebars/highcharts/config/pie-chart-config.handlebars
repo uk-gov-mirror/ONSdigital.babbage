@@ -7,7 +7,7 @@ options.series=[{
 		name: "{{{sub (sup headers.1)}}}",
 		sliced:true,
 		colorByPoint: true,
-		data: [{{#each data}} {name:"{{{sup (sub (get this headers.0))}}}",y:{{num (get this headers.1)}} },{{/each}}]
+		data: [{{#each data}} {name:"{{{sup (sub (lookup this headers.0))}}}",y:{{num (lookup this headers.1)}} },{{/each}}]
 	}];
 options.plotOptions={
 	     pie: {

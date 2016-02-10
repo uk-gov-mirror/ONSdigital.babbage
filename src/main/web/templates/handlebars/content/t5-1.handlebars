@@ -22,7 +22,7 @@
 	{{!-- Print and download --}}
 	<p class="col col--md-12 col--lg-15 print-hidden meta__item">
 		{{#if description.cdid}}Series ID: {{description.cdid}}
-        <a href="#" class="tooltip-npl" title="This series ID is a unique random identifier for this individual time series. The digits themselves do not have any specific meaning" aria-label="This series ID is a unique random identifier for this individual time series. The digits themselves do not have any specific meaning">what is this?</a><br/>{{/if}}
+        <a href="#" class="tooltip-npl" title="This series ID is a unique random identifier for this individual time series. The digits themselves do not have any specific meaning">what is this?</a><br/>{{/if}}
         {{#if description.unit}}Units: {{description.preUnit}} {{description.unit}}<br/>{{/if}}
         {{seasonalAdjustment}}
 	</p>
@@ -40,16 +40,23 @@
 					{{> partials/highcharts/linechart}}
 
 					{{!-- Chart footer --}}
-					<div class="tiles__content nojs-hidden">
+					<div class="tiles__content">
 						<h2>Download this data</h2>
 						<div class="chart-area__footer__actions">
-							<form method="get" action="{{uri}}/linechartimage" class="inline dlCustomData">
-							    <button id="download-custom-image" type="submit" class="btn btn--primary btn--small download-analytics" target="_blank">
+							<div class="nojs-hidden">
+								<a href="{{uri}}/linechartimage" title="Download as an image" class="btn btn--primary dlCustomData">Image</a>
+	                            <a class="btn btn--primary dlCustomData" title="Download as {{format}}" href="/generator?format=csv&uri={{uri}}">.csv</a>
+	                            <a class="btn btn--primary dlCustomData" title="Download as {{format}}" href="/generator?format=xls&uri={{uri}}">.xls</a>
+                            </div>
+
+                            {{!-- Show JS downloads options --}}
+							{{!-- <form method="get" action="{{uri}}/linechartimage" class="inline nojs-hidden dlCustomData">
+							    <button id="download-custom-image" type="submit" class="btn btn--primary btn--small download-analytics">
 								Image
 								</button>
 								<input type="hidden" name="fileName" value="{{description.title}}" />
 							</form>
-							<form method="get" action="/generator" class="inline dlCustomData">
+							<form method="get" action="/generator" class="inline nojs-hidden dlCustomData">
 								<button id="download-custom-csv" type="submit" name="format" value="csv" class="btn btn--primary btn--small download-analytics">
 								.csv
 								</button>
@@ -57,10 +64,16 @@
 								.xls
 								</button>
 								<input type="hidden" name="uri" value="{{uri}}" />
-								{{!-- Series filter input --}}
+								Series filter input
 								<input type="hidden" name="series" value="" />
-							</form>
-						</div>
+							</form> --}}
+                            {{!-- Show no-JS download options --}}
+                            <div class="js-enhance--hide">
+                                <a href="{{uri}}/linechartimage" title="Download as an image" class="btn btn--primary">Image</a>
+                                {{> partials/highcharts/download format='csv'}}
+                                {{> partials/highcharts/download format='xls'}}
+                            </div>
+                        </div>
 						<!-- </div> -->
 					</div> {{!-- /tiles__content --}}
                     <!--[if gt IE 8]><!--><noscript><![endif]-->
@@ -134,7 +147,7 @@
 	<div class="wrapper">
 		<div class="col-wrap flexbox__item">
 			{{#if relatedDocuments}}
-				<div class="col {{#if_all relatedDocuments relatedMethodology}}col--md-one-third col--lg-one-third{{else}}col--md-half col--lg-half{{/if_all}} background--mercury margin-bottom-md--2">
+				<div class="col {{#if_all relatedDocuments relatedMethodology}}col--md-one-third col--lg-one-third{{else}}col--md-half col--lg-half{{/if_all}} background--mercury margin-bottom-sm--2 margin-bottom-md--2">
 					{{#partial "block-documents-title"}}
 						<h2 class="tiles__title-h2 tiles__title-h2--nav">Publications that use this data</h2>
 					{{/partial}}

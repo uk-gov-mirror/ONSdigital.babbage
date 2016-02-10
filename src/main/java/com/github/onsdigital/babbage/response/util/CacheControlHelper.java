@@ -33,6 +33,10 @@ public class CacheControlHelper {
         return DigestUtils.sha1Hex(data);
     }
 
+    public static String hashData(byte[] data) {
+        return DigestUtils.sha1Hex(data);
+    }
+
     private static void resolveHash(HttpServletRequest request, HttpServletResponse response, String newHash) {
         if (StringUtils.isEmpty(newHash)) {
             return;

@@ -14,7 +14,6 @@ import static com.github.onsdigital.babbage.api.util.SearchUtils.buildListQuery;
 import static com.github.onsdigital.babbage.api.util.SearchUtils.list;
 import static com.github.onsdigital.babbage.search.builders.ONSFilterBuilders.filterDates;
 import static com.github.onsdigital.babbage.search.builders.ONSFilterBuilders.filterTopic;
-import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.topicListQuery;
 
 /**
  * Created by bren on 25/11/15.
@@ -30,8 +29,7 @@ public class TimeSeriesTool {
     private SearchQueries queries(HttpServletRequest request) {
         return () -> ONSQueryBuilders.toList(
                 buildListQuery(request, filters(request))
-                        .types(ContentType.timeseries),
-                topicListQuery()
+                        .types(ContentType.timeseries)
         );
     }
 

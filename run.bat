@@ -17,6 +17,9 @@ set BONSAI_TRANSPORT_PORT=9300
 export MONGO_USER=ons
 export MONGO_PASSWORD=uJlVY2FDGI5SFawS/PN+jnZpymKWpU7C
 
+# Handlebars templates
+export TEMPLATES_DIR=src/main/web/templates/handlebars
+
 # Generate content
 rem #mvn clean compile dependency:copy-dependencies && ^
 rem #rm -rf src/main/content && ^

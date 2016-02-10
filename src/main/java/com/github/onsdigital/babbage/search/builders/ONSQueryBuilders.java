@@ -48,8 +48,8 @@ public class ONSQueryBuilders {
                 .add(multiMatchQuery(searchTerm, summary.fieldNameBoosted(), metaDescription.fieldNameBoosted())
                         .type(BEST_FIELDS).minimumShouldMatch("75%"))
                 .add(matchQuery(keywords.fieldName(), searchTerm).operator(AND))
-                .add(multiMatchQuery(searchTerm, cdid.fieldNameBoosted(), datasetId.fieldNameBoosted()).operator(AND)).
-                add(matchQuery(searchBoost.fieldName(), searchTerm).boost(searchBoost.boost()));
+                .add(multiMatchQuery(searchTerm, cdid.fieldNameBoosted(), datasetId.fieldNameBoosted())).
+                        add(matchQuery(searchBoost.fieldName(), searchTerm).boost(searchBoost.boost()).operator(AND));
 
         if (filter != null) {
             query = appyFilter(QueryBuilders.boolQuery().must(query), filter);
@@ -60,9 +60,48 @@ public class ONSQueryBuilders {
 
     public static QueryBuilder contentQuery(String searchTerm) {
         return contentQuery(searchTerm, null);
-
     }
 
+    public static QueryBuilder advancedSearchQuery(String searchQuery) {
+        return simpleQueryStringQuery(searchQuery)
+                .field(title.fieldName())
+                .field(title_no_synonym_no_stem.fieldName())
+                .field(edition.fieldName())
+                .field(summary.fieldName())
+                .field(metaDescription.fieldName())
+                .field(keywords.fieldName())
+                .field(cdid.fieldName())
+                .field(datasetId.fieldName())
+                .lowercaseExpandedTerms(true);
+    }
+
+    public static QueryBuilder listQuery(String searchTerm) {
+        QueryBuilder query = disMaxQuery()
+                .add(boolQuery()
+                                .should(matchQuery(title_no_dates.fieldName(), searchTerm)
+                                                .boost(title_no_dates.boost())
+                                                .minimumShouldMatch("1<-2 3<80% 5<60%")
+                                ).should(matchQuery(title_no_stem.fieldName(), searchTerm)
+                                                .boost(title_no_stem.boost())
+                                                .minimumShouldMatch("1<-2 3<80% 5<60%")
+                                )
+                                .should(multiMatchQuery(searchTerm, title.fieldNameBoosted(), edition.fieldNameBoosted())
+                                        .type(CROSS_FIELDS).minimumShouldMatch("3<80% 5<60%"))
+                                .should(matchPhrasePrefixQuery(Field.title_no_synonym_no_stem.fieldName(), searchTerm).maxExpansions(10))
+                )
+                .add(multiMatchQuery(searchTerm, summary.fieldNameBoosted(), metaDescription.fieldNameBoosted())
+                        .type(BEST_FIELDS).minimumShouldMatch("75%"))
+                .add(matchQuery(keywords.fieldName(), searchTerm).operator(AND))
+                .add(multiMatchQuery(searchTerm, cdid.fieldNameBoosted(), datasetId.fieldNameBoosted())).
+                        add(matchQuery(searchBoost.fieldName(), searchTerm).boost(searchBoost.boost()).operator(AND));
+
+        return query;
+    }
+
+
+    public static QueryBuilder departmentQuery(String searchTerm) {
+        return matchQuery("terms", searchTerm);
+    }
 
     /**
      * Boosts content types based on content type weights defined in {@link ContentType}
@@ -82,7 +121,7 @@ public class ONSQueryBuilders {
 
     public static ONSQuery bestTopicMatchQuery(String searchTerm) {
         return onsQuery(contentQuery(searchTerm))
-                .types(ContentType.product_page)
+                .types(ContentType.product_page, ContentType.home_page_census)
                 .size(1);
     }
 
@@ -120,9 +159,9 @@ public class ONSQueryBuilders {
     public static ONSQuery firstLetterCounts(ONSQuery query) {
         return query.aggregate(
                 AggregationBuilders
-                .terms("docCounts")
-                .size(0)
-                .field(Field.title_first_letter.fieldName())
+                        .terms("docCounts")
+                        .size(0)
+                        .field(Field.title_first_letter.fieldName())
         ).size(0).name("counts"); //aggregating all content types without using selected numbers
     }
 

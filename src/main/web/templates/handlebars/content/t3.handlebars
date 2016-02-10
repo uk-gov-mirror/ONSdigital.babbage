@@ -52,7 +52,7 @@
                                 <div class="background--iron-light margin-top-md--1 margin-bottom-md--2 js-hover-click">
                                     <div class="background--abbey height--35 overflow--hidden">
 
-                                        <img src="{{#if_any (eq 'localhost' location.hostname) (eq '127.0.0.1' location.hostname)}}http://localhost:9000/dist/img/latest-publications.png{{else}}/node_modules/sixteens/dist/img/latest-publications.png{{/if_any}}" class="width-md--23 width-lg--29 height-md--35" alt="" />
+                                        <img src="{{#if_any (eq 'localhost' location.hostname) (eq '127.0.0.1' location.hostname)}}http://localhost:9000/dist/img/latest-publications.png{{else}}/assets/img/latest-publications.png{{/if_any}}" class="width-md--23 width-lg--29 height-md--35" alt="" />
                                     </div>
                                     <div class="equal-height box__content test--1 test--2 padding-top-sm--2 padding-right-sm--1 padding-bottom-sm--2 padding-left-sm--1 padding-top-md--2 padding-right-md--1 padding-bottom-md--2 padding-left-md--1">
                                         <h3>
@@ -71,7 +71,7 @@
                                             {{/if}}
                                         </ul>
                                     </div>
-                                    <div class="background--iron-light box__content height--7 width--50 border-top--iron-sm border-top--iron-md padding-top-sm--1 padding-left-sm--1 padding-top-md--1 padding-left-md--1">
+                                    <div class="background--iron-light box__content height--7{{#if_any data.years data.quarters data.months}} width--50{{/if_any}} border-top--iron-sm border-top--iron-md padding-top-sm--1 padding-left-sm--1 padding-top-md--1 padding-left-md--1">
                                         <a href="{{bulletin.uri}}" class="block">Read this statistical bulletin</a>
                                     </div>
                                 </div>
@@ -106,7 +106,7 @@
             <div id="user-requested-container" class="section-container">
                 {{!-- User requested data --}}
                 <h2 id="user-requested" class="section-title">User requested data</h2>
-                <div class="background--iron-light margin-bottom-md--2 js-hover-click">
+                <div class="background--iron-light margin-bottom-sm--2 margin-bottom-md--2 js-hover-click">
 
                     <div class="box__content padding-top-sm--3 padding-bottom-sm--2 padding-left-sm--1 padding-right-sm--1 padding-top-md--3 padding-right-md--1 padding-bottom-md--2 padding-left-md--1">
                         <span class="icon icon-arrow-right--dark float-right margin-top-md--2 margin-top-sm--2"></span>

@@ -8,6 +8,8 @@ import com.github.onsdigital.babbage.publishing.model.PublishNotification;
 import com.github.onsdigital.babbage.util.ElasticSearchUtils;
 import com.github.onsdigital.babbage.util.json.JsonUtil;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.action.bulk.BulkItemResponse;
 import org.elasticsearch.action.bulk.BulkProcessor;
 import org.elasticsearch.action.bulk.BulkRequest;
@@ -84,7 +86,10 @@ public class PublishingManager {
                     String uri = (String) hit.getSource().get("uri");
                     bulkProcessor.add(prepareDeleteRequest(notification, uri));
                     if (triggerReindex) {
-                        triggerReindex(notification.getKey(), uri);
+                        //only index uri to the page which hash data.json at the end and is stripped out when saving the uri to upcoming publish uris
+                        if (StringUtils.isEmpty(FilenameUtils.getExtension(uri))) {
+                            triggerReindex(notification.getKey(), uri);
+                        }
                     }
                 }
                 response = getElasticsearchClient().prepareSearchScroll(response.getScrollId()).setScroll(scrollKeepAlive).execute().actionGet();
@@ -163,7 +168,7 @@ public class PublishingManager {
 
     //Clears data.json and .json at the end of uri
     public static String cleanUri(String uri) {
-        return removeEnd(removeEnd(uri, "/data.json"), ".json");
+        return removeEnd(removeEnd(removeEnd(uri, "/data.json"), "/data_cy.json"), ".json") ;
     }
 
     private BulkProcessor createBulkProcessor() {
@@ -205,9 +210,4 @@ public class PublishingManager {
 
         return bulkProcessor;
     }
-
-    public static void main(String[] args) {
-        System.out.println(DigestUtils.sha1Hex("test"));
-    }
-
 }

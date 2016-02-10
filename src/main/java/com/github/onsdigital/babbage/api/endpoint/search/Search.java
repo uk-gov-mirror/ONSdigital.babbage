@@ -30,17 +30,22 @@ public class Search {
     @GET
     public void get(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String searchTerm = extractSearchTerm(request);
-        search(request, getClass().getSimpleName(), searchTerm, queries(request, searchTerm))
+        String[] filter = request.getParameterValues("filter");
+        boolean searchAdditionalContent = false;
+        if (extractPage(request) == 1 && isEmpty(filter)) {
+            searchAdditionalContent = true;
+        }
+        search(request, getClass().getSimpleName(), searchTerm, queries(request, searchTerm, searchAdditionalContent), searchAdditionalContent)
                 .apply(request, response);
     }
 
-    private SearchQueries queries(HttpServletRequest request, String searchTerm) {
+    private SearchQueries queries(HttpServletRequest request, String searchTerm, boolean searchAdditionalContent) {
+        ONSQuery query = buildSearchQuery(request, searchTerm, allFilters);
         List<ONSQuery> queries = toList(
-                buildSearchQuery(request, searchTerm, allFilters),
-                typeCountsQuery(contentQuery(searchTerm)).types(contentTypesToCount)
+                query,
+                typeCountsQuery(query.query()).types(contentTypesToCount)
         );
-        String[] filter = request.getParameterValues("filter");
-        if (extractPage(request) == 1 && isEmpty(filter)) {
+        if (searchAdditionalContent) {
             queries.add(bestTopicMatchQuery(searchTerm).name("featuredResult").highlight(true));
         }
         return () -> queries;

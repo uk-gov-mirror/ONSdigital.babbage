@@ -3,11 +3,11 @@ options.legend.enabled=false;
 options.series=[{
 			name: "{{{sub (sup headers.1)}}}",
 			type: "{{#if rotated}}bar{{else}}column{{/if}}",
-			data: [{{#each data}}{{num (get this headers.1)}},{{/each}}]
+			data: [{{#each data}}{{num (lookup this headers.1)}},{{/each}}]
 	    },{
 	    	name: "{{{sub (sup headers.2)}}} - {{sub (sup headers.3)}}",
 	    	type: "errorbar",
-	    	data: [{{#each data}}[{{num (get this headers.2)}},{{num (get this headers.3)}}],{{/each}}]
+	    	data: [{{#each data}}[{{num (lookup this headers.2)}},{{num (lookup this headers.3)}}],{{/each}}]
 	    }];
 {{/partial}}
 

@@ -99,12 +99,15 @@ function prototypeModalButtons() {
     var d = new Date();
     d.setTime(d.getTime() + (1*24*60*60*1000));
     var expires = "expires="+d.toUTCString();
-    document.cookie='onsBetaDisclaimer=true; ' + expires + ';path=/';
+    var disclaimerCookie = 'onsBetaDisclaimer=true; ' + expires + ';path=/';
+    if(document.secureCookies != false) {//set secure flag
+        disclaimerCookie += disclaimerCookie + ' ; secure';
+    }
+    document.cookie= disclaimerCookie;
     
     //can use jquery as this function will only be aclled when modal is visible, and modal will only be visible when window has loaded meaning jQuery has loaded (at the bottom of the body)
     $('#modal-overlay').fadeOut(300);
 }
-
 
 // moved function to js-enhance to make use of jquery fade functionality
 // function acceptBetaDiscalimer() {

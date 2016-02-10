@@ -6,12 +6,13 @@
         {{{resource}}}
     </div>
     {{/resolveResource}}
-    <h6 class="print--hide">Download this table</h6>
-    <form method="get" action="/file" class="inline print--hide">
-        <button type="submit" title="Download XLS" class="btn btn--primary btn--thick download-analytics">
-        .xls
-        </button>
-        <input type="hidden" name="format" value="xls"/>
-        <input type="hidden" name="uri" value="{{absolute uri}}.xls"/>
-    </form>
+    <h5 class="print--hide font-size--h6">Download this table</h5>
+    <a href="/file?uri={{uri}}.xls" title="Download as xls" class="btn btn--primary">.xls</a>
+    {{!-- <form method="get" action="/file" class="inline print--hide">
+         <button type="submit" title="Download XLS" class="btn btn--primary btn--thick download-analytics">
+         .xls
+         </button>
+         <input type="hidden" name="format" value="xls"/>
+         <input type="hidden" name="uri" value="{{absolute uri}}.xls"/>
+     </form> --}}
 </div>

@@ -10,7 +10,7 @@
 
     <properties>
         <java.version>1.8</java.version>
-        <handlebars-java-version>2.2.1</handlebars-java-version>
+        <handlebars-java-version>4.0.3</handlebars-java-version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <powermock.version>1.5.6</powermock.version>
     </properties>
@@ -98,6 +98,14 @@
             <version>2.1.1</version>
         </dependency>
 
+        <!-- Elastic search multicast, used for discovering elastic search  instances-->
+        <dependency>
+            <groupId>org.elasticsearch.plugin</groupId>
+            <artifactId>discovery-multicast</artifactId>
+            <version>2.1.1</version>
+        </dependency>
+
+
         <!-- Ical4j-->
         <dependency>
             <groupId>org.mnode.ical4j</groupId>
@@ -112,6 +120,13 @@
             <version>3.24.0</version>
             <type>zip</type>
             <scope>runtime</scope>
+        </dependency>
+
+        <!-- RSS Feeds -->
+        <dependency>
+            <groupId>rome</groupId>
+            <artifactId>rome</artifactId>
+            <version>1.0</version>
         </dependency>
 
         <!-- Test -->
@@ -146,16 +161,29 @@
         <resources>
             <!-- Standard resources -->
             <resource>
-                <directory>src/main/resources</directory>
+                <directory>${basedir}/src/main/resources</directory>
             </resource>
             <!-- Generated contents-->
             <resource>
-                <directory>src/main/content</directory>
+                <directory>${basedir}/src/main/content</directory>
                 <targetPath>${project.build.directory}/content</targetPath>
             </resource>
+            <!-- Copy Sixteens to both source (for development) and target (for deployment) -->
+            <resource>
+                <directory>${basedir}/src/main/web/node_modules/sixteens/dist</directory>
+                <targetPath>${basedir}/src/main/web/assets</targetPath>
+            </resource>
+            <resource>
+                <directory>${basedir}/src/main/web/node_modules/sixteens/dist</directory>
+                <targetPath>${project.build.directory}/web/assets</targetPath>
+            </resource>
+            <!-- Filter out node_modules for deployment -->
             <resource>
                 <directory>src/main/web</directory>
                 <targetPath>${project.build.directory}/web</targetPath>
+                <excludes>
+                    <exclude>node_modules/**</exclude>
+                </excludes>
             </resource>
         </resources>
         <plugins>

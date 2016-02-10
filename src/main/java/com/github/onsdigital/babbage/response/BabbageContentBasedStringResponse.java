@@ -23,6 +23,6 @@ public class BabbageContentBasedStringResponse extends BabbageStringResponse {
 
     @Override
     protected void setCacheHeaders(HttpServletRequest request, HttpServletResponse response) {
-        CacheControlHelper.setCacheHeaders(request, response, contentResponse.getHash(), contentResponse.getMaxAge());
+        CacheControlHelper.setCacheHeaders(request, response, CacheControlHelper.hashData(getData()), contentResponse.getMaxAge());
     }
 }

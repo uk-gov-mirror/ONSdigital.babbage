@@ -27,8 +27,8 @@ public class HandlebarsRenderer {
 
     private Handlebars handlebars;
 
-    public HandlebarsRenderer(String templatesDirectory, String templatesSuffix) {
-        handlebars = new Handlebars(new FileTemplateLoader(templatesDirectory, templatesSuffix)).with(new HighConcurrencyTemplateCache());
+    public HandlebarsRenderer(String templatesDirectory, String templatesSuffix, boolean reload) {
+        handlebars = new Handlebars(new FileTemplateLoader(templatesDirectory, templatesSuffix)).with(new HighConcurrencyTemplateCache().setReload(reload));
         initializeHelpers();
     }
 

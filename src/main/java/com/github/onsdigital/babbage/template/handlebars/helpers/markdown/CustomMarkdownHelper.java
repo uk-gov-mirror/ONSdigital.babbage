@@ -11,6 +11,7 @@ import org.pegdown.Extensions;
 import org.pegdown.PegDownProcessor;
 
 import java.io.IOException;
+import java.util.LinkedHashMap;
 
 /**
  * Created by bren on 28/07/15.
@@ -27,9 +28,13 @@ public class CustomMarkdownHelper extends MarkdownHelper implements BabbageHandl
             return "";
         }
 
-        RequestUtil.Location location = (RequestUtil.Location)ThreadContext.getData("location");
-        String path = location.getPathname();
-        System.out.println("uri:" + location.getPathname());
+        String path;
+        try {
+            path = ((LinkedHashMap<String, Object>)options.context.parent().model()).get("uri").toString();
+        } catch (Exception e) {
+            RequestUtil.Location location = (RequestUtil.Location)ThreadContext.getData("location");
+            path = location.getPathname();
+        }
 
         String markdown = context.toString();
 

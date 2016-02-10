@@ -134,10 +134,11 @@ public class Configuration {
     /*Handlebars configuration*/
     public static class HANDLEBARS {
         private static final String DEFAULT_HANDLEBARS_DATE_PATTERN = "d MMMM yyyy";
-        private static final String TEMPLATES_DIR = StringUtils.defaultIfBlank(getValue("TEMPLATES_DIR"), "src/main/web/templates/handlebars");
+        private static final String TEMPLATES_DIR = StringUtils.defaultIfBlank(getValue("TEMPLATES_DIR"), "target/web/templates/handlebars");
         private static final String TEMPLATES_SUFFIX = StringUtils.defaultIfBlank(getValue("TEMPLATES_SUFFIX"), ".handlebars");
         private static final String MAIN_CONTENT_TEMPLATE_NAME = "main";
         private static final String MAIN_CHART_CONFIG_TEMPLATE_NAME = "chart-config";
+        private static final boolean RELOAD_TEMPLATE_CHANGES = "Y".equals(StringUtils.defaultIfBlank(getValue("RELOAD_TEMPLATES"), "N"));
 
         public static String getHandlebarsDatePattern() {
             return DEFAULT_HANDLEBARS_DATE_PATTERN;
@@ -157,6 +158,10 @@ public class Configuration {
 
         public static String getMainChartConfigTemplateName() {
             return MAIN_CHART_CONFIG_TEMPLATE_NAME;
+        }
+
+        public static boolean isReloadTemplateChanges() {
+            return RELOAD_TEMPLATE_CHANGES;
         }
     }
 

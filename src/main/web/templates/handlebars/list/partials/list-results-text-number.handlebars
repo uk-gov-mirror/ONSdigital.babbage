@@ -2,7 +2,7 @@
 	{{!-- Show copy denoting all results are shown if there are no results starting with selected letter and page is not filtered with keyword--}}
 	{{#if parameters.az.0}} 
 		{{#unless parameters.query.0}}
-			{{#unless (get counts.docCounts parameters.az.0) }}
+			{{#unless (lookup counts.docCounts parameters.az.0) }}
 			<span>There are no statistical bulletins that begin with the letter <strong>'{{parameters.az.0}}'</strong>. Showing all statistical bulletins.<span></br></br>
 			{{/unless}}
 		{{/unless}}
@@ -19,7 +19,7 @@
 	{{#if_all showTopic parameters.topic.0 (ne parameters.topic.0 "Home")}}
 		that are related to {{#resolve parameters.topic.0}}<span class="lowercase"><strong>{{description.title}}</strong></span>{{/resolve}}
 	{{/if_all}}
-	{{#if_all atoz parameters.az.0 (get couts.docCounts parameters.az.0)}}
+	{{#if_all atoz parameters.az.0 (lookup couts.docCounts parameters.az.0)}}
 		that begin with the letter <strong>'{{parameters.az.0}}'</strong>
 	{{/if_all}}
 	{{#if_any parameters.fromDate.0 parameters.toDate.0}} published

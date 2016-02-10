@@ -16,6 +16,7 @@ public class SearchResult {
     private Long numberOfResults;
     private long took;
     private List<Map<String, Object>> results = new ArrayList<>();
+    private List<String> suggestions = new ArrayList<>();
     private Map<String,Long> docCounts = new LinkedHashMap<>();
     private Paginator paginator;
     private String sortBy;
@@ -52,6 +53,14 @@ public class SearchResult {
             docCounts = new LinkedHashMap<>();
         }
         docCounts.put(key, number);
+    }
+
+    public List<String> getSuggestions() {
+        return suggestions;
+    }
+
+    public void setSuggestions(List<String> suggestions) {
+        this.suggestions = suggestions;
     }
 
     public long getTook() {

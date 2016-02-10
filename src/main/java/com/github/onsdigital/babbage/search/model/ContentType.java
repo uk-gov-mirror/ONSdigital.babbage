@@ -9,6 +9,7 @@ import org.apache.commons.lang3.ArrayUtils;
  */
 public enum ContentType {
     home_page,
+    home_page_census,
     taxonomy_landing_page,
     product_page,
     bulletin(1.55f),
@@ -33,7 +34,8 @@ public enum ContentType {
     release,
     reference_tables,
     chart,
-    table;
+    table,
+    departments; //departments type is index under departments index, not a part of ons index which has usual content
 
 
     //Content type boost in search results

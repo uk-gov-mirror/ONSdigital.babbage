@@ -25,6 +25,7 @@
 			<div class="col-wrap print-hidden">
 				<div class="col">
 					{{#block "block-results-text"}}
+
 						<div class="col col--md-28 col--lg-38">
 							{{> list/partials/search-results-text-number result}}
 						</div>
@@ -73,11 +74,11 @@
 
 				{{!-- MAIN RESULTS --}}
 				<!-- /desktop-grid-one-third -->
-				<div class="search-results">
+                <div class="search-results {{#unless featuredResult.results.0}}margin-top-md--2{{/unless}}">
 					<ul class="list--neutral flush">
 						{{#block "block-results"}}
 							{{#each result.results}}
-								<li class="search-results__item">
+								<li class="col col--md-34 col--lg-40 search-results__item">
 									{{> list/partials/results-title showEdition=true}}
 									{{> list/partials/results-meta}}
 									{{> list/partials/results-summary}}
