@@ -22,19 +22,12 @@
 		<link rel="stylesheet" href="{{#if_any (eq 'localhost' location.hostname) (eq '127.0.0.1' location.hostname)}}http://localhost:9000/dist/css/old-ie.css{{else}}/assets/css/old-ie.css{{/if_any}}"/>
 		<![endif]-->
 		<!--[if gt IE 8]><!-->
-		{{!-- {{#if_any (eq type "taxonomy_landing_page") (eq type "product_page") (eq type "bulletin") (eq type "article") (eq type "timeseries") (eq type "timeseries") }}
-		<link rel="stylesheet" type="text/css" href="{{#if_any (eq 'localhost' location.hostname) (eq '127.0.0.1' location.hostname)}}http://localhost:9000/dist/css/main.css{{else}}/node_modules/sixteens/dist/css/main.css{{/if_any}}">
-		{{else}}
-		<link rel="stylesheet" href="/node_modules/ONS-Pattern-Library/dist/css/main.min.css"/>
-		{{/if_any}} --}}
-		{{!-- <link rel="stylesheet" href="/node_modules/ONS-Pattern-Library/dist/css/main.min.css"/> --}}
 		<link rel="stylesheet" type="text/css" href="{{#if is_dev}}http://localhost:9000/dist/css/main.css{{else}}/assets/css/main.css{{/if}}">
 		{{#if pdf_style}}<link rel="stylesheet" type="text/css" href="{{#if is_dev}}http://localhost:9000/dist/css/pdf.css{{else}}/assets/css/pdf.css{{/if}}">{{/if}}
 		{{!-- <link rel="stylesheet" type"text/css" href="{{#if is_dev}}http://localhost:9000/dist/css/print.css{{else}}/assets/css/print.css{{/if}}" media="print"> --}}
 
 		{{!-- <link rel="stylesheet" href="/css/js-enhance.css"/> --}}
 		{{!-- <link rel="stylesheet" href="/css/c3.css"/> --}}
-		{{!-- <script src="/node_modules/ONS-Pattern-Library/dist/js/header.js"></script> --}}
         <![endif]-->
         <!-- Google Analytics Content Experiment code -->
         {{#if_eq uri "/economy/inflationandpriceindices"}}{{#unless (eq parameters.test.0 "B")}}<script>function utmx_section(){}function utmx(){}(function(){var
