@@ -62,7 +62,10 @@ page = require('webpage').create();
 page.paperSize = {
     format: pageSize,
     orientation: pageOrientation,
-    margin: '1cm'
+    margin: {
+        top: '1cm',
+        bottom: '1cm'
+    }
 };
 page.viewportSize = {
     width: pdfViewportWidth,
@@ -87,7 +90,7 @@ for (var i = system.args.length - 1; i > 2; i=i-2) {
         'name': cookie,
         'value': value
     });
-};
+}
 
 page.settings.userAgent = 'WebKit/534.46 Mobile/9A405 Safari/7534.48.3';
 page.settings.javascriptEnabled = false;
