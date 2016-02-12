@@ -19,7 +19,7 @@
                 </fieldset>
             </div>
             <div class="col col--md-16 col--lg-18 margin-right-md--2">
-                <fieldset class="btn-group" role="radiogroup">
+                <fieldset class="btn-group">
                     <legend id="frequency">Frequency</legend>
                     <div role="radiogroup" aria-labelledby="frequency">
                         <label class="btn btn--secondary btn--chart-control frequency-select">
@@ -44,7 +44,7 @@
 			<!-- /chart-area__controls__buttons -->
 			<div class="col col--md-17 col--lg-23">
 				<fieldset class="btn-group">
-					<legend>Time period</legend>
+					<legend id="period">Time period</legend>
 					<div role="radiogroup" aria-labelledby="period">
 						<label class="btn btn--secondary btn--chart-control btn--chart-control--all btn--secondary--active">
 							All
@@ -65,13 +65,13 @@
 					</div>
 				</fieldset>
 
-				<div class="chart-area__controls__custom js-hidden" id="customControls">
+				<div class="chart-area__controls__custom js-hidden" aria-hidden="true" id="customControls">
 					<div class="chart-area__controls__custom__container">
 						<div class="chart-area__controls__dropdowns">
-							<p>Custom time period</p>
+							<p id="custom-period">Custom time period</p>
 							<fieldset class="chart-area__controls__date">
 								<legend class="chart-area__controls__date__legend" id="from">From</legend>
-								<label class="visuallyhidden" for="from-month-1">Month</label>
+								<label class="visuallyhidden" for="from-month-1">Custom time period, from, Month</label>
 								<select class="chart-area__controls__month" id="from-month-1" name="from-month"
 										data-chart-controls-from-month="" aria-controls="data">
 									<option value="01">Jan</option>
@@ -87,7 +87,7 @@
 									<option value="11">Nov</option>
 									<option value="12">Dec</option>
 								</select>
-								<label class="visuallyhidden" for="from-quarter-1">Quarter</label>
+								<label class="visuallyhidden" for="from-quarter-1">Custom time period, from, Quarter</label>
 								<select class="chart-area__controls__quarter" id="from-quarter-1" name="from-quarter"
 										data-chart-controls-from-quarter="" aria-controls="data">
 									<option value="1" selected>Q1</option>
@@ -95,14 +95,14 @@
 									<option value="3">Q3</option>
 									<option value="4">Q4</option>
 								</select>
-								<label class="visuallyhidden" for="from-year-1">Year</label>
+								<label class="visuallyhidden" for="from-year-1">Custom time period, from, Year</label>
 								<select class="chart-area__controls__year" id="from-year-1" name="from-year"
 										data-chart-controls-from-year="" aria-controls="data">
 								</select>
 							</fieldset>
 							<fieldset class="chart-area__controls__date">
 								<legend class="chart-area__controls__date__legend" id="to">To</legend>
-								<label class="visuallyhidden" for="to-month-2">Month</label>
+								<label class="visuallyhidden" for="to-month-2">Custom time period, to, Month</label>
 								<select class="chart-area__controls__month" id="to-month-2" name="to-month"
 										data-chart-controls-to-month="" aria-describedby="to" aria-controls="data">
 									<option value="01">Jan</option>
@@ -118,7 +118,7 @@
 									<option value="11">Nov</option>
 									<option value="12">Dec</option>
 								</select>
-								<label class="visuallyhidden" for="to-quarter-2">Quarter</label>
+								<label class="visuallyhidden" for="to-quarter-2">Custom time period, to, Quarter</label>
 								<select class="chart-area__controls__quarter" id="to-quarter-2" name="to-quarter"
 										data-chart-controls-to-quarter="" aria-controls="data">
 									<option value="1" selected>Q1</option>
@@ -126,7 +126,7 @@
 									<option value="3">Q3</option>
 									<option value="4">Q4</option>
 								</select>
-								<label class="visuallyhidden" for="to-year-2">Year</label>
+								<label class="visuallyhidden" for="to-year-2">Custom time period, to, Year</label>
 								<select class="chart-area__controls__year" id="to-year-2" name="to-year"
 										data-chart-controls-to-year="" aria-controls="data">
 								</select>
