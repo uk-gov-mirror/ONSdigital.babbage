@@ -69,7 +69,7 @@
 			<ul class="nav--controls">
 				<li class="nav--controls__item">
 					<a href="#nav-primary" id="menu-toggle" aria-controls="nav-primary" class="nav--controls__menu">
-						<span class="nav--controls__text">{{labels.dropdown-menu}}</span>
+						<span class="nav--controls__text">{{labels.menu}}</span>
 					</a>
 				</li>
 				<li class="nav--controls__item {{#if_any (eq listType "search") (eq listType "searchpublication") (eq listType "searchdata")}}search-is-expanded{{/if_any}}">
@@ -101,7 +101,7 @@
 					{{!-- SECONDARY NAV - PRIMARY --}}
 					<li class="primary-nav__item {{#if_eq uri '/surveys'}}primary-nav__item--active{{/if_eq}} js-nav">
 						<a class="primary-nav__link  col col--md-8 col--lg-10" href="/surveys">
-							{{labels.survey-respondents}}
+							{{labels.taking-part-in-a-survey}}
 						</a>
 					</li>
 				</ul>
@@ -113,7 +113,7 @@
 		<div class="search nav-search--hidden print--hide" id="searchBar">
 			<div class="wrapper" role="search">
 				<form class="col-wrap search__form" {{#if_any (eq listType "searchdata") (eq listType "searchpublication")}}action="{{location.pathname}}"{{else}}action="/search"{{/if_any}}>
-					<label class="search__label col col--md-23 col--lg-24" for="nav-search">Search by keyword(s) or time series ID</label>
+					<label class="search__label col col--md-23 col--lg-24" for="nav-search">{{labels.search-for-a-keyword-or-time-series-id}}</label>
 					<input type="search" autocomplete="off" class="search__input col col--md-21 col--lg-32" id="nav-search" name="q" value="{{parameters.q.0}}">
 					<button type="submit" class="search__button col--md-3 col--lg-3" id="nav-search-submit">
 					<span class="visuallyhidden">{{labels.search}}</span>
