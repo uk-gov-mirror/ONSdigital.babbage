@@ -1,6 +1,6 @@
 <div class="col-wrap">
 	<div class="col">
-		<h2 id="timeseries">Time series related to {{description.title}}</h2>
+		<h2 id="timeseries">{{labels.time-series-related-to}} {{description.title}}</h2>
 	</div>
 </div>
 
@@ -38,7 +38,7 @@
                         <dl class="tiles__dl">
                             <dt class="tiles__dt">{{labels.release-date}}:</dt>
                             <dd class="flush">{{df description.releaseDate}}</dd>
-                            <dt class="tiles__dt">{{labels.release-next}}:</dt>
+                            <dt class="tiles__dt">{{labels.next-release}}:</dt>
                             <dd class="flush">{{description.nextRelease}}</dd>
                         </dl>
                     </div>
@@ -47,4 +47,4 @@
         {{/resolve}}
 	{{/loop}}
 </ul>
-<a href="/timeseriestool?topic={{uri}}" class="btn btn--primary btn--full-width">View all time series related to {{description.title}}</a>
+<a href="/timeseriestool?topic={{uri}}" class="btn btn--primary btn--full-width">{{labels.view-all-time-series-related-to}} {{description.title}}</a>

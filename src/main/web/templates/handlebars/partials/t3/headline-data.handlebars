@@ -32,18 +32,19 @@
         {{/if}}
 
         <dl>
-            <dt>{{labels.product-last-updated}}</dt>
+            <dt>{{labels.release-date}}: </dt>
             <dd>{{df data.description.releaseDate}}</dd>
-            <dt>{{labels.product-next-update}}</dt>
+            <br>
+            <dt>{{labels.next-release}}: </dt>
             <dd>{{data.description.nextRelease}}</dd>
         </dl>
     </div>
 
     <div class="background--iron-light box__content height--7 width--50 border-top--iron-sm border-top--iron-md padding-top-sm--1 padding-left-sm--1 padding-top-md--1 padding-left-md--1 more-link">
-        <a href="{{bulletin.uri}}" class="block">Read this statistical bulletin</a>
+        <a href="{{bulletin.uri}}" class="block">{{labels.view-this-data}}</a>
     </div>
 
 </div>
 
-<a href="#timeseries" class="btn btn--primary btn--full-width margin-top margin-bottom-sm--4 jsEnhanceAnimateScroll">More data</a>
+<a href="#timeseries" class="btn btn--primary btn--full-width margin-top margin-bottom-sm--4 jsEnhanceAnimateScroll">{{labels.more-data}}</a>
 
