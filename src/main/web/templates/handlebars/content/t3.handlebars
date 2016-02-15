@@ -8,9 +8,16 @@
                 <ul class="nav-secondary__list">
                     {{resolve items.0.uri assign="data"}}
                     {{!-- <li class="nav-secondary__item"><a href="#latest-publication" class="jsEnhanceAnimateScroll">Highlights</a></li> --}}
-                    {{#if items}}<li class="nav-secondary__item"><a href="#timeseries" class="jsEnhanceAnimateScroll">Time series</a></li>{{/if}}
-                    {{#if datasets}}<li class="nav-secondary__item"><a href="#datasets" class="jsEnhanceAnimateScroll">Datasets</a></li>{{/if}}
+                    {{#if items}}
+                        <li class="nav-secondary__item"><a href="#timeseries" class="jsEnhanceAnimateScroll">Time series</a></li>
+                    {{/if}}
+                    {{#if datasets}}
+                        <li class="nav-secondary__item"><a href="#datasets" class="jsEnhanceAnimateScroll">Datasets</a></li>
+                    {{/if}}
                     <li class="nav-secondary__item"><a href="#publications" class="jsEnhanceAnimateScroll">Publications</a></li>
+                    {{#if_any relatedMethodology relatedMethodologyArticles}}
+                        <li class="nav-secondary__item"><a href="#methodology" class="jsEnhanceAnimateScroll">Methodology</a></li>
+                    {{/if_any}}
                 </ul>
             </nav>
             <nav class="nav-secondary col col--lg-half">
@@ -102,11 +109,11 @@
 				{{> partials/t3/dataset-list}}
 			</div>
 		</section>
-        <div class="wrapper margin-bottom-md--2">
+        <div class="wrapper">
             <div id="user-requested-container" class="section-container">
                 {{!-- User requested data --}}
                 <h2 id="user-requested" class="section-title">User requested data</h2>
-                <div class="background--iron-light margin-bottom-sm--2 margin-bottom-md--2 js-hover-click">
+                <div class="background--iron-light margin-bottom-sm--2 margin-bottom-md--5 js-hover-click">
 
                     <div class="box__content padding-top-sm--3 padding-bottom-sm--2 padding-left-sm--1 padding-right-sm--1 padding-top-md--3 padding-right-md--1 padding-bottom-md--2 padding-left-md--1">
                         <span class="icon icon-arrow-right--dark float-right margin-top-md--2 margin-top-sm--2"></span>
@@ -146,7 +153,7 @@
 			<div class="col-wrap">
 				<div class="col col--lg-two-thirds">
 					<div class="tiles__item tiles__item--nav-type flush-col">
-						<h3 class="tiles__title-h3 tiles__title-h3--nav">Methodology related to {{description.title}}</h3>
+						<h2 id="methodology" class="tiles__title-h2 tiles__title-h2--nav font-size--h3">Methodology related to {{description.title}}</h2>
 						<ul class="tiles__content tiles__content--nav list--neutral">
 							{{#each relatedMethodology}}
 							{{#resolve this.uri filter="description"}}
