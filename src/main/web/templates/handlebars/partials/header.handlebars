@@ -19,29 +19,31 @@
 						<img class="main-logo" src="/img/ons-logo.png" alt="Office for National Statistics">
 					</a>
 				</div>
-				{{!-- <nav> --}}
-					<div class="col col--lg-two-thirds col--md-two-thirds hide--mobile print--hide">
-						{{!-- Need space to keep secondary links from vertically aligning at top --}}
-						&nbsp;
-						{{!-- Show different block depending on whether JS or not - saves enhancing <dl> to look and behave like a <select> --}}
-						{{!-- <dl class="language js-enhance--hide">
- 							<dt class="language__title">Language: </dt>
- 							<dd class="language__item">
- 								<a href="https://{{replace location.hostname "cy." ""}}{{uri}}" class="language__link icon--hide">English (EN)</a>
- 							</dd>
- 							<dd class="language__item">
- 								<a href="https://cy.{{replace location.hostname "cy." ""}}{{uri}}" class="language__link icon--hide">Cymraeg (CY)</a>
- 							</dd>
- 						</dl>
- 						<form class="language language--js js-enhance--show">
- 							<label class="language--js__label" for="lang">Language:</label>
- 							<select class="language--js__select" id="lang" name="lang">
- 								<option value="english" class="language-js__option" data-url="https://{{replace location.hostname "cy." ""}}{{uri}}">English (EN)</option>
- 								<option value="welsh" class="language-js__option" data-url="https://cy.{{replace location.hostname "cy." ""}}{{uri}}">Cymraeg (CY)</option>
- 							</select>
- 						</form> --}}
-					</div>
-				{{!-- </nav> --}}
+                <div class="col col--lg-two-thirds col--md-two-thirds hide--mobile print--hide">
+                    {{!-- Need space to keep secondary links at bottom when language toggle not displaying --}}
+                    &nbsp;
+                    {{!-- Show different block depending on whether JS or not - saves enhancing <dl> to look and behave like a <select> --}}
+                    <noscript>
+                        <dl class="language js-enhance--hide">
+                            <dt class="language__title">Language:</dt>
+                            <dd class="language__item">
+                                <a href="http://{{replace location.host "cy." ""}}{{uri}}"
+                                   class="language__link icon--hide">English (EN)</a>
+                            </dd>
+                            <dd class="language__item">
+                                <a href="http://cy.{{replace location.host "cy." ""}}{{uri}}"
+                                   class="language__link icon--hide">Cymraeg (CY)</a>
+                            </dd>
+                        </dl>
+                    </noscript>
+                    <form class="language language--js js-enhance--show">
+                        <label class="language--js__label" for="lang">Language:</label>
+                        <select class="language--js__select" id="lang" name="lang">
+                            <option value="english" data-url="http://{{replace location.host "cy." ""}}{{uri}}">English (EN)</option>
+                            <option value="welsh" data-url="http://cy.{{replace location.host "cy." ""}}{{uri}}">Cymraeg (CY)</option>
+                        </select>
+                    </form>
+                </div>
 				<div class="secondary-nav col col--lg-two-thirds col--md-two-thirds print--hide">
 					<ul class="secondary-nav__list js-nav-clone__list">
 						{{!-- <li class="secondary-nav__item">

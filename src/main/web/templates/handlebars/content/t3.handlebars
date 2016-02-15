@@ -8,22 +8,16 @@
                 <ul class="nav-secondary__list">
                     {{resolve items.0.uri assign="data"}}
                     {{!-- <li class="nav-secondary__item"><a href="#latest-publication" class="jsEnhanceAnimateScroll">Highlights</a></li> --}}
-<<<<<<< Updated upstream
                     {{#if items}}
-                        <li class="nav-secondary__item"><a href="#timeseries" class="jsEnhanceAnimateScroll">Time series</a></li>
+                        <li class="nav-secondary__item"><a href="#timeseries" class="jsEnhanceAnimateScroll">{{labels.time-series}}</a></li>
                     {{/if}}
                     {{#if datasets}}
-                        <li class="nav-secondary__item"><a href="#datasets" class="jsEnhanceAnimateScroll">Datasets</a></li>
+                        <li class="nav-secondary__item"><a href="#datasets" class="jsEnhanceAnimateScroll">{{labels.dataset}}</a></li>
                     {{/if}}
-                    <li class="nav-secondary__item"><a href="#publications" class="jsEnhanceAnimateScroll">Publications</a></li>
-                    {{#if_any relatedMethodology relatedMethodologyArticles}}
-                        <li class="nav-secondary__item"><a href="#methodology" class="jsEnhanceAnimateScroll">Methodology</a></li>
-                    {{/if_any}}
-=======
-                    {{#if items}}<li class="nav-secondary__item"><a href="#timeseries" class="jsEnhanceAnimateScroll">{{labels.time-series}}</a></li>{{/if}}
-                    {{#if datasets}}<li class="nav-secondary__item"><a href="#datasets" class="jsEnhanceAnimateScroll">{{labels.dataset}}</a></li>{{/if}}
                     <li class="nav-secondary__item"><a href="#publications" class="jsEnhanceAnimateScroll">{{labels.publications}}</a></li>
->>>>>>> Stashed changes
+                    {{#if_any relatedMethodology relatedMethodologyArticles}}
+                        <li class="nav-secondary__item"><a href="#methodology" class="jsEnhanceAnimateScroll">{{labels.methodology}}</a></li>
+                    {{/if_any}}
                 </ul>
             </nav>
             <nav class="nav-secondary col col--lg-half">
