@@ -9,7 +9,7 @@
                 {{/block}}
 
                 {{#block "block-next-release"}}
-                    {{> content/partials/metadata/next-release class="col--md-12 col--lg-15"}}
+                    {{> content/partials/metadata/next-release class="col--md-11 col--lg-15"}}
                 {{/block}}
 
                 {{#block "block-additonal-metadata"}}{{/block}}
@@ -20,9 +20,9 @@
 
 {{#partial "block-additonal-metadata"}}
 	{{!-- Print and download --}}
-	<p class="col col--md-12 col--lg-15 print-hidden meta__item">
+	<p class="col col--md-13 col--lg-15 print-hidden meta__item">
 		{{#if description.cdid}}Series ID: {{description.cdid}}
-        <a href="#" class="tooltip-npl" title="This series ID is a unique random identifier for this individual time series. The digits themselves do not have any specific meaning">what is this?</a><br/>{{/if}}
+        <a href="#" class="tooltip" title="This series ID is a unique random identifier for this individual time series. The digits themselves do not have any specific meaning">what's this?</a><br/>{{/if}}
         {{#if description.unit}}Units: {{description.preUnit}} {{description.unit}}<br/>{{/if}}
         {{seasonalAdjustment}}
 	</p>
