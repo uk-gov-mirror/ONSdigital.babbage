@@ -1,12 +1,12 @@
 {{#if versions}}
 	<section class="show-hide__content alert--warning__content section__content--markdown">
 		{{#if_all versions alerts}}
-			<h3 class="alert--correction__title">Corrections</h3>
+			<h3 class="alert--correction__title">{{labels.corrections}}</h3>
 		{{/if_all}}
 		{{#loop versions reverse=true}}
 			<p class="alert__date">{{df updateDate outputFormat="d MMMM yyyy HH:mm"}}</p>
 			{{md correctionNotice}}
-			<a class="btn btn--tertiary margin-bottom-sm--3 margin-bottom-md--3 print--hide" href="{{uri}}">View superseded version</a>
+			<a class="btn btn--tertiary margin-bottom-sm--3 margin-bottom-md--3 print--hide" href="{{uri}}">{{labels.view-superseded-version}}</a>
 		{{/loop}}
 	</section>
 {{/if}}
