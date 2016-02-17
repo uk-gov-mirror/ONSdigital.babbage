@@ -25,15 +25,24 @@
                 {{data.description.unit}}
             {{/if}}
         </p>
-        {{#if data.description.date}}
-            <p class="stand-out--list">
-                {{data.description.date}}
-            </p>
+        {{#if data.description.monthLabelStyle}}
+            {{!-- Display custom label styles (eg Labour Market) --}}
+            {{#last data.months}}
+                <p class="stand-out--list">
+                    {{label}}
+                </p>
+            {{/last}}
+        {{else}}
+            {{#if data.description.date}}
+                <p class="stand-out--list">
+                    {{data.description.date}}
+                </p>
+            {{/if}}
         {{/if}}
-
         <dl>
             <dt>{{labels.product-last-updated}}</dt>
             <dd>{{df data.description.releaseDate}}</dd>
+            <br>
             <dt>{{labels.product-next-update}}</dt>
             <dd>{{data.description.nextRelease}}</dd>
         </dl>
