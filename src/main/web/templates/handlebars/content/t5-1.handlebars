@@ -41,13 +41,45 @@
 
 					{{!-- Chart footer --}}
 					<div class="tiles__content">
-						<h2>Download this data</h2>
+						<h2>Download this time series</h2>
 						<div class="chart-area__footer__actions">
+                            <form class="timeseries__filters nojs-hidden">
 							<div class="nojs-hidden">
-								<a href="{{uri}}/linechartimage" title="Download as an image" class="btn btn--primary dlCustomData">Image</a>
-	                            <a class="btn btn--primary dlCustomData" title="Download as {{format}}" href="/generator?format=csv&uri={{uri}}">.csv</a>
-	                            <a class="btn btn--primary dlCustomData" title="Download as {{format}}" href="/generator?format=xls&uri={{uri}}">.xls</a>
+                                <fieldset class="btn-group">
+                                    <legend id="data-download">Download options</legend>
+                                    <div role="radiogroup" aria-labelledby="data-download">
+                                        <label for="unfiltered-download" class="btn btn--secondary btn--chart-control btn--chart-control--download btn--secondary--active">
+                                            Full unfiltered time series
+                                            <input id="unfiltered-download" type="radio" name="type" data-chart-controls-type="unfiltered-download" aria-controls="unfiltered-download-controls" aria-expanded="true" checked>
+                                        </label>
+                                        <label for="filtered-download" class="btn btn--secondary btn--chart-control btn--chart-control--download">
+                                            Filtered time series
+                                            <input id="filtered-download" type="radio" name="type" data-chart-controls-type="filtered-download" aria-controls="filtered-download-controls" aria-expanded="false">
+                                        </label>
+                                    </div>
+                                </fieldset>
+
+                                {{!-- Unflitered --}}
+                                <div id="unfiltered-download-controls" class="chart-area__controls__download chart-area__controls__download--unfiltered width--22 padding-top--2 padding-bottom--2" aria-hidden="false">
+                                    <div class="chart-area__controls__custom__container">
+                                        <p class="flush">Download full time series as:</p>
+                                        <a href="{{uri}}/linechartimage" title="Download as an image" class="btn btn--primary">Image</a>
+                                        <a class="btn btn--primary" title="Download as csv" href="/generator?format=csv&uri={{uri}}">.csv</a>
+                                        <a class="btn btn--primary" title="Download as xls" href="/generator?format=xls&uri={{uri}}">.xls</a>
+                                    </div>
+                                </div>
+
+                                {{!-- Filtered - parameters added dynamically--}}
+                                <div id="filtered-download-controls" class="chart-area__controls__download chart-area__controls__download--filtered width--22 padding-top--2 padding-bottom--2" aria-hidden="true">
+                                    <div class="chart-area__controls__custom__container">
+                                        <p class="flush"> Download filtered time series as:</p>
+                                        <a href="{{uri}}/linechartimage" title="Download as an image" class="btn btn--primary dlCustomData">Image</a>
+                                        <a class="btn btn--primary dlCustomData" title="Download as csv" href="/generator?format=csv&uri={{uri}}">.csv</a>
+                                        <a class="btn btn--primary dlCustomData" title="Download as xls" href="/generator?format=xls&uri={{uri}}">.xls</a>
+                                    </div>
+                                </div>
                             </div>
+                            </form>
 
                             {{!-- Show JS downloads options --}}
 							{{!-- <form method="get" action="{{uri}}/linechartimage" class="inline nojs-hidden dlCustomData">
@@ -115,16 +147,18 @@
 
 		<div class="meta-wrap meta-wrap--gallery margin-bottom padding-right-sm--1">
 			<div class="col-wrap">
-				{{#if_any section.markdown notes}}
+				{{#if_any section.markdown notes.0}}
 					<div class="col col--md-two-thirds col--lg-two-thirds meta__item padding-right-sm--1 padding-right-md--1">
 						{{md section.markdown}}
+                        {{#if notes.0}}
 						<h2>Notes</h2>
 						{{md notes.0}}
+                        {{/if}}
 					</div>
 				{{/if_any}}
-				<div class="col {{#if_any section.markdown notes}}col--md-one-third col--lg-one-third{{else}}col--md-one col--lg-one padding-left-md--1{{/if_any}} padding-right-md--1 padding-left-sm--1">
-					{{#if_any relatedData relatedDatasets}}
-						<h2>Related time series</h2>
+				<div class="col {{#if_any section.markdown notes.0}}col--md-one-third col--lg-one-third{{else}}col--md-one col--lg-one padding-left-md--1{{/if_any}} padding-right-md--1 padding-left-sm--1">
+                    <h2>Related time series</h2>
+                    {{#if_any relatedData relatedDatasets}}
 						<ul class="list--neutral box__content">
 							{{#each relatedData}}
 								{{#resolve this.uri filter="description"}}
