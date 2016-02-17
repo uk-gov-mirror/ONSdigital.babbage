@@ -9,8 +9,10 @@ var sparkline{{description.cdid}} = {
 		backgroundColor: null,
 		borderWidth: 0,
 		type: 'area',
-		marginRight:30,
-		marginLeft:30,
+		{{!-- marginRight:30,
+ 		marginLeft:30, --}}
+        marginRight:40f,
+		marginLeft:40,
 		{{!-- marginTop:-6, --}}
 		skipClone: true
 	},
@@ -29,7 +31,7 @@ var sparkline{{description.cdid}} = {
 		labels: {
 			crop: false,
 			style: {
-				'color': '#707070'
+				'color': '#707070',
 			},
 			formatter: function() {
 				if (this.isFirst) {
