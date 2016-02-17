@@ -36,6 +36,8 @@ public class PublishNotification {
     }
 
     public Date getDate(){
+        if (publishDate == null) return null;
+
         try {
             return new SimpleDateFormat(Configuration.CONTENT_SERVICE.getDefaultContentDatePattern()).parse(publishDate);
         } catch (ParseException e) {
