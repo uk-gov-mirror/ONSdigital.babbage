@@ -44,13 +44,12 @@
 				{{!-- </nav> --}}
 				<div class="secondary-nav col col--lg-two-thirds col--md-two-thirds print--hide">
 					<ul class="secondary-nav__list js-nav-clone__list">
-						{{!-- <li class="secondary-nav__item">
- 							<a class="secondary-nav__link"
- 							href="/releasecalendar">{{labels.release-calendar}}</a>
- 						</li> --}}
-                        {{!-- <li class="secondary-nav__item">
-                             <a class="secondary-nav__link" href="/methodology">{{labels.methodology}}</a>
-                         </li> --}}
+                        <li class="secondary-nav__item">
+                            <a class="secondary-nav__link {{#if_eq uri '/releasecalendar'}}secondary-nav__link--active{{/if_eq}} js-nav-clone__link" href="/releasecalendar">{{labels.release-calendar}}</a>
+                        </li>
+                        <li class="secondary-nav__item">
+                            <a class="secondary-nav__link {{#if_eq uri '/methodology'}}secondary-nav__link--active{{/if_eq}} js-nav-clone__link" href="/methodology">{{labels.methodology}}</a>
+                        </li>
                         <li class="secondary-nav__item">
                             <a class="secondary-nav__link {{#if_eq uri '/news'}}secondary-nav__link--active{{/if_eq}} js-nav-clone__link" href="/news">News</a>
                         </li>
