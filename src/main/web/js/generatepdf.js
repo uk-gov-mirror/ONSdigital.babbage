@@ -62,7 +62,10 @@ page = require('webpage').create();
 page.paperSize = {
     format: pageSize,
     orientation: pageOrientation,
-    margin: '1cm'
+    margin: {
+        top: '1cm',
+        bottom: '1cm'
+    }
 };
 page.viewportSize = {
     width: pdfViewportWidth,
@@ -77,17 +80,17 @@ output = system.args[2];
 for (var i = system.args.length - 1; i > 2; i=i-2) {
     var cookie = system.args[i-1];
     var value = system.args[i];
-    
-    if(cookie === 'jsEnhanced'){
-        continue;
-    }
-    
+
+    //if(cookie === 'jsEnhanced'){
+    //    continue;
+    //}
+
     phantom.addCookie({
         'domain': 'localhost',
         'name': cookie,
         'value': value
     });
-};
+}
 
 page.settings.userAgent = 'WebKit/534.46 Mobile/9A405 Safari/7534.48.3';
 page.settings.javascriptEnabled = false;
@@ -99,7 +102,7 @@ page.open(address, function(status) {
         phantom.exit();
     } else {
         // Now create the output file and exit PhantomJS
-        var result = page.render(output);
+        page.render(output);
         phantom.exit();
     }
 });

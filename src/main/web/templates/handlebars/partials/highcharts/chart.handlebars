@@ -4,9 +4,8 @@
         <h5 class="flush--third--bottom">{{{sub (sup subtitle)}}}</h5>
     {{/if}}
   <div id="chart-{{filename}}" data-filename="{{filename}}" data-uri="{{uri}}" class="markdown-chart">
-
       <!--[if gt IE 8]><!--><noscript><![endif]-->
-        <img src="/chartimage?uri={{uri}}&width={{width}}" alt="{{alt-text}}">
+      <img src="/chartimage?uri={{uri}}&width={{width}}" alt="{{alt-text}}">
       <!--[if gt IE 8]><!--></noscript><![endif]-->
   </div>
   {{#if source}}<h5 class="flush--third--bottom font-size--h6">Source: {{source}}</h5>{{/if}}
@@ -20,28 +19,4 @@
     <a class="btn btn--primary" href="/chartimage?uri={{uri}}">Image</a>
     {{> partials/highcharts/download format='csv'}}
     {{> partials/highcharts/download format='xls'}}
-
-    {{!-- <form method="get" action="/chartimage" class="inline print--hide">
-         <button type="submit" title="Download chart image" class="btn btn--primary btn--thick download-analytics">
-             Image
-         </button>
-         <input type="hidden" name="uri" value="{{absolute  uri}}"/>
-     </form> --}}
-
-    {{!-- <form method="get" action="/generator" class="inline print--hide">
-         <button type="submit" title="Download CSV" class="btn btn--primary btn--thick download-analytics">
-             .csv
-         </button>
-         <input type="hidden" name="format" value="csv"/>
-         <input type="hidden" name="uri" value="{{absolute  uri}}"/>
-     </form> --}}
-
-    {{!-- <form method="get" action="/generator" class="inline print--hide">
-         <button type="submit" title="Download XLS" class="btn btn--primary btn--thick download-analytics">
-             .xls
-         </button>
-         <input type="hidden" name="format" value="xls"/>
-         <input type="hidden" name="uri" value="{{absolute uri}}"/>
-     </form> --}}
-
 </div>

@@ -21,28 +21,17 @@
 		<!--[if lte IE 8]>
 		<link rel="stylesheet" href="{{#if_any (eq 'localhost' location.hostname) (eq '127.0.0.1' location.hostname)}}http://localhost:9000/dist/css/old-ie.css{{else}}/assets/css/old-ie.css{{/if_any}}"/>
 		<![endif]-->
-		<!--[if gt IE 8]><!-->
-		<link rel="stylesheet" type="text/css" href="{{#if is_dev}}http://localhost:9000/dist/css/main.css{{else}}/assets/css/main.css{{/if}}">
+        <!--[if IE 9]>
+              <link rel="stylesheet" type="text/css" href="{{#if is_dev}}http://localhost:9000/dist/css/ie-9.css{{else}}/assets/css/ie-9.css{{/if}}">
+        <![endif]-->
+		<!--[if gt IE 9]><!-->
+        <link rel="stylesheet" type="text/css" href="{{#if is_dev}}http://localhost:9000/dist/css/main.css{{else}}/assets/css/main.css{{/if}}">
 		{{#if pdf_style}}<link rel="stylesheet" type="text/css" href="{{#if is_dev}}http://localhost:9000/dist/css/pdf.css{{else}}/assets/css/pdf.css{{/if}}">{{/if}}
 		{{!-- <link rel="stylesheet" type"text/css" href="{{#if is_dev}}http://localhost:9000/dist/css/print.css{{else}}/assets/css/print.css{{/if}}" media="print"> --}}
 
 		{{!-- <link rel="stylesheet" href="/css/js-enhance.css"/> --}}
 		{{!-- <link rel="stylesheet" href="/css/c3.css"/> --}}
         <![endif]-->
-        <!-- Google Analytics Content Experiment code -->
-        {{#if_eq uri "/economy/inflationandpriceindices"}}{{#unless (eq parameters.test.0 "B")}}<script>function utmx_section(){}function utmx(){}(function(){var
-                k='104040341-0',d=document,l=d.location,c=d.cookie;
-            if(l.search.indexOf('utm_expid='+k)>0)return;
-            function f(n){if(c){var i=c.indexOf(n+'=');if(i>-1){var j=c.
-                    indexOf(';',i);return escape(c.substring(i+n.length+1,j<0?c.
-                    length:j))}}}var x=f('__utmx'),xx=f('__utmxx'),h=l.hash;d.write(
-                    '<sc'+'ript src="'+'http'+(l.protocol=='https:'?'s://ssl':
-                            '://www')+'.google-analytics.com/ga_exp.js?'+'utmxkey='+k+
-                    '&utmx='+(x?x:'')+'&utmxx='+(xx?xx:'')+'&utmxtime='+new Date().
-                            valueOf()+(h?'&utmxhash='+escape(h.substr(1)):'')+
-                    '" type="text/javascript" charset="utf-8"><\/sc'+'ript>')})();
-        </script><script>utmx('url','A/B');</script>{{/unless}}{{/if_eq}}
-        <!-- End of Google Analytics Content Experiment code -->
 	</head>
 	<body>
 		{{#if is_dev}}
