@@ -15,7 +15,7 @@ import javax.ws.rs.GET;
 @Api
 public class Rss {
 
-	private static final String MIME_TYPE = "application/xml; charset=ISO-8859-1";
+	private static final String MIME_TYPE = "application/rss+xml; charset=ISO-8859-1";
 
 	private final RssService rssService = RssService.getInstance();
 	private RssSearchFilter.Builder filterBuilder = new RssSearchFilter.Builder();
