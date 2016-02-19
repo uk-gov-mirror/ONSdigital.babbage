@@ -21,7 +21,7 @@
 {{!-- Inheritence --}}
 
 {{#if_eq type "article"}}
-    {{> content/base/publication typeLabel="Article"}}
+    {{> content/base/publication typeLabel=labels.article}}
 {{else}}
-    {{> content/base/publication-download typeLabel="Article"}}
+    {{> content/base/publication-download typeLabel=labels.article}}
 {{/if_eq}}

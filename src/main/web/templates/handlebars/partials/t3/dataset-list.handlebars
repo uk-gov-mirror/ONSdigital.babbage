@@ -1,6 +1,6 @@
 <div class="col-wrap">
 	<div class="col">
-		<h2 id="datasets">Datasets related to {{description.title}}</h2>
+		<h2 id="datasets">{{labels.datasets-related-to}} {{description.title}}</h2>
 	</div>
 </div>
 <ul class="tiles__list margin-top--half">
@@ -25,4 +25,4 @@
 		</li>
 	{{/loop}}
 </ul>
-<a href="{{uri}}/datalist?filter=datasets" class="btn btn--primary btn--full-width">View all datasets related to {{description.title}}</a>
+<a href="{{uri}}/datalist?filter=datasets" class="btn btn--primary btn--full-width">{{labels.view-all-datasets-related-to}} {{description.title}}</a>

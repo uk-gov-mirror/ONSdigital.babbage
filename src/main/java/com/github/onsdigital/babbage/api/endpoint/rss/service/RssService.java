@@ -11,6 +11,7 @@ import com.github.onsdigital.babbage.util.ThreadContext;
 import com.sun.syndication.feed.synd.SyndEntry;
 import com.sun.syndication.feed.synd.SyndFeed;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -30,11 +31,17 @@ import static com.github.onsdigital.babbage.util.RequestUtil.Location;
 public class RssService {
 
 	private static final String RSS_TYPE_KEY = "rss.type";
+	private static final String RSS_CALENDAR_PUBLISHED_TITLE_KEY = "rss.calendar.published.title";
+	private static final String RSS_CALENDAR_UPCOMING_TITLE_KEY = "rss.calendar.upcoming.title";
+	private static final String RSS_CALENDAR_TITLE_TWO = "rss.calendar.title.two";
 	private static final RssService INSTANCE = new RssService();
 	private static final RssSearchService rssSearchService = RssSearchService.getInstance();
 
 	private final PropertiesService propertiesService;
 	private String rssType;
+	private String calendarUpcomingTitle;
+	private String calendarPublishedTitle;
+	private String calendarTitleTwo;
 
 	public static RssService getInstance() {
 		return RssService.INSTANCE;
@@ -43,6 +50,9 @@ public class RssService {
 	private RssService() {
 		this.propertiesService = PropertiesService.getInstance();
 		this.rssType = propertiesService.get(RSS_TYPE_KEY);
+		this.calendarUpcomingTitle = propertiesService.get(RSS_CALENDAR_UPCOMING_TITLE_KEY);
+		this.calendarPublishedTitle = propertiesService.get(RSS_CALENDAR_PUBLISHED_TITLE_KEY);
+		this.calendarTitleTwo = propertiesService.get(RSS_CALENDAR_TITLE_TWO);
 	}
 
 	public SyndFeed getFeed(RssSearchFilter filter) {
@@ -50,7 +60,7 @@ public class RssService {
 		return generateSyndFeed(rssSearchService.search(queries), filter);
 	}
 
-	private SyndFeed generateSyndFeed(Optional<SearchResult> results, RssSearchFilter filter) {
+	public SyndFeed generateSyndFeed(Optional<SearchResult> results, RssSearchFilter filter) {
 		return new SyndFeedBuilder()
 				.type(rssType)
 				.link(((Location) ThreadContext.getData(LOCATION_KEY)).getHost())
@@ -58,6 +68,27 @@ public class RssService {
 				.entries(searchResultsToSyndEntries(results))
 				.title(filter)
 				.build();
+	}
+
+	public SyndFeed generateCalendarSyndFeed(Optional<SearchResult> results, HttpServletRequest request) {
+		StringBuilder title = new StringBuilder(calendarTitle(request));
+
+		String query;
+		if ((query = request.getParameter("query")) != null) {
+			title.append(" ").append(String.format(calendarTitleTwo, query));
+		}
+
+		return new SyndFeedBuilder()
+				.type(rssType)
+				.link(((Location) ThreadContext.getData(LOCATION_KEY)).getHost())
+				.category(title.toString())
+				.entries(searchResultsToSyndEntries(results))
+				.title(title.toString())
+				.build();
+	}
+
+	private String calendarTitle(HttpServletRequest request) {
+		return "upcoming".equalsIgnoreCase(request.getParameter("view")) ? calendarUpcomingTitle : calendarPublishedTitle;
 	}
 
 	/**

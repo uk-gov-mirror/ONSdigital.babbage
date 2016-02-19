@@ -1,22 +1,22 @@
 {{!-- Used on search and list page results to dynamically map type codes in foud results to labels --}}
-{{#if_eq type_code "bulletin"}}statistical bulletin{{#if plural}}s{{/if}}{{/if_eq}}
-{{#if_eq type_code "article"}}article{{#if plural}}s{{/if}}{{/if_eq}}
-{{#if_eq type_code "article_download"}}article{{#if plural}}s{{/if}}{{/if_eq}}
-{{#if_eq type_code "timeseries"}}time series{{/if_eq}}
+{{#if_eq type_code "bulletin"}}{{labels.statistical-bulletin}}{{#if plural}}s{{/if}}{{/if_eq}}
+{{#if_eq type_code "article"}}{{labels.article}}{{#if plural}}s{{/if}}{{/if_eq}}
+{{#if_eq type_code "article_download"}}{{labels.article}}{{#if plural}}s{{/if}}{{/if_eq}}
+{{#if_eq type_code "timeseries"}}{{labels.time-series}}{{/if_eq}}
 {{#if_eq type_code "data_slice"}}data slice{{#if plural}}s{{/if}}{{/if_eq}}
-{{#if_eq type_code "compendium_landing_page"}}compend{{#if plural}}iums{{else}}ium{{/if}}{{/if_eq}}
-{{#if_eq type_code "compendium_chapter"}}compend{{#if plural}}iums{{else}}ium{{/if}}{{/if_eq}}
-{{#if_eq type_code "compendium_data"}}datasets{{/if_eq}}
-{{#if_eq type_code "reference_tables"}}datasets{{/if_eq}}
-{{#if_eq type_code "dataset"}}datasets{{/if_eq}}
-{{#if_eq type_code "dataset_landing_page"}}datasets{{/if_eq}}
-{{#if_eq type_code "timeseries_dataset"}}datasets{{/if_eq}}
+{{#if_eq type_code "compendium_landing_page"}}{{labels.compendium}}{{#if plural}}s{{/if}}{{/if_eq}}
+{{#if_eq type_code "compendium_chapter"}}{{labels.compendium}}{{#if plural}}s{{/if}}{{/if_eq}}
+{{#if_eq type_code "compendium_data"}}{{labels.datasets}}{{/if_eq}}
+{{#if_eq type_code "reference_tables"}}{{labels.datasets}}{{/if_eq}}
+{{#if_eq type_code "dataset"}}{{labels.datasets}}{{/if_eq}}
+{{#if_eq type_code "dataset_landing_page"}}{{labels.datasets}}{{/if_eq}}
+{{#if_eq type_code "timeseries_dataset"}}{{labels.datasets}}{{/if_eq}}
 {{#if_eq type_code "static_landing_page"}}{{/if_eq}}
 {{#if_eq type_code "static_page"}}{{/if_eq}}
 {{#if_eq type_code "static_article"}}article{{#if plural}}s{{/if}}{{/if_eq}}
-{{#if_eq type_code "static_methodology"}}methodolog{{#if plural}}ies{{else}}y{{/if}}{{/if_eq}}
-{{#if_eq type_code "static_methodology_download"}}methodolog{{#if plural}}ies{{else}}y{{/if}}{{/if_eq}}
+{{#if_eq type_code "static_methodology"}}{{labels.methodology}}{{#if plural}}ies{{else}}y{{/if}}{{/if_eq}}
+{{#if_eq type_code "static_methodology_download"}}{{labels.methodology}}{{#if plural}}ies{{else}}y{{/if}}{{/if_eq}}
 {{#if_eq type_code "static_qmi"}}QMI{{/if_eq}}
-{{#if_eq type_code "static_adhoc"}}user requested data{{/if_eq}}
+{{#if_eq type_code "static_adhoc"}}{{labels.user-requested-data}}{{/if_eq}}
 {{#if_eq type_code "static_foi"}}FOI{{#if plural}}s{{/if}}{{/if_eq}}
 {{#if_eq type_code "release"}}release{{#if plural}}s{{/if}}{{/if_eq}}

@@ -27,7 +27,7 @@ public class PDFGenerator {
 
     public static Path generatePdf(String uri, String fileName, Map<String, String> cookies, String pdfTable) {
         String[] command = {
-                Configuration.PHANTOMJS.getPhantomjsPath(), "src/main/web/js/generatepdf.js", URL + uri + "?pdf=1", "" + TEMP_DIRECTORY_PATH + "/" + fileName + ".pdf"
+                Configuration.PHANTOMJS.getPhantomjsPath(), "target/web/js/generatepdf.js", URL + uri + "?pdf=1", "" + TEMP_DIRECTORY_PATH + "/" + fileName + ".pdf"
         };
 
         Iterator<Map.Entry<String, String>> iterator = cookies.entrySet().iterator();

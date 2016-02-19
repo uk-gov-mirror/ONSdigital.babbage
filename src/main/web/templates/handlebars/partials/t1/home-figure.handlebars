@@ -1,154 +1,99 @@
-{{!-- home figure --}}
-{{#if_eq ratio "1:1"}}
-    <article class="">
-
-        <div class="">
-            {{#resolve this.theme.uri filter="title"}}
-            {{!-- <h2 class="tiles__title-h2"><a href="{{uri}}">{{title}}</a></h2> --}}
-            {{!-- <h2 class="tiles__title-h2">{{title}}</h2> --}}
-            {{/resolve}}
-
-            {{#resolve this.statistics.uri }}
-
-                <dl class="box__content box__content--homepage padding-top-md--14 padding-right-md--1 padding-bottom-md--0 padding-left-md--0 height--23">
-                    <dt class="tiles__title-dt margin-left-sm--1 margin-left-md--1">
-                        <a class="font-size--14" href="{{uri}}">{{description.title}}</a>
-                    </dt>
-                    <!-- change to dd's -->
-                    <dd class="margin-left-sm--1 margin-left-md--1">
-                        <a class="js-enhance--hide" href="{{statistics.uri}}">More info</a>
-                        <div class="sparkline-holder width-lg--14 height--16">
-                            {{> partials/highcharts/sparkline}}
-                        </div>
-                    </dd>
-                </dl>
-            {{/resolve}}
+{{!-- figure and details repeated in each tile --}}
+{{#partial "block-home-figure-details"}}
+    <dt class="tiles__title-dt margin-left-sm--1 margin-left-md--1">
+        <a href="{{uri}}">{{description.title}}</a>
+    </dt>
+    <!-- change to dd's -->
+    <dd class="margin-left-sm--1 margin-left-md--1">
+        <span class="tiles__preunit--home">{{description.preUnit}}</span>
+        <span class="tiles__figure--home stat__figure-enhance">{{description.number}}</span>
+        <span class="tiles__unit--home">{{description.unit}}</span>
+                <span class="tiles__date--home">
+                    {{#if description.monthLabelStyle}}
+                        {{#last months}}
+                            {{label}}
+                        {{/last}}
+                    {{else}}
+                        {{description.date}}
+                    {{/if}}
+                </span>
+        <a class="js-enhance--hide" href="{{statistics.uri}}">More info</a>
+        <div class="sparkline-holder {{#unless (eq ratio "2:2")}}width-lg--14{{/unless}}">
+            {{> partials/highcharts/sparkline}}
         </div>
+    </dd>
+{{/partial}}
 
-        {{!-- <footer class="nav-panel__footer-home-hero">
-        {{#resolve sections.0.theme.uri filter="title"}}
-            <a href="{{theme.uri}}">Explore {{title}}</a>
-        {{/resolve}}
-        </footer> --}}
-    </article>
+
+{{!-- different home figure tile ratios --}}
+{{#if_eq ratio "1:1"}}
+
+    {{#resolve this.statistics.uri}}
+
+        <dl class="box__content box__content--homepage padding-top-md--14 padding-right-md--1 padding-bottom-md--0 padding-left-md--0 height--23">
+            <dt class="tiles__title-dt margin-left-sm--1 margin-left-md--1">
+                <a class="font-size--14" href="{{uri}}">{{description.title}}</a>
+            </dt>
+            <!-- change to dd's -->
+            <dd class="margin-left-sm--1 margin-left-md--1">
+                <a class="js-enhance--hide" href="{{statistics.uri}}">More info</a>
+                <div class="sparkline-holder width-lg--14 height--16">
+                    {{> partials/highcharts/sparkline}}
+                </div>
+            </dd>
+        </dl>
+    {{/resolve}}
+
+    {{!-- <footer class="nav-panel__footer-home-hero">
+    {{#resolve sections.0.theme.uri filter="title"}}
+        <a href="{{theme.uri}}">Explore {{title}}</a>
+    {{/resolve}}
+    </footer> --}}
 {{/if_eq}}
 
 {{#if_eq ratio "1:2"}}
-	<article class="">
+    {{#resolve this.statistics.uri }}
 
-        <div class="">
-            {{#resolve this.theme.uri filter="title"}}
-            {{!-- <h2 class="tiles__title-h2"><a href="{{uri}}">{{title}}</a></h2> --}}
-            {{!-- <h2 class="tiles__title-h2">{{title}}</h2> --}}
-            {{/resolve}}
+    <dl class="box__content box__content--homepage padding-top-sm--24 padding-top-md--24 padding-right-md--1 padding-bottom-md--0 padding-left-md--0 height--46">
+        {{#block "block-home-figure-details"}}{{/block}}
+    </dl>
+    {{/resolve}}
 
-            {{#resolve this.statistics.uri }}
-
-            <dl class="box__content box__content--homepage padding-top-sm--24 padding-top-md--24 padding-right-md--1 padding-bottom-md--0 padding-left-md--0 height--46">
-                <dt class="tiles__title-dt margin-left-sm--1 margin-left-md--1">
-                <a href="{{uri}}">{{description.title}}</a>
-                </dt>
-                <!-- change to dd's -->
-                <dd class="margin-left-sm--1 margin-left-md--1">
-                    <span class="tiles__preunit--home">{{description.preUnit}}</span>
-                    <span class="tiles__figure--home stat__figure-enhance">{{description.number}}</span>
-                    <span class="tiles__unit--home">{{description.unit}}</span>
-                    <span class="tiles__date--home">
-                        {{description.date}}
-                    </span>
-                    <a class="js-enhance--hide" href="{{statistics.uri}}">More info</a>
-                    <div class="sparkline-holder">
-                    {{> partials/highcharts/sparkline}}
-                    </div>
-                </dd>
-            </dl>
-            {{/resolve}}
-        </div>
-
-        {{!-- <footer class="nav-panel__footer-home-hero">
-        {{#resolve sections.0.theme.uri filter="title"}}
-            <a href="{{theme.uri}}">Explore {{title}}</a>
-        {{/resolve}}
-        </footer> --}}
-    </article>
+    {{!-- <footer class="nav-panel__footer-home-hero">
+    {{#resolve sections.0.theme.uri filter="title"}}
+        <a href="{{theme.uri}}">Explore {{title}}</a>
+    {{/resolve}}
+    </footer> --}}
 {{/if_eq}}
 
 {{#if_eq ratio "2:2"}}
-	<article class="">
 
-        <div class="">
-            {{#resolve this.theme.uri filter="title"}}
-            {{!-- <h2 class="tiles__title-h2"><a href="{{uri}}">{{title}}</a></h2> --}}
-            {{!-- <h2 class="tiles__title-h2">{{title}}</h2> --}}
-            {{/resolve}}
+    {{#resolve this.statistics.uri }}
 
-            {{#resolve this.statistics.uri }}
+    <dl class="box__content box__content--homepage padding-top-sm--24 padding-top-md--24 padding-right-md--1 padding-bottom-md--0 padding-left-md--0 height--46">
+        {{#block "block-home-figure-details"}}{{/block}}
+    </dl>
+    {{/resolve}}
 
-            <dl class="box__content box__content--homepage padding-top-sm--24 padding-top-md--24 padding-right-md--1 padding-bottom-md--0 padding-left-md--0 height--46">
-                <dt class="tiles__title-dt margin-left-sm--1 margin-left-md--1">
-                <a href="{{uri}}">{{description.title}}</a>
-                </dt>
-                <!-- change to dd's -->
-                <dd class="margin-left-sm--1 margin-left-md--1">
-                    <span class="tiles__preunit--home">{{description.preUnit}}</span>
-                    <span class="tiles__figure--home stat__figure-enhance">{{description.number}}</span>
-                    <span class="tiles__unit--home">{{description.unit}}</span>
-                    <span class="tiles__date--home">
-                        {{description.date}}
-                    </span>
-                    <a class="js-enhance--hide" href="{{statistics.uri}}">More info</a>
-                    <div class="sparkline-holder">
-                        {{> partials/highcharts/sparkline}}
-                    </div>
-                </dd>
-            </dl>
-            {{/resolve}}
-        </div>
-
-        {{!-- <footer class="nav-panel__footer-home-hero">
-        {{#resolve sections.0.theme.uri filter="title"}}
-            <a href="{{theme.uri}}">Explore {{title}}</a>
-        {{/resolve}}
-        </footer> --}}
-    </article>
+    {{!-- <footer class="nav-panel__footer-home-hero">
+    {{#resolve sections.0.theme.uri filter="title"}}
+        <a href="{{theme.uri}}">Explore {{title}}</a>
+    {{/resolve}}
+    </footer> --}}
 {{/if_eq}}
 
 {{#if_eq ratio "2:1"}}
-    <article class="">
 
-        <div class="">
-            {{#resolve this.theme.uri filter="title"}}
-            {{!-- <h2 class="tiles__title-h2"><a href="{{uri}}">{{title}}</a></h2> --}}
-            {{!-- <h2 class="tiles__title-h2">{{title}}</h2> --}}
-            {{/resolve}}
+    {{#resolve this.statistics.uri}}
 
-            {{#resolve this.statistics.uri}}
+        <dl class="box__content box__content--homepage height-md--48 height-lg--23 padding-top-sm--24 padding-top-md--24 padding-top-lg--0 padding-right-md--1 padding-bottom-md--0 padding-left-lg--14">
+            {{#block "block-home-figure-details"}}{{/block}}
+        </dl>
+    {{/resolve}}
 
-                <dl class="box__content box__content--homepage height-md--48 height-lg--23 padding-top-sm--24 padding-top-md--24 padding-top-lg--0 padding-right-md--1 padding-bottom-md--0 padding-left-lg--14">
-                    <dt class="tiles__title-dt margin-left-sm--1 margin-left-md--1">
-                        <a href="{{uri}}">{{description.title}}</a>
-                    </dt>
-                    <!-- change to dd's -->
-                    <dd class="margin-left-sm--1 margin-left-md--1">
-                        <span class="tiles__preunit--home">{{description.preUnit}}</span>
-                        <span class="tiles__figure--home stat__figure-enhance">{{description.number}}</span>
-                        <span class="tiles__unit--home">{{description.unit}}</span>
-                        <span class="tiles__date--home">
-                            {{description.date}}
-                        </span>
-                        <a class="js-enhance--hide" href="{{statistics.uri}}">More info</a>
-                        <div class="sparkline-holder width-lg--14">
-                            {{> partials/highcharts/sparkline}}
-                        </div>
-                    </dd>
-                </dl>
-            {{/resolve}}
-        </div>
-
-        {{!-- <footer class="nav-panel__footer-home-hero">
-        {{#resolve sections.0.theme.uri filter="title"}}
-            <a href="{{theme.uri}}">Explore {{title}}</a>
-        {{/resolve}}
-        </footer> --}}
-    </article>
+    {{!-- <footer class="nav-panel__footer-home-hero">
+    {{#resolve sections.0.theme.uri filter="title"}}
+        <a href="{{theme.uri}}">Explore {{title}}</a>
+    {{/resolve}}
+    </footer> --}}
 {{/if_eq}}

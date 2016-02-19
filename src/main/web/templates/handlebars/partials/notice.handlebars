@@ -5,7 +5,7 @@
 		{{#if has-corrections}}
 			<section class="show-hide__content alert--warning__content section__content--markdown">
 				{{#if_all has-corrections has-alerts}}
-					<h3 class="alert--notice__title">Corrections</h3>
+					<h3 class="alert--notice__title">{{labels.corrections}}</h3>
 				{{/if_all}}
 				{{#each alerts}}
 					{{#if_eq type "correction"}}
@@ -18,7 +18,7 @@
 		{{#if has-alerts}}
 			<section class="show-hide__content alert--warning__content section__content--markdown">
 				{{#if_all has-corrections has-alerts}}
-					<h3 class="alert--notice__title">Notices</h3>
+					<h3 class="alert--notice__title">{{labels.notices}}</h3>
 				{{/if_all}}
 				{{#each alerts}}
 					{{#if_eq type "alert"}}
@@ -34,7 +34,7 @@
 		{{!-- Normal alerts --}}
 		<section class="show-hide__content alert--warning__content section__content--markdown">
 			{{#if_all versions alerts}}
-				<h3 class="alert--notice__title">Notices</h3>
+				<h3 class="alert--notice__title">{{labels.notices}}</h3>
 			{{/if_all}}
 			{{#each alerts}}
 				<p class="alert__date">{{df date}}</p>

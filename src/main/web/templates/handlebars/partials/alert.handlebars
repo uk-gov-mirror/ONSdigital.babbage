@@ -30,12 +30,12 @@
 
 									{{!-- Lots of 'if's to handle combinations of corrections or notices --}}
 									{{#if_all has-corrections has-alerts}}
-										Corrections and notices
+										{{labels.corrections-and-notices}}
 									{{else}}
 										{{#if has-corrections}}
-											Correction{{#if_ne alerts 1}}s{{/if_ne}}
+                                            {{#if_ne alerts 1}}{{labels.correction}}{{else}}{{labels.corrections}}{{/if_ne}}
 										{{else}}
-											Notice{{#if_ne alerts 1}}s{{/if_ne}}
+                                            {{#if_ne alerts 1}}{{labels.notice}}{{else}}{{labels.notices}}{{/if_ne}}
 										{{/if}}
 									{{/if_all}}
 								</h2>
@@ -73,12 +73,12 @@
 										<h2 class="show-hide__title alert--warning__title">
 											{{!-- Lots of 'if's to handle plurals and combinations of corrections or notices --}}
 											{{#if_all versions alerts}}
-												Corrections and notices
+												{{labels.corrections-and-notices}}
 											{{else}}
 												{{#if versions}}
-													Correction{{#if_ne versions.size 1}}s{{/if_ne}}
+													{{#if_ne versions.size 1}}{{labels.correction}}{{labels.corrections}}{{/if_ne}}
 												{{else}}
-													Notice{{#if_ne alerts.size 1}}s{{/if_ne}}
+                                                    {{#if_ne alerts.size 1}}{{labels.notice}}{{else}}{{labels.notices}}{{/if_ne}}
 												{{/if}}
 											{{/if_all}}
 										</h2>
@@ -116,7 +116,7 @@
 								{{#if (endsWith (parentPath uri) "previous")}}
 									<div class="alert--warning">
 										<div class="alert--warning__icon"></div>
-										<h2 class="alert--warning__title">This has been superseded</h2> <a class="btn btn--primary print--hide alert--warning__content" href="{{parentPath (parentPath uri)}}">View corrected version</a>
+										<h2 class="alert--warning__title">{{labels.this-has-been-superseded}}</h2> <a class="btn btn--primary print--hide alert--warning__content" href="{{parentPath (parentPath uri)}}">{{labels.view-corrected-version}}</a>
 									</div>
 								{{/if}}
 
@@ -127,7 +127,7 @@
 										<div class="js-show-hide__title">
 
                                             <span class="icon icon-info icon-info--info-box"></span>
-											<h2 class="show-hide__title alert--warning__title">Correction</h2>
+											<h2 class="show-hide__title alert--warning__title">{{labels.correction}}</h2>
 										</div>
 
 										<div class="js-show-hide__content">
@@ -137,7 +137,7 @@
 														<p class="alert__date">{{df updateDate}}</p>
 														{{md correctionNotice}}
 														<a class="btn btn--tertiary margin-bottom-sm--3 margin-bottom-md--3 print--hide"
-														   href="{{uri}}">View superseded version</a>
+														   href="{{uri}}">{{labels.view-superseded-version}}</a>
 													{{/if}}
 												{{/each}}
 											</section>

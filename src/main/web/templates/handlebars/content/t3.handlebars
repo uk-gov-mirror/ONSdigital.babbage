@@ -4,27 +4,27 @@
     <div class="wrapper">
         <div class="col-wrap">
             <nav class="nav-secondary nav-secondary--border-right-lg col col--lg-half">
-                <h2 class="nav-secondary__title">On this page:</h2>
+                <h2 class="nav-secondary__title">{{labels.on-this-page}}:</h2>
                 <ul class="nav-secondary__list">
                     {{resolve items.0.uri assign="data"}}
                     {{!-- <li class="nav-secondary__item"><a href="#latest-publication" class="jsEnhanceAnimateScroll">Highlights</a></li> --}}
                     {{#if items}}
-                        <li class="nav-secondary__item"><a href="#timeseries" class="jsEnhanceAnimateScroll">Time series</a></li>
+                        <li class="nav-secondary__item"><a href="#timeseries" class="jsEnhanceAnimateScroll">{{labels.time-series}}</a></li>
                     {{/if}}
                     {{#if datasets}}
-                        <li class="nav-secondary__item"><a href="#datasets" class="jsEnhanceAnimateScroll">Datasets</a></li>
+                        <li class="nav-secondary__item"><a href="#datasets" class="jsEnhanceAnimateScroll">{{labels.dataset}}</a></li>
                     {{/if}}
-                    <li class="nav-secondary__item"><a href="#publications" class="jsEnhanceAnimateScroll">Publications</a></li>
+                    <li class="nav-secondary__item"><a href="#publications" class="jsEnhanceAnimateScroll">{{labels.publications}}</a></li>
                     {{#if_any relatedMethodology relatedMethodologyArticles}}
-                        <li class="nav-secondary__item"><a href="#methodology" class="jsEnhanceAnimateScroll">Methodology</a></li>
+                        <li class="nav-secondary__item"><a href="#methodology" class="jsEnhanceAnimateScroll">{{labels.methodology}}</a></li>
                     {{/if_any}}
                 </ul>
             </nav>
             <nav class="nav-secondary col col--lg-half">
-                <h2 class="nav-secondary__title">View all content related to this topic:</h2>
+                <h2 class="nav-secondary__title">{{labels.view-all-content-related-to-this-topic}}:</h2>
                 <ul class="nav-secondary__list">
-                    {{#if_any items datasets}}<li class="nav-secondary__item"><a href="{{uri}}/datalist">All data</a></li>{{/if_any}}
-                    <li class="nav-secondary__item"><a href="{{uri}}/publications">All publications</a></li>
+                    {{#if_any items datasets}}<li class="nav-secondary__item"><a href="{{uri}}/datalist">{{labels.all-data}}</a></li>{{/if_any}}
+                    <li class="nav-secondary__item"><a href="{{uri}}/publications">{{labels.all-publications}}</a></li>
                 </ul>
             </nav>
         </div> {{!-- /col-wrap --}}
@@ -41,7 +41,7 @@
 				<div class="tiles">
 					<div class="col-wrap">
 						<div class="col">
-							<h2>Highlights</h2>
+							<h2>{{labels.highlights}}</h2>
 						</div>
 						{{resolve statsBulletins.0.uri filter="description" assign="bulletin"}}
 						{{#if bulletin}}
@@ -79,11 +79,10 @@
                                         </ul>
                                     </div>
                                     <div class="background--iron-light box__content height--7{{#if_any data.years data.quarters data.months}} width--50{{/if_any}} border-top--iron-sm border-top--iron-md padding-top-sm--1 padding-left-sm--1 padding-top-md--1 padding-left-md--1">
-                                        <a href="{{bulletin.uri}}" class="block">Read this statistical bulletin</a>
+                                        <a href="{{bulletin.uri}}" class="block">{{labels.read-this-stats-bulletin}}</a>
                                     </div>
                                 </div>
-								<a href="#publications" class="btn btn--primary btn--full-width margin-top--2 jsEnhanceAnimateScroll">More
-									publications</a>
+								<a href="#publications" class="btn btn--primary btn--full-width margin-top--2 jsEnhanceAnimateScroll">{{labels.more-publications}}</a>
 							</div>
 						{{/if}}
 					</div>
@@ -112,13 +111,12 @@
         <div class="wrapper">
             <div id="user-requested-container" class="section-container">
                 {{!-- User requested data --}}
-                <h2 id="user-requested" class="section-title">User requested data</h2>
-                <div class="background--iron-light margin-bottom-sm--2 margin-bottom-md--5 js-hover-click">
-
+                <h2 id="user-requested" class="section-title">{{labels.user-requested-data}}</h2>
+                <div class="background--iron-light margin-bottom-sm--4 margin-bottom-md--4 js-hover-click">
                     <div class="box__content padding-top-sm--3 padding-bottom-sm--2 padding-left-sm--1 padding-right-sm--1 padding-top-md--3 padding-right-md--1 padding-bottom-md--2 padding-left-md--1">
                         <span class="icon icon-arrow-right--dark float-right margin-top-md--2 margin-top-sm--2"></span>
-                        <h3>Looking for our user requested data?</h3>
-                        <p><a href="{{uri}}/datalist?sortBy=release_date&filter=user_requested_data">We also produce statistics not included in our standard publications</a></p>
+                        <h3>{{labels.looking-for-our-user-requested-data}}</h3>
+                        <p><a href="{{uri}}/datalist?sortBy=release_date&filter=user_requested_data">{{labels.we-also-produce-data-not-included-in-our-standard-publications}}</a></p>
                     </div>
 
                 </div>
@@ -132,7 +130,7 @@
 		<div class="wrapper">
 			<div class="col-wrap">
 				<div class="col">
-					<h2 id="publications">Publications related to {{description.title}}</h2>
+					<h2 id="publications">{{labels.publications-related-to}} {{description.title}}</h2>
 				</div>
 			</div>
 			{{!-- Latest statistical bulletins --}}
@@ -153,7 +151,7 @@
 			<div class="col-wrap">
 				<div class="col col--lg-two-thirds">
 					<div class="tiles__item tiles__item--nav-type flush-col">
-						<h2 id="methodology" class="tiles__title-h2 tiles__title-h2--nav font-size--h3">Methodology related to {{description.title}}</h2>
+						<h2 id="methodology" class="tiles__title-h2 tiles__title-h2--nav font-size--h3">{{labels.methodology-related-to}} {{description.title}}</h2>
 						<ul class="tiles__content tiles__content--nav list--neutral">
 							{{#each relatedMethodology}}
 							{{#resolve this.uri filter="description"}}
