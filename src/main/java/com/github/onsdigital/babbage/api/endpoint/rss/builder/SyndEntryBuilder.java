@@ -79,7 +79,6 @@ public class SyndEntryBuilder {
 			result = (String) nestedMap.get(node);
 			break;
 		}
-		return requireNonNull(result, String.format("Expected field '%s' in search results but none not found.",
-				field.fieldName()));
+		return result;
 	}
 }

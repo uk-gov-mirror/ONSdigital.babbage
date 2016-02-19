@@ -164,6 +164,17 @@
                 {{!-- Related data --}}
 				{{> partials/related/new-data showDataList=true relatedUri="../datalist?filter=datasets" relatedTitle="parent"}}
 
+                {{!-- Time series explorer --}}
+                {{#if timeseries}}
+                    <div class="background--iron-light margin-bottom-sm--2 margin-bottom-md--2 js-hover-click box__content padding-top-sm--2 padding-bottom-sm--2 padding-left-sm--1 padding-right-sm--1 padding-top-md--2 padding-right-md--1 padding-bottom-md--2 padding-left-md--1">
+                        <h3>Looking to create a custom download?</h3>
+                        <p>
+                            <a href="/timeseriestool?topic={{parentPath (parentPath uri)}}">Try our time series
+                                explorer</a>
+                        </p>
+                    </div>
+                {{/if}}
+
                 {{!-- Related articles and bulletins --}}
                 {{> partials/related/documents }}
 
@@ -174,7 +185,7 @@
 				{{> partials/contact }}
 
 				{{!-- Local stats tile --}}
-                {{> partials/local-box}}
+                {{!-- {{> partials/local-box}} --}}
 
             </div>
         </div>

@@ -62,39 +62,31 @@
                     </div>
                 </div>
                 <div class="col col--md-23 col--lg-29 height-sm--48 height-md--23 background--white margin-left-md--1 margin-bottom--2 js-hover-click">
-                    <article class="">
+                    {{!-- <article class="">
+                         {{#resolve sections.2.statistics.uri}}
 
-                        <div class="">
-                            {{#resolve sections.2 filter="title"}}
-                            {{!-- <h2 class="tiles__title-h2"><a href="{{uri}}">{{title}}</a></h2> --}}
-                            {{!-- <h2 class="tiles__title-h2">{{title}}</h2> --}}
-                            {{/resolve}}
-
-                            {{#resolve sections.2.statistics.uri}}
-
-                                <dl class="box__content box__content--homepage height-md--23 padding-top-sm--24 padding-right-md--1 padding-bottom-md--0 padding-left-md--11 padding-left-lg--14">
-                                    <dt class="tiles__title-dt margin-left-sm--1 margin-left-md--1">
-                                        <a href="{{uri}}">{{description.title}}</a>
-                                    </dt>
-                                    <!-- change to dd's -->
-                                    <dd class="margin-left-sm--1 margin-left-md--1">
-                                        <span class="tiles__preunit--home">{{description.preUnit}}</span>
-                                        <span class="tiles__figure--home stat__figure-enhance">{{description.number}}</span>
-                                        <span class="tiles__unit--home">{{description.unit}}</span>
-                                        </span>
-                                        <span class="tiles__date--home">
-                                            {{description.date}}
-                                        </span>
-                                        <a class="js-enhance--hide" href="{{statistics.uri}}">More info</a>
-                                        <div class="sparkline-holder width-md--11 width-lg--14">
-                                            {{> partials/highcharts/sparkline}}
-                                        </div>
-                                    </dd>
-                                </dl>
-                            {{/resolve}}
-                        </div>
-                    </article>
-                    {{!-- {{>partials/t1/home-figure sections.2 ratio="2:1"}} --}}
+                             <dl class="box__content box__content--homepage height-md--23 padding-top-sm--24 padding-right-md--1 padding-bottom-md--0 padding-left-md--11 padding-left-lg--14">
+                                 <dt class="tiles__title-dt margin-left-sm--1 margin-left-md--1">
+                                     <a href="{{uri}}">{{description.title}}</a>
+                                 </dt>
+                                 <!-- change to dd's -->
+                                 <dd class="margin-left-sm--1 margin-left-md--1">
+                                     <span class="tiles__preunit--home">{{description.preUnit}}</span>
+                                     <span class="tiles__figure--home stat__figure-enhance">{{description.number}}</span>
+                                     <span class="tiles__unit--home">{{description.unit}}</span>
+                                     </span>
+                                     <span class="tiles__date--home">
+                                         {{description.date}}
+                                     </span>
+                                     <a class="js-enhance--hide" href="{{statistics.uri}}">More info</a>
+                                     <div class="sparkline-holder width-md--11 width-lg--14">
+                                         {{> partials/highcharts/sparkline}}
+                                     </div>
+                                 </dd>
+                             </dl>
+                         {{/resolve}}
+                     </article> --}}
+                    {{>partials/t1/home-figure sections.2 ratio="2:1"}}
                 </div>
                 <div class="col col--md-11 col--lg-14 height-sm--23 height-md--23 background--white margin-left-md--1 margin-bottom--2 js-hover-click">
                     <div class="padding-left--1 padding-right--1 padding-top--2 padding-bottom--1">
@@ -105,29 +97,29 @@
                     </div>
                 </div>
                 <div class="col col--md-35 col--lg-29 height-sm--48 height-md--23 background--white margin-left-md--1 margin-bottom--2 js-hover-click">
-                    <article>
-                        {{#resolve sections.3.statistics.uri}}
-                            <dl class="box__content box__content--homepage height-md--23 padding-top-sm--24 padding-right-md--1 padding-bottom-md--0 padding-left-md--13 padding-left-lg--14">
-                                <dt class="tiles__title-dt margin-left-sm--1 margin-left-md--1">
-                                    <a href="{{uri}}">{{description.title}}</a>
-                                </dt>
-                                <!-- change to dd's -->
-                                <dd class="margin-left-sm--1 margin-left-md--1">
-                                    <span class="tiles__preunit--home">{{description.preUnit}}</span>
-                                    <span class="tiles__figure--home stat__figure-enhance">{{description.number}}</span>
-                                    <span class="tiles__unit--home">{{description.unit}}</span>
-                                    <span class="tiles__date--home">
-                                        {{description.date}}
-                                    </span>
-                                    <a class="js-enhance--hide" href="{{statistics.uri}}">More info</a>
-                                    <div class="sparkline-holder width-md--13 width-lg--14">
-                                        {{> partials/highcharts/sparkline}}
-                                    </div>
-                                </dd>
-                            </dl>
-                        {{/resolve}}
-                    </article>
-                    {{!-- {{>partials/t1/home-figure sections.3 ratio="2:1"}} --}}
+                    {{!-- <article>
+                         {{#resolve sections.3.statistics.uri}}
+                             <dl class="box__content box__content--homepage height-md--23 padding-top-sm--24 padding-right-md--1 padding-bottom-md--0 padding-left-md--13 padding-left-lg--14">
+                                 <dt class="tiles__title-dt margin-left-sm--1 margin-left-md--1">
+                                     <a href="{{uri}}">{{description.title}}</a>
+                                 </dt>
+                                 <!-- change to dd's -->
+                                 <dd class="margin-left-sm--1 margin-left-md--1">
+                                     <span class="tiles__preunit--home">{{description.preUnit}}</span>
+                                     <span class="tiles__figure--home stat__figure-enhance">{{description.number}}</span>
+                                     <span class="tiles__unit--home">{{description.unit}}</span>
+                                     <span class="tiles__date--home">
+                                         {{description.date}}
+                                     </span>
+                                     <a class="js-enhance--hide" href="{{statistics.uri}}">More info</a>
+                                     <div class="sparkline-holder width-md--13 width-lg--14">
+                                         {{> partials/highcharts/sparkline}}
+                                     </div>
+                                 </dd>
+                             </dl>
+                         {{/resolve}}
+                     </article> --}}
+                    {{>partials/t1/home-figure sections.3 ratio="2:1"}}
                 </div>
                 <div class="col height-sm--23 col--md-23 col--lg-14 height--23 background--white margin-left-md--1 margin-bottom--2 js-hover-click">
                     <div class="padding-left--1 padding-right--1 padding-top--2 padding-bottom--1">
@@ -145,7 +137,7 @@
                 <div class="col height-sm--23 col--md-23 col--lg-14 height--23 background--white margin-left-md--1 margin-bottom--2 js-hover-click">
                     <div class="padding-left--1 padding-right--1 padding-top--2 padding-bottom--2">
                          <div class="box__content box__content--homepage padding-top-lg--14 padding-left-sm--10 padding-left-md--12 padding-left-lg--0">
-                             <h2 class="tiles__title-h2--home"><a href="/help/onsreleasecalendar">{{labels.release-calendar}}<span
+                             <h2 class="tiles__title-h2--home"><a href="/onsreleasecalendar">{{labels.release-calendar}}<span
                                      class="image-holder width-sm--9 width-md--11 width-lg--12"><img src="../../img/t1-cal.png" alt=""></span></a></h2>
                              <p class="hide--lg">Find out when our statistics are released and sign-up to receive notifications.</p>
                          </div>
@@ -205,7 +197,7 @@
                     <div class="padding-left--1 padding-right--1 padding-top--2 padding-bottom--2">
                         <div class="box__content box__content--homepage padding-left-sm--10 padding-left-md--15 height-md--19">
                             <h2 class="tiles__title-h2--home"><a
-                                    href="http://www.ons.gov.uk/ons/guide-method/census/index.html">{{labels.census}}</a></h2>
+                                    href="/census">{{labels.census}}</a></h2>
                             <span class="image-holder width-sm--9 width-md--13"><img src="../../img/t1-census-logo.png" alt="Census logo"
                                                                       class="no-border"></span>
                             <p class="tiles__content">{{labels.discover-how-our-census-statistics-help-paint-a-picture-of-the-nation-and-how-we-live}}.</p>

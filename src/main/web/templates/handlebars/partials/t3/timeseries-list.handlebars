@@ -32,8 +32,19 @@
                         {{#if description.unit}}
                         <span class="tiles__unit tiles__unit--list"> {{description.unit}}</span>
                         {{/if}}
-                        {{#if description.date}}
-                        <span class="stat__description">{{description.date}}</span>
+                        {{#if description.monthLabelStyle}}
+                        {{!-- Display custom label styles (eg Labour Market) --}}
+                            {{#last months}}
+                                <span class="stat__description">
+                                    {{label}}
+                                </span>
+                            {{/last}}
+                        {{else}}
+                            {{#if description.date}}
+                                <span class="stat__description">
+                                    {{description.date}}
+                                </span>
+                            {{/if}}
                         {{/if}}
                         <dl class="tiles__dl">
                             <dt class="tiles__dt">{{labels.release-date}}:</dt>

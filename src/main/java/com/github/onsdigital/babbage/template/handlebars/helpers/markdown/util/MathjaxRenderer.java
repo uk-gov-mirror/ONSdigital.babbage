@@ -5,15 +5,11 @@ import com.github.onsdigital.babbage.util.http.ClientConfiguration;
 import com.github.onsdigital.babbage.util.http.PooledHttpClient;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.http.NameValuePair;
 import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import static com.github.onsdigital.babbage.configuration.Configuration.CONTENT_SERVICE.getMaxContentServiceConnection;
 
@@ -52,9 +48,7 @@ public class MathjaxRenderer {
     private String sendPost(String path, String input) {
         CloseableHttpResponse response = null;
         try {
-            List<NameValuePair> parameters = new ArrayList<>();
-            parameters.add(new BasicNameValuePair("input", input));
-            return EntityUtils.toString(client.sendPost(path, new HashMap<String, String>(), parameters).getEntity());
+            return EntityUtils.toString(client.sendPost(path, new HashMap<>(), input).getEntity());
         } catch (IOException e) {
             IOUtils.closeQuietly(response);
             return input;
