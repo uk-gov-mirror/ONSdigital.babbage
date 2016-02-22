@@ -39,8 +39,8 @@
                     <form class="language language--js js-enhance--show">
                         <label class="language--js__label" for="lang">Language:</label>
                         <select class="language--js__select" id="lang" name="lang">
-                            <option value="english" data-url="http://{{replace location.host "cy." ""}}{{uri}}">English (EN)</option>
-                            <option value="welsh" data-url="http://cy.{{replace location.host "cy." ""}}{{uri}}">Cymraeg (CY)</option>
+                            <option value="english" data-url="http://{{replace location.host "cy." ""}}{{uri}}{{> list/partials/parameters}}">English (EN)</option>
+                            <option value="welsh" data-url="http://cy.{{replace location.host "cy." ""}}{{uri}}{{> list/partials/parameters}}">Cymraeg (CY)</option>
                         </select>
                     </form>
                 </div>
