@@ -1,1 +1,1 @@
-{{#if parameters}}?{{#each parameters}}{{@key}}={{this.0}}{{#unless @last}}&{{/unless}}{{/each}}{{/if}}
+{{#each parameters}}{{#if @first}}?{{/if}}{{@key}}={{this.0}}{{#unless @last}}&{{/unless}}{{/each}}
