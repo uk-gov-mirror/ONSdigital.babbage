@@ -1,5 +1,6 @@
 {{#partial "block-content"}}
     <div class="wrapper">
+        {{#if_eq type "compendium_chapter"}}{{> content/partials/compendium-navigation}}{{/if_eq}}
         <div class="col-wrap border-bottom--iron-md">
             {{!--Table of Contents --}}
             {{> content/partials/toc}}

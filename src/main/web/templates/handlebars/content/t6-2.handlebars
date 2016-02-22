@@ -1,101 +1,20 @@
-{{#partial "block-content"}}
-	{{!-- TABLE OF CONTENTS --}}
-	<div class="wrapper">
-        {{> content/partials/compendium-navigation}}
-		<div class="col-wrap">
-			<div class="col table-of-contents print--avoid-break">
-				<!--<p class="print--hide">-->
-                    <!--{{#last breadcrumb}}-->
-					    <!--{{labels.compendium-return}} <a class="underline-link" href="{{uri}}">{{description.title}}</a>-->
-                    <!--{{/last}}-->
-				<!--</p>-->
-                <div class="col-wrap border-bottom--iron-md">
-                    {{!--Table of Contents --}}
-                    {{> content/partials/toc}}
-                    {{!-- Print & PDF --}}
-                    {{> partials/print-options}}
-                </div>
-			</div>
-		</div>
-		{{!-- Content --}}
-		<!-- <div class="col-wrap"> -->
-		<article class="col col--md-36 col--lg-39 page-content__main-content js-sticky-toc__trigger">
-			{{#each sections}}
-			<section id="{{slugify title}}" class="section__content--markdown">
-				<header>
-					<h2><span class="section__content-number">{{@index_1}}.</span> {{title}}</h2>
-				</header>
-				{{md markdown}}
-				<a class="print--hide jsEnhanceAnimateScroll" href="#toc">{{labels.back-to-toc}}</a>
-			</section>
-			{{/each}}
-			<!-- Accordion -->
-			{{#if_any accordion relatedMethodology}}
-			<div class="accordion__container">
-				{{#each accordion}}
-				<section id="{{slugify title}}" class="accordion is-collapsed section__content--markdown">
-					<h2 class="accordion__title" aria-controls="content-{{@index_1}}">
-					<span class="section__content-number">{{nf (add sections.size @index_1)}}.</span>
-					{{title}}
-					</h2>
-					<div class="accordion__content panel--bottom-mar-small" aria-labelledby="sc-{{@index_1}}">
-						{{md markdown}}
-						<a class="print--hide jsEnhanceAnimateScroll" href="#toc" class="">{{labels.back-to-toc}}</a>
-					</div>
-				</section>
-				{{/each}}
-				{{#if relatedMethodology}}
-				<section id="methodology" class="accordion is-collapsed section__content--markdown">
-					<h2 class="accordion__title" aria-controls="content-{{@index_1}}">
-					{{!-- TODO Related methodology number not working --}}
-					{{!-- <span class="section__content-number">{{nf (add sections.size relatedMethodology.size)}}.</span> --}}
-					Methodology
-					</h2>
-					<div class="accordion__content panel--bottom-mar-small" aria-labelledby="sc-{{@index_1}}">
-						<ul class="list--neutral">
-							{{#each relatedMethodology}}
-                                {{#resolve this.uri filter="description"}}
-                                    <li><a href="{{absolute uri}}">{{description.title}}</a></li>
-                                {{/resolve}}
-							{{/each}}
-						</ul>
-						<a class="print--hide jsEnhanceAnimateScroll" href="#toc">{{labels.back-to-toc}}</a>
-					</div>
-				</section>
-				{{/if}}
-			</div>
-			{{/if_any}}
-            <div class="margin-bottom-md--3 margin-top-md--4">
-                {{> content/partials/compendium-navigation}}
-            </div>
-		</article>
-		{{!-- Sidebar --}}
-		<div class="col col--md-11 col--lg-20 margin-top-md--3">
-			{{!-- Related data --}}
-            {{#last breadcrumb}}
-                {{#resolve uri}}
-                    {{#if datasets}}
-                        <a class="btn btn--primary btn--full-width margin-bottom-sm--2 margin-bottom-md--2 border-top--iron-md" href="{{datasets.0.uri}}">View all data in this compendium</a>
-                    {{/if}}
-                {{/resolve}}
-            {{/last}}
-			{{!-- Contact details --}}
-			{{> partials/contact }}
-		</div> {{!-- /col --}}
-		{{!-- Bottom links: related documents and local stats --}}
-		<div class="col-wrap">
-			{{#if relatedDocuments}}
-			<div class="col col--md-half col--lg-two-thirds">
-				{{> partials/related/documents }}
-			</div>
-			{{/if}}
-			<div class="col col--md-half col--lg-one-third">
-				{{> partials/local-box}}
-			</div>
-		</div>
-	</div>
+{{#partial "publication-sidebar"}}
+    {{!-- Related data --}}
+    {{#last breadcrumb}}
+        {{#resolve uri}}
+            {{#if datasets}}
+                <a class="btn btn--primary btn--full-width margin-bottom-sm--2 margin-bottom-md--2 border-top--iron-md" href="{{datasets.0.uri}}">{{labels.view-all-data-in-this-compendium}}</a>
+            {{/if}}
+        {{/resolve}}
+    {{/last}}
+
+    {{!-- Related documents --}}
+    {{> partials/related/documents }}
+    {{!-- Contact details --}}
+    {{> partials/contact }}
+
 {{/partial}}
 
 
 {{!-- Inheriting from statistics template --}}
-{{> content/base/statistics typeLabel="Compendium"}}
+{{> content/base/publication typeLabel=labels.compendium}}
