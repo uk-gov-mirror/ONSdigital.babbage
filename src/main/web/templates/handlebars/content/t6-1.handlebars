@@ -57,7 +57,7 @@
 
     {{!-- Related boxes --}}
     {{#if_any relatedDocuments relatedData relatedMethodology}}
-        <h2>Related</h2>
+        <h2>{{labels.related}}</h2>
         <div class="col-wrap margin-bottom-sm--2 margin-bottom-md--4">
             {{#if_any relatedData relatedDatasets}}
                 <div class="col {{#if_all relatedDocuments relatedData relatedMethodology}}col--lg-one-third {{else}}col--lg-half{{/if_all}}">
