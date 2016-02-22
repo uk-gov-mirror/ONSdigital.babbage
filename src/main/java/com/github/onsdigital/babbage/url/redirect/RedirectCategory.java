@@ -27,7 +27,7 @@ public enum RedirectCategory {
 	GENERAL_REDIRECT();
 
 	private static final String TAXONOMY_URI = "/ons/taxonomy";
-	private static final String DATA_EXPLORER_URI = "/ons/data/";
+	private static final String DATA_EXPLORER_URI = "/ons/data";
 	private static final String GENERAL_URI = "/ons/";
 
 	private final String parameter;

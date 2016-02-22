@@ -8,7 +8,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Map;
-import java.util.TreeMap;
+import java.util.Optional;
 
 import static com.github.onsdigital.babbage.url.redirect.RedirectCategory.TAXONOMY_REDIRECT;
 import static com.github.onsdigital.babbage.url.redirect.RedirectException.ErrorType.REDIRECT_URL_EXCEPTION;
@@ -22,13 +22,10 @@ public class RedirectURL {
 	private final URL url;
 	private String parameterValue = null;
 	private final RedirectCategory category;
-	private final Map<String, String[]> sanitiseParameters;
 	private final HttpServletRequest originalRequest;
-
 
 	private RedirectURL(HttpServletRequest request) throws RedirectException {
 		this.originalRequest = request;
-		this.sanitiseParameters = sanitiseParameterKeys(request.getParameterMap());
 		this.category = RedirectCategory.getCategoryFromURI(originalRequest);
 
 		try {
@@ -42,7 +39,7 @@ public class RedirectURL {
 					URIBuilder uriBuilder = new URIBuilder(originalRequest.getRequestURL().toString());
 
 					if (containsParameter(TAXONOMY_REDIRECT.getParameterName())) {
-						this.parameterValue = getFormattedParam(sanitiseParameters, getParameterName());
+						this.parameterValue = getFormattedParam(getParameterName());
 						uriBuilder.addParameter(category.getParameterName(), this.parameterValue);
 					}
 					parsedRequestedURLString = uriBuilder.build().toString();
@@ -52,7 +49,7 @@ public class RedirectURL {
 					 * Data explorer redirects simply change the domain name of the original request - the URI and
 					 * param String is does not change.
 					 */
-					parsedRequestedURLString = getOriginalRequestedResource();
+					parsedRequestedURLString = originalRequest.getRequestURL().toString();
 					break;
 				default:
 					/**
@@ -71,7 +68,12 @@ public class RedirectURL {
 	 * @return true if the {@link HttpServletRequest} contains the required parameter for this type of redirect.
 	 */
 	public boolean containsParameter(String param) {
-		return this.sanitiseParameters.containsKey(param);
+		return this.originalRequest.getParameterMap()
+				.entrySet()
+				.stream()
+				.filter(entry -> entry.getKey().equalsIgnoreCase(param))
+				.findFirst()
+				.isPresent();
 	}
 
 	/**
@@ -116,21 +118,15 @@ public class RedirectURL {
 		return this.url.getPath().toLowerCase();
 	}
 
-	private Map<String, String[]> sanitiseParameterKeys(Map<String, String[]> params) {
-		Map<String, String[]> sanitisedParams = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
-		sanitisedParams.putAll(params);
-		return sanitisedParams;
-	}
+	private String getFormattedParam(final String name) {
 
-	private boolean containsParameter(Map<String, String[]> params, final String name) {
-		if (this.category.equals(TAXONOMY_REDIRECT)) {
-			return !params.isEmpty() && params.containsKey(name);
+		Optional<Map.Entry<String, String[]>> value  = originalRequest.getParameterMap().entrySet().stream()
+				.filter(entry -> entry.getKey().equalsIgnoreCase(name))
+				.findFirst();
+		if (value.isPresent()) {
+			return URLEncoder.encode(value.get().getValue()[0].toLowerCase());
 		}
-		return false;
-	}
-
-	private String getFormattedParam(Map<String, String[]> params, final String name) {
-		return URLEncoder.encode(params.get(name)[0]).toLowerCase();
+		return null;
 	}
 
 	/**
@@ -140,14 +136,14 @@ public class RedirectURL {
 	public String getOriginalRequestedResource() throws RedirectException {
 		try {
 			URIBuilder uriBuilder = new URIBuilder(originalRequest.getRequestURI());
-			if (!sanitiseParameters.isEmpty()) {
-				sanitiseParameters.forEach((key, value) -> {
-					uriBuilder.addParameter(key, value[0]);
+			if (!originalRequest.getParameterMap().isEmpty()) {
+				originalRequest.getParameterMap().entrySet().forEach(entry -> {
+					uriBuilder.addParameter(entry.getKey().toLowerCase(), entry.getValue()[0].toLowerCase());
 				});
 			}
 			return uriBuilder.toString();
 		} catch (Exception ex) {
-			throw new RedirectException(REDIRECT_URL_EXCEPTION, new Object[] { ex });
+			throw new RedirectException(REDIRECT_URL_EXCEPTION, new Object[]{ex});
 		}
 	}
 
