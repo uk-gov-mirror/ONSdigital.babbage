@@ -21,7 +21,7 @@
 {{#partial "block-additonal-metadata"}}
 	<p class="col col--md-13 col--lg-15 print-hidden meta__item">
 		{{#if description.cdid}}{{labels.series-id}}: {{description.cdid}}
-        <a href="#" class="tooltip" title="This series ID is a unique random identifier for this individual time series. The digits themselves do not have any specific meaning">what's this?</a><br/>{{/if}}
+        <a href="#" class="tooltip" title="This series ID is a unique random identifier for this individual time series. The digits themselves do not have any specific meaning">{{labels.what-is-this}}</a><br/>{{/if}}
         {{#if description.unit}}{{labels.units}}: {{description.preUnit}} {{description.unit}}<br/>{{/if}}
         {{seasonalAdjustment}}
 	</p>
@@ -224,4 +224,4 @@
 	</div>
 {{/partial}}
 
-{{> content/base/statistics typeLabel="Time series"}}
+{{> content/base/statistics typeLabel=labels.time-series}}
