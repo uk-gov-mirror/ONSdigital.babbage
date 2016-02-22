@@ -7,7 +7,7 @@
                 <p>
                     {{#each breadcrumb}}
                         {{#if @last}}
-                            <a class="underline-link" href="{{uri}}"><span class="icon icon-return--dark-small margin-right-sm--1 margin-right-md--1"></span>{{labels.compendium-return}} {{description.title}}</a>
+                            <a class="underline-link" href="{{uri}}"><span class="icon icon-return--dark-small margin-right-sm--1 margin-right-md--1"></span>{{labels.return-to}} '{{description.title}}'</a>
                         {{/if}}
                     {{/each}}
                 </p>
@@ -31,7 +31,7 @@
         <div class="col col--md-36 col--lg-39">
             <ul class="list--neutral">
                 {{#if downloads}}
-                    <h2>Downloads</h2>
+                    <h2>{{labels.downloads}}</h2>
                     {{#each downloads}}
                         <li>
                             <h3><a href="/file?uri={{concat uri "/" (fn file)}}">{{title}}</a> ({{fs (concat uri "/" (fn file))}}, {{fe (concat uri "/" (fn file))}})</h3>
@@ -40,7 +40,7 @@
                     {{/each}}
                 {{/if}}
                 {{#if relatedDatasets}}
-                    <h2>Related data</h2>
+                    <h2>{{labels.related-data}}</h2>
                     <ul class="list--neutral">
                         {{#each relatedDatasets}}
                             {{#resolve this.uri filter="description"}}
@@ -53,9 +53,9 @@
             </ul>
         </div>
         {{!-- CONTACT --}}
-            <div class="col col--md-11 col--lg-20">
-                {{> partials/contact }}
-            </div>
+        <div class="col col--md-11 col--lg-20">
+            {{> partials/contact }}
+        </div>
         {{!-- METHODOLOGY AND LOCAL --}}
         <div class="col-wrap">
             {{!-- Related methodology --}}
@@ -71,4 +71,4 @@
         </div>
 {{/partial}}
 {{!-- Inheriting from statistics template --}}
-{{> content/base/statistics typeLabel="Compendium"}}
+{{> content/base/statistics typeLabel=labels.compendium}}
