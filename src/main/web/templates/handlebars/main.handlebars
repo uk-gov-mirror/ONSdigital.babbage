@@ -22,10 +22,10 @@
 		<link rel="stylesheet" href="{{#if_any (eq 'localhost' location.hostname) (eq '127.0.0.1' location.hostname)}}http://localhost:9000/dist/css/old-ie.css{{else}}/assets/css/old-ie.css{{/if_any}}"/>
 		<![endif]-->
         <!--[if IE 9]>
-              <link rel="stylesheet" type="text/css" href="{{#if is_dev}}http://localhost:9000/dist/css/ie-9.css{{else}}/assets/css/ie-9.css{{/if}}">
+              <link rel="stylesheet" type="text/css" href="{{#if is_dev}}http://{{location.hostname}}:9000/dist/css/ie-9.css{{else}}/assets/css/ie-9.css{{/if}}">
         <![endif]-->
 		<!--[if gt IE 9]><!-->
-        <link rel="stylesheet" type="text/css" href="{{#if is_dev}}http://localhost:9000/dist/css/main.css{{else}}/assets/css/main.css{{/if}}">
+        <link rel="stylesheet" type="text/css" href="{{#if is_dev}}http://{{location.hostname}}:9000/dist/css/main.css{{else}}/assets/css/main.css{{/if}}">
 		{{#if pdf_style}}<link rel="stylesheet" type="text/css" href="{{#if is_dev}}http://localhost:9000/dist/css/pdf.css{{else}}/assets/css/pdf.css{{/if}}">{{/if}}
 		{{!-- <link rel="stylesheet" type"text/css" href="{{#if is_dev}}http://localhost:9000/dist/css/print.css{{else}}/assets/css/print.css{{/if}}" media="print"> --}}
 
@@ -112,7 +112,7 @@
 
 
         <!--[if gt IE 8]><!-->
-		<script type="text/javascript" src="{{#if is_dev}}http://localhost:9000/dist/js/main.js{{else}}/assets/js/main.js{{/if}}"></script>
+		<script type="text/javascript" src="{{#if is_dev}}http://{{location.hostname}}:9000/dist/js/main.js{{else}}/assets/js/main.js{{/if}}"></script>
         <![endif]-->
 		{{!-- <link rel="stylesheet" type="text/css" href="{{#if_any (eq 'localhost' location.hostname) (eq '127.0.0.1' location.hostname)}}http://localhost:9000/dist/css/main.css{{else}}/assets/dist/css/main.css{{/if_any}}"> --}}
 		{{!-- <script type="text/javascript" src="/ui/js/lib/jquery.tooltipster.min.js"></script>

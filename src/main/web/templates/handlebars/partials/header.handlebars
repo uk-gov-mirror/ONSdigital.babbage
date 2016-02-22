@@ -21,21 +21,24 @@
 				</div>
                 <div class="col col--lg-two-thirds col--md-two-thirds hide--mobile print--hide language--js__container">
                     {{!-- Need space to keep secondary links at bottom when language toggle not displaying --}}
-                    &nbsp;
+                    {{!-- &nbsp; --}}
                     {{!-- Show different block depending on whether JS or not - saves enhancing <dl> to look and behave like a <select> --}}
-                    <noscript>
+                    {{!-- <noscript> --}}
                         <dl class="language js-enhance--hide">
                             <dt class="language__title">Language:</dt>
-                            <dd class="language__item">
-                                <a href="http://{{replace location.host "cy." ""}}{{uri}}"
-                                   class="language__link icon--hide">English (EN)</a>
-                            </dd>
-                            <dd class="language__item">
-                                <a href="http://cy.{{replace location.host "cy." ""}}{{uri}}"
-                                   class="language__link icon--hide">Cymraeg (CY)</a>
-                            </dd>
+                            {{#if_eq location.hostname (concat "cy." (replace location.hostname "cy." ""))}}
+                                <dd class="language__item">
+                                    <a href="http://{{replace location.host "cy." ""}}{{uri}}{{> list/partials/parameters}}"
+                                       class="language__link icon--hide">English (EN)</a>
+                                </dd>
+                            {{else}}
+                                <dd class="language__item">
+                                    <a href="http://cy.{{replace location.host "cy." ""}}{{uri}}{{> list/partials/parameters}}"
+                                       class="language__link icon--hide">Cymraeg (CY)</a>
+                                </dd>
+                            {{/if_eq}}
                         </dl>
-                    </noscript>
+                    {{!-- </noscript> --}}
                     <form class="language language--js js-enhance--show">
                         <label class="language--js__label" for="lang">Language:</label>
                         <select class="language--js__select" id="lang" name="lang">
