@@ -3,13 +3,14 @@
 	{{#if parameters.az.0}} 
 		{{#unless parameters.query.0}}
 			{{#unless (lookup counts.docCounts parameters.az.0) }}
-			<span>There are no statistical bulletins that begin with the letter <strong>'{{parameters.az.0}}'</strong>. Showing all statistical bulletins.<span></br></br>
+			<span>There are no statistical bulletins that begin with the letter <strong>'{{parameters.az.0}}'</strong>. Showing all statistical bulletins.</span></br></br>
 			{{/unless}}
 		{{/unless}}
 	{{/if}}
 
 	{{#if_any results timeSeriesCount}}
-		<span class="stand-out-text">{{nf numberOfResults}}</span> {{#if parameters.filter}}<strong>{{> list/filters/filters-type-list}}</strong>{{else}}{{resultsLabel}}{{/if}}{{#if parameters.query.0}} containing <strong>'{{parameters.query.0}}'</strong>{{/if}}
+		<span class="stand-out-text">{{nf numberOfResults}}</span> {{#if parameters.filter}}<strong><span
+            class="lowercase">{{> list/filters/filters-type-list}}</span></strong>{{else}}{{resultsLabel}}{{/if}}{{#if parameters.query.0}} containing <strong>'{{parameters.query.0}}'</strong>{{/if}}
 	{{else}}
 		There are no {{#if parameters.filter}}<strong>{{> list/filters/filters-type-list}}</strong>{{else}}{{resultsLabel}}{{/if}}{{#if parameters.query.0}} containing <strong>'{{parameters.query.0}}'</strong>{{/if}}
 	{{/if_any}}
