@@ -76,9 +76,9 @@
 												{{labels.corrections-and-notices}}
 											{{else}}
 												{{#if versions}}
-													{{#if_ne versions.size 1}}{{labels.correction}}{{labels.corrections}}{{/if_ne}}
+                                                    {{#if_ne versions.size "1"}}{{labels.correction}}{{else}}{{labels.corrections}}{{/if_ne}}
 												{{else}}
-                                                    {{#if_ne alerts.size 1}}{{labels.notice}}{{else}}{{labels.notices}}{{/if_ne}}
+                                                    {{#if_ne alerts.size "1"}}{{labels.notice}}{{else}}{{labels.notices}}{{/if_ne}}
 												{{/if}}
 											{{/if_all}}
 										</h2>
