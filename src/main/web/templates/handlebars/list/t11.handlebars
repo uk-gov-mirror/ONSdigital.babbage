@@ -34,8 +34,8 @@
 {{/partial}}
 
 {{#partial "block-results-text"}}
-    <div>
-        <a id="rss-calendar-link" href="feed://{{location.host}}{{location.pathname}}?rss{{#if parameters.view.0}}&view={{parameters.view.0}}{{/if}}{{#if parameters.query.0}}&query={{parameters.query.0}}{{/if}}">RSS Feed</a>
+    <div lass="float-right">
+        <a id="rss-calendar-link" class="margin-right--2" href="feed://{{location.host}}{{location.pathname}}?rss{{#if parameters.view.0}}&view={{parameters.view.0}}{{/if}}{{#if parameters.query.0}}&query={{parameters.query.0}}{{/if}}"><span class="icon icon-rss--dark-small"></span>RSS Feed</a>
     </div>
 	<div class="col col--md-28 col--lg-38">
 		{{> list/partials/list-results-text-number result resultsLabel="releases"}}

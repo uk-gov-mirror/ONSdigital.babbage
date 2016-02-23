@@ -47,7 +47,7 @@ public class SearchHelper {
 
     public static ONSSearchResponse search(ONSQuery queries) {
         SearchRequestBuilder searchRequestBuilder = prepare(queries);
-        System.out.println("Searching with query:\n" + searchRequestBuilder.internalBuilder());
+        //System.out.println("Searching with query:\n" + searchRequestBuilder.internalBuilder());
         return resolveDetails(queries, new ONSSearchResponse(searchRequestBuilder.get()));
     }
 
@@ -55,7 +55,7 @@ public class SearchHelper {
         MultiSearchRequestBuilder multiSearchRequestBuilder = getElasticsearchClient().prepareMultiSearch();
         for (ONSQuery builder : queries) {
             SearchRequestBuilder searchRequestBuilder = prepare(builder);
-            System.out.println("Searching with query:\n" + searchRequestBuilder.internalBuilder());
+            //System.out.println("Searching with query:\n" + searchRequestBuilder.internalBuilder());
             multiSearchRequestBuilder.add(searchRequestBuilder);
         }
 

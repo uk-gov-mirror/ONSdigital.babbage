@@ -1,5 +1,6 @@
 package com.github.onsdigital.babbage.request.handler.list;
 
+import com.github.onsdigital.babbage.api.endpoint.rss.service.RssService;
 import com.github.onsdigital.babbage.request.handler.base.ListRequestHandler;
 import com.github.onsdigital.babbage.response.base.BabbageResponse;
 import com.github.onsdigital.babbage.search.helpers.ONSQuery;
@@ -12,10 +13,11 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.Set;
 
-import static com.github.onsdigital.babbage.api.util.SearchUtils.*;
+import static com.github.onsdigital.babbage.api.util.SearchUtils.buildListQuery;
+import static com.github.onsdigital.babbage.api.util.SearchUtils.listJson;
+import static com.github.onsdigital.babbage.api.util.SearchUtils.listPage;
 import static com.github.onsdigital.babbage.search.builders.ONSFilterBuilders.filterLatest;
 import static com.github.onsdigital.babbage.search.builders.ONSFilterBuilders.filterUriAndTopics;
-import static com.github.onsdigital.babbage.search.builders.ONSFilterBuilders.filterUriPrefix;
 import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.toList;
 import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.typeCountsQuery;
 
@@ -25,13 +27,17 @@ import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.typ
 public class PublicationsRequestHandler implements ListRequestHandler {
 
     private static Set<TypeFilter> publicationFilters = TypeFilter.getPublicationFilters();
-    //    private static ContentType[] contentTypesToCount = addAll(resolveContentTypes(publicationFilters), resolveContentTypes(TypeFilter.getDataFilters()));
     private static ContentType[] contentTypesToCount = TypeFilter.contentTypes(publicationFilters);
+
+    private static RssService rssService = RssService.getInstance();
 
     private final static String REQUEST_TYPE = "publications";
 
     @Override
     public BabbageResponse get(String uri, HttpServletRequest request) throws Exception {
+        if (rssService.isRssRequest(request)) {
+            return rssService.getPublicationListFeedResponse(request);
+        }
         return listPage(REQUEST_TYPE, queries(request, uri));
     }
 
