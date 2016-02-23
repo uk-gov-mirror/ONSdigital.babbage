@@ -1,12 +1,14 @@
 package com.github.onsdigital.babbage.api.filter;
 
 import com.github.davidcarboni.restolino.framework.Filter;
-import com.github.onsdigital.babbage.url.shortcuts.ShortcutUrlService;
+import com.github.onsdigital.babbage.url.redirect.RedirectException;
+import com.github.onsdigital.babbage.url.shortcut.ShortcutUrl;
+import com.github.onsdigital.babbage.url.shortcut.ShortcutUrlService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Map;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -14,7 +16,9 @@ import java.util.Optional;
  */
 public class ShortUrlFilter implements Filter {
 
-	private static Optional<Map<String, String>> shortcuts = Optional.empty();
+	private static final String ERROR_MSG = "Unexpected error while attempting to find a shortcut url redirect for '%s'.";
+
+	private static Optional<List<ShortcutUrl>> shortcuts = Optional.empty();
 
 	private ShortcutUrlService shortcutUrlService = ShortcutUrlService.getInstance();
 
@@ -22,24 +26,28 @@ public class ShortUrlFilter implements Filter {
 	public boolean filter(HttpServletRequest req, HttpServletResponse res) {
 		try {
 			String uri = req.getRequestURI().toLowerCase();
-			String shortCut;
-			if ((shortCut = shortcuts().get(uri)) != null) {
-				res.sendRedirect(shortCut);
+			Optional<ShortcutUrl> temp = get(uri);
+
+			if (temp.isPresent()) {
+				res.sendRedirect(temp.get().getRedirect());
 				res.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
 				return false;
 			}
-		} catch (IOException ex) {
-			String msg = String.format("Unexpected error while attempting to find a shortcut url redirect for '%s'.",
-					req.getRequestURI());
+		} catch (IOException | RedirectException ex) {
+			String msg = String.format(ERROR_MSG, req.getRequestURI());
 			throw new RuntimeException(msg, ex);
 		}
 		return true;
 	}
 
-	private Map<String, String> shortcuts() throws IOException {
+
+	private Optional<ShortcutUrl> get(String uri) throws IOException {
 		if (!shortcuts.isPresent()) {
 			shortcuts = Optional.of(shortcutUrlService.shortcuts());
 		}
-		return shortcuts.get();
+		return shortcuts.get()
+				.stream()
+				.filter(shortcutUrl -> shortcutUrl.getShortcut().equalsIgnoreCase(uri))
+				.findFirst();
 	}
 }

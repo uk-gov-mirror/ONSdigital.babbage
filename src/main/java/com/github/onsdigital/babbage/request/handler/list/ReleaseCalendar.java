@@ -1,27 +1,22 @@
 package com.github.onsdigital.babbage.request.handler.list;
 
-import com.github.onsdigital.babbage.api.endpoint.rss.service.RssSearchService;
 import com.github.onsdigital.babbage.api.endpoint.rss.service.RssService;
 import com.github.onsdigital.babbage.api.util.SearchUtils;
 import com.github.onsdigital.babbage.content.client.ContentReadException;
 import com.github.onsdigital.babbage.request.handler.base.ListRequestHandler;
-import com.github.onsdigital.babbage.response.BabbageRssResponse;
 import com.github.onsdigital.babbage.response.base.BabbageResponse;
 import com.github.onsdigital.babbage.search.builders.ONSFilterBuilders;
 import com.github.onsdigital.babbage.search.helpers.base.SearchFilter;
 import com.github.onsdigital.babbage.search.helpers.base.SearchQueries;
 import com.github.onsdigital.babbage.search.input.SortBy;
 import com.github.onsdigital.babbage.search.model.ContentType;
-import com.github.onsdigital.babbage.search.model.SearchResult;
 import com.github.onsdigital.babbage.search.model.field.Field;
-import com.sun.syndication.feed.synd.SyndFeed;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.Date;
-import java.util.Optional;
 
 import static com.github.onsdigital.babbage.api.util.SearchUtils.buildListQuery;
 import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.toList;
@@ -35,47 +30,39 @@ import static org.elasticsearch.index.query.QueryBuilders.termQuery;
 public class ReleaseCalendar implements ListRequestHandler {
 
 	private final static String REQUEST_TYPE = "releasecalendar";
-	private static final String RSS_PARAM = "rss";
+
+	private static RssService rssService = RssService.getInstance();
 
 	@Override
 	public BabbageResponse get(String uri, HttpServletRequest request) throws Exception {
-		if (isRss(request)) {
-			return getRss(request);
+		if (rssService.isRssRequest(request)) {
+			return rssService.getReleaseCalendarFeedResponse(request, queries(request, false));
 		} else {
 			return getPage(uri, request);
 		}
 	}
 
-	private boolean isRss(HttpServletRequest request) {
-		return request.getParameterMap().containsKey(RSS_PARAM);
-	}
-
 	public BabbageResponse getPage(String uri, HttpServletRequest request) throws Exception {
-		return SearchUtils.listPage(getClass().getSimpleName(), queries(request));
-	}
-
-	public BabbageResponse getRss(HttpServletRequest request) throws Exception {
-		Optional<SearchResult> results = RssSearchService.getInstance().search(queries(request));
-		SyndFeed rssFeed = RssService.getInstance().generateCalendarSyndFeed(results, request);
-		return new BabbageRssResponse.Builder().build(rssFeed);
+		return SearchUtils.listPage(getClass().getSimpleName(), queries(request, true));
 	}
 
 	@Override
 	public BabbageResponse getData(String uri, HttpServletRequest request) throws IOException, ContentReadException {
-		return SearchUtils.listJson(getClass().getSimpleName(), queries(request));
+		return SearchUtils.listJson(getClass().getSimpleName(), queries(request, true));
 	}
 
-	private SearchQueries queries(HttpServletRequest request) {
+	private SearchQueries queries(HttpServletRequest request, boolean highlight) {
 		boolean upcoming = isUpcoming(request);
 		SortBy defaultSort = upcoming ? SortBy.release_date_asc : SortBy.release_date;
 		return () -> toList(
 				buildListQuery(request, filters(request, upcoming), defaultSort)
 						.types(ContentType.release)
+						.highlight(highlight)
 		);
 	}
 
 	private boolean isUpcoming(HttpServletRequest request) {
-		return "upcoming".equals(request.getParameter("view"));
+		return "upcoming".equalsIgnoreCase(request.getParameter("view"));
 	}
 
 	private SearchFilter filters(HttpServletRequest request, boolean upcoming) {

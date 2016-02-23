@@ -1,8 +1,9 @@
 package com.github.onsdigital.babbage.api.filter;
 
-import com.github.onsdigital.babbage.url.shortcuts.ShortcutUrlService;
+import com.github.onsdigital.babbage.url.shortcut.ShortcutUrl;
+import com.github.onsdigital.babbage.url.shortcut.ShortcutUrlService;
 import com.github.onsdigital.babbage.util.TestsUtil;
-import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableList;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -11,7 +12,7 @@ import org.mockito.MockitoAnnotations;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Map;
+import java.util.List;
 import java.util.Optional;
 
 import static junit.framework.TestCase.assertTrue;
@@ -43,11 +44,11 @@ public class ShortUrlFilterTest {
 
 	private ShortUrlFilter filter;
 
-	private Map<String, String> shortcutMap = new ImmutableMap.Builder<String, String>()
-			.put(SHORT_URL, SHORT_URL_REDIRECT)
+	private List<ShortcutUrl> shortcuts = new ImmutableList.Builder<ShortcutUrl>()
+			.add(new ShortcutUrl(SHORT_URL, SHORT_URL_REDIRECT))
 			.build();
 
-	private Optional<Map<String, String>> mapOptional = Optional.of(shortcutMap);
+	private Optional<List<ShortcutUrl>> mapOptional = Optional.of(shortcuts);
 
 
 	@Before
@@ -64,7 +65,7 @@ public class ShortUrlFilterTest {
 		when(request.getRequestURI())
 				.thenReturn("/notAShortcut");
 		when(shortcutUrlService.shortcuts())
-				.thenReturn(shortcutMap);
+				.thenReturn(shortcuts);
 
 		TestsUtil.setPrivateStaticField(filter, "shortcuts", Optional.empty());
 
@@ -93,7 +94,7 @@ public class ShortUrlFilterTest {
 		when(request.getRequestURI())
 				.thenReturn(SHORT_URL);
 		when(shortcutUrlService.shortcuts())
-				.thenReturn(shortcutMap);
+				.thenReturn(shortcuts);
 
 		TestsUtil.setPrivateStaticField(filter, "shortcuts", Optional.empty());
 
