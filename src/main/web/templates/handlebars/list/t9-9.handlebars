@@ -25,7 +25,7 @@
 
 {{#partial "block-results-extra"}}
 	<div class="float-right">
-        <a id="rss-link" href="feed://{{location.host}}/rss?uri={{uri}}{{#if parameters.query.0}}?query={{parameters.query.0}}{{/if}}{{#each parameters.filter}}&filter={{this}}{{/each}}">RSS Feed</a>
+        <a id="rss-list-link" class="margin-right--2" href="feed://{{location.host}}{{location.pathname}}?rss{{#if parameters.query.0}}&query={{parameters.query.0}}{{/if}}{{#each parameters.filter}}&filter={{this}}{{/each}}"><span class="icon icon-rss--dark-small"></span>RSS Feed</a>
         {{> list/filters/sort }}
     </div>
 {{/partial}}
