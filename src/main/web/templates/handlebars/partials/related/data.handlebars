@@ -1,6 +1,6 @@
 {{#if relatedData}}
 	<div class="tiles__item tiles__item--nav-type flush-col print--hide">
-		<h3 class="tiles__title-h3 tiles__title-h3--nav">Data in this {{> type-label type_code=type }}</h3>
+		<h3 class="tiles__title-h3 tiles__title-h3--nav">{{labels.data-in-this}} {{> type-label type_code=type }}</h3>
 		{{!-- <div class="tiles__content--nav">
 			<ul class="list--neutral">
 				{{#each relatedData}}
@@ -13,7 +13,7 @@
 
 		{{!-- Shows link to view all spreadsheets at that topic level --}}
 		 <div class="tiles__extra margin-bottom-md--2">
-			<a href="{{uri}}/relateddata">View all data related to {{description.title}}: {{description.edition}}</a>
+			<a href="{{uri}}/relateddata">{{labels.view-all-data-related-to}} {{description.title}}: {{description.edition}}</a>
 		</div> 
 	</div>
 {{/if}}

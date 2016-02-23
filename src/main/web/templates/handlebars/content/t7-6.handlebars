@@ -18,7 +18,7 @@
                     {{/block}}
                 {{else}}
                     <p class="col col--md-12 col--lg-15 meta__item">
-                        <span>Last revised: </span><br/>{{df description.releaseDate}}<br/>
+                        <span>{{labels.last-revised}}: </span><br/>{{df description.releaseDate}}<br/>
                     </p>
                 {{/if_eq}}
 
@@ -54,12 +54,12 @@
 
 {{!-- Inheriting from base content template --}}
 {{#if_eq type "static_methodology"}}
-    {{> content/base/publication typeLabel="Methodology"}}
+    {{> content/base/publication typeLabel=labels.methodology}}
 {{/if_eq}}
 {{#if_eq type "static_methodology_download"}}
-    {{> content/base/publication-download typeLabel="Methodology"}}
+    {{> content/base/publication-download typeLabel=labels.methodology}}
 {{/if_eq}}
 {{#if_eq type "static_article"}}
     {{#partial "block-metadata"}} {{/partial}} {{!-- Remove metadata block --}}
-	{{> content/base/publication hideMeta=true hidePrint=true tocTitle="In this section"}}
+	{{> content/base/publication hideMeta=true hidePrint=true tocTitle=labels.in-this-section}}
 {{/if_eq}}

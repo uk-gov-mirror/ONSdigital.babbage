@@ -26,9 +26,7 @@
             {{!-- DOWNLOADS --}}
             {{#if downloads}}
             <div class="tiles__item tiles__item--nav-type">
-                <h2 class="tiles__title-h2 tiles__title-h2--nav">{{#if_eq downloads.size 1}}Download associated
-                with request{{/if_eq}} {{#if_ne downloads.size 1}}Downloads associated with
-                request{{/if_ne}}</h2>
+                <h2 class="tiles__title-h2 tiles__title-h2--nav">{{#if_eq downloads.size 1}}{{labels.download-associated-with-request}}{{/if_eq}} {{#if_ne downloads.size 1}}{{labels.downloads-associated-with-request}}{{/if_ne}}</h2>
                 <div class="tiles__content tiles__content--nav">
                     <ul class="list--neutral">
                         {{#each downloads}}
@@ -43,11 +41,10 @@
             {{/if}}
             {{!-- FOI INFORMATION TILE --}}
             <div class="tiles__item tiles__item--nav-type">
-                <h2 class="tiles__title-h2 tiles__title-h2--nav">{{labels.foi-request}}</h2>
+                <h2 class="tiles__title-h2 tiles__title-h2--nav">{{labels.making-an-foi-request}}</h2>
                 <div class="tiles__content tiles__content--nav">
                     <p>
-                        <a href="/aboutus/transparencyandgovernance/freedomofinformationfoi/makingarequest">Everything you need to know about Freedom of
-                        Information and how to go about making a request.</a>
+                        <a href="/aboutus/transparencyandgovernance/freedomofinformationfoi/makingarequest">{{labels.everything-you-need-to-know-about-freedom-of-information-and-how-to-go-about-making-a-request}}.</a>
                     </p>
                 </div>
             </div>
@@ -56,4 +53,4 @@
 </div> {{!-- /wrapper --}}
 {{/partial}}
 {{!-- Inheriting from base content template --}}
-{{> content/base/content typeLabel="Freedom of Information (FOI)"}}
+{{> content/base/content typeLabel=labels.freedom-of-information-foi}}
