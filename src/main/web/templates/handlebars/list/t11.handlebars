@@ -34,16 +34,14 @@
 {{/partial}}
 
 {{#partial "block-results-text"}}
-    <div lass="float-right">
-        <a id="rss-calendar-link" class="margin-right--2" href="feed://{{location.host}}{{location.pathname}}?rss{{#if parameters.view.0}}&view={{parameters.view.0}}{{/if}}{{#if parameters.query.0}}&query={{parameters.query.0}}{{/if}}"><span class="icon icon-rss--dark-small"></span>RSS Feed</a>
-    </div>
-	<div class="col col--md-28 col--lg-38">
+	<div class="col col--md-23 col--lg-35">
 		{{> list/partials/list-results-text-number result resultsLabel="releases"}}
 	</div>
 {{/partial}}
 
 {{#partial "block-results-extra"}}
 	<p class="float-right margin-top-sm--0 margin-top-md--3 margin-bottom-sm--0 margin-bottom-md--0">
+        <a id="rss-calendar-link" class="margin-right--2" href="feed://{{location.host}}{{location.pathname}}?rss{{#if parameters.view.0}}&view={{parameters.view.0}}{{/if}}{{#if parameters.query.0}}&query={{parameters.query.0}}{{/if}}"><span class="icon icon-rss--dark-small"></span>RSS feed</a>
 		<a href="/calendar{{uri}}">
 			<span class="icon icon-calendar--dark-small margin-right-md--1"></span>
 			Add releases to your calendar (ICS)
