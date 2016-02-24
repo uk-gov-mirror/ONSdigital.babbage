@@ -17,7 +17,7 @@ var CookieUtils = {
 // function calls
 // ---------------
 
-addPrototypeModal();
+//addPrototypeModal();
 // addLoadingOverlay();
 
 
