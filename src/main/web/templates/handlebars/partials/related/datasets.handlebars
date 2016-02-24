@@ -1,6 +1,6 @@
 {{#if_any relatedDatasets (eq type "dataset_landing_page")}}
 	<div class="tiles__item tiles__item--nav-type flush-col print--hide">
-		<h3 class="tiles__title-h3 tiles__title-h3--nav">Related data</h3>
+		<h3 class="tiles__title-h3 tiles__title-h3--nav">{{labels.related-data}}</h3>
 
         {{#if relatedDatasets}}
             <div class="tiles__content tiles__content--nav">
@@ -17,7 +17,7 @@
 		{{!-- Shows link to view all spreadsheets at that topic level --}}
         {{#if_any (eq type "dataset_landing_page")}}
 			<div class="tiles__extra margin-bottom-md--2">
-				<a href="{{parentPath (parentPath uri)}}/datalist?filter=datasets">View all data related to {{#each breadcrumb}}
+				<a href="{{parentPath (parentPath uri)}}/datalist?filter=datasets">{{labels.view-all-data-related-to}} {{#each breadcrumb}}
                     {{#if @last}}
                         {{description.title}}
                     {{/if}}

@@ -1,5 +1,5 @@
 {{#if description.keywords}}
 	<p class="search-results__keywords">
-		Keywords: {{#each description.keywords}}{{{this}}}{{#unless @last}}, {{/unless}}{{/each}}
+		{{labels.keywords}}: {{#each description.keywords}}{{{this}}}{{#unless @last}}, {{/unless}}{{/each}}
 	</p>
 {{/if}}

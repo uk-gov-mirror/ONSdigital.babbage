@@ -1,9 +1,9 @@
 package com.github.onsdigital.babbage.request.handler.list;
 
+import com.github.onsdigital.babbage.api.endpoint.rss.service.RssService;
 import com.github.onsdigital.babbage.api.util.SearchUtils;
 import com.github.onsdigital.babbage.request.handler.base.ListRequestHandler;
 import com.github.onsdigital.babbage.response.base.BabbageResponse;
-import com.github.onsdigital.babbage.search.builders.ONSFilterBuilders;
 import com.github.onsdigital.babbage.search.helpers.ONSQuery;
 import com.github.onsdigital.babbage.search.helpers.base.SearchFilter;
 import com.github.onsdigital.babbage.search.helpers.base.SearchQueries;
@@ -28,12 +28,17 @@ public class DataListRequestHandler implements ListRequestHandler {
 
     private final static String REQUEST_TYPE = "datalist";
     private static Set<TypeFilter> dataFilters = TypeFilter.getDataFilters();
-    //    private static ContentType[] contentTypesToCount = addAll(resolveContentTypes(dataFilters), resolveContentTypes(TypeFilter.getPublicationFilters()));
     private static ContentType[] contentTypesToCount = TypeFilter.contentTypes(dataFilters);
+
+    private RssService rssService = RssService.getInstance();
 
     @Override
     public BabbageResponse get(String uri, HttpServletRequest request) throws Exception {
-        return listPage(REQUEST_TYPE, queries(request, uri));
+        if (rssService.isRssRequest(request)) {
+            return rssService.getDataListFeedResponse(request);
+        } else {
+            return listPage(REQUEST_TYPE, queries(request, uri));
+        }
     }
 
     @Override

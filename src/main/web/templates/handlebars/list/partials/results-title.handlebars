@@ -2,4 +2,4 @@
 <a href="{{uri}}">{{{description.title}}}
 	{{#if_all description.edition showEdition}}
 		{{#if_all (ne description.edition 'yes') (ne description.edition '<strong>yes</strong>')}}: {{{description.edition}}}{{/if_all}}
-{{/if_all}} {{#if description.latestRelease}}(Latest release){{/if}}</a></h3>
+{{/if_all}} {{#if description.latestRelease}}({{labels.latest-release}}){{/if}}</a></h3>

@@ -13,10 +13,10 @@
 {{#if_eq type_code "timeseries_dataset"}}{{labels.datasets}}{{/if_eq}}
 {{#if_eq type_code "static_landing_page"}}{{/if_eq}}
 {{#if_eq type_code "static_page"}}{{/if_eq}}
-{{#if_eq type_code "static_article"}}article{{#if plural}}s{{/if}}{{/if_eq}}
+{{#if_eq type_code "static_article"}}{{labels.article}}{{#if plural}}s{{/if}}{{/if_eq}}
 {{#if_eq type_code "static_methodology"}}{{labels.methodology}}{{#if plural}}ies{{else}}y{{/if}}{{/if_eq}}
-{{#if_eq type_code "static_methodology_download"}}{{labels.methodology}}{{#if plural}}ies{{else}}y{{/if}}{{/if_eq}}
-{{#if_eq type_code "static_qmi"}}QMI{{/if_eq}}
+{{#if_eq type_code "static_methodology_download"}}{{labels.methodology}}{{#if plural}}ies{{/if}}{{/if_eq}}
+{{#if_eq type_code "static_qmi"}}{{labels.quality-and-methodology-information}}{{/if_eq}}
 {{#if_eq type_code "static_adhoc"}}{{labels.user-requested-data}}{{/if_eq}}
-{{#if_eq type_code "static_foi"}}FOI{{#if plural}}s{{/if}}{{/if_eq}}
-{{#if_eq type_code "release"}}release{{#if plural}}s{{/if}}{{/if_eq}}
+{{#if_eq type_code "static_foi"}}{{labels.freedom-of-information}}{{#if plural}}s{{/if}}{{/if_eq}}
+{{#if_eq type_code "release"}}{{labels.release}}{{#if plural}}s{{/if}}{{/if_eq}}

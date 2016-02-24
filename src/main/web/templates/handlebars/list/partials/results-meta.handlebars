@@ -4,9 +4,9 @@
 	| Series ID: {{{description.cdid}}}
 	{{/if}}
 	{{#if_any description.releaseDate description.lastRevised}} |
-		{{#if description.releaseDate}}Released on {{df description.releaseDate}}
-		{{else}}Revised on {{df description.lastRevised}}
+		{{#if description.releaseDate}}{{labels.released-on}} {{df description.releaseDate}}
+		{{else}}{{labels.revised-on}} {{df description.lastRevised}}
 		{{/if}}
 	{{/if_any}}
-	{{#if description.reference}}| Ref: {{{description.reference}}}{{/if}}
+	{{#if description.reference}}| {{labels.ref}}: {{{description.reference}}}{{/if}}
 </p>

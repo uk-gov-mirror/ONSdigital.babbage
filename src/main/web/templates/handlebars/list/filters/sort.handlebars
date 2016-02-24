@@ -3,19 +3,19 @@
 		<input  type="hidden" name="q" value="{{parameters.q.0}}">
 
 		<div class="js-mobile-filters__sort">
-			<label for="select" class="sort__label">Sort by
+			<label for="select" class="sort__label">{{labels.sort-by}}
 				<select class="input select select--thin width-auto js-auto-submit__input" id="select" name="sortBy">
-					<option class="sort__option" value="relevance" {{#if_eq result.sortBy "relevance"}}selected{{/if_eq}}>Relevance
+					<option class="sort__option" value="relevance" {{#if_eq result.sortBy "relevance"}}selected{{/if_eq}}>{{labels.relevance}}
 					</option>
 					<option class="sort__option" value="release_date"
-							{{#if_eq result.sortBy "release_date"}}selected{{/if_eq}} >Release date
+							{{#if_eq result.sortBy "release_date"}}selected{{/if_eq}} >{{labels.release-date}}
 					</option>
 					<option class="sort__option" value="title" {{#if_eq result.sortBy "title"}}selected{{/if_eq}}>
-						Title
+						{{labels.title}}
 					</option>
 				</select>
 			</label>
-            <button type="submit" class="btn btn--primary btn--thin btn--small js-enhance--hide">Sort</button>
+            <button type="submit" class="btn btn--primary btn--thin btn--small js-enhance--hide">{{labels.sort}}</button>
         </div>
 	</form>
 </div>

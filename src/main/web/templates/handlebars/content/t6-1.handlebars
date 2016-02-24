@@ -6,7 +6,7 @@
 	<div class="col-wrap print--avoid-break">
         <div class="col col--md-two-thirds col--lg-two-thirds padding-md-right--2">
             <div class="table-of-contents print--avoid-break margin-top--negative-one-fix">
-                <h2 class="table-of-contents__title">Chapters in this compendium:</h2>
+                <h2 class="table-of-contents__title">{{labels.chapters-in-this-compendium}}:</h2>
                 {{!-- Chapters --}}
                 {{#if chapters}}
                     <ol class="padding-left-md--0 margin-bottom-md--4">
@@ -27,7 +27,7 @@
             {{!-- Print options --}}
                 <p class="text-right padding-top-md--0 padding-bottom-md--0 height--5 margin-top-md--3 print--hide">
                     <a href="" id="jsEnhancePrintCompendium" class="nojs-hidden js-enhance--show">
-                        Print all chapters in this compendium
+                        {{labels.print-all-chapters-in-this-compendium}}
                     </a>
                     <span class="icon icon-print--dark-small"></span>
                 </p>
@@ -57,7 +57,7 @@
 
     {{!-- Related boxes --}}
     {{#if_any relatedDocuments relatedData relatedMethodology}}
-        <h2>Related</h2>
+        <h2>{{labels.related}}</h2>
         <div class="col-wrap margin-bottom-sm--2 margin-bottom-md--4">
             {{#if_any relatedData relatedDatasets}}
                 <div class="col {{#if_all relatedDocuments relatedData relatedMethodology}}col--lg-one-third {{else}}col--lg-half{{/if_all}}">
@@ -90,4 +90,4 @@
 {{/partial}}
 
 {{!-- Inheriting from statistics template --}}
-{{> content/base/statistics typeLabel="Compendium"}}
+{{> content/base/statistics typeLabel=labels.compendium}}

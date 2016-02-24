@@ -1,14 +1,14 @@
-<h4 class="filters__title">{{labels.search-refine-types}}</h4>
+<h4 class="filters__title">{{labels.content-types-to-show}}</h4>
 <fieldset class="filters__fieldset">
-    <legend class="filters__sub-title">Publications</legend>
+    <legend class="filters__sub-title">{{labels.publications}}</legend>
     {{> list/filters/publications}}
 </fieldset>
 <fieldset class="filters__fieldset">
-    <legend class="filters__sub-title">Data</legend>
+    <legend class="filters__sub-title">{{labels.data}}</legend>
     {{> list/filters/data}}
 </fieldset>
 <fieldset class="filters__fieldset">
-    <legend class="filters__sub-title">Other</legend>
+    <legend class="filters__sub-title">{{labels.other}}</legend>
     <div class="js-checkbox-container">
         <ul class="list--neutral flush-top">
             {{>list/partials/filter-item id="methodology" value="methodology" label=labels.methodology docCount=(add docCounts.static_qmi docCounts.static_methodology)}}

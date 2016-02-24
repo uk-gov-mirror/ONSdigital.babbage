@@ -20,7 +20,6 @@ import static java.util.Objects.requireNonNull;
  */
 public class RssSearchFilter {
 
-	private static final String TOPIC_PARAM = "uri";
 	private static final String DATA_LIST_URI = "/datalist";
 	private static final String PUBLICATIONS_URI = "/publications";
 
@@ -53,14 +52,7 @@ public class RssSearchFilter {
 	}
 
 	private void setTopicAndFilterType(HttpServletRequest request) {
-		Optional<Map.Entry<String, String[]>> topicParam = request.getParameterMap().entrySet()
-				.stream()
-				.filter((entry) -> TOPIC_PARAM.equals(entry.getKey()))
-				.findFirst();
-
-		if (topicParam.isPresent()) {
-			String uriString = topicParam.get().getValue()[0];
-
+			String uriString = request.getRequestURI();
 
 			int lastSlashIndex = StringUtils.lastIndexOf(uriString, "/");
 			String endSegment = StringUtils.substring(uriString, lastSlashIndex, uriString.length());
@@ -82,7 +74,6 @@ public class RssSearchFilter {
 					providedParams.put("rss.resultstype", "publications");
 					break;
 			}
-		}
 	}
 
 	private void setFilters(HttpServletRequest request) {
