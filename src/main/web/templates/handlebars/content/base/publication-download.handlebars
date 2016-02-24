@@ -8,24 +8,35 @@
                 </section>
             {{/if}}
 
-            {{#if downloads}}
-                <h2>Download this article</h2>
-                <ul class="list--neutral margin-top--negative-one-fix">
-                    {{#each downloads}}
-                        <li>
-                            <a href="/file?uri={{lowercase (concat uri "/" this.file)}}">
-                                {{title}} ({{fe (lowercase (concat uri "/" this.file))}}, {{fs (lowercase (concat uri "/" this.file))}})
-                            </a>
-                            {{!-- <form method="get" action="/file">
-                                 <button type="submit" title="{{title}}" class="btn btn--simple download-analytics">
-                                     {{title}} ({{fe (lowercase (concat uri "/" this.file))}}, {{fs (lowercase (concat uri "/" this.file))}})
-                                 </button>
-                                 <input type="hidden" name="uri" value="{{lowercase (concat uri "/" this.file)}}"/>
-                             </form> --}}
-                        </li>
-                    {{/each}}
-                </ul>
-            {{/if}}
+            {{!-- TODO Remove this {{if}}, any publication downloads should be storing uri for PDF in the same node --}}
+            {{#if_eq type "static_methodology_download"}}
+                {{#if pdfDownloads}}
+                    <h2>Download this article</h2>
+                    <ul class="list--neutral margin-top--negative-one-fix">
+                        {{#each pdfDownloads}}
+                            <li>
+                                <a href="/file?uri={{lowercase (concat uri "/" this.file)}}">
+                                    {{title}} ({{fe (lowercase (concat uri "/" this.file))}}, {{fs (lowercase (concat uri "/" this.file))}})
+                                </a>
+                                <input type="hidden" name="uri" value="{{lowercase (concat uri "/" this.file)}}"/>
+                            </li>
+                        {{/each}}
+                    </ul>
+                {{/if}}
+            {{else}}
+            	{{#if downloads}}
+                    <h2>Download this article</h2>
+                    <ul class="list--neutral margin-top--negative-one-fix">
+                        {{#each downloads}}
+                            <li>
+                                <a href="/file?uri={{lowercase (concat uri "/" this.file)}}">
+                                    {{title}} ({{fe (lowercase (concat uri "/" this.file))}}, {{fs (lowercase (concat uri "/" this.file))}})
+                                </a>
+                            </li>
+                        {{/each}}
+                    </ul>
+                {{/if}}
+            {{/if_eq}}
 
         </article>
 
