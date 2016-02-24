@@ -148,11 +148,11 @@
                             {{#resolve this.uri}}
                                 <li class="tiles__item--list-type-simple">
                                     <h3 class="tiles__title-h3">
-                                        <a href="{{uri}}">{{#if description.title}}{{description.title}}{{else}}{{#last breadcrumb}}{{description.title}}{{/last}}{{/if}}</a>
+                                        <a href="{{uri}}">{{description.title}}</a>
                                     </h3>
 
                                     <p class="tiles__content">
-                                        {{#if description.summary}}{{description.summary}}{{else}}{{#last breadcrumb}}{{description.summary}}{{/last}}{{/if}}
+                                        {{description.summary}}
                                     </p>
                                 </li>
                             {{/resolve}}
