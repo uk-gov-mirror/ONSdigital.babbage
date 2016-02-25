@@ -117,7 +117,7 @@
             {{!-- RELATED PUBLICATIONS --}}
             {{#if relatedDocuments}}
                 <div class="col-wrap">
-                    <h2 class="col">Publications</h2>
+                    <h2 class="col">{{labels.publications}}</h2>
                 </div>
                 <div class="col-wrap">
                     <ul class="tiles__list col col--lg-40">
@@ -140,7 +140,7 @@
             {{!-- RELATED DATA --}}
             {{#if relatedDatasets}}
                 <div class="col-wrap">
-                    <h2 class="col">Data</h2>
+                    <h2 class="col">{{labels.data}}</h2>
                 </div>
                 <div class="col-wrap">
                     <ul class="tiles__list col col--lg-40 margin-bottom--double">
@@ -160,6 +160,43 @@
                     </ul>
                 </div>
             {{/if}}
+
+            {{!-- RELATED METHODOLOGY --}}
+            {{#if_any relatedMethodology relatedMethodologyArticle}}
+                <div class="col-wrap">
+                    <h2 class="col">{{labels.methodology}}</h2>
+                </div>
+                <div class="col-wrap">
+                    <ul class="tiles__list col col--lg-40 margin-bottom--double">
+                        {{#each relatedMethodology}}
+                            {{#resolve this.uri}}
+                                <li class="tiles__item--list-type-simple">
+                                    <h3 class="tiles__title-h3">
+                                        <a href="{{uri}}">{{description.title}}</a>
+                                    </h3>
+
+                                    <p class="tiles__content">
+                                        {{description.summary}}
+                                    </p>
+                                </li>
+                            {{/resolve}}
+                        {{/each}}
+                        {{#each relatedMethodologyArticle}}
+                            {{#resolve this.uri}}
+                                <li class="tiles__item--list-type-simple">
+                                    <h3 class="tiles__title-h3">
+                                        <a href="{{uri}}">{{description.title}}</a>
+                                    </h3>
+
+                                    <p class="tiles__content">
+                                        {{description.summary}}
+                                    </p>
+                                </li>
+                            {{/resolve}}
+                        {{/each}}
+                    </ul>
+                </div>
+            {{/if_any}}
 
             {{#if_any description.nationalStatistic markdown dateChanges}}
                 <div class="col-wrap">
@@ -190,35 +227,40 @@
                             </section>
                         {{/if}}
 
-                        <div> {{!-- TODO Empty div needed for top border on first accordion --}}
+                        <div class="padding-bottom--1">
                             {{!-- PRE-RELEASE ACCESS LIST --}}
                             {{#if markdown}}
                                 <section id="prereleaseaccesslist"
-                                         class="accordion is-collapsed section__content--static-markdown flush-col">
-                                    <h2 class="accordion__title" aria-controls="content-1">
-										Pre-release access list for {{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}
-									</h2>
+                                         class="js-show-hide border-top--iron-sm border-top--iron-md border-bottom--iron-sm border-bottom--iron-md padding-bottom--0">
+                                    <div class="show-hide show-hide--light">
+                                        <div class="js-show-hide__title">
+                                            <h2 class="show-hide__title flush">Pre-release access list
+                                                for {{description.title}}{{#if description.edition}}
+                                                    : {{description.edition}}{{/if}}</h2>
+                                        </div>
+                                        <div class="js-show-hide__content">
+                                            <p>
+                                                The phrase 'Pre-release Access' refers to the practice whereby official
+                                                statistics
+                                                in their final form, and any accompanying written commentary, are made
+                                                available
+                                                to
+                                                an eligible person in advance of their publication. The rules and
+                                                principles
+                                                which
+                                                govern pre-release access are featured within the Pre-release Access to
+                                                Official
+                                                Statistics Order 2008.
+                                            </p>
 
-                                    <div class="accordion__content" aria-labelledby="sc-1">
-                                        <p>
-                                            The phrase 'Pre-release Access' refers to the practice whereby official
-                                            statistics
-                                            in their final form, and any accompanying written commentary, are made
-                                            available
-                                            to
-                                            an eligible person in advance of their publication. The rules and principles
-                                            which
-                                            govern pre-release access are featured within the Pre-release Access to
-                                            Official
-                                            Statistics Order 2008.
-                                        </p>
-
-                                        <p>
-                                            Besides ONS staff, the following persons are given pre-release access by the
-                                            period
-                                            indicated before release.
-                                        </p>
-                                        {{md markdown.0}}
+                                            <p>
+                                                Besides ONS staff, the following persons are given pre-release access by
+                                                the
+                                                period
+                                                indicated before release.
+                                            </p>
+                                            {{md markdown.0}}
+                                        </div>
                                     </div>
                                 </section>
                             {{/if}}
@@ -226,22 +268,26 @@
                             {{!-- DATE CHANGES --}}
                             {{#if dateChanges}}
                                 <section id="datechanges"
-                                         class="accordion is-collapsed section__content--static-markdown flush-col">
-                                    <h2 class="accordion__title" aria-controls="content-2">
-										Changes to this release date
-									</h2>
-                                        <ul class="accordion__content list--neutral margin-top" aria-labelledby="sc-2">
-                                            {{#loop dateChanges orderBy="previousDate" reverse=true}}
-                                                <li class="margin-bottom overflow--hidden">
-                                                    <dl>
-                                                        <dt class="col col--md-10 col--lg-10">Previous date: </dt>
-                                                        <dd class="col col--md-37 col--lg-49">{{df previousDate}}</dd>
-                                                        <dt class="col col--md-10 col--lg-10">Reason for change: </dt>
-                                                        <dd class="col col--md-37 col--lg-49">{{changeNotice}}</dd>
-                                                    </dl>
-                                                </li>
-                                            {{/loop}}
-                                        </ul>
+                                         class="js-show-hide border-top--iron-sm border-top--iron-md border-bottom--iron-sm border-bottom--iron-md padding-bottom--0">
+                                    <div class="show-hide show-hide--light">
+                                        <div class="js-show-hide__title">
+                                            <h2 class="show-hide__title flush">Changes to this release date</h2>
+                                        </div>
+                                        <div class="js-show-hide__content">
+                                            <ul class="list--neutral margin-top">
+                                                {{#loop dateChanges orderBy="previousDate" reverse=true}}
+                                                    <li class="margin-bottom overflow--hidden">
+                                                        <dl>
+                                                            <dt class="col col--md-10 col--lg-10">Previous date:</dt>
+                                                            <dd class="col col--md-37 col--lg-49">{{df previousDate}}</dd>
+                                                            <dt class="col col--md-10 col--lg-10">Reason for change:</dt>
+                                                            <dd class="col col--md-37 col--lg-49">{{changeNotice}}</dd>
+                                                        </dl>
+                                                    </li>
+                                                {{/loop}}
+                                            </ul>
+                                        </div>
+                                    </div>
                                 </section>
                             {{/if}}
                         </div>
