@@ -117,7 +117,7 @@
             {{!-- RELATED PUBLICATIONS --}}
             {{#if relatedDocuments}}
                 <div class="col-wrap">
-                    <h2 class="col">Publications</h2>
+                    <h2 class="col">{{labels.publications}}</h2>
                 </div>
                 <div class="col-wrap">
                     <ul class="tiles__list col col--lg-40">
@@ -140,7 +140,7 @@
             {{!-- RELATED DATA --}}
             {{#if relatedDatasets}}
                 <div class="col-wrap">
-                    <h2 class="col">Data</h2>
+                    <h2 class="col">{{labels.data}}</h2>
                 </div>
                 <div class="col-wrap">
                     <ul class="tiles__list col col--lg-40 margin-bottom--double">
@@ -160,6 +160,43 @@
                     </ul>
                 </div>
             {{/if}}
+
+            {{!-- RELATED METHODOLOGY --}}
+            {{#if_any relatedMethodology relatedMethodologyArticle}}
+                <div class="col-wrap">
+                    <h2 class="col">{{labels.methodology}}</h2>
+                </div>
+                <div class="col-wrap">
+                    <ul class="tiles__list col col--lg-40 margin-bottom--double">
+                        {{#each relatedMethodology}}
+                            {{#resolve this.uri}}
+                                <li class="tiles__item--list-type-simple">
+                                    <h3 class="tiles__title-h3">
+                                        <a href="{{uri}}">{{description.title}}</a>
+                                    </h3>
+
+                                    <p class="tiles__content">
+                                        {{description.summary}}
+                                    </p>
+                                </li>
+                            {{/resolve}}
+                        {{/each}}
+                        {{#each relatedMethodologyArticle}}
+                            {{#resolve this.uri}}
+                                <li class="tiles__item--list-type-simple">
+                                    <h3 class="tiles__title-h3">
+                                        <a href="{{uri}}">{{description.title}}</a>
+                                    </h3>
+
+                                    <p class="tiles__content">
+                                        {{description.summary}}
+                                    </p>
+                                </li>
+                            {{/resolve}}
+                        {{/each}}
+                    </ul>
+                </div>
+            {{/if_any}}
 
             {{#if_any description.nationalStatistic markdown dateChanges}}
                 <div class="col-wrap">
