@@ -86,7 +86,7 @@
                                     <h4 class="flush-bottom">Supporting files you may find useful</h4>
                                     <ul class="list--neutral flush-top">
                                         {{#each supplementaryFiles}}
-                                            <li class="flush"><a href="{{concat uri "/" this.file}}">{{title}}</a> ({{fs (concat uri "/" this.file)}}, {{fe (concat uri "/" this.file)}})</li>
+                                            <li class="flush"><a href="/file?uri={{concat uri "/" this.file}}">{{title}}</a> ({{fs (concat uri "/" this.file)}}, {{fe (concat uri "/" this.file)}})</li>
                                         {{/each}}
                                     </ul>
                                 {{/if}}
@@ -130,7 +130,7 @@
                                                         <h4 class="flush-bottom">Supporting files you may find useful</h4>
                                                         <ul class="list--neutral flush-top">
                                                             {{#each supplementaryFiles}}
-                                                                <li class="flush"><a href="{{concat uri "/" this.file}}">{{title}}</a> ({{fs (concat uri "/" this.file)}}, {{fe (concat uri "/" this.file)}})</li>
+                                                                <li class="flush"><a href="/file?uri={{concat uri "/" this.file}}">{{title}}</a> ({{fs (concat uri "/" this.file)}}, {{fe (concat uri "/" this.file)}})</li>
                                                             {{/each}}
                                                         </ul>
                                                     {{/if}}
