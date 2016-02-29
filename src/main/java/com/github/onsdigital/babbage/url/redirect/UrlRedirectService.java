@@ -2,12 +2,12 @@ package com.github.onsdigital.babbage.url.redirect;
 
 import au.com.bytecode.opencsv.CSVReader;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.net.URL;
+import java.text.MessageFormat;
 import java.util.Map;
 import java.util.TreeMap;
 
-import static com.github.onsdigital.babbage.url.redirect.RedirectCategory.DATA_EXPLORER_REDIRECT;
 import static com.github.onsdigital.babbage.url.redirect.RedirectCategory.GENERAL_REDIRECT;
 import static com.github.onsdigital.babbage.url.redirect.RedirectCategory.TAXONOMY_REDIRECT;
 import static com.github.onsdigital.babbage.url.redirect.RedirectException.ErrorType.MAPPING_IO_ERROR;
@@ -29,19 +29,44 @@ public class UrlRedirectService {
 
 	/* Property Key for TNA timestamp value. */
 	private static final String NA_TIMESTAMP_KEY = "national_archive_timestamp";
+
 	/* Property key for TNA url. */
 	private static final String NA_URL_KEY = "national_archive_url";
+
 	/* Property key for ONS domain. */
 	private static final String ONS_DOMAIN_KEY = "ons_domain";
-	/* National Archive URL format. */
-	private static final String TNA_URL_FORMAT = "%s/%s/%s%s";
+
 	/* Property key for Data Explorer domain */
 	private static final String DATA_EXPLORER_DOMAIN_KEY = "data_explorer_domain";
+
 	/* Data explorer url format. */
-	private static final String DATA_EXPLORER_URL_FORMAT = "%s%s";
-	/* Error message for Invalid Data Explorer requests. */
-	private static final String INVALID_CATEGORY_DATA_EXPLORER_MSG = "Unable to convert %s to Data Explorer request." +
-			" Identified RedirectCategory is not Data Explorer.";
+	private static final String DATA_EXPLORER_URL_FORMAT = "{0}{1}";
+
+	/* The Old taxonomy uri property key. */
+	private static final String TAXONOMY_URI = "taxonomy_uri";
+
+	/**
+	 * Placeholders in order:
+	 * <ul>
+	 * <li>National Archive URL.</li>
+	 * <li>National Archive timestamp (the latest crawl).</li>
+	 * <li>The ONS base site URL.</li>
+	 * <li>The requested uri that does not exist on the new site.</li>
+	 * </ul>
+	 */
+	private static final String TNA_URL_FORMAT = "{0}/{1}/{2}{3}";
+
+	/**
+	 * Placeholders in order:
+	 * <ul>
+	 * <li>National Archive URL.</li>
+	 * <li>National Archive timestamp (the latest crawl).</li>
+	 * <li>The ONS base site URL.</li>
+	 * <li>The old taxonomy URI.</li>
+	 * <li>The NSCL parameter.</li>
+	 * </ul>
+	 */
+	private static final String TNA_TAXONOMY_URI = "{0}/{1}/{2}{3}?nscl={4}";
 
 	private final UrlRedirectCSVFactory urlRedirectCSVFactory;
 	private final UrlRedirectPropertiesService urlRedirectPropertiesService;
@@ -68,27 +93,32 @@ public class UrlRedirectService {
 		this.generalMappings = null;
 	}
 
-	/**
-	 * Returns the URL redirect value if one exists for the supplied {@link RedirectURL}. If no redirect mapping exists
-	 * then null is returned.
-	 *
-	 * @param url the {@link RedirectURL} to find a redirect value for.
-	 * @return the redirect value if one has been defined, null if no mapping has been defined.
-	 * @throws RedirectException problem trying to find the redirect value.
-	 */
-	public String findRedirect(final RedirectURL url) throws RedirectException {
-		RedirectCategory category = url.getCategory();
-		Map<String, String> mapping = null;
-
-		switch (category) {
-			case TAXONOMY_REDIRECT:
-				mapping = getTaxonomyMapping();
-				break;
-			case GENERAL_REDIRECT:
-				mapping = getGeneralMapping();
-				break;
+	public String taxonomyRedirect(final String searchTerm) throws RedirectException {
+		String redirect;
+		if ((redirect = getTaxonomyMapping().get(searchTerm)) == null) {
+			redirect = taxonomyNationalArchiveFormat(searchTerm);
 		}
-		return mapping != null ? mapping.get(url.getSearchTerm()) : null;
+		return redirect;
+	}
+
+	public String generalRedirect(final String searchTerm) throws RedirectException {
+		String redirect;
+		if ((redirect = getGeneralMapping().get(searchTerm)) == null) {
+			redirect = convertToNationalArchiveFormat(searchTerm);
+		}
+		return redirect;
+	}
+
+	public String dataExplorerRedirect(HttpServletRequest request) throws RedirectException {
+		String requestedResource = request.getRequestURI();
+
+		if (!request.getParameterMap().isEmpty()) {
+			requestedResource += request.getQueryString();
+		}
+
+		return MessageFormat.format(DATA_EXPLORER_URL_FORMAT,
+				urlRedirectPropertiesService.getProperty(DATA_EXPLORER_DOMAIN_KEY),
+				requestedResource);
 	}
 
 	/**
@@ -132,35 +162,20 @@ public class UrlRedirectService {
 		}
 	}
 
-	/**
-	 * Converts the {@link URL} to the National Archive format. Please note there is no guarantee that this resource
-	 * exists on the national archive site.
-	 *
-	 * @param url the {@link RedirectURL} to convert to the National Archive format.
-	 * @return the National Archive URL for the supplied URL.
-	 */
-	public String convertToNationalArchiveFormat(RedirectURL url) throws RedirectException {
-		return String.format(TNA_URL_FORMAT,
+	private String convertToNationalArchiveFormat(String requestedURI) throws RedirectException {
+		return MessageFormat.format(TNA_URL_FORMAT,
 				urlRedirectPropertiesService.getProperty(NA_URL_KEY),
 				urlRedirectPropertiesService.getProperty(NA_TIMESTAMP_KEY),
 				urlRedirectPropertiesService.getProperty(ONS_DOMAIN_KEY),
-				url.getOriginalRequestedResource());
+				requestedURI);
 	}
 
-	/**
-	 * Convert the Requested URL to the Data Explorer redirect format.
-	 *
-	 * @param url the {@link RedirectURL} to convert.
-	 * @return the converted value for the original url.
-	 * @throws RedirectException problem converting the url.
-	 */
-	public String convertToDataExplorerFormat(RedirectURL url) throws RedirectException {
-		if (DATA_EXPLORER_REDIRECT.equals(url.getCategory())) {
-			return String.format(DATA_EXPLORER_URL_FORMAT,
-					urlRedirectPropertiesService.getProperty(DATA_EXPLORER_DOMAIN_KEY),
-					url.getOriginalRequestedResource());
-		}
-		throw new RedirectException(RedirectException.ErrorType.REDIRECT_URL_EXCEPTION,
-				new Object[]{String.format(INVALID_CATEGORY_DATA_EXPLORER_MSG, url.getUrl().getPath())});
+	private String taxonomyNationalArchiveFormat(final String nscl) throws RedirectException {
+		return MessageFormat.format(TNA_TAXONOMY_URI,
+				urlRedirectPropertiesService.getProperty(NA_URL_KEY),
+				urlRedirectPropertiesService.getProperty(NA_TIMESTAMP_KEY),
+				urlRedirectPropertiesService.getProperty(ONS_DOMAIN_KEY),
+				urlRedirectPropertiesService.getProperty(TAXONOMY_URI),
+				nscl);
 	}
 }

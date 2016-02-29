@@ -1,7 +1,6 @@
 package com.github.onsdigital.babbage.api.filter;
 
 import com.github.onsdigital.babbage.url.redirect.RedirectCategory;
-import com.github.onsdigital.babbage.url.redirect.RedirectURL;
 import com.github.onsdigital.babbage.url.redirect.handler.RedirectHandler;
 import com.github.onsdigital.babbage.util.TestsUtil;
 import com.google.common.collect.ImmutableMap;
@@ -13,13 +12,13 @@ import org.mockito.MockitoAnnotations;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.net.URL;
+import javax.ws.rs.core.Response;
 
 import static com.github.onsdigital.babbage.url.redirect.RedirectCategory.DATA_EXPLORER_REDIRECT;
 import static com.github.onsdigital.babbage.url.redirect.RedirectCategory.GENERAL_REDIRECT;
 import static com.github.onsdigital.babbage.url.redirect.RedirectCategory.TAXONOMY_REDIRECT;
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
@@ -36,12 +35,6 @@ public class UrlRedirectFilterTest {
 
 	@Mock
 	private HttpServletResponse mockResponse;
-
-	@Mock
-	private RedirectURL.Builder redirectUrlBuilderMock;
-
-	@Mock
-	private RedirectURL redirectURLMock;
 
 	@Mock
 	private RedirectHandler taxonomyHandlerMock, generalHandlerMock, dataExHandlerMock;
@@ -63,101 +56,60 @@ public class UrlRedirectFilterTest {
 				.build();
 
 		// Set mocks on target.
-		TestsUtil.setPrivateField(filter, "redirectUrlBuilder", redirectUrlBuilderMock);
 		TestsUtil.setPrivateField(filter, "handlers", handlers);
 	}
 
-	/**
-	 * Test verifies filter behaves correctly for cases where no redirect is required.
-	 *
-	 * @throws Exception unexpected test failed.
-	 */
 	@Test
-	public void testFilterNoRedirectRequired() throws Exception {
+	public void shouldNotRedirect() throws Exception {
 		when(mockRequest.getRequestURI())
 				.thenReturn("/no/redirect/required.html");
 
-		filter.filter(mockRequest, mockResponse);
-
-		assertThat("Incorrect filter result test failed.", filter.filter(mockRequest, mockResponse), is(true));
-		verifyZeroInteractions(taxonomyHandlerMock, dataExHandlerMock, generalHandlerMock, redirectUrlBuilderMock);
+		assertThat("Incorrect filter result test failed.", filter.filter(mockRequest, mockResponse), equalTo(true));
+		verifyZeroInteractions(taxonomyHandlerMock, dataExHandlerMock, generalHandlerMock);
 	}
 
-	/**
-	 * Test verifies filter behaves correctly for cases where a Taxonomy Redirect URL is encountered. Test verifies the
-	 * correct {@link RedirectHandler} is called.
-	 *
-	 * @throws Exception unexpected test failed.
-	 */
 	@Test
-	public void testFilterTaxonomyRequest() throws Exception {
+	public void shouldCallTaxonomyRedirectHandler() throws Exception {
 		when(mockRequest.getRequestURI())
 				.thenReturn("/ons/taxonomy/index.html");
-		when(redirectUrlBuilderMock.build(mockRequest))
-				.thenReturn(redirectURLMock);
-		when(redirectURLMock.getCategory())
-				.thenReturn(TAXONOMY_REDIRECT);
-		when(redirectURLMock.containsParameter(TAXONOMY_REDIRECT.getParameterName()))
-				.thenReturn(false);
-		when(redirectURLMock.getUrl())
-				.thenReturn(new URL("http://localhost:8080/ons/taxonomy/index.html"));
 
-		boolean result = filter.filter(mockRequest, mockResponse);
+		assertThat("Incorrect filter result test failed.", filter.filter(mockRequest, mockResponse),
+				equalTo(false));
 
-		assertThat("Incorrect filter result test failed.", result, is(false));
-		verify(redirectUrlBuilderMock, times(1)).build(mockRequest);
-		verify(taxonomyHandlerMock, times(1)).handle(redirectURLMock, mockResponse);
+		verify(taxonomyHandlerMock, times(1)).handle(mockRequest, mockResponse);
 		verifyZeroInteractions(generalHandlerMock, dataExHandlerMock);
 	}
 
-	/**
-	 * Test verifies filter behaves correctly for cases where a General Redirect URL is encountered. Test verifies the
-	 * correct {@link RedirectHandler} is called.
-	 *
-	 * @throws Exception unexpected test failed.
-	 */
 	@Test
-	public void testFilterGeneralRedirect() throws Exception {
+	public void shouldCallGeneralRedirectHandler() throws Exception {
 		when(mockRequest.getRequestURI())
 				.thenReturn("/ons/resources/140068097_tcm77-298212.jpg");
-		when(redirectURLMock.getCategory())
-				.thenReturn(GENERAL_REDIRECT);
-		when(redirectUrlBuilderMock.build(mockRequest))
-				.thenReturn(redirectURLMock);
-		when(redirectURLMock.getUrl())
-				.thenReturn(new URL("http://localhost:8080/ons/taxonomy/index.html"));
 
-		boolean result = filter.filter(mockRequest, mockResponse);
-
-		assertThat("Incorrect filter result test failed.", result, is(false));
-		verify(redirectUrlBuilderMock, times(1)).build(mockRequest);
-		verify(generalHandlerMock, times(1)).handle(redirectURLMock, mockResponse);
+		assertThat("Incorrect filter result test failed.", filter.filter(mockRequest, mockResponse), equalTo(false));
+		verify(generalHandlerMock, times(1)).handle(mockRequest, mockResponse);
 		verifyZeroInteractions(taxonomyHandlerMock, dataExHandlerMock);
 	}
 
-	/**
-	 * Test verifies filter behaves correctly for cases where a Data Explorer Redirect URL is encountered. Test verifies
-	 * the correct {@link RedirectHandler} is called.
-	 *
-	 * @throws Exception unexpected test failed.
-	 */
 	@Test
-	public void testFilterDataExplorerRequest() throws Exception {
+	public void shouldCallDataExplorerRedirectHandler() throws Exception {
 		when(mockRequest.getRequestURI())
 				.thenReturn("/ons/data/dataset-finder");
-		when(redirectURLMock.getCategory())
-				.thenReturn(DATA_EXPLORER_REDIRECT);
-		when(redirectUrlBuilderMock.build(mockRequest))
-				.thenReturn(redirectURLMock);
-		when(redirectURLMock.getUrl())
-				.thenReturn(new URL("http://localhost:8080/ons/data/dataset-finder"));
 
-		boolean result = filter.filter(mockRequest, mockResponse);
-
-		assertThat("Incorrect filter result test failed.", result, is(false));
-		verify(redirectUrlBuilderMock, times(1)).build(mockRequest);
-		verify(dataExHandlerMock, times(1)).handle(redirectURLMock, mockResponse);
+		assertThat("Incorrect filter result test failed.", filter.filter(mockRequest, mockResponse), equalTo(false));
+		verify(dataExHandlerMock, times(1)).handle(mockRequest, mockResponse);
 		verifyZeroInteractions(taxonomyHandlerMock, generalHandlerMock);
+	}
+
+	@Test
+	public void shouldInvokeErrorHandler() throws Exception {
+		when(mockRequest.getRequestURI())
+				.thenReturn("/ons/taxonomy/index.html")
+				.thenReturn("/somethingRandom");
+
+		filter.filter(mockRequest, mockResponse);
+
+		verify(mockResponse, times(1)).setStatus(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode());
+		verifyZeroInteractions(taxonomyHandlerMock, generalHandlerMock, dataExHandlerMock);
 	}
 
 }
