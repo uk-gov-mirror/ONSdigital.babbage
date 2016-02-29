@@ -34,7 +34,7 @@
                     <h2>{{labels.downloads}}</h2>
                     {{#each downloads}}
                         <li>
-                            <h3><a href="/file?uri={{concat uri "/" (fn file)}}">{{title}}</a> ({{fs (concat uri "/" (fn file))}}, {{fe (concat uri "/" (fn file))}})</h3>
+                            <h3><a href="/file?uri={{concat uri "/" (fn file)}}" data-ga-event data-ga-event-category='download-{{fe (concat uri "/" (fn file))}}' data-ga-event-label="{{title}}>{{title}}</a> ({{fs (concat uri "/" (fn file))}}, {{fe (concat uri "/" (fn file))}})</h3>
                             <p class="flush">{{fileDescription}}</p>
                         </li>
                     {{/each}}

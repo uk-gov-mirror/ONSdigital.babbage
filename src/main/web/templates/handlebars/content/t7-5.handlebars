@@ -22,7 +22,7 @@
                     <ul class="list--neutral">
                         {{#each downloads}}
                             <li>
-                                <a href="/file?uri={{concat uri "/" (fn file)}}">{{title}}</a>
+                                <a href="/file?uri={{concat uri "/" (fn file)}}" data-ga-event data-ga-event-category='download-{{fe (concat uri "/" (fn file))}}' data-ga-event-label="{{title}}">{{title}}</a>
                                 ({{fs (concat uri "/" (fn file))}} {{fe (concat uri "/" (fn file))}})
                             </li>
                         {{/each}}
