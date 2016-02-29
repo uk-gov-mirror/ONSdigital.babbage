@@ -1,3 +1,1 @@
-$(function() {
-   console.log('Babbage JS test');
-});
+// Google analytics JS
