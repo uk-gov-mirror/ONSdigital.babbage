@@ -19,7 +19,7 @@
 
 		<!--[if IE]><![endif]-->
 		<!--[if lte IE 8]>
-		<link rel="stylesheet" href="{{#if_any (eq 'localhost' location.hostname) (eq '127.0.0.1' location.hostname)}}http://localhost:9000/dist/css/old-ie.css{{else}}/assets/css/old-ie.css{{/if_any}}"/>
+		<link rel="stylesheet" href="{{#if is_dev}}http://{{location.hostname}}:9000/dist/css/old-ie.css{{else}}/assets/css/old-ie.css{{/if}}"/>
 		<![endif]-->
         <!--[if IE 9]>
               <link rel="stylesheet" type="text/css" href="{{#if is_dev}}http://{{location.hostname}}:9000/dist/css/ie-9.css{{else}}/assets/css/ie-9.css{{/if}}">
