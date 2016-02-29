@@ -41,9 +41,15 @@
         */
         var trackOutboundLink = function(url) {
            ga('send', 'event', 'outbound', 'click', url, {
-             'transport': 'beacon',
+             'transport': 'beacon'
              //'hitCallback': function(){document.location = url;}
            });
+        }
+        var trackEvent = function(category, label) {
+            ga('send', 'event', category, label, {
+                'transport': 'beacon'
+                //'hitCallback': function(){document.location = url;}
+            });
         }
         </script>
 	</head>
@@ -169,6 +175,14 @@
             $("a[target='_blank']").on( "click", function() {
                 var href = $(this).attr("href");
                 trackOutboundLink(href); //return false;
+            });
+
+            $('a[data-ga-event]').on("click", function() {
+                var $this = $(this),
+                    category = $this.attr('data-ga-event-category'),
+                    label = $this.attr('data-ga-event-label');
+                //console.log("You clicked " + $this.text() + " category: " + category + " label: " + label);
+                trackEvent(category, label);
             });
 
         });
