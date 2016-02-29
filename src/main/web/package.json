@@ -11,7 +11,7 @@
         "preinstall": "rm -rf node_modules/sixteens",
         "watch-js": "catw -v js/app/*.js -o assets/js/babbage.js",
         "concat-js": "cat node_modules/sixteens/dist/js/main.js js/app/*.js > node_modules/sixteens/dist/js/babbage.js",
-        "postinstall": "cd node_modules && git clone -b $npm_config_branch --single-branch --depth=1 git://github.com/ONSdigital/sixteens && cd sixteens && npm install --production && cd ../ && npm run concat-js"
+        "postinstall": "cd node_modules && git clone -b $npm_config_branch --single-branch --depth=1 git://github.com/ONSdigital/sixteens && cd sixteens && npm install --production && cd ../../ && npm run concat-js"
     },
     "repository": {
         "type": "git",
