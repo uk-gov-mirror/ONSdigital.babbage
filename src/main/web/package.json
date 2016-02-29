@@ -1,41 +1,40 @@
 {
-  "name": "babbage-web",
-  "version": "1.0.0",
-  "description": "Web front-end of the ONS website",
-  "license" : "MIT",
-  "main": " ",
-  "scripts": {
-    "clean": "",
-    "build": "",
-    "preinstall" : "rm -rf node_modules/sixteens",
-    "watch-js": "catw -v js/app/*.js -o assets/js/babbage.js",
-    "concat-js": "cat node_modules/sixteens/dist/js/main.js js/app/*.js > node_modules/sixteens/dist/js/babbage.js",
-    "postinstall" : "cd node_modules && git clone -b $npm_config_branch --single-branch --depth=1 git://github.com/ONSdigital/sixteens && cd sixteens && npm install --production && npm run concat-js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git@github.com:ONSdigital/babbage.git"
-  },
-  "keywords": [
-    "ons",
-    "statistics",
-    "web",
-    "babbage"
-  ],
-  "author": "Bren",
-  "license": "Open Government License v3.0",
-  "bugs": {
-    "url": "https://github.com/ONSdigital/babbage/issues"
-  },
-  "engines": {
-    "node": "4.3.0",
-    "npm": "2.14.20"
-  },
-  "dependencies" : {
-    "concat": "latest"
-  },
-  "devDependencies": {
-    "catw": "latest",
-    "phantomjs": "~1.9.17"
-  }
+    "name": "babbage-web",
+    "version": "1.0.0",
+    "description": "Web front-end of the ONS website",
+    "author": "Bren",
+    "license": "Open Government License v3.0",
+    "main": " ",
+    "scripts": {
+        "clean": "",
+        "build": "",
+        "preinstall": "rm -rf node_modules/sixteens",
+        "watch-js": "catw -v js/app/*.js -o assets/js/babbage.js",
+        "concat-js": "cat node_modules/sixteens/dist/js/main.js js/app/*.js > node_modules/sixteens/dist/js/babbage.js",
+        "postinstall": "cd node_modules && git clone -b $npm_config_branch --single-branch --depth=1 git://github.com/ONSdigital/sixteens && cd sixteens && npm install --production && cd ../ && npm run concat-js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git@github.com:ONSdigital/babbage.git"
+    },
+    "keywords": [
+        "ons",
+        "statistics",
+        "web",
+        "babbage"
+    ],
+    "bugs": {
+        "url": "https://github.com/ONSdigital/babbage/issues"
+    },
+    "engines": {
+        "node": "4.3.0",
+        "npm": "2.14.20"
+    },
+    "dependencies": {
+        "cat": "latest"
+    },
+    "devDependencies": {
+        "catw": "latest",
+        "phantomjs": "~1.9.17"
+    }
 }
