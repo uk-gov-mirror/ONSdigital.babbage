@@ -5,13 +5,16 @@
     "author": "Bren",
     "license": "Open Government License v3.0",
     "main": " ",
+    "config": {
+      "js": "node_modules/sixteens/dist/js/main.js js/app/analytics.js js/app/auto-submit-form.js js/app/load-results.js js/app/pagination.js js/app/rss-feed-url-generator.js js/app/time-series-tool.js"
+    },
     "scripts": {
+        "build-babbage-js": "uglifyjs $npm_package_config_js -o js/app.js && cat node_modules/sixteens/dist/js/main.js js/app.js > node_modules/sixteens/dist/js/babbage.js",
+        "watch-babbage-js": "catw -v js/app/*.js -o js/app.js",
         "clean": "",
         "build": "",
         "preinstall": "rm -rf node_modules/sixteens",
-        "watch-js": "catw -v js/app/*.js -o assets/js/babbage.js",
-        "concat-js": "cat node_modules/sixteens/dist/js/main.js js/app/*.js > node_modules/sixteens/dist/js/babbage.js",
-        "postinstall": "cd node_modules && git clone -b $npm_config_branch --single-branch --depth=1 git://github.com/ONSdigital/sixteens && cd sixteens && npm install --production && cd ../../ && npm run concat-js"
+        "postinstall": "cd node_modules && git clone -b $npm_config_branch --single-branch --depth=1 git://github.com/ONSdigital/sixteens && cd sixteens && npm install --production && cd ../../ && npm run build-babbage-js"
     },
     "repository": {
         "type": "git",
@@ -31,6 +34,7 @@
         "npm": "latest-2"
     },
     "dependencies": {
+        "uglify-js": "latest",
         "cat": "latest"
     },
     "devDependencies": {
