@@ -1,5 +1,5 @@
 {{!-- Contact --}}
 <p class="col {{class}} meta__item">
     {{#if description.nationalStatistic}} <img class="meta__image" src="/img/national-statistics.png" alt="National Statistics logo"/>{{/if}}
-	<span>{{labels.contact}}: </span><br/><a href="mailto:{{description.contact.email}}" data-ga-event data-ga-event-category="mailto" data-ga-event-label="click">{{#if description.contact.name}}{{description.contact.name}}{{else}}{{description.contact.email}}{{/if}}</a>
+	<span>{{labels.contact}}: </span><br/><a href="mailto:{{description.contact.email}}" data-ga-event data-ga-event-category="mailto" data-ga-event-label="{{description.contact.email}}">{{#if description.contact.name}}{{description.contact.name}}{{else}}{{description.contact.email}}{{/if}}</a>
 </p>
