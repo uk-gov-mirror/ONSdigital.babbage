@@ -6,7 +6,7 @@
 		<address>
 			{{#if description.contact.name}}{{description.contact.name}}<br/>{{/if}}
 			<a href="mailto:{{description.contact.email}}"
-                data-ga-event data-ga-event-category="mailto" data-ga-event-label="click">{{description.contact.email}}</a><br/>
+                data-ga-event data-ga-event-category="mailto" data-ga-event-label="{{description.contact.email}}">{{description.contact.email}}</a><br/>
 			{{#if description.contact.telephone}}{{labels.telephone}}: {{description.contact.telephone}}{{/if}}
 		</address>
 	</div>
