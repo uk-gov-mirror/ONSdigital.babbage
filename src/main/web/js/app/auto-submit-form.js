@@ -10,8 +10,6 @@ function autoSubmitForm() {
     var form = '.js-auto-submit__form',
         input = '.js-auto-submit__input',
         $keywordSearch = $('input[type="search"].js-auto-submit__input'),
-        $clearAll = $(form).find('a[value="Reset"]'),
-        $atozContainer = $('.js-atoz-container'),
         $selectUpdated = $('#select-updated'),
         url,
         timer,
@@ -53,23 +51,6 @@ function autoSubmitForm() {
             submitForm($target)
         }
     });
-
-    // Commented out as not sure this is necessary and adds complexity to the code
-    //Bind clear form click event
-    //$clearAll.click(function (e) {
-    //    e.preventDefault();
-    //    url = $(this).attr('href');
-    //    loadNewResults(url, true);
-    //});
-
-    // Using generic js-auto-submit__input class instead
-    //Auto-submit A-Z filters
-    //if ($atozContainer.length > 0) {
-    //    $atozContainer.on('change', '.filters__a-z input', function (e) {
-    //        var $target = $(e.target);
-    //        submitForm($target);
-    //    });
-    //}
 
     //Bind form submission to store form data and run ajax function
     $(form).submit(function (e) {
