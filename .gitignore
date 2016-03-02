@@ -35,3 +35,4 @@ export-server.log
 npm-debug.log
 .tmp
 src/main/web/assets/
+src/main/web/js/app.js

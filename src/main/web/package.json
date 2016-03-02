@@ -1,35 +1,44 @@
 {
-  "name": "babbage-web",
-  "version": "0.0.1",
-  "description": "Web front-end of ONS Website Babbage",
-  "license" : "MIT",
-  "main": " ",
-  "scripts": {
-    "clean": "",
-    "build": "",
-    "preinstall" : "rm -rf node_modules/sixteens",
-    "postinstall" : "cd node_modules && git clone -b $npm_config_branch --single-branch --depth=1 git://github.com/ONSdigital/sixteens && cd sixteens && npm install --production"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git@github.com:ONSdigital/babbage.git"
-  },
-  "keywords": [
-    "ons",
-    "statistics",
-    "web",
-    "babbage"
-  ],
-  "author": "Bren",
-  "license": "Open Government License v2.0",
-  "bugs": {
-    "url": "https://github.com/ONSdigital/babbage/issues"
-  },
-  "engines": {
-    "node": "0.10.25",
-    "npm": "1.3.10"
-  },
-  "devDependencies": {
-    "phantomjs": "~1.9.17"
-  }
+    "name": "babbage-web",
+    "version": "1.0.0",
+    "description": "Web front-end of the ONS website",
+    "author": "Bren",
+    "license": "Open Government License v3.0",
+    "main": " ",
+    "config": {
+      "js": "js/app/analytics.js js/app/auto-submit-form.js js/app/load-results.js js/app/pagination.js js/app/rss-feed-url-generator.js js/app/time-series-tool.js js/app/pym-interactive.js"
+    },
+    "scripts": {
+        "build-babbage-js": "uglifyjs $npm_package_config_js -o js/app.js && cat node_modules/sixteens/dist/js/main.js js/app.js > node_modules/sixteens/dist/js/babbage.js",
+        "watch-babbage-js": "catw -v js/app/*.js -o js/app.js",
+        "clean": "",
+        "build": "",
+        "preinstall": "rm -rf node_modules/sixteens",
+        "postinstall": "cd node_modules && git clone -b $npm_config_branch --single-branch --depth=1 git://github.com/ONSdigital/sixteens && cd sixteens && npm install --production && cd ../../ && npm run build-babbage-js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git@github.com:ONSdigital/babbage.git"
+    },
+    "keywords": [
+        "ons",
+        "statistics",
+        "web",
+        "babbage"
+    ],
+    "bugs": {
+        "url": "https://github.com/ONSdigital/babbage/issues"
+    },
+    "engines": {
+        "node": "4.3.0",
+        "npm": "latest-2"
+    },
+    "dependencies": {
+        "uglify-js": "latest",
+        "cat": "latest"
+    },
+    "devDependencies": {
+        "catw": "latest",
+        "phantomjs": "~1.9.17"
+    }
 }
