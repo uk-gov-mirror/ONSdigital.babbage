@@ -26,7 +26,7 @@
 		<ul class="list--neutral">
 			{{#each downloads}}
 			<li>
-				<h3><a href="/file?uri={{file}}">{{title}}</a></h3>
+				<h3><a href="/file?uri={{file}}" data-ga-event data-ga-event-category='download-{{fe file}}' data-ga-event-label="{{title}}">{{title}}</a></h3>
 				<p class="flush">{{fileDescription}}</p>
 			</li>
 			{{/each}}

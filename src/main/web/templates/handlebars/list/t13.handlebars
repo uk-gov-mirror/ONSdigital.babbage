@@ -38,7 +38,8 @@
 				{{!-- Excel download --}}
 				<form id="xls-form" method="post" action="/export" class="inline print--hide">
 					<button type="submit" title="Download XLS" aria-labelledby="timeseries__download-label"
-							class="btn btn--primary download-analytics">
+							class="btn btn--primary download-analytics"
+                            data-ga-event data-ga-event-category="download-timeseries" data-ga-event-label="xls">
 						Download .xls
 					</button>
 					<input type="hidden" name="format" value="xls"/>
@@ -47,7 +48,8 @@
 				{{!-- CSV download --}}
 				<form id="csv-form" method="post" action="/export" class="inline print--hide">
 					<button type="submit" title="Download CSV" aria-labelledby="timeseries__download-label"
-							class="btn btn--primary download-analytics">
+							class="btn btn--primary download-analytics"
+                            data-ga-event data-ga-event-category="download-timeseries" data-ga-event-label="csv">
 						Download .csv
 					</button>
 					<input type="hidden" name="format" value="csv"/>

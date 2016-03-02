@@ -6,20 +6,19 @@
 <html {{> partials/subdomain-lang }}>
 	<!--<![endif]-->
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-		<title>{{> partials/page-title }} - Office for National Statistics</title>
-		<meta charset="utf-8" />
-		<meta content="width=device-width,initial-scale=1.0" name="viewport" />
-		<meta content="on" http-equiv="cleartype" />
-		<meta name="format-detection" content="telephone=no">
-		<meta name="theme-color" content="#58595B">
-		<meta name="apple-mobile-web-app-status-bar-style" content="#58595B">
-	    <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+        <title>{{> partials/page-title }} - Office for National Statistics</title>
+        <meta charset="utf-8" />
+        <meta content="width=device-width,initial-scale=1.0,user-scalable=1" name="viewport">
+        <meta content="on" http-equiv="cleartype" />
+        <meta name="format-detection" content="telephone=no">
+        <meta name="theme-color" content="#58595B">
+        <meta name="apple-mobile-web-app-status-bar-style" content="#58595B">
+        <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
 
 		<!--[if IE]><![endif]-->
 		<!--[if lte IE 8]>
-		<link rel="stylesheet" href="{{#if_any (eq 'localhost' location.hostname) (eq '127.0.0.1' location.hostname)}}http://localhost:9000/dist/css/old-ie.css{{else}}/assets/css/old-ie.css{{/if_any}}"/>
+		<link rel="stylesheet" href="{{#if is_dev}}http://{{location.hostname}}:9000/dist/css/old-ie.css{{else}}/assets/css/old-ie.css{{/if}}"/>
 		<![endif]-->
         <!--[if IE 9]>
               <link rel="stylesheet" type="text/css" href="{{#if is_dev}}http://{{location.hostname}}:9000/dist/css/ie-9.css{{else}}/assets/css/ie-9.css{{/if}}">
@@ -27,10 +26,6 @@
 		<!--[if gt IE 9]><!-->
         <link rel="stylesheet" type="text/css" href="{{#if is_dev}}http://{{location.hostname}}:9000/dist/css/main.css{{else}}/assets/css/main.css{{/if}}">
 		{{#if pdf_style}}<link rel="stylesheet" type="text/css" href="{{#if is_dev}}http://localhost:9000/dist/css/pdf.css{{else}}/assets/css/pdf.css{{/if}}">{{/if}}
-		{{!-- <link rel="stylesheet" type"text/css" href="{{#if is_dev}}http://localhost:9000/dist/css/print.css{{else}}/assets/css/print.css{{/if}}" media="print"> --}}
-
-		{{!-- <link rel="stylesheet" href="/css/js-enhance.css"/> --}}
-		{{!-- <link rel="stylesheet" href="/css/c3.css"/> --}}
         <![endif]-->
         <script>
         /**
@@ -41,10 +36,16 @@
         */
         var trackOutboundLink = function(url) {
            ga('send', 'event', 'outbound', 'click', url, {
-             'transport': 'beacon',
+             'transport': 'beacon'
              //'hitCallback': function(){document.location = url;}
            });
-        }
+        };
+        var trackEvent = function(category, label) {
+            ga('send', 'event', category, 'click', label, {
+                'transport': 'beacon'
+                //'hitCallback': function(){document.location = url;}
+            });
+        };
         </script>
 	</head>
 	<body>
@@ -56,8 +57,8 @@
 
         <!--[if gt IE 8]><!-->
 		<script type="text/javascript" src="/js/js-enhance-loading.js"></script>
-
         <![endif]-->
+
 		{{!-- Main handlebars is the main file rendered by handlebars.
 		performs type check on content type and decides which template to render  --}}
 
@@ -126,15 +127,14 @@
 
 
         <!--[if gt IE 8]><!-->
-		<script type="text/javascript" src="{{#if is_dev}}http://{{location.hostname}}:9000/dist/js/main.js{{else}}/assets/js/main.js{{/if}}"></script>
+        {{!-- {{#if is_dev}}
+             <script type="text/javascript" src="//{{location.hostname}}:9000/dist/js/main.js"></script>
+             <script type="text/javascript" src="js/app.js"></script>
+         {{else}}
+             <script type="text/javascript" src="/assets/js/babbage.js"></script>
+         {{/if}} --}}
+        <script type="text/javascript" src="{{#if is_dev}}http://{{location.hostname}}:9000/dist/js/main.js{{else}}/assets/js/main.js{{/if}}"></script>
         <![endif]-->
-		{{!-- <link rel="stylesheet" type="text/css" href="{{#if_any (eq 'localhost' location.hostname) (eq '127.0.0.1' location.hostname)}}http://localhost:9000/dist/css/main.css{{else}}/assets/dist/css/main.css{{/if_any}}"> --}}
-		{{!-- <script type="text/javascript" src="/ui/js/lib/jquery.tooltipster.min.js"></script>
-		<script type="text/javascript" src="/ui/js/lib/highcharts.js"></script>
-		<script type="text/javascript" src="/js/linechart.js"></script>
-		<script type="text/javascript" src="/js/sparkline.js"></script>
-		<script type="text/javascript" src="/js/chartRenderer.js"></script>
-		<script type="text/javascript" src="/js/js-enhance.js"></script> --}}
         <script>
             (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
             (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -169,6 +169,14 @@
             $("a[target='_blank']").on( "click", function() {
                 var href = $(this).attr("href");
                 trackOutboundLink(href); //return false;
+            });
+
+            $('a[data-ga-event]').on("click", function() {
+                var $this = $(this),
+                    category = $this.attr('data-ga-event-category'),
+                    label = $this.attr('data-ga-event-label');
+                //console.log("You clicked " + $this.text() + " category: " + category + " label: " + label);
+                trackEvent(category, label);
             });
 
         });
