@@ -1,6 +1,6 @@
 /* Load search/list results into a page without refreshing (eg when changing a filter) */
 
-function loadNewResults(url, focus, clear) {
+function loadNewResults(url, focus) {
     // Selector classes/IDs
     var results = '.results',
         resultsText = '.search-page__results-text',
@@ -11,6 +11,9 @@ function loadNewResults(url, focus, clear) {
 
     //Show 'Loading...' in place of results text before Ajax starts
     updateContents(resultsText, 'Loading...');
+
+    // Empty results
+    $(results).empty();
 
     //Ajax request for new URL
     $.ajax({
@@ -37,13 +40,6 @@ function loadNewResults(url, focus, clear) {
                 var $atozFilters = $(result).find(atozFilters);
                 replaceFilters($atozFilters);
             }
-            // Commented out as not sure this is necessary and adds complexity to the code
-            //if (clear) { //Clear all filters
-            //    $('.filters input, select').each(function () {
-            //        var thisId = '#' + $(this).attr('id');
-            //        updateContents(thisId);
-            //    });
-            //}
 
             //Tab counts (only when page has tab container and keyword search or custom dates - otherwise no update required
             if (newTabsContainer && $('.filters').find('input[type="search"], input[type="text"]')) {
@@ -61,7 +57,6 @@ function loadNewResults(url, focus, clear) {
 
     //Removes current results from page and loads in new results
     function replaceResults(url, newResults, newResultsText, newPagination) {
-        $(results).empty();
         $(newResults).hide().appendTo(results).fadeIn(300);
 
         //Re-run functions done on load that are needed after Ajax
