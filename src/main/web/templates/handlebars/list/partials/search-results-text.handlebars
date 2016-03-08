@@ -7,10 +7,10 @@
 	{{/if_any}}
 	<strong>‘{{parameters.q.0}}’</strong>
 	{{#if parameters.filter}}
-	showing <strong>{{#each parameters.filter}}{{> filter-label this}}{{!--<span class="icon icon-cancel js-enhance--show" role="presentation"></span> --}}{{#unless @last}},{{/unless}}{{/each}}</strong>
+	showing <strong>{{#each parameters.filter}}{{> filter-label this}}{{!--<span class="icon icon-cancel js--show" role="presentation"></span> --}}{{#unless @last}},{{/unless}}{{/each}}</strong>
 	{{/if}}.
 	{{#if parameters.includeStatics}}
-	You have chosen to expand these results to include <strong>all other website content</strong>{{!-- <span class="icon icon-cancel js-enhance--show" role="presentation"></span> --}}
+	You have chosen to expand these results to include <strong>all other website content</strong>{{!-- <span class="icon icon-cancel js--show" role="presentation"></span> --}}
 	{{/if}}
 	{{#unless results}}
 	{{#unless showFeaturedResult}}

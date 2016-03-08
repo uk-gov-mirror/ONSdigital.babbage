@@ -42,8 +42,8 @@
 					<div class="tiles__content">
 						<h2>{{labels.download-this-time-series}}</h2>
 						<div class="chart-area__footer__actions">
-                            <form class="timeseries__filters nojs-hidden">
-							<div class="nojs-hidden">
+                            <form class="timeseries__filters nojs--hide">
+							<div class="nojs--hide">
                                 <fieldset class="btn-group">
                                     <legend id="data-download">{{labels.download-options}}</legend>
                                     <div role="radiogroup" aria-labelledby="data-download">
@@ -81,13 +81,13 @@
                             </form>
 
                             {{!-- Show JS downloads options --}}
-							{{!-- <form method="get" action="{{uri}}/linechartimage" class="inline nojs-hidden dlCustomData">
+							{{!-- <form method="get" action="{{uri}}/linechartimage" class="inline nojs--hide dlCustomData">
 							    <button id="download-custom-image" type="submit" class="btn btn--primary btn--small download-analytics">
 								Image
 								</button>
 								<input type="hidden" name="fileName" value="{{description.title}}" />
 							</form>
-							<form method="get" action="/generator" class="inline nojs-hidden dlCustomData">
+							<form method="get" action="/generator" class="inline nojs--hide dlCustomData">
 								<button id="download-custom-csv" type="submit" name="format" value="csv" class="btn btn--primary btn--small download-analytics">
 								.csv
 								</button>
@@ -99,7 +99,7 @@
 								<input type="hidden" name="series" value="" />
 							</form> --}}
                             {{!-- Show no-JS download options --}}
-                            <div class="js-enhance--hide">
+                            <div class="js--hide">
                                 <a href="{{uri}}/linechartimage" title="Download as an image" class="btn btn--primary">Image</a>
                                 {{> partials/highcharts/download format='csv'}}
                                 {{> partials/highcharts/download format='xls'}}
@@ -108,7 +108,7 @@
 						<!-- </div> -->
 					</div> {{!-- /tiles__content --}}
                     <!--[if gt IE 8]><!--><noscript><![endif]-->
-						<div class="tiles__content js-enhance--hide">
+						<div class="tiles__content js--hide">
 							<h2>{{labels.table}}</h2>
 							<table class="tablesaw">
 								<thead>

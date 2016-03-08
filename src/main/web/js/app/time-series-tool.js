@@ -284,7 +284,7 @@ var timeseriesTool = (function() {
             }
         });
 
-        jsEnhanceShow();
+        setDisplay();
     }
 
     function resolveCustomDateFilter() {

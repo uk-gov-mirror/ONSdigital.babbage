@@ -21,12 +21,12 @@
             <!-- TODO change to dd's -->
             <dd class="margin-left-sm--1 margin-left-md--1">
                 <span class="tiles__preunit--home">{{description.preUnit}}</span>
-                <span class="tiles__figure--home stat__figure-enhance">{{description.number}}</span>
+                <span class="tiles__figure--home">{{nf description.number}}</span>
                 <span class="tiles__unit--home">{{description.unit}}</span>
                                         <span class="tiles__date--home">
                                             {{description.date}}
                                         </span>
-                <a class="js-enhance--hide" href="{{statistics.uri}}">More info</a>
+                <a class="js--hide" href="{{statistics.uri}}">More info</a>
                 <div class="sparkline-holder">
                     {{> partials/highcharts/sparkline}}
                 </div>

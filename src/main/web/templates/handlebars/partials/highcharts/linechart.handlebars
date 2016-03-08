@@ -1,4 +1,4 @@
-<form class="timeseries__filters nojs-hidden">
+<form class="timeseries__filters nojs--hide">
     <h2 class="tiles__title-h2">{{labels.fitlers}}</h2>
     <div class="tiles__content">
         <div data-chart-controls="" data-chart-controls-for="">
@@ -196,9 +196,9 @@
 <div class="timeseries__chart" id="data">
     <h2 id="title-type" class="tiles__title-h2">{{labels.chart}}</h2>
     <div class="col col--md-45 col--lg-57 margin-left-sm--1 margin-left-md--1 padding-right-sm--2 chart-area__timeseries">
-        <div class="js-enhance--show nojs-hidden chart linechart" data-chart="" data-uri="{{uri}}" ></div>
-        <div class="js-enhance--show nojs-hidden"></div>
-        <table class="table-advanced js-table-sort nojs-hidden" role="grid" data-table="">
+        <div class="js--show nojs--hide chart linechart" data-chart="" data-uri="{{uri}}" ></div>
+        <div class="js--show nojs--hide"></div>
+        <table class="table-advanced js-table-sort nojs--hide" role="grid" data-table="">
             <thead>
             <tr role="row">
                 <th class="table-advanced__header js-table-sort__header" scope="col" role="columnheader" aria-sort="ascending">Period</th>
@@ -211,7 +211,7 @@
     </div>
     <!--[if gt IE 8]><!--><noscript><![endif]-->
     <div class="tiles__content">
-        <img class="js-enhance--hide image-responsive" src="{{uri}}/linechartimage" alt="{{description.title}}">
+        <img class="js--hide image-responsive" src="{{uri}}/linechartimage" alt="{{description.title}}">
     </div>
     <!--[if gt IE 8]><!--></noscript><![endif]-->
 

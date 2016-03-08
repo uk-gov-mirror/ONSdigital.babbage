@@ -2,7 +2,7 @@
 <div class="sparkline" style="height:100%" data-sparkline-{{description.cdid}} data-uri="{{uri}}">
 
     <!--[if gt IE 8]><!--><noscript><![endif]-->
-	    <img class="{{#if_eq type 'home_page'}}stat__image--home{{else}}img-sparkline{{/if_eq}} js-enhance--hide" src="{{uri}}/sparklineimage"
+	    <img class="{{#if_eq type 'home_page'}}stat__image--home{{else}}img-sparkline{{/if_eq}} js--hide" src="{{uri}}/sparklineimage"
 
              alt="{{description.title}} between
             {{#if months}}{{#each months}}{{#if @first}}{{date}}{{/if}}{{#if @last}} and {{date}}{{/if}}{{/each}}{{/if}}
