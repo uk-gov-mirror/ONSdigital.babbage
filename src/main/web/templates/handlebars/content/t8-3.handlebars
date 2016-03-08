@@ -22,7 +22,7 @@
 
 
 {{#partial "block-intro"}}
-    <h1 class="page-intro__title margin-bottom-sm--4 margin-bottom-md--4"><span class="page-intro__type">Dataset(s):</span>{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}</h1>
+    <h1 class="page-intro__title margin-bottom-sm--4 margin-bottom-md--4"><span class="page-intro__type">{{labels.dataset}}:</span>{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}</h1>
 {{/partial}}
 
 {{#partial "block-alert" no-versions=true}}{{/partial}}
@@ -37,7 +37,7 @@
 
                     {{#if description.summary}}
 
-                        <h2>About this dataset(s)</h2>
+                        <h2>About this dataset</h2>
                         <p class="margin-top-sm--0 margin-top-md--0">{{description.summary}}</p>
 
                     {{/if}}
@@ -199,4 +199,4 @@
 {{/partial}}
 
 {{!-- Inheriting from statistics template --}}
-{{> content/base/statistics typeLabel="Dataset(s)"}}
+{{> content/base/statistics typeLabel=labels.dataset}}
