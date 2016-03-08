@@ -178,12 +178,12 @@ var renderLineChart = function(timeseries) {
 		if (currentDisplay === 'chart') {
 			hide(table);
 			renderChart();
-			timeseriesAccessibiliyAttrs();
+			timeseriesAccessibilityAttrs();
 		} else {
 			hide(chartContainer);
 			sortArray = []; //Remove any previously selected data from array when new frequency/time period selected
 			renderTable();
-			timeseriesAccessibiliyAttrs(true);
+			timeseriesAccessibilityAttrs(true);
 
 			sortMarkup('reset'); //Reset sort styling so arrows on default sorting order
 			inverse = true; //Used to default table sort function to correct order
