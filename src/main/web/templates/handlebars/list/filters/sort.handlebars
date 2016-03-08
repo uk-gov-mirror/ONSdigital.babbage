@@ -1,6 +1,10 @@
 <div class="sort-results">
 	<form id="form-sort" class="js-auto-submit__form">
-		<input  type="hidden" name="q" value="{{parameters.q.0}}">
+        {{#each parameters}}
+            {{#if_all this.0 (ne @key "sortBy")}}
+                <input type="hidden" name="{{@key}}" value="{{this.0}}">
+            {{/if_all}}
+        {{/each}}
 
 		<div class="js-mobile-filters__sort">
 			<label for="select" class="sort__label">{{labels.sort-by}}

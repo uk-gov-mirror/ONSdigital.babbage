@@ -73,7 +73,7 @@ function loadNewResults(url, focus) {
         }
 
         //Pushes new url into browser, if browser compatible (enhancement)
-        if (typeof (history.pushState) != undefined) {
+        if (history.pushState) {
             window.history.pushState({}, '', url);
         }
     }
