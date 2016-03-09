@@ -61,21 +61,21 @@
         <div class="col-wrap margin-bottom-sm--2 margin-bottom-md--4">
             {{#if_any relatedData relatedDatasets}}
                 <div class="col {{#if_all relatedDocuments relatedData relatedMethodology}}col--lg-one-third {{else}}col--lg-half{{/if_all}}">
-                    <div class="equal-height">
+                    <div class="js-equal-height">
                         {{>partials/related/data}}
                     </div>
                 </div>
             {{/if_any}}
             {{#if relatedDocuments}}
                 <div class="col {{#if_all relatedDocuments relatedData relatedMethodology}}col--lg-one-third {{else}}col--lg-half{{/if_all}}">
-                    <div class="equal-height">
+                    <div class="js-equal-height">
                         {{>partials/related/documents}}
                     </div>
                 </div>
             {{/if}}
             {{#if relatedMethodology}}
                 <div class="col {{#if_all relatedDocuments relatedData relatedMethodology}}col--lg-one-third {{else}}col--lg-half{{/if_all}}">
-                    <div class="equal-height">
+                    <div class="js-equal-height">
                         {{>partials/related/methodology}}
                     </div>
                 </div>
