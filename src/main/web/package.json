@@ -6,7 +6,7 @@
     "license": "Open Government License v3.0",
     "main": " ",
     "config": {
-      "js": "js/third-party/moment.js js/third-party/highcharts.js js/third-party/highcharts-more.js js/third-party/pym.min.js js/app/analytics.js js/app/accessibility-enhance.js js/app/linechart.js js/app/sparkline.js js/app/auto-submit-form.js js/app/load-results.js js/app/pagination.js js/app/rss-feed-url-generator.js js/app/time-series-tool.js js/app/pym-interactive.js js/app/print-compendium.js"
+      "js": "js/third-party/moment.js js/third-party/highcharts.js js/third-party/highcharts-more.js js/third-party/pym.min.js js/third-party/js.cookie.min.js js/app/analytics.js js/app/accessibility-enhance.js js/app/linechart.js js/app/sparkline.js js/app/auto-submit-form.js js/app/load-results.js js/app/pagination.js js/app/rss-feed-url-generator.js js/app/time-series-tool.js js/app/pym-interactive.js js/app/print-compendium.js"
     },
     "scripts": {
         "build-babbage-js": "uglifyjs $npm_package_config_js -o js/app.js && cat node_modules/sixteens/dist/js/main.js js/app.js > node_modules/sixteens/dist/js/babbage.js",
