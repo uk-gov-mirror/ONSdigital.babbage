@@ -10,7 +10,7 @@
 
 {{#partial "block-release-date"}}
     {{!-- Release date --}}
-    <p class="col {{#if description.nationalStatistic}}col--md-11 col--lg-14{{else}}col--md-12 col--lg-15{{/if}} meta__item">
+    <p class="col col--md-11 col--lg-14 meta__item">
         {{#if description.cancelled}}
             Proposed release date:
             <br/>
@@ -37,7 +37,7 @@
 {{#partial "block-next-release"}}
     {{!-- Next release --}}
     {{#unless description.cancelled}}
-        <p class="col {{#if description.nationalStatistic}}col--md-11 col--lg-14{{else}}col--md-12 col--lg-15{{/if}} meta__item">
+        <p class="col col--md-11 col--lg-14 meta__item">
                 <span>{{labels.release-next}}: </span><br/>{{#if description.nextRelease}}{{description.nextRelease}}{{else}}To be
             announced{{/if}}
         </p>
@@ -48,7 +48,7 @@
 {{#partial "block-additonal-metadata"}}
     {{#if markdown}}
         {{!-- Pre-release list link --}}
-        <p class="col {{#if description.nationalStatistic}}col--md-11 col--lg-14{{else}}col--md-12 col--lg-15	{{/if}} print--hide meta__item">
+        <p class="col col--md-11 col--lg-14 print--hide meta__item">
             <a href="#prereleaseaccesslist" class="jsEnhanceAnimateScroll expand-accordion">Pre-release access list</a>
         </p>
     {{/if}}
@@ -245,7 +245,7 @@
                             </section>
                         {{/if}}
 
-                        <div class="padding-bottom--1">
+                        <div class="padding-top--1 padding-bottom--1">
                             {{!-- PRE-RELEASE ACCESS LIST --}}
                             {{#if markdown}}
                                 <section id="prereleaseaccesslist"
