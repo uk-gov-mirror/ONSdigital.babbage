@@ -113,7 +113,7 @@
 
                 {{#each downloads}}
 
-                    {{#if file}}
+                    {{#if_all file (ne (fe this.file) 'csdb')}}
                         <a href="/file?uri={{absolute (concat uri "/" file)}}" title="Download as {{fe (lowercase (concat uri "/" file))}}" class="btn btn--primary btn--thin btn--narrow btn--small float-left {{#if @last}}margin-left--1{{/if}}"
                            data-ga-event data-ga-event-category='download-version' data-ga-event-label="latest">
                             {{fe (lowercase (concat uri "/" file))}} ({{fs (lowercase (concat uri "/" file))}})
@@ -125,7 +125,7 @@
                          <input type="hidden" name="uri" value="{{absolute (concat uri "/" file)}}"/>
                      </form> --}}
 
-                    {{/if}}
+                    {{/if_all}}
 
                 {{/each}}
 
@@ -150,7 +150,7 @@
 
                                         {{#each downloads}}
 
-                                            {{#if file}}
+                                            {{#if_all file (ne (fe this.file) 'csdb')}}
                                                 <a href="/file?uri={{absolute (concat uri "/" this.file)}}" title="Download as {{fe (lowercase (concat uri "/" this.file))}}" class="btn btn--primary btn--thin btn--narrow btn--small float-left {{#if @last}}margin-left--1{{/if}}"
                                                    data-ga-event data-ga-event-category='download-version' data-ga-event-label="{{df updateDate}}">
                                                     {{fe (lowercase (concat uri "/" this.file))}} ({{fs (lowercase (concat uri "/" this.file))}})
@@ -162,7 +162,7 @@
                                                  <input type="hidden" name="uri" value="{{absolute (concat uri "/" this.file)}}"/>
                                              </form> --}}
 
-                                            {{/if}}
+                                            {{/if_all}}
 
                                         {{/each}}
 
