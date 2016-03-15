@@ -16,7 +16,7 @@
         {{!-- Content --}}
         <article class="col col--md-36 col--lg-39 page-content__main-content js-sticky-toc__trigger">
             {{#each sections}}
-                <section id="{{slugify title}}" class="section__content--markdown">
+                <section id="{{slugify title}}" class="section__content--markdown js-sticky-toc__section">
                     <header>
                         <h2><span class="section__content-number">{{@index_1}}.</span> {{title}}</h2>
                     </header>
@@ -28,7 +28,7 @@
             {{#if_any accordion relatedMethodology}}
                 <div class="margin-top--4 margin-bottom--4">
                     {{#each accordion}}
-                        <section id="{{slugify title}}" class="js-show-hide section__content--markdown border-top--iron-sm border-top--iron-md{{#if @last}}{{#unless relatedMethodology}} border-bottom--iron-sm border-bottom--iron-md{{/unless}}{{/if}}">
+                        <section id="{{slugify title}}" class="js-show-hide js-sticky-toc__section section__content--markdown border-top--iron-sm border-top--iron-md{{#if @last}}{{#unless relatedMethodology}} border-bottom--iron-sm border-bottom--iron-md{{/unless}}{{/if}}">
                             <div class="show-hide show-hide--light">
                                 <div class="js-show-hide__title">
                                     <h2 class="show-hide__title flush">
@@ -43,7 +43,7 @@
                         </section>
                     {{/each}}
                     {{#if relatedMethodology}}
-                        <section id="methodology" class="js-show-hide section__content--markdown border-top--iron-sm border-top--iron-md border-bottom--iron-sm border-bottom--iron-md">
+                        <section id="methodology" class="js-show-hide js-sticky-toc__section section__content--markdown border-top--iron-sm border-top--iron-md border-bottom--iron-sm border-bottom--iron-md">
                             <div class="show-hide show-hide--light">
                                 <div class="js-show-hide__title">
                                     <h2 class="show-hide__title flush">
