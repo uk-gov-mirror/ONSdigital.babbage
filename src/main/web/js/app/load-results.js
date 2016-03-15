@@ -57,13 +57,13 @@ function loadNewResults(url, focus) {
 
     //Removes current results from page and loads in new results
     function replaceResults(url, newResults, newResultsText, newPagination) {
-        var $newResults = $(newResult);
+        var $newResults = $(newResults);
 
         $newResults.hide().appendTo(results).fadeIn(300);
 
         //Re-run functions done on load that are needed after Ajax
         getSparkline();
-        jsEnhanceHover();
+        hoverState();
         timeseriesTool.refresh();
 
         //Update results text

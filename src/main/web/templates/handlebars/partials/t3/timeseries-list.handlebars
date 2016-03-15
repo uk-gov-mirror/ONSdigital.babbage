@@ -4,19 +4,18 @@
 	</div>
 </div>
 
-<ul class="tiles__list margin-top--half">
+<ul class="list--neutral margin-top--half">
 	{{#loop items limit=6}}
         {{#resolve this.uri}}
-            <li class="col-wrap tiles__item tiles__item--list-type flush-col js-hover-click">
+            <li class="col-wrap background--white padding-top--2 padding-bottom--2 padding-left--1 flush-col js-hover-click">
                 <div class="col col--md-15 col--lg-27">
-                    <h4 class="tiles__title tiles__title-h4">
-                        <a href="{{uri}}">{{description.title}}</a>
-                    </h4>
-                    {{#if description.keyNote}}
-                    <div class="tiles__content">
-                        <p class="flush">{{description.keyNote}}</p>
-                    </div>
-                    {{/if}}
+                    <div class="box__content">
+                        <h4>
+                            <a href="{{uri}}">{{description.title}}</a>
+                        </h4>
+                        {{#if description.keyNote}}
+                            <p class="flush">{{description.keyNote}}</p>
+                        {{/if}}</div>
                 </div>
                 <div class="col col--md-15 col--lg-14">
                     <div style="height:96px;">

@@ -3,17 +3,17 @@
 		<h2 id="datasets">{{labels.datasets-related-to}} {{description.title}}</h2>
 	</div>
 </div>
-<ul class="tiles__list margin-top--half">
+<ul class="list--neutral margin-top--half">
 	{{#loop datasets limit=6}}
-		<li class="col-wrap tiles__item tiles__item--list-type tiles__item--list-type-mercury flush-col js-hover-click">
+		<li class="col-wrap background--mercury flush-col padding-top--2 padding-bottom--4 padding-left--1 js-hover-click">
 			{{#resolve (absolute this.uri) filter="description"}}
 			<div class="col col--lg-38">
-				<h4 class="tiles__title tiles__title-h4">
-					<a href="{{absolute uri}}">
-						{{description.title}}
-					</a>
-				</h4>
-				<div class="tiles__content">
+                <div class="box__content">
+                    <h4>
+                        <a href="{{absolute uri}}">
+                            {{description.title}}
+                        </a>
+                    </h4>
                     <p class="flush">{{description.summary}}</p>
                 </div>
 			</div>
