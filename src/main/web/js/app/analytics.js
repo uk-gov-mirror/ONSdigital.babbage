@@ -5,6 +5,7 @@
  * Setting the transport method to 'beacon' lets the hit be sent
  * using 'navigator.sendBeacon' in browser that support it.
  */
+
 var trackEvent = function(category, label) {
     ga('send', 'event', category, 'click', label, {
         'transport': 'beacon'

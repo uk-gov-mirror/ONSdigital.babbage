@@ -7,16 +7,16 @@
                 <h2 class="nav-secondary__title">{{labels.on-this-page}}:</h2>
                 <ul class="nav-secondary__list">
                     {{resolve items.0.uri assign="data"}}
-                    {{!-- <li class="nav-secondary__item"><a href="#latest-publication" class="jsEnhanceAnimateScroll">Highlights</a></li> --}}
+                    {{!-- <li class="nav-secondary__item"><a href="#latest-publication" class="js-scroll">Highlights</a></li> --}}
                     {{#if items}}
-                        <li class="nav-secondary__item"><a href="#timeseries" class="jsEnhanceAnimateScroll">{{labels.time-series}}</a></li>
+                        <li class="nav-secondary__item"><a href="#timeseries" class="js-scroll">{{labels.time-series}}</a></li>
                     {{/if}}
                     {{#if datasets}}
-                        <li class="nav-secondary__item"><a href="#datasets" class="jsEnhanceAnimateScroll">{{labels.dataset}}</a></li>
+                        <li class="nav-secondary__item"><a href="#datasets" class="js-scroll">{{labels.dataset}}</a></li>
                     {{/if}}
-                    <li class="nav-secondary__item"><a href="#publications" class="jsEnhanceAnimateScroll">{{labels.publications}}</a></li>
+                    <li class="nav-secondary__item"><a href="#publications" class="js-scroll">{{labels.publications}}</a></li>
                     {{#if_any relatedMethodology relatedMethodologyArticles}}
-                        <li class="nav-secondary__item"><a href="#methodology" class="jsEnhanceAnimateScroll">{{labels.methodology}}</a></li>
+                        <li class="nav-secondary__item"><a href="#methodology" class="js-scroll">{{labels.methodology}}</a></li>
                     {{/if_any}}
                 </ul>
             </nav>
@@ -82,7 +82,7 @@
                                         <a href="{{bulletin.uri}}" class="block">{{labels.read-this-stats-bulletin}}</a>
                                     </div>
                                 </div>
-								<a href="#publications" class="btn btn--primary btn--full-width margin-top--2 jsEnhanceAnimateScroll">{{labels.more-publications}}</a>
+								<a href="#publications" class="btn btn--primary btn--full-width margin-top--2 js-scroll">{{labels.more-publications}}</a>
 							</div>
 						{{/if}}
 					</div>

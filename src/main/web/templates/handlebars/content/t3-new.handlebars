@@ -12,12 +12,12 @@
                     <h2 class="">On this page:</h2>
                     <ul class="list--neutral border-bottom--iron-sm border-bottom--iron-md border-bottom--iron-lg">
                         {{resolve items.0.uri assign="data"}}
-                        <li id="highlights-menu-item" class="side-bar__item"><a href="#highlights" class="jsEnhanceAnimateScroll side-bar__link">Highlights</a></li>
-                        {{#if items}}<li id="timeseries-menu-item" class="side-bar__item"><a href="#timeseries" class="jsEnhanceAnimateScroll side-bar__link">Time series</a></li>{{/if}}
-                        {{#if datasets}}<li id="datasets-menu-item" class="side-bar__item"><a href="#datasets" class="jsEnhanceAnimateScroll side-bar__link">Dataset(s)</a></li>{{/if}}
-                        <li id="user-requested-menu-item" class="side-bar__item"><a href="#user-requested" class="jsEnhanceAnimateScroll side-bar__link">User requested data</a></li>
-                        <li id="publications-menu-item" class="side-bar__item"><a href="#publications" class="jsEnhanceAnimateScroll side-bar__link">Publications</a></li>
-                        {{#if relatedMethodology}}<li id="methodology-menu-item" class="side-bar__item margin-bottom-md--4"><a href="#methodology" class="jsEnhanceAnimateScroll side-bar__link">Methodology</a></li>{{/if}}
+                        <li id="highlights-menu-item" class="side-bar__item"><a href="#highlights" class="js-scroll side-bar__link">Highlights</a></li>
+                        {{#if items}}<li id="timeseries-menu-item" class="side-bar__item"><a href="#timeseries" class="js-scroll side-bar__link">Time series</a></li>{{/if}}
+                        {{#if datasets}}<li id="datasets-menu-item" class="side-bar__item"><a href="#datasets" class="js-scroll side-bar__link">Dataset(s)</a></li>{{/if}}
+                        <li id="user-requested-menu-item" class="side-bar__item"><a href="#user-requested" class="js-scroll side-bar__link">User requested data</a></li>
+                        <li id="publications-menu-item" class="side-bar__item"><a href="#publications" class="js-scroll side-bar__link">Publications</a></li>
+                        {{#if relatedMethodology}}<li id="methodology-menu-item" class="side-bar__item margin-bottom-md--4"><a href="#methodology" class="js-scroll side-bar__link">Methodology</a></li>{{/if}}
                     </ul>
 
                     <div class="padding-top-sm--2 padding-bottom-sm--2 padding-left-sm--0 padding-right-sm--1 padding-top-md--2 padding-bottom-md--5 padding-left-md--0 padding-right-md--1 border-bottom--iron-sm border-bottom--iron-md">
@@ -82,7 +82,7 @@
                                             </div>
                                         </div>
                                     <!--</div>-->
-                                    <a href="#publications" class="btn btn--primary btn--full-width jsEnhanceAnimateScroll">More publications</a>
+                                    <a href="#publications" class="btn btn--primary btn--full-width js-scroll">More publications</a>
                                 </div>
                             {{/if}}
                         </div>
