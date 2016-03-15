@@ -12,29 +12,17 @@
                     {{/each}}
                 </p>
                 {{!-- Number of results --}}
-                <p>
-				<span class="stand-out-text">
-                    {{#each downloads}}
-                        {{#if @last}}
-                            {{#if_eq @index_1 '1'}}
-                                {{@index_1}}</span> result
-                            {{/if_eq}}
-                            {{#if_ne @index_1 '1'}}
-                                {{@index_1}}</span> results
-                            {{/if_ne}}
-                        {{/if}}
-                    {{/each}}
-                </p>
+                <p>{{downloads.size}} download{{#if_ne downloads.size 1}}s{{/if_ne}}</p>
             </div>
         </div>
         {{!-- LIST OF DOWNLOADS --}}
         <div class="col col--md-36 col--lg-39">
-            <ul class="list--neutral">
+            <ul class="list--neutral margin-top--0">
                 {{#if downloads}}
-                    <h2>{{labels.downloads}}</h2>
+                    <h2 class="margin-top--2">{{labels.downloads}}</h2>
                     {{#each downloads}}
                         <li>
-                            <h3><a href="/file?uri={{concat uri "/" (fn file)}}" data-ga-event data-ga-event-category='download-{{fe (concat uri "/" (fn file))}}' data-ga-event-label="{{title}}>{{title}}</a> ({{fs (concat uri "/" (fn file))}}, {{fe (concat uri "/" (fn file))}})</h3>
+                            <h3><a href='/file?uri={{concat uri "/" (fn file)}}' data-ga-event data-ga-event-category='download-{{fe (concat uri "/" (fn file))}}' data-ga-event-label="{{title}}">{{title}}</a> ({{fs (concat uri "/" (fn file))}}, {{fe (concat uri "/" (fn file))}})</h3>
                             <p class="flush">{{fileDescription}}</p>
                         </li>
                     {{/each}}
