@@ -114,9 +114,9 @@
                 {{#each downloads}}
 
                     {{#if file}}
-                        <a href="/file?uri={{absolute (concat uri "/" file)}}" title="Download as {{fe (lowercase (concat uri "/" file))}}" class="btn btn--primary btn--thin btn--narrow btn--small float-left {{#if @last}}margin-left--1{{/if}}"
+                        <a href="/file?uri={{absolute (concat uri "/" file)}}" title="Download as {{fe (lowercase (concat uri "/" file))}}" class="btn btn--primary btn--thin btn--narrow btn--small"
                            data-ga-event data-ga-event-category='download-version' data-ga-event-label="latest">
-                            {{fe (lowercase (concat uri "/" file))}} ({{fs (lowercase (concat uri "/" file))}})
+                            {{#if_eq (fe file) 'csdb'}}structured text{{else}}{{fe (lowercase (concat uri "/" file))}}{{/if_eq}} ({{fs (lowercase (concat uri "/" file))}})
                         </a>
                     {{!-- <form method="get" action="/file" class="inline">
                          <button type="submit" title="Latest version" class="btn btn--primary btn--thin btn--narrow btn--small download-analytics">
@@ -151,9 +151,9 @@
                                         {{#each downloads}}
 
                                             {{#if file}}
-                                                <a href="/file?uri={{absolute (concat uri "/" this.file)}}" title="Download as {{fe (lowercase (concat uri "/" this.file))}}" class="btn btn--primary btn--thin btn--narrow btn--small float-left {{#if @last}}margin-left--1{{/if}}"
+                                                <a href="/file?uri={{absolute (concat uri "/" this.file)}}" title="Download as {{fe (lowercase (concat uri "/" this.file))}}" class="btn btn--primary btn--thin btn--narrow btn--small {{#if @last}}margin-top--1{{/if}}"
                                                    data-ga-event data-ga-event-category='download-version' data-ga-event-label="{{df updateDate}}">
-                                                    {{fe (lowercase (concat uri "/" this.file))}} ({{fs (lowercase (concat uri "/" this.file))}})
+                                                    {{#if_eq (fe file) 'csdb'}}structured text{{else}}{{fe (lowercase (concat uri "/" file))}}{{/if_eq}} ({{fs (lowercase (concat uri "/" this.file))}})
                                                 </a>
                                             {{!-- <form method="get" action="/file" {{#if_ne downloads.size 1}}class="inline"{{/if_ne}}>
                                                  <button type="submit" title="Latest version" class="btn btn--primary btn--thin btn--narrow btn--small download-analytics">

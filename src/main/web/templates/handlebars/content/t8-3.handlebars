@@ -54,26 +54,27 @@
                                 <div class="col-wrap margin-left-sm--0 margin-left-md--0">
 
                                     {{#each downloads}}
-
                                         {{#if file}}
 
-
-                                            {{!-- TIMESERIES DATASETS --}}
-
-                                            <div class="col col--md-8 col--lg-9">
-                                                <a href="/file?uri={{concat uri "/" this.file}}" title="Download as {{fe (lowercase (concat uri "/" this.file))}}" class="btn btn--primary btn--thick" data-ga-event data-ga-event-category='download-{{fe (lowercase (concat uri "/" this.file))}}' data-ga-event-label="{{../../../description.title}} - {{description.edition}}">
-                                                    .{{fe (lowercase (concat uri "/" this.file))}} ({{fs (lowercase (concat uri "/" this.file))}})
-                                                </a>
-                                                {{!-- <form method="get" action="/file">
-                                                     <button type="submit" title="Latest version" class="btn btn--primary btn--thick download-analytics">
-                                                         {{fe (lowercase (concat uri "/" this.file))}} ({{fs (lowercase (concat uri "/" this.file))}})
-                                                     </button>
-                                                     <input type="hidden" name="uri" value="{{concat uri "/" this.file}}"/>
-                                                 </form> --}}
-                                            </div>
+                                                {{!-- TIMESERIES DATASETS --}}
+                                        {{!-- <div class="col col--md-8 col--lg-9"> --}}
+                                                    <a href="/file?uri={{concat uri "/" this.file}}"
+                                                       title="Download as {{fe (lowercase (concat uri "/" this.file))}}"
+                                                       class="btn btn--primary btn--thick" data-ga-event
+                                                       data-ga-event-category='download-{{fe (lowercase (concat uri "/" this.file))}}'
+                                                       data-ga-event-label="{{../../../description.title}} - {{description.edition}}">
+                                                        {{#if_eq (fe file) 'csdb'}}structured text{{else}}{{fe (lowercase (concat uri "/" file))}}{{/if_eq}}
+                                                        ({{fs (lowercase (concat uri "/" this.file))}})
+                                                    </a>
+                                                    {{!-- <form method="get" action="/file">
+                                                         <button type="submit" title="Latest version" class="btn btn--primary btn--thick download-analytics">
+                                                             {{fe (lowercase (concat uri "/" this.file))}} ({{fs (lowercase (concat uri "/" this.file))}})
+                                                         </button>
+                                                         <input type="hidden" name="uri" value="{{concat uri "/" this.file}}"/>
+                                                     </form> --}}
+                                        {{!-- </div> --}}
 
                                         {{/if}}
-
                                     {{/each}}
 
                                 </div>
