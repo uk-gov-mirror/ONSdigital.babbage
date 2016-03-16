@@ -114,7 +114,7 @@
                 {{#each downloads}}
 
                     {{#if file}}
-                        <a href="/file?uri={{absolute (concat uri "/" file)}}" title="Download as {{fe (lowercase (concat uri "/" file))}}" class="btn btn--primary btn--thin btn--narrow btn--small float-left {{#unless @first}}margin-left--1{{/unless}}"
+                        <a href="/file?uri={{absolute (concat uri "/" file)}}" title="Download as {{fe (lowercase (concat uri "/" file))}}" class="btn btn--primary btn--thin btn--narrow btn--small"
                            data-ga-event data-ga-event-category='download-version' data-ga-event-label="latest">
                             {{#if_eq (fe file) 'csdb'}}structured text{{else}}{{fe (lowercase (concat uri "/" file))}}{{/if_eq}} ({{fs (lowercase (concat uri "/" file))}})
                         </a>
