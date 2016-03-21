@@ -7,7 +7,6 @@ import com.github.onsdigital.babbage.publishing.model.PublishInfo;
 import com.github.onsdigital.babbage.publishing.model.PublishNotification;
 import com.github.onsdigital.babbage.util.ElasticSearchUtils;
 import com.github.onsdigital.babbage.util.json.JsonUtil;
-import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.action.bulk.BulkItemResponse;
@@ -87,7 +86,7 @@ public class PublishingManager {
                     bulkProcessor.add(prepareDeleteRequest(notification, uri));
                     if (triggerReindex) {
                         //only index uri to the page which hash data.json at the end and is stripped out when saving the uri to upcoming publish uris
-                        if (StringUtils.isEmpty(FilenameUtils.getExtension(uri))) {
+                        if (StringUtils.isEmpty(FilenameUtils.getExtension(uri)) && !isVersionedUri(uri)) {
                             triggerReindex(notification.getKey(), uri);
                         }
                     }
@@ -102,6 +101,10 @@ public class PublishingManager {
             System.err.println("!!!Warning, re-indexing failed for collection id " + notification.getCollectionId());
             e.printStackTrace();
         }
+    }
+
+    private boolean isVersionedUri(String uri) {
+        return uri.contains("/previous/v");
     }
 
     private DeleteRequest prepareDeleteRequest(PublishNotification notification, String uri) {

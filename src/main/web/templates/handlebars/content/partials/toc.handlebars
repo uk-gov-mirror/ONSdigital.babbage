@@ -4,17 +4,17 @@
 		<ol id="toc" class="table-of-contents__list">
 			{{#each sections}}
 			<li class="table-of-contents__item">
-				<a href="#{{slugify title}}" class="js-scroll">{{title}}</a>
+				<a href="#{{slugify title}}" class="js-scroll" data-ga-event data-ga-event-category='toc-link' data-ga-event-label="{{title}}">{{title}}</a>
 			</li>
 			{{/each}}
 			{{#each accordion}}
 			<li class="table-of-contents__item">
-				<a href="#{{slugify title}}" class="js-scroll expand-accordion">{{title}}</a>
+				<a href="#{{slugify title}}" class="js-scroll expand-accordion" data-ga-event data-ga-event-category='toc-link' data-ga-event-label="{{title}}">{{title}}</a>
 			</li>
 			{{/each}}
 			{{#if relatedMethodology}}
 			<li class="table-of-contents__item">
-				<a href="#methodology" class="js-scroll expand-accordion">{{labels.methodology}}</a>
+				<a href="#methodology" class="js-scroll expand-accordion" data-ga-event data-ga-event-category='toc-link' data-ga-event-label="{{labels.methodology}}">{{labels.methodology}}</a>
 			</li>
 			{{/if}}
 		</ol>
