@@ -3,7 +3,7 @@
     <!--<div class="box padding-top--2 padding-right--1 padding-bottom--1 padding-left--1">-->
         <h3 class="flush">{{labels.did-you-know}}</h3>
         <p class="margin-top-sm--0 margin-top-md--0 margin-bottom-md--2 float-left width-md--18 width-lg--24"><a class="underline-link" href="{{departments.results.0.url}}">{{departments.results.0.name}}</a> {{labels.also-produce-statistics-relating-to}} {{{departments.results.0.match}}}.</p>
-    <img src="../../img/{{departments.results.0.code}}.png" alt="{{departments.results.0.name}} logo" class="hide--mobile {{#if_any (eq departments.results.0.code 'fc') (eq departments.results.0.code 'nhs') (eq departments.results.0.code 'nie')}}width-md--10{{else}}height-md--11{{/if_any}} float-right margin-right-md--1 margin-bottom-md--2"/>
+    <img src="../../img/{{departments.results.0.code}}.png" alt="{{departments.results.0.name}} logo" class="hide--sm {{#if_any (eq departments.results.0.code 'fc') (eq departments.results.0.code 'nhs') (eq departments.results.0.code 'nie')}}width-md--10{{else}}height-md--11{{/if_any}} float-right margin-right-md--1 margin-bottom-md--2"/>
     <!--</div>-->
 </div>
 {{/if}}
