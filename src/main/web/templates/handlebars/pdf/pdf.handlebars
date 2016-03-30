@@ -1,0 +1,18 @@
+<html>
+
+<body>
+
+
+{{#each sections}}
+    <section id="{{slugify title}}">
+        <header>
+            <h2><span class="section__content-number">{{@index_1}}.</span> {{title}}</h2>
+        </header>
+        {{md markdown}}
+    </section>
+{{/each}}
+
+
+</body>
+
+</html>
