@@ -1,12 +1,14 @@
 {{#partial "block-content"}}
 <div class="wrapper">
     <div class="col-wrap">
-        <article class="col {{#if_any links downloads}}col--lg-two-thirds{{/if_any}}">
-            {{#each markdown}}
-            <section class="section__content--static-markdown">
-                {{md this}}
-            </section>
-            {{/each}}
+        <article>
+            <div class="col {{#if_any links downloads}}col--lg-two-thirds{{/if_any}}">
+                {{#each markdown}}
+                    <section>
+                        <div class="section__content--static-markdown">{{md this}}</div>
+                    </section>
+                {{/each}}
+            </div>
         </article>
         {{#if_any links downloads}}
         <div class="col col--lg-one-third margin-top">
