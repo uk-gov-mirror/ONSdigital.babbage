@@ -31,19 +31,6 @@ public class PDFGenerator {
 
     private static final String TEMP_DIRECTORY_PATH = FileUtils.getTempDirectoryPath();
     private static final String URL = "http://localhost:8080";
-    //Phantom js export code
-
-    public static void main(String[] args) {
-
-        String html="<A HREF=\"#Item1\">\n"
-                + "<p style=\"font-family:times;margin-top:12pt;margin-left:0pt;\">\n"
-                + "<FONT SIZE=2>Item&nbsp;1.</FONT>\n"
-                + "</A>";
-        org.jsoup.nodes.Document doc = Jsoup.parse(html);
-        System.out.println("UNPARSED = \n"+html);
-        System.out.println("JSOUP PARSED = \n"+doc.toString());
-
-    }
 
     public static Path generatePdf(String uri, String fileName, Map<String, String> cookies, String pdfTable) {
 
@@ -55,21 +42,16 @@ public class PDFGenerator {
                 additionalData.put("pdf_style", true);
                 html = TemplateService.getInstance().renderTemplate("pdf/pdf", dataStream, additionalData);
 
-//                org.jsoup.nodes.Document.OutputSettings outputSettings = new org.jsoup.nodes.Document.OutputSettings()
-//                        .syntax(org.jsoup.nodes.Document.OutputSettings.Syntax.xml)
-//                        .charset(StandardCharsets.UTF_8)
-//                        .prettyPrint(true);
-//                html = Jsoup.clean(html, URL,  Whitelist.relaxed().addTags("!DOCTYPE", "!ENTITY", "html", "body", "table"), outputSettings);
-
-//                html = "<!DOCTYPE html>" + html;
+                html = html.replace("\"\"/>", " \"/>"); // img tags from markdown have an extra " at the end of the tag for some reason
 
                 html = Jsoup.parse(html, URL, Parser.xmlParser()).toString();
-                html = Jsoup.parse(html).toString();
+                //html = Jsoup.parse(html).toString();
                 html = html.replace("&nbsp;", "&#160;");
+
                 System.out.println("html = " + html);
             }
 
-                    String outputFile = TEMP_DIRECTORY_PATH + "/" + fileName + ".pdf";
+            String outputFile = TEMP_DIRECTORY_PATH + "/" + fileName + ".pdf";
             InputStream inputStream = new ByteArrayInputStream(html.getBytes());
             createPDF(uri, inputStream, outputFile);
 
@@ -91,7 +73,9 @@ public class PDFGenerator {
 
     public static void createPDF(String url, InputStream input, String outputFile)
             throws IOException, DocumentException, com.lowagie.text.DocumentException {
+
         OutputStream os = null;
+
         try {
             os = new FileOutputStream(outputFile);
 
