@@ -17,9 +17,11 @@ import java.util.regex.Pattern;
 public class ImageTagReplacer extends TagReplacementStrategy {
 
     private static final Pattern pattern = Pattern.compile("<ons-image\\spath=\"([-A-Za-z0-9+&@#/%?=~_|!:,.;()*$]+)\"?\\s?/>");
+    private final String template;
 
-    public ImageTagReplacer(String path) {
+    public ImageTagReplacer(String path, String template) {
         super(path);
+        this.template = template;
     }
 
     /**
@@ -46,9 +48,9 @@ public class ImageTagReplacer extends TagReplacementStrategy {
 
         try {
             ContentResponse contentResponse = ContentClient.getInstance().getContent(figureUri);
-            return TemplateService.getInstance().renderTemplate("partials/image", contentResponse.getDataStream());
+            return TemplateService.getInstance().renderTemplate(template, contentResponse.getDataStream());
         } catch (ContentReadException e) {
-            return TemplateService.getInstance().renderTemplate("partials/image", Serialiser.serialise(new ImageData(figureUri)));
+            return TemplateService.getInstance().renderTemplate(template, Serialiser.serialise(new ImageData(figureUri)));
         }
     }
 

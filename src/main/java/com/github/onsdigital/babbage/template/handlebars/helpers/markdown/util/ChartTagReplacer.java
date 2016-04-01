@@ -6,7 +6,6 @@ import com.github.onsdigital.babbage.content.client.ContentResponse;
 import com.github.onsdigital.babbage.template.TemplateService;
 
 import java.io.IOException;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -17,9 +16,11 @@ import java.util.regex.Pattern;
 public class ChartTagReplacer extends TagReplacementStrategy {
 
     private static final Pattern pattern = Pattern.compile("<ons-chart\\spath=\"([-A-Za-z0-9+&@#/%?=~_|!:,.;()*$]+)\"?\\s?/>");
+    private final String template;
 
-    public ChartTagReplacer(String path) {
+    public ChartTagReplacer(String path, String template) {
         super(path);
+        this.template = template;
     }
 
     /**
@@ -40,19 +41,9 @@ public class ChartTagReplacer extends TagReplacementStrategy {
 
         try {
             ContentResponse contentResponse = ContentClient.getInstance().getContent(figureUri);
-            return TemplateService.getInstance().renderTemplate("partials/highcharts/chart", contentResponse.getDataStream());
+            return TemplateService.getInstance().renderTemplate(template, contentResponse.getDataStream());
         } catch (ContentReadException e) {
             return matcher.group();
         }
-    }
-
-    public static void main(String[] args) {
-
-        Path path = Paths.get("/one/two/three");
-        System.out.println(path.getFileName());
-        path = Paths.get("/one/two/three/");
-        System.out.println(path.getFileName());
-        path = Paths.get("/one/two/three.json/");
-        System.out.println(path.getFileName());
     }
 }
