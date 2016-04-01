@@ -1,0 +1,12 @@
+<div class="markdown-chart-container panel--bottom-mar print--avoid-break">
+  <h4 class="flush--third--vertical">{{{sub (sup title)}}}</h4>
+    {{#if subtitle}}
+        <h5 class="flush--third--bottom">{{{sub (sup subtitle)}}}</h5>
+    {{/if}}
+    <img src="localhost:8080/chartimage?uri={{uri}}&width={{width}}" alt="{{alt-text}}" />
+  {{#if source}}<h5 class="flush--third--bottom font-size--h6">Source: {{source}}</h5>{{/if}}
+  {{#if notes}}
+      <h6 class="flush--third--bottom">Notes:</h6>
+      {{md notes}}
+  {{/if}}
+</div>

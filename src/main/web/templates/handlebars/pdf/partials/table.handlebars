@@ -1,0 +1,10 @@
+{{!--Not having line breaks before and after the div markups breaks tables displaying on the page--}}
+<div class="markdown-table-container print--avoid-break">
+    <h4>{{{sub (sup title)}}}</h4>
+    {{#resolveResource (concat uri ".html")}}
+    <div class="markdown-table-wrap">
+        {{{resource}}}
+    </div>
+    {{/resolveResource}}
+
+</div>
