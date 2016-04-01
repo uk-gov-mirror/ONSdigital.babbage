@@ -248,8 +248,7 @@ public enum DataHelpers implements BabbageHandlebarsHelper<Object> {
 
     private static void logResolveError(Object uri, Exception e) {
         System.err.printf("Failed resolving data, uri: %s cause: %s", uri, e.getMessage());
-        e.printStackTrace();
-
+        //e.printStackTrace();
     }
 
 }
