@@ -48,7 +48,7 @@ public class PDFGenerator {
                 //html = Jsoup.parse(html).toString();
                 html = html.replace("&nbsp;", "&#160;");
 
-                System.out.println("html = " + html);
+                //System.out.println("html = " + html);
             }
 
             String outputFile = TEMP_DIRECTORY_PATH + "/" + fileName + ".pdf";
@@ -61,8 +61,8 @@ public class PDFGenerator {
                 throw new RuntimeException("Failed generating pdf, file not created");
             }
 
-            BufferedReader bufferedReader = new BufferedReader(new FileReader(outputFile));
-            addDataTableToPdf(fileName, pdfTable, bufferedReader, pdfFile);
+//            BufferedReader bufferedReader = new BufferedReader(new FileReader(outputFile));
+//            addDataTableToPdf(fileName, pdfTable, bufferedReader, pdfFile);
 
             return pdfFile;
         } catch (Exception ex) {
