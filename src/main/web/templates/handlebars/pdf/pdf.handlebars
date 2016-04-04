@@ -1,16 +1,110 @@
 <html>
+<head>
+    <link href="css/pdf.css" media="print" rel="stylesheet" type="text/css" />
+    <style>
+        @page {
+            margin: 0;
+        }
 
+        * {
+            font-family: Tahoma, Verdana, Arial, sans-serif !important;
+        }
+
+        p, li {
+            font-size: 14px;
+        }
+
+        .page-intro {
+            background-color: #EAEAEA;
+            border-top: 1px solid #D0D2D3;
+
+        }
+
+        .page-intro__content {
+            padding: 0.25in 0.5in;
+        }
+
+        .page-intro_summary {
+            font-size: 18px;
+        }
+
+        .meta {
+            background-color: #E5E5E7;
+            border-top: 1px solid #D0D2D3;
+            border-bottom: 1px solid #D0D2D3;
+            height: 50px;
+            padding: 25px 50px;
+            margin-bottom: 1in;
+        }
+
+        .meta__block {
+            width: 33%;
+            float: left;
+        }
+
+        .page {
+            padding: 0 0.5in;
+            float: left;
+        }
+
+        .page__section {
+            page-break-inside: avoid !important;
+        }
+
+        h2, h3, h4, h5 {
+            page-break-after: avoid !important;
+        }
+
+        .markdown-chart-container,
+        .markdown-table-container {
+            page-break-inside: avoid;
+        }
+
+        .flush {
+            margin: 0;
+        }
+    </style>
+</head>
 <body>
 
+<img src="//www.ons.gov.uk/img/ons-logo.png" height="39px" width="150px" />
 
-{{#each sections}}
-    <section id="{{slugify title}}">
-        <header>
-            <h2><span class="section__content-number">{{@index_1}}.</span> {{title}}</h2>
-        </header>
-        {{pdf-md markdown}}
-    </section>
-{{/each}}
+<div class="page-intro">
+    <div class="page-intro__content">
+        <h1>{{description.title}}</h1>
+        <p class="page-intro_summary">{{#if description.summary}}{{description.summary}}{{else}}{{description._abstract}}{{/if}}</p>
+    </div>
+</div>
+
+<div class="meta">
+    <div class="meta__block">
+        <p class="flush">
+            {{#if description.nationalStatistic}} <img class="meta__image" src="/img/national-statistics.png" alt="National Statistics logo"/>{{/if}}
+            <span>{{labels.contact}}: </span><br/><a href="mailto:{{description.contact.email}}">{{#if description.contact.name}}{{description.contact.name}}{{else}}{{description.contact.email}}{{/if}}</a>
+        </p>
+    </div>
+    <div class="meta__block">
+        <p class="flush">
+            <span>{{labels.release-date}}: </span><br/>{{df description.releaseDate}}
+        </p>
+    </div>
+    <div class="meta__block">
+        <p class="flush">
+            <span>{{labels.next-release}}: </span><br/>{{#if description.nextRelease}}{{description.nextRelease}}{{else}}To be announced{{/if}}
+        </p>
+    </div>
+</div>
+
+<div class="page">
+    {{#each sections}}
+        <section class="page__section" id="{{slugify title}}">
+            <header>
+                <h2><span class="section__content-number">{{@index_1}}.</span> {{title}}</h2>
+            </header>
+            {{pdf-md markdown}}
+        </section>
+    {{/each}}
+</div>
 
 </body>
 
