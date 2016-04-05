@@ -86,10 +86,21 @@ public class PDFGenerator {
            renderer.createPDF(os);
            */
 
-            ITextRenderer renderer = new ITextRenderer();
-            ResourceLoaderUserAgent callback = new ResourceLoaderUserAgent(renderer.getOutputDevice());
-            callback.setSharedContext(renderer.getSharedContext());
-            renderer.getSharedContext().setUserAgentCallback(callback);
+           // ITextRenderer renderer = new ITextRenderer();
+            ITextRenderer renderer = new ITextRenderer(4.1666f, 3);
+
+//            ResourceLoaderUserAgent callback = new ResourceLoaderUserAgent(renderer.getOutputDevice());
+//            callback.setSharedContext(renderer.getSharedContext());
+//            renderer.getSharedContext().setUserAgentCallback(callback);
+//
+//            renderer.getSharedContext().setPrint(true);
+
+//            renderer.getSharedContext().setDotsPerPixel(1);
+
+            // add a custom image replacer
+            renderer.getSharedContext().setReplacedElementFactory(
+                    new ChartImageReplacedElementFactory(
+                            renderer.getSharedContext().getReplacedElementFactory()));
 
             Document doc = XMLResource.load(new InputSource(input)).getDocument();
 

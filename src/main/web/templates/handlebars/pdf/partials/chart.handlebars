@@ -3,7 +3,9 @@
     {{#if subtitle}}
         <h5 class="flush--third--bottom">{{{sub (sup subtitle)}}}</h5>
     {{/if}}
-    <img src="localhost:8080/chartimage?uri={{uri}}&width={{width}}" alt="{{alt-text}}" />
+
+    <div class="markdown-chart-div" data-uri="{{uri}}" data-image-width="{{width}}">
+    </div>
   {{#if source}}<h5 class="flush--third--bottom font-size--h6">Source: {{source}}</h5>{{/if}}
   {{#if notes}}
       <h6 class="flush--third--bottom">Notes:</h6>
