@@ -3,7 +3,8 @@
     <link href="css/pdf.css" media="print" rel="stylesheet" type="text/css" />
     <style>
         @page {
-            margin: 0;
+            margin: 0.5in 0;
+            size: a4;
         }
 
         * {
@@ -34,15 +35,14 @@
             border-bottom: 1px solid #D0D2D3;
             height: 50px;
             padding: 25px 50px;
-            margin-bottom: 1in;
         }
 
         .meta__block {
             width: 33%;
             float: left;
+            margin-bottom: 0.8in;
         }
 
-        @page {  size: a4; }
         .page {
             padding: 0 0.5in;
             float: left;
@@ -50,14 +50,22 @@
         .page__section {
             page-break-inside: avoid !important;
         }
-
+        .page__section li {
+            margin-bottom: 14pt;
+        }
         h2, h3, h4, h5 {
             page-break-after: avoid !important;
         }
 
         .markdown-chart-container,
-        .markdown-table-container {
+        .markdown-table-container,
+        table {
             page-break-inside: avoid;
+        }
+
+        tr {
+            page-break-after: avoid;
+            page-break-before: avoid;
         }
 
         .flush {
@@ -67,44 +75,44 @@
 </head>
 <body>
 
-<img src="https://www.ons.gov.uk/img/ons-logo.png" height="39px" width="150px" />
+    <img src="https://www.ons.gov.uk/img/ons-logo.png" height="39px" width="150px" />
 
-<div class="page-intro">
-    <div class="page-intro__content">
-        <h1>{{description.title}}</h1>
-        <p class="page-intro_summary">{{#if description.summary}}{{description.summary}}{{else}}{{description._abstract}}{{/if}}</p>
+    <div class="page-intro">
+        <div class="page-intro__content">
+            <h1>{{description.title}}</h1>
+            <p class="page-intro_summary">{{#if description.summary}}{{description.summary}}{{else}}{{description._abstract}}{{/if}}</p>
+        </div>
     </div>
-</div>
 
-<div class="meta">
-    <div class="meta__block">
-        <p class="flush">
-            {{#if description.nationalStatistic}} <img class="meta__image" src="/img/national-statistics.png" alt="National Statistics logo"/>{{/if}}
-            <span>{{labels.contact}}: </span><br/><a href="mailto:{{description.contact.email}}">{{#if description.contact.name}}{{description.contact.name}}{{else}}{{description.contact.email}}{{/if}}</a>
-        </p>
+    <div class="meta">
+        <div class="meta__block">
+            <p class="flush">
+                {{#if description.nationalStatistic}} <img class="meta__image" src="/img/national-statistics.png" alt="National Statistics logo"/>{{/if}}
+                <span>{{labels.contact}}: </span><br/><a href="mailto:{{description.contact.email}}">{{#if description.contact.name}}{{description.contact.name}}{{else}}{{description.contact.email}}{{/if}}</a>
+            </p>
+        </div>
+        <div class="meta__block">
+            <p class="flush">
+                <span>{{labels.release-date}}: </span><br/>{{df description.releaseDate}}
+            </p>
+        </div>
+        <div class="meta__block">
+            <p class="flush">
+                <span>{{labels.next-release}}: </span><br/>{{#if description.nextRelease}}{{description.nextRelease}}{{else}}To be announced{{/if}}
+            </p>
+        </div>
     </div>
-    <div class="meta__block">
-        <p class="flush">
-            <span>{{labels.release-date}}: </span><br/>{{df description.releaseDate}}
-        </p>
-    </div>
-    <div class="meta__block">
-        <p class="flush">
-            <span>{{labels.next-release}}: </span><br/>{{#if description.nextRelease}}{{description.nextRelease}}{{else}}To be announced{{/if}}
-        </p>
-    </div>
-</div>
 
-<div class="page">
-    {{#each sections}}
-        <section class="page__section" id="{{slugify title}}">
-            <header>
-                <h2><span class="section__content-number">{{@index_1}}.</span> {{title}}</h2>
-            </header>
-            {{pdf-md markdown}}
-        </section>
-    {{/each}}
-</div>
+    <div class="page">
+        {{#each sections}}
+            <section class="page__section" id="{{slugify title}}">
+                <header>
+                    <h2><span class="section__content-number">{{@index_1}}.</span> {{title}}</h2>
+                </header>
+                {{pdf-md markdown}}
+            </section>
+        {{/each}}
+    </div>
 
 </body>
 
