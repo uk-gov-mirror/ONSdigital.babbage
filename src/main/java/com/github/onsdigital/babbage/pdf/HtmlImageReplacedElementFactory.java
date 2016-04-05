@@ -1,13 +1,16 @@
 package com.github.onsdigital.babbage.pdf;
 
+import com.github.onsdigital.babbage.content.client.ContentClient;
+import com.github.onsdigital.babbage.content.client.ContentReadException;
+import com.github.onsdigital.babbage.content.client.ContentResponse;
 import com.lowagie.text.BadElementException;
 import com.lowagie.text.Image;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.slf4j.Logger;
 import org.w3c.dom.Element;
 import org.xhtmlrenderer.extend.ReplacedElement;
 import org.xhtmlrenderer.extend.ReplacedElementFactory;
@@ -20,10 +23,15 @@ import org.xhtmlrenderer.simple.extend.FormSubmissionListener;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
+
+import static org.slf4j.LoggerFactory.getLogger;
 
 public class HtmlImageReplacedElementFactory implements ReplacedElementFactory {
 
     private final ReplacedElementFactory superFactory;
+    private static final Logger log = getLogger(HtmlImageReplacedElementFactory.class);
 
     public HtmlImageReplacedElementFactory(ReplacedElementFactory superFactory) {
         this.superFactory = superFactory;
@@ -46,35 +54,57 @@ public class HtmlImageReplacedElementFactory implements ReplacedElementFactory {
         if ("img".equals(tagName)) {
 
             // get the URL from the src attribute.
-            String url = element.getAttribute("src");
+            String src = element.getAttribute("src");
+            try {
 
-            if (url != null && url.length() > 0) {
-                try {
 
-                    HttpClient client = HttpClientBuilder.create().build();
-                    HttpResponse response = client.execute(new HttpGet(url));
+                if (src != null && src.length() > 0) {
 
-                    try (InputStream input = response.getEntity().getContent()){
-                        byte[] bytes = IOUtils.toByteArray(input);
+                    // check if its a relative url - if so get the resource from the content service (zebedee)
+                    URI uri = new URI(src);
+                    if (!uri.isAbsolute()) {
+                        ContentResponse contentResponse = ContentClient.getInstance().getResource(src);
 
-                        Image image = Image.getInstance(bytes);
-                        ITextFSImage fsImage = new ITextFSImage(image);
-
-                        if (fsImage != null) {
-                            if ((cssWidth != -1) || (cssHeight != -1)) {
-                                fsImage.scale(cssWidth, cssHeight);
-                            }
-                            return new ITextImageElement(fsImage);
+                        try (InputStream input = contentResponse.getDataStream())
+                        {
+                            ReplacedElement fsImage = getReplacedImage(cssWidth, cssHeight, input);
+                            if (fsImage != null) return fsImage;
                         }
                     }
 
-                } catch (IOException | BadElementException e) {
-                    ExceptionUtils.getStackTrace(e);
+                    // if the url is absolute, go get it using HTTP client.
+                    HttpClient client = HttpClientBuilder.create().build();
+                    HttpResponse response = client.execute(new HttpGet(src));
+
+                    try (InputStream input = response.getEntity().getContent()) {
+                        ReplacedElement fsImage = getReplacedImage(cssWidth, cssHeight, input);
+                        if (fsImage != null) return fsImage;
+                    }
                 }
+
+            } catch (URISyntaxException | ContentReadException | IOException | BadElementException e) {
+                log.error(e.getMessage());
             }
+
+
         }
 
         return superFactory.createReplacedElement(layoutContext, blockBox, userAgentCallback, cssWidth, cssHeight);
+    }
+
+    private ReplacedElement getReplacedImage(int cssWidth, int cssHeight, InputStream input) throws IOException, BadElementException {
+        byte[] bytes = IOUtils.toByteArray(input);
+
+        Image image = Image.getInstance(bytes);
+        ITextFSImage fsImage = new ITextFSImage(image);
+
+        if (fsImage != null) {
+            if ((cssWidth != -1) || (cssHeight != -1)) {
+                fsImage.scale(cssWidth * 2, cssHeight * 2);
+            }
+            return new ITextImageElement(fsImage);
+        }
+        return null;
     }
 
     @Override

@@ -5,7 +5,7 @@
 
         {{#each files}}
             {{#if (eq type "uploaded-image")}}
-                <img src="/resource?uri={{uri}}.{{fileType}}" alt="{{alt-text}}">
+                <img src="{{uri}}.{{fileType}}" alt="{{alt-text}}">
             {{/if}}
         {{/each}}
 
