@@ -3,7 +3,7 @@
     <link href="css/pdf.css" media="print" rel="stylesheet" type="text/css" />
     <style>
         @page {
-            margin: 0.5in 0;
+            margin: 0.25in 0 0.5in 0;
             size: a4;
         }
 
@@ -13,6 +13,12 @@
 
         p, li {
             font-size: 14px;
+        }
+
+        .logo {
+            margin-bottom: 0.3in;
+            margin-left: 0.5in;
+            display: block;
         }
 
         .page-intro {
@@ -38,9 +44,13 @@
         }
 
         .meta__block {
-            width: 33%;
+            width: 30%;
             float: left;
-            margin-bottom: 0.8in;
+            margin-bottom: 0.5in;
+        }
+
+        .meta__block--ns {
+            width: 8%;
         }
 
         .page {
@@ -73,16 +83,17 @@
         }
 
         @page {
-          @bottom-right {
-            content: "Page " counter(page) " of " counter(pages);
-          }
+            @bottom-right {
+                content: "Page " counter(page) " of " counter(pages);
+                font-family: Tahoma, Verdana, Arial, sans-serif !important;
+                font-size: 12px;
+                padding-right: 0.25in;
+            }
         }
     </style>
 </head>
 <body>
-
-
-<img src="https://www.ons.gov.uk/img/ons-logo.png" />
+    <img src="https://www.ons.gov.uk/img/ons-logo.png" class="logo"/>
 
     <div class="page-intro">
         <div class="page-intro__content">
@@ -92,10 +103,12 @@
     </div>
 
     <div class="meta">
+        <div class="meta__block meta__block--ns">
+            {{#if description.nationalStatistic}} <img class="meta__image" src="https://www.ons.gov.uk/img/national-statistics.png" alt="National Statistics logo"/>{{/if}}
+        </div>
         <div class="meta__block">
             <p class="flush">
-                {{#if description.nationalStatistic}} <img class="meta__image" src="https://www.ons.gov.uk/img/national-statistics.png" alt="National Statistics logo"/>{{/if}}
-                <span>{{labels.contact}}: </span><br/><a href="mailto:{{description.contact.email}}">{{#if description.contact.name}}{{description.contact.name}}{{else}}{{description.contact.email}}{{/if}}</a>
+                <span>{{labels.contact}}: </span><br/>{{description.contact.name}}<br/>{{description.contact.email}}
             </p>
         </div>
         <div class="meta__block">
