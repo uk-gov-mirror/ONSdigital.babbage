@@ -91,6 +91,13 @@
             }
         }
     </style>
+
+  <bookmarks>
+      {{#each sections}}
+        <bookmark name="{{title}}" href="#{{@index_1}}" />
+      {{/each}}
+  </bookmarks>
+
 </head>
 <body>
     <img src="https://www.ons.gov.uk/img/ons-logo.png" class="logo"/>
@@ -127,7 +134,7 @@
         {{#each sections}}
             <section class="page__section" id="{{slugify title}}">
                 <header>
-                    <h2><span class="section__content-number">{{@index_1}}.</span> {{title}}</h2>
+                    <h2><a name="{{@index_1}}"></a><span class="section__content-number">{{@index_1}}.</span> {{title}}</h2>
                 </header>
                 {{pdf-md markdown}}
             </section>
