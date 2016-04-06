@@ -1,5 +1,6 @@
 package com.github.onsdigital.babbage.util.http;
 
+import org.apache.commons.io.Charsets;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
@@ -119,7 +120,7 @@ public class PooledHttpClient {
         HttpPost request = new HttpPost(uri);
         addHeaders(headers, request);
         if (postParameters != null) {
-            request.setEntity(new UrlEncodedFormEntity(postParameters));
+            request.setEntity(new UrlEncodedFormEntity(postParameters, Charsets.UTF_8));
         }
         return validate(httpClient.execute(request));
     }
