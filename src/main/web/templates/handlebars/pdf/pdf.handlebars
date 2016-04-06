@@ -109,18 +109,24 @@
 
 </head>
 <body>
-    <img src="https://www.ons.gov.uk/img/ons-logo.png" class="logo"/>
+    <img src="https://www.ons.gov.uk/img/ons-logo.png" class="logo" width="199" height="39"/>
 
     <div class="page-intro">
         <div class="page-intro__content">
-            <h1>{{description.title}}</h1>
+
+            {{#if_eq type "bulletin"}}{{labels.statistical-bulletin}}{{/if_eq}}
+            {{#if_eq type "article"}}{{labels.article}}{{/if_eq}}
+            {{#if_eq type "compendium_landing_page"}}{{labels.compendium}}{{/if_eq}}
+            {{#if_eq type "compendium_chapter"}}{{labels.compendium}}{{/if_eq}}
+
+            <h1>{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}</h1>
             <p class="page-intro_summary">{{#if description.summary}}{{description.summary}}{{else}}{{description._abstract}}{{/if}}</p>
         </div>
     </div>
 
     <div class="meta">
         <div class="meta__block meta__block--ns">
-            {{#if description.nationalStatistic}} <img class="meta__image" src="https://www.ons.gov.uk/img/national-statistics.png" alt="National Statistics logo"/>{{/if}}
+            {{#if description.nationalStatistic}} <img class="meta__image" src="https://www.ons.gov.uk/img/national-statistics.png" alt="National Statistics logo" width="47" height="47" />{{/if}}
         </div>
         <div class="meta__block">
             <p class="flush">
