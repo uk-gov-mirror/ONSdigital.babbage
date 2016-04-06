@@ -49,7 +49,7 @@ public class HighChartsExportClient {
         return getImage(chartConfig, width, null);
     }
 
-    public InputStream getImage(String chartConfig, Integer width, Integer scale) throws IOException {
+    public InputStream getImage(String chartConfig, Integer width, Double scale) throws IOException {
         System.out.println("Calling Highcharts export server");
         List<NameValuePair> postParameters = new ArrayList<>();
         postParameters.add(new BasicNameValuePair("options", chartConfig));

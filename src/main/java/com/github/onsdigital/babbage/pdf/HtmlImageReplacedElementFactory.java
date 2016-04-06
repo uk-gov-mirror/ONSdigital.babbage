@@ -37,6 +37,9 @@ public class HtmlImageReplacedElementFactory implements ReplacedElementFactory {
         this.superFactory = superFactory;
     }
 
+    private final double scale = 2.5;
+    private final int maxWidth = 2000;
+
     @Override
     public ReplacedElement createReplacedElement(
             LayoutContext layoutContext, BlockBox blockBox,
@@ -100,7 +103,15 @@ public class HtmlImageReplacedElementFactory implements ReplacedElementFactory {
 
         if (fsImage != null) {
             if ((cssWidth != -1) || (cssHeight != -1)) {
-                fsImage.scale(cssWidth * 2, cssHeight * 2);
+                fsImage.scale(cssWidth, cssHeight);
+            } else {
+
+                if ((fsImage.getWidth() * scale) > maxWidth) {
+                    // pass -1 as height to maintain aspect ratio when setting width.
+                    fsImage.scale(maxWidth, -1);
+                } else {
+                    fsImage.scale(new Double(fsImage.getWidth() * scale).intValue(), new Double(fsImage.getHeight() * scale).intValue());
+                }
             }
             return new ITextImageElement(fsImage);
         }

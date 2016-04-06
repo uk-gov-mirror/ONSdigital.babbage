@@ -58,7 +58,7 @@ public class ChartImageReplacedElementFactory implements ReplacedElementFactory 
                         additionalData);
 
                 Integer width = null;
-                int scale = 3;
+                double scale = 3.5;
                 input = HighChartsExportClient.getInstance().getImage(chartConfig, width, scale);
 
                 byte[] bytes = IOUtils.toByteArray(input);
