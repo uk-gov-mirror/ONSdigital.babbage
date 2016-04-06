@@ -33,7 +33,7 @@ $(function() {
                 $input.prop('checked', false);
             }
         });
-        $buttons.removeClass('btn--secondary--active');
+        $buttons.removeClass('btn--secondary-active');
 
         // set all controls to hidden
         $controls.each(function() {
@@ -43,7 +43,7 @@ $(function() {
         });
 
         // set active class on clicked button and unhide correct controls (button) block
-        $activeButton.addClass('btn--secondary--active');
+        $activeButton.addClass('btn--secondary-active');
         $activeInput.attr('aria-expanded', 'true');
         $activeInput.prop('checked', true);
         $activeControl.attr('aria-hidden', 'false');
@@ -496,7 +496,7 @@ var renderLineChart = function(timeseries) {
 				var frequency = this.value;
 				if (!chart[frequency]) {
 					$(this).attr("disabled", true);
-					$(this).parent().addClass('btn--secondary--disabled');
+					$(this).parent().addClass('btn--secondary-disabled');
 				} else {
 					if ($(this).data('chart-controls-scale') == currentFrequency) {
 						$(this).attr('checked', true);
@@ -708,11 +708,11 @@ var renderLineChart = function(timeseries) {
             }
 
 
-			selectedElement.closest('.btn-group').find('.btn').removeClass('btn--secondary--active');
+			selectedElement.closest('.btn-group').find('.btn').removeClass('btn--secondary-active');
 
 			selectedElement.each(function() {
 
-				$(this).closest('.btn').addClass('btn--secondary--active');
+				$(this).closest('.btn').addClass('btn--secondary-active');
 			});
 
 		};
@@ -753,7 +753,7 @@ $(function() {
 		// Update each link with new href
 		$('.dlCustomData').each(function(i) {
 
-			selectedFrequency = $(".btn--secondary--active.frequency-select .frequency").val();
+			selectedFrequency = $(".btn--secondary-active.frequency-select .frequency").val();
 			selectedFrequency = selectedFrequency.trim();
 
 			var $this = $(this),
