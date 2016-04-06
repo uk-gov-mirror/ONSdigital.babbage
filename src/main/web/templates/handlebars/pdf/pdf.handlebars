@@ -60,6 +60,7 @@
         .page__section {
             page-break-inside: avoid !important;
         }
+        .page li,
         .page__section li {
             margin-bottom: 14pt;
         }
@@ -92,15 +93,20 @@
         }
     </style>
 
-  <bookmarks>
-      {{#each sections}}
+    <bookmarks>
+        {{#each sections}}
         <bookmark name="{{title}}" href="#{{@index_1}}" />
-      {{/each}}
-  </bookmarks>
+        {{/each}}
+        {{#if accordion}}
+            {{#each accordion}}
+                <bookmark name="{{title}}" href="#{{nf (add sections.size @index_1)}}" />
+            {{/each}}
+        {{/if}}
+    </bookmarks>
 
 </head>
 <body>
-    <img src="https://www.ons.gov.uk/img/ons-logo.png" class="logo"/>
+    <img src="https://www.ons.gov.uk/img/ons-logo.png" class="logo"/>PIE22
 
     <div class="page-intro">
         <div class="page-intro__content">
@@ -131,6 +137,7 @@
     </div>
 
     <div class="page">
+        {{!-- SECTIONS --}}
         {{#each sections}}
             <section class="page__section" id="{{slugify title}}">
                 <header>
@@ -139,6 +146,15 @@
                 {{pdf-md markdown}}
             </section>
         {{/each}}
+
+        {{!-- BACKGROUND NOTES --}}
+        {{#if accordion}}
+            {{#each accordion}}
+                <h2><a name="{{nf (add sections.size @index_1)}}"></a><span class="section__content-number">{{nf (add sections.size @index_1)}}.</span> {{title}}</h2>
+                {{pdf-md markdown}}
+            {{/each}}
+        {{/if}}
+
     </div>
 
 </body>
