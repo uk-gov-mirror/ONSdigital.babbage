@@ -43,26 +43,21 @@ public class PDFGenerator {
                 html = TemplateService.getInstance().renderTemplate("pdf/pdf", dataStream, additionalData);
 
                 html = html.replace("\"\"/>", " \"/>"); // img tags from markdown have an extra " at the end of the tag for some reason
-
                 html = Jsoup.parse(html, URL, Parser.xmlParser()).toString();
-                //html = Jsoup.parse(html).toString();
                 html = html.replace("&nbsp;", "&#160;");
-
-                //System.out.println("html = " + html);
             }
 
             String outputFile = TEMP_DIRECTORY_PATH + "/" + fileName + ".pdf";
             InputStream inputStream = new ByteArrayInputStream(html.getBytes());
             createPDF(uri, inputStream, outputFile);
 
-
             Path pdfFile = FileSystems.getDefault().getPath(TEMP_DIRECTORY_PATH).resolve(fileName + ".pdf");
             if (!Files.exists(pdfFile)) {
                 throw new RuntimeException("Failed generating pdf, file not created");
             }
 
-//            BufferedReader bufferedReader = new BufferedReader(new FileReader(outputFile));
-//            addDataTableToPdf(fileName, pdfTable, bufferedReader, pdfFile);
+            BufferedReader bufferedReader = new BufferedReader(new FileReader(outputFile));
+            addDataTableToPdf(fileName, pdfTable, bufferedReader, pdfFile);
 
             return pdfFile;
         } catch (Exception ex) {

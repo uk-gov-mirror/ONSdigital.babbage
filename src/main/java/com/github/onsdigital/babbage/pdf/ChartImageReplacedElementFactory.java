@@ -36,12 +36,13 @@ public class ChartImageReplacedElementFactory implements ReplacedElementFactory 
             LayoutContext layoutContext, BlockBox blockBox,
             UserAgentCallback userAgentCallback, int cssWidth, int cssHeight
     ) {
-
         Element element = blockBox.getElement();
         if (element == null) {
             return null;
         }
 
+        // The markdown charts get output as a div with a particular class and data attributes for the URI.
+        // Here we look for the class name in each DIV to see where charts need to be rendered.
         String nodeName = element.getNodeName();
         String className = element.getAttribute("class");
         if ("div".equals(nodeName) && className.contains("markdown-chart-div")) {
@@ -50,15 +51,17 @@ public class ChartImageReplacedElementFactory implements ReplacedElementFactory 
 
             InputStream input = null;
             try {
+                // read the chart JSON from the content service (zebedee reader)
                 ContentResponse contentResponse = ContentClient.getInstance().getContent(uri);
 
+                // The highcharts configuration is generated from a handlebars template with the chart JSON as input.
                 LinkedHashMap<String, Object> additionalData = new LinkedHashMap<>();
                 additionalData.put("width",600);
                 String chartConfig = TemplateService.getInstance().renderChartConfiguration(contentResponse.getDataStream(),
                         additionalData);
 
-                Integer width = null;
-                double scale = 3.5;
+                Integer width = null; // do not set the width here as it overrides the scale
+                double scale = 3.5; // we use the scale to increase the size of the chart so that it also increased the font size accordingly.
                 input = HighChartsExportClient.getInstance().getImage(chartConfig, width, scale);
 
                 byte[] bytes = IOUtils.toByteArray(input);
