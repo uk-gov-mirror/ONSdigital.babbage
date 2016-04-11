@@ -8,8 +8,8 @@ $(function() {
         $paginationContainer.on('click', 'a.page-link', function(e) {
             e.preventDefault();
             var url = $(e.target).attr('href');
-            loadNewResults(url);
             $('html, body').animate({scrollTop: $('#main').offset().top}, 1000);
+            loadNewResults(url);
         });
     }
 })
