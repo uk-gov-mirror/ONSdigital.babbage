@@ -1,0 +1,22 @@
+{{#if files}}
+    <div class="markdown-chart-container panel--bottom-mar print--avoid-break">
+        <h4 class="flush--third--vertical">{{{sub (sup title)}}}</h4>
+        <h5 class="flush--third--bottom">{{{sub (sup subtitle)}}}</h5>
+
+        {{#each files}}
+            {{#if (eq type "uploaded-image")}}
+                <img src="{{uri}}.{{fileType}}" alt="{{alt-text}}">
+            {{/if}}
+        {{/each}}
+
+        {{#if source}}<h6 class="flush--third--bottom">Source: {{source}}</h6>{{/if}}
+        {{#if notes}}
+            <h6 class="flush--third--bottom">Notes:</h6>
+            {{md notes}}
+        {{/if}}
+    </div>
+{{/if}}
+
+{{#unless files}}
+    <img src="/resource?uri={{uri}}">
+{{/unless}}

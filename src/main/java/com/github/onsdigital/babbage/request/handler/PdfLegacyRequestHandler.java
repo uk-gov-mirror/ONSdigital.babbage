@@ -4,7 +4,7 @@ import com.github.onsdigital.babbage.content.client.ContentClient;
 import com.github.onsdigital.babbage.content.client.ContentFilter;
 import com.github.onsdigital.babbage.content.client.ContentReadException;
 import com.github.onsdigital.babbage.content.client.ContentResponse;
-import com.github.onsdigital.babbage.pdf.PDFGenerator;
+import com.github.onsdigital.babbage.pdf.PdfGeneratorLegacy;
 import com.github.onsdigital.babbage.request.handler.base.RequestHandler;
 import com.github.onsdigital.babbage.response.BabbageBinaryResponse;
 import com.github.onsdigital.babbage.response.base.BabbageResponse;
@@ -28,9 +28,9 @@ import static com.github.onsdigital.babbage.content.client.ContentClient.filter;
 /**
  * Created by bren on 07/07/15.
  */
-public class PDFRequestHandler implements RequestHandler {
+public class PdfLegacyRequestHandler implements RequestHandler {
 
-    private static final String REQUEST_TYPE = "pdf-new";
+    private static final String REQUEST_TYPE = "pdf";
     public static final String CONTENT_TYPE = "application/pdf";
 
     public BabbageResponse get(String requestedUri, HttpServletRequest requests) throws Exception {
@@ -40,7 +40,7 @@ public class PDFRequestHandler implements RequestHandler {
         if(pdfTable != null) {
             System.out.println("Using pdfTable: " + pdfTable);
         }
-        Path pdfFile = PDFGenerator.generatePdf(requestedUri, getTitle(requestedUri), RequestUtil.getAllCookies(requests), pdfTable);
+        Path pdfFile = PdfGeneratorLegacy.generatePdf(requestedUri, getTitle(requestedUri), RequestUtil.getAllCookies(requests), pdfTable);
         InputStream fin = Files.newInputStream(pdfFile);
         BabbageBinaryResponse response = new BabbageBinaryResponse(fin, CONTENT_TYPE);
         response.addHeader("Content-Disposition", "attachment; filename=\"" + pdfFile.getFileName() + "\"");
