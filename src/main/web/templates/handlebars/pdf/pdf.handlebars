@@ -1,0 +1,171 @@
+<html>
+<head>
+    <link href="css/pdf.css" media="print" rel="stylesheet" type="text/css" />
+    <style>
+        @page {
+            margin: 0.25in 0 0.5in 0;
+            size: a4;
+        }
+
+        * {
+            font-family: Tahoma, Verdana, Arial, sans-serif !important;
+        }
+
+        p, li {
+            font-size: 14px;
+        }
+
+        .logo {
+            margin-bottom: 0.3in;
+            margin-left: 0.5in;
+            display: block;
+        }
+
+        .page-intro {
+            background-color: #EAEAEA;
+            border-top: 1px solid #D0D2D3;
+
+        }
+
+        .page-intro__content {
+            padding: 0.25in 0.5in;
+        }
+
+        .page-intro_summary {
+            font-size: 18px;
+        }
+
+        .meta {
+            background-color: #E5E5E7;
+            border-top: 1px solid #D0D2D3;
+            border-bottom: 1px solid #D0D2D3;
+            height: 50px;
+            padding: 25px 50px;
+        }
+
+        .meta__block {
+            width: 30%;
+            float: left;
+            margin-bottom: 0.5in;
+        }
+
+        .meta__block--ns {
+            width: 8%;
+        }
+
+        .page {
+            padding: 0 0.5in;
+            float: left;
+        }
+        .page__section {
+            page-break-inside: avoid !important;
+        }
+        .page li,
+        .page__section li {
+            margin-bottom: 14pt;
+        }
+        h2, h3, h4, h5 {
+            page-break-after: avoid !important;
+        }
+        p {
+            page-break-before: avoid;
+        }
+
+        .markdown-chart-container,
+        .markdown-table-container,
+        table {
+            page-break-inside: avoid;
+        }
+
+        tr {
+            page-break-after: avoid;
+            page-break-before: avoid;
+        }
+
+        .flush {
+            margin: 0;
+        }
+
+        @page {
+            @bottom-right {
+                content: "Page " counter(page) " of " counter(pages);
+                font-family: Tahoma, Verdana, Arial, sans-serif !important;
+                font-size: 12px;
+                padding-right: 0.25in;
+            }
+        }
+    </style>
+
+    <bookmarks>
+        {{#each sections}}
+        <bookmark name="{{title}}" href="#{{@index_1}}" />
+        {{/each}}
+        {{#if accordion}}
+            {{#each accordion}}
+                <bookmark name="{{title}}" href="#{{nf (add sections.size @index_1)}}" />
+            {{/each}}
+        {{/if}}
+    </bookmarks>
+
+</head>
+<body>
+    <img src="https://www.ons.gov.uk/img/ons-logo.png" class="logo" width="199" height="39"/>
+
+    <div class="page-intro">
+        <div class="page-intro__content">
+
+            {{#if_eq type "bulletin"}}{{labels.statistical-bulletin}}{{/if_eq}}
+            {{#if_eq type "article"}}{{labels.article}}{{/if_eq}}
+            {{#if_eq type "compendium_landing_page"}}{{labels.compendium}}{{/if_eq}}
+            {{#if_eq type "compendium_chapter"}}{{labels.compendium}}{{/if_eq}}
+
+            <h1>{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}</h1>
+            <p class="page-intro_summary">{{#if description.summary}}{{description.summary}}{{else}}{{description._abstract}}{{/if}}</p>
+        </div>
+    </div>
+
+    <div class="meta">
+        <div class="meta__block meta__block--ns">
+            {{#if description.nationalStatistic}} <img class="meta__image" src="https://www.ons.gov.uk/img/national-statistics.png" alt="National Statistics logo" width="47" height="47" />{{/if}}
+        </div>
+        <div class="meta__block">
+            <p class="flush">
+                <span>{{labels.contact}}: </span><br/>{{description.contact.name}}<br/>{{description.contact.email}}
+            </p>
+        </div>
+        <div class="meta__block">
+            <p class="flush">
+                <span>{{labels.release-date}}: </span><br/>{{df description.releaseDate}}
+            </p>
+        </div>
+        <div class="meta__block">
+            <p class="flush">
+                <span>{{labels.next-release}}: </span><br/>{{#if description.nextRelease}}{{description.nextRelease}}{{else}}To be announced{{/if}}
+            </p>
+        </div>
+    </div>
+
+    <div class="page">
+        {{!-- SECTIONS --}}
+        {{#each sections}}
+            <section class="page__section" id="{{slugify title}}">
+                <header>
+                    <h2><a name="{{@index_1}}"></a><span class="section__content-number">{{@index_1}}.</span> {{title}}</h2>
+                </header>
+                {{pdf-md markdown}}
+            </section>
+        {{/each}}
+
+        {{!-- BACKGROUND NOTES --}}
+        {{#if accordion}}
+            {{#each accordion}}
+                <h2><a name="{{nf (add sections.size @index_1)}}"></a><span class="section__content-number">{{nf (add sections.size @index_1)}}.</span> {{title}}</h2>
+                {{pdf-md markdown}}
+            {{/each}}
+        {{/if}}
+
+    </div>
+
+</body>
+
+</html>
