@@ -1,5 +1,7 @@
 <div class="sort-results">
 	<form id="form-sort" class="js-auto-submit__form">
+
+        {{!-- Include existing parameters in form  --}}
         {{#each parameters}}
             {{#if_all this.0 (ne @key "sortBy")}}
                 <input type="hidden" name="{{@key}}" value="{{this.0}}">

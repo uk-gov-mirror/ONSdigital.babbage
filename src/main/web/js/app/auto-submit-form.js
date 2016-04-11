@@ -38,7 +38,7 @@ function autoSubmitForm() {
     // Auto-submit instantly for all other elements
     $(form).on('change', input, function (e) {
         var $target = $(e.target);
-        var $targetId = $(e.target).attr('id');
+        var $targetId = $target.attr('id');
         $trigger = $target;
         if ($targetId !== $keywordSearch.attr('id') && $targetId !== 'select-updated') { //Don't submit again after keyword change
             submitForm($target);
@@ -55,7 +55,7 @@ function autoSubmitForm() {
     //Bind form submission to store form data and run ajax function
     $(form).submit(function (e) {
         e.preventDefault();
-        url = (window.location.pathname) + '?' + $(form).serialize();
+        url = (window.location.pathname) + '?' + $(input).serialize();
         loadNewResults(url, $trigger);
         $trigger = undefined; // reset the focus element
         return false;
