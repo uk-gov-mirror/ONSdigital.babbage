@@ -1,12 +1,17 @@
 <div class="sort-results">
 	<form id="form-sort" class="js-auto-submit__form">
 
-        {{!-- Include existing parameters in form  --}}
+        {{!-- Include existing parameters in form. Exclude 'sortBy' and 'q' (this needs slightly different markup for the JS auto-submit to work)  --}}
         {{#each parameters}}
-            {{#if_all this.0 (ne @key "sortBy")}}
+            {{#if_all this.0 (ne @key "sortBy") (ne @key "q")}}
                 <input type="hidden" name="{{@key}}" value="{{this.0}}">
             {{/if_all}}
         {{/each}}
+
+        {{!-- Add auto-submit class to 'q' input so that it is included in serialised form on JS --}}
+        {{#if parameters.q.0}}
+            <input type="hidden" name="q" value="{{parameters.q.0}}" class="js-auto-submit__input">
+        {{/if}}
 
 		<div class="js-mobile-filters__sort">
 			<label for="select" class="sort__label">{{labels.sort-by}}
