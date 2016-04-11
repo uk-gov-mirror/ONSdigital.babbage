@@ -28,20 +28,31 @@ import org.elasticsearch.index.query.QueryBuilder;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.MediaType;
 import java.io.IOException;
+import java.text.MessageFormat;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import static com.github.onsdigital.babbage.configuration.Configuration.GENERAL.getSearchResponseCacheTime;
-import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.*;
-import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.*;
+import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.advancedSearchQuery;
+import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.contentQuery;
+import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.departmentQuery;
+import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.listQuery;
+import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.onsQuery;
+import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.typeBoostedQuery;
+import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.extractPage;
+import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.extractSearchTerm;
+import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.extractSelectedFilters;
+import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.extractSortBy;
 import static com.github.onsdigital.babbage.search.input.TypeFilter.contentTypes;
 import static com.github.onsdigital.babbage.search.model.field.Field.cdid;
 import static com.github.onsdigital.babbage.util.URIUtil.isDataRequest;
 import static org.apache.commons.lang.ArrayUtils.isEmpty;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
-import static org.elasticsearch.index.query.QueryBuilders.*;
+import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
+import static org.elasticsearch.index.query.QueryBuilders.matchAllQuery;
+import static org.elasticsearch.index.query.QueryBuilders.termQuery;
 import static org.elasticsearch.search.suggest.SuggestBuilders.phraseSuggestion;
 
 /**
@@ -183,7 +194,24 @@ public class SearchUtils {
                 .page(page)
                 .sortBy(sort)
                 .name("result")
+                .size(extractSize(request))
                 .highlight(true);
+    }
+
+    /**
+     * If a size parameter exists use that otherwise use default.
+     */
+    private static int extractSize(HttpServletRequest request) {
+        int result = Configuration.GENERAL.getResultsPerPage();
+        if (StringUtils.isNotEmpty(request.getParameter("size"))) {
+            try {
+                result = Integer.parseInt(request.getParameter("size"));
+            } catch (NumberFormatException ex) {
+                System.out.println(MessageFormat.format("Failed to parse size parameter to integer." +
+                        " Default value will be used.\n {0}", ex));
+            }
+        }
+        return result;
     }
 
     static LinkedHashMap<String, SearchResult> doSearch(List<ONSQuery> searchQueries) {
