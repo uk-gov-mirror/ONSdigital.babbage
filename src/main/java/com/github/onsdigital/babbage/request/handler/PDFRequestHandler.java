@@ -52,12 +52,14 @@ public class PDFRequestHandler implements RequestHandler {
         return REQUEST_TYPE;
     }
 
-    public String getTitle(String uri) throws IOException, ContentReadException {
+    public static String getTitle(String uri) throws IOException, ContentReadException {
         ContentResponse contentResponse = ContentClient.getInstance().getContent(uri, filter(ContentFilter.DESCRIPTION));
         Map<String, Object> stringObjectMap = JsonUtil.toMap(contentResponse.getDataStream());
 
-        String title = (String) stringObjectMap.get("title");
-        String edition = (String) stringObjectMap.get("edition");
+        Map<String, Object> descriptionMap = (Map<String, Object>) stringObjectMap.get("description");
+
+        String title = (String) descriptionMap.get("title");
+        String edition = (String) descriptionMap.get("edition");
 
         if (StringUtils.isNotEmpty(edition))
             title += " " + edition;

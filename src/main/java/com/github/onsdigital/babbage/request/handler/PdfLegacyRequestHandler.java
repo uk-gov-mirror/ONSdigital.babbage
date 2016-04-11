@@ -1,7 +1,6 @@
 package com.github.onsdigital.babbage.request.handler;
 
 import com.github.onsdigital.babbage.content.client.ContentClient;
-import com.github.onsdigital.babbage.content.client.ContentFilter;
 import com.github.onsdigital.babbage.content.client.ContentReadException;
 import com.github.onsdigital.babbage.content.client.ContentResponse;
 import com.github.onsdigital.babbage.pdf.PdfGeneratorLegacy;
@@ -22,8 +21,6 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 
-import static com.github.onsdigital.babbage.content.client.ContentClient.filter;
-
 
 /**
  * Created by bren on 07/07/15.
@@ -40,7 +37,7 @@ public class PdfLegacyRequestHandler implements RequestHandler {
         if(pdfTable != null) {
             System.out.println("Using pdfTable: " + pdfTable);
         }
-        Path pdfFile = PdfGeneratorLegacy.generatePdf(requestedUri, getTitle(requestedUri), RequestUtil.getAllCookies(requests), pdfTable);
+        Path pdfFile = PdfGeneratorLegacy.generatePdf(requestedUri, PDFRequestHandler.getTitle(requestedUri), RequestUtil.getAllCookies(requests), pdfTable);
         InputStream fin = Files.newInputStream(pdfFile);
         BabbageBinaryResponse response = new BabbageBinaryResponse(fin, CONTENT_TYPE);
         response.addHeader("Content-Disposition", "attachment; filename=\"" + pdfFile.getFileName() + "\"");
@@ -50,19 +47,6 @@ public class PdfLegacyRequestHandler implements RequestHandler {
     @Override
     public String getRequestType() {
         return REQUEST_TYPE;
-    }
-
-    public String getTitle(String uri) throws IOException, ContentReadException {
-        ContentResponse contentResponse = ContentClient.getInstance().getContent(uri, filter(ContentFilter.DESCRIPTION));
-        Map<String, Object> stringObjectMap = JsonUtil.toMap(contentResponse.getDataStream());
-
-        String title = (String) stringObjectMap.get("title");
-        String edition = (String) stringObjectMap.get("edition");
-
-        if (StringUtils.isNotEmpty(edition))
-            title += " " + edition;
-
-        return title;
     }
 
     public String getPDFTables(String uri) throws IOException, ContentReadException {
