@@ -34,6 +34,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import static com.github.onsdigital.babbage.configuration.Configuration.GENERAL.getMaxResultsPerPage;
+import static com.github.onsdigital.babbage.configuration.Configuration.GENERAL.getResultsPerPage;
 import static com.github.onsdigital.babbage.configuration.Configuration.GENERAL.getSearchResponseCacheTime;
 import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.advancedSearchQuery;
 import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.contentQuery;
@@ -57,7 +59,7 @@ import static org.elasticsearch.search.suggest.SuggestBuilders.phraseSuggestion;
 
 /**
  * Created by bren on 20/01/16.
- * <p/>
+ * <p>
  * Commons search functionality for search, search publications and search data pages.
  */
 public class SearchUtils {
@@ -202,10 +204,11 @@ public class SearchUtils {
      * If a size parameter exists use that otherwise use default.
      */
     private static int extractSize(HttpServletRequest request) {
-        int result = Configuration.GENERAL.getResultsPerPage();
+        int result = getResultsPerPage();
         if (StringUtils.isNotEmpty(request.getParameter("size"))) {
             try {
                 result = Integer.parseInt(request.getParameter("size"));
+                return Math.max(getResultsPerPage(), Math.min(result, getMaxResultsPerPage()));
             } catch (NumberFormatException ex) {
                 System.out.println(MessageFormat.format("Failed to parse size parameter to integer." +
                         " Default value will be used.\n {0}", ex));
