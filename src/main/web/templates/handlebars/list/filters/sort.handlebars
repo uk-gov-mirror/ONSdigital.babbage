@@ -14,8 +14,8 @@
         {{/if}}
 
 		<div class="js-mobile-filters__sort">
-			<label for="select" class="sort__label">{{labels.sort-by}}
-				<select class="input select select--thin width-auto js-auto-submit__input" id="select" name="sortBy">
+			<label for="sort" class="sort__label">{{labels.sort-by}}
+				<select class="input select select--thin width-auto js-auto-submit__input" id="sort" name="sortBy">
 					<option class="sort__option" value="relevance" {{#if_eq result.sortBy "relevance"}}selected{{/if_eq}}>{{labels.relevance}}
 					</option>
 					<option class="sort__option" value="release_date"

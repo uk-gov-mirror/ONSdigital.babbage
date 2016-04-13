@@ -7,23 +7,73 @@ function loadNewResults(url, focus) {
         paginationContainer = '#js-pagination-container',
         tabsContainer = '.tabs--js',
         checkboxContainer = '.js-checkbox-container',
-        atozFilters = '.filters__a-z';
+        atozFilters = '.filters__a-z',
+        $results = $(results),
+        resultsHeight = $results.height();
 
     //Show 'Loading...' in place of results text before Ajax starts
     updateContents(resultsText, 'Loading...');
 
-    // Empty results
-    $(results).empty();
+    // Empty results & pagination
+    $results.height(resultsHeight).empty(); // Set height so that footer doesn't move around page erratically
+    $('#js-pagination-container').empty();
 
     //Ajax request for new URL
     $.ajax({
         url: url,
         success: function (result) {
+            //Removes current results from page and loads in new results
+            function replaceResults(url, newResults, newResultsText, newPagination) {
+                var $newResults = $(newResults);
+
+                $newResults.hide().appendTo(results).fadeIn(300);
+
+                //Re-run functions done on load that are needed after Ajax
+                getSparkline();
+                hoverState();
+                timeseriesTool.refresh();
+
+                //Update results text
+                updateContents(resultsText, newResultsText);
+
+                if (newPagination || newPagination == '') {
+                    //Update pagination for results
+                    updateContents(paginationContainer, newPagination);
+                }
+
+                //Pushes new url into browser, if browser compatible (enhancement)
+                if (history.pushState) {
+                    window.history.pushState({}, '', url);
+                }
+            }
+
+            //Update filters
+            function replaceFilters(newFilters) {
+                if ($(newFilters).is(checkboxContainer)) {
+                    //Detect what filters are being updated
+                    var checkboxId = $(newFilters).find('input').attr('id');
+
+                    //Find corresponding filters on current page
+                    var $checkboxFilters = $('#' + checkboxId).closest(checkboxContainer);
+
+                    //Empty and replace checkboxes
+                    updateContents($checkboxFilters, $(newFilters).html());
+                }
+
+                if ($(newFilters).is(atozFilters)) {
+                    //If page A-Z and no checkboxes
+                    updateContents('.js-atoz-container', newFilters);
+                }
+
+            }
+
+
+            /* Run functions to replace content on page */
             //Results
             var newResults = $(result).find(results).html(),
                 newResultsText = $(result).find(resultsText).html(),
                 newTabsContainer = $(result).find(tabsContainer).html(),
-                newPagination;
+                newPagination = '';
             if ($(result).find(paginationContainer).length > 0) {
                 newPagination = $(result).find(paginationContainer).html();
             }
@@ -55,50 +105,10 @@ function loadNewResults(url, focus) {
         }
     });
 
-    //Removes current results from page and loads in new results
-    function replaceResults(url, newResults, newResultsText, newPagination) {
-        var $newResults = $(newResults);
-
-        $newResults.hide().appendTo(results).fadeIn(300);
-
-        //Re-run functions done on load that are needed after Ajax
-        getSparkline();
-        hoverState();
-        timeseriesTool.refresh();
-
-        //Update results text
-        updateContents(resultsText, newResultsText);
-
-        //Update pagination for results
-        if (newPagination) {
-            updateContents(paginationContainer, newPagination);
-        }
-
-        //Pushes new url into browser, if browser compatible (enhancement)
-        if (history.pushState) {
-            window.history.pushState({}, '', url);
-        }
-    }
-
-    //Update filters
-    function replaceFilters(newFilters) {
-        if ($(newFilters).is(checkboxContainer)) {
-            //Detect what filters are being updated
-            var checkboxId = $(newFilters).find('input').attr('id');
-
-            //Find corresponding filters on current page
-            var $checkboxFilters = $('#' + checkboxId).closest(checkboxContainer);
-
-            //Empty and replace checkboxes
-            updateContents($checkboxFilters, $(newFilters).html());
-        }
-
-        if ($(newFilters).is(atozFilters)) {
-            //If page A-Z and no checkboxes
-            updateContents('.js-atoz-container', newFilters);
-        }
-
-    }
+    // Revert results height to auto after Ajax is finished
+    $(document).ajaxComplete(function() {
+        $results.height('auto');
+    });
 }
 
 //Remove and replaces content according to selector and results parsed into function
@@ -111,7 +121,7 @@ function updateContents(id, newContents) {
     }
 
     //Replace other inputs/elements with new HTML from Ajax results
-    if (newContents) {
+    if (newContents || newContents == '') {
         $element.empty();
         $element.append(newContents)
     }

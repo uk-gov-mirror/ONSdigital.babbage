@@ -53,6 +53,14 @@
 								{{#block "block-filters"}}
 								{{/block}}
 							</div>
+                            {{!-- Hidden parameters for any filters already applied --}}
+                            {{#if parameters.size.0}}
+                                <input type="hidden" name="size" value="{{parameters.size.0}}">
+                            {{/if}}
+                            {{#if parameters.sortBy.0}}
+                                <input type="hidden" name="sortBy" value="{{parameters.sortBy.0}}">
+                            {{/if}}
+
 							<button type="submit" class="btn btn--primary btn--thick margin-top-sm--2 margin-top-md--2 js-submit-button">{{labels.filter}}</button>
 						</div>
 					</div>
@@ -65,29 +73,31 @@
 
 				<div id="results" class="results">
 
-				{{#block "block-featured-result"}}{{/block}}
+                    {{#block "block-featured-result"}}{{/block}}
 
-				{{> list/partials/search-results-text-help result}}
+                    {{> list/partials/search-results-text-help result}}
 
-				{{!-- MAIN RESULTS --}}
-				<!-- /desktop-grid-one-third -->
-                <div class="search-results {{#unless featuredResult.results.0}}margin-top-md--2{{/unless}}">
-					<ul class="list--neutral flush">
-						{{#block "block-results"}}
-							{{#each result.results}}
-								<li class="col col--md-34 col--lg-40 search-results__item">
-									{{> list/partials/results-title showEdition=true}}
-									{{> list/partials/results-meta}}
-									{{> list/partials/results-summary}}
-									{{> list/partials/results-keywords}}
-								</li>
-							{{/each}}
-						{{/block}}
-					</ul>
-				</div>
-				{{> list/partials/paginator paginator=result.paginator}}
-				<!-- /desktop-grid-two-thirds -->
-				</div>
+                    {{!-- MAIN RESULTS --}}
+                    <!-- /desktop-grid-one-third -->
+                    <div class="search-results {{#unless featuredResult.results.0}}margin-top-md--2{{/unless}}">
+                        <ul class="list--neutral flush">
+                            {{#block "block-results"}}
+                                {{#each result.results}}
+                                    <li class="col col--md-34 col--lg-40 search-results__item">
+                                        {{> list/partials/results-title showEdition=true}}
+                                        {{> list/partials/results-meta}}
+                                        {{> list/partials/results-summary}}
+                                        {{> list/partials/results-keywords}}
+                                    </li>
+                                {{/each}}
+                            {{/block}}
+                        </ul>
+                    </div>
+                </div>
+                <form id="js-pagination-container" class="js-auto-submit__form">
+                    <div class="col col--md-22 col--lg-28">{{> list/partials/paginator paginator=result.paginator }}</div>
+                    <div class="col col--md-12 col--lg-12 margin-top-md--2 padding-left--1 background--iron-light">{{> list/filters/size }}</div>
+                </form>
 			</div>
 		</div>
 	</div>
