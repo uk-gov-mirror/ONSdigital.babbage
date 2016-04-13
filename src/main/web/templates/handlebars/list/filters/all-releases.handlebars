@@ -1,12 +1,10 @@
 <fieldset class="filters__fieldset">
     <legend class="filters__title">Previous releases</legend>
-    <div cfiss="js-checkbox-container">
-        <div class="filters__field">
+    <div class="js-checkbox-container">
+        <label for="checkbox-previous">
             <input type="checkbox" id="checkbox-previous" class="js-auto-submit__input" name="allReleases" value="1"
                    {{#if parameters.allReleases}}checked{{/if}}>
-            <label for="checkbox-previous">
-                Show all releases over time (only showing latest one of each by default)
-            </label>
-        </div>
+            Show all releases over time (only showing latest one of each by default)
+        </label>
     </div>
 </fieldset>
