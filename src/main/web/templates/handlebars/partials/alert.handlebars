@@ -134,7 +134,8 @@
 											<section class="show-hide__content alert--warning__content section__content--markdown">
 												{{#each versions}}
 													{{#if correctionNotice}}
-														<p class="alert__date">{{df updateDate}}</p>
+                                                        {{!-- TODO Uncomment updateDate when bug in Brian has been fixed --}}
+                                                        {{!-- <p class="alert__date">{{df updateDate}}</p> --}}
 														{{md correctionNotice}}
 														<a class="btn btn--tertiary margin-bottom-sm--3 margin-bottom-md--3 print--hide"
 														   href="{{uri}}">{{labels.view-superseded-version}}</a>
