@@ -8,7 +8,7 @@ public class Configuration {
 
     /*General Babbage app settings*/
     public static class GENERAL {
-        private static final int MAX_VISIBLE_PAGINATOR_LINK = 10;
+        private static final int MAX_VISIBLE_PAGINATOR_LINK = 5;
         private static final int RESULTS_PER_PAGE = 10;
         private static final int MAX_RESULTS_PER_PAGE = 250;
         //Should be the same as cut off time in Florence publishing system to ensure cache times are correct

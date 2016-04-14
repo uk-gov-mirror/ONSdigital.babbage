@@ -13,7 +13,8 @@ function autoSubmitForm() {
         $selectUpdated = $('#select-updated'),
         url,
         timer,
-        $trigger;
+        $trigger,
+        scrollToTop;
 
     // Hide submit button
     $('.js-submit-button').hide();
@@ -40,7 +41,10 @@ function autoSubmitForm() {
         var $target = $(e.target);
         var $targetId = $target.attr('id');
         $trigger = $target;
-        if ($targetId !== $keywordSearch.attr('id') && $targetId !== 'select-updated') { //Don't submit again after keyword change
+        if ($targetId !== $keywordSearch.attr('id') && $targetId !== 'select-updated' && $targetId !== 'page-size') { //Don't submit again after keyword change
+            submitForm($target);
+        } else if ($targetId == 'page-size') {
+            scrollToTop = true;
             submitForm($target);
         } else if ($targetId == $selectUpdated.attr('id')) { //Clear custom dates on timeseries tool if 'Custom' not selected
             if ($selectUpdated.val() != 'custom') {
@@ -57,7 +61,11 @@ function autoSubmitForm() {
         e.preventDefault();
         url = (window.location.pathname) + '?' + $(input).serialize();
         loadNewResults(url, $trigger);
+        if (scrollToTop) { // used only for 'result per page' select to scroll to top on change
+            $('html, body').animate({scrollTop: $('#main').offset().top}, 1000);
+        }
         $trigger = undefined; // reset the focus element
+        scrollToTop = false; // reset flag for scrolling on change
         return false;
     });
 
