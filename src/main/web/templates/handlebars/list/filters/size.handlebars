@@ -12,7 +12,7 @@
     {{/if}}
 
     <label for="page-size">Results per page:</label>
-    <select name="size" id="page-size" class="input select--iron-light select--thin font-size--14 width--3 padding-left--1 padding-right--1 js-auto-submit__input">
+    <select name="size" id="page-size" class="input select--thin font-size--14 width--3 padding-left--1 padding-right--1 js-auto-submit__input">
         <option value="10" {{#if_eq parameters.size.0 "10"}}selected{{/if_eq}}>10</option>
         <option value="25" {{#if_eq parameters.size.0 "25"}}selected{{/if_eq}}>25</option>
         <option value="50" {{#if_eq parameters.size.0 "50"}}selected{{/if_eq}}>50</option>
