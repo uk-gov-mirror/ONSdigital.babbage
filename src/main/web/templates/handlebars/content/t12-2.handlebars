@@ -144,7 +144,8 @@
                                         Scheduled update/revision
                                     {{/if}}
                                 </td>
-                                <td>{{df updateDate}}</td>
+                                {{!-- TODO Remove unless correctionNotice - only being hidden on correction because of bug in Brian that puts publish date, not correction date, in JSON --}}
+                                    <td>{{#unless correctionNotice}}{{df updateDate}}{{/unless}}</td>
                             </tr>
                         {{/loop}}
                         </tbody>
