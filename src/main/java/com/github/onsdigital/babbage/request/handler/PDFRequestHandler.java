@@ -43,6 +43,7 @@ public class PDFRequestHandler implements RequestHandler {
         Path pdfFile = PDFGenerator.generatePdf(requestedUri, getTitle(requestedUri), RequestUtil.getAllCookies(requests), pdfTable);
         InputStream fin = Files.newInputStream(pdfFile);
         BabbageBinaryResponse response = new BabbageBinaryResponse(fin, CONTENT_TYPE);
+        response.addHeader("Content-Length", Long.toString(FileUtils.sizeOf(pdfFile.toFile())));
         response.addHeader("Content-Disposition", "attachment; filename=\"" + pdfFile.getFileName() + "\"");
         return response;
     }
