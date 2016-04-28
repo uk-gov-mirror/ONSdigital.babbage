@@ -47,6 +47,11 @@ public class Configuration {
             return "Y".equals(devEnvironment);
         }
 
+        public static boolean isPublishing() {
+            String isPublishing = StringUtils.defaultIfBlank(getValue("IS_PUBLISHING"), "N");
+            return "Y".equals(isPublishing);
+        }
+
         public static int getPublishCacheTimeout() {
             return PUBLISH_CACHE_TIMEOUT;
         }
