@@ -38,13 +38,12 @@ public class PdfLegacyRequestHandler implements RequestHandler {
             contentResponse = ContentClient.getInstance().getResource(requestedUri + "/page.pdf");
             BabbageContentBasedBinaryResponse response = new BabbageContentBasedBinaryResponse(contentResponse, contentResponse.getDataStream(), contentResponse.getMimeType());
             String contentDispositionHeader = "attachment; ";
-            contentDispositionHeader += contentResponse.getName() == null ? "" : "filename=\"" + contentResponse.getName() + "\"";
+            contentDispositionHeader += contentResponse.getName() == null ? "" : "filename=\"" + PDFRequestHandler.getTitle(requestedUri) + "\"";
             response.addHeader("Content-Disposition", contentDispositionHeader);
             return response;
         } catch (ContentReadException e) {
             System.out.println("Pre-rendered PDF not found - attempting to generate it...");
         }
-
 
         String uriPath = StringUtils.removeStart(requestedUri, "/");
 
