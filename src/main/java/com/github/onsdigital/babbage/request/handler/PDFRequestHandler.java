@@ -36,14 +36,8 @@ public class PDFRequestHandler implements RequestHandler {
 
     public BabbageResponse get(String requestedUri, HttpServletRequest requests) throws Exception {
 
-        ContentResponse contentResponse = null;
         try {
-            contentResponse = ContentClient.getInstance().getResource(requestedUri + "/page.pdf");
-            BabbageContentBasedBinaryResponse response = new BabbageContentBasedBinaryResponse(contentResponse, contentResponse.getDataStream(), contentResponse.getMimeType());
-            String contentDispositionHeader = "attachment; ";
-            contentDispositionHeader += contentResponse.getName() == null ? "" : "filename=\"" + contentResponse.getName() + "\"";
-            response.addHeader("Content-Disposition", contentDispositionHeader);
-            return response;
+            return getPregeneartedPdf(requestedUri);
         } catch (ContentReadException e) {
             System.out.println("Pre-rendered PDF not found - attempting to generate it...");
         }
@@ -59,6 +53,16 @@ public class PDFRequestHandler implements RequestHandler {
         BabbageBinaryResponse response = new BabbageBinaryResponse(fin, CONTENT_TYPE);
         response.addHeader("Content-Length", Long.toString(FileUtils.sizeOf(pdfFile.toFile())));
         response.addHeader("Content-Disposition", "attachment; filename=\"" + pdfFile.getFileName() + "\"");
+        return response;
+    }
+
+    static BabbageResponse getPregeneartedPdf(String requestedUri) throws ContentReadException, IOException {
+        ContentResponse contentResponse;
+        contentResponse = ContentClient.getInstance().getResource(requestedUri + "/page.pdf");
+        BabbageContentBasedBinaryResponse response = new BabbageContentBasedBinaryResponse(contentResponse, contentResponse.getDataStream(), contentResponse.getMimeType());
+        String contentDispositionHeader = "attachment; ";
+        contentDispositionHeader += contentResponse.getName() == null ? "" : "filename=\"" + getTitle(requestedUri) + "\"";
+        response.addHeader("Content-Disposition", contentDispositionHeader);
         return response;
     }
 

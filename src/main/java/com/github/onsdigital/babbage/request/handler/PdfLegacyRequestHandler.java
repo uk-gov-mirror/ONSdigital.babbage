@@ -6,7 +6,6 @@ import com.github.onsdigital.babbage.content.client.ContentResponse;
 import com.github.onsdigital.babbage.pdf.PdfGeneratorLegacy;
 import com.github.onsdigital.babbage.request.handler.base.RequestHandler;
 import com.github.onsdigital.babbage.response.BabbageBinaryResponse;
-import com.github.onsdigital.babbage.response.BabbageContentBasedBinaryResponse;
 import com.github.onsdigital.babbage.response.base.BabbageResponse;
 import com.github.onsdigital.babbage.util.RequestUtil;
 import com.github.onsdigital.babbage.util.json.JsonUtil;
@@ -33,14 +32,8 @@ public class PdfLegacyRequestHandler implements RequestHandler {
 
     public BabbageResponse get(String requestedUri, HttpServletRequest requests) throws Exception {
 
-        ContentResponse contentResponse = null;
         try {
-            contentResponse = ContentClient.getInstance().getResource(requestedUri + "/page.pdf");
-            BabbageContentBasedBinaryResponse response = new BabbageContentBasedBinaryResponse(contentResponse, contentResponse.getDataStream(), contentResponse.getMimeType());
-            String contentDispositionHeader = "attachment; ";
-            contentDispositionHeader += contentResponse.getName() == null ? "" : "filename=\"" + PDFRequestHandler.getTitle(requestedUri) + "\"";
-            response.addHeader("Content-Disposition", contentDispositionHeader);
-            return response;
+            return PDFRequestHandler.getPregeneartedPdf(requestedUri);
         } catch (ContentReadException e) {
             System.out.println("Pre-rendered PDF not found - attempting to generate it...");
         }
