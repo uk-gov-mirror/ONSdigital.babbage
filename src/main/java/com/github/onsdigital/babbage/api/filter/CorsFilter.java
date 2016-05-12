@@ -16,7 +16,7 @@ public class CorsFilter implements Filter {
         String requestType = URIUtil.resolveRequestType(request.getRequestURI());
 
         if (requestType.equals("data")) {
-            response.addHeader("Access-Control-Allow-Origin", request.getHeader("origin"));
+            response.addHeader("Access-Control-Allow-Origin", "*"); //request.getHeader("origin"));
             response.addHeader("Access-Control-Allow-Methods", "GET");
         }
 
