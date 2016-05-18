@@ -5,16 +5,24 @@ import com.github.onsdigital.babbage.content.client.ContentClient;
 import com.github.onsdigital.babbage.content.client.ContentResponse;
 import com.github.onsdigital.babbage.response.BabbageContentBasedBinaryResponse;
 import com.github.onsdigital.babbage.util.URIUtil;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Map;
 
 import static com.github.onsdigital.babbage.api.error.ErrorHandler.handle;
 
 public class StaticFilesFilter implements Filter {
+
+    private static final Type type = new TypeToken<Map<String, String>>(){}.getType();
+    private static final String visualisationRoot = "visualisations";
+
     @Override
     public boolean filter(HttpServletRequest request, HttpServletResponse response) {
 
@@ -22,11 +30,11 @@ public class StaticFilesFilter implements Filter {
             String uri = request.getRequestURI();
             Path requestPath = Paths.get(uri);
 
-            if (requestPath.getNameCount() > 1)
+            if (requestPath.getNameCount() < 2) // requires two parts to the path to be a valid visualisation: /visualisation/code/
                 return true; // there is no path, do not try and handle it.
 
             Path endpoint = requestPath.getName(0);
-            if (endpoint.toString().equalsIgnoreCase("visualisation")) {
+            if (endpoint.toString().equalsIgnoreCase("visualisations")) {
 
                 Path uid = Paths.get(uri).getName(1);
                 String path = URIUtil.removeEndpoint(URIUtil.removeEndpoint(uri));
@@ -34,10 +42,14 @@ public class StaticFilesFilter implements Filter {
                 if (path.length() == 0 || path.equals("/")) {
                     // get the page object for this URI
                     // read the index page filename.
-                    path = "/index.html";
+                    String jsonPath = String.format("/%s/%s", visualisationRoot, uid);
+                    ContentResponse contentResponse = ContentClient.getInstance().getContent(jsonPath);
+                    Map<String, String> jsonMap = new Gson().fromJson(contentResponse.getAsString(), type);
+                    // read the filename from the visualisation page json
+                    path = jsonMap.get("indexPage");
                 }
 
-                String visualisationPath = "/visualisation/" + uid + path;
+                String visualisationPath = String.format("/%s/%s/content/%s", visualisationRoot, uid, path);
 
                 ContentResponse contentResponse = ContentClient.getInstance().getResource(visualisationPath);
                 new BabbageContentBasedBinaryResponse(contentResponse, contentResponse.getDataStream(), contentResponse.getMimeType()).apply(request, response);
