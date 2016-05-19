@@ -47,6 +47,10 @@ public class StaticFilesFilter implements Filter {
                     Map<String, String> jsonMap = new Gson().fromJson(contentResponse.getAsString(), type);
                     // read the filename from the visualisation page json
                     path = jsonMap.get("indexPage");
+
+                    if (path == null || path.length() == 0 || path.equals("/")) {
+                        path = "index.html";
+                    }
                 }
 
                 String visualisationPath = String.format("/%s/%s/content/%s", visualisationRoot, uid, path);
