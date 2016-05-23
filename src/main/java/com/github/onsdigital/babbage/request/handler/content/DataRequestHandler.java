@@ -24,7 +24,7 @@ import static com.github.onsdigital.babbage.util.RequestUtil.getQueryParameters;
  */
 public class DataRequestHandler implements RequestHandler {
 
-    private static final String REQUEST_TYPE = "data";
+    public static final String REQUEST_TYPE = "data";
     private static Map<String, ListRequestHandler> listPageHandlers = new HashMap<>();
 
 
