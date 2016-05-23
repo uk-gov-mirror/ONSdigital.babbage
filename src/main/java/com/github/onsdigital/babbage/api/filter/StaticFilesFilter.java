@@ -59,9 +59,7 @@ public class StaticFilesFilter implements Filter {
                     }
                 }
 
-                path = URIUtil.cleanUri(path);
-
-                String visualisationPath = String.format("/%s/%s/content%s", visualisationRoot, uid, path);
+                String visualisationPath = String.format("/%s/%s/content/%s", visualisationRoot, uid, path);
 
                 ContentResponse contentResponse = ContentClient.getInstance().getResource(visualisationPath);
                 new BabbageContentBasedBinaryResponse(contentResponse, contentResponse.getDataStream(), contentResponse.getMimeType()).apply(request, response);
