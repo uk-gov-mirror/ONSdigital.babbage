@@ -5,6 +5,8 @@ import com.github.onsdigital.babbage.content.client.ContentClient;
 import com.github.onsdigital.babbage.content.client.ContentResponse;
 import com.github.onsdigital.babbage.response.BabbageContentBasedBinaryResponse;
 import com.github.onsdigital.babbage.util.URIUtil;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 
 import javax.servlet.http.HttpServletRequest;
@@ -39,22 +41,21 @@ public class StaticFilesFilter implements Filter {
                 String path = URIUtil.removeEndpoint(URIUtil.removeEndpoint(uri));
 
                 if (path.length() == 0 || path.equals("/")) {
-                    path = "index.html";
+                    String jsonPath = String.format("/%s/%s", visualisationRoot, uid);
+                    ContentResponse contentResponse = ContentClient.getInstance().getContent(jsonPath);
 
-                    // get the page object for this URI
-                    // read the index page filename.
-//                    String jsonPath = String.format("/%s/%s", visualisationRoot, uid);
-//                    ContentResponse contentResponse = ContentClient.getInstance().getContent(jsonPath);
-//                    Map<String, String> jsonMap = new Gson().fromJson(contentResponse.getAsString(), type);
-//                    // read the filename from the visualisation page json
-//                    path = jsonMap.get("indexPage");
-//
-//                    if (path == null || path.length() == 0 || path.equals("/")) {
-//                        path = "index.html";
-//                    }
+                    JsonParser parser = new JsonParser();
+                    JsonObject obj = parser.parse(contentResponse.getAsString()).getAsJsonObject();
+                    path = obj.get("indexPage").getAsString();
+
+                    if (path == null || path.length() == 0 || path.equals("/")) {
+                        path = "index.html";
+                    }
                 }
 
-                String visualisationPath = String.format("/%s/%s/content/%s", visualisationRoot, uid, path);
+                path = URIUtil.cleanUri(path);
+
+                String visualisationPath = String.format("/%s/%s/content%s", visualisationRoot, uid, path);
 
                 ContentResponse contentResponse = ContentClient.getInstance().getResource(visualisationPath);
                 new BabbageContentBasedBinaryResponse(contentResponse, contentResponse.getDataStream(), contentResponse.getMimeType()).apply(request, response);
