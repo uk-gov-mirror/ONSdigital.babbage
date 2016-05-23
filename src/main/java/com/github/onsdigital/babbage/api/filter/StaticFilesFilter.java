@@ -9,6 +9,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
+import org.apache.commons.io.FilenameUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -34,15 +35,15 @@ public class StaticFilesFilter implements Filter {
 
             if (requestPath.getNameCount() < 2) // requires two parts to the path to be a valid visualisation: /visualisation/code/
                 return true; // there is no path, do not try and handle it.
-            
+
 
             Path endpoint = requestPath.getName(0);
-            if (endpoint.toString().equalsIgnoreCase("visualisations")) {
+            if (endpoint.toString().equalsIgnoreCase(visualisationRoot)) {
 
                 Path uid = Paths.get(uri).getName(1);
-                String path = requestPath.getFileName().toString();
+                String path = Paths.get("/" + visualisationRoot + "/" + uid).relativize(requestPath).toString();
 
-                if (path.length() == 0 || path.equals("/")) {
+                if (path.length() == 0 || path.equals("/") || FilenameUtils.getExtension(path).length() == 0) {
                     String jsonPath = String.format("/%s/%s", visualisationRoot, uid);
                     ContentResponse contentResponse = ContentClient.getInstance().getContent(jsonPath);
 
