@@ -3,7 +3,6 @@ package com.github.onsdigital.babbage.api.filter;
 import com.github.davidcarboni.restolino.framework.Filter;
 import com.github.onsdigital.babbage.content.client.ContentClient;
 import com.github.onsdigital.babbage.content.client.ContentResponse;
-import com.github.onsdigital.babbage.request.handler.content.DataRequestHandler;
 import com.github.onsdigital.babbage.response.BabbageContentBasedBinaryResponse;
 import com.github.onsdigital.babbage.util.URIUtil;
 import com.google.gson.JsonElement;
@@ -35,15 +34,13 @@ public class StaticFilesFilter implements Filter {
 
             if (requestPath.getNameCount() < 2) // requires two parts to the path to be a valid visualisation: /visualisation/code/
                 return true; // there is no path, do not try and handle it.
-
-            if (URIUtil.resolveRequestType(uri).equals(DataRequestHandler.REQUEST_TYPE))
-                return true;
+            
 
             Path endpoint = requestPath.getName(0);
             if (endpoint.toString().equalsIgnoreCase("visualisations")) {
 
                 Path uid = Paths.get(uri).getName(1);
-                String path = URIUtil.removeEndpoint(URIUtil.removeEndpoint(uri));
+                String path = requestPath.getFileName().toString();
 
                 if (path.length() == 0 || path.equals("/")) {
                     String jsonPath = String.format("/%s/%s", visualisationRoot, uid);
