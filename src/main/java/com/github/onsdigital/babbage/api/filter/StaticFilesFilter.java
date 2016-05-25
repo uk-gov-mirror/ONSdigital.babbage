@@ -2,9 +2,9 @@ package com.github.onsdigital.babbage.api.filter;
 
 import com.github.davidcarboni.restolino.framework.Filter;
 import com.github.onsdigital.babbage.content.client.ContentClient;
+import com.github.onsdigital.babbage.content.client.ContentReadException;
 import com.github.onsdigital.babbage.content.client.ContentResponse;
 import com.github.onsdigital.babbage.response.BabbageContentBasedBinaryResponse;
-import com.github.onsdigital.babbage.util.URIUtil;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -37,6 +37,7 @@ public class StaticFilesFilter implements Filter {
                 return true; // there is no path, do not try and handle it.
 
 
+            // only go in here if we have a URI that starts /visualisation/....
             Path endpoint = requestPath.getName(0);
             if (endpoint.toString().equalsIgnoreCase(visualisationRoot)) {
 
@@ -44,17 +45,16 @@ public class StaticFilesFilter implements Filter {
                 String path = Paths.get("/" + visualisationRoot + "/" + uid).relativize(requestPath).toString();
 
                 if (path.length() == 0 || path.equals("/") || FilenameUtils.getExtension(path).length() == 0) {
-                    String jsonPath = String.format("/%s/%s", visualisationRoot, uid);
-                    ContentResponse contentResponse = ContentClient.getInstance().getContent(jsonPath);
-
-                    JsonParser parser = new JsonParser();
-                    JsonObject obj = parser.parse(contentResponse.getAsString()).getAsJsonObject();
-                    JsonElement indexPage = obj.get("indexPage");
-                    path = indexPage == null ? "" : indexPage.getAsString();
+                    path = getIndexPagePath(uid);
 
                     if (path == null || path.length() == 0 || path.equals("/")) {
                         path = "index.html";
                     }
+                } else {
+                    String indexPagePath = getIndexPagePath(uid);
+
+                    path = resolveRelativePath(indexPagePath, path);
+                    // take the directory of index page and prepend it to the path
                 }
 
                 String visualisationPath = String.format("/%s/%s/content/%s", visualisationRoot, uid, path);
@@ -75,25 +75,48 @@ public class StaticFilesFilter implements Filter {
         return true; // continue onto other filters / handlers
     }
 
+    /**
+     * Takes the path of the index pages and 'merges' it with the relative path of the file.
+     * @param indexPage
+     * @param file
+     * @return
+     */
+    public static String resolveRelativePath(String indexPage, String file) {
+        Path index = Paths.get(indexPage);
+        Path path = Paths.get(file);
+
+        Path result = Paths.get("");
+
+        if (index.getParent() != null) {
+            for (Path indexPart : index.getParent()) {
+
+                if (!path.getName(0).equals(indexPart)) {
+                    result = result.resolve(indexPart);
+                }
+            }
+        }
+
+        result = result.resolve(path);
+        return result.toString();
+    }
+
+    private String getIndexPagePath(Path uid) throws ContentReadException, IOException {
+        String path;
+        String jsonPath = String.format("/%s/%s", visualisationRoot, uid);
+        ContentResponse contentResponse = ContentClient.getInstance().getContent(jsonPath);
+        JsonParser parser = new JsonParser();
+        JsonObject obj = parser.parse(contentResponse.getAsString()).getAsJsonObject();
+        JsonElement indexPage = obj.get("indexPage");
+        path = indexPage == null ? "" : indexPage.getAsString();
+        return path;
+    }
+
     public static void main(String[] args) {
-        String path = "/visualisation";
+        String indexPathPath = "/";
+        String path = "/";
 
-        System.out.println(Paths.get(path).getNameCount());
+        String result = resolveRelativePath(indexPathPath, path);
 
-
-        Path endpoint = Paths.get(path).getName(0);
-        Path uid = Paths.get(path).getName(1);
-
-
-
-        boolean endpointIsVis = endpoint.toString().equalsIgnoreCase("visualisation");
-
-        System.out.println("endpointIsVis = " + endpointIsVis);
-
-
-        System.out.println("uid = " + uid);
-        String removeEndpoint = URIUtil.removeEndpoint(URIUtil.removeEndpoint(path));
-
-        System.out.println("removeEndpoint = " + removeEndpoint);
+        System.out.println("result = " + result);
     }
 }
