@@ -177,6 +177,11 @@
             {{#each sections}}
                 <li>{{@index_1}}. <a href="#{{@index_1}}">{{title}}</a></li>
             {{/each}}
+            {{#if accordion}}
+                {{#each accordion}}
+                    <li>{{nf (add sections.size @index_1)}}. <a href="#{{nf (add sections.size @index_1)}}">{{title}}</a></li>
+                {{/each}}
+            {{/if}}
         </ol>
 
         {{!-- SECTIONS --}}
