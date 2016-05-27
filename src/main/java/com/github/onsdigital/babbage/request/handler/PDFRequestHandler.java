@@ -36,12 +36,6 @@ public class PDFRequestHandler implements RequestHandler {
 
     public BabbageResponse get(String requestedUri, HttpServletRequest requests) throws Exception {
 
-        try {
-            return getPregeneartedPdf(requestedUri);
-        } catch (ContentReadException e) {
-            System.out.println("Pre-rendered PDF not found - attempting to generate it...");
-        }
-
         String uriPath = StringUtils.removeStart(requestedUri, "/");
         System.out.println("Generating pdf for uri:" + uriPath);
         String pdfTable = getPDFTables(uriPath);
