@@ -75,7 +75,9 @@ public class PDFRequestHandler implements RequestHandler {
         String edition = (String) descriptionMap.get("edition");
 
         if (StringUtils.isNotEmpty(edition))
-            title += " " + edition + ".pdf";
+            title += " " + edition;
+
+        title += ".pdf";
 
         return title;
     }
