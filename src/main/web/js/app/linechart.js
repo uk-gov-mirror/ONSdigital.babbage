@@ -204,8 +204,8 @@ var renderLineChart = function(timeseries) {
 			});
 			tr = $(document.createElement('tr')).addClass('table__row');
 			tbody.append(tr);
-			tr.append('<td class="table__data">' + current.name + '</td>');
-			tr.append('<td class="table__data">' + current.y + '</td>');
+			tr.append('<th scope="row" class="table__data text-left">' + current.name + '</th>');
+			tr.append('<td class="table__data text-right">' + current.y + '</td>');
 		}
 		show(table);
 
