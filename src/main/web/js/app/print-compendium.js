@@ -2,7 +2,7 @@ $(function () {
     if ($('body').hasClass('compendium_landing_page')) {
         $('.js-print-chapters').click(function (e) {
             e.preventDefault();
-            // addLoadingOverlay();
+            addLoadingOverlay();
 
             var $chapters =  $('.chapter'),
             chapterLength = $chapters.length;
@@ -26,7 +26,7 @@ $(function () {
                     var $response = $(html);
                     $response.find(childIntro).addClass('print--break-before').appendTo('#compendium-print' + index);
                     $response.find(childContent).appendTo('#compendium-print' + index);
-                    
+
                     chaptersComplete(index)
                 });
             });
