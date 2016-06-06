@@ -51,6 +51,7 @@ $(function () {
 
                 function imageLoaded() {
                     counter--;
+                    console.log(counter);
                     if (counter === 0) {
                         success();
                     }
