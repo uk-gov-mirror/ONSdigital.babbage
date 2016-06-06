@@ -14,7 +14,7 @@
         "clean": "",
         "build": "",
         "preinstall": "rm -rf ./node_modules/sixteens",
-        "postinstall": "cd ./node_modules && git clone -b $npm_config_sixteens_branch --single-branch --depth=1 git://github.com/ONSdigital/sixteens && cd sixteens && npm install --production && cd ../../ && npm run build-babbage-js"
+        "postinstall": "cd ./node_modules && git clone -b $npm_config_sixteens_branch --single-branch --depth=1 https://github.com/ONSdigital/sixteens && cd sixteens && npm install --production && cd ../../ && npm run build-babbage-js"
     },
     "repository": {
         "type": "git",
