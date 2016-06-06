@@ -34,14 +34,37 @@ $(function () {
             // Tally number of chapters complete and print window when done
             function chaptersComplete(index) {
                 if (index+1 == chapterLength) {
-                    var $imgs = $('img');
-                    console.log($imgs);
                     // Only open print window once all images are loaded
-                    $imgs.on('load', function() {
-                        window.print();
-                        location.reload();
-                    });
+                    imagesLoaded(
+                        success = function() {
+                            window.print();
+                            location.reload();
+                        }
+                    );
                 }
+            }
+
+            // Run function on load of last image
+            function imagesLoaded(success) {
+                var $imgs = $('img');
+                var counter = $imgs.length;
+
+                function imageLoaded() {
+                    counter--;
+                    if (counter === 0) {
+                        success();
+                    }
+                }
+
+                $imgs.each(function() {
+                    if (this.complete) {
+                        imageLoaded.call(this);
+                    } else if (this.error) {
+                        $(this).hide();
+                    } else {
+                        $(this).one('load', imageLoaded);
+                    }
+                });
             }
         });
     }
