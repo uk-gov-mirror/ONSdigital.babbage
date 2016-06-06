@@ -34,8 +34,10 @@ $(function () {
             // Tally number of chapters complete and print window when done
             function chaptersComplete(index) {
                 if (index+1 == chapterLength) {
+                    var $imgs = $('img');
+                    console.log($imgs);
                     // Only open print window once all images are loaded
-                    $('img').on('load', function() {
+                    $imgs.on('load', function() {
                         window.print();
                         location.reload();
                     });
