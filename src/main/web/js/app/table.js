@@ -11,7 +11,7 @@ function initialiseTable() {
     $tableHeaders.each(function (index) {
         var $this = $(this),
             headerText = $this.text(),
-            btnClasses = (index == 1)? 'class="text-right"' : '';
+            btnClasses = (index == 1)? 'class="text-right"' : ''; // right align the 'value' header
         $this.wrapInner('<button ' + btnClasses + ' aria-label="Sort table by ' + headerText + '" aria-controls="table-tbody">');
     });
 
@@ -20,7 +20,7 @@ function initialiseTable() {
 }
 initialiseTable();
 
-function triggerSort(array, column, frequency) {
+function triggerSort(array, column, frequency, decimalPlaces) {
 
     // If frequency is 'months' then replace month values with actual numbers (stops alphabetical ordering breaking order)
     if (frequency == "months") {
@@ -57,7 +57,7 @@ function triggerSort(array, column, frequency) {
     inverse = !inverse;
 
     //Rebuild the table with sorted array
-    buildTable(array);
+    buildTable(array, decimalPlaces);
 }
 
 //Sorts table contents. Argument 'column' defines which column is being sorted
@@ -76,16 +76,21 @@ function sortTable(column) {
 }
 
 //Get the data array and build the table body from it - TODO Should reuse renderTable function in linechart.js if possible
-function buildTable(array) {
+function buildTable(array, decimalPlaces) {
+    console.log(array);
     var tbody = $('.js-table-sort').find('tbody');
     $(tbody).empty();
 
     for (var i = 0; i < array.length; i++) {
         var current = array[i];
+        var currentValue = current.value;
         var tr = $(document.createElement('tr')).addClass('table__row');
+        if (decimalPlaces > 0) { // Fixing sort removing '.0' from numbers
+             currentValue = currentValue.toFixed(decimalPlaces);
+        }
         tbody.append(tr);
         tr.append('<th scope="row" class="js-table-sort__data text-left">' + current.date + '</th>');
-        tr.append('<td class="js-table-sort__data text-right">' + current.value + '</td>');
+        tr.append('<td class="js-table-sort__data text-right">' + currentValue + '</td>');
     }
 }
 
