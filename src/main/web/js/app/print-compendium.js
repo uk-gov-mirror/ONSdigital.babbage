@@ -22,6 +22,8 @@ $(function () {
                     // Remove noscript tags around images, they break the charts when requested
                     var html = response.replace(/<\/noscript>/g, '').replace(/<noscript>/g, '');
 
+                    console.log(html);
+
                     // Add in print page breaks before each chapter and add to compendium landing page
                     var $response = $(html);
                     $response.find(childIntro).addClass('print--break-before').appendTo('#compendium-print' + index);
@@ -34,8 +36,9 @@ $(function () {
             // Tally number of chapters complete and print window when done
             function chaptersComplete(index) {
                 if (index+1 == chapterLength) {
-                    window.print();
-                    location.reload();
+                    console.log('chapter complete');
+                    // window.print();
+                    // location.reload();
                 }
             }
         });
