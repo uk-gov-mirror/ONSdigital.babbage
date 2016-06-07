@@ -7,7 +7,7 @@ node {
     stage 'Build'
     def mvn = "${tool 'm3'}/bin/mvn"
     sh "${mvn} clean package dependency:copy-dependencies"
-    sh 'npm install --no-bin-links --prefix ./src/main/web --sixteens-branch=feature/npm-relative-bin-path'
+    sh 'npm install --no-bin-links --prefix ./src/main/web --sixteens-branch=develop'
 
     stage 'Image'
     sh 'git rev-parse --short HEAD > git_commit_id'
