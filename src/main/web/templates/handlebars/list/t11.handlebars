@@ -9,14 +9,14 @@
         {{#unless parameters.view.0}}
             <span class="tab__link tab__link--active">Published releases</span>
         {{else}}
-		    <a href="/releasecalendar" class="tab__link">Published releases</a>
+		    <a href="/releasecalendar{{#if parameters.query.0}}?query={{parameters.query.0}}{{/if}}" class="tab__link">Published releases</a>
         {{/unless}}
 	</li>
 	<li class="tab__item">
         {{#if_eq parameters.view.0 "upcoming"}}
             <span class="tab__link tab__link--active">Upcoming releases</span>
         {{else}}
-		    <a href="/releasecalendar?view=upcoming" class="tab__link">Upcoming releases</a>
+		    <a href="/releasecalendar?view=upcoming{{#if parameters.query.0}}&query={{parameters.query.0}}{{/if}}" class="tab__link">Upcoming releases</a>
         {{/if_eq}}
 	</li>
 {{/partial}}
