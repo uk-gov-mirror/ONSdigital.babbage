@@ -4,7 +4,7 @@ jdk:
 before_script:
   - '[ "${TRAVIS_NODE_VERSION}" != "0.10.25" ] || npm install -g npm@1.3.10'
   - npm install -g npm@latest
-  - npm --prefix="./src/main/web" install --branch=develop --production
+  - npm --prefix="./src/main/web" install --sixteens-branch=develop --production
 #~ script:
   #~ - npm --prefix src/main/web/ test
 notifications:
