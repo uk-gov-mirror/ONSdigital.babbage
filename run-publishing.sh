@@ -43,7 +43,7 @@ echo "export server pid: $exportserverpid"
 
 ### 4 - START BABBAGE
 
-export JAVA_OPTS="-Xdebug -Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=n"
+export JAVA_OPTS="-Xdebug -Xmx256m -Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=n"
 
 #External Taxonomy
 #export TAXONOMY_DIR=target/content
