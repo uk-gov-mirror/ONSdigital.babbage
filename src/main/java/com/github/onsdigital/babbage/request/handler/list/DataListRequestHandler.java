@@ -2,6 +2,7 @@ package com.github.onsdigital.babbage.request.handler.list;
 
 import com.github.onsdigital.babbage.api.endpoint.rss.service.RssService;
 import com.github.onsdigital.babbage.api.util.SearchUtils;
+import com.github.onsdigital.babbage.request.handler.base.BaseRequestHandler;
 import com.github.onsdigital.babbage.request.handler.base.ListRequestHandler;
 import com.github.onsdigital.babbage.response.base.BabbageResponse;
 import com.github.onsdigital.babbage.search.helpers.ONSQuery;
@@ -24,7 +25,7 @@ import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.typ
 /**
  * Render a list page for bulletins under the given URI.
  */
-public class DataListRequestHandler implements ListRequestHandler {
+public class DataListRequestHandler extends BaseRequestHandler implements ListRequestHandler {
 
     private final static String REQUEST_TYPE = "datalist";
     private static Set<TypeFilter> dataFilters = TypeFilter.getDataFilters();

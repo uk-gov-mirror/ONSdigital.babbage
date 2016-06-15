@@ -5,7 +5,7 @@ import com.github.onsdigital.babbage.content.client.ContentFilter;
 import com.github.onsdigital.babbage.content.client.ContentReadException;
 import com.github.onsdigital.babbage.content.client.ContentResponse;
 import com.github.onsdigital.babbage.pdf.PDFGenerator;
-import com.github.onsdigital.babbage.request.handler.base.RequestHandler;
+import com.github.onsdigital.babbage.request.handler.base.BaseRequestHandler;
 import com.github.onsdigital.babbage.response.BabbageBinaryResponse;
 import com.github.onsdigital.babbage.response.BabbageContentBasedBinaryResponse;
 import com.github.onsdigital.babbage.response.base.BabbageResponse;
@@ -29,7 +29,7 @@ import static com.github.onsdigital.babbage.content.client.ContentClient.filter;
 /**
  * Created by bren on 07/07/15.
  */
-public class PDFRequestHandler implements RequestHandler {
+public class PDFRequestHandler extends BaseRequestHandler {
 
     private static final String REQUEST_TYPE = "pdf-new";
     public static final String CONTENT_TYPE = "application/pdf";

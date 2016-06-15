@@ -4,14 +4,6 @@ import com.github.onsdigital.babbage.response.base.BabbageResponse;
 
 import javax.servlet.http.HttpServletRequest;
 
-/**
- * Created by bren on 29/05/15.
- *
- * Classes implementing RequestHandler will automatically be registered to handle urls ending in in given requesttype.
- *
- * See {@link com.github.onsdigital.babbage.request.RequestDelegator} documentation for more info on url design
- *
- */
 public interface RequestHandler {
     BabbageResponse get(String uri, HttpServletRequest request) throws Exception;
 
@@ -23,4 +15,6 @@ public interface RequestHandler {
      * @return
      */
     String getRequestType();
+
+    boolean canHandleRequest(String uri, String requestType);
 }

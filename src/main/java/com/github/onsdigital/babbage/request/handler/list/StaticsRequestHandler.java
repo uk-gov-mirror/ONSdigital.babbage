@@ -1,6 +1,7 @@
 package com.github.onsdigital.babbage.request.handler.list;
 
 import com.github.onsdigital.babbage.api.util.SearchUtils;
+import com.github.onsdigital.babbage.request.handler.base.BaseRequestHandler;
 import com.github.onsdigital.babbage.request.handler.base.ListRequestHandler;
 import com.github.onsdigital.babbage.response.base.BabbageResponse;
 import com.github.onsdigital.babbage.search.builders.ONSFilterBuilders;
@@ -15,7 +16,7 @@ import static com.github.onsdigital.babbage.api.util.SearchUtils.listJson;
 import static com.github.onsdigital.babbage.api.util.SearchUtils.listPage;
 import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.toList;
 
-public class StaticsRequestHandler implements ListRequestHandler {
+public class StaticsRequestHandler extends BaseRequestHandler implements ListRequestHandler {
 
     private final static String REQUEST_TYPE = "staticlist";
 
@@ -28,7 +29,6 @@ public class StaticsRequestHandler implements ListRequestHandler {
     public BabbageResponse getData(String uri, HttpServletRequest request) throws IOException {
         return listJson(REQUEST_TYPE, queries(uri,request));
     }
-
 
     private SearchQueries queries(String uri, HttpServletRequest request) {
         return () -> toList(

@@ -3,6 +3,7 @@ package com.github.onsdigital.babbage.request.handler.list;
 import com.github.onsdigital.babbage.api.endpoint.rss.service.RssService;
 import com.github.onsdigital.babbage.api.util.SearchUtils;
 import com.github.onsdigital.babbage.content.client.ContentReadException;
+import com.github.onsdigital.babbage.request.handler.base.BaseRequestHandler;
 import com.github.onsdigital.babbage.request.handler.base.ListRequestHandler;
 import com.github.onsdigital.babbage.response.base.BabbageResponse;
 import com.github.onsdigital.babbage.search.builders.ONSFilterBuilders;
@@ -20,14 +21,12 @@ import java.util.Date;
 
 import static com.github.onsdigital.babbage.api.util.SearchUtils.buildListQuery;
 import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.toList;
-import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
-import static org.elasticsearch.index.query.QueryBuilders.rangeQuery;
-import static org.elasticsearch.index.query.QueryBuilders.termQuery;
+import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * Created by bren on 22/09/15.
  */
-public class ReleaseCalendar implements ListRequestHandler {
+public class ReleaseCalendar extends BaseRequestHandler implements ListRequestHandler {
 
 	private final static String REQUEST_TYPE = "releasecalendar";
 
