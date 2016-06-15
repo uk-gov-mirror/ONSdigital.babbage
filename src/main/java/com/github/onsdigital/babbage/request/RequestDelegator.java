@@ -25,7 +25,6 @@ import java.util.Set;
  */
 public class RequestDelegator {
 
-    //private static Map<String, RequestHandler> handlers = new HashMap<>();
     private static List<RequestHandler> handlerList = new ArrayList<>();
 
     //Find request handlers and register
@@ -39,7 +38,7 @@ public class RequestDelegator {
             String uri = URIUtil.cleanUri(request.getRequestURI());
 
             String requestType = URIUtil.resolveRequestType(uri);
-            RequestHandler handler; // resolveRequestHandler(requestType);
+            RequestHandler handler;
 
             handler = resolveRequestHandler(uri, requestType);
 
@@ -72,12 +71,6 @@ public class RequestDelegator {
         return null;
     }
 
-//    //Resolves Request handler to be used for requested uri
-//    static RequestHandler resolveRequestHandler(String requestType) {
-//        RequestHandler handler = handlers.get(requestType);
-//        return handler;
-//    }
-
     private static void registerRequestHandlers() {
         System.out.println("Resolving request handlers");
         try {
@@ -91,7 +84,6 @@ public class RequestDelegator {
                     String className = handlerClass.getSimpleName();
                     RequestHandler handlerInstance = handlerClass.newInstance();
                     System.out.println("Registering request handler: " + className);
-                    //handlers.put(handlerInstance.getRequestType(), handlerInstance);
                     handlerList.add(handlerInstance);
                 }
             }
