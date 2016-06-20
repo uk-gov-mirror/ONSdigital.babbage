@@ -44,11 +44,8 @@ public class RequestDelegator {
 
             String requestedUri = uri;
             if (handler == null) {
-                System.out.println("NULL HANDLER!");
                 handler = resolveRequestHandler("/", "/"); //default handler
             } else {
-
-                System.out.println("handler.getRequestType() = " + handler.getRequestType());
                 //remove last segment to get requested resource uri
                 requestedUri = com.github.onsdigital.babbage.util.URIUtil.removeLastSegment(uri);
             }
