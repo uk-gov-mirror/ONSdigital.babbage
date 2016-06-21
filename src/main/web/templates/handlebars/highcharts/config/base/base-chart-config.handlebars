@@ -86,6 +86,7 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
             style: {
                 padding: 0
             },
+            {{#if_ne chartType 'pie'}}
             formatter: function() {
                 var div = '<div id="custom-tooltip"><div class="maintext">';
                 var s = '<b>'+ this.x +'</b>';
@@ -98,6 +99,7 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 
                 return div;
             },
+            {{/if_ne}} 
             backgroundColor: 'rgba(208,210,211, 1)',
             borderWidth: 0,
             borderRadius: 0,
