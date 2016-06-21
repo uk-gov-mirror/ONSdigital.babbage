@@ -97,14 +97,34 @@
 
                                 {{else}}
 
+                                {{!-- Store if-first or if-last or loop for use within child loop --}}
+                                    {{#if @first}}
+                                        {{#assign "is-first"}}
+                                            true
+                                        {{/assign}}
+                                    {{else}}
+                                        {{#assign "is-first"}}
+                                            false
+                                        {{/assign}}
+                                    {{/if}}
+
+                                    {{#if @last}}
+                                        {{#assign "is-last"}}
+                                            true
+                                        {{/assign}}
+                                    {{else}}
+                                        {{#assign "is-last"}}
+                                            false
+                                        {{/assign}}
+                                    {{/if}}
+
                                     {{#each downloads}}
 
                                         {{#if file}}
 
                                             {{!-- NON-TIMESERIES DATASETS --}}
-
-                                            <div class="show-hide show-hide--light border-top--abbey-sm border-top--abbey-md border-top--abbey-lg {{#if ../@last}}border-bottom--abbey-sm border-bottom--abbey-md border-bottom--abbey-lg margin-top--negative-two-fix{{/if}} js-show-hide">
-                                                <div class="js-show-hide__title {{#if ../@first}}is-shown{{/if}}">
+                                            <div class="show-hide show-hide--light border-top--abbey-sm border-top--abbey-md border-top--abbey-lg {{#if_eq is-last "true"}}border-bottom--abbey-sm border-bottom--abbey-md border-bottom--abbey-lg margin-top--negative-two-fix margin-bottom--6{{/if_eq}} js-show-hide">
+                                                <div class="js-show-hide__title {{#if_eq is-first "true"}}is-shown{{/if_eq}}">
                                                     <h3 class="margin-top-sm--0 margin-top-md--0 margin-bottom-sm--0 margin-bottom-md--0">{{description.edition}}{{#if description.versionLabel}}: {{description.versionLabel}}{{/if}}</h3>
                                                 </div>
 

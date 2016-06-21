@@ -9,14 +9,14 @@
         {{#unless parameters.view.0}}
             <span class="tab__link tab__link--active">Published releases</span>
         {{else}}
-		    <a href="/releasecalendar" class="tab__link">Published releases</a>
+		    <a href="/releasecalendar{{#if parameters.query.0}}?query={{parameters.query.0}}{{/if}}" class="tab__link">Published releases</a>
         {{/unless}}
 	</li>
 	<li class="tab__item">
         {{#if_eq parameters.view.0 "upcoming"}}
             <span class="tab__link tab__link--active">Upcoming releases</span>
         {{else}}
-		    <a href="/releasecalendar?view=upcoming" class="tab__link">Upcoming releases</a>
+		    <a href="/releasecalendar?view=upcoming{{#if parameters.query.0}}&query={{parameters.query.0}}{{/if}}" class="tab__link">Upcoming releases</a>
         {{/if_eq}}
 	</li>
 {{/partial}}
@@ -26,7 +26,7 @@
 {{/partial}}
 
 {{#partial "block-results-text"}}
-	<div class="col col--md-23 col--lg-35">
+	<div class="col col--md-18 col--lg-30">
 		{{> list/partials/list-results-text-number result resultsLabel="releases"}}
 	</div>
 {{/partial}}
@@ -34,9 +34,13 @@
 {{#partial "block-results-extra"}}
 	<p class="float-right margin-top-sm--0 margin-top-md--3 margin-bottom-sm--0 margin-bottom-md--0">
         <a id="rss-calendar-link" class="margin-right--2" href="feed://{{location.host}}{{location.pathname}}?rss{{#if parameters.view.0}}&view={{parameters.view.0}}{{/if}}{{#if parameters.query.0}}&query={{parameters.query.0}}{{/if}}"><span class="icon icon-rss--dark-small"></span>RSS feed</a>
-		<a href="/calendar{{uri}}">
+		<a class="margin-right--2 icon--hide" href="https://public.govdelivery.com/accounts/UKONS/subscribers/new">
+            <span class="icon icon-email--dark-small"></span>
+            Email alerts
+        </a>
+        <a href="/calendar{{uri}}">
 			<span class="icon icon-calendar--dark-small"></span>
-			Add releases to your calendar (ICS)
+			Add to your calendar (ICS)
 		</a>
 	</p>
 {{/partial}}

@@ -78,10 +78,31 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 				stacking: "normal"
 			}
 		},
+
 		tooltip: {
 			valueDecimals: "{{decimalPlaces}}",
 			shared: true,
-			useHTML:true
+			useHTML:true,
+            style: {
+                padding: 0
+            },
+            formatter: function() {
+                var div = '<div id="custom-tooltip"><div class="maintext">';
+                var s = '<b>'+ this.x +'</b>';
+
+                $.each(this.points, function(i, point) {
+                    s += '<br/><span style="color:'+ point.series.color +'">\u25CF</span> ' + point.series.name + ': ' + point.y;
+                });
+
+                div += s + '</div></div>';
+
+                return div;
+            },
+            backgroundColor: 'rgba(208,210,211, 1)',
+            borderWidth: 0,
+            borderRadius: 0,
+            borderColor: 'rgba(255, 255, 255, 0)',
+            shadow: false
 		},
 		credits: {
 			enabled: false
@@ -92,12 +113,12 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 	};
 
 	var unit = "{{{sub (sup unit)}}}";
-	
+
 	options.yAxis.title.text=unit;
 	options.yAxis.title.align="high";
 	{{#unless rotated}}
     options.yAxis.title.offset=0;
-    
+
     {{#if options.legend.enabled}}options.yAxis.title.y=-2;{{/if}}
     {{!-- Setting rotation to 0 causes axis lable push chart to the right for some text (e.g. "GDP growth percentage" ) and shrinks it in size. Funny enough, rotating 360 degrees eliminates this issue and still keeps the label horizontal.  --}}
 	options.yAxis.title.rotation=360;
@@ -114,12 +135,12 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 
 	{{!-- Chart id is the file name for Florence chart builder generated charts, and cdid for time series --}}
 	var chartId = "{{#if filename}}{{filename}}{{else}}{{description.cdid}}{{/if}}";
-	
+
 	{{!-- attaching id to window object to be used on client side --}}
 	window["chart-" + chartId] = options;
 
 	{{!-- Returning chart to be used by highcharts export server for server side image rendering --}}
-	return options; 
+	return options;
 
 {{!-- Don't add semi-colon at end of closing brackets below - it breaks server-side rendering --}}
 })()
