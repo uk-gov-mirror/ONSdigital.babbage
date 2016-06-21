@@ -97,10 +97,10 @@ function loadNewResults(url, focus) {
             }
 
             //Put focus back onto element on page (unless it is the minical, stopping bug where the datepicker won't close - TODO Remove this when inputs updated so minical isn't needed anymore)
-            if (focus && !focus.hasClass('minical_input')) {
-                var focusId = '#' + focus.attr('id');
-                $(focusId).focus();
-            }
+            // if (focus && !focus.hasClass('minical_input')) {
+            //     var focusId = '#' + focus.attr('id');
+            //     $(focusId).focus();
+            // }
             insertRssLink();
         }
     });
