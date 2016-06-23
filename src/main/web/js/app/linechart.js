@@ -192,7 +192,6 @@ var renderLineChart = function (timeseries) {
     }
 
     function renderTable() {
-        console.log(chartData.values);
 
         //Find empty table body to add data to
         var tbody = table.find('tbody');
