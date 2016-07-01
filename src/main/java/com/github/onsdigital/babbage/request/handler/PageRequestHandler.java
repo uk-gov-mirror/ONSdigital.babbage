@@ -27,7 +27,10 @@ public class PageRequestHandler extends BaseRequestHandler {
 
     @Override
     public BabbageResponse get(String uri, HttpServletRequest request) throws IOException, ContentReadException {
+        return getPage(uri, request);
+    }
 
+    public static BabbageResponse getPage(String uri, HttpServletRequest request) throws ContentReadException, IOException {
         ContentResponse contentResponse = ContentClient.getInstance().getContent(uri);
         try (InputStream dataStream = contentResponse.getDataStream()){
             LinkedHashMap<String, Object> additionalData = new LinkedHashMap<>();
@@ -38,7 +41,6 @@ public class PageRequestHandler extends BaseRequestHandler {
             return new BabbageContentBasedStringResponse(contentResponse,html, TEXT_HTML);
         }
     }
-
 
     @Override
     public String getRequestType() {
