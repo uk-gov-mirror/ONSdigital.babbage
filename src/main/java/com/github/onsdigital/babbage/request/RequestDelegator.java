@@ -1,17 +1,17 @@
 package com.github.onsdigital.babbage.request;
 
 import com.github.onsdigital.babbage.api.error.ErrorHandler;
+import com.github.onsdigital.babbage.request.handler.TimeseriesLandingRequestHandler;
 import com.github.onsdigital.babbage.request.handler.base.BaseRequestHandler;
 import com.github.onsdigital.babbage.request.handler.base.RequestHandler;
 import com.github.onsdigital.babbage.util.URIUtil;
+import org.antlr.v4.runtime.misc.OrderedHashSet;
 import org.reflections.Reflections;
 import org.reflections.util.ConfigurationBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -25,7 +25,7 @@ import java.util.Set;
  */
 public class RequestDelegator {
 
-    private static List<RequestHandler> handlerList = new ArrayList<>();
+    private static Set<RequestHandler> handlerList = new OrderedHashSet<>();
 
     //Find request handlers and register
     static {
@@ -75,6 +75,10 @@ public class RequestDelegator {
             ConfigurationBuilder configurationBuilder = new ConfigurationBuilder().addUrls(BaseRequestHandler.class.getProtectionDomain().getCodeSource().getLocation());
             configurationBuilder.addClassLoader(BaseRequestHandler.class.getClassLoader());
             Set<Class<? extends RequestHandler>> requestHandlerClasses = new Reflections(configurationBuilder).getSubTypesOf(RequestHandler.class);
+
+            // force the timeseries landing request to be first in the request processing pipeline by inserting it first.
+            System.out.println("Registering request handler: " + TimeseriesLandingRequestHandler.class.getSimpleName());
+            handlerList.add(new TimeseriesLandingRequestHandler());
 
             for (Class<? extends RequestHandler> handlerClass : requestHandlerClasses) {
                 if (!Modifier.isAbstract(handlerClass.getModifiers())) {
