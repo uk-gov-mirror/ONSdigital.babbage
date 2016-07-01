@@ -281,7 +281,7 @@ public class SearchUtils {
         return new BabbageStringResponse(TemplateService.getInstance().renderContent(data), MediaType.TEXT_HTML, getSearchResponseCacheTime());
     }
 
-    private static LinkedHashMap<String, Object> buildResults(String listType, Map<String, SearchResult> results) {
+    public static LinkedHashMap<String, Object> buildResults(String listType, Map<String, SearchResult> results) {
         LinkedHashMap<String, Object> data = getBaseListTemplate(listType);
         if (results != null) {
             for (Map.Entry<String, SearchResult> result : results.entrySet()) {
