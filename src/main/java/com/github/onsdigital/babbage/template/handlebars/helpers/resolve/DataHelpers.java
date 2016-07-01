@@ -6,33 +6,22 @@ import com.github.onsdigital.babbage.api.util.SearchUtils;
 import com.github.onsdigital.babbage.content.client.ContentClient;
 import com.github.onsdigital.babbage.content.client.ContentFilter;
 import com.github.onsdigital.babbage.content.client.ContentResponse;
-import com.github.onsdigital.babbage.search.builders.ONSFilterBuilders;
-import com.github.onsdigital.babbage.search.builders.ONSQueryBuilders;
-import com.github.onsdigital.babbage.search.helpers.ONSQuery;
-import com.github.onsdigital.babbage.search.helpers.base.SearchFilter;
-import com.github.onsdigital.babbage.search.helpers.base.SearchQueries;
-import com.github.onsdigital.babbage.search.input.SortBy;
-import com.github.onsdigital.babbage.search.model.ContentType;
 import com.github.onsdigital.babbage.search.model.SearchResult;
 import com.github.onsdigital.babbage.template.handlebars.helpers.base.BabbageHandlebarsHelper;
 import com.github.onsdigital.babbage.util.URIUtil;
 import org.apache.commons.lang3.StringUtils;
-import org.elasticsearch.index.query.QueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import static com.github.onsdigital.babbage.content.client.ContentClient.depth;
 import static com.github.onsdigital.babbage.content.client.ContentClient.filter;
-import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.onsQuery;
-import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.typeBoostedQuery;
 import static com.github.onsdigital.babbage.util.json.JsonUtil.toList;
 import static com.github.onsdigital.babbage.util.json.JsonUtil.toMap;
-import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 /**
  * Created by bren on 11/08/15.
@@ -88,23 +77,7 @@ public enum DataHelpers implements BabbageHandlebarsHelper<Object> {
                 validateUri(uri);
                 String uriString = (String) uri;
 
-                QueryBuilder builder = QueryBuilders.matchAllQuery();
-                SortBy sortByReleaseDate = SortBy.release_date;
-
-                SearchFilter filter = boolQueryBuilder -> {
-                    if (isNotEmpty(uriString)) {
-                        ONSFilterBuilders.filterUriPrefix(uriString, boolQueryBuilder);
-                    }
-                };
-
-                ONSQuery query = onsQuery(typeBoostedQuery(builder), filter)
-                        .types(ContentType.timeseries)
-                        .sortBy(sortByReleaseDate)
-                        .name("result")
-                        .highlight(true);
-
-                SearchQueries queries = () -> ONSQueryBuilders.toList(query);
-                LinkedHashMap<String, SearchResult> results = SearchUtils.searchAll(queries);
+                HashMap<String, SearchResult> results = SearchUtils.searchTimeseriesForUri(uriString);
                 LinkedHashMap<String, Object> data = SearchUtils.buildResults("list", results);
 
                 assign(options, data);
@@ -284,7 +257,6 @@ public enum DataHelpers implements BabbageHandlebarsHelper<Object> {
         }
 
     };
-
 
     //gets first parameter as uri, throws exception if not valid
     private static void validateUri(Object uri) throws IOException {
