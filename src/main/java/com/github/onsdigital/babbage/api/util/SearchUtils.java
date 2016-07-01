@@ -5,6 +5,8 @@ import com.github.onsdigital.babbage.response.BabbageRedirectResponse;
 import com.github.onsdigital.babbage.response.BabbageStringResponse;
 import com.github.onsdigital.babbage.response.base.BabbageResponse;
 import com.github.onsdigital.babbage.search.ElasticSearchClient;
+import com.github.onsdigital.babbage.search.builders.ONSFilterBuilders;
+import com.github.onsdigital.babbage.search.builders.ONSQueryBuilders;
 import com.github.onsdigital.babbage.search.helpers.ONSQuery;
 import com.github.onsdigital.babbage.search.helpers.ONSSearchResponse;
 import com.github.onsdigital.babbage.search.helpers.SearchHelper;
@@ -24,37 +26,23 @@ import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.common.text.Text;
 import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.MediaType;
 import java.io.IOException;
 import java.text.MessageFormat;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
-import static com.github.onsdigital.babbage.configuration.Configuration.GENERAL.getMaxResultsPerPage;
-import static com.github.onsdigital.babbage.configuration.Configuration.GENERAL.getResultsPerPage;
-import static com.github.onsdigital.babbage.configuration.Configuration.GENERAL.getSearchResponseCacheTime;
-import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.advancedSearchQuery;
-import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.contentQuery;
-import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.departmentQuery;
-import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.listQuery;
-import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.onsQuery;
-import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.typeBoostedQuery;
-import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.extractPage;
-import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.extractSearchTerm;
-import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.extractSelectedFilters;
-import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.extractSortBy;
+import static com.github.onsdigital.babbage.configuration.Configuration.GENERAL.*;
+import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.*;
+import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.*;
 import static com.github.onsdigital.babbage.search.input.TypeFilter.contentTypes;
 import static com.github.onsdigital.babbage.search.model.field.Field.cdid;
 import static com.github.onsdigital.babbage.util.URIUtil.isDataRequest;
 import static org.apache.commons.lang.ArrayUtils.isEmpty;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
-import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
-import static org.elasticsearch.index.query.QueryBuilders.matchAllQuery;
-import static org.elasticsearch.index.query.QueryBuilders.termQuery;
+import static org.elasticsearch.index.query.QueryBuilders.*;
 import static org.elasticsearch.search.suggest.SuggestBuilders.phraseSuggestion;
 
 /**
@@ -289,6 +277,31 @@ public class SearchUtils {
             }
         }
         return data;
+    }
+
+    /**
+     * search time series for a given uri without dealing with request / response objects.
+     * @param uriString
+     * @return
+     */
+    public static HashMap<String, SearchResult> searchTimeseriesForUri(String uriString) {
+        QueryBuilder builder = QueryBuilders.matchAllQuery();
+        SortBy sortByReleaseDate = SortBy.release_date;
+
+        SearchFilter filter = boolQueryBuilder -> {
+            if (isNotEmpty(uriString)) {
+                ONSFilterBuilders.filterUriPrefix(uriString, boolQueryBuilder);
+            }
+        };
+
+        ONSQuery query = onsQuery(typeBoostedQuery(builder), filter)
+                .types(ContentType.timeseries)
+                .sortBy(sortByReleaseDate)
+                .name("result")
+                .highlight(true);
+
+        SearchQueries queries = () -> ONSQueryBuilders.toList(query);
+        return SearchUtils.searchAll(queries);
     }
 
     private static boolean isFiltered(HttpServletRequest request) {
