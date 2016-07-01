@@ -16,6 +16,8 @@ else
   docker run -d                                          \
     --env=CONTENT_SERVICE_MAX_CONNECTION=1000            \
     --env=CONTENT_SERVICE_URL=http://zebedee-reader:8080 \
+    --env=ELASTIC_SEARCH_CLUSTER=cluster                 \
+    --env=ELASTIC_SEARCH_SERVER=elasticsearch            \
     --env=ENABLE_CACHE=Y                                 \
     --env=GHOSTSCRIPT_PATH=/usr/bin/gs                   \
     --env=GLOBAL_CACHE_SIZE=5000                         \
