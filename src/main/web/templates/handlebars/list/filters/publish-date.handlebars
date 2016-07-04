@@ -24,6 +24,11 @@
 <div class="margin-top--1">
     <fieldset>
         <legend class="filters__title">Published after</legend>
+        {{#each errors}}
+             {{#if_eq  @key 'publishedFrom'}}
+                 <div style="color:red"><i>{{@value}}</i></div>
+             {{/if_eq }}
+        {{/each}}
         <div class="col col--lg-4">
             <label for="fromDateDay">Day</label>
             <input type="text" autocomplete="off" name="fromDateDay"
@@ -51,6 +56,11 @@
 <div class="margin-top--2">
     <fieldset>
         <legend class="filters__title">Published before</legend>
+        {{#each errors}}
+            {{#if_eq  @key 'publishedBefore'}}
+                <div style="color:red"><i>{{@value}}</i></div>
+            {{/if_eq }}
+        {{/each}}
         <div class="col col--lg-4">
             <label for="toDateDay">Day</label>
             <input type="text" autocomplete="off" name="toDateDay"

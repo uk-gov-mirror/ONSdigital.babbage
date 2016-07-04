@@ -2,21 +2,24 @@ package com.github.onsdigital.babbage.search.helpers;
 
 import com.github.onsdigital.babbage.error.BadRequestException;
 import com.github.onsdigital.babbage.error.ResourceNotFoundException;
+import com.github.onsdigital.babbage.search.helpers.dates.PublishDates;
+import com.github.onsdigital.babbage.search.helpers.dates.PublishDatesException;
 import com.github.onsdigital.babbage.search.input.SortBy;
 import com.github.onsdigital.babbage.search.input.TypeFilter;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.function.BiFunction;
 
+import static com.github.onsdigital.babbage.search.helpers.dates.PublishDates.publishedDates;
+import static com.github.onsdigital.babbage.search.helpers.dates.PublishDates.updatedWithinPeriod;
 import static com.github.onsdigital.babbage.util.RequestUtil.getParam;
 import static org.apache.commons.lang3.EnumUtils.getEnum;
-import static org.apache.commons.lang3.StringUtils.*;
+import static org.apache.commons.lang3.StringUtils.isEmpty;
+import static org.apache.commons.lang3.StringUtils.upperCase;
 
 /**
  * Common utilities to manipulate search request query and extracting common search parameters
@@ -24,55 +27,55 @@ import static org.apache.commons.lang3.StringUtils.*;
 
 public class SearchRequestHelper {
 
-    public static Date[] extractPublishDates(HttpServletRequest request) {
-        String updated = request.getParameter("updated");
-        Date fromDate;
-        Date toDate = null;
+    static BiFunction<HttpServletRequest, String, String> extractDayOrMonthDateValue = (request, parameterName) ->
+            StringUtils.isEmpty(request.getParameter(parameterName)) ? "" : request.getParameter(parameterName) + "/";
 
-        if (updated == null) {
-            updated = "";
-        }
+    static BiFunction<HttpServletRequest, String, String> extractYearDateValue = (request, parameterName) ->
+            StringUtils.isEmpty(request.getParameter(parameterName)) ? "" : request.getParameter(parameterName);
 
-        switch (updated) {
-            case "today":
-                fromDate = daysBefore(1);
-                break;
-            case "week":
-                fromDate = daysBefore(7);
-                break;
-            case "month":
-                fromDate = daysBefore(30);
-                break;
-            default:
-                fromDate = parseDate(request.getParameter("fromDate"));
-                toDate = parseDate(request.getParameter("toDate"));
-                break;
-        }
-        return new Date[]{fromDate, toDate};
+    static SimpleDateFormat SDF = new SimpleDateFormat("dd/MM/yy");
+
+    static final String FROM_DAY_PARAM = "fromDateDay";
+    static final String FROM_MONTH_PARAM = "fromDateMonth";
+    static final String FROM_YEAR_PARAM = "fromDateYear";
+    static final String TO_DAY_PARAM = "toDateDay";
+    static final String TO_MONTH_PARAM = "toDateMonth";
+    static final String TO_YEAR_PARAM = "toDateYear";
+    static final String UPDATED_PARAM = "updated";
+
+    private SearchRequestHelper() {
+        // contains only static methods - hide constructor.
     }
 
-    private static Date parseDate(String date) {
-        if (isNotEmpty(date)) {
-            date = date.trim();
-            try {
-                return new SimpleDateFormat("dd/MM/yyyy").parse(date);
-            } catch (ParseException e) {
-                //ignore invalid date input
-            }
+    public static PublishDates extractPublishDates(HttpServletRequest request) throws PublishDatesException {
+        String updatedPeriod = request.getParameter(UPDATED_PARAM);
+        PublishDates publishDates;
+
+        if (StringUtils.isEmpty(updatedPeriod)) {
+            publishDates = parseDates(request);
+        } else {
+            publishDates = updatedWithinPeriod(updatedPeriod);
         }
-        return null;
+        return publishDates;
     }
 
+    public static PublishDates parseDates(HttpServletRequest req) throws PublishDatesException {
+        String fromDateStr = extractDateStr(req, FROM_DAY_PARAM, FROM_MONTH_PARAM, FROM_YEAR_PARAM);
+        String toDateStr = extractDateStr(req, TO_DAY_PARAM, TO_MONTH_PARAM, TO_YEAR_PARAM);
+        return publishedDates(fromDateStr, toDateStr);
+    }
 
-    private static Date daysBefore(int days) {
-        Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.DAY_OF_MONTH, -1 * days);
-        return cal.getTime();
+    private static String extractDateStr(HttpServletRequest req, String dayKey, String monthKey, String yearKey) {
+        StringBuilder stringDate = new StringBuilder();
+        stringDate.append(extractDayOrMonthDateValue.apply(req, dayKey));
+        stringDate.append(extractDayOrMonthDateValue.apply(req, monthKey));
+        stringDate.append(extractYearDateValue.apply(req, yearKey));
+        return stringDate.toString();
     }
 
     /**
      * Extracts filter parameters requested, including only filter if given default filters, otherwise ignores.
-     * <p/>
+     * <p>
      * If there are no valid filters will return default filters
      *
      * @param request
