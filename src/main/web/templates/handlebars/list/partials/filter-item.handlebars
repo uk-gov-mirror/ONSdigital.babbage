@@ -1,10 +1,12 @@
-<li class="flush">
-    <label for="checkbox-{{id}}">
+<li class="filters__item">
+    <div class="filters__field">
         <input id="checkbox-{{id}}" class="js-auto-submit__input" type="checkbox" name="filter" value="{{value}}" {{#contains parameters.filter value}}checked{{/contains}}>
-        {{label}} ({{nf docCount alt=0}})
-        {{#if explanation}}
-        <br>
-        ({{explanation}})
-        {{/if}}
-    </label>
+        <label for="checkbox-{{id}}">
+            {{label}} ({{nf docCount alt=0}})
+            {{#if explanation}}
+                <br>
+                ({{explanation}})
+            {{/if}}
+        </label>
+    </div>
 </li>
