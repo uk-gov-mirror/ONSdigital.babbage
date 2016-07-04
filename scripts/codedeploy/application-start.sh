@@ -6,6 +6,8 @@ GIT_COMMIT=
 if [[ $DEPLOYMENT_GROUP_NAME =~ [a-z]+-publishing ]]; then
   docker run -d                                   \
     --env=CONTENT_SERVICE_URL=http://zebedee:8080 \
+    --env=ELASTIC_SEARCH_CLUSTER=cluster          \
+    --env=ELASTIC_SEARCH_SERVER=elasticsearch     \
     --env=GHOSTSCRIPT_PATH=/usr/bin/gs            \
     --env=IS_PUBLISHING=Y                         \
     --name=babbage                                \
