@@ -48,9 +48,10 @@ function autoSubmitForm() {
             submitForm($target);
         } else if ($targetId == $selectUpdated.attr('id')) { //Clear custom dates on timeseries tool if 'Custom' not selected
             if ($selectUpdated.val() != 'custom') {
-                $('#input-start-date, #input-start-date').each(function () {
+                $('#inputs-start-date input, #inputs-end-date input').each(function () {
                     $(this).val('');
                 });
+                // $('#inputs-start-date input, #inputs-end-date input').val();
             }
             submitForm($target)
         }
