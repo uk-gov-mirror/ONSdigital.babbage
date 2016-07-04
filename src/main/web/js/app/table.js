@@ -77,7 +77,7 @@ function sortTable(column) {
 
 //Get the data array and build the table body from it - TODO Should reuse renderTable function in linechart.js if possible
 function buildTable(array, decimalPlaces) {
-    console.log(array);
+    
     var tbody = $('.js-table-sort').find('tbody');
     $(tbody).empty();
 
