@@ -41,8 +41,22 @@ function autoSubmitForm() {
         var $target = $(e.target);
         var $targetId = $target.attr('id');
         $trigger = $target;
-        if ($targetId !== $keywordSearch.attr('id') && $targetId !== 'select-updated' && $targetId !== 'page-size') { //Don't submit again after keyword change
+        if ($targetId !== $keywordSearch.attr('id') && $targetId !== 'select-updated' && $targetId !== 'page-size' && !$target.hasClass('js-auto-submit__input--date')) { //Don't submit again after keyword, select update date, page results size or date input change
             submitForm($target);
+        } else if ($target.hasClass('js-auto-submit__input--date')) {
+            // Only submit form if all of date inputs contained a value
+            var dateType = $target.closest('#inputs-start-date').length ? "start" : "end",
+                emptyInputs = 0;
+            $('#inputs-' + dateType + '-date input').each(function() {
+                if ($(this).val() === "") {
+                    emptyInputs += 1;
+                }
+            });
+            if (emptyInputs === 1 || emptyInputs === 2 ) {
+                return false;
+            } else {
+                submitForm($target);
+            }
         } else if ($targetId == 'page-size') {
             scrollToTop = true;
             submitForm($target);

@@ -101,18 +101,14 @@ function loadNewResults(url, focus) {
                         $this.one(animationEvent, function() {
                             $('#' + id).empty();
                         });
-                        console.log('Remove error');
-                        console.log($newErrorMsg[i].children);
                         $this.toggleClass('active');
                     } else if (!hasError && $newErrorMsg[i].children.length > 0) {
                         // Show new error
                         $('#' + id).empty().html($newErrorMsg[i].innerHTML);
                         $this.toggleClass('active');
-                        console.log('New error');
                     } else if (hasError && $newErrorMsg[i].children.length > 0) {
                         // Update existing error with new error
                         $('#' + id).empty().html($newErrorMsg[i].innerHTML);
-                        console.log('Update error');
                     }
                 });
             }
