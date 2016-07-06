@@ -1,6 +1,7 @@
 package com.github.onsdigital.babbage.api.util;
 
 import com.github.onsdigital.babbage.configuration.Configuration;
+import com.github.onsdigital.babbage.error.ValidationError;
 import com.github.onsdigital.babbage.response.BabbageRedirectResponse;
 import com.github.onsdigital.babbage.response.BabbageStringResponse;
 import com.github.onsdigital.babbage.response.base.BabbageResponse;
@@ -32,6 +33,7 @@ import java.text.MessageFormat;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 import static com.github.onsdigital.babbage.configuration.Configuration.GENERAL.getMaxResultsPerPage;
@@ -65,6 +67,7 @@ import static org.elasticsearch.search.suggest.SuggestBuilders.phraseSuggestion;
 public class SearchUtils {
 
     private static final String DEPARTMENTS_INDEX = "departments";
+    private static final String ERRORS_KEY = "errors";
 
     /**
      * Performs search for requested search term against filtered content types and counts contents types.
@@ -98,6 +101,11 @@ public class SearchUtils {
 
     public static BabbageResponse listPage(String listType, SearchQueries queries) throws IOException {
         return buildPageResponse(listType, searchAll(queries));
+    }
+
+    public static BabbageResponse listPageWithValidationErrors(String listType, SearchQueries queries,
+                                                               List<ValidationError> errors) throws IOException {
+        return buildPageResponseWithValidationErrors(listType, searchAll(queries), Optional.ofNullable(errors));
     }
 
     public static BabbageResponse listJson(String listType, SearchQueries queries) throws IOException {
@@ -279,6 +287,16 @@ public class SearchUtils {
     public static BabbageResponse buildPageResponse(String listType, Map<String, SearchResult> results) throws IOException {
         LinkedHashMap<String, Object> data = buildResults(listType, results);
         return new BabbageStringResponse(TemplateService.getInstance().renderContent(data), MediaType.TEXT_HTML, getSearchResponseCacheTime());
+    }
+
+    public static BabbageResponse buildPageResponseWithValidationErrors(String listType, Map<String, SearchResult>
+            results, Optional<List<ValidationError>> errors) throws IOException {
+        LinkedHashMap<String, Object> data = buildResults(listType, results);
+        if (errors.isPresent() && !errors.get().isEmpty()) {
+            data.put(ERRORS_KEY, errors.get());
+        }
+        return new BabbageStringResponse(TemplateService.getInstance().renderContent(data), MediaType.TEXT_HTML,
+                getSearchResponseCacheTime());
     }
 
     private static LinkedHashMap<String, Object> buildResults(String listType, Map<String, SearchResult> results) {
