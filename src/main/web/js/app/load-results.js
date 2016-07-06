@@ -11,6 +11,24 @@ function loadNewResults(url, focus) {
         $results = $(results),
         resultsHeight = $results.height();
 
+    // Use to stop animation event being bound/fired twice on Chrome - https://davidwalsh.name/css-animation-callback
+    function whichAnimationEvent() {
+        var t;
+        var el = document.createElement('fakeelement');
+        var animations = {
+            'animation':'animationend',
+            'OAnimation':'oAnimationEnd',
+            'WebkitTransition':'webkitTransitionEnd'
+        };
+
+        for (t in animations) {
+            if( el.style[t] !== undefined ){
+                return animations[t];
+            }
+        }
+    }
+    var animationEvent = whichAnimationEvent();
+
     //Show 'Loading...' in place of results text before Ajax starts
     updateContents(resultsText, 'Loading...');
 
@@ -63,25 +81,40 @@ function loadNewResults(url, focus) {
 
             }
 
-            // Update error message
-            function replaceErrorMsg() {
-                $errorMsg.each(function(i) {
-                    var $this = $(this),
-                        id = $this.attr('id');
-
-                    $('#' + id).html($newErrorMsg[i].innerHTML);
-                });
-            }
-
 
             /* Run functions to replace content on page */
+
             //Errors
             var $errorMsg = $(errorMsg);
             var $newErrorMsg = $(result).find(errorMsg);
+            $errorMsg.addClass('enhanced');
             if ($newErrorMsg.children().length > 0 || $errorMsg.children().length > 0) {
-                console.log('Current error: ', $errorMsg);
-                console.log('New error: ', $newErrorMsg);
-                replaceErrorMsg();
+                // Replace error message/s
+                $errorMsg.each(function(i) {
+                    var $this = $(this),
+                        id = $this.attr('id'),
+                        hasError = $this.children().length > 0;
+
+                    // Add active class for CSS animation to work
+                    if (hasError && $newErrorMsg[i].children.length <= 0) {
+                        // Remove old error
+                        $this.one(animationEvent, function() {
+                            $('#' + id).empty();
+                        });
+                        console.log('Remove error');
+                        console.log($newErrorMsg[i].children);
+                        $this.toggleClass('active');
+                    } else if (!hasError && $newErrorMsg[i].children.length > 0) {
+                        // Show new error
+                        $('#' + id).empty().html($newErrorMsg[i].innerHTML);
+                        $this.toggleClass('active');
+                        console.log('New error');
+                    } else if (hasError && $newErrorMsg[i].children.length > 0) {
+                        // Update existing error with new error
+                        $('#' + id).empty().html($newErrorMsg[i].innerHTML);
+                        console.log('Update error');
+                    }
+                });
             }
             if (($newErrorMsg.children().length > 0)) {
                 // Stop rest of replace and update results text if there's an error

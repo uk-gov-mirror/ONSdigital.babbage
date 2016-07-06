@@ -42,6 +42,13 @@
     <legend class="filters__title">
         Published before
     </legend>
+    <div class="js-auto-submit__error filters__error" id="to-date-error">
+        {{#each errors}}
+            {{#if_eq  @key 'publishedBefore'}}
+                <p class="margin-top--0 margin-bottom--0">{{@value}}</p>
+            {{/if_eq }}
+        {{/each}}
+    </div>
     <div id="inputs-end-date">
         <div class="filters__date filters__date--day">
             <label for="toDateDay">Day</label>
@@ -67,12 +74,4 @@
     </div>
 
     {{> list/partials/date-picker buttonId="js-end-date" datepickerId="dp2"}}
-
-    <div class="js-auto-submit__error filters__error" id="to-date-error">
-        {{#each errors}}
-            {{#if_eq  @key 'publishedBefore'}}
-                <p class="margin-top--2 margin-bottom--0">{{@value}}</p>
-            {{/if_eq }}
-        {{/each}}
-    </div>
 </fieldset>
