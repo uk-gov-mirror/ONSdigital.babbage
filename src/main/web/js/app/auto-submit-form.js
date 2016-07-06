@@ -51,7 +51,6 @@ function autoSubmitForm() {
                 $('#inputs-start-date input, #inputs-end-date input').each(function () {
                     $(this).val('');
                 });
-                // $('#inputs-start-date input, #inputs-end-date input').val();
             }
             submitForm($target)
         }

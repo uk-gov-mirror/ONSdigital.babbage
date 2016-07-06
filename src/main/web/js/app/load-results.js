@@ -1,4 +1,3 @@
-/* Load search/list results into a page without refreshing (eg when changing a filter) */
 
 function loadNewResults(url, focus) {
     // Selector classes/IDs
@@ -8,15 +7,12 @@ function loadNewResults(url, focus) {
         tabsContainer = '.tabs--js',
         checkboxContainer = '.js-checkbox-container',
         atozFilters = '.filters__a-z',
+        errorMsg = '.js-auto-submit__error',
         $results = $(results),
         resultsHeight = $results.height();
 
     //Show 'Loading...' in place of results text before Ajax starts
     updateContents(resultsText, 'Loading...');
-
-    // Empty results & pagination
-    $results.height(resultsHeight).empty(); // Set height so that footer doesn't move around page erratically
-    $('#js-pagination-container').empty();
 
     //Ajax request for new URL
     $.ajax({
@@ -67,8 +63,34 @@ function loadNewResults(url, focus) {
 
             }
 
+            // Update error message
+            function replaceErrorMsg() {
+                $errorMsg.each(function(i) {
+                    var $this = $(this),
+                        id = $this.attr('id');
+
+                    $('#' + id).html($newErrorMsg[i]);
+                });
+            }
+
 
             /* Run functions to replace content on page */
+            //Errors
+            var $errorMsg = $(errorMsg);
+            var $newErrorMsg = $(result).find(errorMsg);
+            if ($newErrorMsg.children().length > 0 || $errorMsg.children().length > 0) {
+                replaceErrorMsg();
+            }
+            if (($newErrorMsg.children().length > 0)) {
+                // Stop rest of replace and update results text if there's an error
+                updateContents(resultsText, 'There is an error with the date you have selected.');
+                return false;
+            }
+
+            // Empty results & pagination
+            $results.height(resultsHeight).empty(); // Set height so that footer doesn't move around page erratically
+            $('#js-pagination-container').empty();
+
             //Results
             var newResults = $(result).find(results).html(),
                 newResultsText = $(result).find(resultsText).html(),
@@ -96,11 +118,12 @@ function loadNewResults(url, focus) {
                 updateContents(tabsContainer, newTabsContainer);
             }
 
-            //Put focus back onto element on page (unless it is the minical, stopping bug where the datepicker won't close - TODO Remove this when inputs updated so minical isn't needed anymore)
-            // if (focus && !focus.hasClass('minical_input')) {
-            //     var focusId = '#' + focus.attr('id');
-            //     $(focusId).focus();
-            // }
+            //Ensure focus back onto correct element on page
+            if (focus) {
+                var focusId = '#' + focus.attr('id');
+                $(focusId).focus();
+            }
+
             insertRssLink();
         }
     });

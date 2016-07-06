@@ -30,11 +30,13 @@
 
     {{> list/partials/date-picker buttonId="js-start-date" datepickerId="dp1"}}
 
-    {{#each errors}}
-        {{#if_eq  @key 'publishedFrom'}}
-            <div style="color:red"><i>{{@value}}</i></div>
-        {{/if_eq }}
-    {{/each}}
+    <div class="js-auto-submit__error" id="from-date-error">
+        {{#each errors}}
+            {{#if_eq  @key 'publishedFrom'}}
+                <p>{{@value}}</p>
+            {{/if_eq }}
+        {{/each}}
+    </div>
 </fieldset>
 
 <fieldset class="filters__fieldset">
@@ -67,9 +69,11 @@
 
     {{> list/partials/date-picker buttonId="js-end-date" datepickerId="dp2"}}
 
-    {{#each errors}}
-        {{#if_eq  @key 'publishedBefore'}}
-            <div style="color:red"><i>{{@value}}</i></div>
-        {{/if_eq }}
-    {{/each}}
+    <div class="js-auto-submit__error" id="to-date-error">
+        {{#each errors}}
+            {{#if_eq  @key 'publishedBefore'}}
+                <p>{{@value}}</p>
+            {{/if_eq }}
+        {{/each}}
+    </div>
 </fieldset>
