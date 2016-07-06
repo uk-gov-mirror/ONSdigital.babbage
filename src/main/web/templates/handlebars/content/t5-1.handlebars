@@ -184,7 +184,12 @@
 
                 <ul class="list--neutral">
                     {{#each result.results}}
-                        <li class="flush"><p class="flush"><a href="{{uri}}">{{description.title}}</a>({{description.datasetId}}), released on {{df description.releaseDate}}</p></li>
+                        <li class="flush"><p class="flush">
+                            {{#resolve this.description.datasetUri}}
+                                <a href="{{uri}}">{{description.title}}</a> ({{description.datasetId}}), released
+                                on {{df description.releaseDate}}
+                            {{/resolve}}
+                        </p></li>
                     {{/each}}
                 </ul>
 
