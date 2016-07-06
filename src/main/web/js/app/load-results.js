@@ -69,7 +69,7 @@ function loadNewResults(url, focus) {
                     var $this = $(this),
                         id = $this.attr('id');
 
-                    $('#' + id).html($newErrorMsg[i]);
+                    $('#' + id).html($newErrorMsg[i].innerHTML);
                 });
             }
 
@@ -79,6 +79,8 @@ function loadNewResults(url, focus) {
             var $errorMsg = $(errorMsg);
             var $newErrorMsg = $(result).find(errorMsg);
             if ($newErrorMsg.children().length > 0 || $errorMsg.children().length > 0) {
+                console.log('Current error: ', $errorMsg);
+                console.log('New error: ', $newErrorMsg);
                 replaceErrorMsg();
             }
             if (($newErrorMsg.children().length > 0)) {

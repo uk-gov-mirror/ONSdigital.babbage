@@ -4,6 +4,13 @@
         {{!-- Hidden text to help screen reader users when they focus on first input --}}
         <span class="hide" id="date-hint">For example, 29 4 2016</span>
     </legend>
+    <div class="js-auto-submit__error filters__error" id="from-date-error">
+        {{#each errors}}
+            {{#if_eq  @key 'publishedFrom'}}
+                <p class="margin-top--0 margin-bottom--0">{{@value}}</p>
+            {{/if_eq }}
+        {{/each}}
+    </div>
     <div id="inputs-start-date">
         <div class="filters__date filters__date--day">
             <label for="fromDateDay">Day</label>
@@ -29,14 +36,6 @@
     </div>
 
     {{> list/partials/date-picker buttonId="js-start-date" datepickerId="dp1"}}
-
-    <div class="js-auto-submit__error" id="from-date-error">
-        {{#each errors}}
-            {{#if_eq  @key 'publishedFrom'}}
-                <p>{{@value}}</p>
-            {{/if_eq }}
-        {{/each}}
-    </div>
 </fieldset>
 
 <fieldset class="filters__fieldset">
@@ -69,10 +68,10 @@
 
     {{> list/partials/date-picker buttonId="js-end-date" datepickerId="dp2"}}
 
-    <div class="js-auto-submit__error" id="to-date-error">
+    <div class="js-auto-submit__error filters__error" id="to-date-error">
         {{#each errors}}
             {{#if_eq  @key 'publishedBefore'}}
-                <p>{{@value}}</p>
+                <p class="margin-top--2 margin-bottom--0">{{@value}}</p>
             {{/if_eq }}
         {{/each}}
     </div>
