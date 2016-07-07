@@ -39,16 +39,28 @@ public class TimeseriesLandingRequestHandler extends BaseRequestHandler {
     @Override
     public BabbageResponse get(String uri, HttpServletRequest request) throws Exception {
 
-        boolean isDataRequest = false;
+
 
         // use the original request uri, as the uri passed in has the last segment removed.
         uri = URIUtil.cleanUri(request.getRequestURI());
 
+        boolean isDataRequest = false;
         if (URIUtil.isDataRequest(uri)) {
             isDataRequest = true;
             uri = URIUtil.removeLastSegment(uri);
         }
 
+        String latestTimeseriesUri = getLatestTimeseriesUri(uri);
+
+        if (isDataRequest) {
+            ContentResponse contentResponse = ContentClient.getInstance().getContent(latestTimeseriesUri, getQueryParameters(request));
+            return new BabbageContentBasedStringResponse(contentResponse, contentResponse.getAsString());
+        } else {
+            return PageRequestHandler.getPage(latestTimeseriesUri, request);
+        }
+    }
+
+    public static String getLatestTimeseriesUri(String uri) {
         // search the timeseries that live under this CDID
         HashMap<String, SearchResult> data = SearchUtils.searchTimeseriesForUri(uri);
 
@@ -58,14 +70,7 @@ public class TimeseriesLandingRequestHandler extends BaseRequestHandler {
         }
 
         // the first timeseries result in the list is the most recent so use that.
-        String latestTimeseriesUri = results.get(0).get("uri").toString(); // get from search results
-
-        if (isDataRequest) {
-            ContentResponse contentResponse = ContentClient.getInstance().getContent(latestTimeseriesUri, getQueryParameters(request));
-            return new BabbageContentBasedStringResponse(contentResponse, contentResponse.getAsString());
-        } else {
-            return PageRequestHandler.getPage(latestTimeseriesUri, request);
-        }
+        return results.get(0).get("uri").toString();
     }
 
     @Override
@@ -78,13 +83,13 @@ public class TimeseriesLandingRequestHandler extends BaseRequestHandler {
         return isTimeseriesLandingUri(uri);
     }
 
-    boolean isTimeseriesLandingUri(String uri) {
+    public static boolean isTimeseriesLandingUri(String uri) {
         Pattern r = Pattern.compile(landingPageRegex);
         Matcher match = r.matcher(uri);
         return match.matches();
     }
 
-    boolean isTimeseriesLandingDataUri(String uri) {
+    public static boolean isTimeseriesLandingDataUri(String uri) {
         Pattern r = Pattern.compile(landingPageRegex);
         Matcher match = r.matcher(uri);
         if (match.find()) {

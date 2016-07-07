@@ -6,6 +6,7 @@ import com.github.onsdigital.babbage.api.util.SearchUtils;
 import com.github.onsdigital.babbage.content.client.ContentClient;
 import com.github.onsdigital.babbage.content.client.ContentFilter;
 import com.github.onsdigital.babbage.content.client.ContentResponse;
+import com.github.onsdigital.babbage.request.handler.TimeseriesLandingRequestHandler;
 import com.github.onsdigital.babbage.search.model.SearchResult;
 import com.github.onsdigital.babbage.template.handlebars.helpers.base.BabbageHandlebarsHelper;
 import com.github.onsdigital.babbage.util.URIUtil;
@@ -36,10 +37,14 @@ public enum DataHelpers implements BabbageHandlebarsHelper<Object> {
     resolve {
         @Override
         public CharSequence apply(Object uri, Options options) throws IOException {
-            ContentResponse contentResponse = null;
+            ContentResponse contentResponse;
             try {
                 validateUri(uri);
                 String uriString = (String) uri;
+
+                if (TimeseriesLandingRequestHandler.isTimeseriesLandingUri(uriString)) {
+                    uriString = TimeseriesLandingRequestHandler.getLatestTimeseriesUri(uriString);
+                }
 
                 ContentFilter filter = null;
                 String filterVal = options.<String>hash("filter");
@@ -61,7 +66,6 @@ public enum DataHelpers implements BabbageHandlebarsHelper<Object> {
         public void register(Handlebars handlebars) {
             handlebars.registerHelper(this.name(), this);
         }
-
     },
 
     /**
