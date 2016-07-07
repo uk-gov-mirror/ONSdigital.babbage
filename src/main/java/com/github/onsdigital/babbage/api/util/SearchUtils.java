@@ -220,6 +220,7 @@ public class SearchUtils {
         ONSSearchResponse search = SearchHelper.
                 search(onsQuery(boolQuery().filter(termQuery(cdid.fieldName(), searchTerm)))
                         .types(ContentType.timeseries)
+                        .sortBy(SortBy.release_date)
                         .size(1)
                         .fetchFields(Field.uri));
         if (search.getNumberOfResults() == 0) {
