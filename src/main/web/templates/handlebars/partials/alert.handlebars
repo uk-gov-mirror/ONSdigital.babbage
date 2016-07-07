@@ -116,7 +116,7 @@
                                     Source dataset: {{#if description.datasetUri}}{{#resolve description.datasetUri filter="description"}}{{description.title}} ({{description.datasetId}}){{/resolve}}{{else}}{{description.datasetId}}{{/if}}
                                 </h2>
                                 {{#resolveTimeSeriesList (parentPath uri) }}
-                                    {{#if_ne result.results.size "1"}}
+                                    {{#if_ne result.results.size 1}}
                                         <a class="alert__link js-scroll" href="#otherdatasets">View other datasets</a>
                                     {{/if_ne}}
                                 {{/resolveTimeSeriesList}}
