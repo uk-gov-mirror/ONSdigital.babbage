@@ -186,7 +186,7 @@
                     {{#each result.results}}
 
                         <li class="flush"><p class="flush">
-                        <a href="{{uri}}">{{#resolve description.datasetUri}}{{description.title}}{{/resolve}}</a> ({{description.datasetId}}), released on {{df description.releaseDate}}
+                        <a href="{{uri}}">{{ description.cdid }}: {{#resolve description.datasetUri}}{{description.title}}{{/resolve}}</a> ({{description.datasetId}}), released on {{df description.releaseDate}}
                         </p></li>
                     {{/each}}
                 </ul>
