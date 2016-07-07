@@ -9,7 +9,25 @@ var description = {{json fullDescription.description}};
 var linechart = {
    chart: {
      type: 'line',
-     marginRight: 35
+     marginRight: 16,
+    {{!-- Update chart after intial render to correct offset. Solution found at: http://stackoverflow.com/questions/16686997/automated-y-axis-title-offset-in-highcharts-possible-when-having-varying-length --}}
+    events: {
+        load: function () {
+            console.log(this.yAxis[0]);
+            var chart = this,
+                yAxis = chart.yAxis[0],
+                tp = yAxis.tickPositions,
+                firstLabel = yAxis.ticks[tp[0]].label.getBBox().width,
+                lastLabel = yAxis.ticks[tp[tp.length - 1]].label.getBBox().width,
+                bb = yAxis.axisTitle.getBBox();
+            yAxis.update({
+                title: {
+                offset: -bb.width + (firstLabel > lastLabel ? firstLabel : lastLabel)
+            }
+            });
+            console.log(bb);
+        }
+    }
    },
    colors: ['#007dc3', '#409ed2', '#7fbee1', '#007dc3', '#409ed2', '#7fbee1'],
 
@@ -71,9 +89,8 @@ var linechart = {
      title: {
        text: description.preUnit + description.unit,
        align: 'high',
-       rotation: 0,
-       textAlign: 'left',
-       x: 10,
+       rotation: 360,
+       x: -15,
        y: -10
      },
     labels: {
