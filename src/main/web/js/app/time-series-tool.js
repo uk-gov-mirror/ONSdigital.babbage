@@ -50,7 +50,6 @@ var timeseriesTool = (function() {
                 success: function(data) {
                     var timeseries = {
                         uri: data.uri,
-                        cdid: data.description.cdid,
                         datasetId: data.description.datasetId,
                         title: data.description.title
                     };
@@ -195,7 +194,6 @@ var timeseriesTool = (function() {
     function addTimeSeries(element) {
         var timeseries = {
             uri: element.data('uri'),
-            cdid: getCdid(element),
             datasetId: element.data('datasetid'),
             title: element.data('title')
         };
@@ -240,14 +238,14 @@ var timeseriesTool = (function() {
     }
 
     function getListElementMarkup(timeseries) {
-        return '<li data-cdid="' + timeseries.cdid + '" class="flush col-wrap" data-uri="' + timeseries.uri + '"><p class="flush col col--md-22 col--lg-22">' + timeseries.title + ' (' + timeseries.datasetId + ')' + '</p>' + '<div class="col col--md-4 col--lg-4"><button class="btn btn--primary btn--thin btn--small btn--narrow float-right margin-top-md--1 js-remove-selected">remove</button></div></li>';
+        return '<li class="flush col-wrap" data-uri="' + timeseries.uri + '"><p class="flush col col--md-22 col--lg-22">' + timeseries.title + ' (' + timeseries.datasetId + ')' + '</p>' + '<div class="col col--md-4 col--lg-4"><button class="btn btn--primary btn--thin btn--small btn--narrow float-right margin-top-md--1 js-remove-selected">remove</button></div></li>';
     }
 
     function getInputMarkup(timeseries) {
         return '<input type="hidden" name="uri" data-uri="' + timeseries.uri + '" value="' + timeseries.uri + '"/>';
     }
 
-    //Remove time series with given cdid in given parent element
+    //Remove time series with given uri in given parent element
     function remove(element, uri) {
         findIn(element, uri).remove();
     }
@@ -267,13 +265,6 @@ var timeseriesTool = (function() {
     function findIn(parent, uri) {
         var elem = parent.find('[data-uri="' + uri + '"]');
         return elem;
-    }
-
-    //returns cdid data attribute of element
-    function getCdid(element) {
-        // var cdid = element.data('cdid').indexOf('<strong>') >= 0 ? $(element.data('cdid')).text() : element.data('cdid'); // Remove any <strong> tags that are input by ElasticSearch
-        // return cdid;
-        return element.data('cdid');
     }
 
     //re-initializes various fields on js refresh of results
