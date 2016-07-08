@@ -218,7 +218,7 @@ public class SearchUtils {
 
     private static String searchTimeSeriesUri(String searchTerm) {
         ONSSearchResponse search = SearchHelper.
-                search(onsQuery(boolQuery().filter(termQuery(cdid.fieldName(), searchTerm)))
+                search(onsQuery(boolQuery().filter(termQuery(cdid.fieldName(), searchTerm.toLowerCase())))
                         .types(ContentType.timeseries)
                         .sortBy(SortBy.release_date)
                         .size(1)
