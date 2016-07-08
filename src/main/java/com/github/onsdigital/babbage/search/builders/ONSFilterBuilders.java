@@ -1,15 +1,20 @@
 package com.github.onsdigital.babbage.search.builders;
 
-import com.github.onsdigital.babbage.search.helpers.SearchRequestHelper;
+import com.github.onsdigital.babbage.search.helpers.dates.PublishDates;
+import com.github.onsdigital.babbage.search.helpers.dates.PublishDatesException;
 import com.github.onsdigital.babbage.search.model.field.Field;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
 
+import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.extractPublishDates;
+import static com.github.onsdigital.babbage.search.helpers.dates.PublishDates.publishedAnyTime;
 import static org.apache.commons.lang3.StringUtils.endsWith;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
-import static org.elasticsearch.index.query.QueryBuilders.*;
+import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
+import static org.elasticsearch.index.query.QueryBuilders.prefixQuery;
+import static org.elasticsearch.index.query.QueryBuilders.rangeQuery;
+import static org.elasticsearch.index.query.QueryBuilders.termQuery;
 
 /**
  * Created by bren on 20/01/16.
@@ -17,8 +22,15 @@ import static org.elasticsearch.index.query.QueryBuilders.*;
 public class ONSFilterBuilders {
 
     public static void filterDates(HttpServletRequest request, BoolQueryBuilder listQuery) {
-        Date[] dates = SearchRequestHelper.extractPublishDates(request);
-        listQuery.filter(rangeQuery(Field.releaseDate.fieldName()).from(dates[0]).to(dates[1]));
+        PublishDates publishDates;
+        try {
+            publishDates = extractPublishDates(request);
+        } catch (PublishDatesException ex) {
+            publishDates = publishedAnyTime();
+        }
+        listQuery.filter(rangeQuery(Field.releaseDate.fieldName())
+                .from(publishDates.publishedFrom())
+                .to(publishDates.publishedTo()));
     }
 
     public static void filterUriPrefix(String uri, BoolQueryBuilder listQuery) {

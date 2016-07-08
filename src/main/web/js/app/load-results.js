@@ -1,4 +1,3 @@
-/* Load search/list results into a page without refreshing (eg when changing a filter) */
 
 function loadNewResults(url, focus) {
     // Selector classes/IDs
@@ -8,15 +7,30 @@ function loadNewResults(url, focus) {
         tabsContainer = '.tabs--js',
         checkboxContainer = '.js-checkbox-container',
         atozFilters = '.filters__a-z',
+        errorMsg = '.js-auto-submit__error',
         $results = $(results),
         resultsHeight = $results.height();
 
+    // Use to stop animation event being bound/fired twice on Chrome - https://davidwalsh.name/css-animation-callback
+    function whichAnimationEvent() {
+        var t;
+        var el = document.createElement('fakeelement');
+        var animations = {
+            'animation':'animationend',
+            'OAnimation':'oAnimationEnd',
+            'WebkitTransition':'webkitTransitionEnd'
+        };
+
+        for (t in animations) {
+            if( el.style[t] !== undefined ){
+                return animations[t];
+            }
+        }
+    }
+    var animationEvent = whichAnimationEvent();
+
     //Show 'Loading...' in place of results text before Ajax starts
     updateContents(resultsText, 'Loading...');
-
-    // Empty results & pagination
-    $results.height(resultsHeight).empty(); // Set height so that footer doesn't move around page erratically
-    $('#js-pagination-container').empty();
 
     //Ajax request for new URL
     $.ajax({
@@ -69,6 +83,45 @@ function loadNewResults(url, focus) {
 
 
             /* Run functions to replace content on page */
+
+            //Errors
+            var $errorMsg = $(errorMsg);
+            var $newErrorMsg = $(result).find(errorMsg);
+            $errorMsg.addClass('enhanced');
+            if ($newErrorMsg.children().length > 0 || $errorMsg.children().length > 0) {
+                // Replace error message/s
+                $errorMsg.each(function(i) {
+                    var $this = $(this),
+                        id = $this.attr('id'),
+                        hasError = $this.children().length > 0;
+
+                    // Add active class for CSS animation to work
+                    if (hasError && $newErrorMsg[i].children.length <= 0) {
+                        // Remove old error
+                        $this.one(animationEvent, function() {
+                            $('#' + id).empty();
+                        });
+                        $this.toggleClass('active');
+                    } else if (!hasError && $newErrorMsg[i].children.length > 0) {
+                        // Show new error
+                        $('#' + id).empty().html($newErrorMsg[i].innerHTML);
+                        $this.toggleClass('active');
+                    } else if (hasError && $newErrorMsg[i].children.length > 0) {
+                        // Update existing error with new error
+                        $('#' + id).empty().html($newErrorMsg[i].innerHTML);
+                    }
+                });
+            }
+            if (($newErrorMsg.children().length > 0)) {
+                // Stop rest of replace and update results text if there's an error
+                updateContents(resultsText, 'There is an error with the date you have selected.');
+                return false;
+            }
+
+            // Empty results & pagination
+            $results.height(resultsHeight).empty(); // Set height so that footer doesn't move around page erratically
+            $('#js-pagination-container').empty();
+
             //Results
             var newResults = $(result).find(results).html(),
                 newResultsText = $(result).find(resultsText).html(),
@@ -96,11 +149,12 @@ function loadNewResults(url, focus) {
                 updateContents(tabsContainer, newTabsContainer);
             }
 
-            //Put focus back onto element on page (unless it is the minical, stopping bug where the datepicker won't close - TODO Remove this when inputs updated so minical isn't needed anymore)
-            if (focus && !focus.hasClass('minical_input')) {
+            //Ensure focus back onto correct element on page
+            if (focus) {
                 var focusId = '#' + focus.attr('id');
                 $(focusId).focus();
             }
+
             insertRssLink();
         }
     });

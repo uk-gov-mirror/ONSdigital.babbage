@@ -1,6 +1,7 @@
 package com.github.onsdigital.babbage.api.util;
 
 import com.github.onsdigital.babbage.configuration.Configuration;
+import com.github.onsdigital.babbage.error.ValidationError;
 import com.github.onsdigital.babbage.response.BabbageRedirectResponse;
 import com.github.onsdigital.babbage.response.BabbageStringResponse;
 import com.github.onsdigital.babbage.response.base.BabbageResponse;
@@ -53,11 +54,12 @@ import static org.elasticsearch.search.suggest.SuggestBuilders.phraseSuggestion;
 public class SearchUtils {
 
     private static final String DEPARTMENTS_INDEX = "departments";
+    private static final String ERRORS_KEY = "errors";
 
     /**
      * Performs search for requested search term against filtered content types and counts contents types.
      * Content results are serialised into json with key "result" and document counts are serialised as "counts".
-     * <p/>
+     * <p>
      * Accepts extra searches to perform along with content search and document counts.
      *
      * @param request
@@ -66,7 +68,7 @@ public class SearchUtils {
     public static BabbageResponse search(HttpServletRequest request, String listType, String searchTerm, SearchQueries queries, boolean searchDepartments) throws IOException {
         if (searchTerm == null) {
             return buildResponse(request, listType, null);
-        } else if(!isFiltered(request)) { //only search for time series when new search made through search input
+        } else if (!isFiltered(request)) { //only search for time series when new search made through search input
             //search time series by cdid, redirect to time series page if found
             String timeSeriesUri = searchTimeSeriesUri(searchTerm);
             if (timeSeriesUri != null) {
@@ -86,6 +88,13 @@ public class SearchUtils {
 
     public static BabbageResponse listPage(String listType, SearchQueries queries) throws IOException {
         return buildPageResponse(listType, searchAll(queries));
+    }
+
+    public static BabbageResponse listPageWithValidationErrors(
+            String listType, SearchQueries queries,
+            List<ValidationError> errors
+    ) throws IOException {
+        return buildPageResponseWithValidationErrors(listType, searchAll(queries), Optional.ofNullable(errors));
     }
 
     public static BabbageResponse listJson(String listType, SearchQueries queries) throws IOException {
@@ -130,6 +139,7 @@ public class SearchUtils {
         ONSQuery query = buildONSQuery(request, advancedSearchQuery(searchTerm), sortBy, null, contentTypes(extractSelectedFilters(request, defaultFilters)));
         return query;
     }
+
     public static ONSQuery buildListQuery(HttpServletRequest request, Set<TypeFilter> defaultFilters, SearchFilter filter) {
         return buildListQuery(request, defaultFilters, filter, null);
     }
@@ -270,7 +280,24 @@ public class SearchUtils {
         return new BabbageStringResponse(TemplateService.getInstance().renderContent(data), MediaType.TEXT_HTML, getSearchResponseCacheTime());
     }
 
-    public static LinkedHashMap<String, Object> buildResults(String listType, Map<String, SearchResult> results) {
+
+    public static BabbageResponse buildPageResponseWithValidationErrors(
+            String
+                    listType, Map<String, SearchResult>
+                    results, Optional<List<ValidationError>> errors
+    ) throws IOException {
+        LinkedHashMap<String, Object> data = buildResults(listType, results);
+        if (errors.isPresent() && !errors.get().isEmpty()) {
+            data.put(ERRORS_KEY, errors.get());
+        }
+        return new BabbageStringResponse(TemplateService.getInstance().renderContent(data), MediaType.TEXT_HTML,
+                getSearchResponseCacheTime());
+    }
+
+    public static LinkedHashMap<String, Object> buildResults(
+            String
+                    listType, Map<String, SearchResult> results
+    ) {
         LinkedHashMap<String, Object> data = getBaseListTemplate(listType);
         if (results != null) {
             for (Map.Entry<String, SearchResult> result : results.entrySet()) {
@@ -282,6 +309,7 @@ public class SearchUtils {
 
     /**
      * search time series for a given uri without dealing with request / response objects.
+     *
      * @param uriString
      * @return
      */
