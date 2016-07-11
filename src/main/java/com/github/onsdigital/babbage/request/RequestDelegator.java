@@ -1,16 +1,17 @@
 package com.github.onsdigital.babbage.request;
 
 import com.github.onsdigital.babbage.api.error.ErrorHandler;
+import com.github.onsdigital.babbage.request.handler.TimeseriesLandingRequestHandler;
+import com.github.onsdigital.babbage.request.handler.base.BaseRequestHandler;
 import com.github.onsdigital.babbage.request.handler.base.RequestHandler;
 import com.github.onsdigital.babbage.util.URIUtil;
+import org.antlr.v4.runtime.misc.OrderedHashSet;
 import org.reflections.Reflections;
 import org.reflections.util.ConfigurationBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Modifier;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -24,7 +25,7 @@ import java.util.Set;
  */
 public class RequestDelegator {
 
-    private static Map<String, RequestHandler> handlers = new HashMap<String, RequestHandler>();
+    private static Set<RequestHandler> handlerList = new OrderedHashSet<>();
 
     //Find request handlers and register
     static {
@@ -35,11 +36,15 @@ public class RequestDelegator {
 
         try {
             String uri = URIUtil.cleanUri(request.getRequestURI());
+
             String requestType = URIUtil.resolveRequestType(uri);
-            RequestHandler handler = resolveRequestHandler(requestType);
+            RequestHandler handler;
+
+            handler = resolveRequestHandler(uri, requestType);
+
             String requestedUri = uri;
             if (handler == null) {
-                handler = handlers.get("/"); //default handler
+                handler = resolveRequestHandler("/", "/"); //default handler
             } else {
                 //remove last segment to get requested resource uri
                 requestedUri = com.github.onsdigital.babbage.util.URIUtil.removeLastSegment(uri);
@@ -50,26 +55,37 @@ public class RequestDelegator {
         }
     }
 
-    //Resolves Request handler to be used for requested uri
     static RequestHandler resolveRequestHandler(String requestType) {
-        RequestHandler handler = handlers.get(requestType);
-        return handler;
+        return resolveRequestHandler(requestType, requestType);
+    }
+
+    static RequestHandler resolveRequestHandler(String uri, String requestType) {
+        for (RequestHandler requestHandler : handlerList) {
+            if (requestHandler.canHandleRequest(uri, requestType)) {
+                return requestHandler;
+            }
+        }
+        return null;
     }
 
     private static void registerRequestHandlers() {
         System.out.println("Resolving request handlers");
         try {
 
-            ConfigurationBuilder configurationBuilder = new ConfigurationBuilder().addUrls(RequestHandler.class.getProtectionDomain().getCodeSource().getLocation());
-            configurationBuilder.addClassLoader(RequestHandler.class.getClassLoader());
+            ConfigurationBuilder configurationBuilder = new ConfigurationBuilder().addUrls(BaseRequestHandler.class.getProtectionDomain().getCodeSource().getLocation());
+            configurationBuilder.addClassLoader(BaseRequestHandler.class.getClassLoader());
             Set<Class<? extends RequestHandler>> requestHandlerClasses = new Reflections(configurationBuilder).getSubTypesOf(RequestHandler.class);
+
+            // force the timeseries landing request to be first in the request processing pipeline by inserting it first.
+            System.out.println("Registering request handler: " + TimeseriesLandingRequestHandler.class.getSimpleName());
+            handlerList.add(new TimeseriesLandingRequestHandler());
 
             for (Class<? extends RequestHandler> handlerClass : requestHandlerClasses) {
                 if (!Modifier.isAbstract(handlerClass.getModifiers())) {
                     String className = handlerClass.getSimpleName();
                     RequestHandler handlerInstance = handlerClass.newInstance();
                     System.out.println("Registering request handler: " + className);
-                    handlers.put(handlerInstance.getRequestType(), handlerInstance);
+                    handlerList.add(handlerInstance);
                 }
             }
         } catch (Exception e) {

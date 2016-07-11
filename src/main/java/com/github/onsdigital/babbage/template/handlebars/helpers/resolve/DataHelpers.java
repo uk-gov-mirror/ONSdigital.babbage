@@ -2,15 +2,19 @@ package com.github.onsdigital.babbage.template.handlebars.helpers.resolve;
 
 import com.github.jknack.handlebars.Handlebars;
 import com.github.jknack.handlebars.Options;
+import com.github.onsdigital.babbage.api.util.SearchUtils;
 import com.github.onsdigital.babbage.content.client.ContentClient;
 import com.github.onsdigital.babbage.content.client.ContentFilter;
 import com.github.onsdigital.babbage.content.client.ContentResponse;
+import com.github.onsdigital.babbage.request.handler.TimeseriesLandingRequestHandler;
+import com.github.onsdigital.babbage.search.model.SearchResult;
 import com.github.onsdigital.babbage.template.handlebars.helpers.base.BabbageHandlebarsHelper;
 import com.github.onsdigital.babbage.util.URIUtil;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,10 +37,14 @@ public enum DataHelpers implements BabbageHandlebarsHelper<Object> {
     resolve {
         @Override
         public CharSequence apply(Object uri, Options options) throws IOException {
-            ContentResponse contentResponse = null;
+            ContentResponse contentResponse;
             try {
                 validateUri(uri);
                 String uriString = (String) uri;
+
+                if (TimeseriesLandingRequestHandler.isTimeseriesLandingUri(uriString)) {
+                    uriString = TimeseriesLandingRequestHandler.getLatestTimeseriesUri(uriString);
+                }
 
                 ContentFilter filter = null;
                 String filterVal = options.<String>hash("filter");
@@ -48,6 +56,36 @@ public enum DataHelpers implements BabbageHandlebarsHelper<Object> {
                 Map<String, Object> context = toMap(data);
                 assign(options, context);
                 return options.fn(context);
+            } catch (Exception e) {
+                logResolveError(uri, e);
+                return options.inverse();
+            }
+        }
+
+        @Override
+        public void register(Handlebars handlebars) {
+            handlebars.registerHelper(this.name(), this);
+        }
+    },
+
+    /**
+     * usage: {{#resolve "uri" [filter=] [assign=variableName]}}
+     * <p>
+     * If variableName is not empty data is assigned to given variable name
+     */
+    resolveTimeSeriesList {
+        @Override
+        public CharSequence apply(Object uri, Options options) throws IOException {
+            try {
+
+                validateUri(uri);
+                String uriString = (String) uri;
+
+                HashMap<String, SearchResult> results = SearchUtils.searchTimeseriesForUri(uriString);
+                LinkedHashMap<String, Object> data = SearchUtils.buildResults("list", results);
+
+                assign(options, data);
+                return options.fn(data);
             } catch (Exception e) {
                 logResolveError(uri, e);
                 return options.inverse();
@@ -223,7 +261,6 @@ public enum DataHelpers implements BabbageHandlebarsHelper<Object> {
         }
 
     };
-
 
     //gets first parameter as uri, throws exception if not valid
     private static void validateUri(Object uri) throws IOException {

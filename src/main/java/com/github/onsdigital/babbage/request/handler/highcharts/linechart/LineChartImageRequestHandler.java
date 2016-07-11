@@ -4,7 +4,7 @@ import com.github.onsdigital.babbage.content.client.ContentClient;
 import com.github.onsdigital.babbage.content.client.ContentFilter;
 import com.github.onsdigital.babbage.content.client.ContentResponse;
 import com.github.onsdigital.babbage.highcharts.HighChartsExportClient;
-import com.github.onsdigital.babbage.request.handler.base.RequestHandler;
+import com.github.onsdigital.babbage.request.handler.base.BaseRequestHandler;
 import com.github.onsdigital.babbage.response.BabbageContentBasedBinaryResponse;
 import com.github.onsdigital.babbage.response.base.BabbageResponse;
 import com.github.onsdigital.babbage.template.TemplateService;
@@ -19,7 +19,7 @@ import java.util.Map;
 /**
  * Created by bren on 18/06/15.
  */
-public class LineChartImageRequestHandler implements RequestHandler {
+public class LineChartImageRequestHandler extends BaseRequestHandler {
 
     public static final String REQUEST_TYPE = "linechartimage";
     public static final String CONTENT_TYPE = "image/png";

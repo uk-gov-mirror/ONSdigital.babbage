@@ -4,7 +4,7 @@ import com.github.onsdigital.babbage.content.client.ContentClient;
 import com.github.onsdigital.babbage.content.client.ContentFilter;
 import com.github.onsdigital.babbage.content.client.ContentResponse;
 import com.github.onsdigital.babbage.highcharts.HighChartsExportClient;
-import com.github.onsdigital.babbage.request.handler.base.RequestHandler;
+import com.github.onsdigital.babbage.request.handler.base.BaseRequestHandler;
 import com.github.onsdigital.babbage.response.BabbageContentBasedBinaryResponse;
 import com.github.onsdigital.babbage.response.base.BabbageResponse;
 import com.github.onsdigital.babbage.template.TemplateService;
@@ -17,7 +17,7 @@ import static com.github.onsdigital.babbage.content.client.ContentClient.filter;
 /**
  * Created by bren on 17/06/15.
  */
-public class SparklineImageRequestHandler implements RequestHandler {
+public class SparklineImageRequestHandler extends BaseRequestHandler {
 
     private static final String REQUEST_TYPE = "sparklineimage";
 

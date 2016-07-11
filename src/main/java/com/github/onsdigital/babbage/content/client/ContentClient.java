@@ -107,7 +107,6 @@ public class ContentClient {
     }
 
     public ContentResponse getTaxonomy(Map<String, String[]> queryParameters) throws ContentReadException {
-        System.out.println("getTaxonomy(): Reading taxonomy nodes");
         return sendGet(getPath(getTaxonomyEndpoint()), getParameters(queryParameters));
     }
 

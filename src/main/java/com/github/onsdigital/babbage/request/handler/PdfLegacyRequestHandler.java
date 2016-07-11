@@ -4,7 +4,7 @@ import com.github.onsdigital.babbage.content.client.ContentClient;
 import com.github.onsdigital.babbage.content.client.ContentReadException;
 import com.github.onsdigital.babbage.content.client.ContentResponse;
 import com.github.onsdigital.babbage.pdf.PdfGeneratorLegacy;
-import com.github.onsdigital.babbage.request.handler.base.RequestHandler;
+import com.github.onsdigital.babbage.request.handler.base.BaseRequestHandler;
 import com.github.onsdigital.babbage.response.BabbageBinaryResponse;
 import com.github.onsdigital.babbage.response.base.BabbageResponse;
 import com.github.onsdigital.babbage.util.RequestUtil;
@@ -25,7 +25,7 @@ import java.util.Map;
 /**
  * Created by bren on 07/07/15.
  */
-public class PdfLegacyRequestHandler implements RequestHandler {
+public class PdfLegacyRequestHandler extends BaseRequestHandler {
 
     private static final String REQUEST_TYPE = "pdf";
     public static final String CONTENT_TYPE = "application/pdf";

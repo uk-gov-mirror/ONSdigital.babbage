@@ -1,5 +1,6 @@
 package com.github.onsdigital.babbage.request.handler.list;
 
+import com.github.onsdigital.babbage.request.handler.base.BaseRequestHandler;
 import com.github.onsdigital.babbage.request.handler.base.ListRequestHandler;
 import com.github.onsdigital.babbage.response.base.BabbageResponse;
 import com.github.onsdigital.babbage.search.helpers.base.SearchFilter;
@@ -20,7 +21,7 @@ import static com.github.onsdigital.babbage.search.input.TypeFilter.contentTypes
 /**
  * Render a list page for bulletins under the given URI.
  */
-public class TopicSpecificMethodologyRequestHandler implements ListRequestHandler {
+public class TopicSpecificMethodologyRequestHandler extends BaseRequestHandler implements ListRequestHandler {
 
     private static Set<TypeFilter> methodologyFilters = TypeFilter.getMethodologyFilters();
     private static ContentType[] contentTypesToCount = contentTypes(methodologyFilters);

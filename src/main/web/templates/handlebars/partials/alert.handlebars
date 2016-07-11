@@ -54,7 +54,7 @@
 
 {{else}}
 
-	{{#if_any description.latestRelease versions alerts (eq type "bulletin") (eq type "article") (eq type "compendium_landing_page") (endsWith (parentPath uri) "previous")}} {{!-- Must always show on bulletin & article for 'not latest release' alert or for 'previous versions' alert on dataset-landing-pages --}}
+	{{#if_any description.latestRelease versions alerts (eq type "bulletin") (eq type "article") (eq type "timeseries") (eq type "compendium_landing_page") (endsWith (parentPath uri) "previous")}} {{!-- Must always show on bulletin & article for 'not latest release' alert or for 'previous versions' alert on dataset-landing-pages --}}
 		{{#unless (eq type "timeseries")}} {{!-- Use a different type of alert block if it is a timeseries page --}}
 			<div class="alert">
 				<div class="wrapper">
@@ -106,11 +106,20 @@
 			{{/each}}
 
 			{{!-- Alert block for timeseries --}}
-			{{#if_any has-corrections (endsWith (parentPath uri) "previous")}}
+            {{!-- {{#if_any has-corrections (endsWith (parentPath uri) "previous")}} --}}
 				<div class="alert">
 					<div class="wrapper">
 						<div class="col-wrap">
 							<div class="col">
+
+                                <h2 class="alert__title inline-block margin-bottom--0 margin-right-md--1">
+                                    Source dataset: {{#if description.datasetUri}}{{#resolve description.datasetUri filter="description"}}{{description.title}} ({{description.datasetId}}){{/resolve}}{{else}}{{description.datasetId}}{{/if}}
+                                </h2>
+                                {{#resolveTimeSeriesList (parentPath uri) }}
+                                    {{#if_ne result.results.size 1}}
+                                        <a class="alert__link js-scroll" href="#otherdatasets">View other datasets</a>
+                                    {{/if_ne}}
+                                {{/resolveTimeSeriesList}}
 
 								{{!-- 'This is an old versions' alert --}}
 								{{#if (endsWith (parentPath uri) "previous")}}
@@ -149,7 +158,7 @@
 						</div>
 					</div>
 				</div>
-			{{/if_any}}
+        {{!-- {{/if_any}} --}}
 		{{/unless}}
 	{{/if_any}}
 {{/if}}

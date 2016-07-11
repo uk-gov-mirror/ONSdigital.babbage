@@ -24,17 +24,21 @@
 	{{#if_all atoz parameters.az.0 (lookup couts.docCounts parameters.az.0)}}
 		that begin with the letter <strong>'{{parameters.az.0}}'</strong>
 	{{/if_all}}
-	{{#if_any parameters.fromDate.0 parameters.toDate.0}} published
-		{{#if parameters.fromDate.0}}
-			after <strong>{{df parameters.fromDate.0 outputFormat="dd MMMM yyyy" inputFormat="dd/MM/yyyy"}}</strong>
-		{{/if}}
-		{{#if parameters.toDate.0}}
-			{{#if parameters.fromDate.0}}
+
+    {{!-- DATE PARAMETERS --}}
+	{{#if_any parameters.fromDateDay.0 parameters.fromDateMonth.0 parameters.fromDateYear.0 parameters.toDateDay.0 parameters.toDateMonth.0 parameters.toDateYear.0}} published
+		{{#if_any parameters.fromDateDay.0 parameters.fromDateMonth.0 parameters.fromDateYear.0}}
+			after <strong>{{df parameters.fromDateDay.0 outputFormat="dd" inputFormat="d"}} {{df parameters.fromDateMonth.0 outputFormat="MMMM" inputFormat="M"}} {{df parameters.fromDateYear.0 outputFormat="yyyy" inputFormat="yyyy"}}</strong>
+		{{/if_any}}
+		{{#if_any parameters.toDateDay.0 parameters.toDateMonth.0 parameters.toDateYear.0}}
+			{{#if_any parameters.fromDateDay.0 parameters.fromDateMonth.0 parameters.fromDateYear.0}}
 				and
-			{{/if}}
-			before <strong>{{df parameters.toDate.0 outputFormat="dd MMMM yyyy" inputFormat="dd/MM/yyyy"}}</strong>
-		{{/if}}
+			{{/if_any}}
+			before <strong>{{df parameters.toDateDay.0 outputFormat="dd" inputFormat="d"}} {{df parameters.toDateMonth.0 outputFormat="MMMM" inputFormat="M"}} {{df parameters.toDateYear.0 outputFormat="yyyy" inputFormat="yyyy"}}</strong>
+		{{/if_any}}
 	{{/if_any}}
+
+    {{!-- SORTING PARAMETERS --}}
 	{{#if_any results}}
 		{{#unless hideSort}}
 			{{#if result.sortBy}}
@@ -42,8 +46,8 @@
 				{{#if_eq result.sortBy "release_date"}}release date{{/if_eq}}
 				{{#if_eq result.sortBy "title"}}title{{/if_eq}}
 				{{#if_eq result.sortBy "relevance"}}relevance{{/if_eq}}
+                </strong>
 			{{/if}}
-		</strong>
 		{{/unless}}
 	{{/if_any}}
 </h2>

@@ -175,21 +175,27 @@
 			</div>
 		</div>
 
-        {{!--
-
-        <div class="col col--lg-59 padding-top--0 padding-right--1 padding-bottom--0 padding-left--1 margin-left-md--0 margin-bottom--2 background--gallery">
-            <h2 class="margin-top--3">Stuff</h2>
-            <p class="margin-top--0">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec tincidunt tempor orci, ac fermentum enim lacinia vitae. Ut euismod non nunc at porttitor. Nulla quam tellus, efficitur et nulla quis, efficitur commodo arcu. Etiam quis mi porttitor, tristique eros quis, pretium urna.</p>
-
-            <ul class="list--neutral">
-                <li class="flush"><p class="flush"><a>GDP quarter on quarter growth - CVM</a>, released on 25 December 2017</p></li>
-                <li class="flush"><p class="flush"><a>OS visits to UK:All visits Thousands-NSA</a>, released on 01 January 2017</p></li>
-                <li class="flush"><p class="flush"><a>Male claimant count rate SA:London - %</a>, released on 31 February 2018</p></li>
-            </ul>
+        {{#resolveTimeSeriesList (parentPath uri) }}
 
 
+            {{#if_ne result.results.size 1}}
 
-        </div> --}}
+            <div class="col col--lg-59 padding-top--0 padding-right--1 padding-bottom--0 padding-left--1 margin-left-md--0 margin-bottom--2 background--gallery" id="otherdatasets">
+                <h2 class="margin-top--3">Variations of this time series in other datasets</h2>
+                <ul class="list--neutral">
+                    {{#each result.results}}
+
+                        <li class="flush"><p class="flush">
+                        <a href="{{uri}}">{{ description.cdid }}: {{#resolve description.datasetUri}}{{description.title}}{{/resolve}}</a> ({{description.datasetId}}), released on {{df description.releaseDate}}
+                        </p></li>
+                    {{/each}}
+                </ul>
+
+            </div>
+
+            {{/if_ne}}
+
+        {{/resolveTimeSeriesList}}
 	</div>
 
 	<div class="wrapper">

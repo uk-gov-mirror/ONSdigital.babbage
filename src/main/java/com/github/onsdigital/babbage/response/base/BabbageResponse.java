@@ -7,7 +7,9 @@ import org.apache.commons.lang3.CharEncoding;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -19,16 +21,18 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
  * A successful response for http request
  *
  */
-public abstract class BabbageResponse{
+public abstract class BabbageResponse {
 
     private String mimeType = APPLICATION_JSON; //Default mimetype
     private String charEncoding = CharEncoding.UTF_8;//Default encoding
     private int status = HttpServletResponse.SC_OK;//Default status
     private Long maxAge;
     private Map<String, String> header;
+    protected List<String> errors;
 
     public BabbageResponse(String mimeType) {
         this.mimeType = mimeType;
+        this.errors = new ArrayList<>();
     }
 
     public BabbageResponse(String mimeType, int status) {
@@ -46,7 +50,9 @@ public abstract class BabbageResponse{
         setMaxAge(maxAge);
     }
 
-    public BabbageResponse() { }
+    public BabbageResponse() {
+        this.errors = new ArrayList<>();
+    }
 
     public void apply(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setStatus(getStatus());
@@ -113,5 +119,9 @@ public abstract class BabbageResponse{
         if (Configuration.GENERAL.isCacheEnabled()) {
             this.maxAge = maxAge;
         }
+    }
+
+    public List<String> getErrors() {
+        return errors;
     }
 }
