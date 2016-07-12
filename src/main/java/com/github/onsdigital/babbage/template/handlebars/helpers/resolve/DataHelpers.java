@@ -6,6 +6,7 @@ import com.github.onsdigital.babbage.api.util.SearchUtils;
 import com.github.onsdigital.babbage.content.client.ContentClient;
 import com.github.onsdigital.babbage.content.client.ContentFilter;
 import com.github.onsdigital.babbage.content.client.ContentResponse;
+import com.github.onsdigital.babbage.equations.MathjaxRenderer;
 import com.github.onsdigital.babbage.request.handler.TimeseriesLandingRequestHandler;
 import com.github.onsdigital.babbage.search.model.SearchResult;
 import com.github.onsdigital.babbage.template.handlebars.helpers.base.BabbageHandlebarsHelper;
@@ -126,6 +127,38 @@ public enum DataHelpers implements BabbageHandlebarsHelper<Object> {
 
         }
 
+        @Override
+        public void register(Handlebars handlebars) {
+            handlebars.registerHelper(this.name(), this);
+        }
+    },
+
+
+    //Resolve latest article or bulletin with given uri
+    resolveEquation {
+        @Override
+        public CharSequence apply(Object uri, Options options) throws IOException {
+            ContentResponse contentResponse = null;
+            try {
+                validateUri(uri);
+                String uriString = (String) uri;
+
+                contentResponse = ContentClient.getInstance().getContent(uriString);
+                InputStream data = contentResponse.getDataStream();
+                Map<String, Object> jsonData = toMap(data);
+
+                String equation = MathjaxRenderer.render(jsonData.get("content").toString());
+
+                Map<String, Object> context = new LinkedHashMap<>();
+                context.put("equation", equation);
+                assign(options, context);
+                return options.fn(context);
+            } catch (Exception e) {
+                logResolveError(uri, e);
+                return options.inverse();
+            }
+
+        }
 
         @Override
         public void register(Handlebars handlebars) {
