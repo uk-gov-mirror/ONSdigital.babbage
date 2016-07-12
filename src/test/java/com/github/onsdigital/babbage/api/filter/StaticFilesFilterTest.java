@@ -49,4 +49,26 @@ public class StaticFilesFilterTest {
 
         assertEquals("dir/index.html", result);
     }
+
+    @Test
+    public void shouldResolveRelatedFile() {
+
+        String indexPathPath = "Pop_Chart4/Pop_Chart4.html";
+        String path = "Pop_Chart4/Pop_Chart4.png";
+
+        String result = StaticFilesFilter.resolveRelativePath(indexPathPath, path);
+
+        assertEquals("Pop_Chart4/Pop_Chart4.png", result);
+    }
+
+    @Test
+    public void shouldResolveRelatedFileInAnotherDirectory() {
+
+        String indexPathPath = "Pop_Chart4/Pop_Chart4.html";
+        String path = "Pop_Chart5/Pop_Chart5.png";
+
+        String result = StaticFilesFilter.resolveRelativePath(indexPathPath, path);
+
+        assertEquals("Pop_Chart5/Pop_Chart5.png", result);
+    }
 }
