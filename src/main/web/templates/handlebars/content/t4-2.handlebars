@@ -10,14 +10,14 @@
 {{#partial "publication-sidebar"}}
 	{{!-- Related data --}}
     {{>partials/related/new-data relatedUri=(concat uri "/relateddata") relatedTitle="self"}}
+    {{!-- Contact details --}}
+    {{>partials/contact}}
 	{{!-- Related publications --}}
 	{{>partials/related/documents}}
 	{{!-- Related articles --}}
 	{{>partials/related/articles}}
     {{!-- Related links --}}
     {{>partials/related/related-links}}
-	{{!-- Contact details --}}
-	{{>partials/contact}}
 {{/partial}}
 
 {{!-- Inheritence --}}
