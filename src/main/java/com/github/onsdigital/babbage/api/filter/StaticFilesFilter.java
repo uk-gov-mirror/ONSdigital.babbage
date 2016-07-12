@@ -8,22 +8,18 @@ import com.github.onsdigital.babbage.response.BabbageContentBasedBinaryResponse;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.google.gson.reflect.TypeToken;
 import org.apache.commons.io.FilenameUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Map;
 
 import static com.github.onsdigital.babbage.api.error.ErrorHandler.handle;
 
 public class StaticFilesFilter implements Filter {
 
-    private static final Type type = new TypeToken<Map<String, String>>(){}.getType();
     private static final String visualisationRoot = "visualisations";
 
     @Override
@@ -52,9 +48,8 @@ public class StaticFilesFilter implements Filter {
                     }
                 } else {
                     String indexPagePath = getIndexPagePath(uid);
-
+                    // resolve files that are referenced relative to the root html page.
                     path = resolveRelativePath(indexPagePath, path);
-                    // take the directory of index page and prepend it to the path
                 }
 
                 String visualisationPath = String.format("/%s/%s/content/%s", visualisationRoot, uid, path);
@@ -77,6 +72,7 @@ public class StaticFilesFilter implements Filter {
 
     /**
      * Takes the path of the index pages and 'merges' it with the relative path of the file.
+     *
      * @param indexPage
      * @param file
      * @return
@@ -87,9 +83,12 @@ public class StaticFilesFilter implements Filter {
 
         Path result = Paths.get("");
 
+        if (index.getNameCount() == path.getNameCount()) {
+            return file;
+        }
+
         if (index.getParent() != null) {
             for (Path indexPart : index.getParent()) {
-
                 if (!path.getName(0).equals(indexPart)) {
                     result = result.resolve(indexPart);
                 }
@@ -109,14 +108,5 @@ public class StaticFilesFilter implements Filter {
         JsonElement indexPage = obj.get("indexPage");
         path = indexPage == null ? "" : indexPage.getAsString();
         return path;
-    }
-
-    public static void main(String[] args) {
-        String indexPathPath = "/";
-        String path = "/";
-
-        String result = resolveRelativePath(indexPathPath, path);
-
-        System.out.println("result = " + result);
     }
 }
