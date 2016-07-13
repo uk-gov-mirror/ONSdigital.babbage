@@ -7,9 +7,9 @@
     {{!--<!--[if gt IE 8]><!--></noscript><!--[endif]-->--}}
     {{!--</div>--}}
 
-    {{#resolveEquation (concat uri (concat "/" filename)) }}
-        {{{equation}}}
-    {{/resolveEquation}}
+    {{#resolveResource (concat uri (concat "/" (concat filename ".svg"))) }}
+        {{{resource}}}
+    {{/resolveResource}}
 
 </div>
 
