@@ -32,20 +32,20 @@
 
 
 {{#partial "publication-sidebar"}}
-{{!-- Related data --}}
+    {{!-- Related data --}}
     {{#if relatedDatasets}}
 	    {{>partials/related/datasets}}
     {{else}}
         {{>partials/related/data}}
     {{/if}}
+    {{!-- Contact details --}}
+    {{#if_any description.contact.email description.contact.telephone description.contact.name}}
+        {{>partials/contact}}
+    {{/if_any}}
 	{{!-- Related publications --}}
 	{{>partials/related/documents}}
 	{{!-- Related articles --}}
 	{{>partials/related/articles}}
-	{{!-- Contact details --}}
-	{{#if_any description.contact.email description.contact.telephone description.contact.name}}
-		{{>partials/contact}}
-	{{/if_any}}
 	{{!-- Related links --}}
 	{{> partials/related/related-links }}
     {{!-- Related downloads --}}
