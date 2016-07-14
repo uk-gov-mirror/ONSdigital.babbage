@@ -10,7 +10,6 @@ if [[ $DEPLOYMENT_GROUP_NAME =~ [a-z]+-publishing ]]; then
     --env=ELASTIC_SEARCH_SERVER=elasticsearch             \
     --env=GHOSTSCRIPT_PATH=/usr/bin/gs                    \
     --env=HIGHCHARTS_EXPORT_SERVER=http://highcharts:8080 \
-    --env=MATHJAX_EXPORT_SERVER=http://mathjax:8080       \
     --env=IS_PUBLISHING=Y                                 \
     --name=babbage                                        \
     --net=publishing                                      \
@@ -26,7 +25,6 @@ else
     --env=GHOSTSCRIPT_PATH=/usr/bin/gs                    \
     --env=GLOBAL_CACHE_SIZE=5000                          \
     --env=HIGHCHARTS_EXPORT_SERVER=http://highcharts:8080 \
-    --env=MATHJAX_EXPORT_SERVER=http://mathjax:8080       \
     --env=PHANTOMJS_PATH=/usr/local/bin/phantomjs         \
     --name=babbage                                        \
     --net=website                                         \
