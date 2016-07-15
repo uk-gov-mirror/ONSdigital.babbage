@@ -3,6 +3,8 @@ package com.github.onsdigital.babbage.search.helpers;
 import com.github.onsdigital.babbage.error.ValidationError;
 import com.github.onsdigital.babbage.search.helpers.dates.PublishDates;
 import com.github.onsdigital.babbage.search.helpers.dates.PublishDatesException;
+import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -220,7 +222,11 @@ public class SearchRequestHelperTest {
     private void verifyDateUpdated(PublishDates result, int range) {
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.DAY_OF_MONTH, -1 * range);
-        assertThat("From date is incorrect.", result.publishedFrom(), equalTo(cal.getTime()));
+
+        LocalDate expectedDate = new DateTime().minusDays(range).toLocalDate();
+        LocalDate actualDate = new DateTime(result.publishedFrom()).toLocalDate();
+
+        assertThat("From date is incorrect.", actualDate.compareTo(expectedDate), equalTo(0));
     }
 
     private void setFrom(String day, String month, String year) {
