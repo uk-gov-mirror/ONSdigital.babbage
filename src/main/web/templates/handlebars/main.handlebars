@@ -82,6 +82,7 @@
 		{{!-- Charts and tables and images--}}
 		{{else if_eq type "chart"}} 						{{> highcharts/chart}}
 		{{else if_eq type "table"}} 						{{> table}}
+		{{else if_eq type "equation"}} 						{{> partials/equation}}
 
 		{{!-- List Pages --}}
 		{{else if_eq type "list"}}

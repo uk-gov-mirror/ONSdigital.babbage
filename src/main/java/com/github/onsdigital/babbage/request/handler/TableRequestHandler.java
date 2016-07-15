@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 
 /**
  * Handles requests at the endpoint /table.
- * Renders a chart and associated content in an isolated page.
+ * Renders a table and associated content in an isolated page.
  */
 public class TableRequestHandler extends BaseRequestHandler {
 
