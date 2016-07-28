@@ -1,0 +1,21 @@
+
+{{!-- CORRECTIONS AND ALERTS --}}
+{{#if versions}}
+    <div class="correction">
+        <h2>Correction</h2>
+        {{#each versions}}
+            <h3>{{df updateDate}}</h3>
+            {{md correctionNotice}}
+        {{/each}}
+    </div>
+{{/if}}
+
+{{#if alerts}}
+    <div class="correction">
+        <h2>Notice</h2>
+        {{#each alerts}}
+            <h3>{{df date}}</h3>
+            {{md markdown}}
+        {{/each}}
+    </div>
+{{/if}}

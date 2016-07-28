@@ -47,6 +47,7 @@ public class PDFGenerator {
                 html = html.replace("&nbsp;", "&#160;");
             }
 
+            System.out.println("html = " + html);
             String outputFile = TEMP_DIRECTORY_PATH + "/" + fileName + ".pdf";
             InputStream inputStream = new ByteArrayInputStream(html.getBytes());
             createPDF(uri, inputStream, outputFile);
