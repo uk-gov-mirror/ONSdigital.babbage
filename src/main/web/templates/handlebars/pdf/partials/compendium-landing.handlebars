@@ -1,0 +1,25 @@
+
+<div class="page">
+    {{!-- CORRECTION AND ALERTS --}}
+    {{> pdf/partials/corrections-alerts}}
+
+    {{!-- TABLE OF CONTENTS --}}
+    <h2>Chapters in this compendium</h2>
+    <ol class="toc">
+        {{#each chapters}}
+            {{#resolve this.uri}}
+                <li>{{@index_1}}. <a href="#{{slugify description.title}}">{{description.title}}</a></li>
+            {{/resolve}}
+        {{/each}}
+    </ol>
+</div>
+
+{{!-- CHAPTERS --}}
+{{#each chapters}}
+    {{#resolve this.uri}}
+        <div id="{{slugify description.title}}">
+            {{> pdf/partials/header}}
+            {{> pdf/partials/publication}}
+        </div>
+    {{/resolve}}
+{{/each}}

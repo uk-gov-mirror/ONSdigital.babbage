@@ -1,0 +1,39 @@
+
+<div class="page">
+    {{!-- CORRECTION AND ALERTS --}}
+    {{> pdf/partials/corrections-alerts}}
+
+    {{!-- TABLE OF CONTENTS --}}
+    <h2>Table of contents</h2>
+    <ol class="toc">
+        {{#each sections}}
+            <li>{{@index_1}}. <a href="#{{slugify description.title}}">{{title}}</a></li>
+        {{/each}}
+        {{#if accordion}}
+            {{#each accordion}}
+                <li>{{nf (add sections.size @index_1)}}. <a href="#{{nf (add sections.size @index_1)}}">{{title}}</a>
+                </li>
+            {{/each}}
+        {{/if}}
+    </ol>
+
+    {{!-- SECTIONS --}}
+    {{#each sections}}
+        <section class="page__section" id="{{slugify title}}">
+            <header>
+                <h2><a name="{{slugify description.title}}"></a><span class="section__content-number">{{@index_1}}
+                    .</span> {{title}}</h2>
+            </header>
+            {{pdf-md markdown}}
+        </section>
+    {{/each}}
+
+    {{!-- BACKGROUND NOTES --}}
+    {{#if accordion}}
+        {{#each accordion}}
+            <h2><a name="{{nf (add sections.size @index_1)}}"></a><span
+                    class="section__content-number">{{nf (add sections.size @index_1)}}.</span> {{title}}</h2>
+            {{pdf-md markdown}}
+        {{/each}}
+    {{/if}}
+</div>
