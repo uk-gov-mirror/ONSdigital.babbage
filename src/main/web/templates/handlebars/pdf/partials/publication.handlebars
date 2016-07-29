@@ -7,7 +7,7 @@
     <h2>Table of contents</h2>
     <ol class="toc">
         {{#each sections}}
-            <li>{{@index_1}}. <a href="#{{slugify description.title}}">{{title}}</a></li>
+            <li>{{@index_1}}. <a href="#{{slugify title}}">{{title}}</a></li>
         {{/each}}
         {{#if accordion}}
             {{#each accordion}}
@@ -19,9 +19,9 @@
 
     {{!-- SECTIONS --}}
     {{#each sections}}
-        <section class="page__section" id="{{slugify title}}">
+        <section class="page__section">
             <header>
-                <h2><a name="{{slugify description.title}}"></a><span class="section__content-number">{{@index_1}}
+                <h2><a name="{{slugify title}}"></a><span class="section__content-number">{{@index_1}}
                     .</span> {{title}}</h2>
             </header>
             {{pdf-md markdown}}
@@ -31,7 +31,7 @@
     {{!-- BACKGROUND NOTES --}}
     {{#if accordion}}
         {{#each accordion}}
-            <h2><a name="{{nf (add sections.size @index_1)}}"></a><span
+            <h2><a name="{{slugify title}}"></a><span
                     class="section__content-number">{{nf (add sections.size @index_1)}}.</span> {{title}}</h2>
             {{pdf-md markdown}}
         {{/each}}

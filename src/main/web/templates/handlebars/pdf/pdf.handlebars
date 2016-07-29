@@ -128,11 +128,11 @@
 
     <bookmarks>
         {{#each sections}}
-        <bookmark name="{{title}}" href="#{{@index_1}}" />
+        <bookmark name="{{title}}" href="#{{slugify title}}" />
         {{/each}}
         {{#if accordion}}
             {{#each accordion}}
-                <bookmark name="{{title}}" href="#{{nf (add sections.size @index_1)}}" />
+                <bookmark name="{{title}}" href="#{{slugify title}}" />
             {{/each}}
         {{/if}}
     </bookmarks>
