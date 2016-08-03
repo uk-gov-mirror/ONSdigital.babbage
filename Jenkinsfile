@@ -32,8 +32,6 @@ node {
         docker.build(registry['image']).push(registry['tag'])
     })
 
-    if (branch != 'develop') return
-
     stage 'Bundle'
     sh sprintf('sed -i -e %s -e %s -e %s -e %s appspec.yml scripts/codedeploy/*', [
         "s/\\\${CODEDEPLOY_USER}/${env.CODEDEPLOY_USER}/g",
@@ -43,6 +41,8 @@ node {
     ])
     sh "tar -cvzf babbage-${revision}.tar.gz appspec.yml scripts/codedeploy"
     sh "aws s3 cp babbage-${revision}.tar.gz s3://${env.S3_REVISIONS_BUCKET}/babbage-${revision}.tar.gz"
+
+    if (branch != 'develop') return
 
     stage 'Deploy'
     sh sprintf('aws deploy create-deployment %s %s %s,bundleType=tgz,key=%s.tar.gz', [
