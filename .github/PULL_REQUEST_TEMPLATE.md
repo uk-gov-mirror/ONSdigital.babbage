@@ -1,6 +1,6 @@
 ### What
 
-Describe what you have chaged and why.
+Describe what you have changed and why.
 
 ### How to review
 
