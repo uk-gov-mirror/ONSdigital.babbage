@@ -13,7 +13,7 @@ public class PublishNotification {
     private String key;
     private String collectionId;
     private List<String> urisToUpdate;
-    private List<String> urisToDelete;
+    private List<ContentDetail> urisToDelete;
     private String publishDate;
 
     public String getKey() {
@@ -44,11 +44,11 @@ public class PublishNotification {
         this.urisToUpdate = urisToUpdate;
     }
 
-    public List<String> getUrisToDelete() {
+    public List<ContentDetail> getUrisToDelete() {
         return urisToDelete;
     }
 
-    public void setUrisToDelete(List<String> urisToDelete) {
+    public void setUrisToDelete(List<ContentDetail> urisToDelete) {
         this.urisToDelete = urisToDelete;
     }
 

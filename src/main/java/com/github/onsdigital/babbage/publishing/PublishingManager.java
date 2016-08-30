@@ -3,9 +3,11 @@ package com.github.onsdigital.babbage.publishing;
 import com.github.onsdigital.babbage.configuration.Configuration;
 import com.github.onsdigital.babbage.content.client.ContentClient;
 import com.github.onsdigital.babbage.content.client.ContentReadException;
+import com.github.onsdigital.babbage.publishing.model.ContentDetail;
 import com.github.onsdigital.babbage.publishing.model.FilePublishType;
 import com.github.onsdigital.babbage.publishing.model.PublishInfo;
 import com.github.onsdigital.babbage.publishing.model.PublishNotification;
+import com.github.onsdigital.babbage.search.model.ContentType;
 import com.github.onsdigital.babbage.util.ElasticSearchUtils;
 import com.github.onsdigital.babbage.util.json.JsonUtil;
 import org.apache.commons.io.FilenameUtils;
@@ -65,10 +67,10 @@ public class PublishingManager {
                 bulkProcessor.add(indexRequestBuilder.request());
             }
 
-            for (String uri : notification.getUrisToDelete()) {
-                uri = cleanUri(uri);
+            for (ContentDetail contentDetail : notification.getUrisToDelete()) {
+                String uri = cleanUri(contentDetail.uri);
                 IndexRequestBuilder indexRequestBuilder = getElasticsearchClient().prepareIndex(PUBLISH_DATES_INDEX, notification.getCollectionId(), uri);
-                PublishInfo publishInfo = new PublishInfo(uri, notification.getCollectionId(), notification.getDate(), FilePublishType.DELETE);
+                PublishInfo publishInfo = new PublishInfo(uri, notification.getCollectionId(), notification.getDate(), FilePublishType.DELETE, ContentType.valueOf(contentDetail.type));
                 indexRequestBuilder.setSource(JsonUtil.toJson(publishInfo));
                 bulkProcessor.add(indexRequestBuilder.request());
             }
@@ -95,11 +97,17 @@ public class PublishingManager {
             while (true) {
                 for (SearchHit hit : response.getHits().getHits()) {
                     String uri = (String) hit.getSource().get("uri");
+
+                    // todo: get page type
+                    // todo: get filepublish type - or default
+
                     bulkProcessor.add(prepareDeleteRequest(notification, uri));
                     if (triggerReindex) {
                         //only index uri to the page which hash data.json at the end and is stripped out when saving the uri to upcoming publish uris
                         if (StringUtils.isEmpty(FilenameUtils.getExtension(uri)) && !isVersionedUri(uri)) {
                             triggerReindex(notification.getKey(), uri);
+
+                            // todo - call delete index for pending deletes
                         }
                     }
                 }
