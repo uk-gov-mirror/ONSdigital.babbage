@@ -3,6 +3,7 @@ package com.github.onsdigital.babbage.publishing;
 import com.github.onsdigital.babbage.configuration.Configuration;
 import com.github.onsdigital.babbage.content.client.ContentClient;
 import com.github.onsdigital.babbage.content.client.ContentReadException;
+import com.github.onsdigital.babbage.publishing.model.FilePublishType;
 import com.github.onsdigital.babbage.publishing.model.PublishInfo;
 import com.github.onsdigital.babbage.publishing.model.PublishNotification;
 import com.github.onsdigital.babbage.util.ElasticSearchUtils;
@@ -59,11 +60,10 @@ public class PublishingManager {
             for (String uri : notification.getUrisToUpdate()) {
                 uri = cleanUri(uri);
                 IndexRequestBuilder indexRequestBuilder = getElasticsearchClient().prepareIndex(PUBLISH_DATES_INDEX, notification.getCollectionId(), uri);
-                indexRequestBuilder.setSource(JsonUtil.toJson(new PublishInfo(uri, notification.getCollectionId(), notification.getDate())));
+                PublishInfo publishInfo = new PublishInfo(uri, notification.getCollectionId(), notification.getDate(), FilePublishType.UPDATE);
+                indexRequestBuilder.setSource(JsonUtil.toJson(publishInfo));
                 bulkProcessor.add(indexRequestBuilder.request());
             }
-
-            // Add files to delete.
         }
     }
 
@@ -132,7 +132,9 @@ public class PublishingManager {
         if (response.getHits().getTotalHits() > 0) {
             Long publishDate = (Long) response.getHits().getAt(0).getSource().get("publishDate");
             String collectionId = (String) response.getHits().getAt(0).getSource().get("collectionId");
-            return new PublishInfo(uri, collectionId, publishDate == null ? null : new Date(publishDate));
+            String publishType = (String) response.getHits().getAt(0).getSource().get("filePublishType");
+            FilePublishType filePublishType = publishType == null ? FilePublishType.UPDATE : FilePublishType.valueOf (publishType);
+            return new PublishInfo(uri, collectionId, publishDate == null ? null : new Date(publishDate), filePublishType);
         }
         return null;
     }

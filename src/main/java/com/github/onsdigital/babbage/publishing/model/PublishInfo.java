@@ -10,11 +10,21 @@ public class PublishInfo {
     private String uri;
     private String collectionId;
     private Date publishDate;
+    private FilePublishType filePublishType;
 
-    public PublishInfo(String uri, String collectionId, Date publishDate) {
+    public PublishInfo(String uri, String collectionId, Date publishDate, FilePublishType filePublishType) {
         this.uri = uri;
         this.collectionId = collectionId;
         this.publishDate = publishDate;
+        this.filePublishType = filePublishType;
+    }
+
+    public FilePublishType getFilePublishType() {
+        return filePublishType;
+    }
+
+    public void setFilePublishType(FilePublishType filePublishType) {
+        this.filePublishType = filePublishType;
     }
 
     public String getUri() {
