@@ -64,6 +64,14 @@ public class PublishingManager {
                 indexRequestBuilder.setSource(JsonUtil.toJson(publishInfo));
                 bulkProcessor.add(indexRequestBuilder.request());
             }
+
+            for (String uri : notification.getUrisToDelete()) {
+                uri = cleanUri(uri);
+                IndexRequestBuilder indexRequestBuilder = getElasticsearchClient().prepareIndex(PUBLISH_DATES_INDEX, notification.getCollectionId(), uri);
+                PublishInfo publishInfo = new PublishInfo(uri, notification.getCollectionId(), notification.getDate(), FilePublishType.DELETE);
+                indexRequestBuilder.setSource(JsonUtil.toJson(publishInfo));
+                bulkProcessor.add(indexRequestBuilder.request());
+            }
         }
     }
 
