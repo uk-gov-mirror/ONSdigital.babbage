@@ -181,6 +181,14 @@ public class ContentClient {
         return sendPost(getReindexEndpoint(), parameters);
     }
 
+    public ContentResponse deleteIndex(String key, String uri, String contentType) throws ContentReadException {
+        List<NameValuePair> parameters = new ArrayList<>();
+        parameters.add(new BasicNameValuePair("key", key));
+        parameters.add(new BasicNameValuePair("uri", uri));
+        parameters.add(new BasicNameValuePair("contentType", contentType));
+        return sendDelete(getReindexEndpoint(), parameters);
+    }
+
     public ContentResponse reIndexAll(String key) throws ContentReadException {
         List<NameValuePair> parameters = new ArrayList<>();
         parameters.add(new BasicNameValuePair("key", key));
@@ -214,6 +222,18 @@ public class ContentClient {
         }
     }
 
+    private ContentResponse sendDelete(String path, List<NameValuePair> postParameters) throws ContentReadException {
+        CloseableHttpResponse response = null;
+        try {
+            return new ContentResponse(client.sendDelete(path, getHeaders(), postParameters));
+        } catch (HttpResponseException e) {
+            IOUtils.closeQuietly(response);
+            throw wrapException(e);
+        } catch (IOException e) {
+            IOUtils.closeQuietly(response);
+            throw wrapException(e);
+        }
+    }
 
     private List<NameValuePair> getParameters(Map<String, String[]> parametes) {
         List<NameValuePair> nameValuePairs = new ArrayList<>();
@@ -328,5 +348,4 @@ public class ContentClient {
         }
         return parameterMap;
     }
-
 }

@@ -98,16 +98,27 @@ public class PublishingManager {
                 for (SearchHit hit : response.getHits().getHits()) {
                     String uri = (String) hit.getSource().get("uri");
 
-                    // todo: get page type
-                    // todo: get filepublish type - or default
 
                     bulkProcessor.add(prepareDeleteRequest(notification, uri));
                     if (triggerReindex) {
                         //only index uri to the page which hash data.json at the end and is stripped out when saving the uri to upcoming publish uris
                         if (StringUtils.isEmpty(FilenameUtils.getExtension(uri)) && !isVersionedUri(uri)) {
-                            triggerReindex(notification.getKey(), uri);
 
-                            // todo - call delete index for pending deletes
+                            FilePublishType filePublishType = FilePublishType.UPDATE; // default to update for existing entries with no type
+                            String storedFilePublishType = (String) hit.getSource().get("filePublishType");
+
+                            if (storedFilePublishType != null);
+                                filePublishType = FilePublishType.valueOf(storedFilePublishType);
+
+                            switch (filePublishType) {
+                                case UPDATE:
+                                    triggerReindex(notification.getKey(), uri);
+                                    break;
+                                case DELETE:
+                                    String contentType = (String) hit.getSource().get("contentType");
+                                    deleteIndex(notification.getKey(), uri, contentType);
+                                    break;
+                            }
                         }
                     }
                 }
@@ -136,6 +147,14 @@ public class PublishingManager {
             ContentClient.getInstance().reIndex(key, uri);
         } catch (ContentReadException e) {
             System.err.println("!!!Warning , re-indexing failed for uri " + uri);
+        }
+    }
+
+    private void deleteIndex(String key, String uri, String contentType) {
+        try {
+            ContentClient.getInstance().deleteIndex(key, uri, contentType);
+        } catch (ContentReadException e) {
+            System.err.println("!!!Warning , delete index failed for uri " + uri);
         }
     }
 
