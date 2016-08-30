@@ -12,7 +12,8 @@ import java.util.List;
 public class PublishNotification {
     private String key;
     private String collectionId;
-    private List<String> uriList;
+    private List<String> urisToUpdate;
+    private List<String> urisToDelete;
     private String publishDate;
 
     public String getKey() {
@@ -23,16 +24,8 @@ public class PublishNotification {
         this.key = key;
     }
 
-    public List<String> getUriList() {
-        return uriList;
-    }
-
-    public void setUriList(List<String> uriList) {
-        this.uriList = uriList;
-    }
-
-    public String getPublishDate() {
-        return publishDate;
+    public List<String> getUrisToUpdate() {
+        return urisToUpdate;
     }
 
     public Date getDate(){
@@ -45,6 +38,22 @@ public class PublishNotification {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public void setUrisToUpdate(List<String> urisToUpdate) {
+        this.urisToUpdate = urisToUpdate;
+    }
+
+    public List<String> getUrisToDelete() {
+        return urisToDelete;
+    }
+
+    public void setUrisToDelete(List<String> urisToDelete) {
+        this.urisToDelete = urisToDelete;
+    }
+
+    public String getPublishDate() {
+        return publishDate;
     }
 
     public void setPublishDate(String publishDate) {

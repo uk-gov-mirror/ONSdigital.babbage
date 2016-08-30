@@ -65,7 +65,7 @@ public class Upcoming {
     }
 
     private void verifyUriList(PublishNotification publishNotification) {
-        List<String> uriList = publishNotification.getUriList();
+        List<String> uriList = publishNotification.getUrisToUpdate();
         if (uriList == null || uriList.isEmpty()) {
             throw new BadRequestException("Please speficy uri list");
         }

@@ -54,12 +54,16 @@ public class PublishingManager {
     public void notifyUpcoming(PublishNotification notification) throws IOException {
         initPublishDatesIndex();
         try (BulkProcessor bulkProcessor = createBulkProcessor()) {
-            for (String uri : notification.getUriList()) {
+
+            // Add files to update.
+            for (String uri : notification.getUrisToUpdate()) {
                 uri = cleanUri(uri);
                 IndexRequestBuilder indexRequestBuilder = getElasticsearchClient().prepareIndex(PUBLISH_DATES_INDEX, notification.getCollectionId(), uri);
                 indexRequestBuilder.setSource(JsonUtil.toJson(new PublishInfo(uri, notification.getCollectionId(), notification.getDate())));
                 bulkProcessor.add(indexRequestBuilder.request());
             }
+
+            // Add files to delete.
         }
     }
 
