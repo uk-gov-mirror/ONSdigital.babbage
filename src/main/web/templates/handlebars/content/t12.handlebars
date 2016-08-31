@@ -64,10 +64,7 @@
                             {{#if description.datasetId}}
                                 <p class="col col--md-12 col--lg-15 meta__item">
                                     <span>{{labels.dataset-id}}: </span>{{description.datasetId}}&nbsp;
-                                    <span><a href="#" class="tooltip print--hide"
-                                             title="This series ID is a unique random identifier for this individual time series. The digits themselves do not have any specific meaning"
-                                            {{labels.dataset-what-is}}
-                                         </a></span>
+                                    <span><a href="#" class="tooltip print--hide" title="This series ID is a unique random identifier for this individual time series. The digits themselves do not have any specific meaning">{{labels.dataset-what-is}} </a></span>
                                 </p>
                             {{/if}}
                         {{/resolve}}
@@ -109,35 +106,33 @@
 
                 </div>
 
-                <h3 class="margin-top-md--4 {{#unless versions}}margin-bottom-sm--4 margin-bottom-md--4{{/unless}}">Latest version</h3>
+                <div class="margin-top-md--4 margin-bottom-sm--4 margin-bottom-md--5">
+                    <h3>Latest version</h3>
 
-                {{#each downloads}}
+                    {{#each downloads}}
 
-                    {{#if file}}
-                        <a href="/file?uri={{absolute (concat uri "/" file)}}" title="Download as {{fe (lowercase (concat uri "/" file))}}" class="btn btn--primary btn--thin btn--narrow btn--small"
-                           data-ga-event data-ga-event-category='download-version' data-ga-event-label="latest">
-                            {{#if_eq (fe file) 'csdb'}}structured text{{else}}{{fe (lowercase (concat uri "/" file))}}{{/if_eq}} ({{fs (lowercase (concat uri "/" file))}})
-                        </a>
-                    {{!-- <form method="get" action="/file" class="inline">
-                         <button type="submit" title="Latest version" class="btn btn--primary btn--thin btn--narrow btn--small download-analytics">
-                             {{fe (lowercase (concat uri "/" file))}} ({{fs (lowercase (concat uri "/" file))}})
-                         </button>
-                         <input type="hidden" name="uri" value="{{absolute (concat uri "/" file)}}"/>
-                     </form> --}}
+                        {{#if file}}
+                            <a href="/file?uri={{absolute (concat uri "/" file)}}"
+                               title="Download as {{fe (lowercase (concat uri "/" file))}}"
+                               class="btn btn--primary btn--thin btn--narrow btn--small"
+                               data-ga-event data-ga-event-category='download-version' data-ga-event-label="latest">
+                                {{#if_eq (fe file) 'csdb'}}structured
+                                    text{{else}}{{fe (lowercase (concat uri "/" file))}}{{/if_eq}}
+                                ({{fs (lowercase (concat uri "/" file))}})
+                            </a>
+                        {{/if}}
 
-                    {{/if}}
-
-                {{/each}}
+                    {{/each}}</div>
 
                 {{#if versions}}
 
-                    <h3 class="margin-top-md--5">Previous versions</h3>
+                    <h3>Previous versions</h3>
 
                     <table class="table-advanced margin-bottom-sm--4 margin-bottom-md--4">
                         <thead>
                         <tr>
-                            <th class="table-advanced__header" width="25%">Superseded files</th>
-                            <th class="table-advanced__header" width="55%">Reason for update</th>
+                            <th class="table-advanced__header" width="30%">Superseded files</th>
+                            <th class="table-advanced__header" width="50%">Reason for update</th>
                             <th class="table-advanced__header" width="20%">Date superseded</th>
                         </tr>
                         </thead>
@@ -151,17 +146,10 @@
                                         {{#each downloads}}
 
                                             {{#if file}}
-                                                <a href="/file?uri={{absolute (concat uri "/" this.file)}}" title="Download as {{fe (lowercase (concat uri "/" this.file))}}" class="btn btn--primary btn--thin btn--narrow btn--small {{#if @last}}margin-top--1{{/if}}"
+                                                <a href="/file?uri={{absolute (concat uri "/" this.file)}}" title="Download as {{fe (lowercase (concat uri "/" this.file))}}" class="btn btn--primary btn--thin btn--narrow btn--small clear-left {{#unless @first}}margin-top--1{{/unless}}"
                                                    data-ga-event data-ga-event-category='download-version' data-ga-event-label="{{df updateDate}}">
                                                     {{#if_eq (fe file) 'csdb'}}structured text{{else}}{{fe (lowercase (concat uri "/" file))}}{{/if_eq}} ({{fs (lowercase (concat uri "/" this.file))}})
                                                 </a>
-                                            {{!-- <form method="get" action="/file" {{#if_ne downloads.size 1}}class="inline"{{/if_ne}}>
-                                                 <button type="submit" title="Latest version" class="btn btn--primary btn--thin btn--narrow btn--small download-analytics">
-                                                     {{fe (lowercase (concat uri "/" this.file))}} ({{fs (lowercase (concat uri "/" this.file))}})
-                                                 </button>
-                                                 <input type="hidden" name="uri" value="{{absolute (concat uri "/" this.file)}}"/>
-                                             </form> --}}
-
                                             {{/if}}
 
                                         {{/each}}

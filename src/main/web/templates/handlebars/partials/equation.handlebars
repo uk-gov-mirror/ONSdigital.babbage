@@ -1,16 +1,10 @@
 {{!--Not having line breaks before and after the div markups breaks tables displaying on the page--}}
 <div class="markdown-equation-container print--avoid-break">
 
-    {{!--<div id="equation-{{filename}}" data-filename="{{filename}}" data-uri="{{uri}}" class="markdown-equation">--}}
-    {{!--<!--[if gt IE 8]><!--><noscript><!--[endif]-->--}}
-    {{!--<img src="/chartimage?uri={{uri}}&width={{width}}" alt="{{alt-text}}" />--}}
-    {{!--<!--[if gt IE 8]><!--></noscript><!--[endif]-->--}}
-    {{!--</div>--}}
-
     {{#resolveResource (concat uri (concat "/" (concat filename ".svg"))) }}
         {{{resource}}}
     {{/resolveResource}}
 
+  {{!--<img src="/resource?uri={{ concat uri (concat "/" (concat filename ".png")) }}" >--}}
+
 </div>
-
-
