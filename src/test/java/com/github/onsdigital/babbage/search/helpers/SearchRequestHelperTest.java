@@ -220,7 +220,9 @@ public class SearchRequestHelperTest {
     private void verifyDateUpdated(PublishDates result, int range) {
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.DAY_OF_MONTH, -1 * range);
-        assertThat("From date is incorrect.", result.publishedFrom(), equalTo(cal.getTime()));
+        long actual = result.publishedFrom().getTime() / 1000; // do not be sensitive to milliseconds / seconds
+        long expected = cal.getTime().getTime() / 1000; // do not be sensitive to milliseconds / seconds
+        assertThat("From date is incorrect.", actual, equalTo(expected));
     }
 
     private void setFrom(String day, String month, String year) {
