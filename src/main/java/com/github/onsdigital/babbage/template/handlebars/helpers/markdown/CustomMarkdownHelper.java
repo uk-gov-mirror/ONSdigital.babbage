@@ -57,6 +57,7 @@ public class CustomMarkdownHelper extends MarkdownHelper implements BabbageHandl
         markdown = new ChartTagReplacer(path, "partials/highcharts/chart").replaceCustomTags(markdown);
         markdown = new TableTagReplacer(path, "partials/table").replaceCustomTags(markdown);
         markdown = new ImageTagReplacer(path, "partials/image").replaceCustomTags(markdown);
+        markdown = new MathjaxTagReplacer(path, "partials/equation").replaceCustomTags(markdown);
         markdown = new InteractiveTagReplacer(path, "partials/interactive").replaceCustomTags(markdown);
         return markdown;
     }

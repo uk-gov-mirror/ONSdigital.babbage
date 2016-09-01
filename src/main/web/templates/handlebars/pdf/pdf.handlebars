@@ -77,7 +77,8 @@
 
         .page {
             padding: 0 0.5in;
-            float: left;
+            margin-bottom: 48px;
+            /*float: left;*/
         }
         .page__section {
             page-break-inside: avoid !important;
@@ -127,11 +128,11 @@
 
     <bookmarks>
         {{#each sections}}
-        <bookmark name="{{title}}" href="#{{@index_1}}" />
+        <bookmark name="{{title}}" href="#{{slugify title}}" />
         {{/each}}
         {{#if accordion}}
             {{#each accordion}}
-                <bookmark name="{{title}}" href="#{{nf (add sections.size @index_1)}}" />
+                <bookmark name="{{title}}" href="#{{slugify title}}" />
             {{/each}}
         {{/if}}
     </bookmarks>
@@ -140,100 +141,14 @@
 <body>
     <img src="https://www.ons.gov.uk/img/ons-logo.png" class="logo" width="199" height="39" alt="Office for National Statistics logo"/>
 
-    <div class="page-intro">
-        <div class="page-intro__content">
+    {{> pdf/partials/header}}
 
-            {{#if_eq type "bulletin"}}{{labels.statistical-bulletin}}{{/if_eq}}
-            {{#if_eq type "article"}}{{labels.article}}{{/if_eq}}
-            {{#if_eq type "compendium_landing_page"}}{{labels.compendium}}{{/if_eq}}
-            {{#if_eq type "compendium_chapter"}}{{labels.compendium}}{{/if_eq}}
-
-            <h1>{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}</h1>
-            <p class="page-intro_summary">{{#if description.summary}}{{description.summary}}{{else}}{{description._abstract}}{{/if}}</p>
-        </div>
-    </div>
-
-    <div class="meta">
-        <div class="meta__block meta__block--ns">
-            {{#if description.nationalStatistic}} <a class="icon--hide"
-                    href="https://www.statisticsauthority.gov.uk/national-statistician/types-of-official-statistics/"><img
-                    class="meta__image"
-                    src="https://www.ons.gov.uk/img/national-statistics.png"
-                    alt="National Statistics logo" width="47"
-                    height="47"/></a>{{/if}}
-        </div>
-        <div class="meta__block">
-            <p class="flush">
-                <span>{{labels.contact}}: </span><br/>{{description.contact.name}}<br/>{{description.contact.email}}
-            </p>
-        </div>
-        <div class="meta__block">
-            <p class="flush">
-                <span>{{labels.release-date}}: </span><br/>{{df description.releaseDate}}
-            </p>
-        </div>
-        <div class="meta__block">
-            <p class="flush">
-                <span>{{labels.next-release}}: </span><br/>{{#if description.nextRelease}}{{description.nextRelease}}{{else}}To be announced{{/if}}
-            </p>
-        </div>
-    </div>
-
-    <div class="page">
-        {{!-- CORRECTIONS AND ALERTS --}}
-        {{#if versions}}
-            <div class="correction">
-                <h2>Correction</h2>
-                {{#each versions}}
-                    <h3>{{df updateDate}}</h3>
-                    {{md correctionNotice}}
-                {{/each}}
-            </div>
-        {{/if}}
-
-        {{#if alerts}}
-            <div class="correction">
-                <h2>Notice</h2>
-                {{#each alerts}}
-                    <h3>{{df date}}</h3>
-                    {{md markdown}}
-                {{/each}}
-            </div>
-        {{/if}}
-
-        {{!-- TABLE OF CONTENTS --}}
-        <h2>Table of contents</h2>
-        <ol class="toc">
-            {{#each sections}}
-                <li>{{@index_1}}. <a href="#{{@index_1}}">{{title}}</a></li>
-            {{/each}}
-            {{#if accordion}}
-                {{#each accordion}}
-                    <li>{{nf (add sections.size @index_1)}}. <a href="#{{nf (add sections.size @index_1)}}">{{title}}</a></li>
-                {{/each}}
-            {{/if}}
-        </ol>
-
-        {{!-- SECTIONS --}}
-        {{#each sections}}
-            <section class="page__section" id="{{slugify title}}">
-                <header>
-                    <h2><a name="{{@index_1}}"></a><span class="section__content-number">{{@index_1}}.</span> {{title}}</h2>
-                </header>
-                {{pdf-md markdown}}
-            </section>
-        {{/each}}
-
-        {{!-- BACKGROUND NOTES --}}
-        {{#if accordion}}
-            {{#each accordion}}
-                <h2><a name="{{nf (add sections.size @index_1)}}"></a><span class="section__content-number">{{nf (add sections.size @index_1)}}.</span> {{title}}</h2>
-                {{pdf-md markdown}}
-            {{/each}}
-        {{/if}}
-
-    </div>
-
+    {{!-- DETECT WHICH PDF BODY TEMPLATE TO SERVE UP --}}
+    {{#if_any (eq type "bulletin") (eq type "article") (eq type "static_methodlogy") (eq type "compendium_chapter")}}
+        {{> pdf/partials/publication}}
+    {{/if_any}}
+    {{#if_eq type "compendium_landing_page"}}
+        {{> pdf/partials/compendium-landing}}
+    {{/if_eq}}
 </body>
-
 </html>

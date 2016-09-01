@@ -85,7 +85,7 @@ var linechart = {
    },
    yAxis: {
      title: {
-        text: {{#if description.preUnit}}description.preUnit{{else}}" "{{/if}} + {{#if description.unit}}description.unit{{else}}" "{{/if}},
+        text: {{#if fullDescription.description.preUnit}}description.preUnit{{else}}" "{{/if}} + {{#if fullDescription.description.unit}}description.unit{{else}}" "{{/if}},
        align: 'high',
        rotation: 360,
        x: -15,

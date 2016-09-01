@@ -126,7 +126,6 @@ public enum DataHelpers implements BabbageHandlebarsHelper<Object> {
 
         }
 
-
         @Override
         public void register(Handlebars handlebars) {
             handlebars.registerHelper(this.name(), this);

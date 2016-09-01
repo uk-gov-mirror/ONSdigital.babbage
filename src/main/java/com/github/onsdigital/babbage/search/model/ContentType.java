@@ -35,6 +35,7 @@ public enum ContentType {
     reference_tables,
     chart,
     table,
+    equation,
     departments; //departments type is index under departments index, not a part of ons index which has usual content
 
 

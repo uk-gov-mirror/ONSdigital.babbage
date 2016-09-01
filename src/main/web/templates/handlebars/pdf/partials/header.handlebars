@@ -1,0 +1,41 @@
+
+{{!-- HEADER --}}
+<div class="page-intro">
+    <div class="page-intro__content">
+
+        {{#if_eq type "bulletin"}}{{labels.statistical-bulletin}}{{/if_eq}}
+        {{#if_eq type "article"}}{{labels.article}}{{/if_eq}}
+        {{#if_eq type "static_methodlogy"}}{{labels.methodology}}{{/if_eq}}
+        {{#if_eq type "compendium_landing_page"}}{{labels.compendium}}{{/if_eq}}
+        {{#if_eq type "compendium_chapter"}}{{labels.compendium}}{{/if_eq}}
+
+        <h1>{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}</h1>
+        <p class="page-intro_summary">{{#if description.summary}}{{description.summary}}{{else}}{{description._abstract}}{{/if}}</p>
+    </div>
+</div>
+
+<div class="meta">
+    <div class="meta__block meta__block--ns">
+        {{#if description.nationalStatistic}} <a class="icon--hide"
+                                                 href="https://www.statisticsauthority.gov.uk/national-statistician/types-of-official-statistics/"><img
+                class="meta__image"
+                src="https://www.ons.gov.uk/img/national-statistics.png"
+                alt="National Statistics logo" width="47"
+                height="47"/></a>{{/if}}
+    </div>
+    <div class="meta__block">
+        <p class="flush">
+            <span>{{labels.contact}}: </span><br/>{{description.contact.name}}<br/>{{description.contact.email}}
+        </p>
+    </div>
+    <div class="meta__block">
+        <p class="flush">
+            <span>{{labels.release-date}}: </span><br/>{{df description.releaseDate}}
+        </p>
+    </div>
+    <div class="meta__block">
+        <p class="flush">
+            <span>{{labels.next-release}}: </span><br/>{{#if description.nextRelease}}{{description.nextRelease}}{{else}}To be announced{{/if}}
+        </p>
+    </div>
+</div>
