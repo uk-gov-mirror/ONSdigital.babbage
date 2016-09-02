@@ -108,6 +108,25 @@ public class ChartRenderer {
         }
     }
 
+    /**
+     * Fetches configuration from Zebedee Reader and renders self contained chart html
+     * <p>
+     * Optionally takes a width parameter, width is 600 by default, if width exceeds max, max width will be applied, if it is smaller than min, min width will apply
+     */
+    public void renderEmbeddedChart(HttpServletRequest request, HttpServletResponse response) throws IOException, ContentReadException {
+        String uri = request.getParameter("uri");
+        if (assertUri(uri, request, response)) {
+            ContentResponse contentResponse = ContentClient.getInstance().getContent(uri);
+            LinkedHashMap<String, Object> additionalData = new LinkedHashMap<>();
+            additionalData.put("width", getWidth(request));
+
+            // render the template - ensure pym is included.
+
+            new BabbageContentBasedStringResponse(contentResponse, TemplateService.getInstance().renderTemplate("highcharts/chart", contentResponse.getDataStream(), additionalData),
+                    MediaType.TEXT_HTML).applyEmbedded(request, response);
+        }
+    }
+
     private boolean assertUri(String uri, HttpServletRequest request, HttpServletResponse response) throws IOException {
         if (StringUtils.isEmpty(uri)) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);

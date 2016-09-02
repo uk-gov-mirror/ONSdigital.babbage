@@ -21,7 +21,7 @@ fi
 export EXPORT_SERVER_DIR="highcharts/exporting-server/java/highcharts-export"
 export EXPORT_SERVER_WEB="highcharts-export-web"
 export CWD=`pwd`
-export JAVA_OPTS="-Xrunjdwp:transport=dt_socket,address=9000,server=y,suspend=n"
+export JAVA_OPTS="-Dhttp.proxyPort=8888-Xrunjdwp:transport=dt_socket,address=9000,server=y,suspend=n"
 
 cd $EXPORT_SERVER_DIR && \
 mvn  clean install && \

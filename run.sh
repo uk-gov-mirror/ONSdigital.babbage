@@ -23,6 +23,7 @@ export EXPORT_SERVER_WEB="highcharts-export-web"
 export CWD=`pwd`
 export JAVA_OPTS="-Xrunjdwp:transport=dt_socket,address=9000,server=y,suspend=n"
 
+
 cd $EXPORT_SERVER_DIR && \
 mvn  clean install && \
 cd $EXPORT_SERVER_WEB && \
@@ -43,7 +44,7 @@ echo "export server pid: $exportserverpid"
 
 ### 4 - START BABBAGE
 
-export JAVA_OPTS="-Xmx512m -Xdebug -Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=n"
+export JAVA_OPTS="-Dhttp.socksProxyHost=127.0.0.1-Dhttp.socksProxyPort=8888-Xmx512m -Xdebug -Xrunjdwp:transport=dt_socket,address=8010,server=y,suspend=n"
 
 #External Taxonomy
 #export TAXONOMY_DIR=target/content
