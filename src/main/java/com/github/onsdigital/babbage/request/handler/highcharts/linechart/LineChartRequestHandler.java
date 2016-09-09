@@ -2,10 +2,9 @@ package com.github.onsdigital.babbage.request.handler.highcharts.linechart;
 
 import com.github.onsdigital.babbage.content.client.ContentClient;
 import com.github.onsdigital.babbage.content.client.ContentResponse;
-import com.github.onsdigital.babbage.request.handler.base.RequestHandler;
+import com.github.onsdigital.babbage.request.handler.base.BaseRequestHandler;
 import com.github.onsdigital.babbage.response.BabbageContentBasedStringResponse;
 import com.github.onsdigital.babbage.response.base.BabbageResponse;
-import com.github.onsdigital.babbage.response.BabbageStringResponse;
 import com.github.onsdigital.babbage.template.TemplateService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,7 +13,7 @@ import javax.ws.rs.core.MediaType;
 /**
  * Created by bren on 15/08/15.
  */
-public class LineChartRequestHandler implements RequestHandler {
+public class LineChartRequestHandler extends BaseRequestHandler {
     public static final String REQUEST_TYPE = "linechart";
 
     @Override

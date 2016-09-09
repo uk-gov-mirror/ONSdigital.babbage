@@ -2,24 +2,21 @@ package com.github.onsdigital.babbage.request.handler.highcharts.linechart;
 
 import com.github.onsdigital.babbage.content.client.ContentClient;
 import com.github.onsdigital.babbage.content.client.ContentFilter;
-import com.github.onsdigital.babbage.content.client.ContentReadException;
 import com.github.onsdigital.babbage.content.client.ContentResponse;
-import com.github.onsdigital.babbage.request.handler.base.RequestHandler;
+import com.github.onsdigital.babbage.request.handler.base.BaseRequestHandler;
 import com.github.onsdigital.babbage.response.BabbageContentBasedStringResponse;
 import com.github.onsdigital.babbage.response.base.BabbageResponse;
-import com.github.onsdigital.babbage.response.BabbageStringResponse;
 import com.github.onsdigital.babbage.template.TemplateService;
 import com.github.onsdigital.babbage.util.json.JsonUtil;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * Created by bren on 18/06/15.
  */
-public class LineChartConfigRequestHandler implements RequestHandler {
+public class LineChartConfigRequestHandler extends BaseRequestHandler {
 
     public static final String REQUEST_TYPE = "linechartconfig";
 

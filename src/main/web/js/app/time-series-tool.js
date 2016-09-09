@@ -50,12 +50,12 @@ var timeseriesTool = (function() {
                 success: function(data) {
                     var timeseries = {
                         uri: data.uri,
-                        cdid: data.description.cdid,
+                        datasetId: data.description.datasetId,
                         title: data.description.title
                     };
-                    timeseriesList[timeseries.cdid] = timeseries;
+                    timeseriesList[timeseries.uri] = timeseries;
                     addToPage(timeseries);
-                    check(findIn(resultsContainer, timeseries.cdid));
+                    check(findIn(resultsContainer, timeseries.uri));
                 }
             });
         }
@@ -140,9 +140,9 @@ var timeseriesTool = (function() {
 
         list.on("click", ".js-remove-selected", function() {
             var listElement = $(this).closest('li');
-            var id = getCdid(listElement);
-            removeElement(id);
-            uncheck(findIn(resultsContainer, id));
+            var uri = listElement.data('uri');
+            removeElement(uri);
+            uncheck(findIn(resultsContainer, uri));
             basket.focus();
         });
     }
@@ -194,14 +194,14 @@ var timeseriesTool = (function() {
     function addTimeSeries(element) {
         var timeseries = {
             uri: element.data('uri'),
-            cdid: getCdid(element),
+            datasetId: element.data('datasetid'),
             title: element.data('title')
         };
 
-        if (timeseriesList.hasOwnProperty(timeseries.cdid)) {
+        if (timeseriesList.hasOwnProperty(timeseries.uri)) {
             return; // it is already in the list    
         }
-        timeseriesList[timeseries.cdid] = timeseries;
+        timeseriesList[timeseries.uri] = timeseries;
         addToPage(timeseries);
         addToCookie(timeseries);
     }
@@ -219,36 +219,35 @@ var timeseriesTool = (function() {
 
     //Remove time series from forms and lists
     function removeTimeSeries(element) {
-        var id = getCdid(element),
-            uri = element.data('uri');
-        removeElement(id);
+        var uri = element.data('uri');
+        removeElement(uri);
     }
 
-    function removeElement(id) {
-        var timeseries = timeseriesList[id];
-        delete timeseriesList[id];
+    function removeElement(uri) {
+        var timeseries = timeseriesList[uri];
+        delete timeseriesList[uri];
         if (count(timeseriesList) === 0) {
             buttons.hide();
             noTimeseries.show();
         }
-        remove(list, id);
-        remove(xlsForm, id);
-        remove(csvForm, id);
+        remove(list, uri);
+        remove(xlsForm, uri);
+        remove(csvForm, uri);
         removeFromCookie(timeseries);
         updateCount();
     }
 
     function getListElementMarkup(timeseries) {
-        return '<li data-cdid="' + timeseries.cdid + '" class="flush col-wrap" data-uri="' + timeseries.uri + '"><p class="flush col col--md-22 col--lg-22">' + timeseries.title + '</p>' + '<div class="col col--md-4 col--lg-4"><button class="btn btn--primary btn--thin btn--small btn--narrow float-right margin-top-md--1 js-remove-selected">remove</button></div></li>';
+        return '<li class="flush col-wrap" data-uri="' + timeseries.uri + '"><p class="flush col col--md-22 col--lg-22">' + timeseries.title + ' (' + timeseries.datasetId + ')' + '</p>' + '<div class="col col--md-4 col--lg-4"><button class="btn btn--primary btn--thin btn--small btn--narrow float-right margin-top-md--1 js-remove-selected">remove</button></div></li>';
     }
 
     function getInputMarkup(timeseries) {
-        return '<input type="hidden" name="uri" data-cdid="' + timeseries.cdid + '" value="' + timeseries.uri + '"/>';
+        return '<input type="hidden" name="uri" data-uri="' + timeseries.uri + '" value="' + timeseries.uri + '"/>';
     }
 
-    //Remove time series with given cdid in given parent element
-    function remove(element, cdid) {
-        findIn(element, cdid).remove();
+    //Remove time series with given uri in given parent element
+    function remove(element, uri) {
+        findIn(element, uri).remove();
     }
 
     function count(o) {
@@ -263,14 +262,9 @@ var timeseriesTool = (function() {
         return $(".js-timeseriestool-select");
     }
 
-    function findIn(parent, cdid) {
-        var elem = parent.find('[data-cdid="' + cdid + '"]');
+    function findIn(parent, uri) {
+        var elem = parent.find('[data-uri="' + uri + '"]');
         return elem;
-    }
-
-    //returns cdid data attribute of element
-    function getCdid(element) {
-        return element.data('cdid');
     }
 
     //re-initializes various fields on js refresh of results
@@ -279,7 +273,7 @@ var timeseriesTool = (function() {
         //Checks all elements in basket on result list after results are refreshed
         getAllCheckboxes().each(function() {
             checkbox = $(this);
-            if (timeseriesList.hasOwnProperty(checkbox.data('cdid'))) {
+            if (timeseriesList.hasOwnProperty(checkbox.data('uri'))) {
                 check(checkbox);
             }
         });

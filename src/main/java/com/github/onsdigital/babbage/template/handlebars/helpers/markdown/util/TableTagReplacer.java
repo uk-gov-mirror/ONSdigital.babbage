@@ -16,9 +16,11 @@ import java.util.regex.Pattern;
 public class TableTagReplacer extends TagReplacementStrategy {
 
     private static final Pattern pattern = Pattern.compile("<ons-table\\spath=\"([-A-Za-z0-9+&@#/%?=~_|!:,.;()*$]+)\"?\\s?/>");
+    private final String template;
 
-    public TableTagReplacer(String path) {
+    public TableTagReplacer(String path, String template) {
         super(path);
+        this.template = template;
     }
 
     /**
@@ -46,7 +48,7 @@ public class TableTagReplacer extends TagReplacementStrategy {
 
         try {
             ContentResponse contentResponse = ContentClient.getInstance().getContent(figureUri);
-            String result = TemplateService.getInstance().renderTemplate("partials/table", contentResponse.getDataStream());
+            String result = TemplateService.getInstance().renderTemplate(template, contentResponse.getDataStream());
             return result;
         } catch (ContentReadException e) {
             System.err.println("Failed rendering table, uri:" + figureUri);

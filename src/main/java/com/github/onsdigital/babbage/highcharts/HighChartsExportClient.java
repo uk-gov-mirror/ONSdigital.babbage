@@ -4,9 +4,7 @@ import com.github.onsdigital.babbage.configuration.Configuration;
 import com.github.onsdigital.babbage.util.http.ClientConfiguration;
 import com.github.onsdigital.babbage.util.http.PooledHttpClient;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpPost;
 import org.apache.http.message.BasicNameValuePair;
 
 import java.io.IOException;
@@ -48,12 +46,19 @@ public class HighChartsExportClient {
     }
 
     public InputStream getImage(String chartConfig, Integer width) throws IOException {
+        return getImage(chartConfig, width, null);
+    }
+
+    public InputStream getImage(String chartConfig, Integer width, Double scale) throws IOException {
         System.out.println("Calling Highcharts export server");
         List<NameValuePair> postParameters = new ArrayList<>();
         postParameters.add(new BasicNameValuePair("options", chartConfig));
         postParameters.add(new BasicNameValuePair("type", "png"));
         if (width != null) {
             postParameters.add(new BasicNameValuePair("width", width.toString()));
+        }
+        if (scale != null) {
+            postParameters.add(new BasicNameValuePair("scale", scale.toString()));
         }
         postParameters.add(new BasicNameValuePair("async", "false"));
         CloseableHttpResponse response = client.sendPost("/", null, postParameters);

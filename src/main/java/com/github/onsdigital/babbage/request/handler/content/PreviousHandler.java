@@ -2,7 +2,7 @@ package com.github.onsdigital.babbage.request.handler.content;
 
 import com.github.onsdigital.babbage.content.client.ContentClient;
 import com.github.onsdigital.babbage.content.client.ContentResponse;
-import com.github.onsdigital.babbage.request.handler.base.RequestHandler;
+import com.github.onsdigital.babbage.request.handler.base.BaseRequestHandler;
 import com.github.onsdigital.babbage.response.BabbageContentBasedStringResponse;
 import com.github.onsdigital.babbage.response.base.BabbageResponse;
 import com.github.onsdigital.babbage.template.TemplateService;
@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 /**
  * Created by bren on 10/11/15.
  */
-public class PreviousHandler implements RequestHandler {
+public class PreviousHandler extends BaseRequestHandler {
 
     private static final String REQUEST_TYPE = "previous";
 

@@ -8,8 +8,9 @@ public class Configuration {
 
     /*General Babbage app settings*/
     public static class GENERAL {
-        private static final int MAX_VISIBLE_PAGINATOR_LINK = 10;
+        private static final int MAX_VISIBLE_PAGINATOR_LINK = 5;
         private static final int RESULTS_PER_PAGE = 10;
+        private static final int MAX_RESULTS_PER_PAGE = 250;
         //Should be the same as cut off time in Florence publishing system to ensure cache times are correct
         private static int DEFAULT_CACHE_TIME = 15 * 60; //in seconds, to be set as HTTP max age header
         private static int PUBLISH_CACHE_TIMEOUT  = 60 * 60; //If content that should be published is more than an hour due delete publish date to get it caching again
@@ -37,9 +38,18 @@ public class Configuration {
             return RESULTS_PER_PAGE;
         }
 
+        public static int getMaxResultsPerPage() {
+            return MAX_RESULTS_PER_PAGE;
+        }
+
         public static boolean isDevEnvironment() {
             String devEnvironment = StringUtils.defaultIfBlank(getValue("DEV_ENVIRONMENT"), "N");
             return "Y".equals(devEnvironment);
+        }
+
+        public static boolean isPublishing() {
+            String isPublishing = StringUtils.defaultIfBlank(getValue("IS_PUBLISHING"), "N");
+            return "Y".equals(isPublishing);
         }
 
         public static int getPublishCacheTimeout() {

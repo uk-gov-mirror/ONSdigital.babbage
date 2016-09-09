@@ -60,7 +60,9 @@
                     {{#if description.nationalStatistic}}
 
                         <div class="col col--md-4 {{#if_all description.surveyName description.frequency description.compilation description.sampleSize description.geographicCoverage}}col--lg-5{{else}}col--lg-4{{/if_all}}">
-                            <img class="meta__image padding-left padding-top--half" src="/img/national-statistics.png" alt="National Statistics logo"/>
+                            <a class="icon--hide" href="https://www.statisticsauthority.gov.uk/national-statistician/types-of-official-statistics/"><img
+                                    class="meta__image padding-left padding-top--half"
+                                    src="/img/national-statistics.png" alt="National Statistics logo"/></a>
                         </div>
                         {{#if description.surveyName}}
                             <p class="col {{#if_all description.surveyName description.frequency description.compilation description.sampleSize description.geographicCoverage}}col--md-8 col--lg-11{{else}}col--md-11 col--lg-14{{/if_all}} meta__item">

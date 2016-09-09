@@ -2,5 +2,4 @@
 
 export WEB_DIRECTORY="./src/main/web"
 
-npm --branch=develop --prefix $WEB_DIRECTORY install
-
+npm --no-bin-links --prefix $WEB_DIRECTORY --sixteens-branch=develop install

@@ -3,7 +3,6 @@ package com.github.onsdigital.babbage.highcharts;
 import com.github.onsdigital.babbage.content.client.ContentClient;
 import com.github.onsdigital.babbage.content.client.ContentReadException;
 import com.github.onsdigital.babbage.content.client.ContentResponse;
-import com.github.onsdigital.babbage.response.BabbageBinaryResponse;
 import com.github.onsdigital.babbage.response.BabbageContentBasedBinaryResponse;
 import com.github.onsdigital.babbage.response.BabbageContentBasedStringResponse;
 import com.github.onsdigital.babbage.response.BabbageStringResponse;

@@ -1,0 +1,154 @@
+<html {{> partials/subdomain-lang }}>
+<head>
+    <link href="css/pdf.css" media="print" rel="stylesheet" type="text/css" />
+    <title>{{> partials/page-title}}</title>
+    <style>
+        @page {
+            margin: 0.25in 0 0.5in 0;
+            size: a4;
+
+            @bottom-right {
+                content: "Page " counter(page) " of " counter(pages);
+                font-family: Tahoma, Verdana, Arial, sans-serif !important;
+                font-size: 12px;
+                padding-right: 0.25in;
+            }
+        }
+
+        * {
+            font-family: Tahoma, Verdana, Arial, sans-serif !important;
+        }
+
+        p, li {
+            font-size: 14px;
+        }
+
+        .logo {
+            margin-bottom: 0.3in;
+            margin-left: 0.5in;
+            display: block;
+        }
+
+        .page-intro {
+            background-color: #EAEAEA;
+            border-top: 1px solid #D0D2D3;
+
+        }
+
+        .page-intro__content {
+            padding: 0.25in 0.5in;
+        }
+
+        .page-intro_summary {
+            font-size: 18px;
+        }
+
+        .meta {
+            background-color: #E5E5E7;
+            border-top: 1px solid #D0D2D3;
+            border-bottom: 1px solid #D0D2D3;
+            height: 50px;
+            padding: 25px 50px;
+        }
+
+        .meta__block {
+            width: 30%;
+            float: left;
+            margin-bottom: 0.5in;
+        }
+
+        .meta__block--ns {
+            width: 8%;
+        }
+
+        .correction {
+            page-break-after: always;
+        }
+
+        .toc {
+            margin-left: 0;
+            padding-left: 0;
+            page-break-after: always;
+        }
+
+        .toc li {
+            list-style: none;
+        }
+
+        .page {
+            padding: 0 0.5in;
+            margin-bottom: 48px;
+            /*float: left;*/
+        }
+        .page__section {
+            page-break-inside: avoid !important;
+        }
+        .page li,
+        .page__section li {
+            margin-bottom: 14pt;
+        }
+        h2, h3, h4, h5 {
+            page-break-after: avoid !important;
+        }
+        p {
+            page-break-before: avoid;
+        }
+
+        .markdown-chart-container,
+        .markdown-table-container,
+        table {
+            page-break-inside: avoid;
+        }
+
+        tr {
+            page-break-after: avoid;
+            page-break-before: avoid;
+            page-break-inside: avoid;
+        }
+
+        td {
+            vertical-align: top;
+        }
+
+        /* Fix for table rows breaking over pages - http://stackoverflow.com/questions/9288802/avoid-page-break-inside-row-of-table */
+        table tr td:before,
+        table tr td:after,
+        table tr th:before,
+        table tr th:after {
+            content: '';
+            height: 4px;
+            display: block;
+            page-break-inside: avoid;
+        }
+
+        .flush {
+            margin: 0;
+        }
+    </style>
+
+    <bookmarks>
+        {{#each sections}}
+        <bookmark name="{{title}}" href="#{{slugify title}}" />
+        {{/each}}
+        {{#if accordion}}
+            {{#each accordion}}
+                <bookmark name="{{title}}" href="#{{slugify title}}" />
+            {{/each}}
+        {{/if}}
+    </bookmarks>
+
+</head>
+<body>
+    <img src="https://www.ons.gov.uk/img/ons-logo.png" class="logo" width="199" height="39" alt="Office for National Statistics logo"/>
+
+    {{> pdf/partials/header}}
+
+    {{!-- DETECT WHICH PDF BODY TEMPLATE TO SERVE UP --}}
+    {{#if_any (eq type "bulletin") (eq type "article") (eq type "static_methodlogy") (eq type "compendium_chapter")}}
+        {{> pdf/partials/publication}}
+    {{/if_any}}
+    {{#if_eq type "compendium_landing_page"}}
+        {{> pdf/partials/compendium-landing}}
+    {{/if_eq}}
+</body>
+</html>

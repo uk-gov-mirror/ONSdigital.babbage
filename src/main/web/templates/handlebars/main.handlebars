@@ -14,7 +14,6 @@
         <meta name="format-detection" content="telephone=no">
         <meta name="theme-color" content="#58595B">
         <meta name="apple-mobile-web-app-status-bar-style" content="#58595B">
-        <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
 
 		<!--[if IE]><![endif]-->
 		<!--[if lte IE 8]>
@@ -29,15 +28,20 @@
         <![endif]-->
 	</head>
 	<body class="{{type}}">
+
+        {{!-- Sends a message out of window - for Florance preview use, so that she can see when the preview window is loading (rather than looking for the iframe onload event which is only fired after all JS has loaded) --}}
+        {{#if is_publishing}}
+             <script>
+                 window.onunload = function(){
+                     top.postMessage('load', '*');
+                 }
+             </script>
+        {{/if}}
 		{{#if is_dev}}
 			<script>
 				document.secureCookies = false;
 			</script>
 		{{/if}}
-
-        <!--[if gt IE 8]><!-->
-		<script type="text/javascript" src="/js/js-enhance-loading.js"></script>
-        <![endif]-->
 
 		{{!-- Main handlebars is the main file rendered by handlebars.
 		performs type check on content type and decides which template to render  --}}
@@ -77,6 +81,7 @@
 		{{!-- Charts and tables and images--}}
 		{{else if_eq type "chart"}} 						{{> highcharts/chart}}
 		{{else if_eq type "table"}} 						{{> table}}
+		{{else if_eq type "equation"}} 						{{> partials/equation}}
 
 		{{!-- List Pages --}}
 		{{else if_eq type "list"}}
@@ -129,6 +134,21 @@
                     return location.search;
                 }
             }
+
+            // Measure time on page - credit to http://help.analyticsedge.com/googleanalytics/measuring-time-on-bounce-page/
+            function timer11(){ga('send', 'event', 'TimeOnPage', '1', '11-30 seconds', { 'nonInteraction': 1 });}
+            function timer31(){ga('send', 'event', 'TimeOnPage', '2', '31-60 seconds', { 'nonInteraction': 1 });}
+            function timer61(){ga('send', 'event', 'TimeOnPage', '3', '61-180 seconds', { 'nonInteraction': 1 });}
+            function timer181(){ga('send', 'event', 'TimeOnPage', '4', '181-600 seconds', { 'nonInteraction': 1 });}
+            function timer601(){ga('send', 'event', 'TimeOnPage', '5', '601-1800 seconds', { 'nonInteraction': 1 });}
+            function timer1801(){ga('send', 'event', 'TimeOnPage', '6', '1801+ seconds', { 'nonInteraction': 1 });}
+            ga('send', 'event', 'TimeOnPage', '0', '0-10 seconds', { 'nonInteraction': 1 });
+            setTimeout(timer11,11000);
+            setTimeout(timer31,31000);
+            setTimeout(timer61,61000);
+            setTimeout(timer181,181000);
+            setTimeout(timer601,601000);
+            setTimeout(timer1801,1801000);
         </script>
 	</body>
 </html>

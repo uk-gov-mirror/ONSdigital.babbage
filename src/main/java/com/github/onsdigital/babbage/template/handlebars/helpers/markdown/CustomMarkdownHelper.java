@@ -46,12 +46,20 @@ public class CustomMarkdownHelper extends MarkdownHelper implements BabbageHandl
 
         markdown = SubscriptHelper.doSubscript(markdown);
         markdown = SuperscriptHelper.doSuperscript(markdown);
-        markdown = new ChartTagReplacer(path).replaceCustomTags(markdown);
-        markdown = new TableTagReplacer(path).replaceCustomTags(markdown);
-        markdown = new ImageTagReplacer(path).replaceCustomTags(markdown);
-        markdown = new InteractiveTagReplacer(path).replaceCustomTags(markdown);
+
+        markdown = processCustomMarkdownTags(path, markdown);
+
         //markdown = MathjaxRenderer.render(markdown);
         return new Handlebars.SafeString(markdown) ;
+    }
+
+    protected String processCustomMarkdownTags(String path, String markdown) throws IOException {
+        markdown = new ChartTagReplacer(path, "partials/highcharts/chart").replaceCustomTags(markdown);
+        markdown = new TableTagReplacer(path, "partials/table").replaceCustomTags(markdown);
+        markdown = new ImageTagReplacer(path, "partials/image").replaceCustomTags(markdown);
+        markdown = new MathjaxTagReplacer(path, "partials/equation").replaceCustomTags(markdown);
+        markdown = new InteractiveTagReplacer(path, "partials/interactive").replaceCustomTags(markdown);
+        return markdown;
     }
 
     @Override

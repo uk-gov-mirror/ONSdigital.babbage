@@ -1,22 +1,77 @@
 <fieldset class="filters__fieldset">
-    <legend class="filters__title">Release date</legend>
-    <ul class="list--neutral margin-top--0">
-        {{!-- Using date format to ensure entered date is correct date format and gibberish does not end up in input box, which should make user understand date filter did not take affect --}}
-        <li class="filters__item">
-            <div class="filters__field">
-                <label for="input-start-date">Published after</label>
-                <input type="text" autocomplete="off" id="input-start-date" name="fromDate"
-                       value="{{df parameters.fromDate.0 outputFormat="dd/MM/yyyy" inputFormat="dd/MM/yyyy"}}"
-                       placeholder="e.g. 23/01/2015" class="input minical_input js-auto-submit__input">
-            </div>
-        </li>
-        <li class="filters__item">
-            <div class="filters__field">
-                <label for="input-end-date">Published before</label>
-                <input type="text" autocomplete="off" id="input-end-date" name="toDate"
-                       value="{{df parameters.toDate.0 outputFormat="dd/MM/yyyy" inputFormat="dd/MM/yyyy"}}"
-                       placeholder="e.g. 23/02/2015" class="input minical_input js-auto-submit__input">
-            </div>
-        </li>
-    </ul>
+    <legend class="filters__title">
+        Published after
+        {{!-- Hidden text to help screen reader users when they focus on first input --}}
+        <span class="hide" id="date-hint">For example, 29 4 2016</span>
+    </legend>
+    <div class="js-auto-submit__error filters__error" id="from-date-error">
+        {{#each errors}}
+            {{#if_eq  @key 'publishedFrom'}}
+                <p class="margin-top--0 margin-bottom--0">{{@value}}</p>
+            {{/if_eq }}
+        {{/each}}
+    </div>
+    <div id="inputs-start-date">
+        <div class="filters__date filters__date--day">
+            <label for="fromDateDay">Day</label>
+            <input type="number" autocomplete="off" name="fromDateDay"
+                   value="{{df parameters.fromDateDay.0 outputFormat="d" inputFormat="d"}}"
+                   class="js-auto-submit__input js-auto-submit__input--date"
+                   min="0" max="31" pattern="[0-9]*" aria-describedby="date-hint">
+        </div>
+        <div class="filters__date filters__date--month">
+            <label for="fromDateMonth">Month</label>
+            <input type="number" autocomplete="off" name="fromDateMonth"
+                   value="{{df parameters.fromDateMonth.0 outputFormat="M" inputFormat="M"}}"
+                   class="js-auto-submit__input js-auto-submit__input--date"
+                   min="1" max="12" maxlength="2" pattern="[0-9]*">
+        </div>
+        <div class="filters__date filters__date--year">
+            <label for="fromDateYear">Year</label>
+            <input type="number" autocomplete="off" name="fromDateYear"
+                   value="{{df parameters.fromDateYear.0 outputFormat="yyyy" inputFormat="yyyy"}}"
+                   class="js-auto-submit__input js-auto-submit__input--date"
+                   min="1900" max="2050" maxlength="4" pattern="[0-9]*">
+        </div>
+    </div>
+
+    {{> list/partials/date-picker buttonId="js-start-date" datepickerId="dp1"}}
+</fieldset>
+
+<fieldset class="filters__fieldset">
+    <legend class="filters__title">
+        Published before
+    </legend>
+    <div class="js-auto-submit__error filters__error" id="to-date-error">
+        {{#each errors}}
+            {{#if_eq  @key 'publishedBefore'}}
+                <p class="margin-top--0 margin-bottom--0">{{@value}}</p>
+            {{/if_eq }}
+        {{/each}}
+    </div>
+    <div id="inputs-end-date">
+        <div class="filters__date filters__date--day">
+            <label for="toDateDay">Day</label>
+            <input type="number" autocomplete="off" name="toDateDay"
+                   value="{{df parameters.toDateDay.0 outputFormat="d" inputFormat="d"}}"
+                   class="js-auto-submit__input js-auto-submit__input--date"
+                   min="0" max="31" pattern="[0-9]*" aria-describedby="date-hint">
+        </div>
+        <div class="filters__date filters__date--month">
+            <label for="toDateMonth">Month</label>
+            <input type="number" autocomplete="off" name="toDateMonth"
+                   value="{{df parameters.toDateMonth.0 outputFormat="M" inputFormat="M"}}"
+                   class="js-auto-submit__input js-auto-submit__input--date"
+                   min="1" max="12" maxlength="2" pattern="[0-9]*">
+        </div>
+        <div class="filters__date filters__date--year">
+            <label for="toDateYear">Year</label>
+            <input type="number" autocomplete="off" name="toDateYear"
+                   value="{{df parameters.toDateYear.0 outputFormat="yyyy" inputFormat="yyyy"}}"
+                   class="js-auto-submit__input js-auto-submit__input--date"
+                   min="1900" max="2050" maxlength="4" pattern="[0-9]*">
+        </div>
+    </div>
+
+    {{> list/partials/date-picker buttonId="js-end-date" datepickerId="dp2"}}
 </fieldset>

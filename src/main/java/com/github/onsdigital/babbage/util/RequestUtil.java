@@ -23,6 +23,7 @@ public class RequestUtil {
     public static final String LABELS_KEY = "labels";
     public static final String LANG_KEY = "lang";
     public static final String IS_DEV_KEY = "is_dev";
+    public static final String IS_PUBLISHING = "is_publishing";
 
     /**
      * Saves Authentication token and collection id to thread context if available when a request is made to babbage,
@@ -40,6 +41,7 @@ public class RequestUtil {
         ThreadContext.addData(LANG_KEY, locale.getLanguage());
         ThreadContext.addData(LOCATION_KEY, getLocation(request));
         ThreadContext.addData(IS_DEV_KEY, Configuration.GENERAL.isDevEnvironment());
+        ThreadContext.addData(IS_PUBLISHING, Configuration.GENERAL.isPublishing());
     }
 
     public static void clearContext() {

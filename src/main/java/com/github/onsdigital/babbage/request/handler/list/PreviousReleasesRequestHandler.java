@@ -4,6 +4,7 @@ import com.github.onsdigital.babbage.content.client.ContentClient;
 import com.github.onsdigital.babbage.content.client.ContentReadException;
 import com.github.onsdigital.babbage.content.client.ContentResponse;
 import com.github.onsdigital.babbage.error.ResourceNotFoundException;
+import com.github.onsdigital.babbage.request.handler.base.BaseRequestHandler;
 import com.github.onsdigital.babbage.request.handler.base.ListRequestHandler;
 import com.github.onsdigital.babbage.response.base.BabbageResponse;
 import com.github.onsdigital.babbage.search.helpers.base.SearchFilter;
@@ -25,7 +26,7 @@ import static com.github.onsdigital.babbage.util.URIUtil.removeLastSegment;
 /**
  * Render a list page for the given URI.
  */
-public class PreviousReleasesRequestHandler implements ListRequestHandler {
+public class PreviousReleasesRequestHandler extends BaseRequestHandler implements ListRequestHandler {
 
     private static Set<TypeFilter> publicationFilters = TypeFilter.getPublicationFilters();
 

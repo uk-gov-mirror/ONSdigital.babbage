@@ -84,7 +84,7 @@
 
 			{{!-- Checkbox --}}
 			<div class="input__wrapper col col--md-3 col--lg-3 margin-left-md--1 padding-left-md--1 padding-bottom-sm" >
-				<input  type="checkbox" name="" data-title="{{description.title}}" data-cdid="{{description.cdid}}" data-uri="{{uri}}"  value="" class="timeseries__select js-timeseriestool-select js--show" aria-label="{{description.title}}">
+				<input  type="checkbox" name="" data-title="{{description.title}}" data-cdid="{{description.cdid}}" data-datasetId="{{description.datasetId}}" data-uri="{{uri}}" value="" class="timeseries__select js-timeseriestool-select js--show" aria-label="{{description.title}}">
 			</div>
 
 			{{!-- Title --}}
@@ -107,7 +107,7 @@
             {{!-- Units --}}
 			<div class="col-wrap">
 				<div class="col col--md-18 col--lg-20 margin-left-md--5 margin-bottom-md--2">
-					<p class="search-results__meta flush--sm">Series ID: {{{description.cdid}}}{{#if description.unit}} | Units: {{description.unit}}{{else}}&nbsp;{{/if}}</p>
+					<p class="search-results__meta flush--sm">Dataset ID: {{{description.datasetId}}} | Series ID: {{{description.cdid}}}{{#if description.unit}} | Units: {{description.unit}}{{else}}&nbsp;{{/if}}</p>
 				</div>
 			</div>
 

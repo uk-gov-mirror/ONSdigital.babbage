@@ -70,21 +70,6 @@
                 <h3 class="margin-top-md--4">Latest version</h3>
                 <a href="/generator?format=xls&uri={{absolute uri}}" class="btn btn--primary btn--thin btn--narrow btn--small" data-ga-event data-ga-event-category='download-version' data-ga-event-label="latest-xls">Download .xls</a>
                 <a href="/generator?format=csv&uri={{absolute uri}}" class="btn btn--primary btn--thin btn--narrow btn--small" data-ga-event data-ga-event-category='download-version' data-ga-event-label="latest-csv">Download .csv</a>
-                {{!-- <form method="get" action="/generator" class="inline print--hide">
-                     <button type="submit" title="Download XLS" class="btn btn--primary btn--thin btn--narrow btn--small download-analytics">
-                         Download .xls
-                     </button>
-                     <input type="hidden" name="format" value="xls"/>
-                     <input type="hidden" name="uri" value="{{absolute uri}}"/>
-                 </form> --}}
-
-                {{!-- <form method="get" action="/generator" class="inline print--hide">
-                     <button type="submit" title="Download CSV" class="btn btn--primary btn--thin btn--narrow btn--small download-analytics">
-                         Download .csv
-                     </button>
-                     <input type="hidden" name="format" value="csv"/>
-                     <input type="hidden" name="uri" value="{{absolute uri}}"/>
-                 </form> --}}
 
                 {{#if versions}}
 
@@ -93,37 +78,21 @@
                     <table class="table-advanced margin-bottom-sm--4 margin-bottom-md--4">
                         <thead>
                         <tr>
-                            <th width="25%">Superseded files</th>
-                            <th width="55%">Reason for update</th>
-                            <th width="20%">Date superseded</th>
+                            <th class="table-advanced__header" width="20%">Superseded files</th>
+                            <th class="table-advanced__header" width="55%">Reason for update</th>
+                            <th class="table-advanced__header" width="25%">Date superseded</th>
                         </tr>
                         </thead>
                         <tbody>
                         {{#loop versions reverse=true}}
                             <tr>
                                 <td>
-                                    <a href="/generator?format=xls&uri={{absolute uri}}" class="btn btn--primary btn--thin btn--narrow btn--small" data-ga-event data-ga-event-category="download-version-xls" data-ga-event-label="{{df updateDate}}">
+                                    <a href="/generator?format=xls&uri={{absolute uri}}" class="btn btn--primary btn--thin btn--narrow btn--small block width--7" data-ga-event data-ga-event-category="download-version-xls" data-ga-event-label="{{df updateDate}}">
                                         Download .xls
                                     </a>
-                                    <a href="/generator?format=csv&uri={{absolute uri}}" class="btn btn--primary btn--thin btn--narrow btn--small" data-ga-event data-ga-event-category="download-version-csv" data-ga-event-label="{{df updateDate}}">
+                                    <a href="/generator?format=csv&uri={{absolute uri}}" class="btn btn--primary btn--thin btn--narrow btn--small block width--7 margin-top--1" data-ga-event data-ga-event-category="download-version-csv" data-ga-event-label="{{df updateDate}}">
                                         Download .csv
                                     </a>
-                                    {{!-- <form method="get" action="/generator" class="inline print--hide">
-                                         <button type="submit" title="Download XLS" class="btn btn--primary btn--thin btn--narrow btn--small download-analytics">
-                                             Download .xls
-                                         </button>
-                                         <input type="hidden" name="format" value="xls"/>
-                                         <input type="hidden" name="uri" value="{{absolute uri}}"/>
-                                     </form> --}}
-
-                                    {{!-- <form method="get" action="/generator" class="inline print--hide">
-                                         <button type="submit" title="Download CSV" class="btn btn--primary btn--thin btn--narrow btn--small download-analytics">
-                                             Download .csv
-                                         </button>
-                                         <input type="hidden" name="format" value="csv"/>
-                                         <input type="hidden" name="uri" value="{{absolute uri}}"/>
-                                     </form> --}}
-
                                 </td>
                                 <td>
                                     {{#if correctionNotice}}
@@ -135,7 +104,7 @@
                                             </div>
 
                                             <div class="js-show-hide__content">
-                                                {{correctionNotice}}
+                                                {{md correctionNotice}}
                                             </div>
 
                                         </div>

@@ -1,0 +1,10 @@
+{{!--Not having line breaks before and after the div markups breaks tables displaying on the page--}}
+<div class="markdown-equation-container print--avoid-break">
+
+    {{#resolveResource (concat uri (concat "/" (concat filename ".svg"))) }}
+        {{{resource}}}
+    {{/resolveResource}}
+
+  {{!--<img src="/resource?uri={{ concat uri (concat "/" (concat filename ".png")) }}" >--}}
+
+</div>

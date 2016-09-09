@@ -62,17 +62,16 @@
                                 <div id="unfiltered-download-controls" class="chart-area__controls__download chart-area__controls__download--unfiltered width--22 padding-top--2 padding-bottom--2" aria-hidden="false">
                                     <div class="chart-area__controls__custom__container">
                                         <p class="flush">{{labels.download-full-time-series-as}}:</p>
-                                        <a href="{{uri}}/linechartimage" title="Download as an image" class="btn btn--primary" data-ga-event data-ga-event-category="download-image" data-ga-event-label="unfiltered">{{labels.image}}</a>
+                                        <a href="{{uri}}/linechartimage" title="Download as an image" class="btn btn--primary" data-ga-event data-ga-event-category="download-image" data-ga-event-label="unfiltered" download="{{description.title}}">{{labels.image}}</a>
                                         <a class="btn btn--primary" title="Download as csv" href="/generator?format=csv&uri={{uri}}" data-ga-event data-ga-event-category="download-csv" data-ga-event-label="unfiltered">.csv</a>
                                         <a class="btn btn--primary" title="Download as xls" href="/generator?format=xls&uri={{uri}}" data-ga-event data-ga-event-category="download-xls" data-ga-event-label="unfiltered">.xls</a>
                                     </div>
                                 </div>
-
                                 {{!-- Filtered - parameters added dynamically--}}
                                 <div id="filtered-download-controls" class="chart-area__controls__download chart-area__controls__download--filtered width--22 padding-top--2 padding-bottom--2" aria-hidden="true">
                                     <div class="chart-area__controls__custom__container">
                                         <p class="flush"> {{labels.download-filtered-time-series-as}}:</p>
-                                        <a href="{{uri}}/linechartimage" title="Download as an image" class="btn btn--primary dlCustomData" data-ga-event data-ga-event-category="download-image" data-ga-event-label="filtered">{{labels.image}}</a>
+                                        <a href="{{uri}}/linechartimage" title="Download as an image" class="btn btn--primary dlCustomData" data-ga-event data-ga-event-category="download-image" data-ga-event-label="filtered" download="{{description.title}}">{{labels.image}}</a>
                                         <a class="btn btn--primary dlCustomData" title="Download as csv" href="/generator?format=csv&uri={{uri}}" data-ga-event data-ga-event-category="download-csv" data-ga-event-label="filtered">.csv</a>
                                         <a class="btn btn--primary dlCustomData" title="Download as xls" href="/generator?format=xls&uri={{uri}}" data-ga-event data-ga-event-category="download-xls" data-ga-event-label="filtered">.xls</a>
                                     </div>
@@ -175,6 +174,28 @@
 				</div>
 			</div>
 		</div>
+
+        {{#resolveTimeSeriesList (parentPath uri) }}
+
+
+            {{#if_ne result.results.size 1}}
+
+            <div class="col col--lg-59 padding-top--0 padding-right--1 padding-bottom--0 padding-left--1 margin-left-md--0 margin-bottom--2 background--gallery" id="otherdatasets">
+                <h2 class="margin-top--3">Variations of this time series in other datasets</h2>
+                <ul class="list--neutral">
+                    {{#each result.results}}
+
+                        <li class="flush"><p class="flush">
+                        <a href="{{uri}}">{{ description.cdid }}: {{#resolve description.datasetUri}}{{description.title}}{{/resolve}}</a> ({{description.datasetId}}), released on {{df description.releaseDate}}
+                        </p></li>
+                    {{/each}}
+                </ul>
+
+            </div>
+
+            {{/if_ne}}
+
+        {{/resolveTimeSeriesList}}
 	</div>
 
 	<div class="wrapper">
@@ -182,14 +203,18 @@
 			{{#if relatedDocuments}}
 				<div class="col {{#if_all relatedDocuments relatedMethodology}}col--md-one-third col--lg-one-third{{else}}col--md-half col--lg-half{{/if_all}} background--mercury margin-bottom-sm--2 margin-bottom-md--2">
 					{{#partial "block-documents-title"}}
-						<h2 class="tiles__title-h2 tiles__title-h2--nav">{{labels.publications-that-use-this-data}}</h2>
+                        <div class="background--gallery padding-top-md--2 padding-top-sm--2 padding-right-md--1 padding-right-sm--1 padding-bottom-sm--3 padding-bottom-md--4 padding-left-md--1 padding-left-sm--1 border-bottom--iron-md border-bottom--iron-sm height-md--10">
+                            <h2 class="flush">
+                                {{labels.publications-that-use-this-data}}
+                            </h2>
+                        </div>
 					{{/partial}}
 					{{> partials/related/documents}}
 				</div>
 			{{/if}}
 			{{#if relatedMethodology}}
 				<div class="col {{#if_all relatedDocuments relatedMethodology}}col--md-one-third col--lg-one-third{{else}}col--md-half col--lg-half{{/if_all}} background--mercury margin-bottom-sm--2 margin-bottom-md--2">
-					<div class="background--gallery padding-top-md--2 padding-top-sm--2 padding-right-md--1 padding-right-sm--1 padding-bottom-sm--3 padding-bottom-md--4 padding-left-md--1 padding-left-sm--1 border-bottom--iron-md border-bottom--iron-sm">
+					<div class="background--gallery padding-top-md--2 padding-top-sm--2 padding-right-md--1 padding-right-sm--1 padding-bottom-sm--3 padding-bottom-md--4 padding-left-md--1 padding-left-sm--1 border-bottom--iron-md border-bottom--iron-sm height-md--10">
 						<h2 class="flush">
 							{{labels.methodology}}
 						</h2>
@@ -206,12 +231,12 @@
 				</div>
 			{{/if}}
 			<div class="col {{#if_all relatedDocuments relatedMethodology}}col--md-one-third col--lg-one-third{{else}}col--md-half col--lg-half{{/if_all}} background--mercury margin-bottom-sm--2 margin-bottom-md--2">
-				<div class="background--gallery padding-top-md--2 padding-top-sm--2 padding-right-md--1 padding-right-sm--1 padding-bottom-sm--3 padding-bottom-md--4 padding-left-md--1 padding-left-sm--1">
+				<div class="background--gallery padding-top-md--2 padding-top-sm--2 padding-right-md--1 padding-right-sm--1 padding-bottom-sm--3 padding-bottom-md--4 padding-left-md--1 padding-left-sm--1 border-bottom--iron-md border-bottom--iron-sm height-md--10">
 					<h2 class="flush">
 						{{labels.contact-details-for-this-data}}
 					</h2>
 				</div>
-				<div class="box__content padding-top-sm--1 padding-top-md--1 padding-bottom-sm--1 padding-bottom-md--2 padding-left-sm--1 padding-left-md--1 padding-right-sm--1 padding-right-md--1 border-top--iron-sm border-top--iron-md">
+				<div class="box__content padding-top-sm--1 padding-top-md--1 padding-bottom-sm--1 padding-bottom-md--2 padding-left-sm--1 padding-left-md--1 padding-right-sm--1 padding-right-md--1">
 					<address>
 						{{#if description.contact.name}}{{description.contact.name}}<br/>{{/if}}
 						<a href="mailto:{{description.contact.email}}">{{description.contact.email}}</a></br>

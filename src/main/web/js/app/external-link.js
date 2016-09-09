@@ -11,7 +11,7 @@ function eachAnchor(anchors) {
         var hostname = getHostname(href);
 
         if (hostname) {
-            if (hostname !== document.domain && hostname.indexOf('ons.gov.uk') == -1) {
+            if ((hostname !== document.domain && hostname.indexOf('ons.gov.uk') == -1) || (hostname.indexOf('visual.ons.gov.uk') != -1 )){
                 $(this).attr('target', '_blank');
             }
         }
@@ -23,4 +23,5 @@ $(function() {
     eachAnchor('a[href^="http://"]:not([href*="loop11.com"]):not([href*="ons.gov.uk"])');
     eachAnchor('a[href^="https://"]:not([href*="loop11.com"]):not([href*="ons.gov.uk"])');
     eachAnchor('a[href*="nationalarchives.gov.uk"]');
+    eachAnchor('a[href*="visual.ons.gov.uk"]');
 });

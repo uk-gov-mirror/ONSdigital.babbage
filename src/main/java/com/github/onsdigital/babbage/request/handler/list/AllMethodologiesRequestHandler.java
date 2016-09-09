@@ -1,5 +1,6 @@
 package com.github.onsdigital.babbage.request.handler.list;
 
+import com.github.onsdigital.babbage.request.handler.base.BaseRequestHandler;
 import com.github.onsdigital.babbage.request.handler.base.ListRequestHandler;
 import com.github.onsdigital.babbage.response.base.BabbageResponse;
 import com.github.onsdigital.babbage.search.helpers.base.SearchFilter;
@@ -17,7 +18,7 @@ import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.*;
 /**
  * Created by bren on 21/09/15.
  */
-public class AllMethodologiesRequestHandler implements ListRequestHandler {
+public class AllMethodologiesRequestHandler extends BaseRequestHandler implements ListRequestHandler {
 
     private static Set<TypeFilter> methodologyFilters = TypeFilter.getMethodologyFilters();
 

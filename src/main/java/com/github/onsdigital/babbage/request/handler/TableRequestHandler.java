@@ -2,10 +2,9 @@ package com.github.onsdigital.babbage.request.handler;
 
 import com.github.onsdigital.babbage.content.client.ContentClient;
 import com.github.onsdigital.babbage.content.client.ContentResponse;
-import com.github.onsdigital.babbage.request.handler.base.RequestHandler;
+import com.github.onsdigital.babbage.request.handler.base.BaseRequestHandler;
 import com.github.onsdigital.babbage.response.BabbageContentBasedStringResponse;
 import com.github.onsdigital.babbage.response.base.BabbageResponse;
-import com.github.onsdigital.babbage.response.BabbageStringResponse;
 import com.github.onsdigital.babbage.template.TemplateService;
 import com.github.onsdigital.babbage.util.URIUtil;
 
@@ -15,9 +14,9 @@ import java.util.LinkedHashMap;
 
 /**
  * Handles requests at the endpoint /table.
- * Renders a chart and associated content in an isolated page.
+ * Renders a table and associated content in an isolated page.
  */
-public class TableRequestHandler implements RequestHandler {
+public class TableRequestHandler extends BaseRequestHandler {
 
     private static final String REQUEST_TYPE = "table";
 

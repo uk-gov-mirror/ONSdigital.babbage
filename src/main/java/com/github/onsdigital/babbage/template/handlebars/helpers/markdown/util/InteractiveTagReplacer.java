@@ -14,6 +14,7 @@ import java.util.regex.Pattern;
 public class InteractiveTagReplacer extends TagReplacementStrategy {
 
     private static final Pattern pattern = Pattern.compile("<ons-interactive\\surl=\"([-A-Za-z0-9+&@#/%?=~_|!:,.;()*$]+)\"?\\s?/>");
+    private final String template;
 
     /**
      * Create an instance of a tag replacement strategy with the given page path.
@@ -22,8 +23,9 @@ public class InteractiveTagReplacer extends TagReplacementStrategy {
      *
      * @param path
      */
-    public InteractiveTagReplacer(String path) {
+    public InteractiveTagReplacer(String path, String template) {
         super(path);
+        this.template = template;
     }
 
     @Override
@@ -37,6 +39,6 @@ public class InteractiveTagReplacer extends TagReplacementStrategy {
         LinkedHashMap<String, Object> additionalData = new LinkedHashMap<>();
         additionalData.put("id", UUID.randomUUID().toString().substring(10));
         additionalData.put("url", tagPath);
-        return TemplateService.getInstance().renderTemplate("partials/interactive", null, additionalData);
+        return TemplateService.getInstance().renderTemplate(template, null, additionalData);
     }
 }

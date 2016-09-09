@@ -10,6 +10,13 @@
 						</li>
 					{{/resolve}}
 				{{/each}}
+                {{#each relatedMethodologyArticle}}
+                    {{#resolve this.uri filter="title"}}
+                        <li>
+                            <a href="{{uri}}">{{title}}</a>
+                        </li>
+                    {{/resolve}}
+                {{/each}}
 			</ul>
 		</div>
 	</div>
