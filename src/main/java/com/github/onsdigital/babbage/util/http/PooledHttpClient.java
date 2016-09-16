@@ -8,10 +8,7 @@ import org.apache.http.StatusLine;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.client.methods.*;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.conn.HttpClientConnectionManager;
 import org.apache.http.entity.StringEntity;
@@ -104,6 +101,13 @@ public class PooledHttpClient {
         return validate(httpClient.execute(request));
     }
 
+
+    public CloseableHttpResponse sendDelete(String path, Map<String, String> headers, List<NameValuePair> queryParameters) throws IOException {
+        URI uri = buildGetUri(path, queryParameters);
+        HttpDelete request = new HttpDelete(uri);
+        addHeaders(headers, request);
+        return validate(httpClient.execute(request));
+    }
 
     /**
      * @param path           path, should not contain any query string, only path info
@@ -209,7 +213,6 @@ public class PooledHttpClient {
         }
         return null;
     }
-
 
     //Based on tuorial code on https://hc.apache.org/httpcomponents-client-ga/tutorial/html/connmgmt.html#d5e393
 
