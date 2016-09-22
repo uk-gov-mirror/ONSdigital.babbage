@@ -1,6 +1,5 @@
 package com.github.onsdigital.babbage.api.filter;
 
-import com.github.davidcarboni.restolino.framework.Filter;
 import com.github.onsdigital.babbage.api.error.ErrorHandler;
 import com.github.onsdigital.babbage.url.redirect.RedirectCategory;
 import com.github.onsdigital.babbage.url.redirect.RedirectException;
