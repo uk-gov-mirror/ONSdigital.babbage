@@ -196,7 +196,7 @@ public class Configuration {
 
 
         //Trailing slash seems to be important. Export server redirects to trailing slash url if not there
-        private static final String EXPORT_SEVER_URL = StringUtils.defaultIfBlank(getValue("HIGHCHARTS_EXPORT_SERVER"), "http://localhost:9999/export/");
+        private static final String EXPORT_SEVER_URL = StringUtils.defaultIfBlank(getValue("HIGHCHARTS_EXPORT_SERVER"), "http://localhost:9999/");
 
         public static String getExportSeverUrl() {
             return EXPORT_SEVER_URL;
