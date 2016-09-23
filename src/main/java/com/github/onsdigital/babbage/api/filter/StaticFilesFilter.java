@@ -1,6 +1,5 @@
 package com.github.onsdigital.babbage.api.filter;
 
-import com.github.davidcarboni.restolino.framework.Filter;
 import com.github.onsdigital.babbage.content.client.ContentClient;
 import com.github.onsdigital.babbage.content.client.ContentReadException;
 import com.github.onsdigital.babbage.content.client.ContentResponse;
@@ -8,7 +7,6 @@ import com.github.onsdigital.babbage.response.BabbageContentBasedBinaryResponse;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import org.apache.commons.io.FilenameUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -34,28 +32,18 @@ public class StaticFilesFilter implements Filter {
 
 
             // only go in here if we have a URI that starts /visualisation/....
-            Path endpoint = requestPath.getName(0);
+            Path endpoint = requestPath.getName(0); // /visualisations
             if (endpoint.toString().equalsIgnoreCase(visualisationRoot)) {
 
-                Path uid = Paths.get(uri).getName(1);
+                Path uid = Paths.get(uri).getName(1);  // dvc123
                 String path = Paths.get("/" + visualisationRoot + "/" + uid).relativize(requestPath).toString();
 
-                if (path.length() == 0 || path.equals("/") || FilenameUtils.getExtension(path).length() == 0) {
-                    path = getIndexPagePath(uid);
-
-                    if (path == null || path.length() == 0 || path.equals("/")) {
-                        path = "index.html";
-                    }
-                } else {
-                    String indexPagePath = getIndexPagePath(uid);
-                    // resolve files that are referenced relative to the root html page.
-                    path = resolveRelativePath(indexPagePath, path);
-                }
-
                 String visualisationPath = String.format("/%s/%s/content/%s", visualisationRoot, uid, path);
-
                 ContentResponse contentResponse = ContentClient.getInstance().getResource(visualisationPath);
-                new BabbageContentBasedBinaryResponse(contentResponse, contentResponse.getDataStream(), contentResponse.getMimeType()).apply(request, response);
+                new BabbageContentBasedBinaryResponse(
+                        contentResponse,
+                        contentResponse.getDataStream(),
+                        contentResponse.getMimeType()).apply(request, response);
 
                 return false; // we have the response we require, do not continue to process this request.
             }
