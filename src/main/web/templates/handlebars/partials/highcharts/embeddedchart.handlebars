@@ -1,0 +1,92 @@
+{{!
+
+The commented code below is what needs to go in the parent.
+
+--<div id="example"></div>
+<script type="text/javascript" src="//pym.nprapps.org/pym.v1.min.js"></script>
+<script>
+  var pymParent = new pym.Parent('example', "http://localhost:8080/embed?uri=/economy/governmentpublicsectorandtaxes/publicsectorfinance/articles/alignmentbetweenpublicsectorfinancesandnationalaccounts/june2016/e7086846", {});
+</script>
+--}}
+
+
+{{#if showTitle}}
+  <h4 class="flush--third--vertical">{{{sub (sup title)}}}</h4>
+{{/if}}
+{{#if showSubTitle}}
+    {{#if subtitle}}
+      <h5 class="flush--third--bottom">{{{sub (sup subtitle)}}}</h5>
+    {{/if}}
+{{/if}}
+
+<div id="chart-{{filename}}" data-filename="{{filename}}" data-uri="{{uri}}" class="embedded-chart">
+  <!--[if gt IE 8]><!-->
+  <noscript><!--[endif]-->
+    <img src="/chartimage?uri={{uri}}&width={{width}}" alt="{{alt-text}}"/>
+    <!--[if gt IE 8]><!--></noscript>
+  <!--[endif]-->
+</div>
+
+{{#if showSource}}
+  {{#if source}}<h5 class="flush--third--bottom font-size--h6">Source: {{source}}</h5>{{/if}}
+{{/if}}
+
+{{#if showNotes}}
+  {{#if notes}}
+    <h6 class="flush--third--bottom">Notes:</h6>
+    {{md notes}}
+  {{/if}}
+{{/if}}
+
+{{#if is_dev}}
+  <script type="text/javascript" src="//{{location.hostname}}:9000/dist/js/main.js"></script>
+  <script type="text/javascript" src="/js/app.js"></script>
+{{else}}
+  <script type="text/javascript" src="/assets/js/babbage.js"></script>
+{{/if}}
+
+<script type="text/javascript" src="//pym.nprapps.org/pym.v1.min.js"></script>
+
+<script>
+
+  var pymChild = new pym.Child({renderCallback: update});
+
+  function update() {
+
+    var chartContainer = $(".embedded-chart");
+    if (!chartContainer.length) {
+      return;
+    }
+
+    chartContainer.each(function () {
+      var $this = $(this);
+      var id = $this.attr('id');
+      var chartId = $this.data('filename');
+      var chartWidth = $this.width();
+      var chartUri = $this.data('uri');
+      $this.empty();
+
+      $.get("/chartconfig", {
+            uri: chartUri,
+            width: chartWidth
+          },
+          function () {
+            var chartConfig = window["chart-" + chartId];
+            if (chartConfig) {
+
+              // Build chart from config endpoint
+              chartConfig.chart.renderTo = id;
+              new Highcharts.Chart(chartConfig);
+              delete window["chart-" + chartId]; //clear data from window object after rendering
+
+              pymChild.sendHeight()
+            }
+          }, "script");
+    });
+  }
+
+</script>
+
+
+
+
