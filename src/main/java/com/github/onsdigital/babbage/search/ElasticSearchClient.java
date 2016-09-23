@@ -1,6 +1,7 @@
 package com.github.onsdigital.babbage.search;
 
 import com.github.onsdigital.babbage.configuration.Configuration;
+import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.Settings;
@@ -40,12 +41,15 @@ public class ElasticSearchClient {
     }
 
     protected static void initTransportClient() throws IOException {
-        Settings settings = Settings.builder()
-                .put("cluster.name", getElasticSearchCluster()).build();
+        Settings.Builder builder = Settings.builder();
+
+        if (!StringUtils.isBlank(getElasticSearchCluster()))
+            builder.put("cluster.name", getElasticSearchCluster());
+
+        Settings settings = builder.build();
         client = TransportClient.builder().settings(settings).build()
                 .addTransportAddress(new InetSocketTransportAddress(new InetSocketAddress(getElasticSearchServer(), Configuration.ELASTIC_SEARCH.getElasticSearchPort())));
     }
-
 
     protected static void initNodeClient() throws IOException {
         searchHome = Files.createTempDirectory("babbage_search_client");
@@ -77,7 +81,7 @@ public class ElasticSearchClient {
             try {
                 Files.deleteIfExists(searchHome);
             } catch (IOException e) {
-                System.err.println("Falied cleaning temporary search client directory");
+                System.err.println("Failed cleaning temporary search client directory");
                 e.printStackTrace();
             }
         }
