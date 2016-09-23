@@ -9,6 +9,19 @@ The commented code below is what needs to go in the parent.
 </script>
 --}}
 
+<head>
+    <!--[if lte IE 8]>
+    <link rel="stylesheet" href="{{#if is_dev}}http://{{location.hostname}}:9000/dist/css/old-ie.css{{else}}/assets/css/old-ie.css{{/if}}"/>
+    <![endif]-->
+    <!--[if IE 9]>
+    <link rel="stylesheet" type="text/css" href="{{#if is_dev}}http://{{location.hostname}}:9000/dist/css/ie-9.css{{else}}/assets/css/ie-9.css{{/if}}">
+    <![endif]-->
+    <!--[if gt IE 9]><!-->
+    <link rel="stylesheet" type="text/css" href="{{#if is_dev}}http://{{location.hostname}}:9000/dist/css/main.css{{else}}/assets/css/main.css{{/if}}">
+    {{#if pdf_style}}<link rel="stylesheet" type="text/css" href="{{#if is_dev}}http://localhost:9000/dist/css/pdf.css{{else}}/assets/css/pdf.css{{/if}}">{{/if}}
+    <![endif]-->
+</head>
+
 
 {{#if showTitle}}
   <h4 class="flush--third--vertical">{{{sub (sup title)}}}</h4>
