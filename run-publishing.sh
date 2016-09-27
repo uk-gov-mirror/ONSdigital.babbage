@@ -42,21 +42,12 @@ exportserverpid=$!
 echo "export server pid: $exportserverpid"
 
 ### 4 - START BABBAGE
-
 export JAVA_OPTS="-Xdebug -Xmx256m -Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=n"
-
-#External Taxonomy
-#export TAXONOMY_DIR=target/content
 
 # Restolino configuration
 export RESTOLINO_STATIC="src/main/web"
 export RESTOLINO_CLASSES="target/classes"
 export PACKAGE_PREFIX=com.github.onsdigital
-
-# For testing out HTTP basic auth
-#export USERNAME=user
-#export PASSWORD=password
-#export REALM=onsalpha
 
 export PHANTOMJS_PATH=`which phantomjs`
 export DEV_ENVIRONMENT="Y"
@@ -73,6 +64,3 @@ java $JAVA_OPTS \
  -cp "target/dependency/*" \
  com.github.davidcarboni.restolino.Main
 
-kill $exportserverpid
-# Production: non-reloadable
-#java $JAVA_OPTS -jar target/*-jar-with-dependencies.jar

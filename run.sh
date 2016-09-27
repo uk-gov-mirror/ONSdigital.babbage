@@ -30,7 +30,3 @@ java $JAVA_OPTS \
  -Drestolino.packageprefix=$PACKAGE_PREFIX \
  -cp "target/dependency/*" \
  com.github.davidcarboni.restolino.Main
-
-kill $exportserverpid
-# Production: non-reloadable
-#$JAVA_HOME/bin/java $JAVA_OPTS -jar target/*-jar-with-dependencies.jar
