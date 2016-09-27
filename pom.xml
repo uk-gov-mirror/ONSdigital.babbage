@@ -5,8 +5,8 @@
     <artifactId>babbage</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>Babbage</name>
-    <description>Backend of new ONS website Babbage</description>
-    <url>https://onsbeta.herokuapp.com</url>
+    <description>Backend of the ONS website</description>
+    <url>https://www.ons.gov.uk/</url>
 
     <properties>
         <java.version>1.8</java.version>
@@ -207,32 +207,6 @@
                     <target>${java.version}</target>
                     <encoding>UTF-8</encoding>
                 </configuration>
-            </plugin>
-
-            <!-- An assembly that includes all dependencies for deployment: -->
-            <plugin>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <configuration>
-                    <descriptorRefs>
-                        <descriptorRef>jar-with-dependencies</descriptorRef>
-                    </descriptorRefs>
-                    <archive>
-                        <manifest>
-                            <mainClass>com.github.davidcarboni.restolino.Main</mainClass>
-                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-                            <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
-                        </manifest>
-                    </archive>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>make-assembly</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
 
             <!-- A folder of dependencies is used in development when reloading classes: -->
