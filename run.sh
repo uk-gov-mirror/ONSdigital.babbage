@@ -7,11 +7,8 @@
 ### 2 - BUILD API
 ./build-api.sh
 
-### 4 - START BABBAGE
+### 3 - START BABBAGE
 export JAVA_OPTS="-Xmx512m -Xdebug -Xrunjdwp:transport=dt_socket,address=8010,server=y,suspend=n"
-
-#External Taxonomy
-#export TAXONOMY_DIR=target/content
 
 # Restolino configuration
 export RESTOLINO_STATIC="src/main/web"
