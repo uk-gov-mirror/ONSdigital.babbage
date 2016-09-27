@@ -3,8 +3,11 @@ package com.github.onsdigital.babbage.publishing;
 import com.github.onsdigital.babbage.configuration.Configuration;
 import com.github.onsdigital.babbage.content.client.ContentClient;
 import com.github.onsdigital.babbage.content.client.ContentReadException;
+import com.github.onsdigital.babbage.publishing.model.ContentDetail;
+import com.github.onsdigital.babbage.publishing.model.FilePublishType;
 import com.github.onsdigital.babbage.publishing.model.PublishInfo;
 import com.github.onsdigital.babbage.publishing.model.PublishNotification;
+import com.github.onsdigital.babbage.search.model.ContentType;
 import com.github.onsdigital.babbage.util.ElasticSearchUtils;
 import com.github.onsdigital.babbage.util.json.JsonUtil;
 import org.apache.commons.io.FilenameUtils;
@@ -54,10 +57,21 @@ public class PublishingManager {
     public void notifyUpcoming(PublishNotification notification) throws IOException {
         initPublishDatesIndex();
         try (BulkProcessor bulkProcessor = createBulkProcessor()) {
-            for (String uri : notification.getUriList()) {
+
+            // Add files to update.
+            for (String uri : notification.getUrisToUpdate()) {
                 uri = cleanUri(uri);
                 IndexRequestBuilder indexRequestBuilder = getElasticsearchClient().prepareIndex(PUBLISH_DATES_INDEX, notification.getCollectionId(), uri);
-                indexRequestBuilder.setSource(JsonUtil.toJson(new PublishInfo(uri, notification.getCollectionId(), notification.getDate())));
+                PublishInfo publishInfo = new PublishInfo(uri, notification.getCollectionId(), notification.getDate(), FilePublishType.UPDATE);
+                indexRequestBuilder.setSource(JsonUtil.toJson(publishInfo));
+                bulkProcessor.add(indexRequestBuilder.request());
+            }
+
+            for (ContentDetail contentDetail : notification.getUrisToDelete()) {
+                String uri = cleanUri(contentDetail.uri);
+                IndexRequestBuilder indexRequestBuilder = getElasticsearchClient().prepareIndex(PUBLISH_DATES_INDEX, notification.getCollectionId(), uri);
+                PublishInfo publishInfo = new PublishInfo(uri, notification.getCollectionId(), notification.getDate(), FilePublishType.DELETE, ContentType.valueOf(contentDetail.type));
+                indexRequestBuilder.setSource(JsonUtil.toJson(publishInfo));
                 bulkProcessor.add(indexRequestBuilder.request());
             }
         }
@@ -83,11 +97,28 @@ public class PublishingManager {
             while (true) {
                 for (SearchHit hit : response.getHits().getHits()) {
                     String uri = (String) hit.getSource().get("uri");
+
+
                     bulkProcessor.add(prepareDeleteRequest(notification, uri));
                     if (triggerReindex) {
                         //only index uri to the page which hash data.json at the end and is stripped out when saving the uri to upcoming publish uris
                         if (StringUtils.isEmpty(FilenameUtils.getExtension(uri)) && !isVersionedUri(uri)) {
-                            triggerReindex(notification.getKey(), uri);
+
+                            FilePublishType filePublishType = FilePublishType.UPDATE; // default to update for existing entries with no type
+                            String storedFilePublishType = (String) hit.getSource().get("filePublishType");
+
+                            if (storedFilePublishType != null);
+                                filePublishType = FilePublishType.valueOf(storedFilePublishType);
+
+                            switch (filePublishType) {
+                                case UPDATE:
+                                    triggerReindex(notification.getKey(), uri);
+                                    break;
+                                case DELETE:
+                                    String contentType = (String) hit.getSource().get("contentType");
+                                    deleteIndex(notification.getKey(), uri, contentType);
+                                    break;
+                            }
                         }
                     }
                 }
@@ -119,6 +150,14 @@ public class PublishingManager {
         }
     }
 
+    private void deleteIndex(String key, String uri, String contentType) {
+        try {
+            ContentClient.getInstance().deleteIndex(key, uri, contentType);
+        } catch (ContentReadException e) {
+            System.err.println("!!!Warning , delete index failed for uri " + uri);
+        }
+    }
+
     public PublishInfo getNextPublishInfo(String uri) {
         BoolQueryBuilder builder = QueryBuilders.boolQuery().filter(QueryBuilders.termQuery("uri", uri));
         SearchRequestBuilder searchRequestBuilder = getElasticsearchClient().prepareSearch(PUBLISH_DATES_INDEX);
@@ -128,7 +167,9 @@ public class PublishingManager {
         if (response.getHits().getTotalHits() > 0) {
             Long publishDate = (Long) response.getHits().getAt(0).getSource().get("publishDate");
             String collectionId = (String) response.getHits().getAt(0).getSource().get("collectionId");
-            return new PublishInfo(uri, collectionId, publishDate == null ? null : new Date(publishDate));
+            String publishType = (String) response.getHits().getAt(0).getSource().get("filePublishType");
+            FilePublishType filePublishType = publishType == null ? FilePublishType.UPDATE : FilePublishType.valueOf (publishType);
+            return new PublishInfo(uri, collectionId, publishDate == null ? null : new Date(publishDate), filePublishType);
         }
         return null;
     }

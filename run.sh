@@ -64,7 +64,7 @@ export RELOAD_TEMPLATES="Y"
 export TEMPLATES_DIR=src/main/web/templates/handlebars
 
 # Development: reloadable
-$JAVA_HOME/bin/java $JAVA_OPTS \
+java $JAVA_OPTS \
  -Drestolino.realm=$REALM \
  -Drestolino.files=$RESTOLINO_STATIC \
  -Drestolino.classes=$RESTOLINO_CLASSES \
