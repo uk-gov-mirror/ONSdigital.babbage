@@ -8,7 +8,6 @@ ADD ./target/web /usr/src/target/web
 
 # Update the entry point script
 ENTRYPOINT java -Xmx2048m \
-          -javaagent:/usr/src/target/dependency/newrelic/newrelic.jar \
           -Drestolino.files=target/web \
           -Drestolino.classes=target/classes \
           -Drestolino.packageprefix=com.github.onsdigital.babbage.api \

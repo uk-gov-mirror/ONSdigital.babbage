@@ -121,7 +121,7 @@ public class Configuration {
         private static String elasticSearchServer = defaultIfBlank(getValue("ELASTIC_SEARCH_SERVER"), "localhost");
         private static String elasticSearchIndexAlias = defaultIfBlank(getValue("ELASTIC_SEARCH_INDEX_ALIAS"), "ons");
         private static Integer elasticSearchPort = Integer.parseInt(defaultIfBlank(getValue("ELASTIC_SEARCH_PORT"), "9300"));
-        private static String elasticSearchCluster = defaultIfBlank(getValue("ELASTIC_SEARCH_CLUSTER"), "ONSCluster");
+        private static String elasticSearchCluster = defaultIfBlank(getValue("ELASTIC_SEARCH_CLUSTER"), "");
 
         public static String getElasticSearchServer() {
             return elasticSearchServer;
@@ -139,7 +139,6 @@ public class Configuration {
             return elasticSearchCluster;
         }
     }
-
 
     /*Handlebars configuration*/
     public static class HANDLEBARS {
@@ -197,7 +196,7 @@ public class Configuration {
 
 
         //Trailing slash seems to be important. Export server redirects to trailing slash url if not there
-        private static final String EXPORT_SEVER_URL = StringUtils.defaultIfBlank(getValue("HIGHCHARTS_EXPORT_SERVER"), "http://localhost:9999/export/");
+        private static final String EXPORT_SEVER_URL = StringUtils.defaultIfBlank(getValue("HIGHCHARTS_EXPORT_SERVER"), "http://localhost:9999/");
 
         public static String getExportSeverUrl() {
             return EXPORT_SEVER_URL;

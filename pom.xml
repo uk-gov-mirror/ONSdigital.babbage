@@ -5,8 +5,8 @@
     <artifactId>babbage</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>Babbage</name>
-    <description>Backend of new ONS website Babbage</description>
-    <url>https://onsbeta.herokuapp.com</url>
+    <description>Backend of the ONS website</description>
+    <url>https://www.ons.gov.uk/</url>
 
     <properties>
         <java.version>1.8</java.version>
@@ -113,15 +113,6 @@
             <version>2.0-beta1</version>
         </dependency>
 
-        <!-- New Relic -->
-        <dependency>
-            <groupId>com.newrelic.agent.java</groupId>
-            <artifactId>newrelic-java</artifactId>
-            <version>3.24.0</version>
-            <type>zip</type>
-            <scope>runtime</scope>
-        </dependency>
-
         <!-- RSS Feeds -->
         <dependency>
             <groupId>rome</groupId>
@@ -146,8 +137,6 @@
             <artifactId>jsoup</artifactId>
             <version>1.8.3</version>
         </dependency>
-
-
 
         <!-- Test -->
         <dependency>
@@ -220,32 +209,6 @@
                 </configuration>
             </plugin>
 
-            <!-- An assembly that includes all dependencies for deployment: -->
-            <plugin>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <configuration>
-                    <descriptorRefs>
-                        <descriptorRef>jar-with-dependencies</descriptorRef>
-                    </descriptorRefs>
-                    <archive>
-                        <manifest>
-                            <mainClass>com.github.davidcarboni.restolino.Main</mainClass>
-                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-                            <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
-                        </manifest>
-                    </archive>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>make-assembly</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
             <!-- A folder of dependencies is used in development when reloading classes: -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -259,17 +222,6 @@
                             <goal>copy-dependencies</goal>
                         </goals>
                         <!-- Default output folder is ${project.build.api}/dependency -->
-                    </execution>
-                    <execution>
-                        <id>unpack-newrelic</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>unpack-dependencies</goal>
-                        </goals>
-                        <configuration>
-                            <includeGroupIds>com.newrelic.agent.java</includeGroupIds>
-                            <includeArtifactIds>newrelic-java</includeArtifactIds>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>
