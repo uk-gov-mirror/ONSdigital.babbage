@@ -113,7 +113,7 @@
 							<div class="col">
 
                                 <h2 class="alert__title inline-block margin-bottom--0 margin-right-md--1">
-                                    Source dataset: {{#if description.datasetUri}}{{#resolve description.datasetUri filter="description"}}<a href="{{description.datasetUri}}">{{description.title}} ({{description.datasetId}})</a>{{/resolve}}{{else}}{{description.datasetId}}{{/if}}
+                                    Source dataset: {{#if description.datasetUri}}{{#resolve description.datasetUri filter="description"}}{{description.title}} ({{description.datasetId}}){{/resolve}}{{else}}{{description.datasetId}}{{/if}}
                                 </h2>
                                 {{#resolveTimeSeriesList (parentPath uri) }}
                                     {{#if_ne result.results.size 1}}
