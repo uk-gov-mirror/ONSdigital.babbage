@@ -113,11 +113,11 @@
 							<div class="col">
 
                                 <h2 class="alert__title inline-block margin-bottom--0 margin-right-md--1">
-                                    Source dataset: {{#if description.datasetUri}}{{#resolve description.datasetUri filter="description"}}{{description.title}} ({{description.datasetId}}){{/resolve}}{{else}}{{description.datasetId}}{{/if}}
+                                    Source dataset: {{#if description.datasetUri}}{{#resolve description.datasetUri filter="description"}}<a href="{{description.datasetUri}}">{{description.title}} ({{description.datasetId}})</a>{{/resolve}}{{else}}{{description.datasetId}}{{/if}}
                                 </h2>
                                 {{#resolveTimeSeriesList (parentPath uri) }}
                                     {{#if_ne result.results.size 1}}
-                                        <a class="alert__link js-scroll" href="#otherdatasets">View other datasets</a>
+                                        <a class="alert__link js-scroll" href="#othertimeseries">View other variations of this time series</a>
                                     {{/if_ne}}
                                 {{/resolveTimeSeriesList}}
 
