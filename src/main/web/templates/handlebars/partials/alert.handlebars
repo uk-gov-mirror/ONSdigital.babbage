@@ -121,6 +121,23 @@
                                     {{/if_ne}}
                                 {{/resolveTimeSeriesList}}
 
+                                {{#if alerts}}
+                                    <div class="show-hide show-hide--dark info-box margin-top-sm--3 margin-top-md--3 js-show-hide">
+                                        <div class="js-show-hide__title">
+                                            <span class="icon icon-info icon-info--info-box"></span>
+
+                                            <h2 class="show-hide__title alert--warning__title">
+                                                {{#if_ne alerts.size 1}}{{labels.notices}}{{else}}{{labels.notice}}{{/if_ne}}
+                                            </h2>
+                                        </div>
+
+                                        <div class="js-show-hide__content">
+                                            {{> partials/notice}}
+                                        </div>
+
+                                    </div>
+                                {{/if}}
+
 								{{!-- 'This is an old versions' alert --}}
 								{{#if (endsWith (parentPath uri) "previous")}}
 									<div class="alert--warning">
