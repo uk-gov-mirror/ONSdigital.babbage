@@ -27,14 +27,6 @@ import static org.apache.commons.lang3.StringUtils.upperCase;
 
 public class SearchRequestHelper {
 
-    static BiFunction<HttpServletRequest, String, String> extractDayOrMonthDateValue = (request, parameterName) ->
-            StringUtils.isEmpty(request.getParameter(parameterName)) ? "" : request.getParameter(parameterName) + "/";
-
-    static BiFunction<HttpServletRequest, String, String> extractYearDateValue = (request, parameterName) ->
-            StringUtils.isEmpty(request.getParameter(parameterName)) ? "" : request.getParameter(parameterName);
-
-    static SimpleDateFormat SDF = new SimpleDateFormat("dd/MM/yy");
-
     static final String FROM_DAY_PARAM = "fromDateDay";
     static final String FROM_MONTH_PARAM = "fromDateMonth";
     static final String FROM_YEAR_PARAM = "fromDateYear";
@@ -42,6 +34,16 @@ public class SearchRequestHelper {
     static final String TO_MONTH_PARAM = "toDateMonth";
     static final String TO_YEAR_PARAM = "toDateYear";
     static final String UPDATED_PARAM = "updated";
+    static final String UPCOMING_PARAM = "upcoming";
+    static final String VIEW_PARAM = "view";
+
+    static BiFunction<HttpServletRequest, String, String> extractDayOrMonthDateValue = (request, parameterName) ->
+            StringUtils.isEmpty(request.getParameter(parameterName)) ? "" : request.getParameter(parameterName) + "/";
+
+    static BiFunction<HttpServletRequest, String, String> extractYearDateValue = (request, parameterName) ->
+            StringUtils.isEmpty(request.getParameter(parameterName)) ? "" : request.getParameter(parameterName);
+
+    static SimpleDateFormat SDF = new SimpleDateFormat("dd/MM/yy");
 
     private SearchRequestHelper() {
         // contains only static methods - hide constructor.
@@ -62,7 +64,7 @@ public class SearchRequestHelper {
     public static PublishDates parseDates(HttpServletRequest req) throws PublishDatesException {
         String fromDateStr = extractDateStr(req, FROM_DAY_PARAM, FROM_MONTH_PARAM, FROM_YEAR_PARAM);
         String toDateStr = extractDateStr(req, TO_DAY_PARAM, TO_MONTH_PARAM, TO_YEAR_PARAM);
-        return publishedDates(fromDateStr, toDateStr);
+        return publishedDates(fromDateStr, toDateStr, allowFutureAfterDate(req));
     }
 
     private static String extractDateStr(HttpServletRequest req, String dayKey, String monthKey, String yearKey) {
@@ -148,6 +150,10 @@ public class SearchRequestHelper {
             throw new BadRequestException("Search query contains too many characters");
         }
         return query;
+    }
+
+    private static boolean allowFutureAfterDate(HttpServletRequest request) {
+        return UPCOMING_PARAM.equalsIgnoreCase(request.getParameter(VIEW_PARAM));
     }
 
 
