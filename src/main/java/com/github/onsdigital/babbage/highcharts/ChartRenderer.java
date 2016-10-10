@@ -8,6 +8,7 @@ import com.github.onsdigital.babbage.response.BabbageContentBasedStringResponse;
 import com.github.onsdigital.babbage.response.BabbageStringResponse;
 import com.github.onsdigital.babbage.template.TemplateService;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -50,6 +51,51 @@ public class ChartRenderer {
             String chartConfig = TemplateService.getInstance().renderChartConfiguration(contentResponse.getDataStream(),
                     additionalData);
             new BabbageContentBasedStringResponse(contentResponse,chartConfig).apply(request, response);
+        }
+    }
+
+    /**
+     * Fetches configuration from Zebedee Reader and renders self contained chart html
+     * <p>
+     * Optionally takes a width parameter, width is 600 by default, if width exceeds max, max width will be applied, if it is smaller than min, min width will apply
+     */
+    public void renderEmbeddedChart(HttpServletRequest request, HttpServletResponse response) throws IOException, ContentReadException {
+        String uri = request.getParameter("uri");
+        if (assertUri(uri, request, response)) {
+            ContentResponse contentResponse = ContentClient.getInstance().getContent(uri);
+            LinkedHashMap<String, Object> additionalData = new LinkedHashMap<>();
+            additionalData.put("width", getWidth(request));
+
+            Boolean showTitle = true;
+            String showTitleInput = request.getParameter("title");
+            if (StringUtils.isNotBlank(showTitleInput)) {
+                showTitle = BooleanUtils.toBoolean(showTitleInput);
+            }
+            additionalData.put("showTitle", showTitle);
+
+            Boolean showSubTitle = true;
+            String showSubTitleInput = request.getParameter("subtitle");
+            if (StringUtils.isNotBlank(showSubTitleInput)) {
+                showSubTitle = BooleanUtils.toBoolean(showSubTitleInput);
+            }
+            additionalData.put("showSubTitle", showSubTitle);
+
+            Boolean showSource = true;
+            String showSourceInput = request.getParameter("source");
+            if (StringUtils.isNotBlank(showSourceInput)) {
+                showSource = BooleanUtils.toBoolean(showSourceInput);
+            }
+            additionalData.put("showSource", showSource);
+
+            Boolean showNotes = true;
+            String showNotesInput = request.getParameter("notes");
+            if (StringUtils.isNotBlank(showNotesInput)) {
+                showNotes = BooleanUtils.toBoolean(showNotesInput);
+            }
+            additionalData.put("showNotes", showNotes);
+
+            new BabbageContentBasedStringResponse(contentResponse, TemplateService.getInstance().renderTemplate("partials/highcharts/embeddedchart", contentResponse.getDataStream(), additionalData),
+                    MediaType.TEXT_HTML).applyEmbedded(request, response);
         }
     }
 
