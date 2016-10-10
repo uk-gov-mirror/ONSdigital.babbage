@@ -1,14 +1,15 @@
 package com.github.onsdigital.babbage.request.handler.list;
 
 import com.github.onsdigital.babbage.api.endpoint.rss.service.RssService;
-import com.github.onsdigital.babbage.api.util.SearchUtils;
 import com.github.onsdigital.babbage.content.client.ContentReadException;
 import com.github.onsdigital.babbage.request.handler.base.BaseRequestHandler;
 import com.github.onsdigital.babbage.request.handler.base.ListRequestHandler;
 import com.github.onsdigital.babbage.response.base.BabbageResponse;
+import com.github.onsdigital.babbage.search.SearchService;
 import com.github.onsdigital.babbage.search.builders.ONSFilterBuilders;
 import com.github.onsdigital.babbage.search.helpers.base.SearchFilter;
 import com.github.onsdigital.babbage.search.helpers.base.SearchQueries;
+import com.github.onsdigital.babbage.search.helpers.dates.PublishDatesException;
 import com.github.onsdigital.babbage.search.input.SortBy;
 import com.github.onsdigital.babbage.search.model.ContentType;
 import com.github.onsdigital.babbage.search.model.field.Field;
@@ -21,33 +22,41 @@ import java.util.Date;
 
 import static com.github.onsdigital.babbage.api.util.SearchUtils.buildListQuery;
 import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.toList;
-import static org.elasticsearch.index.query.QueryBuilders.*;
+import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
+import static org.elasticsearch.index.query.QueryBuilders.rangeQuery;
+import static org.elasticsearch.index.query.QueryBuilders.termQuery;
 
 /**
  * Created by bren on 22/09/15.
  */
 public class ReleaseCalendar extends BaseRequestHandler implements ListRequestHandler {
 
-	private final static String REQUEST_TYPE = "releasecalendar";
+	private static final String REQUEST_TYPE = "releasecalendar";
+	private static final String VIEW_PARAM = "view";
+	private static final String UPCOMING_VIEW = "upcoming";
 
 	private static RssService rssService = RssService.getInstance();
+	private static SearchService searchService = SearchService.get();
 
 	@Override
 	public BabbageResponse get(String uri, HttpServletRequest request) throws Exception {
 		if (rssService.isRssRequest(request)) {
 			return rssService.getReleaseCalendarFeedResponse(request, queries(request, false));
 		} else {
-			return getPage(uri, request);
+			try {
+				// Not ideal but the lack of cohesion & encapsulation in search makes this very messy to do properly.
+				searchService.extractPublishDates(request);
+				return searchService.listPage(getClass().getSimpleName(), queries(request, true));
+			} catch (PublishDatesException ex) {
+				return searchService.listPageWithValidationErrors(getClass().getSimpleName(), queries(request, true),
+						ex.getErrors());
+			}
 		}
-	}
-
-	public BabbageResponse getPage(String uri, HttpServletRequest request) throws Exception {
-		return SearchUtils.listPage(getClass().getSimpleName(), queries(request, true));
 	}
 
 	@Override
 	public BabbageResponse getData(String uri, HttpServletRequest request) throws IOException, ContentReadException {
-		return SearchUtils.listJson(getClass().getSimpleName(), queries(request, true));
+		return searchService.listJson(getClass().getSimpleName(), queries(request, true));
 	}
 
 	private SearchQueries queries(HttpServletRequest request, boolean highlight) {
@@ -61,7 +70,7 @@ public class ReleaseCalendar extends BaseRequestHandler implements ListRequestHa
 	}
 
 	private boolean isUpcoming(HttpServletRequest request) {
-		return "upcoming".equalsIgnoreCase(request.getParameter("view"));
+		return UPCOMING_VIEW.equalsIgnoreCase(request.getParameter(VIEW_PARAM));
 	}
 
 	private SearchFilter filters(HttpServletRequest request, boolean upcoming) {

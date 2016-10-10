@@ -70,8 +70,8 @@ public class PublishDates {
      *
      * @throws PublishDatesException if the date string parameters are invalid.
      */
-    public static PublishDates publishedDates(String publishedAfter, String publishedBefore) throws
-            PublishDatesException {
+    public static PublishDates publishedDates(String publishedAfter, String publishedBefore,
+                                              boolean allowFutureAfterDate) throws PublishDatesException {
         List<ValidationError> validationErrors = new ArrayList<>();
         Date publishedFromDate;
         Date publishedToDate;
@@ -89,7 +89,8 @@ public class PublishDates {
             publishedToDate = null;
         }
 
-        if (!validateDateRange(publishedFromDate, publishedToDate, validationErrors).isEmpty()) {
+        if (!validateDateRange(publishedFromDate, publishedToDate, validationErrors, allowFutureAfterDate)
+                .isEmpty()) {
             throw new PublishDatesException(validationErrors);
         }
         return new PublishDates(publishedFromDate, publishedToDate);
@@ -98,10 +99,12 @@ public class PublishDates {
     /**
      * Verify the published from date is not in the future and that published from is not after published before.
      */
-    private static List<ValidationError> validateDateRange(Date from, Date to, List<ValidationError> validationErrors) {
-        // Published after is in the future.
-        if (from != null && from.after(Calendar.getInstance().getTime())) {
-            validationErrors.add(PUBLISHED_FROM_DATE_IN_FUTURE_ERROR);
+    private static List<ValidationError> validateDateRange(Date from, Date to, List<ValidationError> validationErrors,
+                                                           boolean allowFutureAfterDate) {
+        if (!allowFutureAfterDate) {
+            if (from != null && from.after(Calendar.getInstance().getTime())) {
+                validationErrors.add(PUBLISHED_FROM_DATE_IN_FUTURE_ERROR);
+            }
         }
 
         // Publish after value in date range is later than Published before.
@@ -126,7 +129,7 @@ public class PublishDates {
      * @throws PublishDatesException the date value provided were invalid.
      */
     public static PublishDates publishedDates(Date publishedFrom, Date publishedTo) throws PublishDatesException {
-        List<ValidationError> validationErrors = validateDateRange(publishedFrom, publishedTo, new ArrayList<>());
+        List<ValidationError> validationErrors = validateDateRange(publishedFrom, publishedTo, new ArrayList<>(), false);
         if (!validationErrors.isEmpty()) {
             throw new PublishDatesException(validationErrors);
         }
