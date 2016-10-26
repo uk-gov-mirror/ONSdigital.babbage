@@ -144,7 +144,7 @@
     {{> pdf/partials/header}}
 
     {{!-- DETECT WHICH PDF BODY TEMPLATE TO SERVE UP --}}
-    {{#if_any (eq type "bulletin") (eq type "article") (eq type "static_methodlogy") (eq type "compendium_chapter")}}
+    {{#if_any (eq type "bulletin") (eq type "article") (eq type "static_methodology") (eq type "compendium_chapter")}}
         {{> pdf/partials/publication}}
     {{/if_any}}
     {{#if_eq type "compendium_landing_page"}}
