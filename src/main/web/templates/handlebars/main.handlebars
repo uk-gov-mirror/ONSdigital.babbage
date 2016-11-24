@@ -131,6 +131,16 @@
                 }
             }
 
+            (function () {
+                var pageType = '{{type}}';
+                if (pageType == 'home_page' ||
+                    pageType == 'taxonomy_landing_page' ||
+                    pageType == 'static_landing_page' ||
+                    pageType == 'list') {
+                        ga('set', 'contentGroup1', 'Navigation');
+                }
+            })();
+
             // Measure time on page - credit to http://help.analyticsedge.com/googleanalytics/measuring-time-on-bounce-page/
             function timer11(){ga('send', 'event', 'TimeOnPage', '1', '11-30 seconds', { 'nonInteraction': 1 });}
             function timer31(){ga('send', 'event', 'TimeOnPage', '2', '31-60 seconds', { 'nonInteraction': 1 });}
