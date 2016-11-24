@@ -7,12 +7,12 @@
 				{{#if_all has-corrections has-alerts}}
 					<h3 class="alert--notice__title">{{labels.corrections}}</h3>
 				{{/if_all}}
-				{{#each alerts}}
+				{{#loop alerts orderBy="date" reverse=true}}
 					{{#if_eq type "correction"}}
 						<p class="alert__date">{{df date}}</p>
 						{{md markdown}}
 					{{/if_eq}}
-				{{/each}}
+				{{/loop}}
 			</section>
 		{{/if}}
 		{{#if has-alerts}}
@@ -20,12 +20,13 @@
 				{{#if_all has-corrections has-alerts}}
 					<h3 class="alert--notice__title">{{labels.notices}}</h3>
 				{{/if_all}}
-				{{#each alerts}}
+				{{#loop alerts orderBy="date" reverse=true}}
 					{{#if_eq type "alert"}}
+                        {{@index}}
 						<p class="alert__date">{{df date}}</p>
 						{{md markdown}}
 					{{/if_eq}}
-				{{/each}}
+				{{/loop}}
 			</section>
 		{{/if}}
 
@@ -36,10 +37,10 @@
 			{{#if_all versions alerts}}
 				<h3 class="alert--notice__title">{{labels.notices}}</h3>
 			{{/if_all}}
-			{{#each alerts}}
+			{{#loop alerts orderBy="date" reverse=true}}
 				<p class="alert__date">{{df date}}</p>
 				{{md markdown}}
-			{{/each}}
+			{{/loop}}
 		</section>
 
 	{{/if_any}}
