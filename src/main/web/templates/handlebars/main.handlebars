@@ -121,16 +121,6 @@
             m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
             })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
             ga('create', 'UA-56892037-3', {'allowAnchor': true});
-            ga('send', 'pageview', {'page': location.pathname + getSearch() + location.hash});
-            function getSearch(){
-                if(location.pathname === '/search'){
-                    var numberOfResults = {{#if result.numberOfResults}} {{result.numberOfResults}} {{else}} 0 {{/if}};
-                    return location.search + '&numberOfResults=' + numberOfResults;
-                } else {
-                    return location.search;
-                }
-            }
-
             (function () {
                 var pageType = '{{type}}';
                 if (pageType == 'home_page' ||
@@ -140,6 +130,15 @@
                         ga('set', 'contentGroup1', 'Navigation');
                 }
             })();
+            ga('send', 'pageview', {'page': location.pathname + getSearch() + location.hash});
+            function getSearch(){
+                if(location.pathname === '/search'){
+                    var numberOfResults = {{#if result.numberOfResults}} {{result.numberOfResults}} {{else}} 0 {{/if}};
+                    return location.search + '&numberOfResults=' + numberOfResults;
+                } else {
+                    return location.search;
+                }
+            }
 
             // Measure time on page - credit to http://help.analyticsedge.com/googleanalytics/measuring-time-on-bounce-page/
             function timer11(){ga('send', 'event', 'TimeOnPage', '1', '11-30 seconds', { 'nonInteraction': 1 });}
