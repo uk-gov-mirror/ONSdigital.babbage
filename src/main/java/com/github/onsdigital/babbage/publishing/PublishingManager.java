@@ -107,8 +107,8 @@ public class PublishingManager {
                             FilePublishType filePublishType = FilePublishType.UPDATE; // default to update for existing entries with no type
                             String storedFilePublishType = (String) hit.getSource().get("filePublishType");
 
-                            if (storedFilePublishType != null);
-                                filePublishType = FilePublishType.valueOf(storedFilePublishType);
+                            if (storedFilePublishType != null) ;
+                            filePublishType = FilePublishType.valueOf(storedFilePublishType);
 
                             switch (filePublishType) {
                                 case UPDATE:
@@ -159,16 +159,27 @@ public class PublishingManager {
     }
 
     public PublishInfo getNextPublishInfo(String uri) {
-        BoolQueryBuilder builder = QueryBuilders.boolQuery().filter(QueryBuilders.termQuery("uri", uri));
+
+        BoolQueryBuilder builder = QueryBuilders.boolQuery();
+
+        // Only return dates that are in future
+        builder.should(QueryBuilders.rangeQuery("publishDate").gte(System.currentTimeMillis()));
+
+        // if the uri is the homepage then cache until the next publish time.
+        if (uri != null && uri.length() > 1) {
+            builder.filter(QueryBuilders.termQuery("uri", uri));
+        }
+
         SearchRequestBuilder searchRequestBuilder = getElasticsearchClient().prepareSearch(PUBLISH_DATES_INDEX);
         searchRequestBuilder.setSize(1);
         searchRequestBuilder.setQuery(builder).addSort(new FieldSortBuilder("publishDate").unmappedType("date"));
+
         SearchResponse response = searchRequestBuilder.get();
         if (response.getHits().getTotalHits() > 0) {
             Long publishDate = (Long) response.getHits().getAt(0).getSource().get("publishDate");
             String collectionId = (String) response.getHits().getAt(0).getSource().get("collectionId");
             String publishType = (String) response.getHits().getAt(0).getSource().get("filePublishType");
-            FilePublishType filePublishType = publishType == null ? FilePublishType.UPDATE : FilePublishType.valueOf (publishType);
+            FilePublishType filePublishType = publishType == null ? FilePublishType.UPDATE : FilePublishType.valueOf(publishType);
             return new PublishInfo(uri, collectionId, publishDate == null ? null : new Date(publishDate), filePublishType);
         }
         return null;
@@ -212,7 +223,7 @@ public class PublishingManager {
 
     //Clears data.json and .json at the end of uri
     public static String cleanUri(String uri) {
-        return removeEnd(removeEnd(removeEnd(uri, "/data.json"), "/data_cy.json"), ".json") ;
+        return removeEnd(removeEnd(removeEnd(uri, "/data.json"), "/data_cy.json"), ".json");
     }
 
     private BulkProcessor createBulkProcessor() {

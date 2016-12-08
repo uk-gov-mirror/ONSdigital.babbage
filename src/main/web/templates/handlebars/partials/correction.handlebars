@@ -3,7 +3,7 @@
 		{{#if_all versions alerts}}
 			<h3 class="alert--correction__title">{{labels.corrections}}</h3>
 		{{/if_all}}
-		{{#loop versions reverse=true}}
+		{{#loop versions orderBy="updateDate" reverse=true}}
 			<p class="alert__date">{{df updateDate outputFormat="d MMMM yyyy HH:mm"}}</p>
 			{{md correctionNotice}}
 			<a class="btn btn--tertiary margin-bottom-sm--3 margin-bottom-md--3 print--hide" href="{{uri}}">{{labels.view-superseded-version}}</a>
