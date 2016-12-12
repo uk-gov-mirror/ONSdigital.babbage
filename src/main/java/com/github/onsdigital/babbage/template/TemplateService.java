@@ -1,6 +1,5 @@
 package com.github.onsdigital.babbage.template;
 
-import com.github.onsdigital.babbage.configuration.Configuration;
 import com.github.onsdigital.babbage.template.handlebars.HandlebarsRenderer;
 import com.github.onsdigital.babbage.util.ThreadContext;
 import org.apache.commons.lang3.ArrayUtils;
@@ -10,7 +9,11 @@ import java.io.InputStream;
 import java.util.Collections;
 import java.util.Map;
 
-import static com.github.onsdigital.babbage.configuration.Configuration.HANDLEBARS.*;
+import static com.github.onsdigital.babbage.configuration.Configuration.HANDLEBARS.getMainChartConfigTemplateName;
+import static com.github.onsdigital.babbage.configuration.Configuration.HANDLEBARS.getMainContentTemplateName;
+import static com.github.onsdigital.babbage.configuration.Configuration.HANDLEBARS.getTemplatesDirectory;
+import static com.github.onsdigital.babbage.configuration.Configuration.HANDLEBARS.getTemplatesSuffix;
+import static com.github.onsdigital.babbage.configuration.Configuration.HANDLEBARS.isReloadTemplateChanges;
 import static com.github.onsdigital.babbage.util.json.JsonUtil.toMap;
 
 /**

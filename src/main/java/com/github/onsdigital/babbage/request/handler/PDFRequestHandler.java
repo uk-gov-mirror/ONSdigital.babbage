@@ -50,7 +50,7 @@ public class PDFRequestHandler extends BaseRequestHandler {
         return response;
     }
 
-    static BabbageResponse getPregeneartedPdf(String requestedUri) throws ContentReadException, IOException {
+    static BabbageResponse getPreGeneratedPDF(String requestedUri) throws ContentReadException, IOException {
         ContentResponse contentResponse;
         contentResponse = ContentClient.getInstance().getResource(requestedUri + "/page.pdf");
         BabbageContentBasedBinaryResponse response = new BabbageContentBasedBinaryResponse(contentResponse, contentResponse.getDataStream(), contentResponse.getMimeType());
