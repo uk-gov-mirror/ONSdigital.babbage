@@ -3,6 +3,7 @@ package com.github.onsdigital.babbage.request.handler;
 import com.github.onsdigital.babbage.content.client.ContentClient;
 import com.github.onsdigital.babbage.content.client.ContentReadException;
 import com.github.onsdigital.babbage.content.client.ContentResponse;
+import com.github.onsdigital.babbage.error.LegacyPDFException;
 import com.github.onsdigital.babbage.pdf.PdfGeneratorLegacy;
 import com.github.onsdigital.babbage.request.handler.base.BaseRequestHandler;
 import com.github.onsdigital.babbage.response.BabbageBinaryResponse;
@@ -33,24 +34,12 @@ public class PdfLegacyRequestHandler extends BaseRequestHandler {
     public BabbageResponse get(String requestedUri, HttpServletRequest requests) throws Exception {
 
         try {
-            return PDFRequestHandler.getPregeneartedPdf(requestedUri);
+            return PDFRequestHandler.getPreGeneratedPDF(requestedUri);
         } catch (ContentReadException e) {
-            System.out.println("Pre-rendered PDF not found - attempting to generate it...");
+            // TODO use actual logging framework for this, log requested URI.
+            System.out.println("Pre-rendered PDF not found, throwing Legacy PDF error.");
+            throw new LegacyPDFException();
         }
-
-        String uriPath = StringUtils.removeStart(requestedUri, "/");
-
-        System.out.println("Generating pdf for uri:" + uriPath);
-        String pdfTable = getPDFTables(uriPath);
-        if(pdfTable != null) {
-            System.out.println("Using pdfTable: " + pdfTable);
-        }
-        Path pdfFile = PdfGeneratorLegacy.generatePdf(requestedUri, PDFRequestHandler.getTitle(requestedUri), RequestUtil.getAllCookies(requests), pdfTable);
-        InputStream fin = Files.newInputStream(pdfFile);
-        BabbageBinaryResponse response = new BabbageBinaryResponse(fin, CONTENT_TYPE);
-        response.addHeader("Content-Length", Long.toString(FileUtils.sizeOf(pdfFile.toFile())));
-        response.addHeader("Content-Disposition", "attachment; filename=\"" + pdfFile.getFileName() + "\"");
-        return response;
     }
 
     @Override
@@ -64,8 +53,8 @@ public class PdfLegacyRequestHandler extends BaseRequestHandler {
 
         List<Map<String, Object>> o = (List<Map<String, Object>>) stringObjectMap.get("pdfTable");
 
-        if(o != null && o.size() > 0) {
-            String filename = (String)o.get(0).get("file");
+        if (o != null && o.size() > 0) {
+            String filename = (String) o.get(0).get("file");
             String file = uri + "/" + filename;
             ContentResponse pdfTableContentResponse = ContentClient.getInstance().getResource(file);
             File targetFile = new File(FileUtils.getTempDirectoryPath() + "/" + filename);
