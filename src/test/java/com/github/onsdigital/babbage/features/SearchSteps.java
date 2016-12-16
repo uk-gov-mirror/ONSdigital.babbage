@@ -1,5 +1,6 @@
 package com.github.onsdigital.babbage.features;
 
+import com.fasterxml.jackson.databind.util.ISO8601DateFormat;
 import com.github.onsdigital.babbage.api.util.SearchUtils;
 import com.github.onsdigital.babbage.mock.MockHttpServletRequest;
 import com.github.onsdigital.babbage.search.ElasticSearchClient;
@@ -15,12 +16,15 @@ import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /**
  * The Steps to test that the results of the Search query contain the correct results on the first page
@@ -58,7 +62,7 @@ public class SearchSteps implements En {
 
         Then("^the user will receive the following documents on the first page$",
              (DataTable expectedInitialPage) -> {
-                 // Write code here that turns the phrase above into concrete actions
+
                  List<Map<String, Object>> result = searchResults.get(queryName)
                                                                  .getResults();
                  List<String> documentUris = result.stream()
@@ -80,7 +84,37 @@ public class SearchSteps implements En {
                  }
 
              });
+        And("^the bulletins are order in date descending order$",
+            () -> {
+                List<Map<String, Object>> result = searchResults.get(queryName)
+                                                                .getResults();
+                result.stream()
+                      .filter(obj -> "bulletin".equals(obj.get("type")))
+                      .reduce(null,
+                              (a, b) -> {
+                                  assertTrue("Either the score is not descending or the date is not and the score is identical",
+                                             a == null || getReleaseTime(a) >= getReleaseTime(b));
+                                  return b;
+                              });
 
+            });
+
+
+    }
+
+
+    private long getReleaseTime(final Map<String, Object> a) {
+        DateFormat df = new ISO8601DateFormat();
+        String s = (String) ((Map) a.get("description")).get("releaseDate");
+        long time = 0;
+        try {
+            time = df.parse(s)
+                     .getTime();
+        } catch (ParseException e) {
+            LOGGER.info("getReleaseTime([a]) : ");
+            fail("Failed to get the date out of the results; date was " + s);
+        }
+        return time;
 
     }
 
