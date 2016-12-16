@@ -36,30 +36,47 @@ public class ONSQueryBuilders {
     public static QueryBuilder contentQuery(String searchTerm, SearchFilter filter) {
         QueryBuilder query = disMaxQuery()
                 .add(boolQuery()
-                        .should(matchQuery(title_no_dates.fieldName(), searchTerm)
-                                        .boost(title_no_dates.boost())
-                                        .minimumShouldMatch("1<-2 3<80% 5<60%")
-                        ).should(matchQuery(title_no_stem.fieldName(), searchTerm)
-                                        .boost(title_no_stem.boost())
-                                        .minimumShouldMatch("1<-2 3<80% 5<60%")
-                        )
-                        .should(multiMatchQuery(searchTerm, title.fieldNameBoosted(), edition.fieldNameBoosted())
-                                .type(CROSS_FIELDS).minimumShouldMatch("3<80% 5<60%")))
-                .add(multiMatchQuery(searchTerm, summary.fieldNameBoosted(), metaDescription.fieldNameBoosted())
-                        .type(BEST_FIELDS).minimumShouldMatch("75%"))
-                .add(matchQuery(keywords.fieldName(), searchTerm).operator(AND))
-                .add(multiMatchQuery(searchTerm, cdid.fieldNameBoosted(), datasetId.fieldNameBoosted())).
-                        add(matchQuery(searchBoost.fieldName(), searchTerm).boost(searchBoost.boost()).operator(AND));
+                             .should(matchQuery(title_no_dates.fieldName(),
+                                                searchTerm)
+                                             .boost(title_no_dates.boost())
+                                             .minimumShouldMatch("1<-2 3<80% 5<60%"))
+                             .should(matchQuery(title_no_stem.fieldName(),
+                                                searchTerm)
+                                             .boost(title_no_stem.boost())
+                                             .minimumShouldMatch("1<-2 3<80% 5<60%"))
+                             .should(multiMatchQuery(searchTerm,
+                                                     title.fieldNameBoosted(),
+                                                     edition.fieldNameBoosted())
+                                             .type(CROSS_FIELDS)
+                                             .minimumShouldMatch("3<80% 5<60%")))
+                .add(multiMatchQuery(searchTerm,
+                                     summary.fieldNameBoosted(),
+                                     metaDescription.fieldNameBoosted())
+                             .type(BEST_FIELDS)
+                             .minimumShouldMatch("75%"))
+                .add(matchQuery(keywords.fieldName(),
+                                searchTerm).operator(AND))
+                .add(multiMatchQuery(searchTerm,
+                                     cdid.fieldNameBoosted(),
+                                     datasetId.fieldNameBoosted()))
+                .add(matchQuery(searchBoost.fieldName(),
+                                searchTerm)
+                             .boost(searchBoost.boost())
+                             .operator(AND));
 
         if (filter != null) {
-            query = appyFilter(QueryBuilders.boolQuery().must(query), filter);
+            query = appyFilter(QueryBuilders
+                                       .boolQuery()
+                                       .must(query),
+                               filter);
         }
 
         return query;
     }
 
     public static QueryBuilder contentQuery(String searchTerm) {
-        return contentQuery(searchTerm, null);
+        return contentQuery(searchTerm,
+                            null);
     }
 
     public static QueryBuilder advancedSearchQuery(String searchQuery) {
@@ -78,29 +95,48 @@ public class ONSQueryBuilders {
     public static QueryBuilder listQuery(String searchTerm) {
         QueryBuilder query = disMaxQuery()
                 .add(boolQuery()
-                                .should(matchQuery(title_no_dates.fieldName(), searchTerm)
-                                                .boost(title_no_dates.boost())
-                                                .minimumShouldMatch("1<-2 3<80% 5<60%")
-                                ).should(matchQuery(title_no_stem.fieldName(), searchTerm)
-                                                .boost(title_no_stem.boost())
-                                                .minimumShouldMatch("1<-2 3<80% 5<60%")
-                                )
-                                .should(multiMatchQuery(searchTerm, title.fieldNameBoosted(), edition.fieldNameBoosted())
-                                        .type(CROSS_FIELDS).minimumShouldMatch("3<80% 5<60%"))
-                                .should(matchPhrasePrefixQuery(Field.title_no_synonym_no_stem.fieldName(), searchTerm).maxExpansions(10))
-                )
-                .add(multiMatchQuery(searchTerm, summary.fieldNameBoosted(), metaDescription.fieldNameBoosted())
-                        .type(BEST_FIELDS).minimumShouldMatch("75%"))
-                .add(matchQuery(keywords.fieldName(), searchTerm).operator(AND))
-                .add(multiMatchQuery(searchTerm, cdid.fieldNameBoosted(), datasetId.fieldNameBoosted())).
-                        add(matchQuery(searchBoost.fieldName(), searchTerm).boost(searchBoost.boost()).operator(AND));
+                             .should(matchQuery(title_no_dates.fieldName(),
+                                                searchTerm)
+                                             .boost(title_no_dates.boost())
+                                             .minimumShouldMatch("1<-2 3<80% 5<60%")
+                                    )
+                             .should(matchQuery(title_no_stem.fieldName(),
+                                                searchTerm)
+                                             .boost(title_no_stem.boost())
+                                             .minimumShouldMatch("1<-2 3<80% 5<60%")
+                                    )
+                             .should(multiMatchQuery(searchTerm,
+                                                     title.fieldNameBoosted(),
+                                                     edition.fieldNameBoosted())
+                                             .type(CROSS_FIELDS)
+                                             .minimumShouldMatch("3<80% 5<60%"))
+                             .should(matchPhrasePrefixQuery(Field.title_no_synonym_no_stem.fieldName(),
+                                                            searchTerm)
+                                             .maxExpansions(10))
+                    )
+                .add(multiMatchQuery(searchTerm,
+                                     summary.fieldNameBoosted(),
+                                     metaDescription.fieldNameBoosted())
+                             .type(BEST_FIELDS)
+                             .minimumShouldMatch("75%"))
+                .add(matchQuery(keywords.fieldName(),
+                                searchTerm).operator(AND))
+                .add(multiMatchQuery(searchTerm,
+                                     cdid.fieldNameBoosted(),
+                                     datasetId.fieldNameBoosted()))
+                .
+                        add(matchQuery(searchBoost.fieldName(),
+                                       searchTerm)
+                                    .boost(searchBoost.boost())
+                                    .operator(AND));
 
         return query;
     }
 
 
     public static QueryBuilder departmentQuery(String searchTerm) {
-        return matchQuery("terms", searchTerm);
+        return matchQuery("terms",
+                          searchTerm);
     }
 
     /**
@@ -113,7 +149,10 @@ public class ONSQueryBuilders {
         FunctionScoreQueryBuilder builder = functionScoreQuery(queryBuilder);
         for (ContentType contentType : ContentType.values()) {
             if (contentType.getWeight() != null) {
-                builder.add(termQuery(_type.fieldName(), contentType.name()), weightFactorFunction(contentType.getWeight()));
+                builder.add(termQuery(_type.fieldName(),
+                                      contentType.name()),
+                            weightFactorFunction(contentType
+                                                         .getWeight()));
             }
         }
         return builder;
@@ -121,7 +160,8 @@ public class ONSQueryBuilders {
 
     public static ONSQuery bestTopicMatchQuery(String searchTerm) {
         return onsQuery(contentQuery(searchTerm))
-                .types(ContentType.product_page, ContentType.home_page_census)
+                .types(ContentType.product_page,
+                       ContentType.home_page_census)
                 .size(1);
     }
 
@@ -129,7 +169,8 @@ public class ONSQueryBuilders {
         return onsQuery(matchAllQuery())
                 .types(ContentType.product_page)
                 .sortBy(SortBy.title)
-                .fetchFields(Field.title, Field.uri)
+                .fetchFields(Field.title,
+                             Field.uri)
                 .name("topics")
                 .size(10000);//how to set max value ? No paging or filtering on front-end for topic drop down list. Elasticsearch 2.1.1 max window is 10000
     }
@@ -142,36 +183,47 @@ public class ONSQueryBuilders {
      * @return
      */
     public static ONSQuery typeCountsQuery(QueryBuilder queryBuilder) {
-        return typeCountsQuery(queryBuilder, null).name("counts");
+        return typeCountsQuery(queryBuilder,
+                               null).name("counts");
     }
 
     public static ONSQuery typeCountsQuery(QueryBuilder queryBuilder, SearchFilter filter) {
-        return onsQuery(queryBuilder, filter)
-                .size(0).aggregate(typeCountsAggregate()); //aggregating all content types without using selected numbers
+        return onsQuery(queryBuilder,
+                        filter)
+                .size(0)
+                .aggregate(typeCountsAggregate()); //aggregating all content types without using selected numbers
     }
 
     public static TermsBuilder typeCountsAggregate() {
-        return AggregationBuilders.terms("docCounts")
+        return AggregationBuilders
+                .terms("docCounts")
                 .size(0)//if more than zero will only return counts for 10
                 .field(Field._type.fieldName());
     }
 
     public static ONSQuery firstLetterCounts(ONSQuery query) {
-        return query.aggregate(
-                AggregationBuilders
-                        .terms("docCounts")
-                        .size(0)
-                        .field(Field.title_first_letter.fieldName())
-        ).size(0).name("counts"); //aggregating all content types without using selected numbers
+        return query
+                .aggregate(
+                        AggregationBuilders
+                                .terms("docCounts")
+                                .size(0)
+                                .field(Field.title_first_letter.fieldName())
+                          )
+                .size(0)
+                .name("counts"); //aggregating all content types without using selected numbers
     }
 
     public static ONSQuery onsQuery(QueryBuilder queryBuilder) {
-        return onsQuery(queryBuilder, null);
+        return onsQuery(queryBuilder,
+                        null);
     }
 
     public static ONSQuery onsQuery(QueryBuilder queryBuilder, SearchFilter filter) {
         if (filter != null) {
-            queryBuilder = appyFilter(QueryBuilders.boolQuery().must(queryBuilder), filter);
+            queryBuilder = appyFilter(QueryBuilders
+                                              .boolQuery()
+                                              .must(queryBuilder),
+                                      filter);
         }
         return new ONSQuery(queryBuilder);
     }
