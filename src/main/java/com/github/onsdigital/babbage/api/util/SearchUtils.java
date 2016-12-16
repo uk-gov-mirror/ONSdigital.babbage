@@ -86,8 +86,7 @@ public class SearchUtils {
         LinkedHashMap<String, SearchResult> results = searchAll(queries);
 
         if (searchDepartments) {
-            searchDepartments(searchTerm,
-                              results);
+            searchDepartments(searchTerm, results);
         }
 
         logResponseStatistics(searchTerm,
@@ -97,6 +96,28 @@ public class SearchUtils {
         return buildResponse(request,
                              listType,
                              results);
+    }
+
+    private static void logResponseStatistics(String searchTerm, SearchQueries queries, LinkedHashMap<String, SearchResult> results) {
+
+
+        for (ONSQuery onsQuery :  queries.buildQueries()) {
+
+            final int size = onsQuery.size();
+            final Integer page = onsQuery.page();
+            final String name = onsQuery.name();
+
+            SearchResult resultsQueryResponse = results.get(name);
+            long took = resultsQueryResponse.getTook();
+
+            LOGGER.info("doSearch([searchQueries]) : name '{}' page '{}' took:'{}' ms for terms: '{}' size {}",
+                        name,
+                        page,
+                        took,
+                        searchTerm,
+                        size
+            );
+        }
     }
 
     private static void logResponseStatistics(String searchTerm, SearchQueries queries,
@@ -195,16 +216,10 @@ public class SearchUtils {
      *
      * @return
      */
-    public static ONSQuery buildAdvancedSearchQuery(HttpServletRequest request, String searchTerm,
-                                                    Set<TypeFilter> defaultFilters) {
-        SortBy sortBy = extractSortBy(request,
-                                      SortBy.relevance);
-        return buildONSQuery(request,
-                             advancedSearchQuery(searchTerm),
-                             sortBy,
-                             null,
-                             contentTypes(extractSelectedFilters(request,
-                                                                 defaultFilters)));
+    public static ONSQuery buildAdvancedSearchQuery(HttpServletRequest request, String searchTerm, Set<TypeFilter> defaultFilters) {
+        SortBy sortBy = extractSortBy(request, SortBy.relevance);
+        return buildONSQuery(request, advancedSearchQuery(searchTerm), sortBy, null, contentTypes(extractSelectedFilters(request,
+        defaultFilters)));
     }
 
     public static ONSQuery buildListQuery(HttpServletRequest request, Set<TypeFilter> defaultFilters,
@@ -329,12 +344,12 @@ public class SearchUtils {
     }
 
     private static String searchTimeSeriesUri(String searchTerm) {
-        ONSSearchResponse search = SearchHelper.search(onsQuery(boolQuery().filter(termQuery(cdid.fieldName(),
-                                                                                             searchTerm.toLowerCase())))
-                                                               .types(ContentType.timeseries)
-                                                               .sortBy(SortBy.release_date)
-                                                               .size(1)
-                                                               .fetchFields(Field.uri));
+        ONSSearchResponse search = SearchHelper.
+                search(onsQuery(boolQuery().filter(termQuery(cdid.fieldName(), searchTerm.toLowerCase())))
+                        .types(ContentType.timeseries)
+                        .sortBy(SortBy.release_date)
+                        .size(1)
+                        .fetchFields(Field.uri));
         if (search.getNumberOfResults() == 0) {
             return null;
         }
