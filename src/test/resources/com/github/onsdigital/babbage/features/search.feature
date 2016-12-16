@@ -12,7 +12,7 @@ Feature: Searching ONS website content
       | /economy/inflationandpriceindices/bulletins/consumerpriceinflation/december2015 |
       | /economy/inflationandpriceindices/bulletins/consumerpriceinflation/november2015 |
       | /economy/inflationandpriceindices/bulletins/consumerpriceinflation/october2015  |
-
+    And the bulletins are order in date descending order
 
   Scenario: When Searching for RPI I get the same results as Retail Price Index
     When a user searches for the term(s) "RPI"
@@ -26,7 +26,7 @@ Feature: Searching ONS website content
       | /economy/inflationandpriceindices/bulletins/consumerpriceinflation/december2015 |
       | /economy/inflationandpriceindices/bulletins/consumerpriceinflation/november2015 |
       | /economy/inflationandpriceindices/bulletins/consumerpriceinflation/october2015  |
-
+    And the bulletins are order in date descending order
 
   Scenario: When Searching for CPI I get the same results as Consumer Price Index
     When a user searches for the term(s) "CPI"
@@ -40,7 +40,7 @@ Feature: Searching ONS website content
       | /economy/inflationandpriceindices/bulletins/consumerpriceinflation/december2015 |
       | /economy/inflationandpriceindices/bulletins/consumerpriceinflation/november2015 |
       | /economy/inflationandpriceindices/bulletins/consumerpriceinflation/october2015  |
-
+    And the bulletins are order in date descending order
 
   Scenario: When Searching for Consumer Price Index I get the same results as Consumer Price Index
     When a user searches for the term(s) "Consumer Price Inflation"
@@ -54,5 +54,5 @@ Feature: Searching ONS website content
       | /economy/inflationandpriceindices/bulletins/consumerpriceinflation/december2015 |
       | /economy/inflationandpriceindices/bulletins/consumerpriceinflation/november2015 |
       | /economy/inflationandpriceindices/bulletins/consumerpriceinflation/october2015  |
-
+    And the bulletins are order in date descending order
 
