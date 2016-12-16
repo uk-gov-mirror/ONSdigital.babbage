@@ -49,7 +49,7 @@ public class SearchSteps implements En {
                  HttpServletRequest dummyRequest = new MockHttpServletRequest();
                  final ONSQuery query = SearchUtils.buildSearchQuery(dummyRequest,
                                                                      terms,
-                                                                     TypeFilter.getDataFilters());
+                                                                     TypeFilter.getAllFilters());
                  //Need to get the name of the query so we can get to the results
                  queryName = query.name();
                  searchResults = SearchUtils.searchAll(() -> Lists.newArrayList(query));
@@ -64,19 +64,22 @@ public class SearchSteps implements En {
                  List<String> documentUris = result.stream()
                                                    .map((resultEntry) -> (String) resultEntry.get("uri"))
                                                    .collect(Collectors.toList());
+                 String uriResults = StringUtils.join(documentUris,
+                                                      "\r\n");
+                 LOGGER.info("SearchSteps([]) : results are :\r\n {}",
+                             uriResults);
 
                  for (String expectedUri : expectedInitialPage.asList(String.class)) {
+
 
                      assertTrue(
                              String.format("Document URI %s was not in the list returned;\r\n%s",
                                            expectedUri,
-                                           StringUtils.join(documentUris,
-                                                            "\r\n")),
+                                           uriResults),
                              documentUris.contains(expectedUri));
                  }
 
              });
-
 
 
     }
