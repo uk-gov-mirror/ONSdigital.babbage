@@ -8,6 +8,8 @@ import org.elasticsearch.ElasticsearchException;
 import org.elasticsearch.action.search.*;
 import org.elasticsearch.search.aggregations.AbstractAggregationBuilder;
 import org.elasticsearch.search.suggest.SuggestBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +21,9 @@ import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 public class SearchHelper {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(SearchHelper.class);
+
+
     private static SearchRequestBuilder prepare(ONSQuery query) {
         return prepare(query, null);
     }
@@ -28,7 +33,8 @@ public class SearchHelper {
                 .prepareSearch(isNotEmpty(index) ? index : getElasticSearchIndexAlias())
                 .setQuery(query.query())
                 .setFrom(query.from())
-                .setSize(query.size()).setSearchType(SearchType.DFS_QUERY_THEN_FETCH);
+                .setSize(query.size())
+                .setSearchType(SearchType.DFS_QUERY_THEN_FETCH);
 
         addTypes(requestBuilder, query);
         addHighlights(requestBuilder, query);
@@ -37,6 +43,7 @@ public class SearchHelper {
         addSuggestions(requestBuilder, query);
         addFetchFields(requestBuilder, query);
 
+        LOGGER.debug("prepare([query, index]) : QueryName:{} -> Query: '{}'", query.name(), requestBuilder);
         return requestBuilder;
     }
 
@@ -104,8 +111,10 @@ public class SearchHelper {
         if (query.sortBy() == null) {
             return;
         }
-        for (SortField sortField : query.sortBy().getSortFields()) {
-            builder.addSort(sortField.getField().fieldName(), sortField.getOrder());
+        for (SortField sortField : query.sortBy()
+                                        .getSortFields()) {
+            builder.addSort(sortField.getField()
+                                     .fieldName(), sortField.getOrder());
         }
     }
 
@@ -135,7 +144,9 @@ public class SearchHelper {
         if (queryBuilder.sortBy() == null) {
             return response;
         }
-        response.getResult().setSortBy(queryBuilder.sortBy().name());
+        response.getResult()
+                .setSortBy(queryBuilder.sortBy()
+                                       .name());
         return response;
     }
 
@@ -146,7 +157,8 @@ public class SearchHelper {
         Paginator.assertPage(queryBuilder.page(), response);
         Paginator paginator = new Paginator(response.getNumberOfResults(), getMaxVisiblePaginatorLink(), queryBuilder.page(), queryBuilder.size());
         if (paginator.getNumberOfPages() > 1) {
-            response.getResult().setPaginator(paginator);
+            response.getResult()
+                    .setPaginator(paginator);
         }
         return response;
     }
