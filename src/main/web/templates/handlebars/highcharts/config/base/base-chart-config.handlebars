@@ -8,17 +8,10 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 
 	Highcharts.setOptions({lang: {thousandsSep: ','}});
 
-	{{!-- chart-config block is to be overriden by chart types inheriting this template --}}
-	var options = {
-		chart: {
-			height: {{width}} * {{aspectRatio}},
-			width: {{width}},
-			marginRight: 35,
-			style: {
-				fontFamily: 'Tahoma, Verdana, Arial'
-			}
-		},
-		colors: [
+	var bluemono = ["#084594", "#2171B5", "#4292C6", "#6BAED6", "#9ECAE1", "#C6DBEF", "#DEEBF7", "#F7FBFF"];
+	var greymono = ["#000000","#252525", "#525252", "#737373", "#969696", "#BDBDBD", "#D9D9D9", "#F0F0F0"];
+	var color = [
+	'rgba(255,96,0,0.5)',
 			"#274796",
 			"#F5942F",
 			"#E73F40",
@@ -28,7 +21,23 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 			"#74B630",
 			"#674796",
 			"#BD5B9E"
-		],
+		];
+
+	// set chart palette based on chart object
+	var palette = {{#if_eq palette "colour"}}color{{else}}bluemono{{/if_eq}}
+
+
+	{{!-- chart-config block is to be overriden by chart types inheriting this template --}}
+	var options = {
+		chart: {
+			height: {{width}} * {{aspectRatio}},
+			width: {{width}},
+			marginRight: 35,
+			style: {
+				fontFamily: '"Open Sans", Tahoma, Verdana, Arial'
+			}
+		},
+		colors: palette,
 		series: [],
 		title: {
 			text: ""
@@ -43,7 +52,8 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 				useHTML:true
 			},
 			plotLines: [{color: 'gray',width: 2,value: 0,zIndex: -100}],
-			gridZIndex: -200
+			gridZIndex: -200,
+			opposite:{{#if_eq yAxisPos "right"}}true{{else}}false{{/if_eq}}
 		},
 		xAxis: {
 			categories: [{{#each categories}}'{{{sub (sup this)}}}',{{/each}}],
@@ -54,7 +64,8 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 			title: {
 				useHTML:true,
 				text: "{{{sub (sup xAxisLabel)}}}"
-			}
+			},
+			opposite:{{#if_eq xAxisPos "top"}}true{{else}}false{{/if_eq}}
 		},
 		legend: {
 			verticalAlign: "top",
@@ -63,12 +74,13 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 		},
 		plotOptions: {
 			series: {
+				borderWidth:0,
 				animation: false,
 				pointPadding: 0,
 				groupPadding: 0.1
 			},
 			line: {
-				lineWidth: 1,
+				lineWidth: 2,
 				marker: {
 					radius: 2,
 					symbol: "circle"
