@@ -28,6 +28,8 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.common.text.Text;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.MediaType;
@@ -52,6 +54,7 @@ import static org.elasticsearch.search.suggest.SuggestBuilders.phraseSuggestion;
  * Commons search functionality for search, search publications and search data pages.
  */
 public class SearchUtils {
+    private static final Logger LOGGER = LoggerFactory.getLogger(SearchUtils.class);
 
     private static final String DEPARTMENTS_INDEX = "departments";
     private static final String ERRORS_KEY = "errors";
@@ -67,38 +70,78 @@ public class SearchUtils {
      */
     public static BabbageResponse search(HttpServletRequest request, String listType, String searchTerm, SearchQueries queries, boolean searchDepartments) throws IOException {
         if (searchTerm == null) {
-            return buildResponse(request, listType, null);
+            return buildResponse(request,
+                                 listType,
+                                 null);
         } else if (!isFiltered(request)) { //only search for time series when new search made through search input
             //search time series by cdid, redirect to time series page if found
             String timeSeriesUri = searchTimeSeriesUri(searchTerm);
             if (timeSeriesUri != null) {
-                return new BabbageRedirectResponse(timeSeriesUri, Configuration.GENERAL.getSearchResponseCacheTime());
+                return new BabbageRedirectResponse(timeSeriesUri,
+                                                   Configuration.GENERAL.getSearchResponseCacheTime());
             }
         }
         LinkedHashMap<String, SearchResult> results = searchAll(queries);
+
         if (searchDepartments) {
-            searchDeparments(searchTerm, results);
+            searchDeparments(searchTerm,
+                             results);
         }
-        return buildResponse(request, listType, results);
+
+        logResponseStatistics(searchTerm,
+                              queries,
+                              results);
+
+        return buildResponse(request,
+                             listType,
+                             results);
+    }
+
+    private static void logResponseStatistics(String searchTerm, SearchQueries queries, LinkedHashMap<String, SearchResult> results) {
+
+
+        for (ONSQuery onsQuery :  queries.buildQueries()) {
+
+            final int size = onsQuery.size();
+            final Integer page = onsQuery.page();
+            final String name = onsQuery.name();
+
+            SearchResult resultsQueryResponse = results.get(name);
+            long took = resultsQueryResponse.getTook();
+
+            LOGGER.info("doSearch([searchQueries]) : name '{}' page '{}' took:'{}' ms for terms: '{}' size {}",
+                        name,
+                        page,
+                        took,
+                        searchTerm,
+                        size
+            );
+        }
     }
 
     public static BabbageResponse list(HttpServletRequest request, String listType, SearchQueries queries) throws IOException {
-        return buildResponse(request, listType, searchAll(queries));
+        return buildResponse(request,
+                             listType,
+                             searchAll(queries));
     }
 
     public static BabbageResponse listPage(String listType, SearchQueries queries) throws IOException {
-        return buildPageResponse(listType, searchAll(queries));
+        return buildPageResponse(listType,
+                                 searchAll(queries));
     }
 
     public static BabbageResponse listPageWithValidationErrors(
             String listType, SearchQueries queries,
             List<ValidationError> errors
     ) throws IOException {
-        return buildPageResponseWithValidationErrors(listType, searchAll(queries), Optional.ofNullable(errors));
+        return buildPageResponseWithValidationErrors(listType,
+                                                     searchAll(queries),
+                                                     Optional.ofNullable(errors));
     }
 
     public static BabbageResponse listJson(String listType, SearchQueries queries) throws IOException {
-        return buildDataResponse(listType, searchAll(queries));
+        return buildDataResponse(listType,
+                                 searchAll(queries));
     }
 
     public static LinkedHashMap<String, SearchResult> searchAll(SearchQueries searchQueries) {
@@ -115,18 +158,31 @@ public class SearchUtils {
      */
     public static ONSQuery buildSearchQuery(HttpServletRequest request, String searchTerm, Set<TypeFilter> defaultFilters) {
         boolean advanced = isAdvancedSearchQuery(searchTerm);
-        SortBy sortBy = extractSortBy(request, SortBy.relevance);
+        SortBy sortBy = extractSortBy(request,
+                                      SortBy.relevance);
         QueryBuilder contentQuery;
         contentQuery = advanced ? advancedSearchQuery(searchTerm) : contentQuery(searchTerm);
-        ONSQuery query = buildONSQuery(request, contentQuery, sortBy, null, contentTypes(extractSelectedFilters(request, defaultFilters)));
+        ONSQuery query = buildONSQuery(request,
+                                       contentQuery,
+                                       sortBy,
+                                       null,
+                                       contentTypes(extractSelectedFilters(request,
+                                                                           defaultFilters)));
         if (!advanced) {
-            query.suggest(phraseSuggestion("search_suggest").field(Field.title_no_synonym_no_stem.fieldName()).text(searchTerm));
+            query.suggest(phraseSuggestion("search_suggest").field(Field.title_no_synonym_no_stem.fieldName())
+                                                            .text(searchTerm));
         }
         return query;
     }
 
     private static boolean isAdvancedSearchQuery(String searchTerm) {
-        return StringUtils.containsAny(searchTerm, "+", "|", "-", "\"", "*", "~");
+        return StringUtils.containsAny(searchTerm,
+                                       "+",
+                                       "|",
+                                       "-",
+                                       "\"",
+                                       "*",
+                                       "~");
     }
 
     /**
@@ -135,29 +191,50 @@ public class SearchUtils {
      * @return
      */
     public static ONSQuery buildAdvancedSearchQuery(HttpServletRequest request, String searchTerm, Set<TypeFilter> defaultFilters) {
-        SortBy sortBy = extractSortBy(request, SortBy.relevance);
-        ONSQuery query = buildONSQuery(request, advancedSearchQuery(searchTerm), sortBy, null, contentTypes(extractSelectedFilters(request, defaultFilters)));
+        SortBy sortBy = extractSortBy(request,
+                                      SortBy.relevance);
+        ONSQuery query = buildONSQuery(request,
+                                       advancedSearchQuery(searchTerm),
+                                       sortBy,
+                                       null,
+                                       contentTypes(extractSelectedFilters(request,
+                                                                           defaultFilters)));
         return query;
     }
 
     public static ONSQuery buildListQuery(HttpServletRequest request, Set<TypeFilter> defaultFilters, SearchFilter filter) {
-        return buildListQuery(request, defaultFilters, filter, null);
+        return buildListQuery(request,
+                              defaultFilters,
+                              filter,
+                              null);
     }
 
     public static ONSQuery buildListQuery(HttpServletRequest request, SearchFilter filter) {
-        return buildListQuery(request, null, filter, null);
+        return buildListQuery(request,
+                              null,
+                              filter,
+                              null);
     }
 
     public static ONSQuery buildListQuery(HttpServletRequest request, SearchFilter filter, SortBy defaultSort) {
-        return buildListQuery(request, null, filter, defaultSort);
+        return buildListQuery(request,
+                              null,
+                              filter,
+                              defaultSort);
     }
 
     public static ONSQuery buildListQuery(HttpServletRequest request) {
-        return buildListQuery(request, null, null, null);
+        return buildListQuery(request,
+                              null,
+                              null,
+                              null);
     }
 
     public static ONSQuery buildListQuery(HttpServletRequest request, Set<TypeFilter> defaultFilters) {
-        return buildListQuery(request, defaultFilters, null, null);
+        return buildListQuery(request,
+                              defaultFilters,
+                              null,
+                              null);
     }
 
 
@@ -172,8 +249,13 @@ public class SearchUtils {
         }
 
         QueryBuilder query = buildBaseListQuery(searchTerm);
-        ContentType[] contentTypes = defaultFilters == null ? null : contentTypes(extractSelectedFilters(request, defaultFilters));
-        return buildONSQuery(request, query, sortBy, filter, contentTypes);
+        ContentType[] contentTypes = defaultFilters == null ? null : contentTypes(extractSelectedFilters(request,
+                                                                                                         defaultFilters));
+        return buildONSQuery(request,
+                             query,
+                             sortBy,
+                             filter,
+                             contentTypes);
     }
 
     public static QueryBuilder buildBaseListQuery(String searchTerm) {
@@ -188,8 +270,10 @@ public class SearchUtils {
 
     private static ONSQuery buildONSQuery(HttpServletRequest request, QueryBuilder builder, SortBy defaultSort, SearchFilter filter, ContentType... contentTypes) {
         int page = extractPage(request);
-        SortBy sort = extractSortBy(request, defaultSort);
-        return onsQuery(typeBoostedQuery(builder), filter)
+        SortBy sort = extractSortBy(request,
+                                    defaultSort);
+        return onsQuery(typeBoostedQuery(builder),
+                        filter)
                 .types(contentTypes)
                 .page(page)
                 .sortBy(sort)
@@ -206,10 +290,13 @@ public class SearchUtils {
         if (StringUtils.isNotEmpty(request.getParameter("size"))) {
             try {
                 result = Integer.parseInt(request.getParameter("size"));
-                return Math.max(getResultsPerPage(), Math.min(result, getMaxResultsPerPage()));
+                return Math.max(getResultsPerPage(),
+                                Math.min(result,
+                                         getMaxResultsPerPage()));
             } catch (NumberFormatException ex) {
                 System.out.println(MessageFormat.format("Failed to parse size parameter to integer." +
-                        " Default value will be used.\n {0}", ex));
+                                                                " Default value will be used.\n {0}",
+                                                        ex));
             }
         }
         return result;
@@ -220,32 +307,43 @@ public class SearchUtils {
         LinkedHashMap<String, SearchResult> results = new LinkedHashMap<>();
         for (int i = 0; i < responseList.size(); i++) {
             ONSSearchResponse response = responseList.get(i);
-            results.put(searchQueries.get(i).name(), response.getResult());
+            results.put(searchQueries.get(i)
+                                     .name(),
+                        response.getResult());
+
 
         }
+
         return results;
     }
 
     private static String searchTimeSeriesUri(String searchTerm) {
         ONSSearchResponse search = SearchHelper.
-                search(onsQuery(boolQuery().filter(termQuery(cdid.fieldName(), searchTerm.toLowerCase())))
-                        .types(ContentType.timeseries)
-                        .sortBy(SortBy.release_date)
-                        .size(1)
-                        .fetchFields(Field.uri));
+                                                       search(onsQuery(boolQuery().filter(termQuery(cdid.fieldName(),
+                                                                                                    searchTerm.toLowerCase())))
+                                                                      .types(ContentType.timeseries)
+                                                                      .sortBy(SortBy.release_date)
+                                                                      .size(1)
+                                                                      .fetchFields(Field.uri));
         if (search.getNumberOfResults() == 0) {
             return null;
         }
-        Map<String, Object> timeSeries = search.getResult().getResults().iterator().next();
+        Map<String, Object> timeSeries = search.getResult()
+                                               .getResults()
+                                               .iterator()
+                                               .next();
         return (String) timeSeries.get(Field.uri.fieldName());
     }
 
     private static void searchDeparments(String searchTerm, LinkedHashMap<String, SearchResult> results) {
         QueryBuilder departmentsQuery = departmentQuery(searchTerm);
-        SearchRequestBuilder departmentsSearch = ElasticSearchClient.getElasticsearchClient().prepareSearch(DEPARTMENTS_INDEX);
+        SearchRequestBuilder departmentsSearch = ElasticSearchClient.getElasticsearchClient()
+                                                                    .prepareSearch(DEPARTMENTS_INDEX);
         departmentsSearch.setQuery(departmentsQuery);
         departmentsSearch.setSize(1);
-        departmentsSearch.addHighlightedField("terms", 0, 0);
+        departmentsSearch.addHighlightedField("terms",
+                                              0,
+                                              0);
         departmentsSearch.setHighlighterPreTags("<strong>");
         departmentsSearch.setHighlighterPostTags("</strong>");
         SearchResponse response = departmentsSearch.get();
@@ -253,31 +351,48 @@ public class SearchUtils {
         if (onsSearchResponse.getNumberOfResults() == 0) {
             return;
         }
-        Map<String, Object> hit = onsSearchResponse.getResult().getResults().get(0);
-        Text[] highlightedFragments = response.getHits().getAt(0).getHighlightFields().get("terms").getFragments();
+        Map<String, Object> hit = onsSearchResponse.getResult()
+                                                   .getResults()
+                                                   .get(0);
+        Text[] highlightedFragments = response.getHits()
+                                              .getAt(0)
+                                              .getHighlightFields()
+                                              .get("terms")
+                                              .getFragments();
         if (highlightedFragments != null && highlightedFragments.length > 0) {
-            hit.put("match", highlightedFragments[0].toString());
+            hit.put("match",
+                    highlightedFragments[0].toString());
         }
-        results.put("departments", onsSearchResponse.getResult());
+        results.put("departments",
+                    onsSearchResponse.getResult());
     }
 
     //Send result back to client
     public static BabbageResponse buildResponse(HttpServletRequest request, String listType, Map<String, SearchResult> results) throws IOException {
         if (isDataRequest(request.getRequestURI())) {
-            return buildDataResponse(listType, results);
+            return buildDataResponse(listType,
+                                     results);
         } else {
-            return buildPageResponse(listType, results);
+            return buildPageResponse(listType,
+                                     results);
         }
     }
 
     public static BabbageResponse buildDataResponse(String listType, Map<String, SearchResult> results) {
-        LinkedHashMap<String, Object> data = buildResults(listType, results);
-        return new BabbageStringResponse(JsonUtil.toJson(data), MediaType.APPLICATION_JSON, getSearchResponseCacheTime());
+        LinkedHashMap<String, Object> data = buildResults(listType,
+                                                          results);
+        return new BabbageStringResponse(JsonUtil.toJson(data),
+                                         MediaType.APPLICATION_JSON,
+                                         getSearchResponseCacheTime());
     }
 
     public static BabbageResponse buildPageResponse(String listType, Map<String, SearchResult> results) throws IOException {
-        LinkedHashMap<String, Object> data = buildResults(listType, results);
-        return new BabbageStringResponse(TemplateService.getInstance().renderContent(data), MediaType.TEXT_HTML, getSearchResponseCacheTime());
+        LinkedHashMap<String, Object> data = buildResults(listType,
+                                                          results);
+        return new BabbageStringResponse(TemplateService.getInstance()
+                                                        .renderContent(data),
+                                         MediaType.TEXT_HTML,
+                                         getSearchResponseCacheTime());
     }
 
 
@@ -286,22 +401,26 @@ public class SearchUtils {
                     listType, Map<String, SearchResult>
                     results, Optional<List<ValidationError>> errors
     ) throws IOException {
-        LinkedHashMap<String, Object> data = buildResults(listType, results);
-        if (errors.isPresent() && !errors.get().isEmpty()) {
-            data.put(ERRORS_KEY, errors.get());
+        LinkedHashMap<String, Object> data = buildResults(listType,
+                                                          results);
+        if (errors.isPresent() && !errors.get()
+                                         .isEmpty()) {
+            data.put(ERRORS_KEY,
+                     errors.get());
         }
-        return new BabbageStringResponse(TemplateService.getInstance().renderContent(data), MediaType.TEXT_HTML,
-                getSearchResponseCacheTime());
+        return new BabbageStringResponse(TemplateService.getInstance()
+                                                        .renderContent(data),
+                                         MediaType.TEXT_HTML,
+                                         getSearchResponseCacheTime());
     }
 
-    public static LinkedHashMap<String, Object> buildResults(
-            String
-                    listType, Map<String, SearchResult> results
+    public static LinkedHashMap<String, Object> buildResults(String listType, Map<String, SearchResult> results
     ) {
         LinkedHashMap<String, Object> data = getBaseListTemplate(listType);
         if (results != null) {
             for (Map.Entry<String, SearchResult> result : results.entrySet()) {
-                data.put(result.getKey(), result.getValue());
+                data.put(result.getKey(),
+                         result.getValue());
             }
         }
         return data;
@@ -319,11 +438,13 @@ public class SearchUtils {
 
         SearchFilter filter = boolQueryBuilder -> {
             if (isNotEmpty(uriString)) {
-                ONSFilterBuilders.filterUriPrefix(uriString, boolQueryBuilder);
+                ONSFilterBuilders.filterUriPrefix(uriString,
+                                                  boolQueryBuilder);
             }
         };
 
-        ONSQuery query = onsQuery(typeBoostedQuery(builder), filter)
+        ONSQuery query = onsQuery(typeBoostedQuery(builder),
+                                  filter)
                 .types(ContentType.timeseries)
                 .sortBy(sortByReleaseDate)
                 .name("result")
@@ -343,9 +464,12 @@ public class SearchUtils {
 
     private static LinkedHashMap<String, Object> getBaseListTemplate(String listType) {
         LinkedHashMap<String, Object> baseData = new LinkedHashMap<>();
-        baseData.put("type", "list");
-        baseData.put("listType", listType.toLowerCase());
-        baseData.put("uri", ((RequestUtil.Location) ThreadContext.getData("location")).getPathname());
+        baseData.put("type",
+                     "list");
+        baseData.put("listType",
+                     listType.toLowerCase());
+        baseData.put("uri",
+                     ((RequestUtil.Location) ThreadContext.getData("location")).getPathname());
         return baseData;
     }
 
