@@ -231,9 +231,11 @@ if(!description.isIndex) {
  };
 
 
-function numberWithCommas(number) {
-    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-}
+    function numberWithCommas(number) {
+    var parts = number.toString().split(".");
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return parts.join(".");
+    }
 
 window.linechart = linechart;
 return linechart;
