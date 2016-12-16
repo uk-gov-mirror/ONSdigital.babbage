@@ -54,7 +54,6 @@ public class SearchSteps implements En {
                  final ONSQuery query = SearchUtils.buildSearchQuery(dummyRequest,
                                                                      terms,
                                                                      TypeFilter.getAllFilters());
-                                                                     TypeFilter.getAllFilters());
                  //Need to get the name of the query so we can get to the results
                  queryName = query.name();
                  searchResults = SearchUtils.searchAll(() -> Lists.newArrayList(query));
@@ -64,24 +63,11 @@ public class SearchSteps implements En {
         Then("^the user will receive the following documents on the first page$",
              (DataTable expectedInitialPage) -> {
 
-                 // Write code here that turns the phrase above into concrete actions
                  List<Map<String, Object>> result = searchResults.get(queryName)
                                                                  .getResults();
                  List<String> documentUris = result.stream()
                                                    .map((resultEntry) -> (String) resultEntry.get("uri"))
                                                    .collect(Collectors.toList());
-                 String uriResults = StringUtils.join(documentUris,
-                                                      "\r\n");
-                 LOGGER.info("SearchSteps([]) : results are :\r\n {}",
-                             uriResults);
-
-                 for (String expectedUri : expectedInitialPage.asList(String.class)) {
-
-
-                     assertTrue(
-                             String.format("Document URI %s was not in the list returned;\r\n%s",
-                                           expectedUri,
-                                           uriResults),
                  String uriResults = StringUtils.join(documentUris,
                                                       "\r\n");
                  LOGGER.info("SearchSteps([]) : results are :\r\n {}",
@@ -111,6 +97,7 @@ public class SearchSteps implements En {
                                   return b;
                               });
 
+            });
 
 
     }
