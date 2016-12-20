@@ -8,24 +8,37 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 
 	Highcharts.setOptions({lang: {thousandsSep: ','}});
 
-	var bluemono = ["#084594", "#2171B5", "#4292C6", "#6BAED6", "#9ECAE1", "#C6DBEF", "#DEEBF7", "#F7FBFF"];
-	var greymono = ["#000000","#252525", "#525252", "#737373", "#969696", "#BDBDBD", "#D9D9D9", "#F0F0F0"];
+	var alpha = 0.5;
+	var bluemono = [
+			'rgba(8,69,148,'+alpha+')',
+			'rgba(33,113,181,'+alpha+')',
+			'rgba(66,146,198,'+alpha+')',
+			'rgba(107,174,214,'+alpha+')',
+			'rgba(158,202,225,'+alpha+')',
+			'rgba(198,219,239,'+alpha+')',
+			'rgba(222,235,247,'+alpha+')',
+			'rgba(247,251,255,'+alpha+')',
+		];
+	//use rgba in order to set opacity/alpha
 	var color = [
-	'rgba(255,96,0,0.5)',
-			"#274796",
-			"#F5942F",
-			"#E73F40",
-			"#7BCAE2",
-			"#979796",
-			"#E9E117",
-			"#74B630",
-			"#674796",
-			"#BD5B9E"
+			'rgba(39,71,150,'+alpha+')',
+			'rgba(245,148,47,'+alpha+')',
+			'rgba(231,63,64,'+alpha+')',
+			'rgba(123,202,226,'+alpha+')',
+			'rgba(151,151,150,'+alpha+')',
+			'rgba(233,225,23,'+alpha+')',
+			'rgba(116,182,48,'+alpha+')',
+			'rgba(103,71,150,'+alpha+')',
+			'rgba(189,91,158,'+alpha+')'
 		];
 
-	// set chart palette based on chart object
-	var palette = {{#if_eq palette "colour"}}color{{else}}bluemono{{/if_eq}}
 
+	// set chart palette based on chart object
+	var palette = {{#if_eq palette "colour"}}color{{else}}bluemono{{/if_eq}};
+	var hasTooltip = {{#if showTooltip }}true{{else}}false{{/if}};
+
+
+	
 
 	{{!-- chart-config block is to be overriden by chart types inheriting this template --}}
 	var options = {
@@ -43,6 +56,9 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 			text: ""
 		},
 		yAxis: {
+		{{#if yMin }}min: {{yMin}},{{/if}}
+		{{#if yMax }}max: {{yMax}},{{/if}}
+		
 			title: {
 				text: "",
 				useHTML:true
@@ -54,6 +70,7 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 			plotLines: [{color: 'gray',width: 2,value: 0,zIndex: -100}],
 			gridZIndex: -200,
 			opposite:{{#if_eq yAxisPos "right"}}true{{else}}false{{/if_eq}}
+
 		},
 		xAxis: {
 			categories: [{{#each categories}}'{{{sub (sup this)}}}',{{/each}}],
@@ -74,6 +91,7 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 		},
 		plotOptions: {
 			series: {
+				{{#if isStacked }}stacking: 'normal',{{/if}}
 				borderWidth:0,
 				animation: false,
 				pointPadding: 0,
@@ -82,6 +100,7 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 			line: {
 				lineWidth: 2,
 				marker: {
+					enabled:{{#if showMarker }}true{{else}}false{{/if}},
 					radius: 2,
 					symbol: "circle"
 				}
@@ -99,19 +118,25 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
                 padding: 0
             },
             formatter: function() {
-            var div = '<div id="custom-tooltip"><div class="maintext">';
-            {{#block "tooltip-config"}}
-                var str = '<b>'+ this.x +'</b>';
+				 {{!-- leave the tooltip toggle here then can set in the page?
+				 better to render it earlier as it is done on the server  --}}
+            	if (hasTooltip) {
+		            var div = '<div id="custom-tooltip"><div class="maintext">';
+		            {{#block "tooltip-config"}}
+		                var str = '<b>'+ this.x +'</b>';
 
-                $.each(this.points, function(i, point) {
-                    str += '<br/><span style="color:'+ point.series.color +'">\u25CF</span> ' + point.series.name + ': ' + point.y{{#if decimalPlaces}}.toFixed({{decimalPlaces}}){{/if}};
-                    });
+		                $.each(this.points, function(i, point) {
+		                    str += '<br/><span style="color:'+ point.series.color +'">\u25CF</span> ' + point.series.name + ': ' + point.y{{#if decimalPlaces}}.toFixed({{decimalPlaces}}){{/if}};
+		                    });
 
-            {{/block}}
+		            {{/block}}
 
-                div += str + '</div></div>';
+		                div += str + '</div></div>';
 
-            return div;
+		            return div;
+	            }else{
+	            	return false;
+	            }
 
             },
             backgroundColor: 'rgba(208,210,211, 1)',
@@ -136,7 +161,7 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
     options.yAxis.title.offset=0;
 
     {{#if options.legend.enabled}}options.yAxis.title.y=-2;{{/if}}
-    {{!-- Setting rotation to 0 causes axis lable push chart to the right for some text (e.g. "GDP growth percentage" ) and shrinks it in size. Funny enough, rotating 360 degrees eliminates this issue and still keeps the label horizontal.  --}}
+    {{!-- Setting rotation to 0 causes axis label to push chart to the right for some text (e.g. "GDP growth percentage" ) and shrinks it in size. Funny enough, rotating 360 degrees eliminates this issue and still keeps the label horizontal.  --}}
 	options.yAxis.title.rotation=360;
 	options.yAxis.title.style={
 		left:"0px",
@@ -146,7 +171,7 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 	{{/unless}}
 
 	{{#block "chart-config"}}
-	{{!-- Overridde this block for altering chart configuration for individual chart types --}}
+	{{!-- Override this block for altering chart configuration for individual chart types --}}
 	{{/block}}
 
 	{{!-- Chart id is the file name for Florence chart builder generated charts, and cdid for time series --}}
