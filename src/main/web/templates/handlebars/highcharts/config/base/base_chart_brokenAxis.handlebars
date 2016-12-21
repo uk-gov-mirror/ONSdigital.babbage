@@ -40,11 +40,12 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 
 	{{!-- this draws two slanted lines as a bisual break in the y-axis --}}
 	{{!-- NB ONLY REQUIRED IN EXCEPTIONAL CIRCUMSTANCES --}}
-{{!--     /**
+    /**
      * Extend the Axis.getLinePath method in order to visualize breaks with two parallel
      * slanted lines. For each break, the slanted lines are inserted into the line path.
      */
     Highcharts.wrap(Highcharts.Axis.prototype, 'getLinePath', function (proceed, lineWidth) {
+    console.log('wrap');
         var axis = this,
             path = proceed.call(this, lineWidth),
             x = path[1],
@@ -72,7 +73,7 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
         return path;
     });
 
-	/**
+/**
      * On top of each column, draw a zigzag line where the axis break is.
      */
     function pointBreakColumn(e) {
@@ -98,7 +99,7 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
             });
         }
     }
- --}}
+
 
 
 	{{!-- chart-config block is to be overriden by chart types inheriting this template --}}
@@ -119,10 +120,10 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 		yAxis: {
 		{{#if yMin }}min: {{yMin}},{{/if}}
 		{{#if yMax }}max: {{yMax}},{{/if}}
-		{{!-- breaks: [{
+		breaks: [{
                 from: 100,
                 to: 500
-            }], --}}
+            }],
 			title: {
 				text: "",
 				useHTML:true
@@ -136,10 +137,11 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 			opposite:{{#if_eq yAxisPos "right"}}true{{else}}false{{/if_eq}},
 
 			lineColor: 'gray',
-            lineWidth: 0.5,    
-            {{!-- events: {
+            lineWidth: 2,
+            //tickInterval: 100,     
+            events: {
                 pointBreak: pointBreakColumn
-            } --}}
+            }
 
 
 		},
@@ -147,7 +149,6 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 			categories: [{{#each categories}}'{{{sub (sup this)}}}',{{/each}}],
 			tickInterval: "{{labelInterval}}",
 			labels: {
-				//rotation:360,
 				useHTML : true,
 			},
 			title: {
@@ -230,8 +231,7 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 	options.yAxis.title.text=unit;
 	options.yAxis.title.align="high";
 	{{#unless rotated}}
-    options.yAxis.title.y = -8;
-    options.yAxis.title.offset = 0;
+    options.yAxis.title.offset=0;
 
     {{#if options.legend.enabled}}options.yAxis.title.y=-2;{{/if}}
     {{!-- Setting rotation to 0 causes axis label to push chart to the right for some text (e.g. "GDP growth percentage" ) and shrinks it in size. Funny enough, rotating 360 degrees eliminates this issue and still keeps the label horizontal.  --}}
