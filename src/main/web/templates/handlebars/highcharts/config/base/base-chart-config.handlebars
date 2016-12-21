@@ -158,7 +158,8 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 	options.yAxis.title.text=unit;
 	options.yAxis.title.align="high";
 	{{#unless rotated}}
-    options.yAxis.title.offset=0;
+    options.yAxis.title.y = -8;
+    options.yAxis.title.offset = 0;
 
     {{#if options.legend.enabled}}options.yAxis.title.y=-2;{{/if}}
     {{!-- Setting rotation to 0 causes axis label to push chart to the right for some text (e.g. "GDP growth percentage" ) and shrinks it in size. Funny enough, rotating 360 degrees eliminates this issue and still keeps the label horizontal.  --}}
