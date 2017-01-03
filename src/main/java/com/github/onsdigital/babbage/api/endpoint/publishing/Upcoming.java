@@ -2,12 +2,12 @@ package com.github.onsdigital.babbage.api.endpoint.publishing;
 
 import com.github.davidcarboni.cryptolite.Password;
 import com.github.davidcarboni.restolino.framework.Api;
-import com.github.onsdigital.babbage.configuration.Configuration;
 import com.github.onsdigital.babbage.error.BabbageException;
 import com.github.onsdigital.babbage.error.BadRequestException;
 import com.github.onsdigital.babbage.publishing.PublishingManager;
-import com.github.onsdigital.babbage.publishing.model.ResponseMessage;
+import com.github.onsdigital.babbage.publishing.model.ContentDetail;
 import com.github.onsdigital.babbage.publishing.model.PublishNotification;
+import com.github.onsdigital.babbage.publishing.model.ResponseMessage;
 import com.github.onsdigital.babbage.util.json.JsonUtil;
 
 import javax.servlet.http.HttpServletRequest;
@@ -53,9 +53,6 @@ public class Upcoming {
 
     protected Object process(HttpServletResponse response, PublishNotification publishNotification) throws IOException {
         verifyKey(publishNotification);
-        if (!Configuration.GENERAL.isCacheEnabled()) {
-            return new ResponseMessage("Caching is not enabled, ignoring notification");
-        }
         if (verifyUriList) {
             verifyUriList(publishNotification);
         }
@@ -65,8 +62,11 @@ public class Upcoming {
     }
 
     private void verifyUriList(PublishNotification publishNotification) {
-        List<String> uriList = publishNotification.getUrisToUpdate();
-        if (uriList == null || uriList.isEmpty()) {
+        List<String> urisToUpdate = publishNotification.getUrisToUpdate();
+        List<ContentDetail> urisToDelete = publishNotification.getUrisToDelete();
+
+        if ((urisToUpdate == null || urisToUpdate.isEmpty())
+                && (urisToDelete == null || urisToDelete.isEmpty())) {
             throw new BadRequestException("Please speficy uri list");
         }
     }
