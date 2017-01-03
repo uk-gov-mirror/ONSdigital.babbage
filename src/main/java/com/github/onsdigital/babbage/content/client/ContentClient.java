@@ -185,7 +185,7 @@ public class ContentClient {
         List<NameValuePair> parameters = new ArrayList<>();
         parameters.add(new BasicNameValuePair("key", key));
         parameters.add(new BasicNameValuePair("uri", uri));
-        parameters.add(new BasicNameValuePair("contentType", contentType));
+        parameters.add(new BasicNameValuePair("pageType", contentType));
         return sendDelete(getReindexEndpoint(), parameters);
     }
 
