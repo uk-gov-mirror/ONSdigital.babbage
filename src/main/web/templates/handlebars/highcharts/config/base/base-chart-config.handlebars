@@ -100,10 +100,10 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
     }
  --}}
  // urgh! set the var on the page as a way of passing them back to the chart object
-    function setBoxPosHandle(x,y) {
-        console.log('setBoxPosHandle ' +x,y);
-        $('#note-x').val(x);
-        $('#note-y').val(y);
+    function setBoxPosHandle(id, x,y) {
+        console.log('setBoxPosHandle ' + id,x,y);
+        $('#note-x-'+id).val(x);
+        $('#note-y-'+id).val(y);
     }
 
 	{{!-- chart-config block is to be overriden by chart types inheriting this template --}}
@@ -189,42 +189,38 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 		annotationsOptions: {
             enabledButtons: false   
         },
-		annotations: [
-		{{!-- {{#each this.annotations}} --}}
-		  {
-            id:1,
-            {{!-- x: {{devices.0.x}},
-            y: {{devices.0.y}},
-            title: {{title}}, --}}
-            x: {{annotation.x}},
-            y: {{annotation.y}},
-            title: '{{annotation.title}}',
-            anchorX: "left",
-            anchorY: "top",
-            allowDragY: true,
-            allowDragX: true,
-            shape: {
-                type: 'rect',
-                params: {
-                    x: 0,
-                    y: 0,
-                    width: 100,
-                    height: 40,
-                    //stroke: '#c55',
-                    //fill: '#ccc'
-                }
-            },
-		    events: {
-		        click: function(e) { 
-
-		        	console.log(e); 
-		        	console.log("Annotation clicked:", this); 
-		        	console.log(this.options.x, this.options.y); 
-					setBoxPosHandle(this.options.x, this.options.y);
-		        }
-		    }
-          }
-		{{!-- {{/each}} --}} 
+		annotations: [ 
+		{{#each annotations}}
+		// only show annotaion that are NOT hidden
+			{{#if_ne isHidden true}}
+			{
+	            id:{{id}},
+	            x: {{x}},
+	            y: {{y}},
+	            title: '{{{title}}}',
+	            anchorX: "left",
+	            anchorY: "top",
+	            allowDragY: true,
+	            allowDragX: true,
+	            shape: {
+	                type: 'rect',
+	                params: {
+	                    x: 0,
+	                    y: 0,
+	                    width: 200,{{!-- {{annotation.width}} --}}
+	                    height: 50{{!-- {{annotation.height}} --}}
+	                }
+	            },
+			    events: {
+			        click: function(e) { 
+						setBoxPosHandle(this.options.id, this.options.x, this.options.y);
+			        }
+			    }
+	        },
+	        {{/if_ne}}
+		{{/each }}
+			
+	
         ]
 		  ,
 
