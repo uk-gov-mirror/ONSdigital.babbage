@@ -36,19 +36,24 @@ public class ErrorHandler implements ServerError {
     }
 
     public static void handle(HttpServletRequest req, HttpServletResponse response, Throwable t) throws IOException {
-        logError(t);
+
         response.setContentType(MediaType.TEXT_HTML);
         if (ContentReadException.class.isAssignableFrom(t.getClass())) {
             ContentReadException exception = (ContentReadException) t;
             renderErrorPage(exception.getStatusCode(), response);//renderTemplate template with status code name e.g. 404
+            logError(t);
             return;
         } else if (t instanceof ResourceNotFoundException) {
+            System.err.println(t.getMessage() + ", cause: " + (t.getCause() != null ? t.getCause().getMessage() : ""));
             renderErrorPage(404, response);
+            return;
         } else if (t instanceof LegacyPDFException) {
             renderErrorPage(501, response);
         } else {
             renderErrorPage(500, response);
         }
+
+        logError(t);
     }
 
 
