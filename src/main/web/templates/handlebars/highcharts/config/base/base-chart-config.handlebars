@@ -36,8 +36,6 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 	// set chart palette based on chart object
 	var palette = {{#if_eq palette "blue"}}bluemono{{else}}color{{/if_eq}};
 	var hasTooltip = {{#if showTooltip }}true{{else}}false{{/if}};
-
-
 	{{!-- this draws two slanted lines as a bisual break in the y-axis --}}
 	{{!-- NB ONLY REQUIRED IN EXCEPTIONAL CIRCUMSTANCES --}}
 {{!--     /**
@@ -99,12 +97,12 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
         }
     }
  --}}
- // urgh! set the var on the page as a way of passing them back to the chart object
-    function setBoxPosHandle(id, x,y) {
-        console.log('setBoxPosHandle ' + id,x,y);
-        $('#note-x-'+id).val(x);
-        $('#note-y-'+id).val(y);
-    }
+	// urgh! set the var on the page as a way of passing them back to the chart object
+	function setBoxPosHandle(id, x,y) {
+		console.log('setBoxPosHandle ' + id,x,y);
+		$('#note-x-'+id).val(x);
+		$('#note-y-'+id).val(y);
+	}
 
 	{{!-- chart-config block is to be overriden by chart types inheriting this template --}}
 	var options = {
@@ -141,12 +139,10 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 			opposite:{{#if_eq yAxisPos "right"}}true{{else}}false{{/if_eq}},
 
 			lineColor: 'gray',
-            lineWidth: 0.5,    
+			lineWidth: 0.5,    
             {{!-- events: {
                 pointBreak: pointBreakColumn
             } --}}
-
-
 		},
 		xAxis: {
 			categories: [{{#each categories}}'{{{sub (sup this)}}}',{{/each}}],
@@ -167,8 +163,8 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 			enabled:{{#if_eq series.size 1}}false{{else}}true{{/if_eq}}
 		},
 		plotOptions: {
-			series: {
-				{{#if isStacked }}stacking: 'normal',{{/if}}
+			series: { {{#if isStacked }}
+				stacking: 'normal',{{/if}}
 				borderWidth:0,
 				animation: false,
 				pointPadding: 0,
@@ -187,77 +183,67 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 			}
 		},
 		annotationsOptions: {
-            enabledButtons: false   
-        },
+			enabledButtons: false   
+		},
 		annotations: [ 
-		{{#each annotations}}
-		// only show annotaion that are NOT hidden
+		{{#each annotations}}{{!--// only show if annotation is NOT hidden --}}
 			{{#if_ne isHidden true}}
 			{
-	            id:{{id}},
-	            x: {{x}},
-	            y: {{y}},
-	            title: '{{{title}}}',
-	            anchorX: "left",
-	            anchorY: "top",
-	            allowDragY: true,
-	            allowDragX: true,
-	            shape: {
-	                type: 'rect',
-	                params: {
-	                    x: 0,
-	                    y: 0,
-	                    width: 200,{{!-- {{annotation.width}} --}}
-	                    height: 50{{!-- {{annotation.height}} --}}
-	                }
-	            },
-			    events: {
-			        click: function(e) { 
+				id:{{id}},
+				x: {{x}},
+				y: {{y}},
+				title: '{{{title}}}',
+				anchorX: "left",
+				anchorY: "top",
+				allowDragY: true,
+				allowDragX: true,
+				shape: {
+					type: 'rect',
+					params: {
+						x: 0,
+						y: 0,
+						width: 200,{{!-- {{annotation.width}} --}}
+						height: 50{{!-- {{annotation.height}} --}}
+					}
+				},
+				events: {
+					click: function(e) { 
 						setBoxPosHandle(this.options.id, this.options.x, this.options.y);
-			        }
-			    }
-	        },
+					}
+				}
+			},
 	        {{/if_ne}}
 		{{/each }}
-			
-	
-        ]
-		  ,
-
+		],
 		tooltip: {
 			valueDecimals: "{{decimalPlaces}}",
 			shared: true,
 			useHTML:true,
-            style: {
-                padding: 0
-            },
-            formatter: function() {
-				 {{!-- leave the tooltip toggle here then can set in the page?
-				 better to render it earlier as it is done on the server  --}}
-            	if (hasTooltip) {
-		            var div = '<div id="custom-tooltip"><div class="maintext">';
-		            {{#block "tooltip-config"}}
-		                var str = '<b>'+ this.x +'</b>';
-
-		                $.each(this.points, function(i, point) {
-		                    str += '<br/><span style="color:'+ point.series.color +'">\u25CF</span> ' + point.series.name + ': ' + point.y{{#if decimalPlaces}}.toFixed({{decimalPlaces}}){{/if}};
-		                    });
-
-		            {{/block}}
-
-		                div += str + '</div></div>';
-
-		            return div;
-	            }else{
-	            	return false;
-	            }
-
-            },
-            backgroundColor: 'rgba(208,210,211, 1)',
-            borderWidth: 0,
-            borderRadius: 0,
-            borderColor: 'rgba(255, 255, 255, 0)',
-            shadow: false
+			style: {
+				padding: 0
+			},
+			formatter: function() {
+				{{!-- leave the tooltip toggle here then can set in the page?
+				better to render it earlier as it is done on the server  --}}
+				if (hasTooltip) {
+					var div = '<div id="custom-tooltip"><div class="maintext">';
+					{{#block "tooltip-config"}}
+					var str = '<b>'+ this.x +'</b>';
+					$.each(this.points, function(i, point) {
+						str += '<br/><span style="color:'+ point.series.color +'">\u25CF</span> ' + point.series.name + ': ' + point.y{{#if decimalPlaces}}.toFixed({{decimalPlaces}}){{/if}};
+					});
+					{{/block}}
+						div += str + '</div></div>';
+						return div;
+					}else{
+						return false;
+					}
+			},
+			backgroundColor: 'rgba(208,210,211, 1)',
+			borderWidth: 0,
+			borderRadius: 0,
+			borderColor: 'rgba(255, 255, 255, 0)',
+			shadow: false
 		},
 		credits: {
 			enabled: false
@@ -272,8 +258,8 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 	options.yAxis.title.text=unit;
 	options.yAxis.title.align="high";
 	{{#unless rotated}}
-    options.yAxis.title.y = {{#if_eq xAxisPos "top"}}12{{else}}-8{{/if_eq}};
-    options.yAxis.title.offset = 
+	options.yAxis.title.y = {{#if_eq xAxisPos "top"}}12{{else}}-8{{/if_eq}};
+	options.yAxis.title.offset = 
     {{#if_eq xAxisPos "top"}}
     	{{#if_eq yAxisPos "left"}}-7{{else}}-100{{/if_eq}}
     {{else}}
