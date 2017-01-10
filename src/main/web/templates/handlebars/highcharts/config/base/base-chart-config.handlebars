@@ -233,11 +233,11 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 						str += '<br/><span style="color:'+ point.series.color +'">\u25CF</span> ' + point.series.name + ': ' + point.y{{#if decimalPlaces}}.toFixed({{decimalPlaces}}){{/if}};
 					});
 					{{/block}}
-						div += str + '</div></div>';
-						return div;
-					}else{
-						return false;
-					}
+					div += str + '</div></div>';
+					return div;
+				}else{
+					return false;
+				}
 			},
 			backgroundColor: 'rgba(208,210,211, 1)',
 			borderWidth: 0,
@@ -282,10 +282,8 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 
 	{{!-- Chart id is the file name for Florence chart builder generated charts, and cdid for time series --}}
 	var chartId = "{{#if filename}}{{filename}}{{else}}{{description.cdid}}{{/if}}";
-
 	{{!-- attaching id to window object to be used on client side --}}
 	window["chart-" + chartId] = options;
-
 	{{!-- Returning chart to be used by highcharts export server for server side image rendering --}}
 	return options;
 
