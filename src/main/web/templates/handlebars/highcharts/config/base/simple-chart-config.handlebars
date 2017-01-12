@@ -1,8 +1,9 @@
 {{!-- Charts with an array of series data inherits from this base template --}}
+{{!-- NOTE: the data output needs to be a continous string and whitespace (line returns) break it --}}
 {{#partial "chart-config"}}
 	options.series=[{{#each series}}{
 			name: "{{{sub (sup this)}}}",
-			data: [{{#each data}}{{num (lookup this ../this)}},{{/each}}]
+			data: [{{#each data}} {{#if_eq highlight (lookup this headers.0)}}{name:"{{{sup (sub (lookup this headers.0))}}}",color:'#ff0000', y:{{num (lookup this ../this)}} },{{else}} {{num (lookup this ../this)}}, {{/if_eq}}{{/each}}]
 		},{{/each}} ];
 	{{#block "additional-chart-config"}}
 	{{/block}}
