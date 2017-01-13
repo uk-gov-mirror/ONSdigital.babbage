@@ -4,10 +4,12 @@ options.chart.type="bar";
 options.series=[{{!-- Negating data of first series for negative stacking in highcharts to create Population pyramid --}}
 	    {
 	    	name: "{{{sub (sup headers.1)}}}",
-	    	data: [{{#each data}}-1 *{{num (lookup this headers.1)}},{{/each}}]
+	    	{{!-- data: [{{#each data}}-1 *{{num (lookup this headers.1)}},{{/each}}] --}}
+	    	data: [{{#each data}} {{#if_eq highlight (lookup this headers.0)}}{name:"{{{sup (sub (lookup this headers.1))}}}",color:'#ff0000',y:-1 * {{num (lookup this headers.1)}} },{{else}}-1 * {{num (lookup this headers.1)}},{{/if_eq}}{{/each}}]
 	    },{
 	    	name: "{{{sub (sup headers.2)}}}",
-	    	data: [{{#each data}}{{num (lookup this headers.2)}},{{/each}}]
+	    	{{!-- data: [{{#each data}}{{num (lookup this headers.2)}},{{/each}}] --}}
+	    	data: [{{#each data}} {{#if_eq highlight (lookup this headers.0)}}{name:"{{{sup (sub (lookup this headers.2))}}}",color:'#ff0000',y:{{num (lookup this headers.2)}} },{{else}}{{num (lookup this headers.2)}},{{/if_eq}}{{/each}}]
 	    }
 	];
 options.xAxis=[{
