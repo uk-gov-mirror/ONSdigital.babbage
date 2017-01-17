@@ -3,6 +3,7 @@
 {{#partial "chart-config"}}
 	options.series=[{{#each series}}{
 			name: "{{{sub (sup this)}}}",
+			{{#if_eq highlight this}}color:'#ff0000',{{/if_eq}}
 			data: [{{#each data}}{{#if_eq highlight (lookup this headers.0)}}{name:"{{{sup (sub (lookup this headers.0))}}}",color:'#ff0000', y:{{num (lookup this ../this)}} },{{else}}{{num (lookup this ../this)}}, {{/if_eq}}{{/each}}]
 		},{{/each}} ];
 	{{#block "additional-chart-config"}}
