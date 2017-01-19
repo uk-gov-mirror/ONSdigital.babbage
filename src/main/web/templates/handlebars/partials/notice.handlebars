@@ -22,7 +22,6 @@
 				{{/if_all}}
 				{{#loop alerts orderBy="date" reverse=true}}
 					{{#if_eq type "alert"}}
-                        {{@index}}
 						<p class="alert__date">{{df date}}</p>
 						{{md markdown}}
 					{{/if_eq}}

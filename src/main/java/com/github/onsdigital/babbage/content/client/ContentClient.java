@@ -1,6 +1,7 @@
 package com.github.onsdigital.babbage.content.client;
 
 import com.github.onsdigital.babbage.configuration.Configuration;
+import com.github.onsdigital.babbage.error.ResourceNotFoundException;
 import com.github.onsdigital.babbage.publishing.PublishingManager;
 import com.github.onsdigital.babbage.publishing.model.PublishInfo;
 import com.github.onsdigital.babbage.util.ThreadContext;
@@ -134,11 +135,11 @@ public class ContentClient {
             int maxAge = Configuration.GENERAL.getDefaultContentCacheTime();
             Integer timeToExpire = null;
             if (nextPublishDate != null) {
-                Long time = (nextPublishDate.getTime() - new Date().getTime())/1000;
+                Long time = (nextPublishDate.getTime() - new Date().getTime()) / 1000;
                 timeToExpire = time.intValue();
             }
 
-            if(timeToExpire == null) {
+            if (timeToExpire == null) {
                 response.setMaxAge(maxAge);
             } else if (timeToExpire > 0) {
                 response.setMaxAge(timeToExpire < maxAge ? timeToExpire : maxAge);
@@ -185,7 +186,7 @@ public class ContentClient {
         List<NameValuePair> parameters = new ArrayList<>();
         parameters.add(new BasicNameValuePair("key", key));
         parameters.add(new BasicNameValuePair("uri", uri));
-        parameters.add(new BasicNameValuePair("contentType", contentType));
+        parameters.add(new BasicNameValuePair("pageType", contentType));
         return sendDelete(getReindexEndpoint(), parameters);
     }
 
@@ -202,7 +203,12 @@ public class ContentClient {
             return new ContentResponse(client.sendGet(path, getHeaders(), getParameters));
         } catch (HttpResponseException e) {
             IOUtils.closeQuietly(response);
+
+            if (e.getStatusCode() == HttpStatus.SC_NOT_FOUND)
+                throw new ResourceNotFoundException(e.getMessage());
+
             throw wrapException(e);
+
         } catch (IOException e) {
             IOUtils.closeQuietly(response);
             throw wrapException(e);
