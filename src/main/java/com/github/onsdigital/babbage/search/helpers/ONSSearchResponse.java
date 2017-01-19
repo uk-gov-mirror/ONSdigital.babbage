@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 /**
  * Created by bren on 07/09/15.
  */
-public class    ONSSearchResponse {
+public class ONSSearchResponse {
 
     SearchResponse response;
     SearchResult result;
@@ -31,7 +31,8 @@ public class    ONSSearchResponse {
     }
 
     public long getNumberOfResults() {
-        return response.getHits().getTotalHits();
+        return response.getHits()
+                       .getTotalHits();
     }
 
     public SearchResult getResult() {
@@ -60,17 +61,24 @@ public class    ONSSearchResponse {
         if (suggest == null) {
             return;
         }
-        Suggest.Suggestion<? extends Suggest.Suggestion.Entry<? extends Suggest.Suggestion.Entry.Option>> suggestion = suggest.getSuggestion("search_suggest");
+        Suggest.Suggestion<? extends Suggest.Suggestion.Entry<? extends Suggest.Suggestion.Entry.Option>> suggestion = suggest.getSuggestion(
+                "search_suggest");
         if (suggestion == null) {
             return;
         }
 
 
         List<String> suggestions = new ArrayList<>();
-        Iterator<? extends Suggest.Suggestion.Entry<? extends Suggest.Suggestion.Entry.Option>> iterator = suggestion.getEntries().iterator();
+
+        Iterator<? extends Suggest.Suggestion.Entry<? extends Suggest.Suggestion.Entry.Option>> iterator = suggestion.getEntries()
+                                                                                                                     .iterator();
         while (iterator.hasNext()) {
             Suggest.Suggestion.Entry<? extends Suggest.Suggestion.Entry.Option> entry = iterator.next();
-            suggestions.addAll(entry.getOptions().stream().map(option -> option.getText().string()).collect(Collectors.toList()));
+            suggestions.addAll(entry.getOptions()
+                                    .stream()
+                                    .map(option -> option.getText()
+                                                         .string())
+                                    .collect(Collectors.toList()));
         }
         if (!suggestions.isEmpty()) {
             searchResult.setSuggestions(suggestions);
@@ -94,7 +102,8 @@ public class    ONSSearchResponse {
                 for (MultiBucketsAggregation.Bucket bucket : ((MultiBucketsAggregation) aggregation).getBuckets()) {
                     searchResult.addDocCount(bucket.getKeyAsString(), bucket.getDocCount());
                 }
-            } else {
+            }
+            else {
                 addCounts(searchResult, ((SingleBucketAggregation) aggregation).getAggregations());
             }
         }
@@ -105,7 +114,29 @@ public class    ONSSearchResponse {
         source.put("_type", hit.getType());
         Map<String, HighlightField> highlightFields = new HashMap<>(hit.getHighlightFields());
         overlayHighlightFields(source, highlightFields);
+        addExcludedHighlightedFields(source, highlightFields);
         return source;
+    }
+
+    /**
+     * As the source of the content of the download files could be huge it is excluded from the "_source" requested
+     * from ES, therefore we need to build up the 'highlights' purely from the highlights themselves
+     * @param source
+     * @param highlightFields
+     */
+    private void addExcludedHighlightedFields(final Map<String, Object> source,
+                                              final Map<String, HighlightField> highlightFields) {
+
+        Arrays.stream(Field.excludedSource())
+              .map(src -> src.fieldName())
+              .filter(f -> null != highlightFields.get(f))
+              .forEach(fieldName -> {
+                  String joined = StringUtils.join(highlightFields.get(fieldName)
+                                                                  .getFragments(), "...");
+                  // the Moustache front end appears to treat periods "." as a nested object and this is not how the document is represented from ES
+                  // therefore flattern' by substituting with underscores
+                  source.put(fieldName.replace(".", "_"), joined);
+              });
     }
 
 
@@ -114,12 +145,14 @@ public class    ONSSearchResponse {
             return;
         }
 
+
         ArrayList<Map<String, Object>> nestedObjects = new ArrayList<>();
         for (Map.Entry<String, Object> sourceEntry : source.entrySet()) {
             Object field = sourceEntry.getValue();
             if (saveIfNested(nestedObjects, field)) {
                 continue;
-            } else if (field instanceof Collection) {
+            }
+            else if (field instanceof Collection) {
                 for (Object o : (Collection) field) {
                     saveIfNested(nestedObjects, o);
                 }
@@ -127,7 +160,8 @@ public class    ONSSearchResponse {
             HighlightField highlightedField = highlightedFields.remove(getFieldName(sourceEntry.getKey()));
             if (highlightedField == null) {//not found
                 continue;
-            } else {
+            }
+            else {
                 overlay(sourceEntry, field, highlightedField);
             }
         }
@@ -135,6 +169,7 @@ public class    ONSSearchResponse {
         for (Map<String, Object> nestedObject : nestedObjects) {
             overlayHighlightFields(nestedObject, highlightedFields);
         }
+
 
     }
 
@@ -148,7 +183,8 @@ public class    ONSSearchResponse {
                 arrayField.remove(noTag);//removes existing non-highlighted text
                 arrayField.add(fragmentString);
             }
-        } else {
+        }
+        else {
             sourceEntry.setValue(StringUtils.join(fragments, ","));
         }
         return;
@@ -171,8 +207,10 @@ public class    ONSSearchResponse {
 
     private String getFieldName(String fieldKey) {
         try {
-            return Field.valueOf(fieldKey).fieldName();
-        } catch (IllegalArgumentException e) {
+            return Field.valueOf(fieldKey)
+                        .fieldName();
+        }
+        catch (IllegalArgumentException e) {
             return fieldKey;
         }
     }
