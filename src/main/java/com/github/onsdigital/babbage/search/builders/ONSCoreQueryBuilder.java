@@ -39,26 +39,18 @@ class ONSCoreQueryBuilder {
                                              .minimumShouldMatch("3<80% 5<60%"))
                              .should(multiMatchQuery(searchTerm,
                                                      title.fieldNameBoosted(),
-                                                     summary.fieldNameBoosted(),
-                                                     metaDescription.fieldNameBoosted(),
                                                      edition.fieldNameBoosted(),
-                                                     content.fieldNameBoosted(),
-                                                     pageData.fieldNameBoosted(),
-                                                     keywords.fieldNameBoosted()).type(PHRASE)
-                                                                                 .slop(2)
-                                                                                 .boost(10))
-                    )
+                                                     content.fieldNameBoosted()).type(PHRASE)
+                                                                                .slop(2)
+                                                                                .boost(10)))
                 .add(multiMatchQuery(searchTerm,
                                      summary.fieldNameBoosted(),
                                      metaDescription.fieldNameBoosted(),
-                                     content.fieldNameBoosted(),
-                                     pageData.fieldNameBoosted(),
-                                     keywords.fieldNameBoosted())
+                                     content.fieldNameBoosted())
                              .type(BEST_FIELDS)
                              .minimumShouldMatch("75%"))
                 .add(matchQuery(keywords.fieldName(),
-                                searchTerm).operator(AND)
-                                           .boost(10))
+                                searchTerm).operator(AND))
                 .add(multiMatchQuery(searchTerm,
                                      cdid.fieldNameBoosted(),
                                      datasetId.fieldNameBoosted()))
