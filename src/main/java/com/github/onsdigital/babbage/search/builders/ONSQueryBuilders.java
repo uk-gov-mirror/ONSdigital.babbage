@@ -13,12 +13,10 @@ import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.bucket.terms.TermsBuilder;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static com.github.onsdigital.babbage.search.model.field.Field.*;
-import static org.elasticsearch.index.query.MatchQueryBuilder.Operator.AND;
-import static org.elasticsearch.index.query.MultiMatchQueryBuilder.Type.BEST_FIELDS;
-import static org.elasticsearch.index.query.MultiMatchQueryBuilder.Type.CROSS_FIELDS;
 import static org.elasticsearch.index.query.QueryBuilders.*;
 import static org.elasticsearch.index.query.functionscore.ScoreFunctionBuilders.weightFactorFunction;
 
@@ -33,45 +31,21 @@ public class ONSQueryBuilders {
      * @param searchTerm
      * @return
      */
-    public static QueryBuilder contentQuery(String searchTerm, SearchFilter filter) {
-        QueryBuilder query = disMaxQuery()
-                .add(boolQuery()
-                             .should(matchQuery(title_no_dates.fieldName(),
-                                                searchTerm)
-                                             .boost(title_no_dates.boost())
-                                             .minimumShouldMatch("1<-2 3<80% 5<60%"))
-                             .should(matchQuery(title_no_stem.fieldName(),
-                                                searchTerm)
-                                             .boost(title_no_stem.boost())
-                                             .minimumShouldMatch("1<-2 3<80% 5<60%"))
-                             .should(multiMatchQuery(searchTerm,
-                                                     title.fieldNameBoosted(),
-                                                     edition.fieldNameBoosted())
-                                             .type(CROSS_FIELDS)
-                                             .minimumShouldMatch("3<80% 5<60%")))
-                .add(multiMatchQuery(searchTerm,
-                                     summary.fieldNameBoosted(),
-                                     metaDescription.fieldNameBoosted())
-                             .type(BEST_FIELDS)
-                             .minimumShouldMatch("75%"))
-                .add(matchQuery(keywords.fieldName(),
-                                searchTerm).operator(AND))
-                .add(multiMatchQuery(searchTerm,
-                                     cdid.fieldNameBoosted(),
-                                     datasetId.fieldNameBoosted()))
-                .add(matchQuery(searchBoost.fieldName(),
-                                searchTerm)
-                             .boost(searchBoost.boost())
-                             .operator(AND));
+    private static QueryBuilder contentQuery(String searchTerm, SearchFilter filter) {
+        QueryBuilder query = buildQueryBuilder(searchTerm);
 
         if (filter != null) {
-            query = appyFilter(QueryBuilders
-                                       .boolQuery()
-                                       .must(query),
-                               filter);
+            query = applyFilter(QueryBuilders
+                                        .boolQuery()
+                                        .must(query),
+                                filter);
         }
 
         return query;
+    }
+
+    private static QueryBuilder buildQueryBuilder(final String searchTerm) {
+        return ONSCoreQueryBuilder.buildQuery(searchTerm);
     }
 
     public static QueryBuilder contentQuery(String searchTerm) {
@@ -93,44 +67,8 @@ public class ONSQueryBuilders {
     }
 
     public static QueryBuilder listQuery(String searchTerm) {
-        QueryBuilder query = disMaxQuery()
-                .add(boolQuery()
-                             .should(matchQuery(title_no_dates.fieldName(),
-                                                searchTerm)
-                                             .boost(title_no_dates.boost())
-                                             .minimumShouldMatch("1<-2 3<80% 5<60%")
-                                    )
-                             .should(matchQuery(title_no_stem.fieldName(),
-                                                searchTerm)
-                                             .boost(title_no_stem.boost())
-                                             .minimumShouldMatch("1<-2 3<80% 5<60%")
-                                    )
-                             .should(multiMatchQuery(searchTerm,
-                                                     title.fieldNameBoosted(),
-                                                     edition.fieldNameBoosted())
-                                             .type(CROSS_FIELDS)
-                                             .minimumShouldMatch("3<80% 5<60%"))
-                             .should(matchPhrasePrefixQuery(Field.title_no_synonym_no_stem.fieldName(),
-                                                            searchTerm)
-                                             .maxExpansions(10))
-                    )
-                .add(multiMatchQuery(searchTerm,
-                                     summary.fieldNameBoosted(),
-                                     metaDescription.fieldNameBoosted())
-                             .type(BEST_FIELDS)
-                             .minimumShouldMatch("75%"))
-                .add(matchQuery(keywords.fieldName(),
-                                searchTerm).operator(AND))
-                .add(multiMatchQuery(searchTerm,
-                                     cdid.fieldNameBoosted(),
-                                     datasetId.fieldNameBoosted()))
-                .
-                        add(matchQuery(searchBoost.fieldName(),
-                                       searchTerm)
-                                    .boost(searchBoost.boost())
-                                    .operator(AND));
 
-        return query;
+        return ONSCoreQueryBuilder.buildQuery(searchTerm);
     }
 
 
@@ -220,27 +158,24 @@ public class ONSQueryBuilders {
 
     public static ONSQuery onsQuery(QueryBuilder queryBuilder, SearchFilter filter) {
         if (filter != null) {
-            queryBuilder = appyFilter(QueryBuilders
-                                              .boolQuery()
-                                              .must(queryBuilder),
-                                      filter);
+            queryBuilder = applyFilter(QueryBuilders
+                                               .boolQuery()
+                                               .must(queryBuilder),
+                                       filter);
         }
         return new ONSQuery(queryBuilder);
     }
 
 
     public static List<ONSQuery> toList(ONSQuery... queries) {
+
         ArrayList<ONSQuery> list = new ArrayList<>();
-        for (ONSQuery query : queries) {
-            list.add(query);
-        }
+        Collections.addAll(list, queries);
         return list;
     }
 
-    public static QueryBuilder appyFilter(BoolQueryBuilder queryBuilder, SearchFilter filter) {
+    private static QueryBuilder applyFilter(BoolQueryBuilder queryBuilder, SearchFilter filter) {
         filter.filter(queryBuilder);
         return queryBuilder;
     }
-
-
 }

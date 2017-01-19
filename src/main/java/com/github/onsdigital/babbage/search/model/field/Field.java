@@ -32,9 +32,8 @@ public enum Field {
     published("description.published"),
     cancelled("description.cancelled"),
     topics("topics"),
-    content("downloads.content", 1,  new Highlight(45, 5), true),
-    downloads("downloads*", true),
-    pageData("pageData",  1,  new Highlight(45, 5), true);
+    content("downloads.content", 10, new Highlight(30, 5), true),
+    downloads("downloads*", true);
 
     private static Field[] highlightedFields;
     /**
