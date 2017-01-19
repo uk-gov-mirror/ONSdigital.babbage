@@ -8,6 +8,8 @@ import com.github.onsdigital.babbage.util.URIUtil;
 import org.antlr.v4.runtime.misc.OrderedHashSet;
 import org.reflections.Reflections;
 import org.reflections.util.ConfigurationBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,7 +26,7 @@ import java.util.Set;
  * RequestDelegator resolves what type of GET request is made and delegates flow to appropriate handlers
  */
 public class RequestDelegator {
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(RequestDelegator.class);
     private static Set<RequestHandler> handlerList = new OrderedHashSet<>();
 
     //Find request handlers and register
@@ -45,12 +47,16 @@ public class RequestDelegator {
             String requestedUri = uri;
             if (handler == null) {
                 handler = resolveRequestHandler("/", "/"); //default handler
-            } else {
+            }
+            else {
                 //remove last segment to get requested resource uri
                 requestedUri = com.github.onsdigital.babbage.util.URIUtil.removeLastSegment(uri);
             }
-            handler.get(requestedUri, request).apply(request, response);
-        } catch (Throwable t) {
+            handler.get(requestedUri, request)
+                   .apply(request, response);
+        }
+        catch (Throwable t) {
+            LOGGER.error("get([request, response]) : Exception thrown {}", t.getMessage(), t);
             ErrorHandler.handle(request, response, t);
         }
     }
@@ -72,9 +78,12 @@ public class RequestDelegator {
         System.out.println("Resolving request handlers");
         try {
 
-            ConfigurationBuilder configurationBuilder = new ConfigurationBuilder().addUrls(BaseRequestHandler.class.getProtectionDomain().getCodeSource().getLocation());
+            ConfigurationBuilder configurationBuilder = new ConfigurationBuilder().addUrls(BaseRequestHandler.class.getProtectionDomain()
+                                                                                                                   .getCodeSource()
+                                                                                                                   .getLocation());
             configurationBuilder.addClassLoader(BaseRequestHandler.class.getClassLoader());
-            Set<Class<? extends RequestHandler>> requestHandlerClasses = new Reflections(configurationBuilder).getSubTypesOf(RequestHandler.class);
+            Set<Class<? extends RequestHandler>> requestHandlerClasses = new Reflections(configurationBuilder).getSubTypesOf(
+                    RequestHandler.class);
 
             // force the timeseries landing request to be first in the request processing pipeline by inserting it first.
             System.out.println("Registering request handler: " + TimeseriesLandingRequestHandler.class.getSimpleName());
@@ -88,7 +97,8 @@ public class RequestDelegator {
                     handlerList.add(handlerInstance);
                 }
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             System.err.println("Failed initializing request handlers");
             e.printStackTrace();
             throw new RuntimeException(e);
