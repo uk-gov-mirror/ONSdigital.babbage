@@ -60,6 +60,7 @@ public class SearchHelper {
 
     public static List<ONSSearchResponse> searchMultiple(List<ONSQuery> queries) {
         MultiSearchRequestBuilder multiSearchRequestBuilder = getElasticsearchClient().prepareMultiSearch();
+
         for (ONSQuery builder : queries) {
             SearchRequestBuilder searchRequestBuilder = prepare(builder);
             //System.out.println("Searching with query:\n" + searchRequestBuilder.internalBuilder());
@@ -89,11 +90,15 @@ public class SearchHelper {
         builder.setTypes(ContentType.typeNames(query.types()));
     }
 
+    /**
+     * fetch explicit fields based on the query, but always exclude the excludedSource
+     *
+     * @param builder
+     * @param query
+     */
     private static void addFetchFields(SearchRequestBuilder builder, ONSQuery query) {
-        if (query.fetchFields() == null) {
-            return;
-        }
-        builder.setFetchSource(Field.fieldNames(query.fetchFields()), null);
+        builder.setFetchSource(Field.fieldNames(query.fetchFields()),
+                               Field.fieldNames(Field.excludedSource()));
     }
 
     private static void addHighlights(SearchRequestBuilder builder, ONSQuery query) {
@@ -102,8 +107,13 @@ public class SearchHelper {
         }
         builder.setHighlighterPreTags("<strong>");
         builder.setHighlighterPostTags("</strong>");
-        for (String fieldName : Field.highlightedFieldNames()) {
-            builder.addHighlightedField(fieldName, 0, 0);
+        for (Field fieldHighlighting : Field.highlightedFields()) {
+            //Use the fields own highlight configuration to determine the size of the highlights and frequency
+            builder.addHighlightedField(fieldHighlighting.fieldName(),
+                                        fieldHighlighting.highlight()
+                                                         .getFragmentSize(),
+                                        fieldHighlighting.highlight()
+                                                         .getNumberOfFragments());
         }
     }
 
@@ -155,7 +165,10 @@ public class SearchHelper {
             return response;
         }
         Paginator.assertPage(queryBuilder.page(), response);
-        Paginator paginator = new Paginator(response.getNumberOfResults(), getMaxVisiblePaginatorLink(), queryBuilder.page(), queryBuilder.size());
+        Paginator paginator = new Paginator(response.getNumberOfResults(),
+                                            getMaxVisiblePaginatorLink(),
+                                            queryBuilder.page(),
+                                            queryBuilder.size());
         if (paginator.getNumberOfPages() > 1) {
             response.getResult()
                     .setPaginator(paginator);
