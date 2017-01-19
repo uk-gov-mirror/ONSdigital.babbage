@@ -33,13 +33,15 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 			'rgba(189,91,158,{{alpha}})'
 		];
 
+		var base = {{#if yMin }}{{yMin}}{{else}}0{{/if}};
 
+//!{{hasLineBreak}}...{{yMin}}!
 	// set chart palette based on chart object
 	var palette = {{#if_eq palette "blue"}}bluemono{{else}}color{{/if_eq}};
 	var hasTooltip = {{#if showTooltip }}true{{else}}false{{/if}};
 	{{!-- this draws two slanted lines as a visual break in the y-axis --}}
 	{{!-- NB ONLY REQUIRED IN EXCEPTIONAL CIRCUMSTANCES --}}
-	{{#if yMin }}
+	{{#if hasLineBreak }}
     /**
      * Extend the Axis.getLinePath method in order to visualize breaks with two parallel
      * slanted lines. For each break, the slanted lines are inserted into the line path.
@@ -98,28 +100,11 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
             });
         }
     }
-    {{/if}}
-
-	// urgh! set the var on the page as a way of passing them back to the chart object
-	function setBoxPosHandle(id, x,y) {
-		console.log('setBoxPosHandle ' + id,x,y);
-{{!-- 
-		var ht= {{width}} * {{aspectRatio}};
-		var wd= {{width}};
-
-		var relativeX = (x/wd);
-		var relativeY = (y/ht);
-
-		console.log(relativeX, relativeY); --}}
-
-		$('#note-x-'+id).val(x);
-		$('#note-y-'+id).val(y);
-	}
 
 
-{{#if yMin }}
 	var yMin  = {{yMin}};
 	var yMin2 = 10;
+	var base = 0;
 
 	// do the conditional statements in js
 	if(yMin>=10){
@@ -130,13 +115,27 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 	}else if(yMin>=0.1){
 		yMin = yMin- 0.1;
 		yMin2 = 0.1;
+	}else if(yMin>0){
+		yMin = yMin;
+		base = yMin;
+		yMin2 = yMin;
 	}else{
 		yMin = yMin - 0.01
 		yMin2 = 0.01;
 	}
 
+    {{/if}}
 
-{{/if}}
+	// urgh! set the var on the page as a way of passing them back to the chart object
+	function setBoxPosHandle(id, x,y) {
+		console.log('setBoxPosHandle ' + id,x,y);
+
+		$('#note-x-'+id).val(x);
+		$('#note-y-'+id).val(y);
+	}
+
+
+
 	{{!-- chart-config block is to be overriden by chart types inheriting this template --}}
 	var options = {
 		chart: {
@@ -154,9 +153,9 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 		},
 		yAxis: {
 		
-		{{#if yMin }}min: 0,{{/if}}
+		{{#if yMin }}min: base,{{/if}}
 		{{#if yMax }}max: {{yMax}},{{/if}}
-		 {{#if yMin }}breaks: [{
+		 {{#if hasLineBreak }}breaks: [{
                 from: yMin2,
                 to: yMin
             }], {{/if}}
@@ -174,7 +173,7 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 
 			lineColor: 'gray',
 			lineWidth: 0.5,    
-            {{#if yMin }}events: {
+            {{#if hasLineBreak }}events: {
                 pointBreak: pointBreakColumn
             }{{/if}}
 		},
@@ -237,13 +236,22 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 					params: {
 						x: 0,
 						y: 0,
-						width: 200,{{!-- {{annotation.width}} --}}
-						height: 50{{!-- {{annotation.height}} --}}
+						width: {{width}},
+						height: {{height}}
 					}
 				},
 				events: {
-					click: function(e) { 
+					
+					dblclick: function(e) { 
+						console.log("DBL click")
+						
+					},
+					mouseup: function(e) { 
+						console.log("UP")
+						console.log(e)
+						console.log(this.options.id, this.options.x, this.options.y)
 						setBoxPosHandle(this.options.id, this.options.x, this.options.y);
+						
 					}
 				}
 			},
