@@ -35,22 +35,24 @@ node {
         sh "aws s3 cp babbage-${revision}.tar.gz s3://${env.S3_REVISIONS_BUCKET}/babbage-${revision}.tar.gz"
     }
 
-    if (branch != 'develop') return
+    if (branch != 'develop' && branch != 'dd-develop') return
 
     stage('Deploy') {
-        sh sprintf('aws deploy create-deployment %s %s %s,bundleType=tgz,key=%s', [
-            '--application-name babbage',
-            "--deployment-group-name ${env.CODEDEPLOY_PUBLISHING_DEPLOYMENT_GROUP}",
-            "--s3-location bucket=${env.S3_REVISIONS_BUCKET}",
-            "babbage-${revision}.tar.gz",
-        ])
-        sh sprintf('aws deploy create-deployment %s %s %s,bundleType=tgz,key=%s', [
-            '--application-name babbage',
-            "--deployment-group-name ${env.CODEDEPLOY_FRONTEND_DEPLOYMENT_GROUP}",
-            "--s3-location bucket=${env.S3_REVISIONS_BUCKET}",
-            "babbage-${revision}.tar.gz",
-        ])
+        for (group in deploymentGroupsFor(branch)) {
+            sh sprintf('aws deploy create-deployment %s %s %s,bundleType=tgz,key=%s', [
+                '--application-name babbage',
+                "--deployment-group-name ${group}",
+                "--s3-location bucket=${env.S3_REVISIONS_BUCKET}",
+                "babbage-${revision}.tar.gz",
+            ])
+        }
     }
+}
+
+def deploymentGroupsFor(branch) {
+    branch == 'develop'
+        ? [env.CODEDEPLOY_FRONTEND_DEPLOYMENT_GROUP, env.CODEDEPLOY_PUBLISHING_DEPLOYMENT_GROUP]
+        : [env.CODEDEPLOY_DISCOVERY_FRONTEND_DEPLOYMENT_GROUP, env.CODEDEPLOY_DISCOVERY_PUBLISHING_DEPLOYMENT_GROUP]
 }
 
 def registry(branch, tag) {
