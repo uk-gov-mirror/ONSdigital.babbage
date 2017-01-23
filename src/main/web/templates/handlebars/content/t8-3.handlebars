@@ -185,13 +185,17 @@
                                 </div>
                                 <div class="js-show-hide__content">
                                     <p class="flush">Release date: what to put here?</p>
-                                    <a class="btn btn--primary btn--thick btn--wide font-size--17 margin-bottom--3" href="/dd/dataset/AF001EW">View details and download options</a>
+                                    <a class="btn btn--primary btn--thick btn--wide font-size--17 margin-bottom--3" id="dataset-link" href="">View details and download options</a>
                                 </div>
                             </div>
                         </div>
 
                         <script>
                             var datasetID = document.getElementById('dataset-id').getAttribute('data-id');
+
+                            if (datasetID.length <= 0) {
+                                console.log('No dataset ID found for this page. Please add it as the attribute "data-id" in a matching <span id="dataset-id" class="hidden">');
+                            }
 
                             function buildDimensions(callback) {
                                 //TODO possibly need to polyfill fetch
@@ -217,6 +221,8 @@
                             }
 
                             function renderDimensions() {
+                                document.getElementById('dataset-link').setAttribute('href', '/dd/dataset/' + datasetID);
+
                                 buildDimensions(function(HTML) {
                                     document.getElementById('js-dd-dimensions').innerHTML = HTML;
                                 });
