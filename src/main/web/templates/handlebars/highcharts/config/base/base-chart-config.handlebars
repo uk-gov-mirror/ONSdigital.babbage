@@ -4,10 +4,11 @@ It is used to render highchart configuration and attach it to window object when
 The chart configurations are used both by Babbage and Florence, thats why it is rendered on server side using handlebars to make it possible to edit configuration without the need of rebuilding.
 --}}
 (function(){
+//highlight var passed: _{{highlight}}_?
 
 	Highcharts.setOptions({lang: {thousandsSep: ','}});
 	// Highlight colour
-	var HIGHLIGHT_COLOUR  = '#6D272B';
+	var HIGHLIGHT_COLOUR  = 'gold';
 
 	// use rgba in order to set opacity/alpha
 	// alpha value set in _loadChartBuilder.js ({{alpha}}))
@@ -35,7 +36,7 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 
 		var base = {{#if yMin }}{{yMin}}{{else}}0{{/if}};
 
-//!{{hasLineBreak}}...{{yMin}}!
+
 	// set chart palette based on chart object
 	var palette = {{#if_eq palette "blue"}}bluemono{{else}}color{{/if_eq}};
 	var hasTooltip = {{#if showTooltip }}true{{else}}false{{/if}};
@@ -102,26 +103,32 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
     }
 
 
-	var yMin  = {{yMin}};
-	var yMin2 = 10;
+	var yAxisBreakEnd  = {{yMin}};
+	var yAxisBreakStart = 10;
 	var base = 0;
 
 	// do the conditional statements in js
-	if(yMin>=10){
-		yMin = yMin-10;
-	}else if(yMin>=1){
-		yMin = yMin- 1;
-		yMin2 = 1;
-	}else if(yMin>=0.1){
-		yMin = yMin- 0.1;
-		yMin2 = 0.1;
-	}else if(yMin>0){
-		yMin = yMin;
-		base = yMin;
-		yMin2 = yMin;
+	// set the break points just above zero
+	// and just below the yMin values
+	if(yAxisBreakEnd>=50){
+		yAxisBreakEnd = yAxisBreakEnd-10;
+	}else if(yAxisBreakEnd>=10){
+		yAxisBreakEnd = yAxisBreakEnd-5;
+		yAxisBreakStart = 5;
+	}else if(yAxisBreakEnd>=1){
+		yAxisBreakEnd = yAxisBreakEnd- 1;
+		yAxisBreakStart = 1;
+	}else if(yAxisBreakEnd>=0.1){
+		yAxisBreakEnd = yAxisBreakEnd- 0.1;
+		yAxisBreakStart = 0.1;
+	}else if(yAxisBreakEnd>=0.01){
+		yAxisBreakEnd = yAxisBreakEnd - 0.01
+		yAxisBreakStart = 0.01;
 	}else{
-		yMin = yMin - 0.01
-		yMin2 = 0.01;
+		// negative values
+		yAxisBreakEnd = yAxisBreakEnd;
+		base = yAxisBreakEnd;
+		yAxisBreakStart = yAxisBreakEnd;
 	}
 
     {{/if}}
@@ -129,9 +136,10 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 	// urgh! set the var on the page as a way of passing them back to the chart object
 	function setBoxPosHandle(id, x,y) {
 		console.log('setBoxPosHandle ' + id,x,y);
-
 		$('#note-x-'+id).val(x);
 		$('#note-y-'+id).val(y);
+
+		//this.deselect();
 	}
 
 
@@ -156,8 +164,8 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 		{{#if yMin }}min: base,{{/if}}
 		{{#if yMax }}max: {{yMax}},{{/if}}
 		 {{#if hasLineBreak }}breaks: [{
-                from: yMin2,
-                to: yMin
+                from: yAxisBreakStart,
+                to: yAxisBreakEnd
             }], {{/if}}
 			title: {
 				text: "",
@@ -217,7 +225,7 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 			}
 		},
 		annotationsOptions: {
-			enabledButtons: false   
+			enabledButtons: false 
 		},
 		annotations: [ 
 		{{#each annotations}}{{!--// only show if annotation is NOT hidden --}}
@@ -246,13 +254,19 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 						console.log("DBL click")
 						
 					},
-					mouseup: function(e) { 
-						console.log("UP")
-						console.log(e)
+					mousedown: function(e) { 
+						console.log("DOWN")
+						console.log(this)
+						console.log(this.options)
 						console.log(this.options.id, this.options.x, this.options.y)
 						setBoxPosHandle(this.options.id, this.options.x, this.options.y);
-						
-					}
+						//this.deselect();
+					} ,
+					mouseup: function(e) { 
+						console.log("UP")
+						//console.log(this.options.id, this.options.x, this.options.y)
+						//setBoxPosHandle(this.options.id, this.options.x, this.options.y);
+					} 
 				}
 			},
 	        {{/if_ne}}
