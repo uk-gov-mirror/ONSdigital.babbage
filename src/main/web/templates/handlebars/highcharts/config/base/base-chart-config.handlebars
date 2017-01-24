@@ -135,11 +135,8 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 
 	// urgh! set the var on the page as a way of passing them back to the chart object
 	function setBoxPosHandle(id, x,y) {
-		console.log('setBoxPosHandle ' + id,x,y);
 		$('#note-x-'+id).val(x);
 		$('#note-y-'+id).val(y);
-
-		//this.deselect();
 	}
 
 
@@ -249,23 +246,16 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 					}
 				},
 				events: {
-					
-					dblclick: function(e) { 
-						console.log("DBL click")
-						
-					},
-					mousedown: function(e) { 
-						console.log("DOWN")
-						console.log(this)
-						console.log(this.options)
-						console.log(this.options.id, this.options.x, this.options.y)
-						setBoxPosHandle(this.options.id, this.options.x, this.options.y);
-						//this.deselect();
-					} ,
 					mouseup: function(e) { 
-						console.log("UP")
-						//console.log(this.options.id, this.options.x, this.options.y)
-						//setBoxPosHandle(this.options.id, this.options.x, this.options.y);
+					//HACK _ bug when clicking and NOT moving
+					if(this.transX !==0 || this.transY!==0){
+						setBoxPosHandle(this.options.id, this.transX, this.transY);
+					}
+						
+
+						if (this.chart.selectedAnnotation) {
+							this.chart.selectedAnnotation.events.deselect.call(this.chart.selectedAnnotation, e);
+						}
 					} 
 				}
 			},
