@@ -175,7 +175,7 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 			plotLines: [{color: 'gray', width: 2,value: 0,zIndex: -100}],
 			gridZIndex: -200,
 			opposite:{{#if_eq yAxisPos "right"}}true{{else}}false{{/if_eq}},
-
+			{{#if yMax }}endOnTick: false,// avoids label rounding in order to have exact axis avlues{{/if}}
 			lineColor: 'gray',
 			lineWidth: 0.5,    
             {{#if hasLineBreak }}events: {
