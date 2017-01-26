@@ -139,7 +139,7 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 		$('#note-y-'+id).val(y);
 	}
 
-
+//plot::{{{annotations.0.isPlotline}}}
 
 	{{!-- chart-config block is to be overriden by chart types inheriting this template --}}
 	var options = {
@@ -158,6 +158,17 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 			text: ""
 		},
 		yAxis: {
+			{{!-- plotBands:[{ // Light air
+                from: 130,
+                to: 160,
+                color: 'rgba(68, 170, 213, 1)',
+                label: {
+                    text: 'Light air',
+                    style: {
+                        color: '#606060'
+                    }
+                }
+            }], --}}
 		{{#if yMin }}min: base,{{/if}}
 		{{#if yMax }}max: {{yMax}},{{/if}}
 		{{#if hasLineBreak }}breaks: [{
@@ -172,10 +183,26 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 				format: "{value:,.{{#if decimalPlacesYaxis}}{{decimalPlacesYaxis}}{{/if}}f}",
 				useHTML:true
 			},
-			plotLines: [{color: 'gray', width: 2,value: 0,zIndex: -100}],
+
+			plotLines: [
+			{{#each annotations}}
+			{{#if_eq isPlotline true}}
+				{
+				    color: 'red', 
+				    value: {{y}},
+				    width: 2,
+				    label: {
+                    	text: '{{{title}}}:: {{isPlotline}}' 
+  					}
+  				}
+			  ,
+			  {{/if_eq }}
+			{{/each}}
+			  ],
+
 			gridZIndex: -200,
 			opposite:{{#if_eq yAxisPos "right"}}true{{else}}false{{/if_eq}},
-			{{#if yMax }}endOnTick: false,// avoids label rounding in order to have exact axis avlues{{/if}}
+			{{#if yMax }}endOnTick: false,// avoids label rounding in order to have exact axis values{{/if}}
 			lineColor: 'gray',
 			lineWidth: 0.5,    
             {{#if hasLineBreak }}events: {
@@ -183,6 +210,8 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
             }{{/if}}
 		},
 		xAxis: {
+		
+
 			categories: [{{#each categories}}'{{{sub (sup this)}}}',{{/each}}],
 			tickInterval: "{{labelInterval}}",
 			labels: {
@@ -226,7 +255,9 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 		},
 		annotations: [ 
 		{{#each annotations}}{{!--// only show if annotation is NOT hidden --}}
-			{{#if_ne isHidden true}}
+		//{{isPlotline}}
+			{{!-- {{#if_ne isHidden true}} --}}
+			{{#if_ne isPlotline true}}
 			{
 				id:{{id}},
 				x: ({{x}}),
@@ -260,6 +291,7 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 				}
 			},
 	        {{/if_ne}}
+	       {{!--  {{/if_ne}} --}}
 		{{/each }}
 		],
 		tooltip: {
