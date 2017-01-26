@@ -1,5 +1,5 @@
 <div class="search-results__summary">
 	{{#if description.summary}}{{{description.summary}}}{{else}}{{{description.metaDescription}}}{{/if}}
-    <p>{{#if downloads_content}} Attachments: {{{downloads_content}}}{{/if}}</p>
-
+    {{#if downloads_content}}<br/><i>Attachments:</i> {{{downloads_content}}}{{/if}}
+    {{#if pageData}}<br/><i>Data:</i> {{{pageData}}}{{/if}}
 </div>
