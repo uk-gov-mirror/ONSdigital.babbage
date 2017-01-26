@@ -133,7 +133,7 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 
     {{/if}}
 
-	// urgh! set the var on the page as a way of passing them back to the chart object
+	// urgh! set the vars on the page as a way of passing them back to the chart object
 	function setBoxPosHandle(id, x,y) {
 		$('#note-x-'+id).val(x);
 		$('#note-y-'+id).val(y);
@@ -158,10 +158,9 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 			text: ""
 		},
 		yAxis: {
-		
 		{{#if yMin }}min: base,{{/if}}
 		{{#if yMax }}max: {{yMax}},{{/if}}
-		 {{#if hasLineBreak }}breaks: [{
+		{{#if hasLineBreak }}breaks: [{
                 from: yAxisBreakStart,
                 to: yAxisBreakEnd
             }], {{/if}}
@@ -170,7 +169,7 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 				useHTML:true
 			},
 			labels: {
-				format: "{value:,f}",
+				format: "{value:,.{{#if decimalPlaces}}{{decimalPlaces}}{{/if}}f}",
 				useHTML:true
 			},
 			plotLines: [{color: 'gray', width: 2,value: 0,zIndex: -100}],
