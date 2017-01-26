@@ -4,7 +4,7 @@ It is used to render highchart configuration and attach it to window object when
 The chart configurations are used both by Babbage and Florence, thats why it is rendered on server side using handlebars to make it possible to edit configuration without the need of rebuilding.
 --}}
 (function(){
-//highlight var passed: _{{highlight}}_?
+
 
 	Highcharts.setOptions({lang: {thousandsSep: ','}});
 	// Highlight colour
@@ -169,7 +169,7 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 				useHTML:true
 			},
 			labels: {
-				format: "{value:,.{{#if decimalPlaces}}{{decimalPlaces}}{{/if}}f}",
+				format: "{value:,.{{#if decimalPlacesYaxis}}{{decimalPlacesYaxis}}{{/if}}f}",
 				useHTML:true
 			},
 			plotLines: [{color: 'gray', width: 2,value: 0,zIndex: -100}],
