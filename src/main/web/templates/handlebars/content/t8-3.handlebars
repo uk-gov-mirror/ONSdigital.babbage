@@ -199,7 +199,7 @@
 
                             function buildDimensions(callback) {
                                 //TODO possibly need to polyfill fetch
-                                fetch('/dd/api/datasets/' + datasetID, {method: "GET"})
+                                fetch('/dd/api/datasets/' + datasetID, {method: 'GET', credentials: 'include'})
                                         .then(function(response){
                                             return response.json()
                                         })
