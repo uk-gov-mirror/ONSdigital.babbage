@@ -158,17 +158,8 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 			text: ""
 		},
 		yAxis: {
-			{{!-- plotBands:[{ // Light air
-                from: 130,
-                to: 160,
-                color: 'rgba(68, 170, 213, 1)',
-                label: {
-                    text: 'Light air',
-                    style: {
-                        color: '#606060'
-                    }
-                }
-            }], --}}
+			plotBands:[],
+			plotLines:[],
 		{{#if yMin }}min: base,{{/if}}
 		{{#if yMax }}max: {{yMax}},{{/if}}
 		{{#if hasLineBreak }}breaks: [{
@@ -176,51 +167,14 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
                 to: yAxisBreakEnd
             }], {{/if}}
 			title: {
-				text: "",
-				useHTML:true
+				text: "{{{sub (sup unit)}}}",
+				useHTML:true,
+				align:"high"
 			},
 			labels: {
 				format: "{value:,.{{decimalPlacesYaxis}}f}",
 				useHTML:true
 			},
-			plotBands: [
-			{{#each annotations}}
-				{{#if_eq orientation "y-axis"}}
-					{{#if_eq isPlotline true}}
-					{{#if bandWidth}}
-					
-						{
-						    color: PLOTBAND_COLOUR, 
-						    from: {{y}},
-						    to: ({{y}} + {{bandWidth}}),
-						    label: {
-		                    	text: '{{{title}}}:: {{isPlotline}}' 
-		  					}
-		  				}
-					  ,
-					
-					{{/if}}
-					{{/if_eq}}
-				{{/if_eq }}
-			{{/each}}
-			  ],
-			plotLines: [
-			{{#each annotations}}
-				{{#if_eq orientation "y-axis"}}
-					{{#if_eq isPlotline true}}
-						{
-						    color: PLOTBAND_COLOUR, 
-						    value: {{y}},
-						    width: 2,
-						    label: {
-		                    	text: '{{{title}}}:: {{isPlotline}}' 
-		  					}
-		  				}
-					  ,
-					{{/if_eq}}
-				{{/if_eq }}
-			{{/each}}
-			  ],
 			gridZIndex: -200,
 			opposite:{{#if_eq yAxisPos "right"}}true{{else}}false{{/if_eq}},
 			{{#if yMax }}endOnTick: false,// avoids label rounding in order to have exact axis values{{/if}}
@@ -231,45 +185,8 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
             }{{/if}}
 		},
 		xAxis: {
-		plotBands: [
-			{{#each annotations}}
-				{{#if_eq orientation "x-axis"}}
-					{{#if_eq isPlotline true}}
-					{{#if bandWidth}}
-					
-						{
-						    color: PLOTBAND_COLOUR, 
-						    from: {{x}},
-						    to: ({{x}} + {{bandWidth}}),
-						    label: {
-		                    	text: '{{{title}}}:: {{isPlotline}}' 
-		  					}
-		  				}
-					  ,
-					
-					{{/if}}
-					{{/if_eq}}
-				{{/if_eq }}
-			{{/each}}
-			  ],
-			plotLines: [
-			{{#each annotations}}
-{{#if_eq orientation "x-axis"}}
-			{{#if_eq isPlotline true}}
-				{
-				    color: PLOTBAND_COLOUR, 
-				    value: {{x}},
-				    width: 2,
-				    label: {
-                    	text: '{{{title}}}:: {{isPlotline}}' 
-  					}
-  				}
-			  ,
-{{/if_eq}}		
-			  {{/if_eq }}
-			{{/each}}
-			  ],
-
+		plotBands:[],
+		plotLines:[],
 			categories: [{{#each categories}}'{{{sub (sup this)}}}',{{/each}}],
 			tickInterval: "{{labelInterval}}",
 			labels: {
@@ -313,7 +230,6 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 		},
 		annotations: [ 
 		{{#each annotations}}{{!--// only show if annotation is NOT hidden --}}
-		//{{isPlotline}}
 			{{!-- {{#if_ne isHidden true}} --}}
 			{{#if_ne isPlotline true}}
 			{
@@ -390,10 +306,34 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 		}
 	};
 
-	var unit = "{{{sub (sup unit)}}}";
+{{!--  loop through annotations and push any plotlines/bands into the array  --}}
+{{#each annotations}}
+	{{#if_eq isPlotline true}}
+	{{#if bandWidth}}
+	options.{{#if_eq orientation "x-axis"}}xAxis{{else}}yAxis{{/if_eq}}.plotBands.push( 
+		{
+			color: PLOTBAND_COLOUR, 
+			from: {{#if_eq orientation "x-axis"}}{{x}}{{else}}{{y}}{{/if_eq}},
+			to: ({{#if_eq orientation "x-axis"}}{{x}}{{else}}{{y}}{{/if_eq}} + {{bandWidth}}),
+			label: {
+				text: '{{{title}}}:: {{isPlotline}}' 
+			}
+		})
+	{{else}}
+	options.{{#if_eq orientation "x-axis"}}xAxis{{else}}yAxis{{/if_eq}}.plotLines.push(
+		{
+			color: PLOTBAND_COLOUR, 
+			value: {{#if_eq orientation "x-axis"}}{{x}}{{else}}{{y}}{{/if_eq}},
+			width:2,
+			label: {
+				text: '{{{title}}}:: {{isPlotline}}' 
+			}
+		})
+	{{/if}}
+	{{/if_eq}}
+{{/each}}
 
-	options.yAxis.title.text=unit;
-	options.yAxis.title.align="high";
+
 	{{#unless rotated}}
 	options.yAxis.title.y = {{#if_eq xAxisPos "top"}}12{{else}}-8{{/if_eq}};
 	options.yAxis.title.offset = 
