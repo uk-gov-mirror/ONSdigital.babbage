@@ -180,7 +180,7 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 				useHTML:true
 			},
 			labels: {
-				format: "{value:,.{{#if decimalPlacesYaxis}}{{decimalPlacesYaxis}}{{/if}}f}",
+				format: "{value:,.{{decimalPlacesYaxis}}f}",
 				useHTML:true
 			},
 
@@ -189,7 +189,7 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 			{{#if_eq isPlotline true}}
 				{
 				    color: 'red', 
-				    value: {{y}},
+				    value: {{#if notesYaxis}}{{y}}{{#else}}{{x}}{{/if}},
 				    width: 2,
 				    label: {
                     	text: '{{{title}}}:: {{isPlotline}}' 
