@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -37,7 +38,8 @@ public class SearchSteps implements En {
         try {
             //At this point the Elastic Search client may not have been initialised
             ElasticSearchClient.init();
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             LOGGER.error("static initializer() : Failed to initialize elastic search client");
         }
     }
@@ -84,22 +86,51 @@ public class SearchSteps implements En {
                  }
 
              });
-        And("^the bulletins are order in date descending order$",
-            () -> {
+
+
+        Then("^the user will receive the first page with documents only from this uri prefix (.*)$",
+             (String uriPrefix) -> {
+
+                 searchResults.get(queryName)
+                              .getResults()
+                              .forEach(record -> {
+                                  String uri = (String) record.get("uri");
+                                  assertNotNull(uri);
+                                  assertTrue(StringUtils.startsWith(uri, uriPrefix));
+                              });
+
+             });
+
+        And("^the (.*) are ordered in date descending order$",
+            (String type) -> {
                 List<Map<String, Object>> result = searchResults.get(queryName)
                                                                 .getResults();
                 result.stream()
-                      .filter(obj -> "bulletin".equals(obj.get("type")))
+                      .filter(obj -> type.equals(obj.get("type")))
                       .reduce(null,
                               (a, b) -> {
-                                  assertTrue("Either the score is not descending or the date is not and the score is identical",
-                                             a == null || getReleaseTime(a) >= getReleaseTime(b));
+                                  assertTrue(
+                                          "Either the score is not descending or the date is not and the score is identical",
+                                          a == null || getReleaseTime(a) >= getReleaseTime(b));
                                   return b;
                               });
 
             });
 
+        And("^the results are in date descending order$",
+            () -> {
+                List<Map<String, Object>> result = searchResults.get(queryName)
+                                                                .getResults();
+                result.stream()
+                      .reduce(null,
+                              (a, b) -> {
+                                  assertTrue(
+                                          "Either the score is not descending or the date is not and the score is identical",
+                                          a == null || getReleaseTime(a) >= getReleaseTime(b));
+                                  return b;
+                              });
 
+            });
     }
 
 
@@ -110,7 +141,8 @@ public class SearchSteps implements En {
         try {
             time = df.parse(s)
                      .getTime();
-        } catch (ParseException e) {
+        }
+        catch (ParseException e) {
             LOGGER.info("getReleaseTime([a]) : ");
             fail("Failed to get the date out of the results; date was " + s);
         }
