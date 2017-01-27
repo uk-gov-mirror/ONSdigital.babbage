@@ -9,6 +9,7 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 	Highcharts.setOptions({lang: {thousandsSep: ','}});
 	// Highlight colour
 	var HIGHLIGHT_COLOUR  = 'gold';
+	var PLOTBAND_COLOUR  = '#B5CE94';
 
 	// use rgba in order to set opacity/alpha
 	// alpha value set in _loadChartBuilder.js ({{alpha}}))
@@ -139,7 +140,6 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 		$('#note-y-'+id).val(y);
 	}
 
-//plot::{{{annotations.0.isPlotline}}}
 
 	{{!-- chart-config block is to be overriden by chart types inheriting this template --}}
 	var options = {
@@ -183,23 +183,44 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 				format: "{value:,.{{decimalPlacesYaxis}}f}",
 				useHTML:true
 			},
-
-			plotLines: [
+			plotBands: [
 			{{#each annotations}}
-			{{#if_eq isPlotline true}}
-				{
-				    color: 'red', 
-				    value: {{#if notesYaxis}}{{y}}{{#else}}{{x}}{{/if}},
-				    width: 2,
-				    label: {
-                    	text: '{{{title}}}:: {{isPlotline}}' 
-  					}
-  				}
-			  ,
-			  {{/if_eq }}
+				{{#if_eq orientation "y-axis"}}
+					{{#if_eq isPlotline true}}
+					{{#if bandWidth}}
+					
+						{
+						    color: PLOTBAND_COLOUR, 
+						    from: {{y}},
+						    to: ({{y}} + {{bandWidth}}),
+						    label: {
+		                    	text: '{{{title}}}:: {{isPlotline}}' 
+		  					}
+		  				}
+					  ,
+					
+					{{/if}}
+					{{/if_eq}}
+				{{/if_eq }}
 			{{/each}}
 			  ],
-
+			plotLines: [
+			{{#each annotations}}
+				{{#if_eq orientation "y-axis"}}
+					{{#if_eq isPlotline true}}
+						{
+						    color: PLOTBAND_COLOUR, 
+						    value: {{y}},
+						    width: 2,
+						    label: {
+		                    	text: '{{{title}}}:: {{isPlotline}}' 
+		  					}
+		  				}
+					  ,
+					{{/if_eq}}
+				{{/if_eq }}
+			{{/each}}
+			  ],
 			gridZIndex: -200,
 			opposite:{{#if_eq yAxisPos "right"}}true{{else}}false{{/if_eq}},
 			{{#if yMax }}endOnTick: false,// avoids label rounding in order to have exact axis values{{/if}}
@@ -210,7 +231,44 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
             }{{/if}}
 		},
 		xAxis: {
-		
+		plotBands: [
+			{{#each annotations}}
+				{{#if_eq orientation "x-axis"}}
+					{{#if_eq isPlotline true}}
+					{{#if bandWidth}}
+					
+						{
+						    color: PLOTBAND_COLOUR, 
+						    from: {{x}},
+						    to: ({{x}} + {{bandWidth}}),
+						    label: {
+		                    	text: '{{{title}}}:: {{isPlotline}}' 
+		  					}
+		  				}
+					  ,
+					
+					{{/if}}
+					{{/if_eq}}
+				{{/if_eq }}
+			{{/each}}
+			  ],
+			plotLines: [
+			{{#each annotations}}
+{{#if_eq orientation "x-axis"}}
+			{{#if_eq isPlotline true}}
+				{
+				    color: PLOTBAND_COLOUR, 
+				    value: {{x}},
+				    width: 2,
+				    label: {
+                    	text: '{{{title}}}:: {{isPlotline}}' 
+  					}
+  				}
+			  ,
+{{/if_eq}}		
+			  {{/if_eq }}
+			{{/each}}
+			  ],
 
 			categories: [{{#each categories}}'{{{sub (sup this)}}}',{{/each}}],
 			tickInterval: "{{labelInterval}}",
