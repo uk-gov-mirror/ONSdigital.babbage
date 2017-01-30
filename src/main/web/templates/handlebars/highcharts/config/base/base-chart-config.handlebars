@@ -136,8 +136,9 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 
 	// urgh! set the vars on the page as a way of passing them back to the chart object
 	function setBoxPosHandle(id, x,y) {
-		$('#note-x-'+id).val(x);
-		$('#note-y-'+id).val(y);
+	// important! trigger the change event after setting the value
+		$('#note-x-'+id).val(x).change();
+		$('#note-y-'+id).val(y).change();
 	}
 
 
@@ -150,6 +151,16 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 			marginTop: 35,
 			style: {
 				fontFamily: '"Open Sans", Tahoma, Verdana, Arial'
+			},
+			events:{
+				click:function(e){
+					if($('#annotation-chart').accordion){
+
+						var active = $('#annotation-chart').accordion( "option", "active" );
+						setBoxPosHandle(active, parseInt(e.xAxis[0].value), parseInt(e.yAxis[0].value));
+						console.log(active, parseInt(e.xAxis[0].value), parseInt(e.yAxis[0].value))
+					}
+				}
 			}
 		},
 		colors: palette,
