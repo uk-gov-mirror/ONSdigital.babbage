@@ -5,11 +5,11 @@ options.series=[{{!-- Negating data of first series for negative stacking in hig
 	    {
 	    	name: "{{{sub (sup headers.1)}}}",
 	    	{{!-- data: [{{#each data}}-1 *{{num (lookup this headers.1)}},{{/each}}] --}}
-	    	data: [{{#each data}} {{#if_eq highlight (lookup this headers.0)}}{name:"{{{sup (sub (lookup this headers.1))}}}",color:HIGHLIGHT_COLOUR,y:-1 * {{num (lookup this headers.1)}} },{{else}}-1 * {{num (lookup this headers.1)}},{{/if_eq}}{{/each}}]
+	    	data: [{{#each data}} {{#if_eq highlight (lookup this label)}}{name:"{{{sup (sub (lookup this headers.1))}}}",color:HIGHLIGHT_COLOUR,y:-1 * {{num (lookup this headers.1)}} },{{else}}-1 * {{num (lookup this headers.1)}},{{/if_eq}}{{/each}}]
 	    },{
 	    	name: "{{{sub (sup headers.2)}}}",
 	    	{{!-- data: [{{#each data}}{{num (lookup this headers.2)}},{{/each}}] --}}
-	    	data: [{{#each data}} {{#if_eq highlight (lookup this headers.0)}}{name:"{{{sup (sub (lookup this headers.2))}}}",color:HIGHLIGHT_COLOUR,y:{{num (lookup this headers.2)}} },{{else}}{{num (lookup this headers.2)}},{{/if_eq}}{{/each}}]
+	    	data: [{{#each data}} {{#if_eq highlight (lookup this label)}}{name:"{{{sup (sub (lookup this headers.2))}}}",color:HIGHLIGHT_COLOUR,y:{{num (lookup this headers.2)}} },{{else}}{{num (lookup this headers.2)}},{{/if_eq}}{{/each}}]
 	    }
 	];
 options.xAxis=[{
