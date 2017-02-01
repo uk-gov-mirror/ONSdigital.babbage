@@ -3,7 +3,7 @@ options.chart.type="scatter";
 options.xAxis.categories=[]; {{!-- override categories --}}
 options.legend.enabled=false;
 options.series=[{
-	data: [{{#each data}}{label:"{{{sup (sub (lookup categories @index))}}}",{{#if_eq highlight (lookup this headers.0)}} color:HIGHLIGHT_COLOUR, {{/if_eq}}x:{{num (lookup this headers.1)}},y:{{num (lookup this headers.2)}} },{{/each}}],
+	data: [{{#each data}}{label:"{{{sup (sub (lookup categories @index))}}}",{{#if_eq highlight (lookup this label)}} color:HIGHLIGHT_COLOUR, {{/if_eq}}x:{{num (lookup this headers.1)}},y:{{num (lookup this headers.2)}} },{{/each}}],
 }];
 //clear the main chart tooltip
 options.tooltip = {};
