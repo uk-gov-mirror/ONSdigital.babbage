@@ -4,7 +4,20 @@
 	options.series=[{{#each series}}{
 			name: "{{{sub (sup this)}}}",
 			{{#if_eq highlight this}}color:HIGHLIGHT_COLOUR,{{/if_eq}}
-			data: [{{#each data}}{{#if_eq highlight (lookup this label)}}{name:"{{{sup (sub (lookup this label))}}}",color:HIGHLIGHT_COLOUR, y:{{num (lookup this ../this)}} },{{else}}{{num (lookup this ../this)}}, {{/if_eq}}{{/each}}]
+			data: [{{#each data}}
+
+			{{#if_eq highlight label}}
+			{
+			name:"{{{sup (sub (lookup this label))}}}",
+			color:HIGHLIGHT_COLOUR,
+			y:{{num (lookup this ../this)}}
+			},
+
+			{{else}}
+
+			{{num (lookup this ../this)}}, 
+
+			{{/if_eq}}{{/each}}]
 		},{{/each}} ];
 	{{#block "additional-chart-config"}}
 	{{/block}}
