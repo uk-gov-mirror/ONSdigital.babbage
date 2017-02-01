@@ -149,12 +149,12 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 			},
 			events:{
 				click:function(e){
-					if($('#annotation-chart').accordion){
+					{{!-- if($('#annotation-chart').accordion){
 
 						var active = $('#annotation-chart').accordion( "option", "active" );
 						setBoxPosHandle(active, parseInt(e.xAxis[0].value), parseInt(e.yAxis[0].value));
 						console.log(active, parseInt(e.xAxis[0].value), parseInt(e.yAxis[0].value))
-					}
+					} --}}
 				}
 			}
 		},
