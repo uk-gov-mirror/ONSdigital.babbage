@@ -131,7 +131,6 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 
 	// urgh! set the vars on the page as a way of passing them back to the chart object
 	function setBoxPosHandle(id, x,y) {
-	console.log("set box position");
 	// important! trigger the change event after setting the value
 		$('#note-x-'+id).val(x).change();
 		$('#note-y-'+id).val(y).change();
@@ -220,7 +219,7 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 				animation: false,
 				pointPadding: 0,
 				groupPadding: 0.1,
-				connectNulls: false
+				connectNulls: {{#if hasConnectNull}}true{{else}}false{{/if}}
 			},
 			line: {
 				lineWidth: 2,
@@ -263,9 +262,9 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 				events: {
 					mouseup: function(e) { 
 					//HACK _ bug when clicking and NOT moving
-					if(this.transX !==0 || this.transY!==0){
-						setBoxPosHandle(this.options.id, this.transX, this.transY);
-					}
+					//if(this.transX !==0 || this.transY!==0){
+					//	setBoxPosHandle(this.options.id, this.transX, this.transY);
+					//}
 						
 
 						if (this.chart.selectedAnnotation) {
