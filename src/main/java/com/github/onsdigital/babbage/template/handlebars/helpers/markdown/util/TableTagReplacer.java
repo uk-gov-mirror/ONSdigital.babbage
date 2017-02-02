@@ -3,6 +3,8 @@ package com.github.onsdigital.babbage.template.handlebars.helpers.markdown.util;
 import com.github.onsdigital.babbage.content.client.ContentClient;
 import com.github.onsdigital.babbage.content.client.ContentReadException;
 import com.github.onsdigital.babbage.content.client.ContentResponse;
+import com.github.onsdigital.babbage.error.ResourceNotFoundException;
+import com.github.onsdigital.babbage.logging.Log;
 import com.github.onsdigital.babbage.template.TemplateService;
 
 import java.io.IOException;
@@ -50,6 +52,9 @@ public class TableTagReplacer extends TagReplacementStrategy {
             ContentResponse contentResponse = ContentClient.getInstance().getContent(figureUri);
             String result = TemplateService.getInstance().renderTemplate(template, contentResponse.getDataStream());
             return result;
+        } catch (ResourceNotFoundException e) {
+            Log.buildDebug("Failed to find figure data for table.").addParameter("URL", figureUri).log();
+            return matcher.group();
         } catch (ContentReadException e) {
             System.err.println("Failed rendering table, uri:" + figureUri);
             return matcher.group();

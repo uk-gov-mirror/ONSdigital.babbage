@@ -4,6 +4,8 @@ import com.github.davidcarboni.restolino.json.Serialiser;
 import com.github.onsdigital.babbage.content.client.ContentClient;
 import com.github.onsdigital.babbage.content.client.ContentReadException;
 import com.github.onsdigital.babbage.content.client.ContentResponse;
+import com.github.onsdigital.babbage.error.ResourceNotFoundException;
+import com.github.onsdigital.babbage.logging.Log;
 import com.github.onsdigital.babbage.template.TemplateService;
 
 import java.io.IOException;
@@ -49,6 +51,9 @@ public class ImageTagReplacer extends TagReplacementStrategy {
         try {
             ContentResponse contentResponse = ContentClient.getInstance().getContent(figureUri);
             return TemplateService.getInstance().renderTemplate(template, contentResponse.getDataStream());
+        } catch (ResourceNotFoundException e) {
+            Log.buildDebug("Failed to find figure data for image.").addParameter("URL", figureUri).log();
+            return matcher.group();
         } catch (ContentReadException e) {
             return TemplateService.getInstance().renderTemplate(template, Serialiser.serialise(new ImageData(figureUri)));
         }
