@@ -1,11 +1,12 @@
 {{!-- Charts with an array of series data inherits from this base template --}}
 {{!-- NOTE: the data output needs to be a continous string and whitespace (line returns) break it --}}
 {{#partial "chart-config"}}
+{{#if isStacked }}// reverse legend order for stacked bars with a descending order{{/if}} 
 	options.series=[{{#each series}}{
 			name: "{{{sub (sup this)}}}",
 			{{#if_eq highlight this}}color:HIGHLIGHT_COLOUR,{{/if_eq}}
+			{{#if isStacked }}legendIndex: (-{{@index}}),{{/if}} 
 			data: [{{#each data}}
-
 			{{#if_eq highlight label}}
 			{
 			name:"{{{sup (sub (lookup this label))}}}",
