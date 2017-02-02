@@ -317,6 +317,7 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 
 {{!--  loop through annotations and push any plotlines/bands into the array  --}}
 {{#each annotations}}
+{{#if_ne isHidden true}}
 	{{#if_eq isPlotline true}}
 	{{#if bandWidth}}
 	options.{{#if_eq orientation "x-axis"}}xAxis{{else}}yAxis{{/if_eq}}.plotBands.push( 
@@ -325,7 +326,7 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 			from: {{#if_eq orientation "x-axis"}}{{x}}{{else}}{{y}}{{/if_eq}},
 			to: ({{#if_eq orientation "x-axis"}}{{x}}{{else}}{{y}}{{/if_eq}} + {{bandWidth}}),
 			label: {
-				text: '{{{title}}}:: {{isPlotline}}' 
+				text: '{{{title}}}' 
 			}
 		})
 	{{else}}
@@ -335,11 +336,12 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 			value: {{#if_eq orientation "x-axis"}}{{x}}{{else}}{{y}}{{/if_eq}},
 			width:2,
 			label: {
-				text: '{{{title}}}:: {{isPlotline}}' 
+				text: '{{{title}}}' 
 			}
 		})
 	{{/if}}
 	{{/if_eq}}
+{{/if_ne}}
 {{/each}}
 
 
