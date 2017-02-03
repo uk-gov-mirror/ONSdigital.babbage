@@ -48,7 +48,7 @@ public enum SignedURLHelper implements BabbageHandlebarsHelper<String> {
                         //.withIssuer("auth0")
                         .withClaim("uri", uri)
                         .withClaim("term", term)
-                        .withClaim("page", page)
+                        .withClaim("page", (int)(long)page)
                         .withClaim("index", index)
                         .withClaim("listType", listType)
                         .withClaim("pageSize", pageSize)
