@@ -120,28 +120,7 @@ public class SearchUtils {
         }
     }
 
-    private static void logResponseStatistics(String searchTerm, SearchQueries queries,
-                                              LinkedHashMap<String, SearchResult> results) {
 
-
-        for (ONSQuery onsQuery : queries.buildQueries()) {
-
-            final int size = onsQuery.size();
-            final Integer page = onsQuery.page();
-            final String name = onsQuery.name();
-
-            SearchResult resultsQueryResponse = results.get(name);
-            long took = resultsQueryResponse.getTook();
-
-            LOGGER.info("doSearch([searchQueries]) : name '{}' page '{}' took:'{}' ms for terms: '{}' size {}",
-                        name,
-                        page,
-                        took,
-                        searchTerm,
-                        size
-                       );
-        }
-    }
 
     public static BabbageResponse list(HttpServletRequest request, String listType,
                                        SearchQueries queries) throws IOException {
