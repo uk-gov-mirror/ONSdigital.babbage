@@ -41,6 +41,10 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 	// set chart palette based on chart object
 	var palette = {{#if_eq palette "blue"}}bluemono{{else}}color{{/if_eq}};
 	var hasTooltip = {{#if showTooltip }}true{{else}}false{{/if}};
+
+	var isEditor = $('#note-x-0').val() || false;
+	if(isEditor) isEditor = true;
+
 	{{!-- this draws two slanted lines as a visual break in the y-axis --}}
 	{{!-- NB ONLY REQUIRED IN EXCEPTIONAL CIRCUMSTANCES --}}
 	{{#if hasLineBreak }}
@@ -247,8 +251,8 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 				title: '{{{title}}}',
 				anchorX: "left",
 				anchorY: "top",
-				allowDragY: true,
-				allowDragX: true,
+				allowDragY: isEditor,
+				allowDragX: isEditor,
 				shape: {
 					type: 'rect',
 					params: {
@@ -261,12 +265,11 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 				},
 				events: {
 					mouseup: function(e) { 
-					//HACK _ bug when clicking and NOT moving
-					//if(this.transX !==0 || this.transY!==0){
-					//	setBoxPosHandle(this.options.id, this.transX, this.transY);
-					//}
-						
-
+					console.log('babbage::mouseup')
+						//HACK _ bug when clicking and NOT moving
+						//if(this.transX !==0 || this.transY!==0){
+							setBoxPosHandle(this.options.id, this.transX, this.transY);
+						//}
 						if (this.chart.selectedAnnotation) {
 							this.chart.selectedAnnotation.events.deselect.call(this.chart.selectedAnnotation, e);
 						}
