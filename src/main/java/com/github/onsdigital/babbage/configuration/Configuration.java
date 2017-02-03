@@ -42,7 +42,7 @@ public class Configuration {
             return MAX_RESULTS_PER_PAGE;
         }
 
-        public static String getRedirectSecret() { return getValue("REDIRECT_SECRET" ); }
+        public static String getRedirectSecret() { return StringUtils.defaultIfBlank(getValue("REDIRECT_SECRET"), "secret"); }
 
         public static boolean isDevEnvironment() {
             String devEnvironment = StringUtils.defaultIfBlank(getValue("DEV_ENVIRONMENT"), "N");
