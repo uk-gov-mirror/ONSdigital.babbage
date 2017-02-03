@@ -31,9 +31,9 @@ public enum SignedURLHelper implements BabbageHandlebarsHelper<String> {
             if(term == null || term.length() == 0) {
                 term = options.param(1);
             }
-            Integer page = options.param(2);
+            Long page = options.param(2);
             if(page == null) {
-                page = 1;
+                page = 1L;
             }
             Integer index = options.param(3);
             String listType = options.param(4);
