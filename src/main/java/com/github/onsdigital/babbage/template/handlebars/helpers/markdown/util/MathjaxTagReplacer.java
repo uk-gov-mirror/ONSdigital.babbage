@@ -46,7 +46,7 @@ public class MathjaxTagReplacer extends TagReplacementStrategy {
             return TemplateService.getInstance().renderTemplate(template, contentResponse.getDataStream());
         } catch (ResourceNotFoundException e) {
             Log.buildDebug("Failed to find figure data for equation.").addParameter("URL", figureUri).log();
-            return matcher.group();
+            return TemplateService.getInstance().renderTemplate(figureNotFoundTemplate);
         } catch (ContentReadException e) {
             return matcher.group();
         }

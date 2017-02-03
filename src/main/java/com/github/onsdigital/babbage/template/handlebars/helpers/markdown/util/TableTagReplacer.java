@@ -54,7 +54,7 @@ public class TableTagReplacer extends TagReplacementStrategy {
             return result;
         } catch (ResourceNotFoundException e) {
             Log.buildDebug("Failed to find figure data for table.").addParameter("URL", figureUri).log();
-            return matcher.group();
+            return TemplateService.getInstance().renderTemplate(figureNotFoundTemplate);
         } catch (ContentReadException e) {
             System.err.println("Failed rendering table, uri:" + figureUri);
             return matcher.group();
