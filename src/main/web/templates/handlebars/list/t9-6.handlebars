@@ -22,13 +22,12 @@
 				{{/if}}
                 <ul class="list--neutral">
 					{{#each result.results}}
-					<li {{#if @first}}class="margin-bottom--double"{{/if}}>
-					{{#if @first}}
-						<h3 class="flush">{{labels.previous-latest}}</h3>
+					<li {{#if_all @first (eq result.paginator.currentPage 1)}}class="margin-bottom--double"{{/if_all}}>
+                    {{#if_all @first (eq result.paginator.currentPage 1)}}<h3 class="flush">{{labels.previous-latest}}</h3>
 						<h3 class="flush stand-out-text">
 					{{else}}
 						<h3 class="flush">
-					{{/if}}
+					{{/if_all}}
 						<a href="{{uri}}">{{description.title}}
 							{{#if description.edition}}
 							{{#if_ne description.edition 'yes'}}: {{description.edition}}{{/if_ne}}
@@ -41,7 +40,7 @@
 					</li>
 					{{/each}}
 				</ul>
-				{{> list/partials/paginator}}
+                {{> list/partials/paginator paginator=result.paginator }}
             </div>
             <div class="col col--md-two-thirds col--lg-two-thirds margin-bottom">
                 {{> partials/archives-box}}
