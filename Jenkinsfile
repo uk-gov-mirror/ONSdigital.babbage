@@ -57,18 +57,10 @@ def deploymentGroupsFor(branch) {
 
 def registry(branch, tag) {
     [
-        hub: [
-            login: 'docker --config .dockerhub login --username=$DOCKERHUB_USER --password=$DOCKERHUB_PASS',
-            image: "${env.DOCKERHUB_REPOSITORY}/babbage",
-            tag: 'live',
-            uri: "https://${env.DOCKERHUB_REPOSITORY_URI}",
-        ],
-        ecr: [
-            image: 'babbage',
-            tag: tag,
-            uri: "https://${env.ECR_REPOSITORY_URI}",
-        ],
-    ][branch == 'live' ? 'hub' : 'ecr']
+        image: 'babbage',
+        tag: tag,
+        uri: "https://${env.ECR_REPOSITORY_URI}",
+    ]
 }
 
 @NonCPS
