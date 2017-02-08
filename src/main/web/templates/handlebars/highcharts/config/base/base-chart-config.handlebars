@@ -12,27 +12,30 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 	var PLOTBAND_COLOUR  = '#B5CE94';
 
 	// use rgba in order to set opacity/alpha
-	// alpha value set in _loadChartBuilder.js ({{alpha}}))
+	// alpha value set in _loadChartBuilder.js ({{alpha}})
+	// set it here in js for exsitng charts
+	var alpha = {{#if alpha }}{{alpha}}{{else}}0.3{{/if}};
+
 	var bluemono = [
-			'rgba(8,69,148,{{alpha}})',
-			'rgba(33,113,181,{{alpha}})',
-			'rgba(66,146,198,{{alpha}})',
-			'rgba(107,174,214,{{alpha}})',
-			'rgba(158,202,225,{{alpha}})',
-			'rgba(198,219,239,{{alpha}})',
-			'rgba(222,235,247,{{alpha}})',
-			'rgba(247,251,255,{{alpha}})',
+			'rgba(8,69,148,' + alpha + ')',
+			'rgba(33,113,181,' + alpha + ')',
+			'rgba(66,146,198,' + alpha + ')',
+			'rgba(107,174,214,' + alpha + ')',
+			'rgba(158,202,225,' + alpha + ')',
+			'rgba(198,219,239,' + alpha + ')',
+			'rgba(222,235,247,' + alpha + ')',
+			'rgba(247,251,255,' + alpha + ')',
 		];
 	var color = [
-			'rgba(39,71,150,{{alpha}})',
-			'rgba(245,148,47,{{alpha}})',
-			'rgba(231,63,64,{{alpha}})',
-			'rgba(123,202,226,{{alpha}})',
-			'rgba(151,151,150,{{alpha}})',
-			'rgba(233,225,23,{{alpha}})',
-			'rgba(116,182,48,{{alpha}})',
-			'rgba(103,71,150,{{alpha}})',
-			'rgba(189,91,158,{{alpha}})'
+			'rgba(39,71,150,' + alpha + ')',
+			'rgba(245,148,47,' + alpha + ')',
+			'rgba(231,63,64,' + alpha + ')',
+			'rgba(123,202,226,' + alpha + ')',
+			'rgba(151,151,150,' + alpha + ')',
+			'rgba(233,225,23,' + alpha + ')',
+			'rgba(116,182,48,' + alpha + ')',
+			'rgba(103,71,150,' + alpha + ')',
+			'rgba(189,91,158,' + alpha + ')'
 		];
 
 	var base = {{#if yMin }}{{yMin}}{{else}}0{{/if}};
