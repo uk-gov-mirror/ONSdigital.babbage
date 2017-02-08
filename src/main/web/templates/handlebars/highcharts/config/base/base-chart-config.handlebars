@@ -108,18 +108,18 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 		xAxis: {
 		plotBands:[],
 		plotLines:[],
-			categories: [{{#each categories}}'{{{sub (sup this)}}}',{{/each}}],
-			tickInterval: "{{labelInterval}}",
-			labels: {
-				//rotation:360,
-				useHTML : true,
-				step:"{{labelInterval/4}}"
-			},
-			title: {
-				useHTML:true,
-				text: "{{{sub (sup xAxisLabel)}}}"
-			},
-			opposite:{{#if_eq xAxisPos "top"}}true{{else}}false{{/if_eq}}
+		categories: [{{#each categories}}'{{{sub (sup this)}}}',{{/each}}],
+		tickInterval: "{{labelInterval}}",
+		labels: {
+			//rotation:360,
+			useHTML : true,
+			step:"{{labelInterval/4}}"
+		},
+		title: {
+			useHTML:true,
+			text: "{{{sub (sup xAxisLabel)}}}"
+		},
+		opposite:{{#if_eq xAxisPos "top"}}true{{else}}false{{/if_eq}}
 		},
 		legend: {
 			verticalAlign: {{#if_eq xAxisPos "top"}}"bottom"{{else}}"top"{{/if_eq}},

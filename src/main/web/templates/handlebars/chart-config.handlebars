@@ -1,5 +1,6 @@
 {{#if_eq type "chart"}}
 	{{#if_eq chartType "small-multiples"}}{{> highcharts/config/smallmultiples-chart-config}}{{/if_eq}}
+	{{#if_eq chartType "heatmap"}}{{> highcharts/config/heatmap-chart-config}}{{/if_eq}}
 	{{#if_eq chartType "bar"}}{{> highcharts/config/bar-chart-config}}{{/if_eq}}
 	{{#if_eq chartType "rotated"}}{{> highcharts/config/bar-chart-config rotated=true}}{{/if_eq}}
 	{{#if_eq chartType "line"}}{{> highcharts/config/line-chart-config}}{{/if_eq}}
