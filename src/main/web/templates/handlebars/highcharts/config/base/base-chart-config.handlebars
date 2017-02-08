@@ -12,7 +12,9 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 	var PLOTBAND_COLOUR  = '#B5CE94';
 
 	// use rgba in order to set opacity/alpha
-	// alpha value set in _loadChartBuilder.js ({{alpha}}))
+	// alpha value set in _loadChartBuilder.js ({{alpha}})
+	// set it here in js for exsitng charts
+	var alpha = {{#if alpha }}{{alpha}}{{else}}0.3{{/if}};
 	var bluemono = [
 			'rgba(8,69,148,{{alpha}})',
 			'rgba(33,113,181,{{alpha}})',
