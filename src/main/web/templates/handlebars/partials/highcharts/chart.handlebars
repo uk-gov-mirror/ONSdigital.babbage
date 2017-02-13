@@ -49,9 +49,10 @@
   {{/if}}
   
     <h5 class="print--hide font-size--h6 clear-left">Download this chart</h5>
-
+{{#if_ne chartType "small-multiples"}}
     <a class="btn btn--primary print--hide js-chart-image-src" href="/chartimage?uri={{uri}}"
         data-ga-event="" data-ga-event-category="download-image" data-ga-event-label="{{{sub (sup title)}}}" download="{{{sub (sup title)}}}">Image</a>
+{{/if_ne}}
     {{> partials/highcharts/download format='csv'}}
     {{> partials/highcharts/download format='xls'}}
 
