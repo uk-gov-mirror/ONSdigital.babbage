@@ -1,11 +1,14 @@
 {{#if_eq chartType "small-multiples"}}
+
+
 <div class="markdown-chart-container panel--bottom-mar print--avoid-break">
-  {{#each series}}
-    <div class="float-left">
         <h4 class="flush--third--vertical">{{{sub (sup title)}}}</h4>
         {{#if subtitle}}
             <h5 class="flush--third--bottom">{{{sub (sup subtitle)}}}</h5>
         {{/if}}
+ <div class="sm-multiple-holder">
+  {{#each series}}
+    <div class="sm-multiple">
         
       <div id="chart-{{filename}}-{{@index}}" data-filename="{{filename}}" data-uri="{{uri}}" class="markdown-chart" data-series="{{this}}">
         <!--[if gt IE 8]><!--><noscript><!--[endif]-->
@@ -14,8 +17,13 @@
       </div>
     </div>
   {{/each}}
+    </div>
+
+
 
 {{else}}
+
+
 
 <div class="markdown-chart-container panel--bottom-mar print--avoid-break">
 
@@ -30,6 +38,8 @@
       <!--[if gt IE 8]><!--></noscript><!--[endif]-->
   </div>
 
+
+
 {{/if_eq}}
 
   {{#if source}}<h5 class="flush--third--bottom font-size--h6">Source: {{source}}</h5>{{/if}}
@@ -38,7 +48,7 @@
       {{md notes}}
   {{/if}}
   
-    <h5 class="print--hide font-size--h6">Download this chart</h5>
+    <h5 class="print--hide font-size--h6 clear-left">Download this chart</h5>
 
     <a class="btn btn--primary print--hide js-chart-image-src" href="/chartimage?uri={{uri}}"
         data-ga-event="" data-ga-event-category="download-image" data-ga-event-label="{{{sub (sup title)}}}" download="{{{sub (sup title)}}}">Image</a>
