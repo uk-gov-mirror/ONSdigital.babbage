@@ -70,11 +70,7 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 			marginTop: 35,
 			style: {
 				fontFamily: '"Open Sans", Tahoma, Verdana, Arial'
-			},
-			{{!-- events:{
-				click:function(e){
-				}
-			} --}}
+			}
 		},
 		colors: palette,
 		series: [],
@@ -158,6 +154,7 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 		{{#each annotations}}{{!--// only show if annotation is NOT hidden --}}
 			{{#if_ne isHidden true}}
 			{{#if_ne isPlotline true}}
+			//{{{devices}}}
 			{
 				id:{{id}},
 				x: ({{x}}),
@@ -179,21 +176,32 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 				},
 				events: {
 					mouseup: function(e) { 
-					console.log('babbage::mouseup')
-						//HACK _ bug when clicking and NOT moving
-						//if(this.transX !==0 || this.transY!==0){
-							setBoxPosHandle(this.options.id, this.transX, this.transY);
-						//}
 						if (this.chart.selectedAnnotation) {
 							this.chart.selectedAnnotation.events.deselect.call(this.chart.selectedAnnotation, e);
 						}
 					} 
-				}
+				},
+				position_sm:{x:{{devices.sm.x}}, y:{{devices.sm.y}} },
+				position_md:{x:{{devices.md.x}}, y:{{devices.md.y}} },
+				position_lg:{x:{{devices.lg.x}}, y:{{devices.lg.y}} }
 			},
 	        {{/if_ne}}
 	       {{/if_ne}}
 		{{/each }}
 		],
+		//add devices property -not used by highcharts but stores layout sizes
+		devices:{
+{{#if devices}}
+{{#each devices as |device name|}}
+'{{name}}': {
+aspectRatio: {{aspectRatio}},
+labelInterval: {{#if labelInterval }}{{labelInterval}}{{else}}0{{/if}},
+isHidden: {{isHidden}}
+},
+{{/each}}
+{{/if}}
+
+		},
 		tooltip: {
 			valueDecimals: "{{decimalPlaces}}",
 			shared: true,
@@ -244,7 +252,10 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 			to: ({{#if_eq orientation "x-axis"}}{{x}}{{else}}{{y}}{{/if_eq}} + {{bandWidth}}),
 			label: {
 				text: '{{{title}}}' 
-			}
+			},
+			position_sm:{x:{{devices.sm.x}}, y:{{devices.sm.y}} },
+			position_md:{x:{{devices.md.x}}, y:{{devices.md.y}} },
+			position_lg:{x:{{devices.lg.x}}, y:{{devices.lg.y}} }
 		})
 	{{else}}
 	options.{{#if_eq orientation "x-axis"}}xAxis{{else}}yAxis{{/if_eq}}.plotLines.push(
@@ -254,7 +265,10 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 			width:2,
 			label: {
 				text: '{{{title}}}' 
-			}
+			},
+			position_sm:{x:{{devices.sm.x}}, y:{{devices.sm.y}} },
+			position_md:{x:{{devices.md.x}}, y:{{devices.md.y}} },
+			position_lg:{x:{{devices.lg.x}}, y:{{devices.lg.y}} }
 		})
 	{{/if}}
 	{{/if_eq}}
