@@ -13,7 +13,6 @@ $(function() {
     }
 
     //set the annotation and chart size based on the viewport
-
     if ($("body").hasClass("viewport-sm")) {
         viewport = 'sm';
     }else if ($("body").hasClass("viewport-md")) {
@@ -41,6 +40,7 @@ $(function() {
             },
             function() {
                 var chartConfig = window["chart-" + chartId];
+                console.log(chartConfig );
                 if (chartConfig) {
                     // small multiples have an attribute to show specifc series
                     var display = $this.data('series');
@@ -55,57 +55,91 @@ $(function() {
                     //if we have devices
                     if(chartConfig.devices){
                         if(chartConfig.devices[viewport]){
-                            console.log(chartConfig);
-                            //set the aspect ratio
-                            aspectRatio = chartConfig.devices[viewport].aspectRatio;
-                            chartConfig.xAxis.tickInterval = chartConfig.devices[viewport].labelInterval;
-                            console.log("SET VIEWPORT FOR THE HEART OF THE SUN. " + aspectRatio);
 
-                            //loop thru and update annotations if reqd
-                            if(chartConfig.annotations.length>0){
+                            if(!chartConfig.devices[viewport].isHidden){
+
+                                console.log(chartConfig);
+                                //set the aspect ratio
+                                aspectRatio = chartConfig.devices[viewport].aspectRatio;
+                                chartConfig.xAxis.tickInterval = chartConfig.devices[viewport].labelInterval;
+                                console.log("SET VIEWPORT FOR THE HEART OF THE SUN. " + aspectRatio);
+
+                                //loop thru and update annotations if reqd
+                                if(chartConfig.annotations.length>0){
+                                    $.each(chartConfig.annotations, function(idx, itm){
+                                        console.log(chartConfig.annotations);
+                                        chartConfig.annotations[idx].x = chartConfig.annotations[idx]['position_'+viewport].x;
+                                        chartConfig.annotations[idx].y = chartConfig.annotations[idx]['position_'+viewport].y;
+                                    })
+                                }
+                                //loop thru plotline/plotbands
+                                if(chartConfig.xAxis.plotLines){
+                                if(chartConfig.xAxis.plotLines.length>0){
+                                    $.each(chartConfig.xAxis.plotLines, function(idx, itm){
+                                        console.log(chartConfig.xAxis.plotLines);
+                                        chartConfig.xAxis.plotLines[idx].value = chartConfig.xAxis.plotLines[idx]['position_'+viewport].x;
+                                    })
+                                }
+                                }
+                                //loop thru plotline/plotbands
+                                if(chartConfig.xAxis.plotBands){
+                                if(chartConfig.xAxis.plotBands.length>0){
+                                    $.each(chartConfig.xAxis.plotBands, function(idx, itm){
+                                        console.log(chartConfig.xAxis.plotBands);
+                                        chartConfig.xAxis.plotBands[idx].value = chartConfig.xAxis.plotBands[idx]['position_'+viewport].x;
+                                    })
+                                }
+                                }
+                                //loop thru plotline/plotbands
+                                if(chartConfig.yAxis.plotLines){
+                                if(chartConfig.yAxis.plotLines.length>0){
+                                    $.each(chartConfig.yAxis.plotLines, function(idx, itm){
+                                        console.log(chartConfig.xAxis.plotLines);
+                                        chartConfig.yAxis.plotLines[idx].value = chartConfig.yAxis.plotLines[idx]['position_'+viewport].y;
+                                    })
+                                }
+                                }
+                                //loop thru plotline/plotbands
+                                if(chartConfig.yAxis.plotBands){
+                                if(chartConfig.yAxis.plotBands.length>0){
+                                    $.each(chartConfig.yAxis.plotBands, function(idx, itm){
+                                        console.log(chartConfig.yAxis.plotBands);
+                                        chartConfig.yAxis.plotBands[idx].value = chartConfig.yAxis.plotBands[idx]['position_'+viewport].y;
+                                    })
+                                }
+                                }
+
+                            }else{
+                                //add hidden notes to footnotes
+                                var str = '';
+
+                                //add aheader if required
+                                if(!$('.js-notes-title')){
+                                    str = '<h6 class="flush--third--bottom js-notes-title">Notes:</h6>';
+                                }
                                 $.each(chartConfig.annotations, function(idx, itm){
-                                    console.log(chartConfig.annotations);
-                                    chartConfig.annotations[idx].x = chartConfig.annotations[idx]['position_'+viewport].x;
-                                    chartConfig.annotations[idx].y = chartConfig.annotations[idx]['position_'+viewport].y;
+                                    str+= itm.title+'</br>'
                                 })
-                            }
-                            //loop thru plotline/plotbands
-                            if(chartConfig.xAxis.plotLines){
-                            if(chartConfig.xAxis.plotLines.length>0){
-                                $.each(chartConfig.xAxis.plotLines, function(idx, itm){
-                                    console.log(chartConfig.xAxis.plotLines);
-                                    chartConfig.xAxis.plotLines[idx].value = chartConfig.xAxis.plotLines[idx]['position_'+viewport].x;
-                                })
-                            }
-                            }
-                            //loop thru plotline/plotbands
-                            if(chartConfig.xAxis.plotBands){
-                            if(chartConfig.xAxis.plotBands.length>0){
                                 $.each(chartConfig.xAxis.plotBands, function(idx, itm){
-                                    console.log(chartConfig.xAxis.plotBands);
-                                    chartConfig.xAxis.plotBands[idx].value = chartConfig.xAxis.plotBands[idx]['position_'+viewport].x;
+                                    str+= itm.label.text+'</br>'
                                 })
-                            }
-                            }
-                            //loop thru plotline/plotbands
-                            if(chartConfig.yAxis.plotLines){
-                            if(chartConfig.yAxis.plotLines.length>0){
-                                $.each(chartConfig.yAxis.plotLines, function(idx, itm){
-                                    console.log(chartConfig.xAxis.plotLines);
-                                    chartConfig.yAxis.plotLines[idx].value = chartConfig.yAxis.plotLines[idx]['position_'+viewport].y;
+                                $.each(chartConfig.xAxis.plotLines, function(idx, itm){
+                                    str+= itm.label.text+'</br>'
                                 })
-                            }
-                            }
-                            //loop thru plotline/plotbands
-                            if(chartConfig.yAxis.plotBands){
-                            if(chartConfig.yAxis.plotBands.length>0){
                                 $.each(chartConfig.yAxis.plotBands, function(idx, itm){
-                                    console.log(chartConfig.yAxis.plotBands);
-                                    chartConfig.yAxis.plotBands[idx].value = chartConfig.yAxis.plotBands[idx]['position_'+viewport].y;
+                                    str+= itm.label.text+'</br>'
                                 })
+                                $.each(chartConfig.yAxis.plotLines, function(idx, itm){
+                                    str+= itm.label.text+'</br>'
+                                })
+                                console.log("@hidden: " + str);
+                                $('.notes-holder-js').append(str);
+                                // clear any defaults
+                                chartConfig.xAxis.plotBands = [];
+                                chartConfig.xAxis.plotLines = [];
+                                chartConfig.yAxis.plotBands = [];
+                                chartConfig.yAxis.plotLines = [];
                             }
-                            }
-
                         }
                     }
 

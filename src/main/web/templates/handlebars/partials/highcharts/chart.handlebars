@@ -43,10 +43,12 @@
 {{/if_eq}}
 
   {{#if source}}<h5 class="flush--third--bottom font-size--h6">Source: {{source}}</h5>{{/if}}
+      <div class="notes-holder-js">
   {{#if notes}}
-      <h6 class="flush--third--bottom">Notes:</h6>
+      <h6 class="flush--third--bottom js-notes-title">Notes:</h6>
       {{md notes}}
   {{/if}}
+      </div>
   
     <h5 class="print--hide font-size--h6 clear-left">Download this chart</h5>
 {{#if_ne chartType "small-multiples"}}
