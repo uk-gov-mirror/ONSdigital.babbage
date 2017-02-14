@@ -80,12 +80,12 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 		yAxis: {
 			plotBands:[],
 			plotLines:[],
-		{{#if yMin }}min: base,{{/if}}
-		{{#if yMax }}max: {{yMax}},{{/if}}
-		{{#if hasLineBreak }}breaks: [{
-                from: yAxisBreakStart,
-                to: yAxisBreakEnd
-            }], {{/if}}
+			{{#if yMin }}min: base,{{/if}}
+			{{#if yMax }}max: {{yMax}},{{/if}}
+			{{#if hasLineBreak }}breaks: [{
+		                from: yAxisBreakStart,
+		                to: yAxisBreakEnd
+		    	}], {{/if}}
 			title: {
 				text: "{{{sub (sup unit)}}}",
 				useHTML:true,
@@ -100,9 +100,9 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 			{{#if yMax }}endOnTick: false,// avoids label rounding in order to have exact axis values{{/if}}
 			{{#if hasLineBreak }}lineColor: 'black',
 			lineWidth: 1,    
-            events: {
-                pointBreak: pointBreakColumn
-            }{{/if}}
+			events: {
+				pointBreak: pointBreakColumn
+			}{{/if}}
 		},
 		xAxis: {
 			plotBands:[],
@@ -154,7 +154,6 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 		{{#each annotations}}{{!--// only show if annotation is NOT hidden --}}
 			{{#if_ne isHidden true}}
 			{{#if_ne isPlotline true}}
-			//{{{devices}}}
 			{
 				id:{{id}},
 				x: ({{x}}),
@@ -180,10 +179,10 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 							this.chart.selectedAnnotation.events.deselect.call(this.chart.selectedAnnotation, e);
 						}
 					} 
-				},
+				}{{#if devices}},
 				position_sm:{x:{{devices.sm.x}}, y:{{devices.sm.y}} },
 				position_md:{x:{{devices.md.x}}, y:{{devices.md.y}} },
-				position_lg:{x:{{devices.lg.x}}, y:{{devices.lg.y}} }
+				position_lg:{x:{{devices.lg.x}}, y:{{devices.lg.y}} }{{/if}}
 			},
 	        {{/if_ne}}
 	       {{/if_ne}}
@@ -191,15 +190,15 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 		],
 		//add devices property -not used by highcharts but stores layout sizes
 		devices:{
-{{#if devices}}
-{{#each devices as |device name|}}
-'{{name}}': {
-aspectRatio: {{aspectRatio}},
-labelInterval: {{#if labelInterval }}{{labelInterval}}{{else}}0{{/if}},
-isHidden: {{isHidden}}
-},
-{{/each}}
-{{/if}}
+		{{#if devices}}
+			{{#each devices as |device name|}}
+			'{{name}}': {
+					aspectRatio: {{aspectRatio}},
+					labelInterval: {{#if labelInterval }}{{labelInterval}}{{else}}0{{/if}},
+					isHidden: {{isHidden}}
+				},
+			{{/each}}
+		{{/if}}
 
 		},
 		tooltip: {

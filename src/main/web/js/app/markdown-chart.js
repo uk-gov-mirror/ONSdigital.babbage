@@ -51,12 +51,14 @@ $(function() {
                     //console.log(window["chart-" + chartId]);
 
                     var aspectRatio = 1;
+                    var labelInterval = 1;
                     //if we have devices
                     if(chartConfig.devices){
                         if(chartConfig.devices[viewport]){
                             console.log(chartConfig);
                             //set the aspect ratio
                             aspectRatio = chartConfig.devices[viewport].aspectRatio;
+                            chartConfig.xAxis.tickInterval = chartConfig.devices[viewport].labelInterval;
                             console.log("SET VIEWPORT FOR THE HEART OF THE SUN. " + aspectRatio);
 
                             //loop thru and update annotations if reqd
@@ -68,42 +70,50 @@ $(function() {
                                 })
                             }
                             //loop thru plotline/plotbands
+                            if(chartConfig.xAxis.plotLines){
                             if(chartConfig.xAxis.plotLines.length>0){
                                 $.each(chartConfig.xAxis.plotLines, function(idx, itm){
                                     console.log(chartConfig.xAxis.plotLines);
                                     chartConfig.xAxis.plotLines[idx].value = chartConfig.xAxis.plotLines[idx]['position_'+viewport].x;
                                 })
                             }
+                            }
                             //loop thru plotline/plotbands
+                            if(chartConfig.xAxis.plotBands){
                             if(chartConfig.xAxis.plotBands.length>0){
                                 $.each(chartConfig.xAxis.plotBands, function(idx, itm){
                                     console.log(chartConfig.xAxis.plotBands);
                                     chartConfig.xAxis.plotBands[idx].value = chartConfig.xAxis.plotBands[idx]['position_'+viewport].x;
                                 })
                             }
+                            }
                             //loop thru plotline/plotbands
+                            if(chartConfig.yAxis.plotLines){
                             if(chartConfig.yAxis.plotLines.length>0){
                                 $.each(chartConfig.yAxis.plotLines, function(idx, itm){
                                     console.log(chartConfig.xAxis.plotLines);
                                     chartConfig.yAxis.plotLines[idx].value = chartConfig.yAxis.plotLines[idx]['position_'+viewport].y;
                                 })
                             }
+                            }
                             //loop thru plotline/plotbands
+                            if(chartConfig.yAxis.plotBands){
                             if(chartConfig.yAxis.plotBands.length>0){
                                 $.each(chartConfig.yAxis.plotBands, function(idx, itm){
                                     console.log(chartConfig.yAxis.plotBands);
                                     chartConfig.yAxis.plotBands[idx].value = chartConfig.yAxis.plotBands[idx]['position_'+viewport].y;
                                 })
                             }
+                            }
 
                         }
                     }
-                    chartConfig.chart.width = chartConfig.chart.width * aspectRatio;
 
                     if(display){
                         //loop through series and create mini-charts
                         var tempSeries = chartConfig.series;
-                        chartConfig.chart.height = chartWidth;
+                        chartConfig.chart.width = chartWidth/3;
+                        chartConfig.chart.height = chartWidth/3;
                         
                         chartConfig.series = [tempSeries[array[2]]];
                         chartConfig.chart.renderTo = id;
@@ -112,6 +122,7 @@ $(function() {
                     }else{
                         // Build chart from config endpoint
                         chartConfig.chart.renderTo = id;
+                        chartConfig.chart.height = chartConfig.chart.width * aspectRatio;
                         new Highcharts.Chart(chartConfig);
                     }
 
