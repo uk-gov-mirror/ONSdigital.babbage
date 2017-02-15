@@ -175,7 +175,10 @@
 
 
                     {{!-- DATA DISCOVERY JS ENHANCEMENTS TO GET DIMENSION DATA FROM DD API --}}
-                    {{#if_eq uri "/peoplepopulationandcommunity/housing/datasets/membersofthearmedforcesbyresidencetypebysexbyageaf001ew"}}
+                    {{#if_any
+                            (eq uri "/peoplepopulationandcommunity/housing/datasets/membersofthearmedforcesbyresidencetypebysexbyageaf001ew")
+                            (eq uri "/economy/inflationandpriceindices/datasets/consumerpricesindexcoicop")
+                    }}
                         <div id="js-dd-dimensions"></div>
                         <h2 class="margin-bottom--1">Editions</h2>
                         <div class="js-show-hide margin-bottom--6">
@@ -230,7 +233,7 @@
 
                             document.addEventListener('DOMContentLoaded', renderDimensions, false);
                         </script>
-                    {{/if_eq}}
+                    {{/if_any}}
                 </div>
 
                 {{!-- INFORMATION AND NOTES --}}
