@@ -1,6 +1,5 @@
 {{#partial "chart-config"}}
 options.chart.type= "heatmap";
-options.xAxis.categories = []; {{!-- override categories --}}
 options.legend.enabled = false;
 
 options.xAxis= {
@@ -9,7 +8,6 @@ options.xAxis= {
 
 options.yAxis= {
             categories: [{{#each series}}'{{{sub (sup this)}}}',{{/each}}],
-            //categories: ['MON','TUE','WED','THU','FRI'],
             title: null
         };
 
@@ -19,12 +17,8 @@ options.colorAxis= {
             maxColor: Highcharts.getOptions().colors[0]
         };
 
-
-
-
 options.series=[
     {
-        //name: '{{title}}',
         borderWidth: 1,
         data: [
         {{#each data as |datum line|}}
@@ -40,14 +34,12 @@ options.series=[
     }  
 ];
 
-
 options.tooltip = {
         formatter: function () {
             return '<b>' + this.series.xAxis.categories[this.point.x] + '</b>: <br>' +
                 this.series.yAxis.categories[this.point.y] + ', ' + this.point.value;
         }
     };
-
 
 {{/partial}}
 
