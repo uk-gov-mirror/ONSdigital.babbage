@@ -175,6 +175,7 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 				},
 				events: {
 					mouseup: function(e) { 
+						setBoxPosHandle(this.options.id, this.transX, this.transY)
 						if (this.chart.selectedAnnotation) {
 							this.chart.selectedAnnotation.events.deselect.call(this.chart.selectedAnnotation, e);
 						}
