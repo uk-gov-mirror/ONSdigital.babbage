@@ -1,0 +1,18 @@
+---
+
+platform: linux
+
+image_resource:
+  type: docker-image
+  source:
+    repository: onsdigital/dp-concourse-tools-git
+
+inputs:
+  - name: target
+  - name: babbage
+
+outputs:
+  - name: artifacts
+
+run:
+  path: babbage/ci/scripts/revision.sh
