@@ -20,7 +20,7 @@ $(function() {
     }else  {
         viewport = 'lg';
     }
-    console.log('viewport ' + viewport);
+    //console.log('viewport ' + viewport);
 
 
 
@@ -40,7 +40,7 @@ $(function() {
             },
             function() {
                 var chartConfig = window["chart-" + chartId];
-                console.log(chartConfig );
+                //console.log(chartConfig );
                 if (chartConfig) {
                     // small multiples have an attribute to show specifc series
                     var display = $this.data('series');
@@ -58,11 +58,9 @@ $(function() {
 
                             if(!chartConfig.devices[viewport].isHidden){
 
-                                console.log(chartConfig);
                                 //set the aspect ratio
                                 aspectRatio = chartConfig.devices[viewport].aspectRatio;
                                 chartConfig.xAxis.tickInterval = chartConfig.devices[viewport].labelInterval;
-                                console.log("SET VIEWPORT FOR THE HEART OF THE SUN. " + aspectRatio);
 
                                 //loop thru and update annotations if reqd
                                 if(chartConfig.annotations.length>0){
@@ -76,7 +74,6 @@ $(function() {
                                 if(chartConfig.xAxis.plotLines){
                                 if(chartConfig.xAxis.plotLines.length>0){
                                     $.each(chartConfig.xAxis.plotLines, function(idx, itm){
-                                        console.log(chartConfig.xAxis.plotLines);
                                         chartConfig.xAxis.plotLines[idx].value = chartConfig.xAxis.plotLines[idx]['position_'+viewport].x;
                                     })
                                 }
@@ -85,7 +82,6 @@ $(function() {
                                 if(chartConfig.xAxis.plotBands){
                                 if(chartConfig.xAxis.plotBands.length>0){
                                     $.each(chartConfig.xAxis.plotBands, function(idx, itm){
-                                        console.log(chartConfig.xAxis.plotBands);
                                         chartConfig.xAxis.plotBands[idx].value = chartConfig.xAxis.plotBands[idx]['position_'+viewport].x;
                                     })
                                 }
@@ -94,7 +90,6 @@ $(function() {
                                 if(chartConfig.yAxis.plotLines){
                                 if(chartConfig.yAxis.plotLines.length>0){
                                     $.each(chartConfig.yAxis.plotLines, function(idx, itm){
-                                        console.log(chartConfig.xAxis.plotLines);
                                         chartConfig.yAxis.plotLines[idx].value = chartConfig.yAxis.plotLines[idx]['position_'+viewport].y;
                                     })
                                 }
@@ -103,7 +98,6 @@ $(function() {
                                 if(chartConfig.yAxis.plotBands){
                                 if(chartConfig.yAxis.plotBands.length>0){
                                     $.each(chartConfig.yAxis.plotBands, function(idx, itm){
-                                        console.log(chartConfig.yAxis.plotBands);
                                         chartConfig.yAxis.plotBands[idx].value = chartConfig.yAxis.plotBands[idx]['position_'+viewport].y;
                                     })
                                 }
@@ -132,7 +126,6 @@ $(function() {
                                 $.each(chartConfig.yAxis.plotLines, function(idx, itm){
                                     str+= itm.label.text+'</br>'
                                 })
-                                console.log("@hidden: " + str);
                                 $('.notes-holder-js').append(str);
                                 // clear any defaults
                                 chartConfig.xAxis.plotBands = [];
