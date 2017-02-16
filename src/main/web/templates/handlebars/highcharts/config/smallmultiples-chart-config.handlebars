@@ -1,0 +1,25 @@
+
+{{#partial "chart-config"}}
+
+	options.series=[{{#each series}}{
+			name: "{{{sub (sup this)}}}",
+			data: [
+			{{#each data}}
+			{{#if_eq highlight label}}
+			{
+			name:"{{{sup (sub (lookup this label))}}}",
+			color:HIGHLIGHT_COLOUR,
+			y:{{num (lookup this ../this)}}
+			},{{else}}{{num (lookup this ../this)}},{{/if_eq}}
+
+			{{/each}}]
+		},{{/each}} ];
+
+//"additional-chart-config"
+//chart type::::
+
+
+{{/partial}}
+
+{{!-- This denotes the template inherits from base-chart-config--}}
+{{> highcharts/config/base/base-chart-config}}

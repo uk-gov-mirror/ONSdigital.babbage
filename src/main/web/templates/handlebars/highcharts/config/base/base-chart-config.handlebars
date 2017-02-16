@@ -5,8 +5,8 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 --}}
 (function(){
 
-
 	Highcharts.setOptions({lang: {thousandsSep: ','}});
+
 	// Highlight colour
 	var HIGHLIGHT_COLOUR  = 'gold';
 	var PLOTBAND_COLOUR  = '#B5CE94';
@@ -15,129 +15,47 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 	// alpha value set in _loadChartBuilder.js ({{alpha}})
 	// set it here in js for exsitng charts
 	var alpha = {{#if alpha }}{{alpha}}{{else}}0.3{{/if}};
+
 	var bluemono = [
-			'rgba(8,69,148,{{alpha}})',
-			'rgba(33,113,181,{{alpha}})',
-			'rgba(66,146,198,{{alpha}})',
-			'rgba(107,174,214,{{alpha}})',
-			'rgba(158,202,225,{{alpha}})',
-			'rgba(198,219,239,{{alpha}})',
-			'rgba(222,235,247,{{alpha}})',
-			'rgba(247,251,255,{{alpha}})',
+			'rgba(8,69,148,' + alpha + ')',
+			'rgba(33,113,181,' + alpha + ')',
+			'rgba(66,146,198,' + alpha + ')',
+			'rgba(107,174,214,' + alpha + ')',
+			'rgba(158,202,225,' + alpha + ')',
+			'rgba(198,219,239,' + alpha + ')',
+			'rgba(222,235,247,' + alpha + ')',
+			'rgba(247,251,255,' + alpha + ')',
 		];
 	var color = [
-			'rgba(39,71,150,{{alpha}})',
-			'rgba(245,148,47,{{alpha}})',
-			'rgba(231,63,64,{{alpha}})',
-			'rgba(123,202,226,{{alpha}})',
-			'rgba(151,151,150,{{alpha}})',
-			'rgba(233,225,23,{{alpha}})',
-			'rgba(116,182,48,{{alpha}})',
-			'rgba(103,71,150,{{alpha}})',
-			'rgba(189,91,158,{{alpha}})'
+			'rgba(39,71,150,' + alpha + ')',
+			'rgba(245,148,47,' + alpha + ')',
+			'rgba(231,63,64,' + alpha + ')',
+			'rgba(123,202,226,' + alpha + ')',
+			'rgba(151,151,150,' + alpha + ')',
+			'rgba(233,225,23,' + alpha + ')',
+			'rgba(116,182,48,' + alpha + ')',
+			'rgba(103,71,150,' + alpha + ')',
+			'rgba(189,91,158,' + alpha + ')'
 		];
 
-		var base = {{#if yMin }}{{yMin}}{{else}}0{{/if}};
+	var base = {{#if yMin }}{{yMin}}{{else}}0{{/if}};
 
 
 	// set chart palette based on chart object
 	var palette = {{#if_eq palette "blue"}}bluemono{{else}}color{{/if_eq}};
 	var hasTooltip = {{#if showTooltip }}true{{else}}false{{/if}};
 
+	{{!-- check for annotations in order to  initialise the chart notes --}}
 	var isEditor = $('#note-x-0').val() || false;
 	if(isEditor) isEditor = true;
 
-	{{!-- this draws two slanted lines as a visual break in the y-axis --}}
-	{{!-- NB ONLY REQUIRED IN EXCEPTIONAL CIRCUMSTANCES --}}
 	{{#if hasLineBreak }}
-    /**
-     * Extend the Axis.getLinePath method in order to visualize breaks with two parallel
-     * slanted lines. For each break, the slanted lines are inserted into the line path.
-     */
-    var hasDrawnBreak = false;
-    Highcharts.wrap(Highcharts.Axis.prototype, 'getLinePath', function (proceed, lineWidth) {
+		{{> highcharts/config/line-break-config}}
+	{{/if}}
 
-        var axis = this,
-            path = proceed.call(this, lineWidth),
-            x = path[1],
-            y = path[2];
-
-        Highcharts.each(this.breakArray || [], function (brk) {
-            if (!hasDrawnBreak) {
-	            if (axis.horiz) {
-	                x = axis.toPixels(brk.from);
-	                path.splice(3, 0,
-	                    'L', x - 4, y, // stop
-	                    'M', x - 9, y + 5, 'L', x + 1, y - 5, // left slanted line
-	                    'M', x - 1, y + 5, 'L', x + 9, y - 5, // higher slanted line
-	                    'M', x + 4, y
-	                );
-	            } else {
-	                y = axis.toPixels(brk.from);
-	                var destX = Math.random()*100;
-	                var destY = Math.random()*100;
-	                path.splice(3, 0,
-	                    'L', x, y - 4, // stop
-	                    'M', x + 5, y - 9, 'L', x - 5, y + 1, // lower slanted line
-	                    'M', x + 5, y - 1, 'L', x - 5, y + 9, // higher slanted line
-	                    'M', x, y + 4
-	                );
-	            }
-            	hasDrawnBreak = true;
-            }
-        });
-        return path;
-    });
-
-
-
-
-
-	/**
-     * On top of each column, draw a zigzag line where the axis break is.
-     */
-    function pointBreakColumn(e) {
-        var point = e.point,
-            brk = e.brk,
-            shapeArgs = point.shapeArgs,
-            x = shapeArgs.x,
-            y = this.translate(brk.from, 0, 1, 0, 1),
-            w = shapeArgs.width,
-            key = ['brk', brk.from, brk.to],
-            path = ['M', x, y, 'L', x + w * 0.25, y + 4, 'L', x + w * 0.75, y - 4, 'L', x + w, y];
-
-        if (!point[key]) {
-            point[key] = this.chart.renderer.path(path)
-                .attr({
-                    'stroke-width': 2,
-                    stroke: point.series.options.borderColor
-                })
-                .add(point.graphic.parentGroup);
-        } else {
-            point[key].attr({
-                d: path
-            });
-        }
-    }
-
-
-	var yAxisBreakEnd  = {{yMin}};
-	var yAxisBreakStart = 10;
-	var base = 0;
-
-
-	var yAxisMax = {{yAxisMax}};
-	var range = yAxisMax - {{yMin}};
-	// use 20% of the range for line break offset
-	var offset = range/4;
-	yAxisBreakStart = ( offset/3 );
-	yAxisBreakEnd = {{yMin}} - ( offset/3 );
-
-    {{/if}}
-
-	// urgh! set the vars on the page as a way of passing them back to the chart object
+	// set the vars on the page as a way of passing them back to the chart object
 	function setBoxPosHandle(id, x,y) {
-	// important! trigger the change event after setting the value
+		// important! trigger the change event after setting the value
 		$('#note-x-'+id).val(x).change();
 		$('#note-y-'+id).val(y).change();
 	}
@@ -152,16 +70,6 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 			marginTop: 35,
 			style: {
 				fontFamily: '"Open Sans", Tahoma, Verdana, Arial'
-			},
-			events:{
-				click:function(e){
-					{{!-- if($('#annotation-chart').accordion){
-
-						var active = $('#annotation-chart').accordion( "option", "active" );
-						setBoxPosHandle(active, parseInt(e.xAxis[0].value), parseInt(e.yAxis[0].value));
-						console.log(active, parseInt(e.xAxis[0].value), parseInt(e.yAxis[0].value))
-					} --}}
-				}
 			}
 		},
 		colors: palette,
@@ -172,12 +80,12 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 		yAxis: {
 			plotBands:[],
 			plotLines:[],
-		{{#if yMin }}min: base,{{/if}}
-		{{#if yMax }}max: {{yMax}},{{/if}}
-		{{#if hasLineBreak }}breaks: [{
-                from: yAxisBreakStart,
-                to: yAxisBreakEnd
-            }], {{/if}}
+			{{#if yMin }}min: base,{{/if}}
+			{{#if yMax }}max: {{yMax}},{{/if}}
+			{{#if hasLineBreak }}breaks: [{
+		                from: yAxisBreakStart,
+		                to: yAxisBreakEnd
+		    	}], {{/if}}
 			title: {
 				text: "{{{sub (sup unit)}}}",
 				useHTML:true,
@@ -192,13 +100,13 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 			{{#if yMax }}endOnTick: false,// avoids label rounding in order to have exact axis values{{/if}}
 			{{#if hasLineBreak }}lineColor: 'black',
 			lineWidth: 1,    
-            events: {
-                pointBreak: pointBreakColumn
-            }{{/if}}
+			events: {
+				pointBreak: pointBreakColumn
+			}{{/if}}
 		},
 		xAxis: {
-		plotBands:[],
-		plotLines:[],
+			plotBands:[],
+			plotLines:[],
 			categories: [{{#each categories}}'{{{sub (sup this)}}}',{{/each}}],
 			tickInterval: "{{labelInterval}}",
 			labels: {
@@ -267,21 +175,33 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 				},
 				events: {
 					mouseup: function(e) { 
-					console.log('babbage::mouseup')
-						//HACK _ bug when clicking and NOT moving
-						//if(this.transX !==0 || this.transY!==0){
-							setBoxPosHandle(this.options.id, this.transX, this.transY);
-						//}
+						setBoxPosHandle(this.options.id, this.transX, this.transY)
 						if (this.chart.selectedAnnotation) {
 							this.chart.selectedAnnotation.events.deselect.call(this.chart.selectedAnnotation, e);
 						}
 					} 
-				}
+				}{{#if devices}},
+				position_sm:{x:{{devices.sm.x}}, y:{{devices.sm.y}} },
+				position_md:{x:{{devices.md.x}}, y:{{devices.md.y}} },
+				position_lg:{x:{{devices.lg.x}}, y:{{devices.lg.y}} }{{/if}}
 			},
 	        {{/if_ne}}
 	       {{/if_ne}}
 		{{/each }}
 		],
+		//add devices property -not used by highcharts but stores layout sizes
+		devices:{
+		{{#if devices}}
+			{{#each devices as |device name|}}
+			'{{name}}': {
+					aspectRatio: {{aspectRatio}},
+					labelInterval: {{#if labelInterval }}{{labelInterval}}{{else}}0{{/if}},
+					isHidden: {{isHidden}}
+				},
+			{{/each}}
+		{{/if}}
+
+		},
 		tooltip: {
 			valueDecimals: "{{decimalPlaces}}",
 			shared: true,
@@ -332,7 +252,10 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 			to: ({{#if_eq orientation "x-axis"}}{{x}}{{else}}{{y}}{{/if_eq}} + {{bandWidth}}),
 			label: {
 				text: '{{{title}}}' 
-			}
+			},
+			position_sm:{x:{{devices.sm.x}}, y:{{devices.sm.y}} },
+			position_md:{x:{{devices.md.x}}, y:{{devices.md.y}} },
+			position_lg:{x:{{devices.lg.x}}, y:{{devices.lg.y}} }
 		})
 	{{else}}
 	options.{{#if_eq orientation "x-axis"}}xAxis{{else}}yAxis{{/if_eq}}.plotLines.push(
@@ -342,7 +265,10 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 			width:2,
 			label: {
 				text: '{{{title}}}' 
-			}
+			},
+			position_sm:{x:{{devices.sm.x}}, y:{{devices.sm.y}} },
+			position_md:{x:{{devices.md.x}}, y:{{devices.md.y}} },
+			position_lg:{x:{{devices.lg.x}}, y:{{devices.lg.y}} }
 		})
 	{{/if}}
 	{{/if_eq}}

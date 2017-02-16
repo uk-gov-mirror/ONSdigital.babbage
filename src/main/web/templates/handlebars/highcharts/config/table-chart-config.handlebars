@@ -1,0 +1,48 @@
+{{#partial "additional-chart-config"}}
+    options.chart.type="{{#if area}}area{{else}}line{{/if}}";
+    options.xAxis.tickmarkPlacement='on';
+
+    options.xAxis.tickPositioner=function() {
+        var positions = [];
+        var tick = Math.floor(this.dataMax);
+        for (tick; tick >= this.dataMin; tick -= this.tickInterval) {
+        positions.push(tick);
+        }
+        return positions;
+    };
+//{{{series}}}
+/*
+ <table>
+    <thead>
+        <tr>
+            <th scope ='col'>Date</th>{{#each series}}<th scope ='col'>{{{sub (sup this)}}}</th>{{/each}}
+        </tr>
+    </thead>
+    <tfoot>
+        <tr>
+            //footer goes here
+        </tr>
+    </tfoot>
+
+    <tbody>
+    //TARGET <td>Nov 2016</td><td>3.2</td><td>1.4</td><td>2.6</td><td>4.8</td><td>4.4</td>
+    {{#each data as |datum line|}}
+        <tr>
+            <th scope='row'>{{datum.label}}</th>{{#each series as |header col|}}
+            <td>{{num (lookup this header)}}</td>//header: {{{header}}}{{/each}}
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+*/
+
+
+
+
+
+{{/partial}}
+{{!-- This denotes the template inherits from simple-chart-config--}}
+ {{> highcharts/config/base/simple-chart-config}}  
+
+
+

@@ -12,4 +12,7 @@
 	{{#if_eq chartType "rotated-confidence-interval"}}{{> highcharts/config/confidence-interval-chart-config rotated=true}}{{/if_eq}}
 	{{#if_eq chartType "box-and-whisker"}}{{> highcharts/config/box-and-whisker-chart-config}}{{/if_eq}}
 	{{#if_eq chartType "dual-axis"}}{{> highcharts/config/dual-axis-chart-config}}{{/if_eq}}
+	{{#if_eq chartType "small-multiples"}}{{> highcharts/config/smallmultiples-chart-config}}{{/if_eq}}
+	{{#if_eq chartType "heatmap"}}{{> highcharts/config/heatmap-chart-config}}{{/if_eq}}
+	{{#if_eq chartType "table"}}{{> highcharts/config/table-chart-config}}{{/if_eq}}
 {{/if_eq}}
