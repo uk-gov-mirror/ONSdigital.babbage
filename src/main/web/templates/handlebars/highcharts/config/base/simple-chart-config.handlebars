@@ -7,9 +7,9 @@
 			{{#if_eq highlight this}}color:HIGHLIGHT_COLOUR,{{/if_eq}}
 			{{#if isStacked }}legendIndex: (-{{@index}}),{{/if}} 
 			data: [{{#each data}}
-			{{#if_eq highlight (lookup this headers.0)}}
+			{{#if_eq highlight label}}
 			{
-			name:"{{{sup (sub (lookup this (lookup this headers.0)))}}}",
+			name:"{{{sup (sub (lookup this label))}}}",
 			color:HIGHLIGHT_COLOUR,
 			y:{{num (lookup this ../this)}}
 			},{{else}}{{num (lookup this ../this)}},{{/if_eq}}

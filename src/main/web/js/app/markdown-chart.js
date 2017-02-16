@@ -52,7 +52,7 @@ $(function() {
 
                     var aspectRatio = 1;
                     var labelInterval = 1;
-                    //if we have devices
+                    //if we have devices then set annotations dependant of viewport
                     if(chartConfig.devices){
                         if(chartConfig.devices[viewport]){
 
@@ -62,51 +62,43 @@ $(function() {
                                 //set the aspect ratio
                                 aspectRatio = chartConfig.devices[viewport].aspectRatio;
                                 chartConfig.xAxis.tickInterval = chartConfig.devices[viewport].labelInterval;
-                                console.log("SET VIEWPORT FOR THE HEART OF THE SUN. " + aspectRatio);
 
                                 //loop thru and update annotations if reqd
                                 if(chartConfig.annotations.length>0){
                                     $.each(chartConfig.annotations, function(idx, itm){
-                                        console.log(chartConfig.annotations);
                                         chartConfig.annotations[idx].x = chartConfig.annotations[idx]['position_'+viewport].x;
                                         chartConfig.annotations[idx].y = chartConfig.annotations[idx]['position_'+viewport].y;
                                     })
                                 }
-                                //loop thru plotline/plotbands
+                                //loop thru X AXIS plotline/plotbands
                                 if(chartConfig.xAxis.plotLines){
-                                if(chartConfig.xAxis.plotLines.length>0){
-                                    $.each(chartConfig.xAxis.plotLines, function(idx, itm){
-                                        console.log(chartConfig.xAxis.plotLines);
-                                        chartConfig.xAxis.plotLines[idx].value = chartConfig.xAxis.plotLines[idx]['position_'+viewport].x;
-                                    })
+                                    if(chartConfig.xAxis.plotLines.length>0){
+                                        $.each(chartConfig.xAxis.plotLines, function(idx, itm){
+                                            chartConfig.xAxis.plotLines[idx].value = chartConfig.xAxis.plotLines[idx]['position_'+viewport].x;
+                                        })
+                                    }
                                 }
-                                }
-                                //loop thru plotline/plotbands
                                 if(chartConfig.xAxis.plotBands){
-                                if(chartConfig.xAxis.plotBands.length>0){
-                                    $.each(chartConfig.xAxis.plotBands, function(idx, itm){
-                                        console.log(chartConfig.xAxis.plotBands);
-                                        chartConfig.xAxis.plotBands[idx].value = chartConfig.xAxis.plotBands[idx]['position_'+viewport].x;
-                                    })
+                                    if(chartConfig.xAxis.plotBands.length>0){
+                                        $.each(chartConfig.xAxis.plotBands, function(idx, itm){
+                                            chartConfig.xAxis.plotBands[idx].value = chartConfig.xAxis.plotBands[idx]['position_'+viewport].x;
+                                        })
+                                    }
                                 }
-                                }
-                                //loop thru plotline/plotbands
+                                //loop thru Y AXIS plotline/plotbands
                                 if(chartConfig.yAxis.plotLines){
-                                if(chartConfig.yAxis.plotLines.length>0){
-                                    $.each(chartConfig.yAxis.plotLines, function(idx, itm){
-                                        console.log(chartConfig.xAxis.plotLines);
-                                        chartConfig.yAxis.plotLines[idx].value = chartConfig.yAxis.plotLines[idx]['position_'+viewport].y;
-                                    })
+                                    if(chartConfig.yAxis.plotLines.length>0){
+                                        $.each(chartConfig.yAxis.plotLines, function(idx, itm){
+                                            chartConfig.yAxis.plotLines[idx].value = chartConfig.yAxis.plotLines[idx]['position_'+viewport].y;
+                                        })
+                                    }
                                 }
-                                }
-                                //loop thru plotline/plotbands
                                 if(chartConfig.yAxis.plotBands){
-                                if(chartConfig.yAxis.plotBands.length>0){
-                                    $.each(chartConfig.yAxis.plotBands, function(idx, itm){
-                                        console.log(chartConfig.yAxis.plotBands);
-                                        chartConfig.yAxis.plotBands[idx].value = chartConfig.yAxis.plotBands[idx]['position_'+viewport].y;
-                                    })
-                                }
+                                    if(chartConfig.yAxis.plotBands.length>0){
+                                        $.each(chartConfig.yAxis.plotBands, function(idx, itm){
+                                            chartConfig.yAxis.plotBands[idx].value = chartConfig.yAxis.plotBands[idx]['position_'+viewport].y;
+                                        })
+                                    }
                                 }
 
                             }else{
@@ -154,10 +146,23 @@ $(function() {
                         new Highcharts.Chart(chartConfig);
 
                     }else{
-                        // Build chart from config endpoint
-                        chartConfig.chart.renderTo = id;
-                        chartConfig.chart.height = chartConfig.chart.width * aspectRatio;
-                        new Highcharts.Chart(chartConfig);
+                        console.log(chartConfig);
+                        console.log('type ' + chartConfig.chart.type);
+                        if(chartConfig.chart.type==='table'){
+                            console.log("p**********");
+                            console.log("print table here...." + id);
+                            var template = templates.table;
+                            var html = template(chart);
+                            $('#series-panel').html(html);
+                            $('#series-panel').show();
+
+                        }else{
+
+                            // Build chart from config endpoint
+                            chartConfig.chart.renderTo = id;
+                            chartConfig.chart.height = chartConfig.chart.width * aspectRatio;
+                            new Highcharts.Chart(chartConfig);
+                        }
                     }
 
                     delete window["chart-" + chartId]; //clear data from window object after rendering

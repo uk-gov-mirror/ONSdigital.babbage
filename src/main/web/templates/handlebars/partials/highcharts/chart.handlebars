@@ -22,7 +22,29 @@
 
 
 {{else}}
+{{#if_eq chartType "table"}}
+ <table>
+    <thead>
+        <tr>
+            <th scope ='col'>Date</th>{{#each series}}<th scope ='col'>{{{sub (sup this)}}}</th>{{/each}}
+        </tr>
+    </thead>
+    <tfoot>
+        <tr>
+            //footer goes here
+        </tr>
+    </tfoot>
 
+    <tbody>
+    {{#each data as |datum line|}}
+        <tr>
+            <th scope='row'>{{datum.label}}</th>{{#each series as |header col|}}
+            <td>{{num (lookup this header)}}</td>{{/each}}
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+{{/if_eq}}
 
 
 <div class="markdown-chart-container panel--bottom-mar print--avoid-break">
