@@ -20,7 +20,7 @@ $(function() {
     }else  {
         viewport = 'lg';
     }
-    console.log('viewport ' + viewport);
+    //console.log('viewport ' + viewport);
 
 
 
@@ -40,7 +40,7 @@ $(function() {
             },
             function() {
                 var chartConfig = window["chart-" + chartId];
-                console.log(chartConfig );
+                
                 if (chartConfig) {
                     // small multiples have an attribute to show specifc series
                     var display = $this.data('series');
@@ -58,7 +58,7 @@ $(function() {
 
                             if(!chartConfig.devices[viewport].isHidden){
 
-                                console.log(chartConfig);
+                                //console.log(chartConfig);
                                 //set the aspect ratio
                                 aspectRatio = chartConfig.devices[viewport].aspectRatio;
                                 chartConfig.xAxis.tickInterval = chartConfig.devices[viewport].labelInterval;
@@ -146,18 +146,11 @@ $(function() {
                         new Highcharts.Chart(chartConfig);
 
                     }else{
-                        console.log(chartConfig);
-                        console.log('type ' + chartConfig.chart.type);
+                        //console.log(chartConfig);
+                        //console.log('type ' + chartConfig.chart.type);
                         if(chartConfig.chart.type==='table'){
-                            console.log("p**********");
-                            console.log("print table here...." + id);
-                            var template = templates.table;
-                            var html = template(chart);
-                            $('#series-panel').html(html);
-                            $('#series-panel').show();
 
                         }else{
-
                             // Build chart from config endpoint
                             chartConfig.chart.renderTo = id;
                             chartConfig.chart.height = chartConfig.chart.width * aspectRatio;
