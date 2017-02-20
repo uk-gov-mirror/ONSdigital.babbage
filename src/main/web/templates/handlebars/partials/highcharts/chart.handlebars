@@ -1,12 +1,12 @@
 {{#if_eq chartType "small-multiples"}}
 
 
-<div class="markdown-chart-container panel--bottom-mar print--avoid-break">
-        <h4 class="flush--third--vertical">{{{sub (sup title)}}}</h4>
-        {{#if subtitle}}
-            <h5 class="flush--third--bottom">{{{sub (sup subtitle)}}}</h5>
-        {{/if}}
- <div class="sm-multiple-holder">
+  <div class="markdown-chart-container panel--bottom-mar print--avoid-break">
+          <h4 class="flush--third--vertical">{{{sub (sup title)}}}</h4>
+          {{#if subtitle}}
+              <h5 class="flush--third--bottom">{{{sub (sup subtitle)}}}</h5>
+          {{/if}}
+   <div class="sm-multiple-holder">
   {{#each series}}
     <div class="sm-multiple">
         
@@ -17,52 +17,62 @@
       </div>
     </div>
   {{/each}}
-    </div>
-
+  </div>
 
 
 {{else}}
-{{#if_eq chartType "table"}}
- <table>
-    <thead>
-        <tr>
-            <th scope ='col'>Date</th>{{#each series}}<th scope ='col'>{{{sub (sup this)}}}</th>{{/each}}
-        </tr>
-    </thead>
-    <tfoot>
-        <tr>
-            //footer goes here
-        </tr>
-    </tfoot>
 
-    <tbody>
-    {{#each data as |datum line|}}
-        <tr>
-            <th scope='row'>{{datum.label}}</th>{{#each series as |header col|}}
-            <td>{{num (lookup this header)}}</td>{{/each}}
-        </tr>
-        {{/each}}
-    </tbody>
-</table>
-{{/if_eq}}
-
-
-<div class="markdown-chart-container panel--bottom-mar print--avoid-break">
-
-  <h4 class="flush--third--vertical">{{{sub (sup title)}}}</h4>
+{{{this}}}
+  {{#if_eq chartType "table"}}
+  <div class="markdown-table-container panel--bottom-mar print--avoid-break">
+    <h4 class="flush--third--vertical">{{{sub (sup title)}}}</h4>
     {{#if subtitle}}
         <h5 class="flush--third--bottom">{{{sub (sup subtitle)}}}</h5>
     {{/if}}
 
-  <div id="chart-{{filename}}" data-filename="{{filename}}" data-uri="{{uri}}" class="markdown-chart">
-      <!--[if gt IE 8]><!--><noscript><!--[endif]-->
-      <img src="/chartimage?uri={{uri}}&width={{width}}" alt="{{alt-text}}" />
-      <!--[if gt IE 8]><!--></noscript><!--[endif]-->
-  </div>
+    <table class="t1">
+      <thead>
+          <tr>
+              {{#each headers}}<th scope ='col'>{{{sub (sup this)}}}</th>{{/each}}
+          </tr>
+      </thead>
+      <tfoot>
+          <tr>
+              {{!-- //footer goes here --}}
+          </tr>
+      </tfoot>
 
+      <tbody>
+      {{#each data as |datum line|}}
+          <tr>
+              <th scope='row'>{{lookup ../categories @index}}</th>{{#each series as |header col|}}
+              <td>{{num (lookup this header)}}</td>{{/each}}
+          </tr>
+          {{/each}}
+      </tbody>
+    </table>
+
+  {{else}}
+
+    <div class="markdown-chart-container panel--bottom-mar print--avoid-break">
+
+      <h4 class="flush--third--vertical">{{{sub (sup title)}}}</h4>
+        {{#if subtitle}}
+            <h5 class="flush--third--bottom">{{{sub (sup subtitle)}}}</h5>
+        {{/if}}
+
+      <div id="chart-{{filename}}" data-filename="{{filename}}" data-uri="{{uri}}" class="markdown-chart">
+          <!--[if gt IE 8]><!--><noscript><!--[endif]-->
+          <img src="/chartimage?uri={{uri}}&width={{width}}" alt="{{alt-text}}" />
+          <!--[if gt IE 8]><!--></noscript><!--[endif]-->
+      </div>
+  
+  {{/if_eq}}
 
 
 {{/if_eq}}
+
+
 
   {{#if source}}<h5 class="flush--third--bottom font-size--h6">Source: {{source}}</h5>{{/if}}
       <div class="notes-holder-js">
