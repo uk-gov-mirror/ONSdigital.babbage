@@ -279,7 +279,7 @@
                     <images>
                         <image>
                             <!--<name>sem247/elasticns:2.4.3_1</name>-->
-                            <name>guidof/onswebsite-search</name>
+                            <name>guidof/onswebsite-search:0.0.2</name>
                             <!--<name>elasticsearch:2.4.4</name>-->
                             <run>
                                 <namingStrategy>none</namingStrategy>
