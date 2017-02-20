@@ -14,7 +14,7 @@ node {
 
     stage('Build') {
         sh 'npm install --no-bin-links --prefix ./src/main/web --sixteens-branch=develop'
-        sh "${tool 'm3'}/bin/mvn clean package dependency:copy-dependencies"
+        sh "${tool 'm3'}/bin/mvn clean verify dependency:copy-dependencies"
     }
 
     stage('Image') {
