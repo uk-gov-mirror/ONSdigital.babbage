@@ -282,13 +282,13 @@
             <plugin>
                 <groupId>io.fabric8</groupId>
                 <artifactId>docker-maven-plugin</artifactId>
-                <version>0.15.1</version>
+                <version>0.19.1</version>
                 <configuration>
                     <images>
                         <image>
                             <!--<name>sem247/elasticns:2.4.3_1</name>-->
-                            <!--<name>guidof/onswebsite-search:0.0.1</name>-->
-                            <name>elasticsearch:2.4.4</name>
+                            <name>guidof/onswebsite-search:0.0.1</name>
+                            <!--<name>elasticsearch:2.4.4</name>-->
                             <run>
                                 <namingStrategy>none</namingStrategy>
                                 <ports>
