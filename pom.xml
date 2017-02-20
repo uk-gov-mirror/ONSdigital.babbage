@@ -291,6 +291,7 @@
                                     <http.host>0.0.0.0</http.host>
                                     <transport.host>127.0.0.1</transport.host>
                                 </env>
+                                <hostname>172.17.0.2</hostname>
                             </run>
                         </image>
                     </images>
