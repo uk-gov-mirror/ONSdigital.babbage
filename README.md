@@ -9,3 +9,8 @@ Repository for ONS Website Babbage
 
 To run Babbage locally:
 * Install ghostscript: `brew install ghostscript`
+
+
+### Cucumber Tests
+The Cucumber Tests start up a Docker Elastic Image with a pre-installed data set.
+The ports 9200 and 9300 are now mapped to XX66 ports, i.e. 9266 and 9366 respectively.

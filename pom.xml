@@ -1,4 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.github.onsdigital</groupId>
@@ -264,9 +264,74 @@
                             <includes>
                                 <include>**/*Feature.java</include>
                             </includes>
+                            <systemProperties>
+                                <ELASTIC_SEARCH_PORT>9366</ELASTIC_SEARCH_PORT>
+                            </systemProperties>
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>0.15.1</version>
+                <configuration>
+                    <images>
+                        <image>
+                            <!--<name>sem247/elasticns:2.4.3_1</name>-->
+                            <name>guidof/onswebsite-search:0.0.1</name>
+                            <run>
+                                <namingStrategy>none</namingStrategy>
+                                <ports>
+                                    <port>9266:9200</port>
+                                    <port>9366:9300</port>
+                                </ports>
+                                <env>
+                                    <http.host>0.0.0.0</http.host>
+                                    <transport.host>127.0.0.1</transport.host>
+                                </env>
+                            </run>
+                        </image>
+                    </images>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>elasticStart</id>
+                        <goals>
+                            <goal>start</goal>
+                        </goals>
+                        <phase>pre-integration-test</phase>
+
+                    </execution>
+                    <execution>
+                        <id>elasticStop</id>
+                        <goals>
+                            <goal>stop</goal>
+                        </goals>
+                        <phase>post-integration-test</phase>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>net.masterthought</groupId>
+                <artifactId>maven-cucumber-reporting</artifactId>
+                <version>3.5.0</version>
+                <executions>
+                    <execution>
+                        <id>execution</id>
+                        <phase>post-integration-test</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <projectName>Babbage Queries</projectName>
+                            <outputDirectory>${project.build.directory}</outputDirectory>
+                            <cucumberOutput>${project.build.directory}/cucumber-json-report.json</cucumberOutput>
+                            <parallelTesting>false</parallelTesting>
+                        </configuration>
+                    </execution>
+                </executions>
+
             </plugin>
         </plugins>
     </build>

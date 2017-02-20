@@ -9,7 +9,7 @@ import org.junit.runner.RunWith;
  * Created by fawkej on 16/12/2016.
  */
 @RunWith(Cucumber.class)
-@CucumberOptions(plugin = {"html:target/cucumber-html-report", "json:target/cucumber-json-report.json"})
+@CucumberOptions(plugin = {"json:target/cucumber-json-report.json"})
 public class SearchFeature {
 
 }
