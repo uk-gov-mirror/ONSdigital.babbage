@@ -276,7 +276,7 @@
                 <artifactId>docker-maven-plugin</artifactId>
                 <version>0.19.1</version>
                 <configuration>
-                    <dockerHost>tcp://localhost:2375</dockerHost>
+                    <dockerHost>tcp://172.17.0.1:2375</dockerHost>
                     <images>
                         <image>
                             <!--<name>sem247/elasticns:2.4.3_1</name>-->
