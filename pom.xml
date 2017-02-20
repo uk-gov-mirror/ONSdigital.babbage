@@ -278,8 +278,8 @@
                 <configuration>
                     <images>
                         <image>
-                            <name>sem247/elasticns:2.4.3_1</name>
-                            <!--<name>guidof/onswebsite-search:0.0.1</name>-->
+                            <!--<name>sem247/elasticns:2.4.3_1</name>-->
+                            <name>guidof/onswebsite-search</name>
                             <!--<name>elasticsearch:2.4.4</name>-->
                             <run>
                                 <namingStrategy>none</namingStrategy>
@@ -291,7 +291,7 @@
                                     <http.host>0.0.0.0</http.host>
                                     <transport.host>127.0.0.1</transport.host>
                                 </env>
-                                <hostname>172.17.0.2</hostname>
+                                <autoCreateCustomNetworks>true</autoCreateCustomNetworks>
                             </run>
                         </image>
                     </images>
