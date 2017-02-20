@@ -299,6 +299,7 @@
                                     <http.host>0.0.0.0</http.host>
                                     <transport.host>127.0.0.1</transport.host>
                                 </env>
+                                <dockerHost>http://localhost:2375</dockerHost>
                             </run>
                         </image>
                     </images>
