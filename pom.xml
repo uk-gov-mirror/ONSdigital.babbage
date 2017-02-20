@@ -186,6 +186,14 @@
             <version>${cucumber.version}</version>
             <scope>test</scope>
         </dependency>
+
+        <!--Logging-->
+        <dependency>
+            <groupId>com.github.ONSdigital</groupId>
+            <artifactId>dp-logging</artifactId>
+            <version>master-SNAPSHOT</version>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -272,11 +280,29 @@
                 </executions>
             </plugin>
             <plugin>
+                <groupId>org.codehaus.groovy.maven</groupId>
+                <artifactId>gmaven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>execute</goal>
+                        </goals>
+                        <configuration>
+                            <source>
+                                project.properties["host"] = InetAddress.getLocalHost().getHostAddress()
+                            </source>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
                 <groupId>io.fabric8</groupId>
                 <artifactId>docker-maven-plugin</artifactId>
                 <version>0.19.1</version>
                 <configuration>
-                    <dockerHost>tcp://172.17.0.1:2375</dockerHost>
+                    <dockerHost>tcp://${host}:2375</dockerHost>
                     <images>
                         <image>
                             <!--<name>sem247/elasticns:2.4.3_1</name>-->
@@ -334,8 +360,25 @@
                         </configuration>
                     </execution>
                 </executions>
-
             </plugin>
         </plugins>
     </build>
+    <repositories>
+        <!-- Adding maven central repo explicitly to perent jitpack.io resolve artifacts that are already on Github. Otherwise handlebars-java fails -->
+        <repository>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <id>central</id>
+            <name>Central Repository</name>
+            <url>http://repo.maven.apache.org/maven2</url>
+        </repository>
+        <!--Jitpack io allows us include projects and libraries available on github but not built and published to maven central-->
+        <!-- It is used for including internal project modules. See more on https://jitpack.io/-->
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+    </repositories>
+
 </project>
