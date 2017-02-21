@@ -19,9 +19,9 @@ node {
 
     stage('Test') {
         def elastic = docker.image('guidof/onswebsite-search:0.0.2')
-        elastic.runWith('-p 9267:9200 -p 9367:9300')[
+        elastic.runWith('-p 9267:9200 -p 9367:9300') {
             sh "${tool 'm3'}/bin/mvn surefire:test@integration-test"
-        ]
+        }
     }
 
     stage('Image') {
