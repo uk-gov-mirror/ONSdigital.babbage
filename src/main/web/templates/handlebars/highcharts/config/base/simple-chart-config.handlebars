@@ -7,18 +7,13 @@
 			{{#if_eq highlight this}}color:HIGHLIGHT_COLOUR,{{/if_eq}}
 			{{#if isStacked }}legendIndex: (-{{@index}}),{{/if}} 
 			data: [{{#each data}}
-			{{#if headers.0}}
-			
-				{{#if_eq highlight (lookup this headers.0)}}
+				{{#if_eq highlight (lookup categories @index)}}
 						{
-						name:"{{{sup (sub (lookup this headers.0))}}}",
+						name:"{{{sup (sub (lookup categories @index))}}}",
 						color:HIGHLIGHT_COLOUR,
 						y:{{num (lookup this ../this)}}
 						},{{else}}{{num (lookup this ../this)}},
 				{{/if_eq}}
-			{{else}}
-				{{num (lookup this ../this)}},
-			{{/if}}
 			{{/each}}]
 
 		},{{/each}} ];
