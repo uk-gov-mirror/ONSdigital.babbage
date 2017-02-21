@@ -9,8 +9,9 @@ To rebuild the docker image you need to install ElasticSearch (ES) 2.4.4 (or wha
 
 
 Once you have built the indices with the data you want then copy the indices data files into the subdirectory `localData`.
-Once the data has been copied then run docker  `docker build -t g4pas/elastic-ons-data` and this will create an image on
- you local docker repo.
+Once the data has been copied then run docker  
+```docker build -t g4pas/elastic-ons-data . ```
+and this will create an image on your local docker repo.
 ```bash
 fawkej$ docker images
 \REPOSITORY                 TAG                 IMAGE ID            CREATED             SIZE
@@ -24,7 +25,6 @@ docker tag 253eeecee780 guidof/onswebsite-search:0.0.2
 > note the correlation between _IMAGE ID_ and the id after the `tag` command.
 
 once you have a 0.0.2 locally you can then _(once you have logged into Docker)_ push the image into docker.
-
 ## Data files
 You data files in Elastic will look like this 
 ![Data Files with elasticsearch node name](DataFiles.png).
