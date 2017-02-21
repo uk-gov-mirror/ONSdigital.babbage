@@ -19,9 +19,8 @@ node {
 
     stage('Test') {
         def elastic = docker.image('guidof/onswebsite-search:0.0.2')
-        elastic.pull
-        elastic.start
-        elastic.stop
+        elastic.run('-p 9266:9200 -p 9366:9300')
+        elastic.stop()
     }
 
     stage('Image') {
