@@ -14,7 +14,14 @@ node {
 
     stage('Build') {
         sh 'npm install --no-bin-links --prefix ./src/main/web --sixteens-branch=develop'
-        sh "${tool 'm3'}/bin/mvn -X clean verify dependency:copy-dependencies"
+        sh "${tool 'm3'}/bin/mvn clean package dependency:copy-dependencies"
+    }
+
+    stage('Test') {
+        def elastic = docker.image('guidof/onswebsite-search:0.0.2')
+        elastic.pull
+        elastic.start
+        elastic.stop
     }
 
     stage('Image') {
