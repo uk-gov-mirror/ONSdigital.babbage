@@ -1,7 +1,5 @@
 #!/bin/bash -eux
 
-cp -r assets/ babbage/src/main/
-
 pushd babbage
   ls -lart
   mvn clean verify
