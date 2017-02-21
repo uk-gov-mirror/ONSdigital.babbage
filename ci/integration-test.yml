@@ -11,5 +11,4 @@ inputs:
   - name: babbage
 
 run:
-  path: babbage/ci/scripts/integration-unit.sh
-y
+  path: babbage/ci/scripts/integration-test.sh
