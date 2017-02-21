@@ -1,8 +1,8 @@
 #!/bin/bash -eux
 
-pushd babbage
-  ls -lart
-  mvn clean verify
-popd
+#pushd babbage
+  mvn clean test-compile  surefire:test@integration-test
+#popd
 
-cp -r babbage/target/* target/
+cp -r target/cucumber-json-report .
+mvn clean

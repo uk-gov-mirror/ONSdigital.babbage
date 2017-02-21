@@ -273,31 +273,11 @@
                             <includes>
                                 <include>**/*Feature.java</include>
                             </includes>
-                            <systemProperties>
-                                <ELASTIC_SEARCH_PORT>9367</ELASTIC_SEARCH_PORT>
-                            </systemProperties>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
-            <!--<plugin>-->
-                <!--<groupId>org.codehaus.gmaven</groupId>-->
-                <!--<artifactId>groovy-maven-plugin</artifactId>-->
-                <!--<version>2.0</version>-->
-                <!--<executions>-->
-                    <!--<execution>-->
-                        <!--<phase>generate-resources</phase>-->
-                        <!--<goals>-->
-                            <!--<goal>execute</goal>-->
-                        <!--</goals>-->
-                        <!--<configuration>-->
-                            <!--<source>-->
-                                <!--project.properties["host"] = InetAddress.getLocalHost().getHostAddress()-->
-                            <!--</source>-->
-                        <!--</configuration>-->
-                    <!--</execution>-->
-                <!--</executions>-->
-            <!--</plugin>-->
+
             <plugin>
                 <groupId>io.fabric8</groupId>
                 <artifactId>docker-maven-plugin</artifactId>
@@ -312,8 +292,8 @@
                             <run>
                                 <namingStrategy>none</namingStrategy>
                                 <ports>
-                                    <port>9267:9200</port>
-                                    <port>9367:9300</port>
+                                    <port>9200:9200</port>
+                                    <port>9300:9300</port>
                                 </ports>
                                 <env>
                                     <http.host>0.0.0.0</http.host>
