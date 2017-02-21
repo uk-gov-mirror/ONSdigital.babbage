@@ -10,7 +10,6 @@ node {
 
     def branch   = env.JOB_NAME.replaceFirst('.+/', '')
     def revision = revisionFrom(readFile('git-tag').trim(), readFile('git-commit').trim())
-    def registry = registry(branch, revision)
 
     stage('Build') {
         sh 'npm install --no-bin-links --prefix ./src/main/web --sixteens-branch=develop'
@@ -18,9 +17,8 @@ node {
     }
 
     stage('Image') {
-        docker.withRegistry(registry['uri'], { ->
-            if (registry.containsKey('login')) sh registry['login']
-            docker.build(registry['image']).push(registry['tag'])
+        docker.withRegistry("https://${env.ECR_REPOSITORY_URI}", { ->
+            docker.build('babbage').push(revision)
         })
     }
 
@@ -53,22 +51,6 @@ def deploymentGroupsFor(branch) {
     branch == 'develop'
         ? [env.CODEDEPLOY_FRONTEND_DEPLOYMENT_GROUP, env.CODEDEPLOY_PUBLISHING_DEPLOYMENT_GROUP]
         : [env.CODEDEPLOY_DISCOVERY_FRONTEND_DEPLOYMENT_GROUP, env.CODEDEPLOY_DISCOVERY_PUBLISHING_DEPLOYMENT_GROUP]
-}
-
-def registry(branch, tag) {
-    [
-        hub: [
-            login: 'docker --config .dockerhub login --username=$DOCKERHUB_USER --password=$DOCKERHUB_PASS',
-            image: "${env.DOCKERHUB_REPOSITORY}/babbage",
-            tag: 'live',
-            uri: "https://${env.DOCKERHUB_REPOSITORY_URI}",
-        ],
-        ecr: [
-            image: 'babbage',
-            tag: tag,
-            uri: "https://${env.ECR_REPOSITORY_URI}",
-        ],
-    ][branch == 'live' ? 'hub' : 'ecr']
 }
 
 @NonCPS
