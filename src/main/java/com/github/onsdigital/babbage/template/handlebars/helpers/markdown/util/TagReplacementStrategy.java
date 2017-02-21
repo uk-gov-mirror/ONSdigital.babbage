@@ -12,6 +12,7 @@ import java.util.regex.Pattern;
 public abstract class TagReplacementStrategy {
 
     private final Path path;
+    static final String figureNotFoundTemplate = "partials/figureNotFound";
 
     /**
      * Create an instance of a tag replacement strategy with the given page path.
