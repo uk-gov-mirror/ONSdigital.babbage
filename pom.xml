@@ -273,7 +273,7 @@
                                 <include>**/*Feature.java</include>
                             </includes>
                             <systemProperties>
-                                <ELASTIC_SEARCH_PORT>9366</ELASTIC_SEARCH_PORT>
+                                <ELASTIC_SEARCH_PORT>9367</ELASTIC_SEARCH_PORT>
                             </systemProperties>
                         </configuration>
                     </execution>
