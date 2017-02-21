@@ -33,24 +33,33 @@ node {
         sh "aws s3 cp babbage-${revision}.tar.gz s3://${env.S3_REVISIONS_BUCKET}/babbage-${revision}.tar.gz"
     }
 
-    if (branch != 'develop' && branch != 'dd-develop') return
+    def deploymentGroups = deploymentGroupsFor(env.JOB_NAME.replaceFirst('.+/', ''))
+    if (deploymentGroups.size() < 1) return
 
     stage('Deploy') {
+        def appName = 'babbage'
         for (group in deploymentGroupsFor(branch)) {
             sh sprintf('aws deploy create-deployment %s %s %s,bundleType=tgz,key=%s', [
-                '--application-name babbage',
+                "--application-name ${appName}",
                 "--deployment-group-name ${group}",
                 "--s3-location bucket=${env.S3_REVISIONS_BUCKET}",
-                "babbage-${revision}.tar.gz",
+                "${appName}-${revision}.tar.gz",
             ])
         }
     }
 }
 
 def deploymentGroupsFor(branch) {
-    branch == 'develop'
-        ? [env.CODEDEPLOY_FRONTEND_DEPLOYMENT_GROUP, env.CODEDEPLOY_PUBLISHING_DEPLOYMENT_GROUP]
-        : [env.CODEDEPLOY_DISCOVERY_FRONTEND_DEPLOYMENT_GROUP, env.CODEDEPLOY_DISCOVERY_PUBLISHING_DEPLOYMENT_GROUP]
+    if (branch == 'develop') {
+        return [env.CODEDEPLOY_FRONTEND_DEPLOYMENT_GROUP, env.CODEDEPLOY_PUBLISHING_DEPLOYMENT_GROUP]
+    }
+    if (branch == 'dd-develop') {
+        return [env.CODEDEPLOY_DISCOVERY_FRONTEND_DEPLOYMENT_GROUP, env.CODEDEPLOY_DISCOVERY_PUBLISHING_DEPLOYMENT_GROUP]
+    }
+    if (branch == 'dd-master') {
+        return [env.CODEDEPLOY_DISCOVERY_ALPHA_FRONTEND_DEPLOYMENT_GROUP, env.env.CODEDEPLOY_DISCOVERY_ALPHA_PUBLISHING_DEPLOYMENT_GROUP]
+    }
+    return []
 }
 
 @NonCPS
