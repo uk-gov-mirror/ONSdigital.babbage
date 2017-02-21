@@ -22,7 +22,7 @@ node {
             def esContainer
             def elastic = docker.image('guidof/onswebsite-search:0.0.2')
             try {
-                esContainer = elastic.run('-p 9267:9200 -p 9367:9300')
+                esContainer = elastic.run('-p 9267:9200 -p 9367:9300  -e "http.host=0.0.0.0" -e "transport.host=127.0.0.1"')
                 sh "${tool 'm3'}/bin/mvn surefire:test@integration-test"
             }
             finally {
