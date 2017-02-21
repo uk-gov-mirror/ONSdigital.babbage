@@ -1,7 +1,7 @@
 #!/bin/bash -eux
 
 pushd babbage
-  mvn clean test-compile  surefire:test@integration-test
+  mvn clean verify
 popd
 
 cp -r target/cucumber-json-report .
