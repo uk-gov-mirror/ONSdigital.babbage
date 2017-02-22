@@ -7,13 +7,14 @@ services:
     - "9300:9300"
   maven:
     image: maven
+    links:
+      - elastic
 #    depends_on :
 #     - elastic
     command:
-    - "ls -lart"
-    - /babbage/ci/compose/compose-integration-tests.sh
+      - /babbage/ci/compose/compose-integration-tests.sh
     volumes:
-    - babbage:/babbage
+      - babbage:/babbage
 
 volumes :
   babbage:

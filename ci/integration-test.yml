@@ -23,8 +23,7 @@ run:
       start_docker
 
       echo "Loading image elastic"
-      pwd
-      ls -alR
+
       docker load -i elastic/image
       docker tag "$(cat elastic/image-id)" "$(cat elastic/repository):$(cat elastic/tag)"
 
