@@ -37,6 +37,7 @@ run:
       docker images
 
       # Run the maven container and its dependencies.
+      echo "run tests"
       docker-compose -f babbage/ci/compose/compose-integration.yml run maven
 
       # Cleanup.
