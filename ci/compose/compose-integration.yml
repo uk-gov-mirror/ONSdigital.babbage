@@ -1,7 +1,7 @@
 version: '2'
 services:
   elastic:
-    image: elastic
+    image: guidof/onswebsite-search
     ports:
     - "9200:9200"
     - "9300:9300"
