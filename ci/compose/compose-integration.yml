@@ -14,7 +14,7 @@ services:
     working_dir: /babbage
     command: bash -c "pwd && ls -laR"
     volumes:
-      - babbage:/babbage
+      - ./babbage:/babbage
 
 volumes :
   babbage:
