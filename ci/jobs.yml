@@ -58,9 +58,11 @@ jobs:
         trigger: true
         resource: feature-load-document-concourse
       - get: elastic
-        params: {save: true}
+        params:
+          save: true
       - get: maven
-        params: {save: true}
+        params:
+          save: true
     - task: integration-test
       privileged: true
       file: babbage/ci/integration-test.yml
