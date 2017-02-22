@@ -1,4 +1,7 @@
-#!/usr/sh
+#!/usr/bash
 ls -laR
-cd babbage
+pushd /babbage
 mvn clean install
+
+
+popd

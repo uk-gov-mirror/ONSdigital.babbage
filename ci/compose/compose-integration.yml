@@ -12,7 +12,7 @@ services:
 #    depends_on :
 #     - elastic
 #    working_dir: babbage
-    command: bash -c "pwd && cd / &&  ls -laR"
+    command: /babbage/ci/compose/compose-integration-test.sh
     volumes:
       - ../..:/babbage
 
