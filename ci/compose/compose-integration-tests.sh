@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/binqq/bash
 ls -laR
 pushd /babbage
 mvn clean install
