@@ -58,6 +58,7 @@ jobs:
         resource: feature-load-document-concourse
       - get: elastic
     - task: integration-test
+      privileged: true
       file: babbage/ci/integration-test.yml
 
     # - put: feature-load-document-concourse-build-bundle

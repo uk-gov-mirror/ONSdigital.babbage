@@ -10,6 +10,5 @@ services:
     depends_on : elastic
     command:
     - curl elastic:9200
-    -
     volumes:
     - babbage:/babbage
