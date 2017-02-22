@@ -12,9 +12,8 @@ services:
 #    depends_on :
 #     - elastic
     command:
-      - pwd
+      - ls -laR
     volumes:
       - babbage:/babbage
 
 volumes :
-  babbage:
