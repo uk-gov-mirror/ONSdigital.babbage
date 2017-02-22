@@ -83,9 +83,9 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 			{{#if yMin }}min: base,{{/if}}
 			{{#if yMax }}max: {{yMax}},{{/if}}
 			{{#if hasLineBreak }}breaks: [{
-		                from: yAxisBreakStart,
-		                to: yAxisBreakEnd
-		    	}], {{/if}}
+						from: yAxisBreakStart,
+						to: yAxisBreakEnd
+				}], {{/if}}
 			title: {
 				text: "{{{sub (sup unit)}}}",
 				useHTML:true,
@@ -99,7 +99,7 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 			opposite:{{#if_eq yAxisPos "right"}}true{{else}}false{{/if_eq}},
 			{{#if yMax }}endOnTick: false,// avoids label rounding in order to have exact axis values{{/if}}
 			{{#if hasLineBreak }}lineColor: 'black',
-			lineWidth: 1,    
+			lineWidth: 1,	
 			events: {
 				pointBreak: pointBreakColumn
 			}{{/if}}
@@ -188,8 +188,8 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 				position_md:{x:{{devices.md.x}}, y:{{devices.md.y}} },
 				position_lg:{x:{{devices.lg.x}}, y:{{devices.lg.y}} }{{/if}}
 			},
-	        {{/if_ne}}
-	       {{/if_ne}}
+			{{/if_ne}}
+		   {{/if_ne}}
 		{{/each }}
 		],
 		//add devices property -not used by highcharts but stores layout sizes
@@ -240,6 +240,19 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 		},
 		labels: {
 			useHTML:true
+		},
+		exporting: {
+			height: 200,
+			width: 200,
+			chartOptions: {
+				plotOptions: {
+					series: {
+						dataLabels: {
+							enabled: true
+						}
+					}
+				}
+			}
 		}
 	};
 
@@ -282,14 +295,14 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 	{{#unless rotated}}
 	options.yAxis.title.y = {{#if_eq xAxisPos "top"}}12{{else}}-8{{/if_eq}};
 	options.yAxis.title.offset = 
-    {{#if_eq xAxisPos "top"}}
-    	{{#if_eq yAxisPos "left"}}-7{{else}}-100{{/if_eq}}
-    {{else}}
-    	{{#if_eq yAxisPos "left"}}0{{else}}-50{{/if_eq}}
-    {{/if_eq}};
+	{{#if_eq xAxisPos "top"}}
+		{{#if_eq yAxisPos "left"}}-7{{else}}-100{{/if_eq}}
+	{{else}}
+		{{#if_eq yAxisPos "left"}}0{{else}}-50{{/if_eq}}
+	{{/if_eq}};
 
-    {{#if options.legend.enabled}}options.yAxis.title.y=-2;{{/if}}
-    {{!-- Setting rotation to 0 causes axis label to push chart to the right for some text (e.g. "GDP growth percentage" ) and shrinks it in size. Funny enough, rotating 360 degrees eliminates this issue and still keeps the label horizontal.  --}}
+	{{#if options.legend.enabled}}options.yAxis.title.y=-2;{{/if}}
+	{{!-- Setting rotation to 0 causes axis label to push chart to the right for some text (e.g. "GDP growth percentage" ) and shrinks it in size. Funny enough, rotating 360 degrees eliminates this issue and still keeps the label horizontal.  --}}
 	options.yAxis.title.rotation=360;
 	options.yAxis.title.style={
 		left:"0px",
