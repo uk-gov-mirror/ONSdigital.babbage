@@ -12,6 +12,9 @@ image_resource:
 inputs:
   - name: babbage
   - name: elastic
+    params: {save: true}
+  - name: maven
+    params: {save: true}
 
 run:
   path: babbage/ci/scripts/integration-test.sh
