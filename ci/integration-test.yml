@@ -38,7 +38,7 @@ run:
 
       # Run the maven container and its dependencies.
       echo "run tests"
-      docker-compose --verbose -f babbage/ci/compose/compose-integration.yml run elastic maven
+      docker-compose --verbose -f babbage/ci/compose/compose-integration.yml run elastic
 
       # Cleanup.
       # Not sure that this is required.
