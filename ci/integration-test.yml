@@ -22,6 +22,7 @@ run:
       source /docker-lib.sh
       start_docker
 
+      echo
       echo "Loading image elastic"
 
       docker load -i elastic/image
@@ -34,6 +35,7 @@ run:
       # This is just to visually check in the log that images have been loaded successfully
       echo "Docker Images"
       docker images
+      echo "current dir: `pwd`"
 
       # Run the maven container and its dependencies.
       echo "run tests"
