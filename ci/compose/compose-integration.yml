@@ -13,4 +13,4 @@ services:
     - "ls -lart"
     - babbage/ci/compose/compose-integration-tests.sh
     volumes:
-    - babbage:babbage
+    - babbage:babbage:rw
