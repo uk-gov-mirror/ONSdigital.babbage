@@ -1,5 +1,12 @@
 #!/bin/bash -eux
 
+
+
+
+
+
+
+
 pushd babbage
   mvn clean verify
 popd
