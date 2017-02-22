@@ -1,1 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/sh
+ls -laR
+cd babbage
+mvn clean install
