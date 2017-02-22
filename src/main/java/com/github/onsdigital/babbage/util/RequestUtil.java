@@ -24,6 +24,7 @@ public class RequestUtil {
     public static final String LANG_KEY = "lang";
     public static final String IS_DEV_KEY = "is_dev";
     public static final String IS_PUBLISHING = "is_publishing";
+    public static final String SITE_DOMAIN = System.getenv("SITE_DOMAIN");
 
     /**
      * Saves Authentication token and collection id to thread context if available when a request is made to babbage,
@@ -99,7 +100,7 @@ public class RequestUtil {
     }
 
     public static Location getLocation(HttpServletRequest request) {
-        String hostName = request.getServerName();
+        String hostName = getSiteDomain(request);
         int port = request.getServerPort();
         String pathName = StringUtils.removeEnd(request.getRequestURI(), "/");
         Location location = new Location();
@@ -189,6 +190,13 @@ public class RequestUtil {
         return builder.toString();
     }
 
+    private static String getSiteDomain(HttpServletRequest request) {
+        if (StringUtils.isNotEmpty(SITE_DOMAIN)) {
+            return SITE_DOMAIN;
+        }
+
+        return request.getServerName();
+    }
 
     /**
      * Current location information to be extracted from HTTP request
