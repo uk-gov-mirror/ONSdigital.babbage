@@ -221,35 +221,50 @@
 
                                 var apiPath = '/dd/api/datasets/' + datasetID + '/editions/' + datasetEdition + '/versions/' + datasetVersion;
 
-                                function buildDimensions(callback) {
-                                    //TODO possibly need to polyfill fetch
+                                function getDimensions(callback) {
+                                    if (!window.fetch) {
+                                        var js = document.createElement('script');
+                                        js.src = 'https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.2/fetch.min.js';
+                                        js.onload = function() {
+                                            renderDimensions();
+                                        };
+                                        js.onerror = function() {
+                                            console.log('Error getting fetch API polyfill');
+                                        };
+                                        document.head.appendChild(js);
+                                        return;
+                                    }
+
                                     fetch(apiPath, {method: 'GET', credentials: 'include'})
-                                            .then(function(response){
-                                                return response.json()
-                                            })
-                                            .then(function(response){
-                                                var HTML = ['<h3>Dimensions</h3><ul>'];
-                                                var dimensionsLength = response.dimensions.length;
-                                                var i = 0;
+                                        .then(function(response){
+                                            return response.json()
+                                        })
+                                        .then(function(response){
+                                            callback(response);
+                                        });
+                                }
 
-                                                for (i; i < dimensionsLength; i++) {
-                                                    HTML.push(
-                                                            '<li class="flush">' + response.dimensions[i].name+ '</li>'
-                                                    )
-                                                }
+                                function buildDimensions(data) {
+                                    var HTML = ['<h3>Dimensions</h3><ul>'];
+                                    var dimensionsLength = data.dimensions.length;
+                                    var i = 0;
 
-                                                HTML.push('</ul>');
+                                    for (i; i < dimensionsLength; i++) {
+                                        HTML.push(
+                                                '<li class="flush">' + data.dimensions[i].name+ '</li>'
+                                        )
+                                    }
 
-                                                callback(HTML.join(''));
-                                            });
+                                    HTML.push('</ul>');
+                                    return HTML.join('');
                                 }
 
                                 function renderDimensions() {
-                                    document.getElementById('dataset-link').setAttribute('href', '/dd/datasets/' + datasetID);
-
-                                    buildDimensions(function(HTML) {
-                                        document.getElementById('js-dd-dimensions').innerHTML = HTML;
+                                    getDimensions(function(response) {
+                                        document.getElementById('js-dd-dimensions').innerHTML = buildDimensions(response);
                                     });
+
+                                    document.getElementById('dataset-link').setAttribute('href', '/dd/datasets/' + datasetID);
                                 }
 
                                 document.addEventListener('DOMContentLoaded', renderDimensions, false);
