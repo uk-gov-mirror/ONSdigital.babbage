@@ -10,6 +10,7 @@ services:
     depends_on :
      - elastic
     command:
+    - "ls -lart"
     - babbage/ci/compose/compose-integration-tests.sh
     volumes:
-    - babbage:babbage
+    - babbage:wbabbage
