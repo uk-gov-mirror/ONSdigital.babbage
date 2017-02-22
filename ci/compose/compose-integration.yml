@@ -9,6 +9,6 @@ services:
     image: maven
     depends_on : elastic
     command:
-    - curl elastic:9200
+    - /babbage/ci/compose/compose-integration-tests.sh
     volumes:
     - babbage:/babbage
