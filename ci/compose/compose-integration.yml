@@ -13,7 +13,6 @@ services:
 #     - elastic
     command:
       - ls
-      - pwd
     volumes:
       - babbage:/babbage
 
