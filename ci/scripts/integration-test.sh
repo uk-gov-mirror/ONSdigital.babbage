@@ -1,7 +1,7 @@
 #!/bin/sh -eux
 source /docker-lib.sh
 start_docker
-
+pwd
 echo "Loading image elastic"
 
 docker load -i elastic/image
