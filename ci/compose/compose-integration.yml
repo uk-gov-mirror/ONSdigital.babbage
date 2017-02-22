@@ -1,0 +1,13 @@
+version: '2'
+services:
+  elastic:
+    image: elastic
+    ports:
+    - "9200:9200"
+    - "9300:9300"
+  maven:
+    image: maven
+    depends_on : elastic
+    command: curl elastic:9200
+volumes:
+  logvolume01: {}

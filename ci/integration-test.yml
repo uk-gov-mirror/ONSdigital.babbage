@@ -14,5 +14,4 @@ inputs:
   - name: elastic
 
 run:
-  path: ls
-  args: [-laR]
+path: babbage/ci/scripts/integration-test.sh

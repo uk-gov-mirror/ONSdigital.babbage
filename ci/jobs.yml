@@ -8,6 +8,10 @@ resources:
   type: docker-image
   source:
     repository: guidof/onswebsite-search
+- name: maven
+  type: docker-image
+  source:
+    repository: maven
 
 # - name: feature-load-document-concourse-build-bundle
 
