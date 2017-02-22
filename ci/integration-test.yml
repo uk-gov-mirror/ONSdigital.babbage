@@ -5,12 +5,13 @@ platform: linux
 image_resource:
   type: docker-image
   source:
-    repository: mumoshu/dcind
-#   repository: guidof/onswebsite-search
+#    repository: mumoshu/dcind
+   repository: guidof/onswebsite-search
 
 inputs:
   - name: babbage
   - name: elastic
 
 run:
-  path: babbage/ci/scripts/integration-test.sh
+  path: ls
+  args: [-laR]
