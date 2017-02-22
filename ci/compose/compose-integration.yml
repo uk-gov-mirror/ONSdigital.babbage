@@ -13,7 +13,7 @@ services:
     image: maven
     command: /babbage/ci/compose/compose-integration-tests.sh
     volumes:
-#    note to who it may concern , the host path is relative to the yaml file not the execution of the script
+#    note to whom it may concern, the host path is relative to the yaml file not the execution of the script
       - ../..:/babbage
 
 volumes :
