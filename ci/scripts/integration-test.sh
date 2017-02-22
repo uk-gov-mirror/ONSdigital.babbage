@@ -17,22 +17,20 @@
     # This is just to visually check in the log that images have been loaded successfully
     docker images
 
-    # Run the tests container and its dependencies.
-    docker-compose -f code/example/integration.yml run tests
+    # Run the maven container and its dependencies.
+    docker-compose -f babbage/ci/compose/compose-integration.yml run maven
 
     # Cleanup.
     # Not sure that this is required.
     # It's quite possible that Concourse is smart enough to clean up the Docker mess itself.
-    docker-compose -f code/example/integration.yml down
+    docker-compose -f babbage/ci/compose/compose-integration.yml down
     docker volume rm $(docker volume ls -q)
 
-
-
-
-
-pushd babbage
-  mvn clean verify
-popd
-
-cp -r target/cucumber-json-report .
-mvn clean
+#
+#
+#pushd babbage
+#  mvn clean verify
+#popd
+#
+#cp -r target/cucumber-json-report .
+#mvn clean
