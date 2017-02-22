@@ -12,7 +12,8 @@ services:
 #    depends_on :
 #     - elastic
     command:
-      - /babbage/ci/compose/compose-integration-tests.sh
+      - ls
+      - pwd
     volumes:
       - babbage:/babbage
 
