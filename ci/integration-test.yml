@@ -40,7 +40,7 @@ run:
 
       # Run the maven container and its dependencies.
       echo "run tests"
-      docker-compose -f babbage/ci/compose/compose-integration.yml run maven
+      docker-compose -f --verbose babbage/ci/compose/compose-integration.yml run maven
 
       # Cleanup.
       # Not sure that this is required.

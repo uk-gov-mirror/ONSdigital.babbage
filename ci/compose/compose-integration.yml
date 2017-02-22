@@ -13,7 +13,8 @@ services:
 #     - elastic
 #    working_dir: babbage
     command: bash -c "pwd && cd / &&  ls -laR"
-
+    volumes:
+      - babbage:babbage
 
 volumes :
-  babbage: {}
+  babbage:
