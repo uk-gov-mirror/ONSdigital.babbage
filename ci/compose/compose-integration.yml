@@ -7,8 +7,8 @@ services:
     - "9300:9300"
   maven:
     image: maven
-#    links:
-#      - elastic
+    links:
+      - elastic
 #    depends_on :
 #     - elastic
 #    working_dir: babbage
