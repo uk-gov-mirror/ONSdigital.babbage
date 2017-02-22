@@ -26,11 +26,11 @@ run:
       echo "Loading image elastic"
       pwd
       ls -alR
-      docker load -i elastic/image
+      docker load -i elastic
       docker tag "$(cat elastic/image-id)" "$(cat elastic/repository):$(cat elastic/tag)"
 
       echo "Loading image maven"
-      docker load -i maven/image
+      docker load -i maven
       docker tag "$(cat maven/image-id)" "$(cat maven/repository):$(cat maven/tag)"
 
       # This is just to visually check in the log that images have been loaded successfully
