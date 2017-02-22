@@ -11,6 +11,7 @@ if [[ $DEPLOYMENT_GROUP_NAME =~ [a-z]+-publishing ]]; then
     --env=GHOSTSCRIPT_PATH=/usr/bin/gs                    \
     --env=HIGHCHARTS_EXPORT_SERVER=http://highcharts:8080 \
     --env=IS_PUBLISHING=Y                                 \
+    --env=SITE_DOMAIN=$SITE_DOMAIN                        \
     --name=babbage                                        \
     --net=publishing                                      \
     --restart=always                                      \
@@ -26,6 +27,7 @@ else
     --env=GLOBAL_CACHE_SIZE=5000                          \
     --env=HIGHCHARTS_EXPORT_SERVER=http://highcharts:8080 \
     --env=PHANTOMJS_PATH=/usr/local/bin/phantomjs         \
+    --env=SITE_DOMAIN=$SITE_DOMAIN                        \
     --name=babbage                                        \
     --net=website                                         \
     --restart=always                                      \
