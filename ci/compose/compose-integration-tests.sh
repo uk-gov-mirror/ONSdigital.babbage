@@ -1,7 +1,7 @@
 #!/bin/bash
-ls -laR
 pushd /babbage
-mvn clean install
-
+curl -XGET http://elastic:9200/_count
+export ELASTIC_SEARCH_SERVER=elastic
+mvn clean test-compile surefire:test@integration-test
 
 popd
