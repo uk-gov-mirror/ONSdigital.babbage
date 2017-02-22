@@ -10,7 +10,6 @@ node {
 
     def branch   = env.JOB_NAME.replaceFirst('.+/', '')
     def revision = revisionFrom(readFile('git-tag').trim(), readFile('git-commit').trim())
-    def registry = registry(branch, revision)
 
     stage('Build') {
         sh 'npm install --no-bin-links --prefix ./src/main/web --sixteens-branch=develop'
@@ -18,15 +17,15 @@ node {
     }
 
     stage('Image') {
-        docker.withRegistry(registry['uri'], { ->
-            if (registry.containsKey('login')) sh registry['login']
-            docker.build(registry['image']).push(registry['tag'])
+        docker.withRegistry("https://${env.ECR_REPOSITORY_URI}", { ->
+            docker.build('babbage').push(revision)
         })
     }
 
     stage('Bundle') {
-        sh sprintf('sed -i -e %s -e %s -e %s -e %s appspec.yml scripts/codedeploy/*', [
+        sh sprintf('sed -i -e %s -e %s -e %s -e %s -e %s appspec.yml scripts/codedeploy/*', [
             "s/\\\${CODEDEPLOY_USER}/${env.CODEDEPLOY_USER}/g",
+            "s/^CONFIG_BUCKET=.*/CONFIG_BUCKET=${env.S3_CONFIGURATIONS_BUCKET}/",
             "s/^ECR_REPOSITORY_URI=.*/ECR_REPOSITORY_URI=${env.ECR_REPOSITORY_URI}/",
             "s/^GIT_COMMIT=.*/GIT_COMMIT=${revision}/",
             "s/^AWS_REGION=.*/AWS_REGION=${env.AWS_DEFAULT_REGION}/",
@@ -35,40 +34,34 @@ node {
         sh "aws s3 cp babbage-${revision}.tar.gz s3://${env.S3_REVISIONS_BUCKET}/babbage-${revision}.tar.gz"
     }
 
-    if (branch != 'develop' && branch != 'dd-develop') return
+    def deploymentGroups = deploymentGroupsFor(env.JOB_NAME.replaceFirst('.+/', ''))
+    if (deploymentGroups.size() < 1) return
 
     stage('Deploy') {
+        def appName = 'babbage'
         for (group in deploymentGroupsFor(branch)) {
             sh sprintf('aws deploy create-deployment %s %s %s,bundleType=tgz,key=%s', [
-                '--application-name babbage',
+                "--application-name ${appName}",
                 "--deployment-group-name ${group}",
                 "--s3-location bucket=${env.S3_REVISIONS_BUCKET}",
-                "babbage-${revision}.tar.gz",
+                "${appName}-${revision}.tar.gz",
             ])
         }
     }
 }
 
 def deploymentGroupsFor(branch) {
-    branch == 'develop'
-        ? [env.CODEDEPLOY_FRONTEND_DEPLOYMENT_GROUP, env.CODEDEPLOY_PUBLISHING_DEPLOYMENT_GROUP]
-        : [env.CODEDEPLOY_DISCOVERY_FRONTEND_DEPLOYMENT_GROUP, env.CODEDEPLOY_DISCOVERY_PUBLISHING_DEPLOYMENT_GROUP]
-}
 
-def registry(branch, tag) {
-    [
-        hub: [
-            login: 'docker --config .dockerhub login --username=$DOCKERHUB_USER --password=$DOCKERHUB_PASS',
-            image: "${env.DOCKERHUB_REPOSITORY}/babbage",
-            tag: 'live',
-            uri: "https://${env.DOCKERHUB_REPOSITORY_URI}",
-        ],
-        ecr: [
-            image: 'babbage',
-            tag: tag,
-            uri: "https://${env.ECR_REPOSITORY_URI}",
-        ],
-    ][branch == 'live' ? 'hub' : 'ecr']
+    if (branch == 'develop') {
+        return [env.CODEDEPLOY_FRONTEND_DEPLOYMENT_GROUP, env.CODEDEPLOY_PUBLISHING_DEPLOYMENT_GROUP]
+    }
+    if (branch == 'dd-develop') {
+        return [env.CODEDEPLOY_DISCOVERY_FRONTEND_DEPLOYMENT_GROUP, env.CODEDEPLOY_DISCOVERY_PUBLISHING_DEPLOYMENT_GROUP]
+    }
+    if (branch == 'dd-master') {
+        return [env.CODEDEPLOY_DISCOVERY_ALPHA_FRONTEND_DEPLOYMENT_GROUP, env.env.CODEDEPLOY_DISCOVERY_ALPHA_PUBLISHING_DEPLOYMENT_GROUP]
+    }
+    return []
 }
 
 @NonCPS

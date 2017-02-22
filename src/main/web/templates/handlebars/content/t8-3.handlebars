@@ -194,44 +194,84 @@
                         </div>
 
                         <script>
-                            var datasetID = document.getElementById('dataset-id').getAttribute('data-id');
+                            function enhanceDataset() {
+                                var dataset = document.getElementById('dataset-id');
 
-                            if (datasetID.length <= 0) {
-                                console.log('No dataset ID found for this page. Please add it as the attribute "data-id" in a matching <span id="dataset-id" class="hidden">');
-                            }
+                                if (!dataset) {
+                                    console.warn('No dataset ID found for a DD page. Please add it as the attribute "data-id" in a matching <span id="dataset-id" class="hidden">');
+                                    return;
+                                }
 
-                            function buildDimensions(callback) {
-                                //TODO possibly need to polyfill fetch
-                                fetch('/dd/api/versions/' + datasetID, {method: 'GET', credentials: 'include'})
+                                var datasetID = dataset.getAttribute('data-id');
+                                var datasetEdition = dataset.getAttribute('data-edition');
+                                var datasetVersion = dataset.getAttribute('data-version');
+
+                                if (!datasetID) {
+                                    console.log('No dataset ID included in <span>');
+                                    return;
+                                }
+                                if (!datasetEdition) {
+                                    console.log('No dataset edition included in <span>');
+                                    return
+                                }
+                                if (!datasetVersion) {
+                                    console.log('No dataset version included in <span>');
+                                    return
+                                }
+
+                                var apiPath = '/dd/api/datasets/' + datasetID + '/editions/' + datasetEdition + '/versions/' + datasetVersion;
+
+                                function getDimensions(callback) {
+                                    if (!window.fetch) {
+                                        var js = document.createElement('script');
+                                        js.src = 'https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.2/fetch.min.js';
+                                        js.onload = function() {
+                                            renderDimensions();
+                                        };
+                                        js.onerror = function() {
+                                            console.log('Error getting fetch API polyfill');
+                                        };
+                                        document.head.appendChild(js);
+                                        return;
+                                    }
+
+                                    fetch(apiPath, {method: 'GET', credentials: 'include'})
                                         .then(function(response){
                                             return response.json()
                                         })
                                         .then(function(response){
-                                            var HTML = ['<h3>Dimensions</h3><ul>'];
-                                            var dimensionsLength = response.dimensions.length;
-                                            var i = 0;
-
-                                            for (i; i < dimensionsLength; i++) {
-                                                HTML.push(
-                                                        '<li class="flush">' + response.dimensions[i].name+ '</li>'
-                                                )
-                                            }
-
-                                            HTML.push('</ul>');
-
-                                            callback(HTML.join(''));
+                                            callback(response);
                                         });
+                                }
+
+                                function buildDimensions(data) {
+                                    var HTML = ['<h3>Dimensions</h3><ul>'];
+                                    var dimensionsLength = data.dimensions.length;
+                                    var i = 0;
+
+                                    for (i; i < dimensionsLength; i++) {
+                                        HTML.push(
+                                                '<li class="flush">' + data.dimensions[i].name+ '</li>'
+                                        )
+                                    }
+
+                                    HTML.push('</ul>');
+                                    return HTML.join('');
+                                }
+
+                                function renderDimensions() {
+                                    getDimensions(function(response) {
+                                        document.getElementById('js-dd-dimensions').innerHTML = buildDimensions(response);
+                                    });
+
+                                    document.getElementById('dataset-link').setAttribute('href', '/dd/datasets/' + datasetID);
+                                }
+
+                                document.addEventListener('DOMContentLoaded', renderDimensions, false);
                             }
 
-                            function renderDimensions() {
-                                document.getElementById('dataset-link').setAttribute('href', '/dd/datasets/' + datasetID);
+                            enhanceDataset();
 
-                                buildDimensions(function(HTML) {
-                                    document.getElementById('js-dd-dimensions').innerHTML = HTML;
-                                });
-                            }
-
-                            document.addEventListener('DOMContentLoaded', renderDimensions, false);
                         </script>
                     {{/if_any}}
                 </div>

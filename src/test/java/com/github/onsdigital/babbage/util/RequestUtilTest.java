@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Field;
 import java.util.Map;
 
 import static org.mockito.Mockito.mock;
@@ -30,5 +31,14 @@ public class RequestUtilTest {
 
         String decoded = result.get("q")[0];
         Assert.assertEquals("economic review", decoded);
+    }
+
+    @Test
+    public void getLocationShouldReturnSiteDomain() throws Exception {
+        TestsUtil.setPrivateStaticField(new RequestUtil(), "SITE_DOMAIN", "MOCK_DOMAIN");
+        HttpServletRequest request = mock(HttpServletRequest.class);
+        when(request.getServerName()).thenReturn("other.server");
+        when(request.getServerPort()).thenReturn(123);
+        Assert.assertEquals("MOCK_DOMAIN:123", RequestUtil.getLocation(request).getHost());
     }
 }

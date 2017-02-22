@@ -25,5 +25,5 @@ java $JAVA_OPTS \
  -Drestolino.files=$RESTOLINO_STATIC \
  -Drestolino.classes=$RESTOLINO_CLASSES \
  -Drestolino.packageprefix=$PACKAGE_PREFIX \
- -cp "target/dependency/*" \
+ -cp "target/classes/:target/dependency/*" \
  com.github.davidcarboni.restolino.Main
