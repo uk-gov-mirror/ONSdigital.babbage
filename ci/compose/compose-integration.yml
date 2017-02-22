@@ -11,7 +11,7 @@ services:
 #      - elastic
 #    depends_on :
 #     - elastic
-    workdir: /babbage
+    working_dir: /babbage
     command:
       - mvn clean verify
     volumes:
