@@ -12,9 +12,7 @@ image_resource:
 inputs:
   - name: babbage
   - name: elastic
-    save: true
   - name: maven
-    save: true
 
 run:
   path: sh
