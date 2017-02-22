@@ -1,4 +1,4 @@
-#!/bin/zsh -eux
+#!/bin/sh -eux
     echo "Sourcing docker-lib"
     source /docker-lib.sh
     echo "starting Docker"
