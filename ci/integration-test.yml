@@ -36,6 +36,7 @@ run:
       echo "Docker Images"
       docker images
       echo "current dir: `pwd`"
+      echo "babbage dir: `ls -alrt babbage`"
 
       # Run the maven container and its dependencies.
       echo "run tests"
