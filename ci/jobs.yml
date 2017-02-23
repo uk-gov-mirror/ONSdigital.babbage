@@ -54,7 +54,7 @@ jobs:
     plan:
     - aggregate :
       - get: babbage
-        passed: [feature-load-document-concourse-unit]
+        passed: [feature-load-document-concourse-build]
         trigger: true
         resource: feature-load-document-concourse
       - get: elastic
