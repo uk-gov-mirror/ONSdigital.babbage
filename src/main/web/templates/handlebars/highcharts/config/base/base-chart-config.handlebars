@@ -67,7 +67,7 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 			height: {{width}} * {{aspectRatio}},
 			width: {{width}},
 			marginRight: 35,
-			marginTop: 35,
+			marginTop: 50,
 			style: {
 				fontFamily: '"Open Sans", Tahoma, Verdana, Arial'
 			}
@@ -280,10 +280,10 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 
 
 	{{#unless rotated}}
-	options.yAxis.title.y = {{#if_eq xAxisPos "top"}}12{{else}}-8{{/if_eq}};
+	options.yAxis.title.y = {{#if_eq xAxisPos "top"}}({{width}} * {{aspectRatio}}-55){{else}}-8{{/if_eq}};
 	options.yAxis.title.offset = 
     {{#if_eq xAxisPos "top"}}
-    	{{#if_eq yAxisPos "left"}}-7{{else}}-100{{/if_eq}}
+    	{{#if_eq yAxisPos "left"}}-7{{else}}-120{{/if_eq}}
     {{else}}
     	{{#if_eq yAxisPos "left"}}0{{else}}-50{{/if_eq}}
     {{/if_eq}};
