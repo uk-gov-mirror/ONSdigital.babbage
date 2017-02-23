@@ -1,5 +1,4 @@
 #!/bin/sh -eux
-ls -al /target
 
 source /docker-lib.sh
 start_docker
