@@ -13,12 +13,17 @@ inputs:
   - name: babbage
   - name: elastic
   - name: maven
+  - name: target
+
+
 
 run:
   path: sh
   args:
     - -exc
     - |
+      ls -al /target
+
       source /docker-lib.sh
       start_docker
 

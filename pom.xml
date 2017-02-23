@@ -376,15 +376,6 @@
                         <goals>
                             <goal>test-jar</goal>
                         </goals>
-
-                        <configuration>
-                            <archive>
-                                <manifest>
-                                    <addClasspath>true</addClasspath>
-                                    <mainClass>cucumber.api.cli.Main</mainClass>
-                                </manifest>
-                            </archive>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>

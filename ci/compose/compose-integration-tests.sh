@@ -10,6 +10,6 @@ done
 
 export ELASTIC_SEARCH_SERVER=elastic
 mvn clean test-compile surefire:test@integration-test
-maveReturnCode=$?
+mavenReturnCode=$?
 popd
-exit ${maveReturnCode}
+exit ${mavenReturnCode}
