@@ -9,6 +9,6 @@ until [ ${COUNTER} -lt 20 ] || [ $(curl --output /dev/null --silent --head --fai
 done
 
 export ELASTIC_SEARCH_SERVER=elastic
-mvn surefire:test@integration-test
+mvn clean test-compile surefire:test@integration-test
 
 popd

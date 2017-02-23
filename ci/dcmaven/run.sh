@@ -1,6 +1,7 @@
 #!/bin/bash
 source /docker-lib.sh
 rm -rf /var/lib/docker/aufs
+find / -name auplink
 start_docker
 docker images
 # Cleaning up through docker avoids these errors
