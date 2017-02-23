@@ -13,6 +13,10 @@ resources:
     type: docker-image
     source:
       repository: maven
+  -name:  openjdk
+    type: docker-image
+    source:
+      repository: openjdk:jdk-8-alpine
 
 # - name: feature-load-document-concourse-build-bundle
 

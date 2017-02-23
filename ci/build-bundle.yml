@@ -10,6 +10,7 @@ image_resource:
 inputs:
   - name: artifacts
   - name: babbage
+  - name: target
 
 outputs:
   - name: build

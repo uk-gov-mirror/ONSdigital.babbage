@@ -1,7 +1,10 @@
 #!/bin/sh -eux
+ls -al /target
+
 source /docker-lib.sh
 start_docker
-pwd
+
+echo
 echo "Loading image elastic"
 
 docker load -i elastic/image
@@ -17,7 +20,8 @@ docker images
 
 # Run the maven container and its dependencies.
 echo "run tests"
-docker-compose -f babbage/ci/compose/compose-integration.yml run maven
+docker-compose --verbose -f babbage/ci/compose/compose-integration.yml run maven
+
 # Cleanup.
 # Not sure that this is required.
 # It's quite possible that Concourse is smart enough to clean up the Docker mess itself.
