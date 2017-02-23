@@ -301,9 +301,6 @@
                             <includes>
                                 <include>**/*Feature.java</include>
                             </includes>
-                            <systemProperties>
-                                <ELASTIC_SEARCH_SERVER>0.0.0.0</ELASTIC_SEARCH_SERVER>
-                            </systemProperties>
                         </configuration>
                     </execution>
                 </executions>
@@ -318,7 +315,7 @@
                     <images>
                         <image>
                             <!--<name>sem247/elasticns:2.4.3_1</name>-->
-                            <name>guidof/onswebsite-search:0.0.2</name>
+                            <name>guidof/onswebsite-search</name>
                             <!--<name>elasticsearch:2.4.4</name>-->
                             <run>
                                 <namingStrategy>none</namingStrategy>
@@ -341,7 +338,6 @@
                             <goal>start</goal>
                         </goals>
                         <phase>pre-integration-test</phase>
-
                     </execution>
                     <execution>
                         <id>elasticStop</id>
@@ -380,15 +376,17 @@
                         <goals>
                             <goal>test-jar</goal>
                         </goals>
+
+                        <configuration>
+                            <archive>
+                                <manifest>
+                                    <addClasspath>true</addClasspath>
+                                    <mainClass>cucumber.api.cli.Main</mainClass>
+                                </manifest>
+                            </archive>
+                        </configuration>
                     </execution>
                 </executions>
-                <configuration>
-                    <archive>
-                        <manifest>
-                            <addClasspath>true</addClasspath>
-                        </manifest>
-                    </archive>
-                </configuration>
             </plugin>
         </plugins>
     </build>
