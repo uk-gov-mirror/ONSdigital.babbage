@@ -5,9 +5,9 @@ services:
     ports:
     - "9200:9200"
     - "9300:9300"
-    environment:
-    - http.host:0.0.0.0
-    - transport.host:127.0.0.1
+#    environment:
+#    - http.host:0.0.0.0
+#    - transport.host:127.0.0.1
     command: "true"
   maven:
     image: maven
