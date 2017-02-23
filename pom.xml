@@ -254,7 +254,7 @@
                         <!-- Default output folder is ${project.build.api}/dependency -->
                     </execution>
                     <execution>
-                        <id>copy-dependencies</id>
+                        <id>copy-test-dependencies</id>
                         <phase>package</phase>
                         <goals>
                             <goal>copy-dependencies</goal>
