@@ -8,7 +8,7 @@ services:
 #    environment:
 #    - http.host:0.0.0.0
 #    - transport.host:127.0.0.1
-    command: "true"
+#    command: "true"
   maven:
     image: maven
     depends_on :
