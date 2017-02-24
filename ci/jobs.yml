@@ -5,15 +5,18 @@ resources:
     source:
       uri: https://github.com/ONSdigital/babbage.git
       branch: feature/load-document-content-concourse
-  - name: elastic
-    type: docker-image
-    source:
-      repository: guidof/onswebsite-search
-  - name: maven
-    type: docker-image
-    source:
-      repository: maven
-
+#  - name: elastic
+#    type: docker-image
+#    source:
+#      repository: guidof/onswebsite-search
+#  - name: maven
+#    type: docker-image
+#    source:
+#      repository: maven
+#  - name: integration-container
+#    type: docker-image
+#    source:
+#      repository: repository: amidos/dcind
 
 # - name: feature-load-document-concourse-build-bundle
 
@@ -58,12 +61,12 @@ jobs:
         passed: [feature-load-document-concourse-unit]
         trigger: true
         resource: feature-load-document-concourse
-      - get: elastic
-        params:
-          save: true
-      - get: maven
-        params:
-          save: true
+#      - get: elastic
+#        params:
+#          save: true
+#      - get: maven
+#        params:
+#          save: true
     - task: integration-test
       privileged: true
       file: babbage/ci/integration-test.yml
