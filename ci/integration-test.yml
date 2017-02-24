@@ -14,8 +14,5 @@ inputs:
 #  - name: elastic
 #  - name: maven
 
-
-
-
 run:
   path: babbage/ci/scripts/integration-test.sh
