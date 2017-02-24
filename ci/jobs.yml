@@ -13,10 +13,10 @@ resources:
     type: docker-image
     source:
       repository: maven
-  -name:  openjdk
-    type: docker-image
-    source:
-      repository: openjdk:jdk-8-alpine
+#  - name:  openjdk
+#    type: docker-image
+#    source:
+#      repository: openjdk:jdk-8-alpine
 
 # - name: feature-load-document-concourse-build-bundle
 
@@ -58,7 +58,7 @@ jobs:
     plan:
     - aggregate :
       - get: babbage
-        passed: [feature-load-document-concourse-build]
+        passed: [feature-load-document-concourse-unit]
         trigger: true
         resource: feature-load-document-concourse
       - get: elastic

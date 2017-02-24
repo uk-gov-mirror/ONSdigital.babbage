@@ -14,6 +14,5 @@ inputs:
 outputs:
   - name: artifacts
 
-
 run:
   path: babbage/ci/scripts/revision.sh
