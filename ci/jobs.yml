@@ -19,7 +19,6 @@ resources:
 #      repository: amidos/dcind
 
 # - name: feature-load-document-concourse-build-bundle
-
 # - name: feature-load-document-concourse-image
 
 
@@ -58,7 +57,7 @@ jobs:
     plan:
     - aggregate :
       - get: babbage
-        passed: [feature-load-document-concourse-unit]
+        passed: [feature-load-document-concourse-build]
         trigger: true
         resource: feature-load-document-concourse
 #      - get: elastic
