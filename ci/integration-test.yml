@@ -11,8 +11,8 @@ image_resource:
 
 inputs:
   - name: babbage
-  - name: elastic
-  - name: maven
+#  - name: elastic
+#  - name: maven
 
 
 
