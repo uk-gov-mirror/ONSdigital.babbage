@@ -12,7 +12,8 @@ resources:
   - name: maven
     type: docker-image
     source:
-      repository: maven
+      repository: guidof/mavenastic:0.0.1
+#      repository: maven
   - name: integration-container
     type: docker-image
     source:
