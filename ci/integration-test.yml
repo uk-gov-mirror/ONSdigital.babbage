@@ -1,4 +1,10 @@
 ---
+resources:
+  - name: feature-load-document-concourse
+    type: git
+    source:
+      uri: https://github.com/ONSdigital/babbage.git
+      branch: feature/load-document-content-concourse
 
 platform: linux
 
