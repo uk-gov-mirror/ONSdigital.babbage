@@ -285,14 +285,16 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
+                <!-- using failsafe as give maven the chance to shutdown the docker image before 'verify'ing the success of the run -->
+                <artifactId>maven-failsafe-plugin</artifactId>
                 <version>2.19.1</version>
                 <executions>
                     <execution>
                         <id>integration-test</id>
                         <phase>integration-test</phase>
                         <goals>
-                            <goal>test</goal>
+                            <goal>integration-test</goal>
+
                         </goals>
                         <configuration>
                             <excludes>
@@ -302,6 +304,11 @@
                                 <include>**/*Feature.java</include>
                             </includes>
                         </configuration>
+                    </execution>
+                    <execution>
+                        <goals>
+                            <goal>verify</goal>
+                        </goals>
                     </execution>
                 </executions>
             </plugin>
@@ -318,7 +325,6 @@
                             <name>guidof/onswebsite-search</name>
                             <!--<name>elasticsearch:2.4.4</name>-->
                             <run>
-                                <namingStrategy>none</namingStrategy>
                                 <ports>
                                     <port>9200:9200</port>
                                     <port>9300:9300</port>
@@ -327,6 +333,11 @@
                                     <http.host>0.0.0.0</http.host>
                                     <transport.host>127.0.0.1</transport.host>
                                 </env>
+                                <wait>
+                                    <http>
+                                        <url>http://localhost:9200/</url>
+                                    </http>
+                                </wait>
                             </run>
                         </image>
                     </images>
