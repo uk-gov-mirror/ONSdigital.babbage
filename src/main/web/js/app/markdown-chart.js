@@ -40,15 +40,12 @@ $(function() {
             },
             function() {
                 var chartConfig = window["chart-" + chartId];
-                //console.log(chartConfig );
                 if (chartConfig) {
                     // small multiples have an attribute to show specifc series
                     var display = $this.data('series');
                     var array = id.split("-");
 
                     //adjust size and notes to match viewport
-                    
-                    //console.log(window["chart-" + chartId]);
 
                     var aspectRatio = 1;
                     var labelInterval = 1;
@@ -65,7 +62,6 @@ $(function() {
                                 //loop thru and update annotations if reqd
                                 if(chartConfig.annotations.length>0){
                                     $.each(chartConfig.annotations, function(idx, itm){
-                                        console.log(chartConfig.annotations);
                                         chartConfig.annotations[idx].x = chartConfig.annotations[idx]['position_'+viewport].x;
                                         chartConfig.annotations[idx].y = chartConfig.annotations[idx]['position_'+viewport].y;
                                     })
