@@ -12,11 +12,12 @@ resources:
   - name: maven
     type: docker-image
     source:
-     repository: maven
+      repository: maven
   - name: integration-container
     type: docker-image
     source:
       repository: amidos/dcind
+
 # - name: feature-load-document-concourse-build-bundle
 # - name: feature-load-document-concourse-image
 
