@@ -43,7 +43,7 @@ $(function() {
                 if (chartConfig) {
                     // small multiples have an attribute to show specifc series
                     var display = $this.data('series');
-                    var array = id.split("-");
+                    var smallMultipleRef = id.split("-")[2];
 
                     //adjust size and notes to match viewport
 
@@ -103,7 +103,7 @@ $(function() {
                                 //add hidden notes to footnotes
                                 var str = '';
 
-                                //add aheader if required
+                                //add a header if required
                                 if(!$('.js-notes-title')){
                                     str = '<h6 class="flush--third--bottom js-notes-title">Notes:</h6>';
                                 }
@@ -122,12 +122,13 @@ $(function() {
                                 $.each(chartConfig.yAxis.plotLines, function(idx, itm){
                                     str+= itm.label.text+'</br>'
                                 })
-                                $('.notes-holder-js').append(str);
+                                $('#notes-'+chartId).append(str);
                                 // clear any defaults
                                 chartConfig.xAxis.plotBands = [];
                                 chartConfig.xAxis.plotLines = [];
                                 chartConfig.yAxis.plotBands = [];
                                 chartConfig.yAxis.plotLines = [];
+                                chartConfig.annotations = [];
                             }
                         }
                     }
@@ -138,7 +139,7 @@ $(function() {
                         chartConfig.chart.width = chartWidth/3;
                         chartConfig.chart.height = chartWidth/3;
                         
-                        chartConfig.series = [tempSeries[array[2]]];
+                        chartConfig.series = [tempSeries[smallMultipleRef]];
                         chartConfig.chart.renderTo = id;
                         new Highcharts.Chart(chartConfig);
 
