@@ -21,7 +21,6 @@ resources:
 # - name: feature-load-document-concourse-build-bundle
 # - name: feature-load-document-concourse-image
 
-
 jobs:
   - name: feature-load-document-concourse-unit
     public: true
@@ -77,8 +76,6 @@ jobs:
     #   params:
     #     acl: private
     #     file: build/*.tar.gz
-
-
 
 
   # - name: feature-load-document-concourse-image
