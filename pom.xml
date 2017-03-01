@@ -366,7 +366,7 @@
                 <version>3.5.0</version>
                 <executions>
                     <execution>
-                        <id>execution</id>
+                        <id>generate-report</id>
                         <phase>post-integration-test</phase>
                         <goals>
                             <goal>generate</goal>
