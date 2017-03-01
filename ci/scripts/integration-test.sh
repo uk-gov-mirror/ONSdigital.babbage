@@ -21,6 +21,8 @@ docker images
 echo "run tests"
 docker-compose --verbose -f babbage/ci/compose/compose-integration.yml run maven
 
+ls -laR ../../
+
 # Cleanup.
 # Not sure that this is required.
 # It's quite possible that Concourse is smart enough to clean up the Docker mess itself.

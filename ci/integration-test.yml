@@ -15,5 +15,8 @@ inputs:
   - name: maven
   - name: integration-container
 
+outputs:
+  - name: integration-tests
+
 run:
   path: babbage/ci/scripts/integration-test.sh
