@@ -8,7 +8,10 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 	Highcharts.setOptions({lang: {thousandsSep: ','}});
 
 	// Highlight colour
-	var HIGHLIGHT_COLOUR  = 'rgba(243,148,49,0.9)';
+	{{#if_eq palette "default"}}HIGHLIGHT_COLOUR  = 'gold';{{else}}
+	var HIGHLIGHT_COLOUR  = 'rgba(243,148,49,0.9)';{{/if_eq}}
+
+
 	var PLOTBAND_COLOUR  = '#B5CE94';
 
 	// use rgba in order to set opacity/alpha
@@ -16,6 +19,17 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 	// set it here in js for existing charts
 	var alpha = {{#if alpha }}{{alpha}}{{else}}0.3{{/if}};
 
+	var default_palette = [
+			'rgba(39,71,150,0.9)',
+			'rgba(245,148,47,0.9)',
+			'rgba(231,63,64,0.9)',
+			'rgba(123,202,226,0.9)',
+			'rgba(151,151,150,0.9)',
+			'rgba(233,225,23,0.9)',
+			'rgba(116,182,48,0.9)',
+			'rgba(103,71,150,0.9)',
+			'rgba(189,91,158,0.9)'
+		];
 	var bluemono = [
 			'rgba(0,100,164,0.9)',
 			'rgba(170,214,232,0.9)',
@@ -35,7 +49,10 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 
 
 	// set chart palette based on chart object
-	var palette = {{#if_eq palette "blue"}}bluemono{{else}}color{{/if_eq}};
+	var palette = default_palette;
+	{{#if_eq palette "blue"}}palette = bluemono;{{/if_eq}}
+	{{#if_eq palette "colour"}}palette = color;{{/if_eq}}
+
 	var hasTooltip = {{#if showTooltip }}true{{else}}false{{/if}};
 
 	{{!-- check for annotations in order to  initialise the chart notes --}}
