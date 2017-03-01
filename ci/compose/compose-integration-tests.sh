@@ -10,7 +10,8 @@ until [ ${COUNTER} -lt 20 ] || [ $(curl --output /dev/null --silent --head --fai
 done
 
 export ELASTIC_SEARCH_SERVER=elastic
-mvn clean test-compile failsafe:integration-test@integration-test failsafe:verify@integration-verify
+mvn clean test-compile failsafe:integration-test@integration-test failsafe:verify@integration-verify net.masterthought:maven-cucumber-reporting:generate
+
 mavenReturnCode=$?
 popd
 exit ${mavenReturnCode}
