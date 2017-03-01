@@ -27,4 +27,4 @@ ls -laR ../../
 # Not sure that this is required.
 # It's quite possible that Concourse is smart enough to clean up the Docker mess itself.
 docker-compose -f babbage/ci/compose/compose-integration.yml down
-#      docker volume rm $(docker volume ls -q)
+docker volume rm $(docker volume ls -q)
