@@ -224,7 +224,8 @@
                                     return
                                 }
 
-                                var apiPath = '/dd/api/datasets/' + datasetID + '/editions/' + datasetEdition + '/versions/' + datasetVersion;
+                                var datasetPath = datasetID + '/editions/' + datasetEdition + '/versions/' + datasetVersion
+                                var apiPath = '/dd/api/datasets/' + datasetPath;
 
                                 function getDimensions(callback) {
                                     if (!window.fetch) {
@@ -256,7 +257,7 @@
 
                                     for (i; i < dimensionsLength; i++) {
                                         HTML.push(
-                                                '<li class="flush">' + data.dimensions[i].name+ '</li>'
+                                            '<li class="flush">' + data.dimensions[i].name+ '</li>'
                                         )
                                     }
 
@@ -269,7 +270,7 @@
                                         document.getElementById('js-dd-dimensions').innerHTML = buildDimensions(response);
                                     });
 
-                                    document.getElementById('dataset-link').setAttribute('href', '/dd/datasets/' + datasetID);
+                                    document.getElementById('dataset-link').setAttribute('href', '/dd/datasets/' + datasetPath);
                                 }
 
                                 document.addEventListener('DOMContentLoaded', renderDimensions, false);
