@@ -85,7 +85,7 @@ jobs:
     - put: feature-load-document-concourse-integration-cucumber
       params:
         acl: private
-        path: /integration-tests/
+        file: integration-tests/*tar.gz
 
     # - put: feature-load-document-concourse-build-bundle
     #   params:
