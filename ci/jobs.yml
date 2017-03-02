@@ -22,10 +22,11 @@ resources:
     source:
 #      access_key_id: <%= ENV.fetch('AWS_ACCESS_KEY_ID') %>
 #      secret_access_key: <%= ENV.fetch('AWS_ACCESS_KEY') %>
-      bucket: ons-web-cucumber
+#      bucket: ons-web-cucumber
+       bucket: ons-web-temp
 #      regexp: <%= ENV.fetch('PIPELINE_NAME') %>/.*-?(\d+\.\d+\.\d+)(?:-rc\d+)?.tar.gz
-      region_name: eu-west-1
-      private: true
+       region_name: eu-west-1
+       private: true
 
 
 
