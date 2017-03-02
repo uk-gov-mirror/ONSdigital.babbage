@@ -72,8 +72,6 @@ jobs:
         trigger: true
         resource: feature-load-document-concourse
       - get: elastic
-        params:
-          save: true
       - get: maven
         params:
           save: true
