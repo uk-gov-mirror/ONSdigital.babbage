@@ -54,6 +54,9 @@
 {{#if_ne chartType "small-multiples"}}
     <a class="btn btn--primary print--hide js-chart-image-src" href="/chartimage?uri={{uri}}"
         data-ga-event="" data-ga-event-category="download-image" data-ga-event-label="{{{sub (sup title)}}}" download="{{{sub (sup title)}}}">Image</a>
+      {{else}}
+    <a class="btn btn--primary print--hide js-chart-image-src"  id="export-png" {{!-- href="/chartimage?uri={{uri}}"
+        data-ga-event="" data-ga-event-category="download-image" data-ga-event-label="{{{sub (sup title)}}}" download="{{{sub (sup title)}}}" --}}>Image</a>
 {{/if_ne}}
     {{> partials/highcharts/download format='csv'}}
     {{> partials/highcharts/download format='xls'}}

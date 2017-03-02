@@ -22,7 +22,88 @@ $(function() {
     }
     //console.log('viewport ' + viewport);
 
+/**
+ * Create a global getSVG method that takes an array of charts as an
+ * argument
+ */
+Highcharts.getSVG = function (charts) {
 
+    console.log('get SVG');
+    var svgArr = [],
+    topBorder =20,
+        top = topBorder,
+        left = 0,
+        width = 0,
+        height = 0,
+        columns = 0,
+        rows = 0,
+        maxColumns = 3;
+
+    Highcharts.each(charts, function (chart) {
+        var svg = chart.getSVG(),
+            // Get width/height of SVG for export
+            svgWidth = +svg.match(
+                /^<svg[^>]*width\s*=\s*\"?(\d+)\"?[^>]*>/
+            )[1],
+            svgHeight = +svg.match(
+                /^<svg[^>]*height\s*=\s*\"?(\d+)\"?[^>]*>/
+            )[1];
+
+
+
+        svg = svg.replace(
+            '<svg',
+            '<g transform="translate(' + left + ',' + top + ')" '
+        );
+        svg = svg.replace('</svg>', '</g>');
+
+        //lay out the svg in columns and rows
+        columns++;
+        if(columns>=maxColumns){
+            columns = 0;
+            left = 0;
+            rows++;
+            top = svgHeight * rows + topBorder;
+            height = top + svgHeight;
+        }else{
+            left += svgWidth;
+            width += svgWidth;
+        }
+
+        svgArr.push(svg);
+    });
+    
+    return '<svg height="' + height + '" width="' + width +
+        '" version="1.1" xmlns="http://www.w3.org/2000/svg">' +
+        '<rect x="0" y="0" width="' + width + '" height="' + height + '" fill="white" />' +
+        svgArr.join('') + '</svg>';
+};
+
+/**
+ * Create a global exportCharts method that takes an array of charts as an
+ * argument, and exporting options as the second argument
+ */
+Highcharts.exportCharts = function (charts, options) {
+    // Merge the options
+    options = Highcharts.merge(Highcharts.getOptions().exporting, options);
+
+    // Post to export server
+    Highcharts.post(options.url, {
+        filename: options.filename || 'chart',
+        type: options.type,
+        width: options.width,
+        svg: Highcharts.getSVG(charts)
+    });
+};
+
+
+
+$('#export-png').click(function () {
+    Highcharts.exportCharts(chartList);
+});
+
+
+var chartList = [];
 
     chartContainer.each(function() {
         var $this = $(this);
@@ -42,7 +123,7 @@ $(function() {
                 var chartConfig = window["chart-" + chartId];
                 if (chartConfig) {
                     // small multiples have an attribute to show specifc series
-                    var display = $this.data('series');
+                    var smallMultipleSeries = $this.data('series');
                     var smallMultipleRef = id.split("-")[2];
 
                     //adjust size and notes to match viewport
@@ -133,7 +214,7 @@ $(function() {
                         }
                     }
 
-                    if(display){
+                    if(smallMultipleSeries){
                         //loop through series and create mini-charts
                         var tempSeries = chartConfig.series;
                         chartConfig.chart.width = chartWidth/3;
@@ -141,7 +222,8 @@ $(function() {
                         
                         chartConfig.series = [tempSeries[smallMultipleRef]];
                         chartConfig.chart.renderTo = id;
-                        new Highcharts.Chart(chartConfig);
+                        var chart = new Highcharts.Chart(chartConfig);
+                        chartList.push(chart);
 
                     }else{
                         // Build chart from config endpoint
