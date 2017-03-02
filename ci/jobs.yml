@@ -9,6 +9,10 @@ resources:
     type: docker-image
     source:
       repository: guidof/onswebsite-search
+  - name: mavenastic
+    type: docker-image
+    source:
+      repository: guidof/mavenastic
   - name: maven
     type: docker-image
     source:
@@ -34,14 +38,18 @@ resources:
 # - name: feature-load-document-concourse-image
 
 jobs:
-#  - name: feature-load-document-concourse-unit
-#    public: true
-#    plan:
-#      - get: babbage
-#        trigger: true
-#        resource: feature-load-document-concourse
-#      - task: unit
-#        file: babbage/ci/unit.yml
+  - name: feature-load-document-concourse-unit
+    public: true
+    plan:
+      - aggregate :
+        - get: babbage
+          trigger: true
+          resource: feature-load-document-concourse
+        - get: mavenastic
+          params:
+             save: true
+      - task: unit
+        file: babbage/ci/unit.yml
 #
 #  - name: feature-load-document-concourse-build
 #    public: true
