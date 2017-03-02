@@ -34,41 +34,38 @@ resources:
 # - name: feature-load-document-concourse-image
 
 jobs:
-  - name: feature-load-document-concourse-unit
-    public: true
-    plan:
-      - get: babbage
-        trigger: true
-        resource: feature-load-document-concourse
-      - task: unit
-        file: babbage/ci/unit.yml
-
-  - name: feature-load-document-concourse-build
-    public: true
-    plan:
-      - get: babbage
-        passed: [feature-load-document-concourse-unit]
-        trigger: true
-        resource: feature-load-document-concourse
-      - task: npm-install
-        file: babbage/ci/npm-install.yml
-      - task: compile
-        file: babbage/ci/compile.yml
-      - task: revision
-        file: babbage/ci/revision.yml
-      - task: bundle
-        file: babbage/ci/build-bundle.yml
-      # - put: feature-load-document-concourse-build-bundle
-      #   params:
-      #     acl: private
-      #     file: build/*.tar.gz
+#  - name: feature-load-document-concourse-unit
+#    public: true
+#    plan:
+#      - get: babbage
+#        trigger: true
+#        resource: feature-load-document-concourse
+#      - task: unit
+#        file: babbage/ci/unit.yml
+#
+#  - name: feature-load-document-concourse-build
+#    public: true
+#    plan:
+#      - get: babbage
+#        passed: [feature-load-document-concourse-unit]
+#        trigger: true
+#        resource: feature-load-document-concourse
+#      - task: npm-install
+#        file: babbage/ci/npm-install.yml
+#      - task: compile
+#        file: babbage/ci/compile.yml
+#      - task: revision
+#        file: babbage/ci/revision.yml
+#      - task: bundle
+#        file: babbage/ci/build-bundle.yml
+#
 
   - name: feature-load-document-concourse-integration
     public: true
     plan:
     - aggregate :
       - get: babbage
-        passed: [feature-load-document-concourse-build]
+#        passed: [feature-load-document-concourse-build]
         trigger: true
         resource: feature-load-document-concourse
       - get: elastic
