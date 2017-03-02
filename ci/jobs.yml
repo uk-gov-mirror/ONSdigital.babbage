@@ -88,10 +88,10 @@ jobs:
     - task: integration-test
       privileged: true
       file: babbage/ci/integration-test.yml
-    - put: feature-load-document-concourse-integration-cucumber
-      params:
-        acl: private
-        file: integration-tests/*tar.gz
+#    - put: feature-load-document-concourse-integration-cucumber
+#      params:
+#        acl: private
+#        file: integration-tests/*tar.gz
 
     # - put: feature-load-document-concourse-build-bundle
     #   params:
