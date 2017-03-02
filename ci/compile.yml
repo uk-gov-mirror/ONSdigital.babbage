@@ -1,0 +1,18 @@
+---
+
+platform: linux
+
+image_resource:
+  type: docker-image
+  source:
+    repository: maven
+
+inputs:
+  - name: assets
+  - name: babbage
+
+outputs:
+  - name: target
+
+run:
+  path: babbage/ci/scripts/compile.sh
