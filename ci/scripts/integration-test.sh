@@ -22,8 +22,9 @@ echo "run tests"
 docker-compose --verbose -f babbage/ci/compose/compose-integration.yml run maven
 
 mkdir -p integration-tests/cucumber-html-reports
+tar zcvf integration-tests/cucumber-html-report.tar.gz babbage/target/cucumber-html-reports
 cp  -r babbage/target/cucumber-html-reports/ integration-tests/
-ls -laR ../../
+
 
 # Cleanup.
 # Not sure that this is required.
