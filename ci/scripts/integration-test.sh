@@ -6,7 +6,7 @@ start_docker
 echo
 echo "Loading image elastic"
 
-docker load -i guidof/onswebsite-search/image
+docker load -i elastic/image
 docker tag "$(cat elastic/image-id)" "$(cat elastic/repository):$(cat elastic/tag)"
 
 echo "Loading image maven"
