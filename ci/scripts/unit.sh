@@ -1,5 +1,5 @@
 #!/bin/sh
 uname -a
 cd  babbage
-  mvn clean verify -D !docker-run
+  mvn clean verify
 cd ..

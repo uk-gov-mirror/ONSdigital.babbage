@@ -351,9 +351,6 @@
     <profiles>
         <profile>
             <id>docker-run</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
             <build>
                 <plugins>
                     <plugin>
