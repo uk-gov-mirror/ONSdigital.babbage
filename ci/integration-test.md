@@ -15,3 +15,4 @@ In this case the two docker images that make up the docker compos composition ar
 
 * maven - contains a docker with JDK 8/Alpine and Maven software
 * guidof/onswebsite-elastic - contains a pre-populated the with the Zebedee data of 2017 Jan  
+![Concourse Container -> Docker Compose ->\[ Maven container + ONSWebsite Elastic Container\]](Integration%20Job.png)

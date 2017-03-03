@@ -1,16 +1,4 @@
 ---
-# Declare the maven cache resource type
-resource_types:
-  - name: maven-cache
-    type: docker-image
-    source:
-      repository: olhtbr/maven-cache-resource
-      tag: latest
-
-
-
-
-
 resources:
   - name: feature-load-document-concourse
     type: git
@@ -32,21 +20,7 @@ resources:
   - name: integration-container
     type: docker-image
     source:
-      repository: amidos/
-  # Maven project source code repo
-  - name: maven-repo
-    type: git
-    source: &maven-repo
-      uri: https://github.com/apache/maven
-      # Of course you'll need some github credentials here
-  # Resource cahching Maven dependencies of the maven-repo resource
-  - name: maven-cache
-    type: maven-cache # Defined in resource_types
-    source:
-      <<: *maven-repo # We want to cache dependencies of the maven-repo,
-      paths:          # but interested only in the pom.xml, which declares dependencies
-        - pom.xml
-
+      repository: amidos/dcind
 
 #  - name: feature-load-document-concourse-integration-cucumber
 #    type: s3
@@ -54,13 +28,10 @@ resources:
 ##      access_key_id: <%= ENV.fetch('AWS_ACCESS_KEY_ID') %>
 ##      secret_access_key: <%= ENV.fetch('AWS_ACCESS_KEY') %>
 ##      bucket: ons-web-cucumber
-#       bucket: ons-web-temp
 ##      regexp: <%= ENV.fetch('PIPELINE_NAME') %>/.*-?(\d+\.\d+\.\d+)(?:-rc\d+)?.tar.gz
 #       region_name: eu-west-1
 #       private: true
 
-# - name: feature-load-document-concourse-build-bundle
-# - name: feature-load-document-concourse-image
 
 jobs:
   - name: feature-load-document-concourse-unit
@@ -75,30 +46,30 @@ jobs:
              save: true
       - task: unit
         file: babbage/ci/unit.yml
-#
-#  - name: feature-load-document-concourse-build
-#    public: true
-#    plan:
-#      - get: babbage
-#        passed: [feature-load-document-concourse-unit]
-#        trigger: true
-#        resource: feature-load-document-concourse
-#      - task: npm-install
-#        file: babbage/ci/npm-install.yml
-#      - task: compile
-#        file: babbage/ci/compile.yml
-#      - task: revision
-#        file: babbage/ci/revision.yml
-#      - task: bundle
-#        file: babbage/ci/build-bundle.yml
-#
+
+  - name: feature-load-document-concourse-build
+    public: true
+    plan:
+      - get: babbage
+        passed: [feature-load-document-concourse-unit]
+        trigger: true
+        resource: feature-load-document-concourse
+      - task: npm-install
+        file: babbage/ci/npm-install.yml
+      - task: compile
+        file: babbage/ci/compile.yml
+      - task: revision
+        file: babbage/ci/revision.yml
+      - task: bundle
+        file: babbage/ci/build-bundle.yml
+
 
   - name: feature-load-document-concourse-integration
     public: true
     plan:
     - aggregate :
       - get: babbage
-        passed: [feature-load-document-concourse-unit]
+        passed: [feature-load-document-concourse-build]
         trigger: true
         resource: feature-load-document-concourse
       - get: elastic
@@ -110,9 +81,6 @@ jobs:
       - get: integration-container
         params:
           save: true
-      - get: maven-repo
-        trigger: true
-      - get: maven-cache  # Don't trigger on changes to the cache
     - task: integration-test
       privileged: true
       file: babbage/ci/integration-test.yml
@@ -120,27 +88,3 @@ jobs:
 #      params:
 #        acl: private
 #        file: integration-tests/*tar.gz
-
-    # - put: feature-load-document-concourse-build-bundle
-    #   params:
-    #     acl: private
-    #     file: build/*.tar.gz
-
-
-  # - name: feature-load-document-concourse-image
-  #   plan:
-  #   - get: build-bundle
-  #     passed: [feature-load-document-concourse-build]
-  #     resource: feature-load-document-concourse-build-bundle
-  #   - get: babbage
-  #     passed: [feature-load-document-concourse-build]
-  #     trigger: true
-  #     resource: feature-load-document-concourse
-  #   - task: unpack
-  #     file: babbage/ci/unpack.yml
-  #   - put: feature-load-document-concourse-image
-  #     params:
-  #       build: .
-  #       dockerfile: babbage/Dockerfile
-  #       tag: build/revision
-  #       tag_prefix: concourse-

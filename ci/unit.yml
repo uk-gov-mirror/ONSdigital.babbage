@@ -12,5 +12,7 @@ inputs:
   - name: maven-repo
   - name: maven-cache
 
+outputs:
+  - name: feature-tests
 run:
   path: babbage/ci/scripts/unit.sh
