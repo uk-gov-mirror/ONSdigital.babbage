@@ -5,10 +5,12 @@ platform: linux
 image_resource:
   type: docker-image
   source:
-    repository: guidof/mavenastic
+    repository: guidof/mavenastic:0.0.4
 
 inputs:
   - name: babbage
+  - name: maven-repo
+  - name: maven-cache
 
 run:
   path: babbage/ci/scripts/unit.sh

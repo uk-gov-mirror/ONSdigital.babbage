@@ -1,4 +1,16 @@
 ---
+# Declare the maven cache resource type
+resource_types:
+  - name: maven-cache
+    type: docker-image
+    source:
+      repository: olhtbr/maven-cache-resource
+      tag: latest
+
+
+
+
+
 resources:
   - name: feature-load-document-concourse
     type: git
@@ -20,7 +32,21 @@ resources:
   - name: integration-container
     type: docker-image
     source:
-      repository: amidos/dcind
+      repository: amidos/
+  # Maven project source code repo
+  - name: maven-repo
+    type: git
+    source: &maven-repo
+      uri: https://github.com/apache/maven
+      # Of course you'll need some github credentials here
+  # Resource cahching Maven dependencies of the maven-repo resource
+  - name: maven-cache
+    type: maven-cache # Defined in resource_types
+    source:
+      <<: *maven-repo # We want to cache dependencies of the maven-repo,
+      paths:          # but interested only in the pom.xml, which declares dependencies
+        - pom.xml
+
 
 #  - name: feature-load-document-concourse-integration-cucumber
 #    type: s3
@@ -84,6 +110,9 @@ jobs:
       - get: integration-container
         params:
           save: true
+      - get: maven-repo
+        trigger: true
+      - get: maven-cache  # Don't trigger on changes to the cache
     - task: integration-test
       privileged: true
       file: babbage/ci/integration-test.yml
