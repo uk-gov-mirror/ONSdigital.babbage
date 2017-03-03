@@ -1,6 +1,6 @@
 #!/bin/sh
 uname -a
-#/docker-entrypoint.sh
+/docker-entrypoint.sh
 
 cd  babbage
 mvn clean verify
