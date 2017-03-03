@@ -9,10 +9,10 @@ resources:
     type: docker-image
     source:
       repository: guidof/onswebsite-search
-  - name: mavenastic
-    type: docker-image
-    source:
-      repository: guidof/mavenastic:0.0.4
+#  - name: mavenastic
+#    type: docker-image
+#    source:
+#      repository: guidof/mavenastic:0.0.4
   - name: maven
     type: docker-image
     source:
@@ -44,7 +44,10 @@ jobs:
         - get: babbage
           trigger: true
           resource: feature-load-document-concourse
-        - get: mavenastic
+#        - get: mavenastic
+#          params:
+#             save: true
+        - get: maven
           params:
              save: true
       - task: unit
