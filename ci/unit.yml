@@ -5,7 +5,7 @@ platform: linux
 image_resource:
   type: docker-image
   source:
-    repository: maven
+    repository: guidof/mavenastic:0.0.3
 
 inputs:
   - name: babbage
