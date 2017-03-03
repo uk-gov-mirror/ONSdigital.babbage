@@ -9,8 +9,6 @@ image_resource:
 
 inputs:
   - name: babbage
-  - name: maven-repo
-  - name: maven-cache
 
 outputs:
   - name: feature-tests
