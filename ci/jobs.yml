@@ -21,6 +21,7 @@ resources:
     type: docker-image
     source:
       repository: amidos/dcind
+
 #  - name: feature-load-document-concourse-integration-cucumber
 #    type: s3
 #    source:
