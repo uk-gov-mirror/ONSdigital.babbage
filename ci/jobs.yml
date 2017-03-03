@@ -12,7 +12,7 @@ resources:
   - name: mavenastic
     type: docker-image
     source:
-      repository: guidof/mavenastic:0.0.6
+      repository: guidof/mavenastic
   - name: maven
     type: docker-image
     source:
