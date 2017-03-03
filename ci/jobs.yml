@@ -33,8 +33,6 @@ resources:
 #       region_name: eu-west-1
 #       private: true
 
-
-
 # - name: feature-load-document-concourse-build-bundle
 # - name: feature-load-document-concourse-image
 
