@@ -314,52 +314,7 @@
                 </executions>
             </plugin>
 
-            <plugin>
-                <groupId>io.fabric8</groupId>
-                <artifactId>docker-maven-plugin</artifactId>
-                <version>0.19.1</version>
-                <configuration>
-                    <!--<dockerHost>tcp://${host}:2375</dockerHost>-->
-                    <images>
-                        <image>
-                            <!--<name>sem247/elasticns:2.4.3_1</name>-->
-                            <name>guidof/onswebsite-search</name>
-                            <!--<name>elasticsearch:2.4.4</name>-->
-                            <run>
-                                <ports>
-                                    <port>9200:9200</port>
-                                    <port>9300:9300</port>
-                                </ports>
-                                <env>
-                                    <http.host>0.0.0.0</http.host>
-                                    <transport.host>127.0.0.1</transport.host>
-                                </env>
-                                <wait>
-                                    <http>
-                                        <url>http://localhost:9200/</url>
-                                    </http>
-                                </wait>
-                            </run>
-                        </image>
-                    </images>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>elasticStart</id>
-                        <goals>
-                            <goal>start</goal>
-                        </goals>
-                        <phase>pre-integration-test</phase>
-                    </execution>
-                    <execution>
-                        <id>elasticStop</id>
-                        <goals>
-                            <goal>stop</goal>
-                        </goals>
-                        <phase>post-integration-test</phase>
-                    </execution>
-                </executions>
-            </plugin>
+
             <plugin>
                 <groupId>net.masterthought</groupId>
                 <artifactId>maven-cucumber-reporting</artifactId>
@@ -393,6 +348,64 @@
             </plugin>
         </plugins>
     </build>
+    <profiles>
+        <profile>
+            <id>docker-run</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>io.fabric8</groupId>
+                        <artifactId>docker-maven-plugin</artifactId>
+                        <version>0.19.1</version>
+                        <configuration>
+                            <!--<dockerHost>tcp://${host}:2375</dockerHost>-->
+                            <images>
+                                <image>
+                                    <!--<name>sem247/elasticns:2.4.3_1</name>-->
+                                    <name>guidof/onswebsite-search</name>
+                                    <!--<name>elasticsearch:2.4.4</name>-->
+                                    <run>
+                                        <ports>
+                                            <port>9200:9200</port>
+                                            <port>9300:9300</port>
+                                        </ports>
+                                        <env>
+                                            <http.host>0.0.0.0</http.host>
+                                            <transport.host>127.0.0.1</transport.host>
+                                        </env>
+                                        <wait>
+                                            <http>
+                                                <url>http://localhost:9200/</url>
+                                            </http>
+                                        </wait>
+                                    </run>
+                                </image>
+                            </images>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>elasticStart</id>
+                                <goals>
+                                    <goal>start</goal>
+                                </goals>
+                                <phase>pre-integration-test</phase>
+                            </execution>
+                            <execution>
+                                <id>elasticStop</id>
+                                <goals>
+                                    <goal>stop</goal>
+                                </goals>
+                                <phase>post-integration-test</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
     <repositories>
         <!-- Adding maven central repo explicitly to perent jitpack.io resolve artifacts that are already on Github. Otherwise handlebars-java fails -->
         <repository>
