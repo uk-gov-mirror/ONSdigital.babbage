@@ -1,4 +1,5 @@
 #!/bin/sh
-pushd babbage
+uname -a
+cd  babbage
   mvn clean surefire:test
-popd
+cd ..
