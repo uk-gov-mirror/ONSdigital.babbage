@@ -35,31 +35,19 @@ public class Search {
         if (extractPage(request) == 1 && isEmpty(filter)) {
             searchAdditionalContent = true;
         }
-        final SearchQueries queries = queries(request,
-                                              searchTerm,
-                                              searchAdditionalContent);
-        search(request,
-               getClass().getSimpleName(),
-               searchTerm,
-               queries,
-               searchAdditionalContent)
-                .apply(request,
-                       response);
+        search(request, getClass().getSimpleName(), searchTerm, queries(request, searchTerm, searchAdditionalContent), searchAdditionalContent)
+                .apply(request, response);
     }
 
     private SearchQueries queries(HttpServletRequest request, String searchTerm, boolean searchAdditionalContent) {
-        ONSQuery query = buildSearchQuery(request,
-                                          searchTerm,
-                                          allFilters);
-        List<ONSQuery> queries = toList(query,
+        ONSQuery query = buildSearchQuery(request, searchTerm, allFilters);
+        List<ONSQuery> queries = toList(
+                query,
                                         typeCountsQuery(query.query()).types(contentTypesToCount)
         );
-
         if (searchAdditionalContent) {
-            queries.add(bestTopicMatchQuery(searchTerm).name("featuredResult")
-                                                       .highlight(true));
+            queries.add(bestTopicMatchQuery(searchTerm).name("featuredResult").highlight(true));
         }
-
         return () -> queries;
     }
 }

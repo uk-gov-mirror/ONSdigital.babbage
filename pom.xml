@@ -269,21 +269,6 @@
                 </executions>
             </plugin>
             <plugin>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                        <configuration>
-                            <descriptors>
-                                <descriptor>src/main/assembly/integration-test-assembly.xml</descriptor>
-                            </descriptors>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <!-- using failsafe as give maven the chance to shutdown the docker image before 'verify'ing the success of the run -->
                 <artifactId>maven-failsafe-plugin</artifactId>
@@ -313,8 +298,6 @@
                     </execution>
                 </executions>
             </plugin>
-
-
             <plugin>
                 <groupId>net.masterthought</groupId>
                 <artifactId>maven-cucumber-reporting</artifactId>
@@ -367,9 +350,7 @@
                             <!--<dockerHost>tcp://${host}:2375</dockerHost>-->
                             <images>
                                 <image>
-                                    <!--<name>sem247/elasticns:2.4.3_1</name>-->
                                     <name>guidof/onswebsite-search</name>
-                                    <!--<name>elasticsearch:2.4.4</name>-->
                                     <run>
                                         <ports>
                                             <port>9200:9200</port>

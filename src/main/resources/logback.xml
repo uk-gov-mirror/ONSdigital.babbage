@@ -1,33 +1,42 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <configuration>
 
-    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-        <layout class="ch.qos.logback.classic.PatternLayout">
-            <Pattern>%d{yyyy-MM-dd HH:mm:ss} ||| [%thread] %-5level %logger{36} - %msg%n</Pattern>
-        </layout>
-    </appender>
-
-    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
-        <file>${user.home}/database.log</file>
-        <append>false</append>
+    <appender name="STDOUT"
+              class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>%-5relative [%thread] %-5level %logger{35} - %msg %n</pattern>
+            <pattern>
+                %d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n
+            </pattern>
         </encoder>
     </appender>
 
-    <logger name="com.github.onsdigital" level="debug"
-            additivity="false">
-        <appender-ref ref="STDOUT"/>
-        <appender-ref ref="FILE"/>
+    <!-- Use this appender if you want the log output in plain/standard log format. -->
+    <appender name="PLAIN_TEXT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+            <layout class="com.github.onsdigital.logging.layouts.TextLayout"/>
+        </encoder>
+    </appender>
+
+    <!--&lt;!&ndash; Use this appender if you want the log output in json &ndash;&gt;-->
+    <!--<appender name="JSON" class="ch.qos.logback.core.ConsoleAppender">-->
+        <!--<encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">-->
+            <!--<layout class="com.github.onsdigital.logging.layouts.JsonLayout" />-->
+        <!--</encoder>-->
+    <!--</appender>-->
+
+    <!--<appender name="PRETTY_JSON" class="ch.qos.logback.core.ConsoleAppender">-->
+    <!--<encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">-->
+    <!--<layout class="com.github.onsdigital.logging.layouts.PrettyJsonLayout" />-->
+    <!--</encoder>-->
+    <!--</appender>-->
+
+    <logger name="com.github.onsdigital.babbage" level="debug" additivity="false">
+        <!--<appender-ref ref="JSON"/>-->
+        <!--<appender-ref ref="PRETTY_JSON"/>-->
+        <appender-ref ref="PLAIN_TEXT"/>
     </logger>
 
-    <logger name="org" level="error"
-            additivity="false">
+    <root level="WARN">
         <appender-ref ref="STDOUT"/>
-    </logger>
-    <root level="error">
-        <appender-ref ref="STDOUT"/>
-        <appender-ref ref="FILE"/>
     </root>
 
 </configuration>
