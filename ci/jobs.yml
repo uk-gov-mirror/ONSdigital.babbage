@@ -17,6 +17,8 @@ resources:
   - name: feature-load-document-concourse-integration-cucumber
     type: s3-simple
     source:
+      access_key_id: {{aws_access_key_id}}
+      secret_access_key: {{aws_access_key}}
       bucket: dp-build-feature-test-report
       path: feature-tests
       target: feature-tests
