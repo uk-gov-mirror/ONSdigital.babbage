@@ -21,7 +21,7 @@ resources:
       secret_access_key: {{aws_access_key}}
       bucket: dp-build-feature-test-report
       path: feature-tests
-      target: feature-tests
+      target: babbage/target/cucumber-html-reports
 
 jobs:
   - name: feature-load-document-concourse-unit

@@ -6,13 +6,4 @@ cd  babbage
 mvn clean verify
 mavenReturnCode=$?
 
-mkdir -p  /tmp/build/put/feature-tests/html
-tar zcvf /tmp/build/put/feature-tests/cucumber-html-report.tar.gz target/cucumber-html-reports
-cp -r target/cucumber-html-reports /tmp/build/put/feature-tests/html/
-
-mkdir -p  ../feature-tests/html
-tar zcvf ../feature-tests/cucumber-html-report.tar.gz target/cucumber-html-reports
-cp -r target/cucumber-html-reports ../feature-tests/html/
-
-
 exit ${mavenReturnCode}
