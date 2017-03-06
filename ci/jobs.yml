@@ -10,8 +10,6 @@ resources:
     type: docker-image
     source:
       repository: guidof/mavenastic
-
-
   - name: feature-load-document-concourse-integration-cucumber
     type: s3
     source:
