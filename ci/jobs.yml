@@ -1,4 +1,12 @@
 ---
+
+
+resource_types:
+  - name: s3-simple
+    type: docker-image
+    source:
+      repository: lloydg/s3-resource-simple
+
 resources:
   - name: feature-load-document-concourse
     type: git
@@ -6,20 +14,12 @@ resources:
       uri: https://github.com/ONSdigital/babbage.git
       branch: feature/load-document-content-concourse
 
-  - name: mavenastic
-    type: docker-image
-    source:
-      repository: guidof/mavenastic
   - name: feature-load-document-concourse-integration-cucumber
-    type: s3
+    type: s3-simple
     source:
-#      access_key_id: <%= ENV.fetch('AWS_ACCESS_KEY_ID') %>
-#      secret_access_key: <%= ENV.fetch('AWS_ACCESS_KEY') %>
-    bucket: dp-build-feature-test-report
-    regexp: feature-load-document-concourse\/.*\.tar\.gz
-    region_name: eu-west-1
-    private: true
-
+      bucket: dp-build-feature-test-report
+      path: feature-tests
+      target: feature-tests
 
 jobs:
   - name: feature-load-document-concourse-unit
@@ -29,11 +29,9 @@ jobs:
         - get: babbage
           trigger: true
           resource: feature-load-document-concourse
-        - get: mavenastic
-          params:
-             save: true
       - task: unit
         file: babbage/ci/unit.yml
+      - put: feature-load-document-concourse-integration-cucumber
 
   - name: feature-load-document-concourse-build
     public: true

@@ -351,6 +351,12 @@
     <profiles>
         <profile>
             <id>docker-run</id>
+            <activation>
+                <property>
+                    <name>CONTAINER</name>
+                    <value>!mavenastic</value>
+                </property>
+            </activation>
             <build>
                 <plugins>
                     <plugin>

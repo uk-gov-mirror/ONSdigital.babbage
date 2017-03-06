@@ -11,7 +11,7 @@ inputs:
   - name: babbage
 
 outputs:
-  - name: feature-tests
+  - name: feature-tests/
 
 run:
   path: babbage/ci/scripts/unit.sh
