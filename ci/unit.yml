@@ -11,7 +11,7 @@ inputs:
   - name: babbage
 
 output:
-  -name: reports
+  - name: reports
 
 run:
   path: babbage/ci/scripts/unit.sh
