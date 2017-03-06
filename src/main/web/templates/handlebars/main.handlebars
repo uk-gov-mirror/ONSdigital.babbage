@@ -27,6 +27,14 @@
 		{{#if pdf_style}}<link rel="stylesheet" type="text/css" href="{{#if is_dev}}http://localhost:9000/dist{{else}}//cdn.ons.gov.uk/sixteens/1e59ad8{{/if}}/css/pdf.css">{{/if}}
         <![endif]-->
 
+        <!-- Google Tag Manager -->
+        <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+                new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+                j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+                'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','GTM-MBCBVQS');</script>
+        <!-- End Google Tag Manager -->
+
         <script type='text/javascript'>
             var BugHerdConfig = {"feedback":{"hide":true}};
             (function(d, t) {
@@ -40,6 +48,11 @@
 
 	</head>
 	<body class="{{type}}">
+
+        <!-- Google Tag Manager (noscript) -->
+        <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MBCBVQS"
+                          height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+        <!-- End Google Tag Manager (noscript) -->
 
         {{!-- Sends a message out of window - for Florance preview use, so that she can see when the preview window is loading (rather than looking for the iframe onload event which is only fired after all JS has loaded) --}}
         {{#if is_publishing}}
