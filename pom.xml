@@ -353,7 +353,7 @@
             <id>docker-run</id>
             <activation>
                 <property>
-                    <name>CONTAINER</name>
+                    <name>env.CONTAINER</name>
                     <value>!mavenastic</value>
                 </property>
             </activation>
