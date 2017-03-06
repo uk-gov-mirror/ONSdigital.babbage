@@ -5,32 +5,22 @@ resources:
     source:
       uri: https://github.com/ONSdigital/babbage.git
       branch: feature/load-document-content-concourse
-  - name: elastic
-    type: docker-image
-    source:
-      repository: guidof/onswebsite-search
+
   - name: mavenastic
     type: docker-image
     source:
       repository: guidof/mavenastic
-  - name: maven
-    type: docker-image
-    source:
-      repository: maven
-  - name: integration-container
-    type: docker-image
-    source:
-      repository: amidos/dcind
 
-#  - name: feature-load-document-concourse-integration-cucumber
-#    type: s3
-#    source:
-##      access_key_id: <%= ENV.fetch('AWS_ACCESS_KEY_ID') %>
-##      secret_access_key: <%= ENV.fetch('AWS_ACCESS_KEY') %>
-##      bucket: ons-web-cucumber
-##      regexp: <%= ENV.fetch('PIPELINE_NAME') %>/.*-?(\d+\.\d+\.\d+)(?:-rc\d+)?.tar.gz
-#       region_name: eu-west-1
-#       private: true
+
+  - name: feature-load-document-concourse-integration-cucumber
+    type: s3
+    source:
+#      access_key_id: <%= ENV.fetch('AWS_ACCESS_KEY_ID') %>
+#      secret_access_key: <%= ENV.fetch('AWS_ACCESS_KEY') %>
+    bucket: dp-build-feature-test-report
+    regexp: feature-load-document-concourse\/.*\.tar\.gz
+    region_name: eu-west-1
+    private: true
 
 
 jobs:
@@ -63,28 +53,3 @@ jobs:
       - task: bundle
         file: babbage/ci/build-bundle.yml
 
-
-  - name: feature-load-document-concourse-integration
-    public: true
-    plan:
-    - aggregate :
-      - get: babbage
-        passed: [feature-load-document-concourse-build]
-        trigger: true
-        resource: feature-load-document-concourse
-      - get: elastic
-        params:
-          save: true
-      - get: maven
-        params:
-          save: true
-      - get: integration-container
-        params:
-          save: true
-    - task: integration-test
-      privileged: true
-      file: babbage/ci/integration-test.yml
-#    - put: feature-load-document-concourse-integration-cucumber
-#      params:
-#        acl: private
-#        file: integration-tests/*tar.gz
