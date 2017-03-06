@@ -21,16 +21,15 @@ resources:
       secret_access_key: {{aws_access_key}}
       bucket: dp-build-feature-test-report
       path: feature-tests
-      target: babbage/target/cucumber-html-reports
+      target: reports
 
 jobs:
   - name: feature-load-document-concourse-unit
     public: true
     plan:
-      - aggregate :
-        - get: babbage
-          trigger: true
-          resource: feature-load-document-concourse
+      - get: babbage
+        trigger: true
+        resource: feature-load-document-concourse
       - task: unit
         file: babbage/ci/unit.yml
       - put: feature-load-document-concourse-integration-cucumber

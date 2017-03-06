@@ -10,6 +10,8 @@ image_resource:
 inputs:
   - name: babbage
 
+output:
+  -name: reports
 
 run:
   path: babbage/ci/scripts/unit.sh
