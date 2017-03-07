@@ -366,7 +366,7 @@
                                         </env>
                                         <wait>
                                             <http>
-                                                <url>http://localhost:9233/</url>
+                                                <url>http://172.17.0.1:9233/</url>
                                             </http>
                                             <time>100000</time>
                                         </wait>
