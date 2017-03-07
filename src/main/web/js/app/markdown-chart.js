@@ -122,7 +122,7 @@ var chartList = [];
             function() {
                 var chartConfig = window["chart-" + chartId];
                 if (chartConfig) {
-                    // small multiples have an attribute to show specifc series
+                    // small multiples have an attribute to show specific series
                     var smallMultipleSeries = $this.data('series');
                     var smallMultipleRef = id.split("-")[2];
 
