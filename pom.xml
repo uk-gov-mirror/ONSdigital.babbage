@@ -290,6 +290,7 @@
                             </includes>
                             <systemProperties>
                                 <ELASTIC_SEARCH_PORT>9333</ELASTIC_SEARCH_PORT>
+                                <ELASTIC_SEARCH_SERVER>172.17.0.1</ELASTIC_SEARCH_SERVER>
                             </systemProperties>
                         </configuration>
                     </execution>
