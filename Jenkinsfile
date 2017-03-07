@@ -14,7 +14,7 @@ node {
     stage('Build') {
         sh 'npm install --no-bin-links --prefix ./src/main/web --sixteens-branch=develop'
         sh 'env'
-        sh "${tool 'm3'}/bin/mvn clean -X verify dependency:copy-dependencies"
+        sh "export DOCKER_HOST && ${tool 'm3'}/bin/mvn clean -X verify dependency:copy-dependencies"
     }
 //
 //    stage('Test') {
