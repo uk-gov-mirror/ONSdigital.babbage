@@ -27,6 +27,14 @@
 		{{#if pdf_style}}<link rel="stylesheet" type="text/css" href="{{#if is_dev}}http://localhost:9000/dist{{else}}//cdn.ons.gov.uk/sixteens/1e59ad8{{/if}}/css/pdf.css">{{/if}}
         <![endif]-->
 
+        <!-- Google Tag Manager -->
+        <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+                new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+                j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+                'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','GTM-MBCBVQS');</script>
+        <!-- End Google Tag Manager -->
+
         <script type='text/javascript'>
             var BugHerdConfig = {"feedback":{"hide":true}};
             (function(d, t) {
@@ -40,6 +48,11 @@
 
 	</head>
 	<body class="{{type}}">
+
+        <!-- Google Tag Manager (noscript) -->
+        <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MBCBVQS"
+                          height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+        <!-- End Google Tag Manager (noscript) -->
 
         {{!-- Sends a message out of window - for Florance preview use, so that she can see when the preview window is loading (rather than looking for the iframe onload event which is only fired after all JS has loaded) --}}
         {{#if is_publishing}}
@@ -128,45 +141,5 @@
         <script type="text/javascript" src="{{#if is_dev}}//{{location.hostname}}:9000/dist{{else}}//cdn.ons.gov.uk/sixteens/1e59ad8{{/if}}/js/main.js"></script>
         <script type="text/javascript" src="/js/app.js"></script>
         <![endif]-->
-        <script>
-            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-            ga('create', 'UA-56892037-14', {'allowAnchor': true});
-            (function () {
-                var pageType = '{{type}}';
-                if (pageType == 'home_page' ||
-                    pageType == 'taxonomy_landing_page' ||
-                    pageType == 'static_landing_page' ||
-                    pageType == 'list') {
-                        ga('set', 'contentGroup1', 'Navigation');
-                }
-            })();
-            ga('send', 'pageview', {'page': location.pathname + getSearch() + location.hash});
-            function getSearch(){
-                if(location.pathname === '/search'){
-                    var numberOfResults = {{#if result.numberOfResults}} {{result.numberOfResults}} {{else}} 0 {{/if}};
-                    return location.search + '&numberOfResults=' + numberOfResults;
-                } else {
-                    return location.search;
-                }
-            }
-
-            // Measure time on page - credit to http://help.analyticsedge.com/googleanalytics/measuring-time-on-bounce-page/
-            function timer11(){ga('send', 'event', 'TimeOnPage', '1', '11-30 seconds', { 'nonInteraction': 1 });}
-            function timer31(){ga('send', 'event', 'TimeOnPage', '2', '31-60 seconds', { 'nonInteraction': 1 });}
-            function timer61(){ga('send', 'event', 'TimeOnPage', '3', '61-180 seconds', { 'nonInteraction': 1 });}
-            function timer181(){ga('send', 'event', 'TimeOnPage', '4', '181-600 seconds', { 'nonInteraction': 1 });}
-            function timer601(){ga('send', 'event', 'TimeOnPage', '5', '601-1800 seconds', { 'nonInteraction': 1 });}
-            function timer1801(){ga('send', 'event', 'TimeOnPage', '6', '1801+ seconds', { 'nonInteraction': 1 });}
-            ga('send', 'event', 'TimeOnPage', '0', '0-10 seconds', { 'nonInteraction': 1 });
-            setTimeout(timer11,11000);
-            setTimeout(timer31,31000);
-            setTimeout(timer61,61000);
-            setTimeout(timer181,181000);
-            setTimeout(timer601,601000);
-            setTimeout(timer1801,1801000);
-        </script>
 	</body>
 </html>
