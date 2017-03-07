@@ -366,9 +366,9 @@
                                         </env>
                                         <wait>
                                             <http>
-                                                <url>http://127.0.0.1:9266/</url>
+                                                <url>http://172.17.0.5:9266/</url>
                                             </http>
-                                            <time>100000</time>
+                                            <time>10000</time>
                                         </wait>
                                         <log>
                                             <enabled>true</enabled>
