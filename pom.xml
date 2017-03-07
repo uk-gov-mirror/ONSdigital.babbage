@@ -354,7 +354,7 @@
                             <!--<machine>127.17.0.1</machine>-->
                             <images>
                                 <image>
-                                    <name>guidof/onswebsite-search</name>
+                                    <name>guidof/onswebsite-search:0.1.0</name>
                                     <run>
                                         <ports>
                                             <port>9266:9200</port>
