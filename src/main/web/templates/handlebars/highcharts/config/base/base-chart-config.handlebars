@@ -110,7 +110,7 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 			//gridZIndex: -200,
 			opposite:{{#if_eq yAxisPos "right"}}true{{else}}false{{/if_eq}},
 			{{#if yMax }}endOnTick: false,// avoids label rounding in order to have exact axis values{{/if}}
-			{{#if hasLineBreak }}lineColor: 'black',
+			{{#if hasLineBreak }}lineColor: '#929292',
 			lineWidth: 1,    
 			events: {
 				pointBreak: pointBreakColumn
@@ -150,7 +150,12 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 				borderWidth:0,
 				animation: false,
 				pointPadding: 0,
-				groupPadding: 0.1,{{#if hasConnectNull}}
+				groupPadding: 0.1,
+				states: {
+					hover: {
+						enabled: {{ showTooltip }}
+	                }
+                }{{#if hasConnectNull}},
 				connectNulls: true{{/if}}
 			},
 			line: {
@@ -183,6 +188,7 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 		{{/if}}
 
 		},
+		{{#if showTooltip }}
 		tooltip: {
 			valueDecimals: "{{decimalPlaces}}",
 			shared: true,
@@ -213,6 +219,9 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 			borderColor: 'rgba(255, 255, 255, 0)',
 			shadow: false
 		},
+		{{else}}
+		tooltip:{enabled:false},
+		{{/if}}
 		credits: {
 			enabled: false
 		},
