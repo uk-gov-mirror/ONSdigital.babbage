@@ -347,7 +347,8 @@
                         <artifactId>docker-maven-plugin</artifactId>
                         <version>0.19.1</version>
                         <configuration>
-                            <!--<dockerHost>tcp://${env.DOCKER_HOST}</dockerHost>-->
+                            <dockerHost>tcp://172.17.0.1:2375</dockerHost>
+                            <!--<machine>127.17.0.1</machine>-->
                             <images>
                                 <image>
                                     <name>guidof/onswebsite-search</name>
