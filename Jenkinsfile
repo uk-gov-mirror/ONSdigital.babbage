@@ -6,6 +6,9 @@ node {
         sh 'git clean -dfx'
         sh 'git rev-parse --short HEAD > git-commit'
         sh 'set +e && (git describe --exact-match HEAD || true) > git-tag'
+        step([$class: 'CucumberReportPublisher&apos',
+              jsonReportDirectory: 'target',
+              fileIncludePattern: 'cucumber-json-report.json'])
     }
 
     def branch   = env.JOB_NAME.replaceFirst('.+/', '')
