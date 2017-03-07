@@ -371,7 +371,9 @@
                                             <time>10000</time>
                                         </wait>
                                         <log>
-                                            <enabled>true</enabled>
+                                            <prefix>ES</prefix>
+                                            <date>default</date>
+                                            <color>cyan</color>
                                         </log>
                                     </run>
                                 </image>
