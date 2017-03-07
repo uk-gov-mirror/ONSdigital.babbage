@@ -350,15 +350,15 @@
                         <artifactId>docker-maven-plugin</artifactId>
                         <version>0.19.1</version>
                         <configuration>
-                            <dockerHost>tcp://172.17.0.1:2375</dockerHost>
+                            <!--<dockerHost>tcp://172.17.0.1:2375</dockerHost>-->
                             <!--<machine>127.17.0.1</machine>-->
                             <images>
                                 <image>
-                                    <name>guidof/onswebsite-search:0.1.0</name>
+                                    <name>guidof/onswebsite-search:0.1.1</name>
                                     <run>
                                         <ports>
                                             <port>9266:9200</port>
-                                            <port>9366:9300</port>
+                                            <port>9266:9300</port>
                                         </ports>
                                         <env>
                                             <http.host>0.0.0.0</http.host>
