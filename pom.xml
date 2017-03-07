@@ -347,7 +347,7 @@
                         <artifactId>docker-maven-plugin</artifactId>
                         <version>0.19.1</version>
                         <configuration>
-                            <!--<dockerHost>tcp://${host}:2375</dockerHost>-->
+                            <dockerHost>tcp://172.17.0.1:2375</dockerHost>
                             <images>
                                 <image>
                                     <name>guidof/onswebsite-search</name>
@@ -383,6 +383,23 @@
                                     <goal>stop</goal>
                                 </goals>
                                 <phase>post-integration-test</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.codehaus.groovy.maven</groupId>
+                        <artifactId>gmaven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <phase>initialize</phase>
+                                <goals>
+                                    <goal>execute</goal>
+                                </goals>
+                                <configuration>
+                                    <source>
+                                        project.properties["hostname"] = InetAddress.getLocalHost().getHostAddress()
+                                    </source>
+                                </configuration>
                             </execution>
                         </executions>
                     </plugin>
