@@ -6,9 +6,7 @@ node {
         sh 'git clean -dfx'
         sh 'git rev-parse --short HEAD > git-commit'
         sh 'set +e && (git describe --exact-match HEAD || true) > git-tag'
-        step([$class: 'CucumberReportPublisher',
-              jsonReportDirectory: 'target',
-              fileIncludePattern: 'cucumber-json-report.json'])
+
     }
 
     def branch   = env.JOB_NAME.replaceFirst('.+/', '')
@@ -17,7 +15,9 @@ node {
     stage('Build') {
         sh 'npm install --no-bin-links --prefix ./src/main/web --sixteens-branch=develop'
         sh " ${tool 'm3'}/bin/mvn clean install dependency:copy-dependencies"
-//        archiveArtifacts artifacts: 'cucumber-html-reports/**/*'
+        step([$class: 'CucumberReportPublisher',
+              jsonReportDirectory: 'target',
+              fileIncludePattern: 'cucumber-json-report.json'])
     }
 
     stage('Image') {
