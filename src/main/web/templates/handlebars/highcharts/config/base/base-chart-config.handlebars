@@ -8,7 +8,10 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 	Highcharts.setOptions({lang: {thousandsSep: ','}});
 
 	// Highlight colour
-	var HIGHLIGHT_COLOUR  = 'rgba(243,148,49,0.9)';
+	{{#if_eq palette "default"}}HIGHLIGHT_COLOUR  = 'gold';{{else}}
+	var HIGHLIGHT_COLOUR  = 'rgba(243,148,49,0.9)';{{/if_eq}}
+
+
 	var PLOTBAND_COLOUR  = '#B5CE94';
 
 	// use rgba in order to set opacity/alpha
@@ -16,26 +19,40 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 	// set it here in js for existing charts
 	var alpha = {{#if alpha }}{{alpha}}{{else}}0.3{{/if}};
 
+	var default_palette = [
+			'rgba(39,71,150,0.9)',
+			'rgba(245,148,47,0.9)',
+			'rgba(231,63,64,0.9)',
+			'rgba(123,202,226,0.9)',
+			'rgba(151,151,150,0.9)',
+			'rgba(233,225,23,0.9)',
+			'rgba(116,182,48,0.9)',
+			'rgba(103,71,150,0.9)',
+			'rgba(189,91,158,0.9)'
+		];
 	var bluemono = [
-			'rgba(0,100,164,0.9)',
+			'rgba(0,100,185,0.9)',
 			'rgba(170,214,232,0.9)',
 			'rgba(17,41,65,0.9)',
 			'rgba(0,159,227,0.9)',
 			'rgba(91,197,242,0.9)'
 		];
-	var color = [
-			'rgba(25,150,163,0.9)',		// aqua
-			'rgba(241,196,16,0.9)',		// gold
-			'rgba(17,41,65,0.9)',		// dk blue
-			'rgba(91,190,225,0.9)',		// lt blue
-			'rgba(0,104,168,0.9)'		// blue
+	var color = [						// use US spelling to keep consistency with Highcharts
+			'rgba(0,117,163,0.9)',		// blue
+			'rgba(226,188,34,0.9)',		// gold
+			'rgba(35,77,112,0.9)',		// dk blue
+			'rgba(54,173,217,0.9)',		// lt blue
+			'rgba(38,109,74,0.9)'		// green
 		];
 
 	var base = {{#if yMin }}{{yMin}}{{else}}0{{/if}};
 
 
 	// set chart palette based on chart object
-	var palette = {{#if_eq palette "blue"}}bluemono{{else}}color{{/if_eq}};
+	var palette = default_palette;
+	{{#if_eq palette "blue"}}palette = bluemono;{{/if_eq}}
+	{{#if_eq palette "colour"}}palette = color;{{/if_eq}}
+
 	var hasTooltip = {{#if showTooltip }}true{{else}}false{{/if}};
 
 	{{!-- check for annotations in order to  initialise the chart notes --}}
@@ -48,6 +65,8 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 
 	// set the vars on the page as a way of passing them back to the chart object
 	function setBoxPosHandle(id, x,y) {
+		x = x.toFixed(2);
+		y = y.toFixed(2);
 		// important! trigger the change event after setting the value
 		$('#note-x-'+id).val(x).change();
 		$('#note-y-'+id).val(y).change();
@@ -117,7 +136,13 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 			verticalAlign: {{#if_eq xAxisPos "top"}}"bottom"{{else}}"top"{{/if_eq}},
 			y:-20,
 			useHTML:true,
-			enabled:{{#if_eq series.size 1}}false{{else}}true{{/if_eq}}
+			enabled:{{#if_eq series.size 1}}false{{else}}true{{/if_eq}},
+			align:'left',
+			itemStyle: {
+				fontWeight: 'normal',
+				color:'rgb(112, 112,112)',
+				width: 95
+	        }
 		},
 		plotOptions: {
 			series: { {{#if isStacked }}
@@ -144,46 +169,6 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 			enabledButtons: false 
 		},
 		annotations: [ 
-		{{#each annotations}}{{!--// only show if annotation is NOT hidden --}}
-			{{#if_ne isHidden true}}
-			{{#if_ne isPlotline true}}
-			{
-				id:{{id}},
-				x: ({{x}}),
-				y: ({{y}}),
-				title: '{{{title}}}',
-				anchorX: "left",
-				anchorY: "top",
-				allowDragY: isEditor,
-				allowDragX: isEditor,
-				shape: {
-					type: 'rect',
-					params: {
-						x: 0,
-						y: 0,
-						width: {{width}},
-						height: {{height}},
-						stroke:'none'
-					}
-				},
-				events: {
-					mouseup: function(e) { 
-						// catch errors with zero or undefined values from dragging and clicking
-						if( (this.transX!==0 && this.transY!==0) && (this.transX!== undefined && this.transY!==undefined)){
-							setBoxPosHandle(this.options.id, this.transX, this.transY)
-						}
-						if (this.chart.selectedAnnotation) {
-							this.chart.selectedAnnotation.events.deselect.call(this.chart.selectedAnnotation, e);
-						}
-					} 
-				}{{#if devices}},
-				position_sm:{x:{{devices.sm.x}}, y:{{devices.sm.y}} },
-				position_md:{x:{{devices.md.x}}, y:{{devices.md.y}} },
-				position_lg:{x:{{devices.lg.x}}, y:{{devices.lg.y}} }{{/if}}
-			},
-			{{/if_ne}}
-		   {{/if_ne}}
-		{{/each }}
 		],
 		//add devices property -not used by highcharts but stores layout sizes
 		devices:{
@@ -235,60 +220,14 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 			useHTML:true
 		},
 		exporting: {
-			height: 800,
-			width: 1200,
-			chartOptions: {
-			// need to extend chart height if we add space at the bottom to 
-			// preserver chart aspect / size
-				{{!-- chart: {
-					spacingBottom: 90
-				},
-				subtitle: {
-					verticalAlign: 'bottom',
-					text: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.'
-				} --}}
-			}
-		}
-
-
-
+        	enabled: false // hide button
+    	}
 
 	};
 
-{{!--  loop through annotations and push any plotlines/bands into the array  --}}
-{{#each annotations}}
-{{#if_ne isHidden true}}
-	{{#if_eq isPlotline true}}
-	{{#if bandWidth}}
-	options.{{#if_eq orientation "x-axis"}}xAxis{{else}}yAxis{{/if_eq}}.plotBands.push( 
-		{
-			color: PLOTBAND_COLOUR, 
-			from: {{#if_eq orientation "x-axis"}}{{x}}{{else}}{{y}}{{/if_eq}},
-			to: ({{#if_eq orientation "x-axis"}}{{x}}{{else}}{{y}}{{/if_eq}} + {{bandWidth}}),
-			label: {
-				text: '{{{title}}}' 
-			},
-			position_sm:{x:{{devices.sm.x}}, y:{{devices.sm.y}} },
-			position_md:{x:{{devices.md.x}}, y:{{devices.md.y}} },
-			position_lg:{x:{{devices.lg.x}}, y:{{devices.lg.y}} }
-		})
-	{{else}}
-	options.{{#if_eq orientation "x-axis"}}xAxis{{else}}yAxis{{/if_eq}}.plotLines.push(
-		{
-			color: PLOTBAND_COLOUR, 
-			value: {{#if_eq orientation "x-axis"}}{{x}}{{else}}{{y}}{{/if_eq}},
-			width:2,
-			label: {
-				text: '{{{title}}}' 
-			},
-			position_sm:{x:{{devices.sm.x}}, y:{{devices.sm.y}} },
-			position_md:{x:{{devices.md.x}}, y:{{devices.md.y}} },
-			position_lg:{x:{{devices.lg.x}}, y:{{devices.lg.y}} }
-		})
+	{{#if annotations }}
+		{{> highcharts/config/annotations-config}}
 	{{/if}}
-	{{/if_eq}}
-{{/if_ne}}
-{{/each}}
 
 
 	{{#unless rotated}}
