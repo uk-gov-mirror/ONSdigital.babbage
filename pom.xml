@@ -368,12 +368,6 @@
                                             <http>
                                                 <url>http://127.0.0.1:9266/</url>
                                             </http>
-                                            <tcp>
-                                                <host>127.0.0.1</host>
-                                                <ports>
-                                                    <port>9366</port>
-                                                </ports>
-                                            </tcp>
                                             <time>100000</time>
                                         </wait>
                                         <log>
