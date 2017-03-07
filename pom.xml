@@ -350,7 +350,7 @@
                         <artifactId>docker-maven-plugin</artifactId>
                         <version>0.19.1</version>
                         <configuration>
-                            <dockerHost>tcp://172.17.0.1:2375</dockerHost>
+                            <!--<dockerHost>tcp://172.17.0.1:2375</dockerHost>-->
                             <!--<machine>127.17.0.1</machine>-->
                             <images>
                                 <image>
@@ -364,9 +364,10 @@
                                             <http.host>0.0.0.0</http.host>
                                             <transport.host>127.0.0.1</transport.host>
                                         </env>
+                                        <cmd>echo "hello world"</cmd>
                                         <wait>
                                             <http>
-                                                <url>http://${env.HOSTNAME}}:9266/</url>
+                                                <url>http://${env.HOSTNAME}:9266/</url>
                                             </http>
                                             <time>100000</time>
                                         </wait>
