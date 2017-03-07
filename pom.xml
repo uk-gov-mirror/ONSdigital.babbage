@@ -378,6 +378,7 @@
                                     </run>
                                 </image>
                             </images>
+                            <verbose>true</verbose>
                         </configuration>
                         <executions>
                             <execution>
