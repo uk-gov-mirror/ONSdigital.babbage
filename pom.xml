@@ -367,10 +367,13 @@
                                         <cmd>echo "hello world"</cmd>
                                         <wait>
                                             <http>
-                                                <url>http://172.17.0.1:9266/</url>
+                                                <url>http://127.0.0.1:9266/</url>
                                             </http>
                                             <time>100000</time>
                                         </wait>
+                                        <log>
+                                            <enabled>true</enabled>
+                                        </log>
                                     </run>
                                 </image>
                             </images>
