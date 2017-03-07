@@ -248,24 +248,14 @@
                 <executions>
                     <execution>
                         <id>copy-dependencies</id>
-                        <phase>package</phase>
+                        <phase>install</phase>
                         <goals>
                             <goal>copy-dependencies</goal>
                         </goals>
+
                         <!-- Default output folder is ${project.build.api}/dependency -->
                     </execution>
-                    <execution>
-                        <id>copy-test-dependencies</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>copy-dependencies</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${project.build.directory}/integration-tests</outputDirectory>
-                            <includeScope>test</includeScope>
-                        </configuration>
-                        <!-- Default output folder is ${project.build.api}/dependency -->
-                    </execution>
+
 
                 </executions>
             </plugin>
