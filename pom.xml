@@ -361,12 +361,12 @@
                                             <port>9366:9300</port>
                                         </ports>
                                         <env>
-                                            <http.host>127.0.0.1</http.host>
+                                            <http.host>0.0.0.0</http.host>
                                             <transport.host>127.0.0.1</transport.host>
                                         </env>
                                         <wait>
                                             <http>
-                                                <url>http://localhost:9266/</url>
+                                                <url>http://${env.HOSTNAME}}:9266/</url>
                                             </http>
                                             <time>100000</time>
                                         </wait>
