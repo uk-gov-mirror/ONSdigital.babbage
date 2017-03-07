@@ -14,6 +14,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <powermock.version>1.5.6</powermock.version>
         <cucumber.version>1.2.5</cucumber.version>
+        <docker.ip>localhost</docker.ip>
     </properties>
 
     <dependencies>
@@ -290,7 +291,7 @@
                             </includes>
                             <systemProperties>
                                 <ELASTIC_SEARCH_PORT>9333</ELASTIC_SEARCH_PORT>
-                                <ELASTIC_SEARCH_SERVER>172.17.0.1</ELASTIC_SEARCH_SERVER>
+                                <ELASTIC_SEARCH_SERVER>${docker.ip}</ELASTIC_SEARCH_SERVER>
                             </systemProperties>
                         </configuration>
                     </execution>
@@ -351,9 +352,7 @@
                         <artifactId>docker-maven-plugin</artifactId>
                         <version>0.19.1</version>
                         <configuration>
-                            <dockerHost>tcp://172.17.0.1:2375</dockerHost>
-                            <!--<machine>127.17.0.1</machine>-->
-                            <images>
+                             <images>
                                 <image>
                                     <name>guidof/onswebsite-search:0.1.2</name>
                                     <run>
@@ -367,7 +366,7 @@
                                         </env>
                                         <wait>
                                             <http>
-                                                <url>http://172.17.0.1:9233/</url>
+                                                <url>http://${docker.ip}:9233/</url>
                                             </http>
                                             <time>100000</time>
                                         </wait>
@@ -402,15 +401,32 @@
             </build>
         </profile>
         <profile>
+            <!-- if we are running on Jenkins then there is an issue with Docker picking
+            up the correct management URL - se explicitly set here -->
             <id>DockerUrl</id>
+
             <activation>
                 <property>
                     <name>env.DOCKER_HOST</name>
                 </property>
             </activation>
             <properties>
-                <env.DOCKER_HOST></env.DOCKER_HOST>
+                <docker.ip>172.17.0.1</docker.ip>
             </properties>
+            <build>
+                <pluginManagement>
+                    <plugins>
+                        <plugin>
+                            <groupId>io.fabric8</groupId>
+                            <artifactId>docker-maven-plugin</artifactId>
+                            <version>0.19.1</version>
+                            <configuration>
+                                <dockerHost>tcp://172.17.0.1:2375</dockerHost>
+                            </configuration>
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
+            </build>
         </profile>
     </profiles>
     <repositories>
