@@ -1,0 +1,74 @@
+{{!--  loop through annotations and push any plotlines/bands into the array  --}}
+{{#each annotations}}
+{{#if_ne isHidden true}}
+
+	{{#if_eq isPlotline true}}
+
+	{{#if_eq isPlotband true}}
+	options.{{#if_eq orientation "x-axis"}}xAxis{{else}}yAxis{{/if_eq}}.plotBands.push( 
+		{
+			color: PLOTBAND_COLOUR, 
+			from: {{#if_eq orientation "x-axis"}}{{x}}{{else}}{{y}}{{/if_eq}},
+			to: ({{#if_eq orientation "x-axis"}}{{x}}{{else}}{{y}}{{/if_eq}} + {{bandWidth}}),
+			label: {
+				text: '{{{title}}}' 
+			},
+			position_sm:{x:{{devices.sm.x}}, y:{{devices.sm.y}} },
+			position_md:{x:{{devices.md.x}}, y:{{devices.md.y}} },
+			position_lg:{x:{{devices.lg.x}}, y:{{devices.lg.y}} }
+		})
+	{{else}}
+	options.{{#if_eq orientation "x-axis"}}xAxis{{else}}yAxis{{/if_eq}}.plotLines.push(
+		{
+			color: PLOTBAND_COLOUR, 
+			value: {{#if_eq orientation "x-axis"}}{{x}}{{else}}{{y}}{{/if_eq}},
+			width: 2,
+			label: {
+				text: '{{title}}' 
+			},
+			position_sm:{x:{{devices.sm.x}}, y:{{devices.sm.y}} },
+			position_md:{x:{{devices.md.x}}, y:{{devices.md.y}} },
+			position_lg:{x:{{devices.lg.x}}, y:{{devices.lg.y}} }
+		});
+	{{/if_eq}}
+
+	{{else}}
+	options.annotations.push(
+			{
+				id:{{id}},
+				x: ({{x}}),
+				y: ({{y}}),
+				title: "{{{title}}}",
+				anchorX: "left",
+				anchorY: "top",
+				allowDragY: isEditor,
+				allowDragX: isEditor,
+				shape: {
+					type: 'rect',
+					params: {
+						x: 0,
+						y: 0,
+						width: {{width}},
+						height: {{height}},
+						stroke:'none'
+					}
+				},
+				events: {
+					mouseup: function(e) { 
+						// catch errors with zero or undefined values from dragging and clicking
+						if( (this.transX!==0 && this.transY!==0) && (this.transX!== undefined && this.transY!==undefined)){
+							setBoxPosHandle(this.options.id, this.transX, this.transY)
+						}
+						if (this.chart.selectedAnnotation) {
+							this.chart.selectedAnnotation.events.deselect.call(this.chart.selectedAnnotation, e);
+						}
+					} 
+				}{{#if devices}},
+				position_sm:{x:{{devices.sm.x}}, y:{{devices.sm.y}} },
+				position_md:{x:{{devices.md.x}}, y:{{devices.md.y}} },
+				position_lg:{x:{{devices.lg.x}}, y:{{devices.lg.y}} }{{/if}}
+			}
+	); 
+	{{/if_eq}}
+{{/if_ne}}
+{{/each}}
