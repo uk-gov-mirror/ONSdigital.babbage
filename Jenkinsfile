@@ -6,7 +6,6 @@ node {
         sh 'git clean -dfx'
         sh 'git rev-parse --short HEAD > git-commit'
         sh 'set +e && (git describe --exact-match HEAD || true) > git-tag'
-
     }
 
     def branch   = env.JOB_NAME.replaceFirst('.+/', '')
