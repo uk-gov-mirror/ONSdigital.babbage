@@ -136,8 +136,7 @@ public class SearchUtils {
 
     public static BabbageResponse listPageWithValidationErrors(
             String listType, SearchQueries queries,
-            List<ValidationError> errors
-                                                              ) throws IOException {
+            List<ValidationError> errors ) throws IOException {
         return buildPageResponseWithValidationErrors(listType,
                                                      searchAll(queries),
                                                      Optional.ofNullable(errors));

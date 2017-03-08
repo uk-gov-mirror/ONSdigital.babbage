@@ -43,7 +43,7 @@ public class Search {
         ONSQuery query = buildSearchQuery(request, searchTerm, allFilters);
         List<ONSQuery> queries = toList(
                 query,
-                                        typeCountsQuery(query.query()).types(contentTypesToCount)
+                typeCountsQuery(query.query()).types(contentTypesToCount)
         );
         if (searchAdditionalContent) {
             queries.add(bestTopicMatchQuery(searchTerm).name("featuredResult").highlight(true));
