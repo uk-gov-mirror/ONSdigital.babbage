@@ -13,6 +13,8 @@ To run Babbage locally:
 
 ### Cucumber Tests
 The Cucumber Tests start up a Docker Elastic Image with a pre-installed data set.
-The ports 9200 and 9300 are now mapped to XX33 ports, i.e. 9233 and 9333 respectively.
-When the build is run inside a guidof/mavenastic  Docker&trade; image (which contains the build  [ONSdigital/dp-docker-maven-elastic](https://github.com/ONSdigital/dp-docker-maven-elastic) ) Docker Container then the environment variable CONTAINER=mavenastic is set; this is used by the build to stop Docker starting up as part of the bulid.
+
+When the build is run inside a guidof/mavenastic  Docker&trade; image (which contains the build 
+[ONSdigital/dp-docker-maven-elastic](https://github.com/ONSdigital/dp-docker-maven-elastic) ) Docker Container then the
+ environment variable `CONTAINER=mavenastic` is set; this is used by the build to stop Docker starting up as part of the build.
 
