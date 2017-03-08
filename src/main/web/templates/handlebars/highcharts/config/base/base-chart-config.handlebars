@@ -237,17 +237,29 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 		{{> highcharts/config/annotations-config}}
 	{{/if}}
 
-
 	{{#unless rotated}}
-	options.yAxis.title.y = {{#if_eq xAxisPos "top"}}({{width}} * {{aspectRatio}}-55){{else}}-8{{/if_eq}};
-	options.yAxis.title.offset = 
-    {{#if_eq xAxisPos "top"}}
-    	{{#if_eq yAxisPos "left"}}-7{{else}}-120{{/if_eq}}
+	var textWidth = options.yAxis.title.text.length * 6;
+	{{#if_eq xAxisPos "top"}}
+    	{{#if_eq yAxisPos "left"}}
+	options.yAxis.title.align = 'low';
+	options.yAxis.title.offset = 0;
+	options.yAxis.title.y = 10;
+    	{{else}}
+	options.yAxis.title.align = 'low';
+	options.yAxis.title.offset = (-1 * textWidth);
+	options.yAxis.title.y = 10;
+    	{{/if_eq}}
     {{else}}
-    	{{#if_eq yAxisPos "left"}}0{{else}}-50{{/if_eq}}
-    {{/if_eq}};
-
-    {{#if options.legend.enabled}}options.yAxis.title.y=-2;{{/if}}
+    	{{#if_eq yAxisPos "left"}}
+	options.yAxis.title.align = 'high';
+	options.yAxis.title.offset = 0;
+	options.yAxis.title.y = -10;
+    	{{else}}
+	options.yAxis.title.align = 'high';
+	options.yAxis.title.offset = (-1 * textWidth);
+	options.yAxis.title.y = -10;
+    	{{/if_eq}}
+    {{/if_eq}}
     {{!-- Setting rotation to 0 causes axis label to push chart to the right for some text (e.g. "GDP growth percentage" ) and shrinks it in size. Funny enough, rotating 360 degrees eliminates this issue and still keeps the label horizontal.  --}}
 	options.yAxis.title.rotation=360;
 	options.yAxis.title.style={
