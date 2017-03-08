@@ -15,6 +15,8 @@
         <powermock.version>1.5.6</powermock.version>
         <cucumber.version>1.2.5</cucumber.version>
         <docker.ip>localhost</docker.ip>
+        <docker.elastic.http>9266</docker.elastic.http>
+        <docker.elastic.tcp>9366</docker.elastic.tcp>
     </properties>
 
     <dependencies>
@@ -347,8 +349,8 @@
                                     <name>guidof/onswebsite-search:0.1.2</name>
                                     <run>
                                         <ports>
-                                            <port>9200:9200</port>
-                                            <port>9300:9300</port>
+                                            <port>${docker.elastic.http}:9200</port>
+                                            <port>${docker.elastic.tcp}:9300</port>
                                         </ports>
                                         <env>
                                             <http.host>127.0.0.1</http.host>
@@ -356,7 +358,7 @@
                                         </env>
                                         <wait>
                                             <http>
-                                                <url>http://${docker.ip}:9200/</url>
+                                                <url>http://${docker.ip}:${docker.elastic.http}/</url>
                                             </http>
                                             <time>100000</time>
                                         </wait>
@@ -402,6 +404,8 @@
             </activation>
             <properties>
                 <docker.ip>172.17.0.1</docker.ip>
+                <docker.elastic.http>9200</docker.elastic.http>
+                <docker.elastic.tcp>9300</docker.elastic.tcp>
             </properties>
             <build>
                 <pluginManagement>

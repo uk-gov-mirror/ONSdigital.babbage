@@ -9,14 +9,14 @@ resource_types:
       repository: lloydg/s3-resource-simple
 
 resources:
-  - name: feature-load-document-concourse
+  - name: feature-load-content-documents-featureTest
     type: git
     source:
       uri: https://github.com/ONSdigital/babbage.git
-      branch: feature/load-document-content-concourse
+      branch: feature/load-content-documents-featureTest
 
   # Outbound Job to send FeatureTest results to S3
-  - name: feature-load-document-concourse-integration-cucumber
+  - name: feature-load-content-documents-featureTest-integration-cucumber
     type: s3-simple
     source:
       access_key_id: {{aws_access_key_id}}
@@ -26,12 +26,12 @@ resources:
       target: reports
 
 jobs:
-  - name: feature-load-document-concourse-unit
+  - name: feature-load-content-documents-featureTest-unit
     public: true
     plan:
       - get: babbage
         trigger: true
-        resource: feature-load-document-concourse
+        resource: feature-load-content-documents-featureTest
       - task: unit
         file: babbage/ci/unit.yml
-      - put: feature-load-document-concourse-integration-cucumber
+      - put: feature-load-content-documents-featureTest-integration-cucumber
