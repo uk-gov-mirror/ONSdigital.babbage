@@ -330,6 +330,19 @@
     </build>
     <profiles>
         <profile>
+        <id>mavenastic-run</id>
+        <activation>
+            <property>
+                <name>env.CONTAINER</name>
+                <value>mavenastic</value>
+            </property>
+        </activation>
+        <properties>
+            <docker.elastic.http>9200</docker.elastic.http>
+            <docker.elastic.tcp>9300</docker.elastic.tcp>
+        </properties>
+        </profile>
+        <profile>
             <id>docker-run</id>
             <activation>
                 <property>
@@ -408,8 +421,6 @@
             </activation>
             <properties>
                 <docker.ip>172.17.0.1</docker.ip>
-                <docker.elastic.http>9200</docker.elastic.http>
-                <docker.elastic.tcp>9300</docker.elastic.tcp>
             </properties>
             <build>
                 <pluginManagement>
@@ -420,7 +431,6 @@
                             <version>0.19.1</version>
                             <configuration>
                                 <dockerHost>tcp://172.17.0.1:2375</dockerHost>
-
                             </configuration>
                         </plugin>
                     </plugins>
