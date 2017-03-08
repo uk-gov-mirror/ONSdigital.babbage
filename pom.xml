@@ -15,8 +15,8 @@
         <powermock.version>1.5.6</powermock.version>
         <cucumber.version>1.2.5</cucumber.version>
         <docker.ip>localhost</docker.ip>
-        <docker.elastic.http>9266</docker.elastic.http>
-        <docker.elastic.tcp>9366</docker.elastic.tcp>
+        <docker.elastic.http>9200</docker.elastic.http>
+        <docker.elastic.tcp>9300</docker.elastic.tcp>
     </properties>
 
     <dependencies>
@@ -337,6 +337,10 @@
                     <value>!mavenastic</value>
                 </property>
             </activation>
+            <properties>
+                <docker.elastic.http>9266</docker.elastic.http>
+                <docker.elastic.tcp>9366</docker.elastic.tcp>
+            </properties>
             <build>
                 <plugins>
                     <plugin>
@@ -404,8 +408,6 @@
             </activation>
             <properties>
                 <docker.ip>172.17.0.1</docker.ip>
-                <docker.elastic.http>9200</docker.elastic.http>
-                <docker.elastic.tcp>9300</docker.elastic.tcp>
             </properties>
             <build>
                 <pluginManagement>
