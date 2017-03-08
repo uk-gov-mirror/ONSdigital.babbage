@@ -11,7 +11,7 @@
 			from: {{#if_eq orientation "x-axis"}}{{x}}{{else}}{{y}}{{/if_eq}},
 			to: ({{#if_eq orientation "x-axis"}}{{x}}{{else}}{{y}}{{/if_eq}} + {{bandWidth}}),
 			label: {
-				text: '{{{title}}}' 
+				text: '' 
 			},
 			position_sm:{x:{{devices.sm.x}}, y:{{devices.sm.y}} },
 			position_md:{x:{{devices.md.x}}, y:{{devices.md.y}} },
@@ -24,7 +24,7 @@
 			value: {{#if_eq orientation "x-axis"}}{{x}}{{else}}{{y}}{{/if_eq}},
 			width: 2,
 			label: {
-				text: '{{title}}' 
+				text: '' 
 			},
 			position_sm:{x:{{devices.sm.x}}, y:{{devices.sm.y}} },
 			position_md:{x:{{devices.md.x}}, y:{{devices.md.y}} },
