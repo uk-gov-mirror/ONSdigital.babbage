@@ -140,8 +140,10 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 			align:'left',
 			itemStyle: {
 				fontWeight: 'normal',
-				color:'rgb(112, 112,112)',
-				width: 95
+				color:'rgb(112, 112,112)'
+				{{#if_eq chartType 'small-multiples'}} ,
+				width: 110
+				{{/if_eq}}
 	        }
 		},
 		plotOptions: {

@@ -219,6 +219,7 @@ var chartList = [];
                         var tempSeries = chartConfig.series;
                         chartConfig.chart.width = chartWidth/3;
                         chartConfig.chart.height = chartWidth/3;
+                        chartConfig.isSmallMultiple = 'small-multiples';
                         
                         chartConfig.series = [tempSeries[smallMultipleRef]];
                         chartConfig.chart.renderTo = id;
