@@ -1,45 +1,54 @@
 {{#partial "chart-config"}}
-options.chart.type= "heatmap";
-options.legend.enabled = false;
+        options.chart.type= "heatmap";
 
-options.xAxis= {
-    categories: [{{#each categories}}'{{{sub (sup this)}}}',{{/each}}],
+        options.xAxis= {
+            categories: [{{#each categories}}'{{{sub (sup this)}}}',{{/each}}],
         };
 
-options.yAxis= {
+        options.yAxis= {
             categories: [{{#each series}}'{{{sub (sup this)}}}',{{/each}}],
             title: null
         };
 
-options.colorAxis= {
-            min: 0,
-            minColor: '#FFFFFF',
-            maxColor: Highcharts.getOptions().colors[0]
+        options.colorAxis= {
+            min: base,
+            minColor: '#ffffff',
+            maxColor: palette[0]
         };
 
-options.series=[
-    {
-        borderWidth: 1,
-        data: [
-        {{#each data as |datum line|}}
-            {{#each series as |header col|}}
-               [ {{line}}, {{col}}, {{num (lookup this header)}}],
-            {{/each}}
-        {{/each}}
-        ],
-        dataLabels: {
-            enabled: true,
-            color: '#000000'
-        }
-    }  
-];
+        options.legend = {
+            enabled:true,
+            align: 'right',
+            layout: 'vertical',
+            margin: 50,
+            verticalAlign: 'top',
+            y: 25,
+            symbolHeight: 280
+        };
 
-options.tooltip = {
-        formatter: function () {
-            return '<b>' + this.series.xAxis.categories[this.point.x] + '</b>: <br>' +
-                this.series.yAxis.categories[this.point.y] + ', ' + this.point.value;
-        }
-    };
+        options.series=[
+            {
+                borderWidth: 1,
+                data: [
+                {{#each data as |datum line|}}
+                    {{#each series as |header col|}}
+                       [ {{line}}, {{col}}, {{num (lookup this header)}}],
+                    {{/each}}
+                {{/each}}
+                ],
+                dataLabels: {
+                    enabled: true,
+                    color: '#000000'
+                }
+            }  
+        ];
+
+        options.tooltip = {
+            formatter: function () {
+                return '<b>' + this.series.xAxis.categories[this.point.x] + '</b>: <br>' +
+                    this.series.yAxis.categories[this.point.y] + ', ' + this.point.value;
+            }
+        };
 
 {{/partial}}
 
