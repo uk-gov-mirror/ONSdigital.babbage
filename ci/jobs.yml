@@ -2,6 +2,7 @@
 
 
 resource_types:
+   # Lloyds custom S3 simple deployment
   - name: s3-simple
     type: docker-image
     source:
@@ -14,6 +15,7 @@ resources:
       uri: https://github.com/ONSdigital/babbage.git
       branch: feature/load-document-content-concourse
 
+  # Outbound Job to send FeatureTest results to S3
   - name: feature-load-document-concourse-integration-cucumber
     type: s3-simple
     source:
