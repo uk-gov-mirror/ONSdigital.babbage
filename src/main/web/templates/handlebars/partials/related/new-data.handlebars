@@ -6,8 +6,8 @@
 {{/if_all}}
 
 {{#if_any relatedData relatedDatasets datasets (eq type "dataset_landing_page") (eq type "timeseries")}}
-	<div class="{{#if_all relatedDatasets showDataList}}background--mercury padding-left-sm--1 padding-left-md--1 padding-right-sm--1 padding-right-md--1 padding-bottom-sm--2 padding-bottom-md--2{{/if_all}} margin-bottom-sm--2 margin-bottom-md--2 print--hide">
-		<a class="btn btn--primary btn--full-width" href="{{relatedUri}}">
+	<div class="{{#if_any relatedDatasets showDataList}}background--mercury padding-left-sm--1 padding-left-md--1 padding-right-sm--1 padding-top-sm--2 padding-top-md--2 padding-right-md--1 padding-bottom-sm--2 padding-bottom-md--2 border-top--iron-sm border-top--iron-md{{/if_any}} margin-bottom-sm--2 margin-bottom-md--2 print--hide">
+		<a class="" href="{{relatedUri}}">
 			{{!-- if "parent" get the parent title --}}
 			{{#if_eq relatedTitle "parent"}}
 				{{#last breadcrumb}}
