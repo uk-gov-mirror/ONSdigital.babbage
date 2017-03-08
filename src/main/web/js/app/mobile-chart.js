@@ -1,6 +1,6 @@
 $(function() {    
     // if on mobile inject overlay and button elements
-    if ($("body").hasClass("viewport-sm")) {
+    if ($("body").hasClass("viewport-xs")) {
         var markdownChart = $('.markdown-chart');
 
         if (markdownChart.length) {
