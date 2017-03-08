@@ -282,7 +282,7 @@
                                 <include>**/*Feature.java</include>
                             </includes>
                             <systemProperties>
-                                <ELASTIC_SEARCH_PORT>9300</ELASTIC_SEARCH_PORT>
+                                <ELASTIC_SEARCH_PORT>${docker.elastic.tcp}</ELASTIC_SEARCH_PORT>
                                 <ELASTIC_SEARCH_SERVER>${docker.ip}</ELASTIC_SEARCH_SERVER>
                             </systemProperties>
                         </configuration>
