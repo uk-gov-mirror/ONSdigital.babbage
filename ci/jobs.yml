@@ -1,6 +1,6 @@
 ---
 
-#replace _feature-load-document-concourse_ with the __branch name__
+
 resource_types:
   - name: s3-simple
     type: docker-image
