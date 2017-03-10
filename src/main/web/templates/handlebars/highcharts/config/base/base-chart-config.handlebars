@@ -225,7 +225,9 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 			useHTML:true
 		},
 		exporting: {
-        	enabled: false // hide button
+        	enabled: false {{#if_eq chartType 'small-multiples'}}, 
+        	sourceWidth:700,
+        	sourceHeight: 700 * {{aspectRatio}}{{/if_eq}}
     	}
 	};
 
