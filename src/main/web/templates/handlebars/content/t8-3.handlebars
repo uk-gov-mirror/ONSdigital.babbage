@@ -275,62 +275,6 @@
         var datasetPath = datasetID + '/editions/' + datasetEdition + '/versions/' + datasetVersion;
         var apiPath = '/dd/api/datasets/' + datasetID;
 
-//        function getDimensions(callback) {
-//            if (!window.fetch) {
-//                var js = document.createElement('script');
-//                js.src = 'https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.2/fetch.min.js';
-//                js.onload = function() {
-//                    renderDimensions();
-//                };
-//                js.onerror = function() {
-//                    console.log('Error getting fetch API polyfill');
-//                };
-//                document.head.appendChild(js);
-//                return;
-//            }
-//
-//            fetch(apiPath, {method: 'GET', credentials: 'include'})
-//                    .then(function(response){
-//                        return response.json()
-//                    })
-//                    .then(function(response){
-//                        callback(response);
-//                    });
-//        }
-//
-//        function buildDimensions(data) {
-//            console.log(data);
-//            var HTML = ['<h3>Dimensions</h3><ul>'];
-//            var dimensionsLength = data.dimensions.length;
-//            var i = 0;
-//
-//            for (i; i < dimensionsLength; i++) {
-//                console.log(data.dimensions[i]);
-//                HTML.push(
-//                        '<li class="flush">' + data.dimensions[i].name+ '</li>'
-//                )
-//            }
-//
-//            HTML.push('</ul>');
-//            return HTML.join('');
-//        }
-//
-//        function renderDimensions() {
-//            getDimensions(function(response) {
-//                document.getElementById('js-dd-dimensions').innerHTML = buildDimensions(response);
-//            });
-//
-//            document.getElementById('dataset-edition').innerHTML = datasetEdition;
-//
-//            document.getElementById('view-dataset-details').setAttribute('href', '/dd/datasets/' + datasetPath);
-//            document.getElementById('dataset-link').setAttribute('href', '/dd/datasets/' + datasetPath + '/dimensions');
-//            document.getElementById('full-dataset-link').setAttribute('href', '/dd/datasets/' + datasetPath + '/download');
-//        }
-//
-//        renderDimensions();
-
-
-
         function getData(callback, url) {
             fetch(apiPath, {method: 'GET', credentials: 'include'})
                     .then(function(response){
@@ -347,7 +291,6 @@
                         return response.json()
                     })
                     .then(function(response){
-                        console.log(response);
                         var version = '<div class="js-show-hide">' +
                                 '<div class="show-hide show-hide--light">' +
                                 '<div class="js-show-hide__title">' +
@@ -369,7 +312,6 @@
         }
 
         function buildVersions(data) {
-            console.log(data);
             var HTML = ['<h2 class="border-bottom--iron-sm border-bottom--iron-md">Previous versions</h2>'];
             var versionsLength = data.length;
             var i = 1;
@@ -390,32 +332,8 @@
 
                 getAndBuildVersions(datasetAPIUrl, i, buttons);
 
-                //getData(function(response){
-                    //console.log(response);
-                    //HTML.push(
-                        //'<div class="js-show-hide">' +
-                        //'<div class="show-hide show-hide--light">' +
-                        //'<div class="js-show-hide__title">' +
-                        //'<h3 class="show-hide__title">' +
-                        //response.datasetId +
-                        //'</h3>' +
-                        //'</div>' +
-                        //'<div class="js-show-hide__content">' +
-                        //'<p class="flush">Release date: ' + response.metadata.releaseDate + ' </p>' +
-                        //'<p class="flush">Last updated: ' + response.metadata.releaseDate + ' - <a href="{{uri}}/current">view previous versions</a></p>' +
-                        //'<a class="btn btn--primary btn--thick btn--wide font-size--17 margin-top--1" href="'+ buttonUrl + '">' +
-                        //'Filter and download</a>' +
-                        //'</div>' +
-                        //'</div>' +
-                        //'</div>'
-                    //)
-                //}, datasetAPIUrl)
-
             }
-            //HTML.push('</div>');
-            //console.log(HTML.join(''));
             return HTML.join('');
-            //document.getElementById('js-dataset-versions').innerHTML = HTML.join('');
         }
 
         function getDimensions(uri, callback) {
@@ -458,11 +376,8 @@
             }
 
             getData(function(response){
-                console.log('get data response > ', response);
-
                 if (response.editions.length > 1) {
                     document.getElementById('js-dataset-versions').innerHTML = buildVersions(response.editions);
-                    //buildVersions(response.editions);
                 }
 
                 getDimensions(response.latest.url, function(response) {
