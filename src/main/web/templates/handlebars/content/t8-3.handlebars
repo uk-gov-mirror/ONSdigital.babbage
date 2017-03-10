@@ -191,7 +191,6 @@
 
 
                         {{!-- PREVIOUS EDITIONS --}}
-                        <h2 class="border-bottom--iron-sm border-bottom--iron-md">Previous versions</h2>
                         <div id="js-dataset-versions"></div>
 
                     </div>
@@ -371,7 +370,7 @@
 
         function buildVersions(data) {
             console.log(data);
-            var HTML = [];
+            var HTML = ['<h2 class="border-bottom--iron-sm border-bottom--iron-md">Previous versions</h2>'];
             var versionsLength = data.length;
             var i = 1;
 
