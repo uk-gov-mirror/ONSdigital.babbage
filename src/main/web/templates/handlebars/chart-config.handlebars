@@ -7,6 +7,7 @@
 	{{#if_eq chartType "rotated-barline"}}{{> highcharts/config/barline-chart-config rotated=true}}{{/if_eq}}
 	{{#if_eq chartType "scatter"}}{{> highcharts/config/scatter-chart-config}}{{/if_eq}}
 	{{#if_eq chartType "pie"}}{{> highcharts/config/pie-chart-config}}{{/if_eq}}
+	{{#if_eq chartType "donut"}}{{> highcharts/config/pie-chart-config donut=true}}{{/if_eq}}
 	{{#if_eq chartType "population"}}{{> highcharts/config/population-chart-config}}{{/if_eq}}
 	{{#if_eq chartType "confidence-interval"}}{{> highcharts/config/confidence-interval-chart-config}}{{/if_eq}}
 	{{#if_eq chartType "rotated-confidence-interval"}}{{> highcharts/config/confidence-interval-chart-config rotated=true}}{{/if_eq}}
