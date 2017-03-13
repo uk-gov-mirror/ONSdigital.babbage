@@ -121,6 +121,7 @@ var chartList = [];
             },
             function() {
                 var chartConfig = window["chart-" + chartId];
+
                 if (chartConfig) {
                     // small multiples have an attribute to show specific series
                     var smallMultipleSeries = $this.data('series');
@@ -130,11 +131,12 @@ var chartList = [];
 
                     var aspectRatio = 1;
                     var labelInterval = 1;
-                    //if we have devices
+                    //if we have devices then set annotations dependant of viewport
                     if(chartConfig.devices){
                         if(chartConfig.devices[viewport]){
 
                             if(!chartConfig.devices[viewport].isHidden){
+
 
                                 //set the aspect ratio
                                 aspectRatio = chartConfig.devices[viewport].aspectRatio;
@@ -147,37 +149,43 @@ var chartList = [];
                                         chartConfig.annotations[idx].y = chartConfig.annotations[idx]['position_'+viewport].y;
                                     })
                                 }
-                                //loop thru plotline/plotbands
+                                //loop thru X AXIS plotline/plotbands
                                 if(chartConfig.xAxis.plotLines){
-                                if(chartConfig.xAxis.plotLines.length>0){
-                                    $.each(chartConfig.xAxis.plotLines, function(idx, itm){
-                                        chartConfig.xAxis.plotLines[idx].value = chartConfig.xAxis.plotLines[idx]['position_'+viewport].x;
-                                    })
+
+                                    if(chartConfig.xAxis.plotLines.length>0){
+                                        $.each(chartConfig.xAxis.plotLines, function(idx, itm){
+                                            chartConfig.xAxis.plotLines[idx].value = chartConfig.xAxis.plotLines[idx]['position_'+viewport].x;
+                                        })
+                                    }
+
                                 }
-                                }
-                                //loop thru plotline/plotbands
                                 if(chartConfig.xAxis.plotBands){
-                                if(chartConfig.xAxis.plotBands.length>0){
-                                    $.each(chartConfig.xAxis.plotBands, function(idx, itm){
-                                        chartConfig.xAxis.plotBands[idx].value = chartConfig.xAxis.plotBands[idx]['position_'+viewport].x;
-                                    })
+
+                                    if(chartConfig.xAxis.plotBands.length>0){
+                                        $.each(chartConfig.xAxis.plotBands, function(idx, itm){
+                                            chartConfig.xAxis.plotBands[idx].value = chartConfig.xAxis.plotBands[idx]['position_'+viewport].x;
+                                        })
+                                    }
+
                                 }
-                                }
-                                //loop thru plotline/plotbands
+                                //loop thru Y AXIS plotline/plotbands
                                 if(chartConfig.yAxis.plotLines){
-                                if(chartConfig.yAxis.plotLines.length>0){
-                                    $.each(chartConfig.yAxis.plotLines, function(idx, itm){
-                                        chartConfig.yAxis.plotLines[idx].value = chartConfig.yAxis.plotLines[idx]['position_'+viewport].y;
-                                    })
+
+                                    if(chartConfig.yAxis.plotLines.length>0){
+                                        $.each(chartConfig.yAxis.plotLines, function(idx, itm){
+                                            chartConfig.yAxis.plotLines[idx].value = chartConfig.yAxis.plotLines[idx]['position_'+viewport].y;
+                                        })
+                                    }
+
                                 }
-                                }
-                                //loop thru plotline/plotbands
                                 if(chartConfig.yAxis.plotBands){
-                                if(chartConfig.yAxis.plotBands.length>0){
-                                    $.each(chartConfig.yAxis.plotBands, function(idx, itm){
-                                        chartConfig.yAxis.plotBands[idx].value = chartConfig.yAxis.plotBands[idx]['position_'+viewport].y;
-                                    })
-                                }
+
+                                    if(chartConfig.yAxis.plotBands.length>0){
+                                        $.each(chartConfig.yAxis.plotBands, function(idx, itm){
+                                            chartConfig.yAxis.plotBands[idx].value = chartConfig.yAxis.plotBands[idx]['position_'+viewport].y;
+                                        })
+                                    }
+
                                 }
 
                             }else{
@@ -227,10 +235,16 @@ var chartList = [];
                         chartList.push(chart);
 
                     }else{
-                        // Build chart from config endpoint
-                        chartConfig.chart.renderTo = id;
-                        chartConfig.chart.height = chartConfig.chart.width * aspectRatio;
-                        new Highcharts.Chart(chartConfig);
+                        //console.log(chartConfig);
+                        //console.log('type ' + chartConfig.chart.type);
+                        if(chartConfig.chart.type==='table'){
+
+                        }else{
+                            // Build chart from config endpoint
+                            chartConfig.chart.renderTo = id;
+                            chartConfig.chart.height = chartConfig.chart.width * aspectRatio;
+                            new Highcharts.Chart(chartConfig);
+                        }
                     }
 
                     delete window["chart-" + chartId]; //clear data from window object after rendering

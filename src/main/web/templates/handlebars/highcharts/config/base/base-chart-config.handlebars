@@ -91,9 +91,9 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 			{{#if yMin }}min: base,{{/if}}
 			{{#if yMax }}max: {{yMax}},{{/if}}
 			{{#if hasLineBreak }}breaks: [{
-		                from: yAxisBreakStart,
-		                to: yAxisBreakEnd
-		    	}], {{/if}}
+						from: yAxisBreakStart,
+						to: yAxisBreakEnd
+				}], {{/if}}
 			title: {
 				text: "{{{sub (sup unit)}}}",
 				useHTML:true,
@@ -229,6 +229,7 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
         	sourceWidth:700,
         	sourceHeight: 700 * {{aspectRatio}}{{/if_eq}}
     	}
+
 	};
 
 	{{#if annotations }}
