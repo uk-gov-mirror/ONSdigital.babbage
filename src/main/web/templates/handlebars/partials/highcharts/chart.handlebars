@@ -45,7 +45,7 @@
       <tbody>
       {{#each data as |datum line|}}
           <tr>
-              <th scope='row'>{{lookup ../categories @index}}</th>{{#each series as |header col|}}
+              <th class="left" scope='row'>{{lookup ../categories @index}}</th>{{#each series as |header col|}}
               <td>{{num (lookup this header)}}</td>{{/each}}
           </tr>
           {{/each}}
