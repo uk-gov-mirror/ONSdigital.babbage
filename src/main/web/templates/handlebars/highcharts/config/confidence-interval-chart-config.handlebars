@@ -2,7 +2,9 @@
 options.legend.enabled=false; 
 options.series=[{
 			name: "{{{sub (sup headers.1)}}}",
+			{{#if scatter}}type: "scatter",{{else}}
 			type: "{{#if rotated}}bar{{else}}column{{/if}}",
+			{{/if}}
 			data: [{{#each data}}
 			{{#if_eq highlight (lookup categories @index)}}
 				{color:HIGHLIGHT_COLOUR,y:{{num (lookup this headers.1)}} },
