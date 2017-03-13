@@ -30,7 +30,7 @@
 
 {{#partial "block-content"}}
     <div class="wrapper">
-        <div class="col-wrap">
+        <div class="col-wrap margin-bottom--4">
             <div class="col col--lg-two-thirds col--md-two-thirds">
 
                 <div class="col col--md-31 col--lg-39">
@@ -182,8 +182,8 @@
                         {{!-- LATEST EDITION --}}
                         <h2 class="border-bottom--iron-sm border-bottom--iron-md">Latest edition</h2>
                         <h3><span id="dataset-edition"></span></h3>
-                        <p class="flush">Release date: {{df description.releaseDate}}</p>
-                        <p class="flush">Last updated: {{df description.releaseDate}}</p>
+                        <p class="flush">Release date: {{df description.releaseDate}}<br/>
+                        Last updated: {{df description.releaseDate}}</p>
 
                         <a class="btn btn--primary btn--thick btn--wide font-size--17 margin-top--1" id="dataset-link" href="">Filter and download</a>
 
@@ -191,10 +191,26 @@
 
 
                         {{!-- PREVIOUS EDITIONS --}}
-                        <div id="js-dataset-versions"></div>
+                        <h2 class="border-bottom--iron-sm border-bottom--iron-md">Previous editions</h2>
+
+                        {{#loop 6}}
+                            <div class="js-show-hide" id="js-show-hide--{{@index}}" style="display: none;">
+                                <div class="show-hide show-hide--light">
+                                    <div class="js-show-hide__title">
+                                        <h2 class="show-hide__title" id="js-show-hide__title--{{@index}}">
+
+                                        </h2>
+                                    </div>
+                                    <div class="js-show-hide__content" >
+                                        <div id="js-show-hide__content--{{@index}}"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        {{/loop}}
 
                     </div>
                 </div>
+
 
                 {{!-- INFORMATION AND NOTES --}}
                 {{#if section.markdown}}
@@ -291,50 +307,34 @@
                         return response.json()
                     })
                     .then(function(response){
-                        var version = '<div class="js-show-hide">' +
-                                '<div class="show-hide show-hide--light">' +
-                                '<div class="js-show-hide__title">' +
-                                '<h3 class="show-hide__title">' +
-                                response.edition +
-                                '</h3>' +
-                                '</div>' +
-                                '<div class="js-show-hide__content">' +
-                                '<p class="flush">Release date: ' + response.metadata.releaseDate + ' </p>' +
-                                '<p class="flush">Last updated: ' + response.metadata.releaseDate + ' </p>' +
+                        var title = response.edition;
+                        var body = '<p class="flush">Release date: ' + response.metadata.releaseDate + ' <br/>' +
+                                'Last updated: ' + response.metadata.releaseDate + ' </p>' +
                                 '<a class="btn btn--primary btn--thick btn--wide font-size--17 margin-top--1" href="'+button.customise+'">' +
                                 'Filter and download</a>' +
-                                '<p class="font-size--16"><a href="'+button.downloadFull+'">Download the complete dataset</a> | <a href="'+button.viewDetails+'">View details</a></p>' +
-                                '</div>' +
-                                '</div>' +
-                                '</div>'
-                        document.getElementById('js-dataset-version--' + index).innerHTML = version;
+                                '<p class="font-size--16"><a href="'+button.downloadFull+'">Download the complete dataset</a> | <a href="'+button.viewDetails+'">View details</a></p>';
+                        document.getElementById('js-show-hide__title--' + index).innerHTML = title;
+                        document.getElementById('js-show-hide__content--' + index ).innerHTML = body;
+                        document.getElementById('js-show-hide--' + index).style.display = 'block';
                     });
         }
 
         function buildVersions(data) {
-            var HTML = ['<h2 class="border-bottom--iron-sm border-bottom--iron-md">Previous editions</h2>'];
             var versionsLength = data.length;
             var i = 1;
 
             for (i; i < versionsLength; i++) {
                 var datasetAPIUrl = '/dd/api/datasets/' + datasetID + '/editions/' + data[i].label + '/versions/' + data[i].versions[0];
-                var buttonUrl = '/dd/datasets/' + datasetID + '/editions/' + data[i].label + '/versions/' + data[i].versions[0];
+                var datasetPath = '/dd/datasets/' + datasetID + '/editions/' + data[i].label + '/versions/' + data[i].versions[0];
                 var buttons = {
-                    customise: '/dd/datasets/' + datasetID + '/editions/' + data[i].label + '/versions/' + data[i].versions[0] + '/dimensions',
-                    downloadFull: '/dd/datasets/' + datasetID + '/editions/' + data[i].label + '/versions/' + data[i].versions[0] + '/download',
-                    viewDetails: '/dd/datasets/' + datasetID + '/editions/' + data[i].label + '/versions/' + data[i].versions[0]
-                }
-
-                var version =
-
-                HTML.push(
-                    '<div id="js-dataset-version--' + i + '"></div>'
-                );
+                    customise:  datasetPath + '/dimensions',
+                    downloadFull: datasetPath + '/download',
+                    viewDetails: datasetPath
+                };
 
                 getAndBuildVersions(datasetAPIUrl, i, buttons);
 
             }
-            return HTML.join('');
         }
 
         function getDimensions(uri, callback) {
@@ -378,7 +378,7 @@
 
             getData(function(response){
                 if (response.editions.length > 1) {
-                    document.getElementById('js-dataset-versions').innerHTML = buildVersions(response.editions);
+                    buildVersions(response.editions);
                 }
 
                 getDimensions(response.latest.url, function(response) {
