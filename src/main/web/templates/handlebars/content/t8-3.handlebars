@@ -301,7 +301,7 @@
                                 '<div class="js-show-hide__content">' +
                                 '<p class="flush">Release date: ' + response.metadata.releaseDate + ' </p>' +
                                 '<p class="flush">Last updated: ' + response.metadata.releaseDate + ' </p>' +
-                                '<a class="btn btn--primary btn--thick btn--wide font-size--17 margin-top--1" href="'+response.dimensionsUrl+'">' +
+                                '<a class="btn btn--primary btn--thick btn--wide font-size--17 margin-top--1" href="'+button.customise+'">' +
                                 'Filter and download</a>' +
                                 '<p class="font-size--16"><a href="'+button.downloadFull+'">Download the complete dataset</a> | <a href="'+button.viewDetails+'">View details</a></p>' +
                                 '</div>' +
@@ -320,6 +320,7 @@
                 var datasetAPIUrl = '/dd/api/datasets/' + datasetID + '/editions/' + data[i].label + '/versions/' + data[i].versions[0];
                 var buttonUrl = '/dd/datasets/' + datasetID + '/editions/' + data[i].label + '/versions/' + data[i].versions[0];
                 var buttons = {
+                    customise: '/dd/datasets/' + datasetID + '/editions/' + data[i].label + '/versions/' + data[i].versions[0] + '/dimensions',
                     downloadFull: '/dd/datasets/' + datasetID + '/editions/' + data[i].label + '/versions/' + data[i].versions[0] + '/download',
                     viewDetails: '/dd/datasets/' + datasetID + '/editions/' + data[i].label + '/versions/' + data[i].versions[0]
                 }
