@@ -6,9 +6,7 @@
 		name: "{{{sub (sup this)}}}",
 			{{#if_eq highlight this}}color:HIGHLIGHT_COLOUR,{{/if_eq}}
 			{{#if isStacked }}legendIndex: (-{{@index}}),{{/if}} 
-			{{!-- 
-			// TODO: need to set a hasNulls value to only show some lines as dashed...
-			{{#if hasConnectNull}}dashStyle: 'longdash',{{/if}}  --}}
+			{{#if lineTypes }}dashStyle: '{{{lookup lineTypes this}}}',{{/if}} 
 			data: [{{#each data}}
 				{{#if_eq highlight (lookup categories @index)}}
 						{
