@@ -30,7 +30,7 @@
 
 {{#partial "block-content"}}
     <div class="wrapper">
-        <div class="col-wrap">
+        <div class="col-wrap margin-bottom--4">
             <div class="col col--lg-two-thirds col--md-two-thirds">
 
                 <div class="col col--md-31 col--lg-39">
@@ -172,115 +172,45 @@
                         {{/each}}
                     {{/if}}
 
+                    {{!-- DATA DISCOVERY JS ENHANCEMENT --}}
+                    <div id="js-dd-block" style="display:none">
 
 
-                    {{!-- DATA DISCOVERY JS ENHANCEMENTS TO GET DIMENSION DATA FROM DD API --}}
-                    {{#if_any
-                            (eq uri "/peoplepopulationandcommunity/housing/datasets/membersofthearmedforcesbyresidencetypebysexbyageaf001ew")
-                            (eq uri "/economy/inflationandpriceindices/datasets/consumerpricesindexcoicop")
-                            (eq uri "/businessindustryandtrade/business/businessservices/datasets/annualbusinesssurveynumberofenterprises")
-                            (eq uri "/businessindustryandtrade/business/businessservices/datasets/annualbusinesssurveyemployment")
-                            (eq uri "/businessindustryandtrade/business/businessservices/datasets/annualbusinesssurveyukbusinessvalue")
-                            (eq uri "/economy/inflationandpriceindices/datasets/consumerpricesindexspecialaggregate")
-                            (eq uri "/businessindustryandtrade/manufacturingandproductionindustry/datasets/ukmanufacturerssalesbyproduct")
-                    }}
+                        {{!-- DIMENSIONS --}}
                         <div id="js-dd-dimensions"></div>
-                        <h2 class="margin-bottom--1">Editions</h2>
-                        <div class="js-show-hide margin-bottom--6">
-                            <div class="show-hide show-hide--light border-top--iron-sm border-top--iron-md border-bottom--iron-sm border-bottom--iron-md">
-                                <div class="js-show-hide__title is-shown">
-                                    <h3 class="show-hide__title flush">Current</h3>
-                                </div>
-                                <div class="js-show-hide__content">
-                                    <p class="flush">Release date: {{df description.releaseDate}}</p>
-                                    <a class="btn btn--primary btn--thick btn--wide font-size--17 margin-bottom--3" id="dataset-link" href="">View details and download options</a>
+
+                        {{!-- LATEST EDITION --}}
+                        <h2 class="border-bottom--iron-sm border-bottom--iron-md">Latest edition</h2>
+                        <h3><span id="dataset-edition"></span></h3>
+                        <p class="flush">Release date: {{df description.releaseDate}}<br/>
+                        Last updated: {{df description.releaseDate}}</p>
+
+                        <a class="btn btn--primary btn--thick btn--wide font-size--17 margin-top--1" id="dataset-link" href="">Filter and download</a>
+
+                        <p class="font-size--16"><a id="full-dataset-link">Download the complete dataset</a> | <a id="view-dataset-details">View details</a></p>
+
+
+                        {{!-- PREVIOUS EDITIONS --}}
+                        <h2 class="border-bottom--iron-sm border-bottom--iron-md">Previous editions</h2>
+
+                        {{#loop 6}}
+                            <div class="js-show-hide border-bottom--iron-sm border-bottom--iron-md" id="js-show-hide--{{@index}}" style="display: none; margin-bottom: 0;">
+                                <div class="show-hide show-hide--light">
+                                    <div class="js-show-hide__title">
+                                        <h3 class="show-hide__title" id="js-show-hide__title--{{@index}}">
+
+                                        </h3>
+                                    </div>
+                                    <div class="js-show-hide__content" >
+                                        <div id="js-show-hide__content--{{@index}}"></div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        {{/loop}}
 
-                        <script>
-                            function enhanceDataset() {
-                                var dataset = document.getElementById('dataset-id');
-
-                                if (!dataset) {
-                                    console.warn('No dataset ID found for a DD page. Please add it as the attribute "data-id" in a matching <span id="dataset-id" class="hidden">');
-                                    return;
-                                }
-
-                                var datasetID = dataset.getAttribute('data-id');
-                                var datasetEdition = dataset.getAttribute('data-edition');
-                                var datasetVersion = dataset.getAttribute('data-version');
-
-                                if (!datasetID) {
-                                    console.log('No dataset ID included in <span>');
-                                    return;
-                                }
-                                if (!datasetEdition) {
-                                    console.log('No dataset edition included in <span>');
-                                    return
-                                }
-                                if (!datasetVersion) {
-                                    console.log('No dataset version included in <span>');
-                                    return
-                                }
-
-                                var datasetPath = datasetID + '/editions/' + datasetEdition + '/versions/' + datasetVersion
-                                var apiPath = '/dd/api/datasets/' + datasetPath;
-
-                                function getDimensions(callback) {
-                                    if (!window.fetch) {
-                                        var js = document.createElement('script');
-                                        js.src = 'https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.2/fetch.min.js';
-                                        js.onload = function() {
-                                            renderDimensions();
-                                        };
-                                        js.onerror = function() {
-                                            console.log('Error getting fetch API polyfill');
-                                        };
-                                        document.head.appendChild(js);
-                                        return;
-                                    }
-
-                                    fetch(apiPath, {method: 'GET', credentials: 'include'})
-                                        .then(function(response){
-                                            return response.json()
-                                        })
-                                        .then(function(response){
-                                            callback(response);
-                                        });
-                                }
-
-                                function buildDimensions(data) {
-                                    var HTML = ['<h3>Dimensions</h3><ul>'];
-                                    var dimensionsLength = data.dimensions.length;
-                                    var i = 0;
-
-                                    for (i; i < dimensionsLength; i++) {
-                                        HTML.push(
-                                            '<li class="flush">' + data.dimensions[i].name+ '</li>'
-                                        )
-                                    }
-
-                                    HTML.push('</ul>');
-                                    return HTML.join('');
-                                }
-
-                                function renderDimensions() {
-                                    getDimensions(function(response) {
-                                        document.getElementById('js-dd-dimensions').innerHTML = buildDimensions(response);
-                                    });
-
-                                    document.getElementById('dataset-link').setAttribute('href', '/dd/datasets/' + datasetPath);
-                                }
-
-                                document.addEventListener('DOMContentLoaded', renderDimensions, false);
-                            }
-
-                            enhanceDataset();
-
-                        </script>
-                    {{/if_any}}
+                    </div>
                 </div>
+
 
                 {{!-- INFORMATION AND NOTES --}}
                 {{#if section.markdown}}
@@ -298,6 +228,7 @@
             <div class="col col--lg-one-third col--md-one-third margin-top margin-bottom">
 
                 {{!-- Related data --}}
+                <h3 class="tiles__title-h3 tiles__title-h3--nav">More data on this topic</h3>
                 {{> partials/related/new-data showDataList=true relatedUri="../datalist?filter=datasets" relatedTitle="parent"}}
 
                 {{!-- Time series explorer --}}
@@ -330,6 +261,149 @@
         </div>
     </div>
 {{/partial}}
+
+<script>
+    function enhanceDDBlock() {
+        var dataset = document.getElementById('dataset-id');
+
+        if (!dataset) {
+            console.warn('No dataset ID found for a DD page. Please add it as the attribute "data-id" in a matching <span id="dataset-id" class="hidden">');
+            return;
+        }
+
+        var datasetID = dataset.getAttribute('data-id');
+        var datasetEdition = dataset.getAttribute('data-edition');
+        var datasetVersion = dataset.getAttribute('data-version');
+
+        if (!datasetID) {
+            console.log('No dataset ID included in <span>');
+            return;
+        }
+        if (!datasetEdition) {
+            console.log('No dataset edition included in <span>');
+            return
+        }
+        if (!datasetVersion) {
+            console.log('No dataset version included in <span>');
+            return
+        }
+
+        var datasetPath = datasetID + '/editions/' + datasetEdition + '/versions/' + datasetVersion;
+        var apiPath = '/dd/api/datasets/' + datasetID;
+
+        function getData(callback, url) {
+            fetch(apiPath, {method: 'GET', credentials: 'include'})
+                    .then(function(response){
+                        return response.json()
+                    })
+                    .then(function(response){
+                        callback(response);
+                    });
+        }
+
+        function getAndBuildVersions(url, index, button) {
+            fetch(url, {method: 'GET', credentials: 'include'})
+                    .then(function(response){
+                        return response.json()
+                    })
+                    .then(function(response){
+                        var title = response.edition;
+                        var body = '<p class="flush">Release date: ' + response.metadata.releaseDate + ' <br/>' +
+                                'Last updated: ' + response.metadata.releaseDate + ' </p>' +
+                                '<a class="btn btn--primary btn--thick btn--wide font-size--17 margin-top--1" href="'+button.customise+'">' +
+                                'Filter and download</a>' +
+                                '<p class="font-size--16"><a href="'+button.downloadFull+'">Download the complete dataset</a> | <a href="'+button.viewDetails+'">View details</a></p>';
+                        document.getElementById('js-show-hide__title--' + index).innerHTML = title;
+                        document.getElementById('js-show-hide__content--' + index ).innerHTML = body;
+                        document.getElementById('js-show-hide--' + index).style.display = 'block';
+                    });
+        }
+
+        function buildVersions(data) {
+            var versionsLength = data.length;
+            var i = 1;
+
+            for (i; i < versionsLength; i++) {
+                var datasetAPIUrl = '/dd/api/datasets/' + datasetID + '/editions/' + data[i].label + '/versions/' + data[i].versions[0];
+                var datasetPath = '/dd/datasets/' + datasetID + '/editions/' + data[i].label + '/versions/' + data[i].versions[0];
+                var buttons = {
+                    customise:  datasetPath + '/dimensions',
+                    downloadFull: datasetPath + '/download',
+                    viewDetails: datasetPath
+                };
+
+                getAndBuildVersions(datasetAPIUrl, i, buttons);
+
+            }
+        }
+
+        function getDimensions(uri, callback) {
+            fetch(uri, {method: 'GET', credentials: 'include'})
+                    .then(function(response){
+                        return response.json()
+                    })
+                    .then(function(response){
+                        callback(response);
+                    });
+        }
+
+        function buildDimensions(data) {
+            var HTML = ['<h3>Dimensions</h3><ul>'];
+            var dimensionsLength = data.dimensions.length;
+            var i = 0;
+
+            for (i; i < dimensionsLength; i++) {
+                HTML.push(
+                    '<li class="flush">' + data.dimensions[i].name+ '</li>'
+                )
+            }
+
+            HTML.push('</ul>');
+            return HTML.join('');
+        }
+
+        function renderDDBlock() {
+            if (!window.fetch) {
+                var js = document.createElement('script');
+                js.src = 'https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.2/fetch.min.js';
+                js.onload = function() {
+                    renderDDBlock();
+                };
+                js.onerror = function() {
+                    console.log('Error getting fetch API polyfill');
+                };
+                document.head.appendChild(js);
+                return;
+            }
+
+            getData(function(response){
+                if (response.editions.length > 1) {
+                    buildVersions(response.editions);
+                }
+
+                getDimensions(response.latest.url, function(response) {
+                    document.getElementById('js-dd-dimensions').innerHTML = buildDimensions(response);
+                });
+            });
+
+            document.getElementById('dataset-edition').innerHTML = datasetEdition;
+            document.getElementById('view-dataset-details').setAttribute('href', '/dd/datasets/' + datasetPath);
+            document.getElementById('dataset-link').setAttribute('href', '/dd/datasets/' + datasetPath + '/dimensions');
+            document.getElementById('full-dataset-link').setAttribute('href', '/dd/datasets/' + datasetPath + '/download');
+
+
+        }
+
+        renderDDBlock();
+
+        /// show DD block
+        document.getElementById('js-dd-block').style.display = "block";
+
+    }
+
+    document.addEventListener('DOMContentLoaded', enhanceDDBlock, false);
+
+</script>
 
 {{!-- Inheriting from statistics template --}}
 {{> content/base/statistics typeLabel=labels.dataset}}
