@@ -326,21 +326,56 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.5.0</version>
+                <executions>
+                    <execution>
+                        <id>default-cli</id>
+                        <goals>
+                            <goal>java</goal>
+                        </goals>
+                        <phase>verify</phase>
+                        <configuration>
+                            <mainClass>net.sourceforge.plantuml.Run</mainClass>
+                            <arguments>
+                                <argument>-o</argument>
+                                <argument>${basedir}/target/plantuml</argument>
+                                <argument>${basedir}/documentation/**/*.puml</argument>
+                            </arguments>
+                            <includePluginDependencies>true</includePluginDependencies>
+                            <includeProjectDependencies>false</includeProjectDependencies>
+                            <executableDependency>
+                                <groupId>net.sourceforge.plantuml</groupId>
+                                <artifactId>plantuml</artifactId>
+                            </executableDependency>
+                        </configuration>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>net.sourceforge.plantuml</groupId>
+                        <artifactId>plantuml</artifactId>
+                        <version>8057</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
         </plugins>
     </build>
     <profiles>
         <profile>
-        <id>mavenastic-run</id>
-        <activation>
-            <property>
-                <name>env.CONTAINER</name>
-                <value>mavenastic</value>
-            </property>
-        </activation>
-        <properties>
-            <docker.elastic.http>9200</docker.elastic.http>
-            <docker.elastic.tcp>9300</docker.elastic.tcp>
-        </properties>
+            <id>mavenastic-run</id>
+            <activation>
+                <property>
+                    <name>env.CONTAINER</name>
+                    <value>mavenastic</value>
+                </property>
+            </activation>
+            <properties>
+                <docker.elastic.http>9200</docker.elastic.http>
+                <docker.elastic.tcp>9300</docker.elastic.tcp>
+            </properties>
         </profile>
         <profile>
             <id>docker-run</id>
@@ -361,7 +396,7 @@
                         <artifactId>docker-maven-plugin</artifactId>
                         <version>0.19.1</version>
                         <configuration>
-                             <images>
+                            <images>
                                 <image>
                                     <name>guidof/onswebsite-search:0.1.2</name>
                                     <run>

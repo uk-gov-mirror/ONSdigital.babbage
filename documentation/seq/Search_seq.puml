@@ -1,0 +1,26 @@
+@startuml
+hide footbox
+title Search API
+
+!include defBuildSearchQuery.def
+!include defSearch.def
+actor ONSWebsiteUser
+
+autonumber
+ONSWebsiteUser -> Search : search website
+activate Search
+Search  -> SearchRequestHelper: ""extractSearchTerm(HttpServletRequest)""
+note right : Extracts the term from the Http Request
+Search  <-- SearchRequestHelper: searchTerm
+Search -> Search : ""queries()""
+    note right of Search : ""queries(HttpServletRequest request,""\n\t\t ""String searchTerm,""\n\t\t ""boolean searchAddContent)""
+    activate Search
+    buildSearchQuery(Search)
+    Search <-- Search : queries
+    deactivate Search
+
+    search(Search)
+ONSWebsiteUser <-- Search : results
+deactivate Search
+
+@enduml

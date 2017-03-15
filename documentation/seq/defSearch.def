@@ -1,0 +1,42 @@
+@startuml
+!definelong search(Caller)
+
+Caller -> SearchUtils : ""search()""
+activate SearchUtils
+
+alt  searchTerm is null
+    SearchUtils -> SearchUtils : build buildResponse(request, listType, null)
+    note left of SearchUtils : If the client has not submitted a search term
+    activate SearchUtils
+    SearchUtils <-- SearchUtils : httpResponse
+    Search <-- SearchUtils : httpResponse
+deactivate SearchUtils
+else !filtered && had matching TimeSeries
+    SearchUtils -> SearchUtils :  searchTimeSeriesUri(searchTerm);
+
+    create BabbageDirectResponse
+    SearchUtils -> BabbageDirectResponse : new
+    Search <-- SearchUtils : return BabbageDirectResponse
+
+end
+    SearchUtils -> SearchUtils : ""searchAll(SearchQueries)""
+
+activate SearchUtils
+SearchUtils <-- SearchUtils : results
+deactivate SearchUtils
+alt searchDepartments?
+    SearchUtils -> SearchUtils : ""searchDepartments(results)""
+    note left: results supplied\n and method populates directly
+    activate SearchUtils
+    deactivate SearchUtils
+end
+
+SearchUtils -> SearchUtils : build buildResponse(request, listType, null)
+note left of SearchUtils : Build response actually invokes the search\n and bulids the response
+activate SearchUtils
+SearchUtils <-- SearchUtils : httpResponse
+Caller <-- SearchUtils : httpResponse
+deactivate SearchUtils
+deactivate SearchUtils
+!enddefinelong
+@enduml

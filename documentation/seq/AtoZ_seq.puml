@@ -1,0 +1,127 @@
+@startuml
+hide footbox
+title AtoZ API
+autonumber
+
+actor ONSWebsiteUser
+
+
+
+ONSWebsiteUser -> AtoZ: list a-z
+activate AtoZ
+    AtoZ -> AtoZ : getFirstLetter(request);
+        activate AtoZ
+        AtoZ <-- AtoZ : letter
+        deactivate AtoZ
+    AtoZ -> SearchRequestHelper : extractSearchTerm(request)
+        activate SearchRequestHelper
+        AtoZ <-- SearchRequestHelper
+        deactivate SearchRequestHelper
+
+    AtoZ -> "SearchUtils": buildBaseListQuery
+        activate SearchUtils
+        AtoZ <-- SearchUtils
+        deactivate SearchUtils
+
+    AtoZ -> ONSQueryBuilders : onsQuery
+        activate ONSQueryBuilders
+        AtoZ <-- ONSQueryBuilders
+        deactivate ONSQueryBuilders
+
+    AtoZ -> ONSQueryBuilders : firstLetterCounts
+        activate ONSQueryBuilders
+        AtoZ <-- ONSQueryBuilders : countsByFirstLetter ""<ONSQuery>""
+        deactivate ONSQueryBuilders
+
+    AtoZ -> SearchHelper : search(countsByFirstLetter);
+    activate SearchHelper
+
+        SearchHelper -> SearchHelper : prepare
+            activate SearchHelper
+            create SearchRequestBuilder
+            SearchHelper -> SearchRequestBuilder : new
+            SearchHelper <-- SearchHelper : searchRequestBuilder
+            deactivate SearchHelper
+
+
+        SearchHelper -> SearchRequestBuilder : get()
+            activate SearchRequestBuilder
+            database ElasticSearch
+            SearchRequestBuilder -> ElasticSearch : //search//
+            SearchHelper <-- SearchRequestBuilder : Response
+            deactivate SearchRequestBuilder
+
+        create ONSSearchResponse
+        SearchHelper -> ONSSearchResponse : //new(response)//
+        SearchHelper -> SearchHelper : resolveDetails(ONSQuery queryBuilder,\n ONSSearchResponse response)
+            activate SearchHelper
+            SearchHelper -> SearchHelper : resolvePaginator(ONSQuery queryBuilder,\n ONSSearchResponse response)
+                        activate SearchHelper
+                        deactivate SearchHelper
+            SearchHelper -> SearchHelper : resolveSortBy (ONSQuery queryBuilder,\n ONSSearchResponse response)
+                        activate SearchHelper
+                        deactivate SearchHelper
+            deactivate SearchHelper
+    AtoZ <-- SearchHelper : countResults
+    deactivate SearchHelper
+
+    create "Results \n <Map>"
+    AtoZ -> "Results \n <Map>" : new
+
+
+    deactivate SearchHelper
+
+    AtoZ -> "Results \n <Map>" : count()
+    AtoZ <-- "Results \n <Map>" : count()
+
+
+    alt isNotEmpty(firstLetter) && (count == null)
+        AtoZ -> AtoZ : list(request, **//null//**);
+        activate AtoZ
+         ref over AtoZ : "Common AtoZ.list()" section
+        AtoZ <-- AtoZ : results
+        deactivate AtoZ
+    else
+        AtoZ -> AtoZ : list(request, firstLetter);
+        activate AtoZ
+        group Common "AtoZ.list()" section
+            AtoZ -> AtoZ : queries
+                note left : queries(request, firstLetter)
+                activate AtoZ
+                create SearchQueries
+                AtoZ --> SearchQueries : //new//
+                AtoZ <-- AtoZ : SearchQueries
+                deactivate AtoZ
+            AtoZ -> SearchUtils : searchAll
+                        activate SearchUtils
+                        SearchUtils -> SearchQueries : buildQueries()
+                            activate SearchQueries
+                            SearchUtils <-- SearchQueries : queries
+                            deactivate SearchQueries
+                        SearchUtils -> SearchUtils : doSearch()
+                            activate SearchQueries
+                            SearchUtils <-- SearchUtils :  Map results
+                            deactivate SearchUtils
+                        SearchUtils -> SearchHelper : searchMultiple()
+                            activate SearchHelper
+                            create MultiSearchRequestBuilder
+                            SearchHelper -> MultiSearchRequestBuilder : //new//
+                            SearchHelper -> MultiSearchRequestBuilder : get
+                            SearchUtils <-- SearchHelper :  responseList
+                            deactivate SearchHelper
+                        AtoZ <-- SearchUtils : Map results
+                        deactivate SearchUtils
+        end
+        AtoZ <-- AtoZ : results
+        deactivate AtoZ
+        |||
+    end
+
+    AtoZ -> SearchUtils : buildResponse()
+    activate SearchUtils
+    note right : ""buildResponse(HttpServletRequest request,""\n\t\t\t\t""String listType,""\n\t\t\t\t""Map<String, SearchResult> results)""
+    AtoZ <-- SearchUtils
+    deactivate SearchUtils
+    ONSWebsiteUser <-- AtoZ
+    deactivate AtoZ
+@enduml

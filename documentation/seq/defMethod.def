@@ -1,0 +1,15 @@
+@startuml
+
+!definelong method(caller, dest, methodName, returnObject)
+caller -> dest : methodName
+activate dest
+caller <-- dest : returnObject
+deactivate dest
+!enddefinelong
+
+!definelong func(caller, dest, methodName)
+caller -> dest : methodName
+activate dest
+deactivate dest
+!enddefinelong
+@enduml
