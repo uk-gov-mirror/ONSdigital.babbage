@@ -50,23 +50,18 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 	{{#if_eq palette "colour"}}palette = color;{{/if_eq}}
 
 	var hasTooltip = {{#if showTooltip }}true{{else}}false{{/if}};
-
-	{{!-- check for annotations in order to  initialise the chart notes --}}
-	var isEditor = $('#note-x-0').val() || false;
-	if(isEditor) isEditor = true;
-
 	{{#if hasLineBreak }}
 		{{> highcharts/config/line-break-config}}
 	{{/if}}
 
-	// set the vars on the page as a way of passing them back to the chart object
+	{{#if isEditor }}// set the vars on the page as a way of passing them back to the chart object
 	function setBoxPosHandle(id, x,y) {
 		x = x.toFixed(2);
 		y = y.toFixed(2);
 		// important! trigger the change event after setting the value
 		$('#note-x-'+id).val(x).change();
 		$('#note-y-'+id).val(y).change();
-	}
+	}{{/if}}
 
 
 	{{!-- chart-config block is to be overriden by chart types inheriting this template --}}
