@@ -222,7 +222,8 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 		exporting: {
         	enabled: false {{#if_eq chartType 'small-multiples'}}, 
         	sourceWidth:700,
-        	sourceHeight: 700 * {{aspectRatio}}{{/if_eq}}
+        	sourceHeight: 700 * {{aspectRatio}}{{/if_eq}},
+        	url:'http://localhost:8889' // NB required to print small multiples
     	}
 
 	};

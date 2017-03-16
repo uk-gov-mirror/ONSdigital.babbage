@@ -1,5 +1,6 @@
 $(function() {
     var viewport;
+    var nominalWidth = 700;
     // Global options for markdown charts
     Highcharts.setOptions({
         lang: {
@@ -15,95 +16,103 @@ $(function() {
     //set the annotation and chart size based on the viewport
     if ($("body").hasClass("viewport-sm")) {
         viewport = 'sm';
+        nominalWidth = 360;
     }else if ($("body").hasClass("viewport-md")) {
         viewport = 'md';
+        nominalWidth = 520;
     }else  {
         viewport = 'lg';
     }
     //console.log('viewport ' + viewport);
 
-/**
- * Create a global getSVG method that takes an array of charts as an
- * argument
- */
-Highcharts.getSVG = function (charts) {
+    /**
+     * Create a global getSVG method that takes an array of charts as an
+     * argument
+     */
+    Highcharts.getSVG = function (charts) {
 
-    console.log('get SVG');
-    var svgArr = [],
-    topBorder =20,
-        top = topBorder,
-        left = 0,
-        width = 0,
-        height = 0,
-        columns = 0,
-        rows = 0,
-        maxColumns = 3;
+        console.log('get SVG');
+        var svgArr = [],
+        topBorder =20,
+            top = topBorder,
+            left = 0,
+            width = 0,
+            height = 0,
+            columns = 0,
+            rows = 0,
+            maxColumns = 3;
 
-    Highcharts.each(charts, function (chart) {
-        var svg = chart.getSVG(),
-            // Get width/height of SVG for export
-            svgWidth = +svg.match(
-                /^<svg[^>]*width\s*=\s*\"?(\d+)\"?[^>]*>/
-            )[1],
-            svgHeight = +svg.match(
-                /^<svg[^>]*height\s*=\s*\"?(\d+)\"?[^>]*>/
-            )[1];
+        Highcharts.each(charts, function (chart) {
+            var svg = chart.getSVG(),
+                // Get width/height of SVG for export
+                svgWidth = +svg.match(
+                    /^<svg[^>]*width\s*=\s*\"?(\d+)\"?[^>]*>/
+                )[1],
+                svgHeight = +svg.match(
+                    /^<svg[^>]*height\s*=\s*\"?(\d+)\"?[^>]*>/
+                )[1];
 
 
 
-        svg = svg.replace(
-            '<svg',
-            '<g transform="translate(' + left + ',' + top + ')" '
-        );
-        svg = svg.replace('</svg>', '</g>');
+            svg = svg.replace(
+                '<svg',
+                '<g transform="translate(' + left + ',' + top + ')" '
+            );
+            svg = svg.replace('</svg>', '</g>');
 
-        //lay out the svg in columns and rows
-        columns++;
-        if(columns>=maxColumns){
-            columns = 0;
-            left = 0;
-            rows++;
-            top = svgHeight * rows + topBorder;
-            height = top + svgHeight;
-        }else{
-            left += svgWidth;
-            width += svgWidth;
+            //lay out the svg in columns and rows
+            columns++;
+            if(columns>=maxColumns){
+                columns = 0;
+                left = 0;
+                rows++;
+                top = svgHeight * rows + topBorder;
+                height = top + svgHeight;
+            }else{
+                left += svgWidth;
+                width += svgWidth;
+            }
+
+            svgArr.push(svg);
+        });
+        
+        return '<svg height="' + height + '" width="' + width +
+            '" version="1.1" xmlns="http://www.w3.org/2000/svg">' +
+            '<rect x="0" y="0" width="' + width + '" height="' + height + '" fill="white" />' +
+            svgArr.join('') + '</svg>';
+    };
+
+    /**
+     * Create a global exportCharts method that takes an array of charts as an
+     * argument, and exporting options as the second argument
+     */
+    Highcharts.exportCharts = function (charts, options) {
+        // Merge the options
+        options = Highcharts.merge(Highcharts.getOptions().exporting, options);
+
+        // get export url fromm the chart config
+        if(options.exporting.url){
+            options.url = options.exporting.url;
         }
 
-        svgArr.push(svg);
+        // Post to export server
+        Highcharts.post(options.url, {
+            filename: options.filename || 'chart',
+            type: options.type,
+            width: options.width,
+            svg: Highcharts.getSVG(charts)
+        });
+    };
+
+
+
+    $('#export-png').click(function () {
+        Highcharts.exportCharts(chartList, chartConfig);
     });
-    
-    return '<svg height="' + height + '" width="' + width +
-        '" version="1.1" xmlns="http://www.w3.org/2000/svg">' +
-        '<rect x="0" y="0" width="' + width + '" height="' + height + '" fill="white" />' +
-        svgArr.join('') + '</svg>';
-};
-
-/**
- * Create a global exportCharts method that takes an array of charts as an
- * argument, and exporting options as the second argument
- */
-Highcharts.exportCharts = function (charts, options) {
-    // Merge the options
-    options = Highcharts.merge(Highcharts.getOptions().exporting, options);
-
-    // Post to export server
-    Highcharts.post(options.url, {
-        filename: options.filename || 'chart',
-        type: options.type,
-        width: options.width,
-        svg: Highcharts.getSVG(charts)
-    });
-};
 
 
-
-$('#export-png').click(function () {
-    Highcharts.exportCharts(chartList);
-});
-
-
-var chartList = [];
+    var chartList = [];
+    var chartConfig;
 
     chartContainer.each(function() {
         var $this = $(this);
@@ -112,15 +121,16 @@ var chartList = [];
         var chartWidth = $this.width();
         var chartUri = $this.data('uri'); 
 
+
         $this.empty();
 
         //Read chart configuration from server using container's width
         var jqxhr = $.get("/chartconfig", {
                 uri: chartUri,
-                width: chartWidth
+                width: nominalWidth//chartWidth
             },
             function() {
-                var chartConfig = window["chart-" + chartId];
+             chartConfig = window["chart-" + chartId];
 
                 if (chartConfig) {
                     // small multiples have an attribute to show specific series
@@ -131,7 +141,7 @@ var chartList = [];
 
                     var aspectRatio = 1;
                     var labelInterval = 1;
-                    //if we have devices then set annotations dependant of viewport
+                    //if we have devices then set annotations dependant on viewport
                     if(chartConfig.devices){
                         if(chartConfig.devices[viewport]){
 
@@ -223,6 +233,7 @@ var chartList = [];
                     }
 
                     if(smallMultipleSeries){
+                        //console.log("small multiples ");
                         //loop through series and create mini-charts
                         var tempSeries = chartConfig.series;
                         chartConfig.chart.width = chartWidth/3;
@@ -235,8 +246,7 @@ var chartList = [];
                         chartList.push(chart);
 
                     }else{
-                        //console.log(chartConfig);
-                        //console.log('type ' + chartConfig.chart.type);
+
                         if(chartConfig.chart.type==='table'){
 
                         }else{
