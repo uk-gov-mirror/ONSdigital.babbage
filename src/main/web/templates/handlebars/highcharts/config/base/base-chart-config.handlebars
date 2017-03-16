@@ -193,10 +193,14 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 				if (hasTooltip) {
 					var div = '<div id="custom-tooltip"><div class="maintext">';
 					{{#block "tooltip-config"}}
+					var i = 0;
+					var len = this.points.length;
+					var point;
 					var str = '<b>'+ this.x +'</b>';
-					$.each(this.points, function(i, point) {
+					for ( i = 0; i <len; i++){
+						point = this.points[i];
 						str += '<br/><span style="color:'+ point.series.color +'">\u25CF</span> ' + point.series.name + ': ' + point.y{{#if decimalPlaces}}.toFixed({{decimalPlaces}}){{/if}};
-					});
+					}
 					{{/block}}
 					div += str + '</div></div>';
 					return div;
