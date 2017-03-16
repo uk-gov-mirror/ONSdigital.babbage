@@ -14,7 +14,7 @@ node {
     stage('Build') {
         sh 'npm install --no-bin-links --prefix ./src/main/web --sixteens-branch=develop'
         //changed to clean install and the copy-dependencies step is integrated into the install step
-        sh " ${tool 'm3'}/bin/mvn -X clean install"
+        sh " ${tool 'm3'}/bin/mvn -X clean install  dependency:copy-dependencies"
         //Publish the report to Jenkins
         step([$class: 'CucumberReportPublisher',
               jsonReportDirectory: 'target',
