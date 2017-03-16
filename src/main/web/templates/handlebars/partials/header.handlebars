@@ -25,11 +25,11 @@
                         <dt class="language__title">Language:</dt>
                         {{#if_eq location.hostname (concat "cy." (replace location.hostname "cy." ""))}}
                             <dd class="language__item">
-                                <a href="{{> partials/language-toggle language="en"}}" class="language__link icon--hide">English (EN)</a>
+                                <a href="{{> partials/language-toggle language="en"}}" class="language__link">English (EN)</a>
                             </dd>
                         {{else}}
                             <dd class="language__item">
-                                <a href="{{> partials/language-toggle language="cym"}}" class="language__link icon--hide">Cymraeg (CY)</a>
+                                <a href="{{> partials/language-toggle language="cym"}}" class="language__link">Cymraeg (CY)</a>
                             </dd>
                         {{/if_eq}}
                     </dl>
@@ -56,7 +56,7 @@
 							<a class="secondary-nav__link {{#if_eq uri '/aboutus'}}secondary-nav__link--active{{/if_eq}} js-nav-clone__link" href="/aboutus">{{labels.about}}</a>
 						</li>
 						<li class="secondary-nav__item">
-							<a class="secondary-nav__link icon--hide js-nav-clone__link" target="_blank" rel="noopener noreferrer" href="https://blog.ons.gov.uk/">{{labels.blog}}</a>
+							<a class="secondary-nav__link js-nav-clone__link" target="_blank" rel="noopener noreferrer" href="https://blog.ons.gov.uk/">{{labels.blog}}</a>
 						</li>
 					</ul>
 				</div>
