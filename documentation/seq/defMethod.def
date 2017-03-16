@@ -3,9 +3,19 @@
 !definelong method(caller, dest, methodName, returnObject)
 caller -> dest : methodName
 activate dest
-caller <-- dest : returnObject
+caller <-- dest : ""returnObject""
 deactivate dest
 !enddefinelong
+
+!definelong methodNewReturn(caller, dest, methodName, returnObject, returnInstance)
+caller -> dest : methodName
+activate dest
+create returnInstance
+dest -> returnInstance : new
+caller <-- dest : ""returnObject""
+deactivate dest
+!enddefinelong
+
 
 !definelong func(caller, dest, methodName)
 caller -> dest : methodName

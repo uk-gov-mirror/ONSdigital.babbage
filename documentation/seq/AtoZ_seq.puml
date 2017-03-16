@@ -1,6 +1,7 @@
 @startuml
 hide footbox
 title AtoZ API
+!include defMethod.def
 autonumber
 
 actor ONSWebsiteUser
@@ -9,58 +10,36 @@ actor ONSWebsiteUser
 
 ONSWebsiteUser -> AtoZ: list a-z
 activate AtoZ
-    AtoZ -> AtoZ : getFirstLetter(request);
-        activate AtoZ
-        AtoZ <-- AtoZ : letter
-        deactivate AtoZ
-    AtoZ -> SearchRequestHelper : extractSearchTerm(request)
-        activate SearchRequestHelper
-        AtoZ <-- SearchRequestHelper
-        deactivate SearchRequestHelper
+    method(AtoZ,AtoZ,getFirstLetter(HttpRequest request),letter)
+    method(AtoZ,SearchRequestHelper, extractSearchTerm(HttpRequest request),searchTerm)
+    method(AtoZ, SearchUtils, buildBaseListQuery, queryBuilder)
+    method(AtoZ, AtoZ, lastFilter, searchFilter)
+    methodNewReturn(AtoZ, ONSQueryBuilders, "onsQuery(QueryBuilder queryBuilder, SearchFilter searchFilter)",onsQuery,ONSQuery)
+    method(AtoZ,ONSQuery,  onsQuery.types(ContentType.bulletin), types)
+    method(AtoZ,ONSQueryBuilders,firstLetterCounts(types),countsByFirstLetter)
 
-    AtoZ -> "SearchUtils": buildBaseListQuery
-        activate SearchUtils
-        AtoZ <-- SearchUtils
-        deactivate SearchUtils
-
-    AtoZ -> ONSQueryBuilders : onsQuery
-        activate ONSQueryBuilders
-        AtoZ <-- ONSQueryBuilders
-        deactivate ONSQueryBuilders
-
-    AtoZ -> ONSQueryBuilders : firstLetterCounts
-        activate ONSQueryBuilders
-        AtoZ <-- ONSQueryBuilders : countsByFirstLetter ""<ONSQuery>""
-        deactivate ONSQueryBuilders
 
     AtoZ -> SearchHelper : search(countsByFirstLetter);
     activate SearchHelper
 
-        SearchHelper -> SearchHelper : prepare
-            activate SearchHelper
-            create SearchRequestBuilder
-            SearchHelper -> SearchRequestBuilder : new
-            SearchHelper <-- SearchHelper : searchRequestBuilder
-            deactivate SearchHelper
+        methodNewReturn(SearchHelper, SearchHelper, prepare(ONSQuery countsByFirstLetter) , searchRequestBuilder, SearchRequestBuilder)
 
+
+        database ElasticSearch
 
         SearchHelper -> SearchRequestBuilder : get()
             activate SearchRequestBuilder
-            database ElasticSearch
-            SearchRequestBuilder -> ElasticSearch : //search//
+            SearchRequestBuilder -> ElasticSearch : //_search//
             SearchHelper <-- SearchRequestBuilder : Response
             deactivate SearchRequestBuilder
 
         create ONSSearchResponse
         SearchHelper -> ONSSearchResponse : //new(response)//
+
         SearchHelper -> SearchHelper : resolveDetails(ONSQuery queryBuilder,\n ONSSearchResponse response)
             activate SearchHelper
-            SearchHelper -> SearchHelper : resolvePaginator(ONSQuery queryBuilder,\n ONSSearchResponse response)
-                        activate SearchHelper
-                        deactivate SearchHelper
-            SearchHelper -> SearchHelper : resolveSortBy (ONSQuery queryBuilder,\n ONSSearchResponse response)
-                        activate SearchHelper
-                        deactivate SearchHelper
+            func(SearchHelper, SearchHelper, "resolvePaginator(ONSQuery queryBuilder,\n ONSSearchResponse response)")
+            func(SearchHelper, SearchHelper, "resolveSortBy(ONSQuery queryBuilder,\n ONSSearchResponse response)")
             deactivate SearchHelper
     AtoZ <-- SearchHelper : countResults
     deactivate SearchHelper
@@ -85,28 +64,20 @@ activate AtoZ
         AtoZ -> AtoZ : list(request, firstLetter);
         activate AtoZ
         group Common "AtoZ.list()" section
-            AtoZ -> AtoZ : queries
-                note left : queries(request, firstLetter)
-                activate AtoZ
-                create SearchQueries
-                AtoZ --> SearchQueries : //new//
-                AtoZ <-- AtoZ : SearchQueries
-                deactivate AtoZ
+            methodNewReturn(AtoZ,AtoZ, "queries(HttpServletRequest request, String firstLetter)",searchQueries, SearchQueries)
             AtoZ -> SearchUtils : searchAll
                         activate SearchUtils
-                        SearchUtils -> SearchQueries : buildQueries()
-                            activate SearchQueries
-                            SearchUtils <-- SearchQueries : queries
-                            deactivate SearchQueries
-                        SearchUtils -> SearchUtils : doSearch()
-                            activate SearchQueries
-                            SearchUtils <-- SearchUtils :  Map results
-                            deactivate SearchUtils
+                        method(SearchUtils, SearchQueries, buildQueries(), queries)
+                        method(SearchUtils, SearchQueries, doSearch(), results)
                         SearchUtils -> SearchHelper : searchMultiple()
                             activate SearchHelper
                             create MultiSearchRequestBuilder
                             SearchHelper -> MultiSearchRequestBuilder : //new//
                             SearchHelper -> MultiSearchRequestBuilder : get
+                                activate MultiSearchRequestBuilder
+                                func(MultiSearchRequestBuilder, ElasticSearch, //_search//)
+                                SearchHelper <-- MultiSearchRequestBuilder : Response
+                                deactivate MultiSearchRequestBuilder
                             SearchUtils <-- SearchHelper :  responseList
                             deactivate SearchHelper
                         AtoZ <-- SearchUtils : Map results

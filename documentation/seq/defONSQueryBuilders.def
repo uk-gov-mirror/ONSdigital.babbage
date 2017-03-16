@@ -1,0 +1,19 @@
+@startuml
+!include defMethod.def
+
+!definelong contentQuery(Caller)
+    Caller -> ONSQueryBuilders : contentQuery(String searchTerm)
+        activate ONSQueryBuilders
+        methodNewReturn(ONSQueryBuilders, ONSCoreQueryBuilder,builderQuery, queryBuilder, QueryBuilder)
+        Caller <-- ONSQueryBuilders : QueryBuilder
+        deactivate ONSQueryBuilders
+!enddefinelong
+
+!definelong advancedSearchQuery(Caller)
+Caller -> ONSQueryBuilders : advancedSearchQuery(String queryString)
+        activate ONSQueryBuilders
+        methodNewReturn(ONSQueryBuilders, ONSQueryBuilders, simpleQueryStringQuery(String queryString), SimpleQueryStringBuilder,QueryBuilder)
+        ...  fields and lowercaseExpandedTerms ...
+        Caller <-- ONSQueryBuilders : QueryBuilder
+        deactivate ONSQueryBuilders
+!enddefinelong

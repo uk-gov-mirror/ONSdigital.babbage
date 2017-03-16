@@ -1,23 +1,23 @@
 @startuml
 
-!include defMethod.def
+!include defONSQueryBuilders.def
 
 !definelong buildSearchQuery(caller)
 caller-> SearchUtils : buildSearchQuery
     activate SearchUtils
-    func(SearchUtils,SearchUtils, isAdvancedSearchQuery)
+    func(SearchUtils,SearchUtils, isAdvancedSearch)
     func(SearchUtils, SearchUtils, extractSortBy)
 
-    alt isAdvancedSearchQuery?
-        method(SearchUtils, ONSQueryBuilders, advancedSearchQuery(), contentQuery)
-
-    else
-        method(SearchUtils, ONSQueryBuilders, contentQuery(), contentQuery)
-    end
+       alt isAdvancedSearch?
+            advancedSearchQuery(SearchUtils)
+       else
+            contentQuery(SearchUtils)
+       end
     SearchUtils -> SearchUtils : buildONSQuery
         activate SearchUtils
         create ONSQuery
-        SearchUtils -> ONSQuery : //new//
+
+        SearchUtils -> ONSQuery : //new(QueryBuilder)//
         SearchUtils <-- SearchUtils : ONSQuery
         deactivate SearchUtils
 
@@ -25,7 +25,7 @@ caller-> SearchUtils : buildSearchQuery
         SearchUtils -> SearchUtils : phraseSuggestion
         SearchUtils -> ONSQuery : suggest
     end
-    caller<-- SearchUtils: ONSQuery
+    caller <-- SearchUtils: ONSQuery
     deactivate SearchUtils
 !enddefinelong
 @enduml

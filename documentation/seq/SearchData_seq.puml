@@ -14,10 +14,10 @@ ONSWebsiteUser -> SearchData : search website
     SearchData -> SearchData : queries
         activate SearchData
         buildSearchQuery(SearchData)
-            method(SearchData, ONSQueryBuilders,toList, SearchQueries)
+            methodNewReturn(SearchData, ONSQueryBuilders,toList, searchQueries, SearchQueries)
         deactivate SearchData
 
-    search(SearchData)
+    search(SearchData,SearchQueries)
     ONSWebsiteUser <-- SearchData : results
     deactivate SearchData
 

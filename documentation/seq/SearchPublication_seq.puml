@@ -1,0 +1,21 @@
+@startuml
+hide footbox
+title Search API
+
+!include defBuildSearchQuery.def
+!include defSearch.def
+actor ONSWebsiteUser
+autonumber
+ONSWebsiteUser -> SearchPublication : search website
+    method(SearchPublication, SearchRequestHelper, extractSearchTerm, searchTerm)
+    SearchPublication -> SearchPublication : queries
+        activate SearchPublication
+        buildSearchQuery(SearchPublication)
+        methodNewReturn(SearchPublication, ONSQueryBuilders,toList, searchQueries,SearchQueries)
+        deactivate SearchPublication
+
+    search(SearchPublication, SearchQueries)
+    ONSWebsiteUser <-- SearchPublication : results
+    deactivate SearchPublication
+
+@enduml

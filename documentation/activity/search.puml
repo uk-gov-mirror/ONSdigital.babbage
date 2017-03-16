@@ -1,0 +1,59 @@
+@startuml
+title Search Query
+start
+:Search;
+         #AABBCC:Lookup On CID;
+ note left
+          this is actually done after all the builders are complete,
+          but logically it belongs here
+ end note
+ if (matches timeseries) then (yes)
+        :redirect to timeseries page;
+        stop
+        note right
+             Redirect to page
+             directly using
+             ""BabbageRedirectResponse""
+        end note
+elseif (advancedQuery?) then (advanced)
+  #AABBCC:Build ""SimpleQueryStringBuilder"";
+else  (content)
+    note right
+        Look up Index for TimeSeries
+    end note
+    #AABBCC:Build ""DisMaxQueryBuilder"";
+    note right
+     DisMaxQueryBuilder is static with
+     only the Search Term Changing
+    end note
+endif
+
+:Apply Filters;
+note right
+    Filters evaluate to Document types
+     within the ElasticSearch index.
+end note
+
+:Weight score based on ""Type"";
+note right
+ Wraps a FunctionScoreQueryBuilder around the
+  Query based on static data in the Enum ""ContentType""
+end note
+
+:Sorted By;
+note right
+ Defaults to relevance unless explicit requested
+end note
+#AABBCC::Clone and Add Count Agg for each type;
+if (firstPage) then (yes)
+#AABBCC:add "Featured Page" query;
+else (no)
+endif
+if (searchDepartment) then (yes)
+ #AABBCC:Build SearchDepartment;
+ endif
+floating note right
+ <back:#AABBCC>This colour</back> indicates
+ that the process creates a new template
+ end note
+@enduml
