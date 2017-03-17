@@ -73,7 +73,17 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 			marginTop: 50,
 			style: {
 				fontFamily: '"Open Sans", Tahoma, Verdana, Arial'
-			}
+			},
+			events: {
+                load: function () {
+                    if(this.options.chart.forExport) {
+                        var label = this.renderer.label('Source: {{source}}', 30 , {{width}} * {{aspectRatio}}+70)
+                            .add();
+                    }
+
+                    
+                }
+            }
 		},
 		colors: palette,
 		series: [],
@@ -224,10 +234,24 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 			useHTML:true
 		},
 		exporting: {
-        	enabled: false {{#if_eq chartType 'small-multiples'}}, 
+        	enabled: true,
+        	sourceHeight:({{width}} * {{aspectRatio}}+100){{#if_eq chartType 'small-multiples'}}, 
         	sourceWidth:700,
-        	sourceHeight: 700 * {{aspectRatio}}{{/if_eq}}{{!-- ,
-        	url:'http://localhost:8889' // NB required to print small multiples --}}
+        	sourceHeight: 800 * {{aspectRatio}}{{/if_eq}},
+        	chartOptions:{
+	        	chart:{
+	        		marginBottom:100
+	        	},
+				title:{
+					text:"{{title}}",
+					y:({{width}} * {{aspectRatio}})+30
+				},
+				subtitle:{
+					text:"{{subtitle}}",
+					y:({{width}} * {{aspectRatio}})+50
+				}
+			},
+        	url:'http://localhost:8889' // NB required to print small multiples
     	}
 
 	};
