@@ -19,8 +19,9 @@ options.series=[{
 				{{num (lookup this headers.1)}},
 			{{/if_eq}}
 			{{/each}}
-			] ,
+			],
 			tooltip: {
+				headerFormat: '<span style="font-weight: bold;">{series.name}</span><br>',
 	            pointFormat: '<span style="font-weight: bold; color: {series.color}">{point.category}</span>: <b>{point.y:.1f}</b> '
 	        } 
 	    },{
