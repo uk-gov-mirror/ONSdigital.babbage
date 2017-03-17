@@ -17,7 +17,9 @@
 				{{/if_eq}}
 			{{/each}}]
 
-		},{{/each}} ];
+		},{{/each}} 
+		{{#if_eq highlight this}}zIndex:50,{{/if_eq}}
+		];
 	{{#block "additional-chart-config"}}
 	{{/block}}
 
