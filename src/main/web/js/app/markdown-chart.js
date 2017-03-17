@@ -223,27 +223,29 @@ $(function() {
 
                             }else{
                                 //add hidden notes to footnotes
-                                var str = '';
+                                var str = '<h6 class="flush--third--bottom js-notes-title">Annotations:</h6><ol>';
+                                
 
                                 //add a header if required
-                                if(!$('.js-notes-title')){
-                                    str = '<h6 class="flush--third--bottom js-notes-title">Notes:</h6>';
-                                }
+                                //if(!$('.js-notes-title')){
+                                //    str = '<h6 class="flush--third--bottom js-notes-title">Notes:</h6><ol>';
+                                //}
                                 $.each(chartConfig.annotations, function(idx, itm){
-                                    str+= itm.title+'</br>'
+                                    str+= '<li>'+itm.title+'</li>'
                                 })
-                                $.each(chartConfig.xAxis.plotBands, function(idx, itm){
-                                    str+= itm.label.text+'</br>'
+                               /* $.each(chartConfig.xAxis.plotBands, function(idx, itm){
+                                    str+= '<li>'+itm.label.text+'</li>'
                                 })
                                 $.each(chartConfig.xAxis.plotLines, function(idx, itm){
-                                    str+= itm.label.text+'</br>'
+                                    str+= '<li>'+itm.label.text+'</li>'
                                 })
                                 $.each(chartConfig.yAxis.plotBands, function(idx, itm){
-                                    str+= itm.label.text+'</br>'
+                                    str+= '<li>'+itm.label.text+'</li>'
                                 })
                                 $.each(chartConfig.yAxis.plotLines, function(idx, itm){
-                                    str+= itm.label.text+'</br>'
-                                })
+                                    str+= '<li>'+itm.label.text+'</li>'
+                                })*/
+                                str+='</ol>';
                                 $('#notes-'+chartId).append(str);
                                 // clear any defaults
                                 chartConfig.xAxis.plotBands = [];
