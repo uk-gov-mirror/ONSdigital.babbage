@@ -1,6 +1,7 @@
 $(function() {
     var viewport;
     var nominalWidth = 700;
+    var charts = {};
     // Global options for markdown charts
     Highcharts.setOptions({
         lang: {
@@ -87,6 +88,7 @@ $(function() {
      * argument, and exporting options as the second argument
      */
     Highcharts.exportCharts = function (charts, options) {
+        var svg;
         // Merge the options
         options = Highcharts.merge(Highcharts.getOptions().exporting, options);
 
@@ -95,12 +97,20 @@ $(function() {
             options.url = options.exporting.url;
         }
 
+        if(charts.length>1){
+            svg = Highcharts.getSVG(charts)
+        }else{
+            svg = charts[0];
+        }
+
+        console.log('____________');
+        console.log(svg);
         // Post to export server
         Highcharts.post(options.url, {
             filename: options.filename || 'chart',
             type: options.type,
             width: options.width,
-            svg: Highcharts.getSVG(charts)
+            svg: svg
         });
     };
 
@@ -111,8 +121,21 @@ $(function() {
     });
 
 
+    $('.export-svg').click(function () {
+        console.log('export svg');
+        var id = this.dataset.filename;
+        var chart = charts[id];
+        var svg = chart.getSVG();
+        console.log(svg);
+        // a bit dirty - pass the svg into the charts array
+        Highcharts.exportCharts([svg], chartConfig);
+
+    });
+
+
     var chartList = [];
     var chartConfig;
+    var chart;
 
     chartContainer.each(function() {
         var $this = $(this);
@@ -242,7 +265,7 @@ $(function() {
                         
                         chartConfig.series = [tempSeries[smallMultipleRef]];
                         chartConfig.chart.renderTo = id;
-                        var chart = new Highcharts.Chart(chartConfig);
+                        chart = new Highcharts.Chart(chartConfig);
                         chartList.push(chart);
 
                     }else{
@@ -250,10 +273,15 @@ $(function() {
                         if(chartConfig.chart.type==='table'){
 
                         }else{
+                            //console.log('push chart ' + chartConfig.chart.type);
+                            //chartList = [];
                             // Build chart from config endpoint
                             chartConfig.chart.renderTo = id;
                             chartConfig.chart.height = chartConfig.chart.width * aspectRatio;
-                            new Highcharts.Chart(chartConfig);
+                            chart = new Highcharts.Chart(chartConfig);
+                            //chartList.push(chart);
+
+                            charts[chartId] = chart;
                         }
                     }
 
