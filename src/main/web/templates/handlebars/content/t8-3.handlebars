@@ -262,6 +262,8 @@
     </div>
 {{/partial}}
 
+pie
+
 <script>
     function enhanceDDBlock() {
         var dataset = document.getElementById('dataset-id');
@@ -363,9 +365,21 @@
         }
 
         function renderDDBlock() {
+            if (!window.fetch && !window.Promise) {
+                var polyfills = document.createElement('script');
+                polyfills.src = 'https://cdn.polyfill.io/v2/polyfill.min.js?features=Promise,fetch';
+                polyfills.onload = function() {
+                    renderDDBlock();
+                };
+                polyfills.onerror = function() {
+                    console.log('Error getting fetch and promise API polyfills');
+                };
+                document.head.appendChild(polyfills);
+                return;
+            }
             if (!window.fetch) {
                 var fetchPolyfill = document.createElement('script');
-                fetchPolyfill.src = 'https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.2/fetch.min.js';
+                fetchPolyfill.src = 'https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch';
                 fetchPolyfill.onload = function() {
                     renderDDBlock();
                 };
@@ -375,9 +389,9 @@
                 document.head.appendChild(fetchPolyfill);
                 return;
             }
-            if (!window.promise) {
+            if (!window.Promise) {
                 var fetchPromise = document.createElement('script');
-                fetchPromise.src = 'https://cdnjs.cloudflare.com/ajax/libs/es6-promise/4.1.0/es6-promise.min.js';
+                fetchPromise.src = 'https://cdn.polyfill.io/v2/polyfill.min.js?features=Promise';
                 fetchPromise.onload = function() {
                     renderDDBlock();
                 };
