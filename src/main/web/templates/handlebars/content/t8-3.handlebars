@@ -374,8 +374,7 @@
                 };
                 document.head.appendChild(polyfills);
                 return;
-            }
-            if (!window.fetch) {
+            } else if (!window.fetch) {
                 var fetchPolyfill = document.createElement('script');
                 fetchPolyfill.src = 'https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch';
                 fetchPolyfill.onload = function() {
@@ -386,8 +385,7 @@
                 };
                 document.head.appendChild(fetchPolyfill);
                 return;
-            }
-            if (!window.Promise) {
+            } else if (!window.Promise) {
                 var fetchPromise = document.createElement('script');
                 fetchPromise.src = 'https://cdn.polyfill.io/v2/polyfill.min.js?features=Promise';
                 fetchPromise.onload = function() {
