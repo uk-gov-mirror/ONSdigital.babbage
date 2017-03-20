@@ -5,7 +5,7 @@
 	options.series=[{{#each series }}{
 		name: "{{{sub (sup this)}}}",
 			{{#if_eq highlight this}}color:HIGHLIGHT_COLOUR,{{/if_eq}}
-			{{#if isStacked }}legendIndex: (-{{@index}}),{{/if}} 
+			{{#if isReversed }}legendIndex: (-{{@index}}),{{/if}} 
 			{{#if lineTypes }}dashStyle: '{{{lookup lineTypes this}}}',{{/if}} 
 			data: [{{#each data}}
 				{{#if_eq highlight (lookup categories @index)}}
