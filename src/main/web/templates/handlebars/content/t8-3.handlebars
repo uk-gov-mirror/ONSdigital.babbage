@@ -364,15 +364,27 @@
 
         function renderDDBlock() {
             if (!window.fetch) {
-                var js = document.createElement('script');
-                js.src = 'https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.2/fetch.min.js';
-                js.onload = function() {
+                var fetchPolyfill = document.createElement('script');
+                fetchPolyfill.src = 'https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.2/fetch.min.js';
+                fetchPolyfill.onload = function() {
                     renderDDBlock();
                 };
-                js.onerror = function() {
+                fetchPolyfill.onerror = function() {
                     console.log('Error getting fetch API polyfill');
                 };
-                document.head.appendChild(js);
+                document.head.appendChild(fetchPolyfill);
+                return;
+            }
+            if (!window.promise) {
+                var fetchPromise = document.createElement('script');
+                fetchPromise.src = 'https://cdnjs.cloudflare.com/ajax/libs/es6-promise/4.1.0/es6-promise.min.js';
+                fetchPromise.onload = function() {
+                    renderDDBlock();
+                };
+                fetchPromise.onerror = function() {
+                    console.log('Error getting promise API polyfill');
+                };
+                document.head.appendChild(fetchPromise);
                 return;
             }
 
