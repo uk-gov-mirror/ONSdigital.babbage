@@ -8,14 +8,14 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 	Highcharts.setOptions({lang: {thousandsSep: ','}});
 
 	// Highlight colour
-	{{#if_eq palette "default"}}HIGHLIGHT_COLOUR  = 'gold';{{else}}
+	{{#if_eq palette "legacy"}}HIGHLIGHT_COLOUR  = 'gold';{{else}}
 	var HIGHLIGHT_COLOUR  = 'rgba(243,148,49,0.9)';{{/if_eq}}
 
 
 	var PLOTBAND_COLOUR  = '#B5CE94';
 
 	// use rgba in order to set opacity/alpha
-	var default_palette = [
+	var legacy = [
 			'rgba(39,71,150,0.9)',
 			'rgba(245,148,47,0.9)',
 			'rgba(231,63,64,0.9)',
@@ -45,7 +45,7 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 
 
 	// set chart palette based on chart object
-	var palette = default_palette;
+	var palette = legacy;
 	{{#if_eq palette "blue"}}palette = bluemono;{{/if_eq}}
 	{{#if_eq palette "colour"}}palette = color;{{/if_eq}}
 
@@ -77,13 +77,20 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 			events: {
                 load: function () {
                     if(this.options.chart.forExport) {
-                        var label = this.renderer.label('Source: {{source}}', 30 , {{width}} * {{aspectRatio}}+70)
+                    var label = this.renderer.label('Source: {{source}}', 30 , {{width}} * {{aspectRatio}}+70)
                             .add();
+                    {{#each annotations}}
+						{{#if_ne isHidden true}}
+                        var note_{{@index}} = this.renderer.label('{{title}}', {{x}} , {{y}})
+                            .add();
+						{{/if_ne}}
+					{{/each}}
+
                     }
 
                     
                 }
-            }
+            } 
 		},
 		colors: palette,
 		series: [],
@@ -136,6 +143,7 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 		legend: {
 			verticalAlign: {{#if_eq xAxisPos "top"}}"bottom"{{else}}"top"{{/if_eq}},
 			y:-20,
+			x:30,
 			useHTML:true,
 			enabled:{{#if_eq series.size 1}}false{{else}}true{{/if_eq}},
 			align:'left',
@@ -209,7 +217,7 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 					var str = '<b>'+ this.x +'</b>';
 					for (i = 0; i <len; i++){
 						point = this.points[i];
-						str += '<br/><span style="color:'+ point.series.color +'">\u25CF</span> ' + point.series.name + ': ' + point.y{{#if decimalPlaces}}.toFixed({{decimalPlaces}}){{/if}};
+						str += '<br/><span style="color:'+ point.series.color +'">\u25CF</span> ' + point.series.name + ': ' + Highcharts.numberFormat(point.y,{{#if decimalPlaces}}{{decimalPlaces}}{{else}}0{{/if}});
 					}
 					{{/block}}
 					div += str + '</div></div>';
@@ -243,15 +251,22 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 	        		marginBottom:100
 	        	},
 				title:{
-					text:"{{title}}",
+					//text:"{{{title}}}",
+					x:30,
 					y:({{width}} * {{aspectRatio}})+30
 				},
 				subtitle:{
-					text:"{{subtitle}}",
+					//text:"{{{subtitle}}}",
+        			verticalAlign: 'bottom',
+					x:30,
 					y:({{width}} * {{aspectRatio}})+50
+				},
+				legend:{
+					x:30,
+					y:5
 				}
-			},
-        	url:'http://localhost:8889' // NB required to print small multiples
+			}//,
+        	//url:'http://localhost:8889' // NB required to print small multiples
     	}
 
 	};
