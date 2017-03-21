@@ -42,10 +42,11 @@ options.annotations = [
 {{#each annotations}}
 	{{#if_eq isPlotline true}}
 	{{else}}
+	{{#if isEditor}}
 			{
 				id:{{id}},
-				x: ({{x}}),
-				y: ({{y}}),
+				x: {{devices.lg.x}},
+				y: {{devices.lg.y}},
 				title: "{{{title}}}",
 				anchorX: "left",
 				anchorY: "top",
@@ -76,6 +77,7 @@ options.annotations = [
 				position_md:{x:{{devices.md.x}}, y:{{devices.md.y}} },
 				position_lg:{x:{{devices.lg.x}}, y:{{devices.lg.y}} }{{/if}}
 			},
+			{{/if}}
 	{{/if_eq}}
 {{/each}}
 	];

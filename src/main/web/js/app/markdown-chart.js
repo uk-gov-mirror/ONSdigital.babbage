@@ -149,17 +149,20 @@ $(function() {
                 width: nominalWidth
             },
             function() {
-             chartConfig = window["chart-" + chartId];
+                chartConfig = window["chart-" + chartId];
 
-             // remove the title, subtitle and any renderers for client side display
-             // these are only used by the template for export/printing
-             chartConfig.chart.marginTop = 50;
-             chartConfig.chart.marginBottom = 50;
-             //use this to adjust the render y position based on the height of marginTop
-             chartConfig.chart.offset = 0;
-             chartConfig.title = {text:''};
-             chartConfig.subtitle = {text:''};
-             chartConfig.legend.y = -20;
+                // remove the title, subtitle and any renderers for client side display
+                // these are only used by the template for export/printing
+                chartConfig.chart.marginTop = 50;
+                chartConfig.chart.marginBottom = 50;
+                //use this to adjust the render y position based on the height of marginTop
+                chartConfig.chart.offset = 0;
+                // Babbage uses the render instead of annotations
+                chartConfig.annotations = [];
+                chartConfig.title = {text:''};
+                chartConfig.subtitle = {text:''};
+                chartConfig.legend.y = -20;
+
 
                 if (chartConfig) {
                     // small multiples have an attribute to show specific series
@@ -174,10 +177,11 @@ $(function() {
                     if(chartConfig.devices){
                         if(chartConfig.devices[viewport]){
 
+                            //set the aspect ratio
+                            aspectRatio = chartConfig.devices[viewport].aspectRatio;
+
                             if(!chartConfig.devices[viewport].isHidden){
 
-                                //set the aspect ratio
-                                aspectRatio = chartConfig.devices[viewport].aspectRatio;
                                 chartConfig.xAxis.tickInterval = chartConfig.devices[viewport].labelInterval;
 
                                 //loop thru and update annotations if reqd
@@ -185,6 +189,7 @@ $(function() {
                                     $.each(chartConfig.annotations, function(idx, itm){
                                         chartConfig.annotations[idx].x = chartConfig.annotations[idx]['position_'+viewport].x;
                                         chartConfig.annotations[idx].y = chartConfig.annotations[idx]['position_'+viewport].y;
+                                        console.log('set ', chartConfig.annotations[idx].x, chartConfig.annotations[idx].y);
                                     })
                                 }
                                 //loop thru X AXIS plotline/plotbands
@@ -264,6 +269,7 @@ $(function() {
                         if(chartConfig.chart.type==='table'){
 
                         }else{
+                            console.log(chartConfig);
                             // Build chart from config endpoint
                             chartConfig.chart.renderTo = id;
                             chartConfig.chart.height = chartConfig.chart.width * aspectRatio;

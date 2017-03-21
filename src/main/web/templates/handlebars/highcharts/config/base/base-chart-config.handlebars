@@ -86,14 +86,14 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 						{{#if title}}
 						var text  = '<div>{{{title}}}</div>';
 
-                        var note_{{@index}} = this.renderer.label(text, {{x}}, {{y}}+this.options.chart.offset, 0, 0, true)
+                        var note_{{@index}} = this.renderer.label(text, {{devices.lg.x}}, {{devices.lg.y}}+this.options.chart.offset, 0, 0, true)
                         	 .css({
 				            color: '#000'
 				        })
 				        .attr({
-				            fill: 'rgba(0, 0, 0, 0.15)',
+				            //fill: 'rgba(0, 0, 0, 0.15)',
 				            //paddingTop: 12,
-				            r: 5,
+				            //r: 5,
 				            zIndex: 6
 				        })
                             .add();
