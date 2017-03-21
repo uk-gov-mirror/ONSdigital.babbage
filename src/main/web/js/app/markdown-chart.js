@@ -24,15 +24,12 @@ $(function() {
     }else  {
         viewport = 'lg';
     }
-    //console.log('viewport ' + viewport);
 
     /**
      * Create a global getSVG method that takes an array of charts as an
      * argument
      */
     Highcharts.getSVG = function (charts) {
-
-        console.log('get SVG');
         var svgArr = [],
         topBorder =20,
             top = topBorder,
@@ -52,8 +49,6 @@ $(function() {
                 svgHeight = +svg.match(
                     /^<svg[^>]*height\s*=\s*\"?(\d+)\"?[^>]*>/
                 )[1];
-
-
 
             svg = svg.replace(
                 '<svg',
@@ -116,19 +111,6 @@ $(function() {
         Highcharts.exportCharts(chartList, chartConfig);
     });
 
-/*
-    $('.export-svg').click(function () {
-        console.log('export svg');
-        var id = this.dataset.filename;
-        var chart = charts[id];
-        var svg = chart.getSVG();
-        console.log(svg);
-        // a bit dirty - pass the svg into the charts array
-        Highcharts.exportCharts([svg], chartConfig);
-
-    });
-*/
-
 
     var chartList = [];
     var chartConfig;
@@ -189,7 +171,6 @@ $(function() {
                                     $.each(chartConfig.annotations, function(idx, itm){
                                         chartConfig.annotations[idx].x = chartConfig.annotations[idx]['position_'+viewport].x;
                                         chartConfig.annotations[idx].y = chartConfig.annotations[idx]['position_'+viewport].y;
-                                        console.log('set ', chartConfig.annotations[idx].x, chartConfig.annotations[idx].y);
                                     })
                                 }
                                 //loop thru X AXIS plotline/plotbands
@@ -252,7 +233,6 @@ $(function() {
                     }
 
                     if(smallMultipleSeries){
-                        //console.log("small multiples ");
                         //loop through series and create mini-charts
                         var tempSeries = chartConfig.series;
                         chartConfig.chart.width = chartWidth/3;
@@ -269,7 +249,6 @@ $(function() {
                         if(chartConfig.chart.type==='table'){
 
                         }else{
-                            console.log(chartConfig);
                             // Build chart from config endpoint
                             chartConfig.chart.renderTo = id;
                             chartConfig.chart.height = chartConfig.chart.width * aspectRatio;

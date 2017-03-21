@@ -80,7 +80,7 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 			},
 			events: {
                 load: function () {
-                    //if(this.options.chart.forExport) {
+
                     {{#each annotations}}
 						{{#if_ne isHidden true}}
 						{{#if title}}
@@ -101,7 +101,7 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
                             {{/if}}
 						{{/if_ne}}
 					{{/each}}
-                    //}
+
                     //source
                     var source = this.renderer.text('Source: {{source}}', 50 , {{y}}+ht+top+110)
                         	.attr({
