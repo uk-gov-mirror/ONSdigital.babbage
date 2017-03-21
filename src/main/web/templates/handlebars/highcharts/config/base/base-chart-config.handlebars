@@ -63,39 +63,51 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 		$('#note-y-'+id).val(y).change();
 	}{{/if}}
 
-
+	var ht = ({{width}} * {{aspectRatio}});
+	var top = 150;
+	var bottom = 150;
 	{{!-- chart-config block is to be overriden by chart types inheriting this template --}}
 	var options = {
 		chart: {
-			height: {{width}} * {{aspectRatio}},
+			height: ht + top + bottom,
 			width: {{width}},
 			marginRight: 35,
-			marginTop: 50,
+			marginTop: top,
+			marginBottom: bottom,
 			style: {
 				fontFamily: '"Open Sans", Tahoma, Verdana, Arial'
 			},
 			events: {
                 load: function () {
-                    if(this.options.chart.forExport) {
-                    var label = this.renderer.label('Source: {{source}}', 30 , {{width}} * {{aspectRatio}}+70)
-                            .add();
+                    //if(this.options.chart.forExport) {
                     {{#each annotations}}
 						{{#if_ne isHidden true}}
-                        var note_{{@index}} = this.renderer.label('{{title}}', {{x}} , {{y}})
+                        var note_{{@index}} = this.renderer.text('{{title}}', {{x}}+3 , {{y}}+top+15)
+                        	.attr({
+		                            zIndex: 10
+		                        })
                             .add();
 						{{/if_ne}}
 					{{/each}}
-
-                    }
-
-                    
+                    //}
+                    //source
+                    var source = this.renderer.text('Source: {{source}}', 50 , {{y}}+ht+top+110)
+                        	.attr({
+		                            zIndex: 10
+		                        })
+                            .add();
                 }
             } 
 		},
 		colors: palette,
 		series: [],
 		title: {
-			text: ""
+			text: "{{{title}}}",
+			y:30
+		},
+		subtitle: {
+			text: "{{{subtitle}}}",
+			y:80
 		},
 		yAxis: {
 			plotBands:[],
@@ -115,7 +127,7 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 				format: "{value:,.{{decimalPlacesYaxis}}f}",
 				useHTML:true
 			},
-			//gridZIndex: -200,
+			gridZIndex: -200,
 			opposite:{{#if_eq yAxisPos "right"}}true{{else}}false{{/if_eq}},
 			{{#if yMax }}endOnTick: false,// avoids label rounding in order to have exact axis values{{/if}}
 			{{#if hasLineBreak }}lineColor: '#929292',
@@ -128,11 +140,10 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 			plotBands:[],
 			plotLines:[],
 			categories: [{{#each categories}}'{{{sub (sup this)}}}',{{/each}}],
-			tickInterval: "{{labelInterval}}",
+			{{#if labelInterval}}tickInterval: {{labelInterval}},{{/if}}
 			labels: {
-				//rotation:360,
-				useHTML : true,
-				step:"{{labelInterval/4}}"
+				useHTML : true{{#if labelInterval}},
+				step:({{labelInterval}}/4){{/if}}
 			},
 			title: {
 				useHTML:true,
@@ -142,7 +153,7 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 		},
 		legend: {
 			verticalAlign: {{#if_eq xAxisPos "top"}}"bottom"{{else}}"top"{{/if_eq}},
-			y:-20,
+			y:(ht+top+40),
 			x:30,
 			useHTML:true,
 			enabled:{{#if_eq series.size 1}}false{{else}}true{{/if_eq}},
@@ -242,31 +253,7 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 			useHTML:true
 		},
 		exporting: {
-        	enabled: true,
-        	sourceHeight:({{width}} * {{aspectRatio}}+100){{#if_eq chartType 'small-multiples'}}, 
-        	sourceWidth:700,
-        	sourceHeight: 800 * {{aspectRatio}}{{/if_eq}},
-        	chartOptions:{
-	        	chart:{
-	        		marginBottom:100
-	        	},
-				title:{
-					//text:"{{{title}}}",
-					x:30,
-					y:({{width}} * {{aspectRatio}})+30
-				},
-				subtitle:{
-					//text:"{{{subtitle}}}",
-        			verticalAlign: 'bottom',
-					x:30,
-					y:({{width}} * {{aspectRatio}})+50
-				},
-				legend:{
-					x:30,
-					y:5
-				}
-			}//,
-        	//url:'http://localhost:8889' // NB required to print small multiples
+        	enabled: false
     	}
 
 	};

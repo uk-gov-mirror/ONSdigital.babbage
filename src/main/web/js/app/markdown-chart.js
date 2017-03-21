@@ -144,7 +144,6 @@ $(function() {
         var chartWidth = $this.width();
         var chartUri = $this.data('uri'); 
 
-
         $this.empty();
 
         //Read chart configuration from server using container's width
@@ -154,6 +153,15 @@ $(function() {
             },
             function() {
              chartConfig = window["chart-" + chartId];
+
+             // remove the title, subtitle and any renderers for client side display
+             // these are only used by the template for export/printing
+             chartConfig.chart.marginTop = 50;
+             chartConfig.chart.marginBottom = 50;
+             chartConfig.chart.events = {};
+             chartConfig.title = {text:''};
+             chartConfig.subtitle = {text:''};
+             chartConfig.legend.y = -20;
 
                 if (chartConfig) {
                     // small multiples have an attribute to show specific series
@@ -224,27 +232,11 @@ $(function() {
                             }else{
                                 //add hidden notes to footnotes
                                 var str = '<h6 class="flush--third--bottom js-notes-title">Annotations:</h6><ol>';
-                                
 
-                                //add a header if required
-                                //if(!$('.js-notes-title')){
-                                //    str = '<h6 class="flush--third--bottom js-notes-title">Notes:</h6><ol>';
-                                //}
                                 $.each(chartConfig.annotations, function(idx, itm){
                                     str+= '<li>'+itm.title+'</li>'
                                 })
-                               /* $.each(chartConfig.xAxis.plotBands, function(idx, itm){
-                                    str+= '<li>'+itm.label.text+'</li>'
-                                })
-                                $.each(chartConfig.xAxis.plotLines, function(idx, itm){
-                                    str+= '<li>'+itm.label.text+'</li>'
-                                })
-                                $.each(chartConfig.yAxis.plotBands, function(idx, itm){
-                                    str+= '<li>'+itm.label.text+'</li>'
-                                })
-                                $.each(chartConfig.yAxis.plotLines, function(idx, itm){
-                                    str+= '<li>'+itm.label.text+'</li>'
-                                })*/
+
                                 str+='</ol>';
                                 $('#notes-'+chartId).append(str);
                                 // clear any defaults
@@ -275,13 +267,10 @@ $(function() {
                         if(chartConfig.chart.type==='table'){
 
                         }else{
-                            //console.log('push chart ' + chartConfig.chart.type);
-                            //chartList = [];
                             // Build chart from config endpoint
                             chartConfig.chart.renderTo = id;
                             chartConfig.chart.height = chartConfig.chart.width * aspectRatio;
                             chart = new Highcharts.Chart(chartConfig);
-                            //chartList.push(chart);
 
                             charts[chartId] = chart;
                         }

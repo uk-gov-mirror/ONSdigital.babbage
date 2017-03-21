@@ -33,7 +33,15 @@
 	{{/if_eq}}
 
 	{{else}}
-	options.annotations.push(
+ 
+	{{/if_eq}}
+{{/if_ne}}
+{{/each}}
+
+options.annotations = [
+{{#each annotations}}
+	{{#if_eq isPlotline true}}
+	{{else}}
 			{
 				id:{{id}},
 				x: ({{x}}),
@@ -67,8 +75,7 @@
 				position_sm:{x:{{devices.sm.x}}, y:{{devices.sm.y}} },
 				position_md:{x:{{devices.md.x}}, y:{{devices.md.y}} },
 				position_lg:{x:{{devices.lg.x}}, y:{{devices.lg.y}} }{{/if}}
-			}
-	); 
+			},
 	{{/if_eq}}
-{{/if_ne}}
 {{/each}}
+	];
