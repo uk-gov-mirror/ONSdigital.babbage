@@ -146,7 +146,8 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 			{{#if hasLineBreak }}lineColor: '#929292',
 			lineWidth: 1,    
 			events: {
-				pointBreak: pointBreakColumn
+			{{#if_eq chartType 'column'}}pointBreak: pointBreakColumn{{/if_eq}}
+			{{#if_eq chartType 'bar'}}pointBreak: pointBreakColumn{{/if_eq}}
 			}{{/if}}
 		},
 		xAxis: {
