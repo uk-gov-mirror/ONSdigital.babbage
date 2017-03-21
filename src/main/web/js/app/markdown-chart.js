@@ -103,8 +103,6 @@ $(function() {
             svg = charts[0];
         }
 
-        console.log('____________');
-        console.log(svg);
         // Post to export server
         Highcharts.post(options.url, {
             filename: options.filename || 'chart',
@@ -114,13 +112,11 @@ $(function() {
         });
     };
 
-
-
     $('#export-png').click(function () {
         Highcharts.exportCharts(chartList, chartConfig);
     });
 
-
+/*
     $('.export-svg').click(function () {
         console.log('export svg');
         var id = this.dataset.filename;
@@ -131,6 +127,7 @@ $(function() {
         Highcharts.exportCharts([svg], chartConfig);
 
     });
+*/
 
 
     var chartList = [];
@@ -149,7 +146,7 @@ $(function() {
         //Read chart configuration from server using container's width
         var jqxhr = $.get("/chartconfig", {
                 uri: chartUri,
-                width: nominalWidth//chartWidth
+                width: nominalWidth
             },
             function() {
              chartConfig = window["chart-" + chartId];
@@ -158,7 +155,8 @@ $(function() {
              // these are only used by the template for export/printing
              chartConfig.chart.marginTop = 50;
              chartConfig.chart.marginBottom = 50;
-             chartConfig.chart.events = {};
+             //use this to adjust the render y position based on the height of marginTop
+             chartConfig.chart.offset = 0;
              chartConfig.title = {text:''};
              chartConfig.subtitle = {text:''};
              chartConfig.legend.y = -20;
@@ -177,7 +175,6 @@ $(function() {
                         if(chartConfig.devices[viewport]){
 
                             if(!chartConfig.devices[viewport].isHidden){
-
 
                                 //set the aspect ratio
                                 aspectRatio = chartConfig.devices[viewport].aspectRatio;

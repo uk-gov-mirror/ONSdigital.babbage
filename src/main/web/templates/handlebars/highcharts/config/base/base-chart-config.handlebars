@@ -74,6 +74,7 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 			marginRight: 35,
 			marginTop: top,
 			marginBottom: bottom,
+			offset: top,
 			style: {
 				fontFamily: '"Open Sans", Tahoma, Verdana, Arial'
 			},
@@ -82,11 +83,22 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
                     //if(this.options.chart.forExport) {
                     {{#each annotations}}
 						{{#if_ne isHidden true}}
-                        var note_{{@index}} = this.renderer.text('{{title}}', {{x}}+3 , {{y}}+top+15)
-                        	.attr({
-		                            zIndex: 10
-		                        })
+						{{#if title}}
+						var text  = '<div>{{{title}}}</div>';
+
+                        var note_{{@index}} = this.renderer.label(text, {{x}}, {{y}}+this.options.chart.offset, 0, 0, true)
+                        	 .css({
+				            color: '#000'
+				        })
+				        .attr({
+				            fill: 'rgba(0, 0, 0, 0.15)',
+				            //paddingTop: 12,
+				            r: 5,
+				            zIndex: 6
+				        })
                             .add();
+
+                            {{/if}}
 						{{/if_ne}}
 					{{/each}}
                     //}
@@ -96,17 +108,18 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 		                            zIndex: 10
 		                        })
                             .add();
+
                 }
             } 
 		},
 		colors: palette,
 		series: [],
 		title: {
-			text: "{{{title}}}",
+			text: "{{title}}",
 			y:30
 		},
 		subtitle: {
-			text: "{{{subtitle}}}",
+			text: "{{subtitle}}",
 			y:80
 		},
 		yAxis: {
