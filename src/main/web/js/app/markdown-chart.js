@@ -143,7 +143,13 @@ $(function() {
                 chartConfig.annotations = [];
                 chartConfig.title = {text:''};
                 chartConfig.subtitle = {text:''};
-                chartConfig.legend.y = -20;
+                
+                if(chartConfig.legend.verticalAlign==='top'){
+                    chartConfig.legend.y = -10;
+                }else{
+                    chartConfig.legend.y = 10;
+                }
+                
                 chartConfig.viewport = viewport;
 
 
