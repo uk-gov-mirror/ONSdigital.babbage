@@ -33,9 +33,9 @@ options.legend.verticalAlign="bottom";
 
 {{#partial "tooltip-config"}}
     if (this.point.options.extraValue) {
-    	str = 'name: ' + this.key + ' <br/>y:' + Highcharts.numberFormat(this.y,{{#if decimalPlaces}}{{decimalPlaces}}{{else}}0{{/if}}) + '<br/>Extra value' + this.point.options.extraValue;
+    	str = 'name: ' + this.key + ' <br/>y:' + Highcharts.numberFormat(this.y,{{#if decimalPlaces}}{{decimalPlaces}}{{else}}0{{/if}}) {{#if unit}}+ ' ({{unit}})'{{/if}} + '<br/>Extra value' + this.point.options.extraValue;
     } else {
-    	str = '<b>' + this.key + ' </b><br/>' + Highcharts.numberFormat(this.y,{{#if decimalPlaces}}{{decimalPlaces}}{{else}}0{{/if}});
+    	str = '<b>' + this.key + ' </b><br/>' + Highcharts.numberFormat(this.y,{{#if decimalPlaces}}{{decimalPlaces}}{{else}}0{{/if}}) {{#if unit}}+ ' ({{unit}})'{{/if}};
     }
 {{/partial}}
 
