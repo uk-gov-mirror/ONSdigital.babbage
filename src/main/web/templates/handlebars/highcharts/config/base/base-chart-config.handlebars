@@ -68,6 +68,7 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 	var bottom = 150;
 	{{!-- chart-config block is to be overriden by chart types inheriting this template --}}
 	var options = {
+	viewport:'lg',
 		chart: {
 			height: ht + top + bottom,
 			width: {{width}},
@@ -81,13 +82,20 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 			events: {
                 load: function () {
 
-                    {{#each annotations}}
-						{{#if_ne isHidden true}}
-						{{#if title}}
-						var text  = '<div>{{{title}}}</div>';
+                {{#each annotations}}
+					{{#if_ne isHidden true}}
+					{{#if title}}
+					var text  = '<div>{{{title}}}</div>';
+					var devices = {
+					{{#each devices}}
+					'{{@key}}':{x:{{x}}, y:{{y}} },
+					{{/each}}
+					};
+					var x = devices[this.options.viewport].x;
+					var y = devices[this.options.viewport].y;
 
-                        var note_{{@index}} = this.renderer.label(text, {{devices.lg.x}}, {{devices.lg.y}}+this.options.chart.offset, 0, 0, true)
-                        	 .css({
+                    var note_{{@index}} = this.renderer.label(text, x, y+this.options.chart.offset, 0, 0, true)
+                    	.css({
 				            color: '#000'
 				        })
 				        .attr({
@@ -96,17 +104,17 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 				            //r: 5,
 				            zIndex: 6
 				        })
-                            .add();
+                        .add();
 
-                            {{/if}}
-						{{/if_ne}}
-					{{/each}}
+                        {{/if}}
+					{{/if_ne}}
+				{{/each}}
 
                     //source
                     var source = this.renderer.text('Source: {{source}}', 50 , {{y}}+ht+top+110)
                         	.attr({
-		                            zIndex: 10
-		                        })
+		                    	zIndex: 10
+		                    })
                             .add();
 
                 }

@@ -144,6 +144,7 @@ $(function() {
                 chartConfig.title = {text:''};
                 chartConfig.subtitle = {text:''};
                 chartConfig.legend.y = -20;
+                chartConfig.viewport = viewport;
 
 
                 if (chartConfig) {
