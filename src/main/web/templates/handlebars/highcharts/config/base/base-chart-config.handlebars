@@ -193,11 +193,11 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 				animation: false,
 				pointPadding: 0,
 				groupPadding: 0.1,
-				states: {
+			{{#if showTooltip }}states: {
 					hover: {
 						enabled: {{ showTooltip }}
-	                }
-                }{{#if hasConnectNull}},
+	                } 
+                }{{/if}}{{#if hasConnectNull}},
 				connectNulls: true{{/if}}
 			},
 			line: {
