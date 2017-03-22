@@ -5,6 +5,7 @@ import com.github.onsdigital.babbage.template.handlebars.helpers.base.BabbageHan
 import com.github.onsdigital.babbage.template.handlebars.helpers.markdown.util.ChartTagReplacer;
 import com.github.onsdigital.babbage.template.handlebars.helpers.markdown.util.ImageTagReplacer;
 import com.github.onsdigital.babbage.template.handlebars.helpers.markdown.util.InteractiveTagReplacer;
+import com.github.onsdigital.babbage.template.handlebars.helpers.markdown.util.MathjaxTagReplacer;
 import com.github.onsdigital.babbage.template.handlebars.helpers.markdown.util.TableTagReplacer;
 
 import java.io.IOException;
@@ -26,6 +27,7 @@ public class PdfMarkdownHelper extends CustomMarkdownHelper implements BabbageHa
     @Override
     protected String processCustomMarkdownTags(String path, String markdown) throws IOException {
         markdown = new ChartTagReplacer(path, "pdf/partials/chart").replaceCustomTags(markdown);
+        markdown = new MathjaxTagReplacer(path, "pdf/partials/equation").replaceCustomTags(markdown);
         markdown = new TableTagReplacer(path, "pdf/partials/table").replaceCustomTags(markdown);
         markdown = new ImageTagReplacer(path, "pdf/partials/image").replaceCustomTags(markdown);
         markdown = new InteractiveTagReplacer(path, "pdf/partials/interactive").replaceCustomTags(markdown);
