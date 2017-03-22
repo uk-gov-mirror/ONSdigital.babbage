@@ -32,15 +32,11 @@ options.legend.verticalAlign="bottom";
 {{/partial}}
 
 {{#partial "tooltip-config"}}
-    if (this.point.options.extraValue) str = 'name: ' + this.key + ' <br/>y:' + Highcharts.numberFormat(this.y,{{#if decimalPlaces}}{{decimalPlaces}}{{else}}0{{/if}}) + '<br/>Extra value' + this.point.options.extraValue;
-    else str = '<b>' + this.key + ' </b><br/>' + Highcharts.numberFormat(this.y,{{#if decimalPlaces}}{{decimalPlaces}}{{else}}0{{/if}});
-{{!-- 
-
-        if (this.point.options.extraValue) {
-    	str = 'name: ' + this.key + ' <br/>y:' + Highcharts.numberFormat(this.y,.{{#if decimalPlaces}}{{decimalPlaces}}{{else}}0{{/if}}f)+ '<br/>Extra value' + this.point.options.extraValue;
+    if (this.point.options.extraValue) {
+    	str = 'name: ' + this.key + ' <br/>y:' + Highcharts.numberFormat(this.y,{{#if decimalPlaces}}{{decimalPlaces}}{{else}}0{{/if}}) + '<br/>Extra value' + this.point.options.extraValue;
     } else {
-    	str = '<b>' + this.key + ' </b><br/>' + this.y;
-    } --}}
+    	str = '<b>' + this.key + ' </b><br/>' + Highcharts.numberFormat(this.y,{{#if decimalPlaces}}{{decimalPlaces}}{{else}}0{{/if}});
+    }
 {{/partial}}
 
 {{!-- This denotes the template inherits from base-chart-config--}}
