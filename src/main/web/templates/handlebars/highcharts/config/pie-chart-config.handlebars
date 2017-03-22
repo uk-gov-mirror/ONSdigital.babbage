@@ -1,5 +1,6 @@
 {{#partial "chart-config"}}
 options.chart.type="pie";
+options.chart.marginTop = 100;
 options.labels={};
 options.legend.enabled={{#if_eq data.size 1}}false{{else}}true{{/if_eq}}; {{!-- Hide legends if only single category on chart--}}
 
@@ -15,8 +16,13 @@ options.series=[{
 			},{{/each}}
 		]
 	}];
+
+var offsetX = (ht/2 - 50) +'px'; // based on half height
+var offsetY = 45  +'%';
+
 options.plotOptions={
 	     pie: {
+	     	center: [offsetX,offsetY],
 	     	{{#if donut}}innerSize: '50%',{{/if}}
 	         allowPointSelect: true,
 	         cursor: 'pointer',
