@@ -1,8 +1,9 @@
 $(function() {    
     // if on mobile inject overlay and button elements
+    /*
     if ($("body").hasClass("viewport-xs")) {
         var markdownChart = $('.markdown-chart');
-
+        // remove button on mobile to show static image 
         if (markdownChart.length) {
             $('<div class="markdown-chart-overlay"></div>').insertAfter($('.markdown-chart'));
             $('<button class="btn btn--mobile-chart-show">View chart</button>').insertAfter($('.markdown-chart'));
@@ -32,4 +33,5 @@ $(function() {
             });
         }
     } 
+    */
 });
