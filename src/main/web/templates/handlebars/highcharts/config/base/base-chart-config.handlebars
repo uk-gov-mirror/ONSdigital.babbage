@@ -49,7 +49,8 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 	{{#if_eq palette "blue"}}palette = bluemono;{{/if_eq}}
 	{{#if_eq palette "colour"}}palette = color;{{/if_eq}}
 
-	var hasTooltip = {{#if showTooltip }}true{{else}}false{{/if}};
+	var hasTooltip = '{{showTooltip}}';// cast it as a string to handle missing values
+
 	{{#if hasLineBreak }}
 		{{> highcharts/config/line-break-config}}
 	{{/if}}
@@ -193,11 +194,11 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 				animation: false,
 				pointPadding: 0,
 				groupPadding: 0.1,
-			{{#if showTooltip }}states: {
+				states: {
 					hover: {
-						enabled: {{ showTooltip }}
+						enabled: true
 	                } 
-                }{{/if}}{{#if hasConnectNull}},
+                }{{#if hasConnectNull}},
 				connectNulls: true{{/if}}
 			},
 			line: {
@@ -230,7 +231,7 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 		{{/if}}
 
 		},
-		{{#if showTooltip }}
+
 		tooltip: {
 			valueDecimals: "{{decimalPlaces}}",
 			shared: true,
@@ -241,7 +242,7 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 			formatter: function() {
 				{{!-- leave the tooltip toggle here then can set in the page?
 				better to render it earlier as it is done on the server  --}}
-				if (hasTooltip) {
+				if (hasTooltip!=='false') {
 					var div = '<div id="custom-tooltip"><div class="maintext">';
 					{{#block "tooltip-config"}}
 					var i = 0;
@@ -265,9 +266,6 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 			borderColor: 'rgba(255, 255, 255, 0)',
 			shadow: false
 		},
-		{{else}}
-		tooltip:{enabled:false},
-		{{/if}}
 		credits: {
 			enabled: false
 		},
@@ -279,6 +277,13 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
     	}
 
 	};
+
+	// disable hover state when tooltip is hidden
+	if (hasTooltip!=='false') {
+		options.plotOptions.series.states.hover.enabled = true;
+	}else{
+		options.plotOptions.series.states.hover.enabled = false;
+	}
 
 	{{#if annotations }}
 		{{> highcharts/config/annotations-config}}
