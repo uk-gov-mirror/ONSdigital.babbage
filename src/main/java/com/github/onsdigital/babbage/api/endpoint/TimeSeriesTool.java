@@ -14,6 +14,7 @@ import static com.github.onsdigital.babbage.api.util.SearchUtils.buildListQuery;
 import static com.github.onsdigital.babbage.api.util.SearchUtils.list;
 import static com.github.onsdigital.babbage.search.builders.ONSFilterBuilders.filterDates;
 import static com.github.onsdigital.babbage.search.builders.ONSFilterBuilders.filterTopic;
+import static com.github.onsdigital.babbage.util.URIUtil.isDataRequest;
 
 /**
  * Created by bren on 25/11/15.
@@ -23,7 +24,9 @@ public class TimeSeriesTool {
 
     @GET
     public void get(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        list(request, getClass().getSimpleName(), queries(request)).apply(request, response);
+
+        final boolean dataRequest = isDataRequest(request.getRequestURI());
+        list(dataRequest, getClass().getSimpleName(), queries(request)).apply(request, response);
     }
 
     private SearchQueries queries(HttpServletRequest request) {

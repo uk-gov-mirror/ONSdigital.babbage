@@ -1,7 +1,6 @@
 package com.github.onsdigital.babbage.search.input;
 
 import com.github.onsdigital.babbage.search.model.ContentType;
-import com.github.onsdigital.babbage.search.model.field.Field;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.Collections;
@@ -15,48 +14,60 @@ import java.util.Set;
  */
 public enum TypeFilter {
     BULLETIN(ContentType.bulletin),
-    ARTICLE(ContentType.article, ContentType.article_download),
+    ARTICLE(ContentType.article,
+            ContentType.article_download),
     COMPENDIA(ContentType.compendium_landing_page),
     TIME_SERIES(ContentType.timeseries),
-    DATASETS(ContentType.dataset_landing_page, ContentType.reference_tables),
+    DATASETS(ContentType.dataset_landing_page,
+             ContentType.reference_tables),
     USER_REQUESTED_DATA(ContentType.static_adhoc),
     QMI(ContentType.static_qmi),
-    METHODOLOGY(ContentType.static_qmi, ContentType.static_methodology, ContentType.static_methodology_download),
-    METHODOLOGY_ARTICLE(ContentType.static_methodology, ContentType.static_methodology_download),
-    CORPORATE_INFORMATION(ContentType.static_foi, ContentType.static_page, ContentType.static_landing_page, ContentType.static_article);
-
-    private ContentType[] types;
+    METHODOLOGY(ContentType.static_qmi,
+                ContentType.static_methodology,
+                ContentType.static_methodology_download),
+    METHODOLOGY_ARTICLE(ContentType.static_methodology,
+                        ContentType.static_methodology_download),
+    CORPORATE_INFORMATION(ContentType.static_foi,
+                          ContentType.static_page,
+                          ContentType.static_landing_page,
+                          ContentType.static_article);
 
     private static Set<TypeFilter> allFilters;
     private static Set<TypeFilter> publicationFilters;
     private static Set<TypeFilter> dataFilters;
     private static Set<TypeFilter> methodologyFilters;
+    private ContentType[] types;
 
     TypeFilter(ContentType... types) {
         this.types = types;
     }
 
     public static Set<TypeFilter> getAllFilters() {
-        return initialize(allFilters, TypeFilter.values());
+        return initialize(allFilters,
+                          TypeFilter.values());
     }
 
     public static Set<TypeFilter> getPublicationFilters() {
-        return initialize(publicationFilters, BULLETIN, ARTICLE, COMPENDIA);
+        return initialize(publicationFilters,
+                          BULLETIN,
+                          ARTICLE,
+                          COMPENDIA);
 
     }
 
     public static Set<TypeFilter> getDataFilters() {
-        return initialize(dataFilters, TIME_SERIES, DATASETS, USER_REQUESTED_DATA);
+        return initialize(dataFilters,
+                          TIME_SERIES,
+                          DATASETS,
+                          USER_REQUESTED_DATA);
 
     }
 
     public static Set<TypeFilter> getMethodologyFilters() {
-        return initialize(methodologyFilters, QMI, METHODOLOGY_ARTICLE);
+        return initialize(methodologyFilters,
+                          QMI,
+                          METHODOLOGY_ARTICLE);
 
-    }
-
-    public ContentType[] getTypes() {
-        return types;
     }
 
     private static Set<TypeFilter> initialize(Set<TypeFilter> filterSet, TypeFilter... types) {
@@ -64,23 +75,15 @@ public enum TypeFilter {
             synchronized (TypeFilter.class) {
                 if (filterSet == null) {
                     filterSet = new HashSet<>();
-                    Collections.addAll(filterSet, types);
+                    Collections.addAll(filterSet,
+                                       types);
                 }
             }
         }
         return filterSet;
     }
 
-
-    public static String[] typeNames(Set<TypeFilter> filters) {
-        String[] types = new String[0];
-        for (TypeFilter selectedFilter : filters) {
-            ContentType[] contentTypes = selectedFilter.getTypes();
-            types = ArrayUtils.addAll(types, ContentType.typeNames(contentTypes));
-        }
-        return types;
-    }
-
+    //TODO Convert to Collection<ContentType>
     public static ContentType[] contentTypes(Set<TypeFilter> filters) {
         return resolveContentTypes(filters.toArray(new TypeFilter[filters.size()]));
     }
@@ -88,9 +91,14 @@ public enum TypeFilter {
     public static ContentType[] resolveContentTypes(TypeFilter... filters) {
         ContentType[] contentTypes = new ContentType[0];
         for (TypeFilter filter : filters) {
-            contentTypes = ArrayUtils.addAll(contentTypes, filter.getTypes());
+            contentTypes = ArrayUtils.addAll(contentTypes,
+                                             filter.getTypes());
         }
         return contentTypes;
+    }
+
+    public ContentType[] getTypes() {
+        return types;
     }
 
 

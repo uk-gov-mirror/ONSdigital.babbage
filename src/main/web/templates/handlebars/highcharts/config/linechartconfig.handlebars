@@ -66,19 +66,19 @@ var linechart = {
      labels: {
        formatter: function() {
          var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
-         var response = '';
+         var queryType = '';
          if (w < 768) {
            if (this.isFirst) {
              count = 0;
            }
            if (count % 4 === 0 || this.isLast) {
-             response = this.value;
+             queryType = this.value;
            }
            count++;
          } else {
-           response = this.value;
+           queryType = this.value;
          }
-         return response;
+         return queryType;
        }
      },
      tickmarkPlacement: 'on'

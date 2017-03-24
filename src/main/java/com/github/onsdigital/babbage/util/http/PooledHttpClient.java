@@ -21,7 +21,6 @@ import org.apache.http.util.EntityUtils;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -140,16 +139,14 @@ public class PooledHttpClient {
 
     private void addHeaders(Map<String, String> headers, HttpRequestBase request) {
         if (headers != null) {
-            Iterator<Map.Entry<String, String>> headerIterator = headers.entrySet().iterator();
-            while (headerIterator.hasNext()) {
-                Map.Entry<String, String> next = headerIterator.next();
+            for (final Map.Entry<String, String> next : headers.entrySet()) {
                 request.addHeader(next.getKey(), next.getValue());
             }
 
         }
     }
 
-    public void shutdown() throws IOException {
+    private void shutdown() throws IOException {
         System.out.println("Shutting down connection pool to host:" + HOST);
         httpClient.close();
         System.out.println("Successfully shut down connection pool");
@@ -197,7 +194,7 @@ public class PooledHttpClient {
                     errorMessage == null ? statusLine.getReasonPhrase() : errorMessage);
         }
         if (entity == null) {
-            throw new ClientProtocolException("Response contains no content");
+            throw new ClientProtocolException("QueryType contains no content");
         }
 
         return response;
@@ -205,8 +202,7 @@ public class PooledHttpClient {
 
     private String getErrorMessage(HttpEntity entity) {
         try {
-            String s = EntityUtils.toString(entity);
-            return s;
+            return EntityUtils.toString(entity);
         } catch (Exception e) {
             System.err.println("Failed reading content service:");
             e.printStackTrace();

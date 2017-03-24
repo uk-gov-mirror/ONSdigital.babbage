@@ -1,0 +1,25 @@
+@startuml
+title AtoZ Query
+start
+:Search;
+#AABBCC:Count on Term;
+if (null != term) then (yes)
+ :count first letter;
+else (no)
+ :count all;
+endif
+
+if (term is blank ||
+ count < 1 ) then (yes)
+ :buildListQuery Match All;
+else (no)
+ :buildListQuery on term first letter;
+endif
+
+:execute list query;
+:merge with count;
+:return to client;
+stop
+
+
+@enduml

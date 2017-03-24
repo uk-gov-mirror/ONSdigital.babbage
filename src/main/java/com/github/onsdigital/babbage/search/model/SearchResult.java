@@ -1,7 +1,6 @@
 package com.github.onsdigital.babbage.search.model;
 
 import com.github.onsdigital.babbage.paginator.Paginator;
-import com.github.onsdigital.babbage.search.input.SortBy;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -12,14 +11,23 @@ import java.util.Map;
  * Created by bren on 07/09/15.
  */
 public class SearchResult {
-
+    private QueryType queryType;
     private Long numberOfResults;
     private long took;
     private List<Map<String, Object>> results = new ArrayList<>();
     private List<String> suggestions = new ArrayList<>();
-    private Map<String,Long> docCounts = new LinkedHashMap<>();
+    private Map<String, Long> docCounts = new LinkedHashMap<>();
     private Paginator paginator;
     private String sortBy;
+
+    public QueryType getQueryType() {
+        return queryType;
+    }
+
+    public SearchResult setQueryType(final QueryType queryType) {
+        this.queryType = queryType;
+        return this;
+    }
 
     public Long getNumberOfResults() {
         return numberOfResults;

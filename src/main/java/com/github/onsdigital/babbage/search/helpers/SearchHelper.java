@@ -4,6 +4,7 @@ import com.github.onsdigital.babbage.paginator.Paginator;
 import com.github.onsdigital.babbage.search.model.ContentType;
 import com.github.onsdigital.babbage.search.model.field.Field;
 import com.github.onsdigital.babbage.search.model.sort.SortField;
+import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.ElasticsearchException;
 import org.elasticsearch.action.search.*;
 import org.elasticsearch.search.aggregations.AbstractAggregationBuilder;
@@ -25,7 +26,8 @@ public class SearchHelper {
 
 
     private static SearchRequestBuilder prepare(ONSQuery query) {
-        return prepare(query, null);
+        return prepare(query,
+                       null);
     }
 
     private static SearchRequestBuilder prepare(ONSQuery query, String index) {
@@ -36,26 +38,43 @@ public class SearchHelper {
                 .setSize(query.size())
                 .setSearchType(SearchType.DFS_QUERY_THEN_FETCH);
 
-        addTypes(requestBuilder, query);
-        addHighlights(requestBuilder, query);
-        addSorts(requestBuilder, query);
-        addAggregations(requestBuilder, query);
-        addSuggestions(requestBuilder, query);
-        addFetchFields(requestBuilder, query);
+        addTypes(requestBuilder,
+                 query);
+        addHighlights(requestBuilder,
+                      query);
+        addSorts(requestBuilder,
+                 query);
+        addAggregations(requestBuilder,
+                        query);
+        addSuggestions(requestBuilder,
+                       query);
+        addFetchFields(requestBuilder,
+                       query);
 
-        LOGGER.debug("prepare([query, index]) : QueryName:{} -> Query: '{}'", query.name(), requestBuilder);
+        LOGGER.debug("prepare([query, index]) : index '{}' types '{}' QueryName:{} -> Query: '{}'",
+                     index,
+                     StringUtils.join(query.types(),
+                                      ","),
+                     query.name(),
+                     requestBuilder);
         return requestBuilder;
     }
 
     public static ONSSearchResponse search(ONSQuery queries, String index) {
-        SearchResponse response = prepare(queries, index).get();
-        return resolveDetails(queries, new ONSSearchResponse(response));
+        SearchResponse response = prepare(queries,
+                                          index).get();
+        return resolveDetails(queries,
+                              new ONSSearchResponse(response));
     }
 
     public static ONSSearchResponse search(ONSQuery queries) {
         SearchRequestBuilder searchRequestBuilder = prepare(queries);
         //System.out.println("Searching with query:\n" + searchRequestBuilder.internalBuilder());
-        return resolveDetails(queries, new ONSSearchResponse(searchRequestBuilder.get()));
+        LOGGER.info("search([queries]) : {} - {}",
+                    queries.name(),
+                    searchRequestBuilder);
+        return resolveDetails(queries,
+                              new ONSSearchResponse(searchRequestBuilder.get()));
     }
 
     public static List<ONSSearchResponse> searchMultiple(List<ONSQuery> queries) {
@@ -68,6 +87,9 @@ public class SearchHelper {
         }
 
         List<ONSSearchResponse> helpers = new ArrayList<>();
+        LOGGER.info("search([queries]) : multiSearch",
+                    multiSearchRequestBuilder);
+
         MultiSearchResponse response = multiSearchRequestBuilder.get();
         {
             int i = 0;
@@ -75,7 +97,8 @@ public class SearchHelper {
                 if (item.isFailure()) {
                     throw new ElasticsearchException(item.getFailureMessage());
                 }
-                helpers.add(resolveDetails(queries.get(i), new ONSSearchResponse(item.getResponse())));
+                helpers.add(resolveDetails(queries.get(i),
+                                           new ONSSearchResponse(item.getResponse())));
                 i++;
             }
         }
@@ -124,7 +147,8 @@ public class SearchHelper {
         for (SortField sortField : query.sortBy()
                                         .getSortFields()) {
             builder.addSort(sortField.getField()
-                                     .fieldName(), sortField.getOrder());
+                                     .fieldName(),
+                            sortField.getOrder());
         }
     }
 
@@ -147,7 +171,9 @@ public class SearchHelper {
     }
 
     private static ONSSearchResponse resolveDetails(ONSQuery queryBuilder, ONSSearchResponse response) {
-        return resolveSortBy(queryBuilder, resolvePaginator(queryBuilder, response));
+        return resolveSortBy(queryBuilder,
+                             resolvePaginator(queryBuilder,
+                                              response));
     }
 
     private static ONSSearchResponse resolveSortBy(ONSQuery queryBuilder, ONSSearchResponse response) {
@@ -164,7 +190,8 @@ public class SearchHelper {
         if (queryBuilder.page() == null) { // if page not set , don't resolve pagination
             return response;
         }
-        Paginator.assertPage(queryBuilder.page(), response);
+        Paginator.assertPage(queryBuilder.page(),
+                             response);
         Paginator paginator = new Paginator(response.getNumberOfResults(),
                                             getMaxVisiblePaginatorLink(),
                                             queryBuilder.page(),

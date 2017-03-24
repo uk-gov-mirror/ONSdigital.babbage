@@ -33,7 +33,7 @@ public enum SortBy {
             get(Field._score, SortOrder.DESC)
     );
 
-    private SortField[] sortFields;
+    private final SortField[] sortFields;
 
     SortBy(SortField... sortFields) {
         this.sortFields = sortFields;
@@ -46,4 +46,6 @@ public enum SortBy {
     private static SortField get(Field field, SortOrder order) {
         return new SortField(field, order);
     }
+
+
 }

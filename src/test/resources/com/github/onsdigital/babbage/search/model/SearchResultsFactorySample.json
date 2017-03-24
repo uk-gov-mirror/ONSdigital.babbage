@@ -1,0 +1,666 @@
+{
+  "responses": [
+    {
+      "took": 64,
+      "timed_out": false,
+      "_shards": {
+        "total": 5,
+        "successful": 5,
+        "failed": 0
+      },
+      "hits": {
+        "total": 1555,
+        "max_score": 1044.8848,
+        "hits": [
+          {
+            "_index": "ons1488357205651",
+            "_type": "timeseries",
+            "_id": "/economy/grossdomesticproductgdp/timeseries/rndl/ukea",
+            "_score": 1044.8848,
+            "_source": {
+              "description": {
+                "nextRelease": "31 March 2017",
+                "date": "2016 Q3",
+                "releaseDate": "2016-12-23T00:00:00.000Z",
+                "source": "",
+                "title": "Central Government: Taxes on products excluding VAT and import taxes received",
+                "sampleSize": "0",
+                "datasetUri": "/economy/grossdomesticproductgdp/datasets/unitedkingdomeconomicaccounts",
+                "number": "21255",
+                "cdid": "RNDL",
+                "unit": "",
+                "contact": {
+                  "name": "Michael Rizzo",
+                  "telephone": "+44 (0)1633 456366",
+                  "email": "sector.accounts@ons.gsi.gov.uk"
+                },
+                "datasetId": "UKEA",
+                "preUnit": ""
+              },
+              "searchBoost": [],
+              "type": "timeseries",
+              "uri": "/economy/grossdomesticproductgdp/timeseries/rndl/ukea"
+            },
+            "highlight": {
+              "description.title": [
+                "Central Government: <strong>Taxes</strong> on products excluding VAT and <strong>import</strong> <strong>taxes</strong> received"
+              ],
+              "pageData": [
+                "Central Government: <strong>Taxes</strong> on products excluding",
+                "excluding VAT and import <strong>taxes</strong> received\tsector.accounts@ons"
+              ]
+            }
+          },
+          {
+            "_index": "ons1488357205651",
+            "_type": "timeseries",
+            "_id": "/economy/governmentpublicsectorandtaxes/publicspending/timeseries/ebdb/edp2",
+            "_score": 1012.12146,
+            "_source": {
+              "description": {
+                "nextRelease": "18 January 2017",
+                "date": "2016 Q2",
+                "releaseDate": "2016-10-19T23:00:00.000Z",
+                "source": "",
+                "title": "CG receipts: taxes on expenditure: Purchase tax                         ",
+                "sampleSize": "0",
+                "datasetUri": "/economy/governmentpublicsectorandtaxes/publicspending/datasets/maastrictsupplementarytabe",
+                "number": "0",
+                "cdid": "EBDB",
+                "unit": "",
+                "contact": {
+                  "name": "Rob Pennington",
+                  "telephone": "+44 (0)1633 456659",
+                  "email": "psa@ons.gsi.gov.uk"
+                },
+                "datasetId": "EDP2",
+                "preUnit": ""
+              },
+              "searchBoost": [],
+              "type": "timeseries",
+              "uri": "/economy/governmentpublicsectorandtaxes/publicspending/timeseries/ebdb/edp2"
+            },
+            "highlight": {
+              "description.title": [
+                "CG receipts: <strong>taxes</strong> on expenditure: Purchase <strong>tax</strong>                         "
+              ],
+              "pageData": [
+                "receipts: <strong>taxes</strong> on expenditure: Purchase <strong>tax</strong>      "
+              ]
+            }
+          },
+          {
+            "_index": "ons1488357205651",
+            "_type": "timeseries",
+            "_id": "/economy/governmentpublicsectorandtaxes/publicspending/timeseries/gtat/edp2",
+            "_score": 1012.12146,
+            "_source": {
+              "description": {
+                "nextRelease": "18 January 2017",
+                "date": "2016 Q2",
+                "releaseDate": "2016-10-19T23:00:00.000Z",
+                "source": "",
+                "title": "Central govt receipts: taxes on expenditure: car tax                    ",
+                "sampleSize": "0",
+                "datasetUri": "/economy/governmentpublicsectorandtaxes/publicspending/datasets/maastrictsupplementarytabe",
+                "number": "0",
+                "cdid": "GTAT",
+                "unit": "",
+                "contact": {
+                  "name": "Rob Pennington",
+                  "telephone": "+44 (0)1633 456659",
+                  "email": "psa@ons.gsi.gov.uk"
+                },
+                "datasetId": "EDP2",
+                "preUnit": ""
+              },
+              "searchBoost": [],
+              "type": "timeseries",
+              "uri": "/economy/governmentpublicsectorandtaxes/publicspending/timeseries/gtat/edp2"
+            },
+            "highlight": {
+              "description.title": [
+                "Central govt receipts: <strong>taxes</strong> on expenditure: car <strong>tax</strong>                    "
+              ],
+              "pageData": [
+                "receipts: <strong>taxes</strong> on expenditure: car <strong>tax</strong>        "
+              ]
+            }
+          },
+          {
+            "_index": "ons1488357205651",
+            "_type": "dataset_landing_page",
+            "_id": "/economy/environmentalaccounts/datasets/ukenvironmentalaccountsenvironmentaltaxes",
+            "_score": 993.884,
+            "_source": {
+              "description": {
+                "summary": "Government revenue from environmental taxes (including energy, transport and pollution/resource taxes), for 1993 to 2014.\n",
+                "nextRelease": "To be announced",
+                "unit": "",
+                "keywords": [
+                  "environment, pollution, climate, ghg, natural capital, water, waste, air, forest, accounts, material flows, taxes, EPE, MFA, energy,environment,pollution,climate,ghg,natural,capital,water,waste,air,forest,accounts,material,flows,taxws,EPE,MFA,energy"
+                ],
+                "releaseDate": "2016-07-04T23:00:00.000Z",
+                "contact": {
+                  "name": "Geeta Kerai",
+                  "telephone": "+44 (0)1633 651815",
+                  "email": "geeta.kerai@ons.gsi.gov.uk"
+                },
+                "datasetId": "",
+                "source": "",
+                "title": "Environmental taxes ",
+                "metaDescription": "Government revenue from environmental taxes (including energy, transport and pollution/resource taxes), for 1993 to 2014.\n",
+                "nationalStatistic": true,
+                "preUnit": ""
+              },
+              "searchBoost": [],
+              "type": "dataset_landing_page",
+              "uri": "/economy/environmentalaccounts/datasets/ukenvironmentalaccountsenvironmentaltaxes"
+            },
+            "highlight": {
+              "description.title": [
+                "Environmental <strong>taxes</strong> "
+              ],
+              "pageData": [
+                "taxes\tEnvironmental <strong>taxes</strong> \tGovernment revenue",
+                "revenue from environmental <strong>taxes</strong> (including energy, transport",
+                "and pollution/resource <strong>taxes</strong>), for 1993 to 2014.",
+                "accounts, material flows, <strong>taxes</strong>, EPE, MFA, energy,environment",
+                "revenue from environmental <strong>taxes</strong> (including energy, transport"
+              ],
+              "description.keywords": [
+                "environment, pollution, climate, ghg, natural capital, water, waste, air, forest, accounts, material flows, <strong>taxes</strong>, EPE, MFA, energy,environment,pollution,climate,ghg,natural,capital,water,waste,air,forest,accounts,material,flows,taxws,EPE,MFA,energy"
+              ]
+            }
+          },
+          {
+            "_index": "ons1488357205651",
+            "_type": "timeseries",
+            "_id": "/economy/governmentpublicsectorandtaxes/publicspending/timeseries/ebdb/bb",
+            "_score": 976.01495,
+            "_source": {
+              "description": {
+                "nextRelease": "October 2017",
+                "date": "2015",
+                "releaseDate": "2016-07-28T23:00:00.000Z",
+                "source": "",
+                "title": "CG receipts: taxes on expenditure: Purchase tax                         ",
+                "sampleSize": "0",
+                "datasetUri": "/economy/grossdomesticproductgdp/datasets/bluebook",
+                "number": "0",
+                "cdid": "EBDB",
+                "unit": "",
+                "contact": {
+                  "name": "Emma Howley",
+                  "telephone": "+44 (0)1633 455190 ",
+                  "email": "blue.book.coordination@ons.gsi.gov.uk "
+                },
+                "datasetId": "BB",
+                "preUnit": ""
+              },
+              "searchBoost": [],
+              "type": "timeseries",
+              "uri": "/economy/governmentpublicsectorandtaxes/publicspending/timeseries/ebdb/bb"
+            },
+            "highlight": {
+              "description.title": [
+                "CG receipts: <strong>taxes</strong> on expenditure: Purchase <strong>tax</strong>                         "
+              ],
+              "pageData": [
+                "receipts: <strong>taxes</strong> on expenditure: Purchase <strong>tax</strong>      "
+              ]
+            }
+          },
+          {
+            "_index": "ons1488357205651",
+            "_type": "bulletin",
+            "_id": "/peoplepopulationandcommunity/personalandhouseholdfinances/incomeandwealth/bulletins/theeffectsoftaxesandbenefitsonhouseholdincome/2013-07-10",
+            "_score": 972.309,
+            "_source": {
+              "description": {
+                "summary": "The redistribution effects on households of direct and indirect taxation and benefits received in cash or kind analysed by household type, and the changing levels of income inequality over time.",
+                "nextRelease": "26 June 2014",
+                "keywords": [
+                  "Expenditure",
+                  "redistribution",
+                  "inequality",
+                  "disposable"
+                ],
+                "releaseDate": "2013-07-10T00:00:00.000Z",
+                "edition": "2011/12",
+                "language": "English",
+                "source": "",
+                "title": "The effects of taxes and benefits on household income",
+                "metaDescription": "Examines how taxes and benefits redistribute income between various groups of households in the UK and how levels of income inequality change over time.",
+                "nationalStatistic": true,
+                "unit": "",
+                "headline1": "There was a fall in income inequality between 2010/11 and 2011/12. This was driven partly by earnings falling for higher income households and partly by changes in taxes and benefits. These changes include an increase in the income tax personal allowance, changes to National Insurance Contributions and Child Tax Credits",
+                "headline2": "Disposable incomes have fallen since the start of the economic downturn, with average equivalised income falling by £1,200 since 2007/08 in real terms.  The fall in income has been largest for the richest fifth of households (6.8%).  In contrast, after accounting for inflation and household composition, average income for the poorest fifth has grown over this period (6.9%)",
+                "contact": {
+                  "name": "Claudia Wells / Nathan Thomas  ",
+                  "telephone": "+44 (0)1633 455867",
+                  "email": "hie@ons.gsi.gov.uk"
+                },
+                "headline3": "Before taxes and benefits, the richest fifth of households had an average income of £78,300 in 2011/12, 14 times greater than the poorest fifth, who had an average income of £5,400",
+                "preUnit": ""
+              },
+              "searchBoost": [],
+              "type": "bulletin",
+              "uri": "/peoplepopulationandcommunity/personalandhouseholdfinances/incomeandwealth/bulletins/theeffectsoftaxesandbenefitsonhouseholdincome/2013-07-10"
+            },
+            "highlight": {
+              "description.title": [
+                "The effects of <strong>taxes</strong> and benefits on household income"
+              ],
+              "pageData": [
+                "partly by changes in <strong>taxes</strong> and benefits. These",
+                "increase in the income <strong>tax</strong> personal allowance and",
+                "Contributions and Child <strong>Tax</strong> Credits\n\n- Disposable",
+                "period (6.9%)\n\n- Before <strong>taxes</strong> and benefits, the richest",
+                "of £5,400\n\n- Overall, <strong>taxes</strong> and benefits lead to"
+              ]
+            }
+          },
+          {
+            "_index": "ons1488357205651",
+            "_type": "timeseries",
+            "_id": "/economy/governmentpublicsectorandtaxes/publicspending/timeseries/gtat/bb",
+            "_score": 970.22943,
+            "_source": {
+              "description": {
+                "nextRelease": "October 2017",
+                "date": "2015",
+                "releaseDate": "2016-07-28T23:00:00.000Z",
+                "source": "",
+                "title": "Central govt receipts: taxes on expenditure: car tax                    ",
+                "sampleSize": "0",
+                "datasetUri": "/economy/grossdomesticproductgdp/datasets/bluebook",
+                "number": "0",
+                "cdid": "GTAT",
+                "unit": "",
+                "contact": {
+                  "name": "Emma Howley",
+                  "telephone": "+44 (0)1633 455190 ",
+                  "email": "blue.book.coordination@ons.gsi.gov.uk "
+                },
+                "datasetId": "BB",
+                "preUnit": ""
+              },
+              "searchBoost": [],
+              "type": "timeseries",
+              "uri": "/economy/governmentpublicsectorandtaxes/publicspending/timeseries/gtat/bb"
+            },
+            "highlight": {
+              "description.title": [
+                "Central govt receipts: <strong>taxes</strong> on expenditure: car <strong>tax</strong>                    "
+              ],
+              "pageData": [
+                "receipts: <strong>taxes</strong> on expenditure: car <strong>tax</strong>        "
+              ]
+            }
+          },
+          {
+            "_index": "ons1488357205651",
+            "_type": "bulletin",
+            "_id": "/peoplepopulationandcommunity/personalandhouseholdfinances/incomeandwealth/bulletins/theeffectsoftaxesandbenefitsonincomeinequality/1977tofinancialyearending2015",
+            "_score": 966.78284,
+            "_source": {
+              "topics": [],
+              "description": {
+                "summary": "The redistribution effects on households of direct and indirect taxation and benefits received in cash or kind analysed by household type, and the changing levels of income inequality over time.",
+                "nextRelease": "",
+                "keywords": [
+                  "disposable,expenditure,equivalisation,gini"
+                ],
+                "releaseDate": "2016-04-07T23:00:00.000Z",
+                "edition": "1977 to financial year ending 2015",
+                "source": "",
+                "title": "The effects of taxes and benefits on income inequality",
+                "metaDescription": "The redistribution effects on households of direct and indirect taxation and benefits received in cash or kind analysed by household type, and the changing levels of income inequality over time. ",
+                "nationalStatistic": true,
+                "latestRelease": true,
+                "unit": "",
+                "headline1": "",
+                "headline2": "",
+                "contact": {
+                  "name": "Claudia Wells / Nathan Thomas  ",
+                  "telephone": "+44 (0)1633 455867",
+                  "email": "hie@ons.gsi.gov.uk"
+                },
+                "headline3": "",
+                "preUnit": ""
+              },
+              "searchBoost": [],
+              "type": "bulletin",
+              "uri": "/peoplepopulationandcommunity/personalandhouseholdfinances/incomeandwealth/bulletins/theeffectsoftaxesandbenefitsonincomeinequality/1977tofinancialyearending2015"
+            },
+            "highlight": {
+              "description.title": [
+                "The effects of <strong>taxes</strong> and benefits on income inequality"
+              ],
+              "pageData": [
+                "focus on the impact of <strong>taxes</strong> and benefits on reducing",
+                "direct <strong>taxes</strong>\n\nDirect <strong>taxes</strong> (Income <strong>Tax</strong>, National",
+                "contributions and Council <strong>Tax</strong> or rates) also reduce",
+                "households pay in direct <strong>taxes</strong> has generally fallen",
+                "fluctuations, direct <strong>taxes</strong> have generally been"
+              ]
+            }
+          },
+          {
+            "_index": "ons1488357205651",
+            "_type": "bulletin",
+            "_id": "/peoplepopulationandcommunity/personalandhouseholdfinances/incomeandwealth/bulletins/theeffectsoftaxesandbenefitsonhouseholdincome/financialyearending2015",
+            "_score": 960.86523,
+            "_source": {
+              "topics": [],
+              "description": {
+                "summary": "The redistribution effects on households of direct and indirect taxation and benefits received in cash or kind analysed by household type, and the changing levels of income inequality over time.",
+                "nextRelease": "",
+                "keywords": [
+                  "disposable,expenditure,equivalisation,gini"
+                ],
+                "releaseDate": "2016-05-23T23:00:00.000Z",
+                "edition": "financial year ending 2015",
+                "source": "",
+                "title": "The effects of taxes and benefits on household income",
+                "metaDescription": "The redistribution effects on households of direct and indirect taxation and benefits received in cash or kind analysed by household type, and the changing levels of income inequality over time. ",
+                "nationalStatistic": true,
+                "latestRelease": true,
+                "unit": "",
+                "headline1": "In the financial year ending 2015 (2014/15), the average income of the richest fifth of UK households before taxes and benefits was £83,800, 14 times greater than that of the poorest fifth who had an average income of £6,100 per year.",
+                "headline2": "After taking into account taxes and benefits the ratio between the average incomes of the top and the bottom fifth of households (£62,500 and £16,500 respectively) is reduced to 4 to 1.",
+                "contact": {
+                  "name": "Claudia Wells / Nathan Thomas  ",
+                  "telephone": "+44 (0)1633 455867",
+                  "email": "hie@ons.gsi.gov.uk"
+                },
+                "headline3": "The richest fifth of households paid £29,800 in taxes (direct and indirect) compared with £5,200 for the poorest fifth.",
+                "preUnit": ""
+              },
+              "searchBoost": [],
+              "type": "bulletin",
+              "uri": "/peoplepopulationandcommunity/personalandhouseholdfinances/incomeandwealth/bulletins/theeffectsoftaxesandbenefitsonhouseholdincome/financialyearending2015"
+            },
+            "highlight": {
+              "description.title": [
+                "The effects of <strong>taxes</strong> and benefits on household income"
+              ],
+              "pageData": [
+                "UK households before <strong>taxes</strong> and benefits was £83",
+                "taking into account <strong>taxes</strong> and benefits the ratio",
+                "households paid £29,800 in <strong>taxes</strong> (direct and indirect)",
+                "kind) than they paid in <strong>taxes</strong>, equivalent to 13.6",
+                "and 64 paid more in <strong>taxes</strong> than they received in"
+              ]
+            }
+          },
+          {
+            "_index": "ons1488357205651",
+            "_type": "bulletin",
+            "_id": "/peoplepopulationandcommunity/personalandhouseholdfinances/incomeandwealth/bulletins/theeffectsoftaxesandbenefitsonhouseholdincome/2015-06-29",
+            "_score": 959.4958,
+            "_source": {
+              "description": {
+                "summary": "The redistribution effects on households of direct and indirect taxation and benefits received in cash or kind analysed by household type, and the changing levels of income inequality over time.",
+                "nextRelease": "",
+                "keywords": [
+                  "disposable,expenditure,equivalisation,gini"
+                ],
+                "releaseDate": "2015-06-28T23:00:00.000Z",
+                "edition": "Financial Year Ending 2014",
+                "source": "",
+                "title": "The Effects of Taxes and Benefits on Household Income",
+                "metaDescription": "How do taxes and benefits redistribute income between households in the UK? This release also looks at changing levels of income and inequality over time.",
+                "nationalStatistic": true,
+                "unit": "",
+                "headline1": "Before taxes and benefits the richest fifth of households had an average income of £80,800 in 2013/14, 15 times greater than the poorest fifth who had an average income of £5,500",
+                "headline2": "Overall, taxes and benefits lead to income being shared more equally between households. After all taxes and benefits are taken into account the ratio between the average incomes of the top and the bottom fifth of households (£60,000 and £15,500 per year respectively) is reduced to four-to-one",
+                "contact": {
+                  "name": "Claudia Wells / Nathan Thomas ",
+                  "telephone": "+44 (0)1633 455867",
+                  "email": "hie@ons.gsi.gov.uk"
+                },
+                "headline3": "Cash benefits made up 57.2% of the gross income of the poorest fifth of households (£7,400), compared with 3.5% (£2,900) of the income of the richest fifth",
+                "preUnit": ""
+              },
+              "searchBoost": [],
+              "type": "bulletin",
+              "uri": "/peoplepopulationandcommunity/personalandhouseholdfinances/incomeandwealth/bulletins/theeffectsoftaxesandbenefitsonhouseholdincome/2015-06-29"
+            },
+            "highlight": {
+              "description.title": [
+                "The Effects of <strong>Taxes</strong> and Benefits on Household Income"
+              ],
+              "pageData": [
+                "Main points\t- Before <strong>taxes</strong> and benefits the richest",
+                "of £5,500\n\n- Overall, <strong>taxes</strong> and benefits lead to",
+                "households. After all <strong>taxes</strong> and benefits are taken",
+                "households paid £29,200 in <strong>taxes</strong> (direct and indirect)",
+                "education) than they paid in <strong>taxes</strong> in 2013/14. This is"
+              ]
+            }
+          }
+        ]
+      },
+      "aggregations": {
+        "docCounts": {
+          "doc_count_error_upper_bound": 0,
+          "sum_other_doc_count": 34,
+          "buckets": [
+            {
+              "key": "timeseries",
+              "doc_count": 609
+            },
+            {
+              "key": "bulletin",
+              "doc_count": 289
+            },
+            {
+              "key": "static_adhoc",
+              "doc_count": 254
+            },
+            {
+              "key": "article",
+              "doc_count": 104
+            },
+            {
+              "key": "static_page",
+              "doc_count": 80
+            },
+            {
+              "key": "static_foi",
+              "doc_count": 44
+            },
+            {
+              "key": "dataset_landing_page",
+              "doc_count": 38
+            },
+            {
+              "key": "static_methodology",
+              "doc_count": 38
+            },
+            {
+              "key": "static_qmi",
+              "doc_count": 33
+            },
+            {
+              "key": "article_download",
+              "doc_count": 32
+            }
+          ]
+        }
+      },
+      "suggest": {
+        "search_suggest": [
+          {
+            "text": "taxe",
+            "offset": 0,
+            "length": 4,
+            "options": [
+              {
+                "text": "trade",
+                "score": 0.05700196
+              },
+              {
+                "text": "table",
+                "score": 0.05572858
+              },
+              {
+                "text": "taxes",
+                "score": 0.048277125
+              },
+              {
+                "text": "tax",
+                "score": 0.033536367
+              },
+              {
+                "text": "take",
+                "score": 0.0130992755
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "took": 34,
+      "timed_out": false,
+      "_shards": {
+        "total": 5,
+        "successful": 5,
+        "failed": 0
+      },
+      "hits": {
+        "total": 1956,
+        "max_score": 0.0,
+        "hits": []
+      },
+      "aggregations": {
+        "docCounts": {
+          "doc_count_error_upper_bound": 0,
+          "sum_other_doc_count": 138,
+          "buckets": [
+            {
+              "key": "timeseries",
+              "doc_count": 609
+            },
+            {
+              "key": "dataset",
+              "doc_count": 299
+            },
+            {
+              "key": "bulletin",
+              "doc_count": 289
+            },
+            {
+              "key": "static_adhoc",
+              "doc_count": 254
+            },
+            {
+              "key": "article",
+              "doc_count": 104
+            },
+            {
+              "key": "static_page",
+              "doc_count": 80
+            },
+            {
+              "key": "compendium_chapter",
+              "doc_count": 63
+            },
+            {
+              "key": "static_foi",
+              "doc_count": 44
+            },
+            {
+              "key": "dataset_landing_page",
+              "doc_count": 38
+            },
+            {
+              "key": "static_methodology",
+              "doc_count": 38
+            }
+          ]
+        }
+      }
+    },
+    {
+      "took": 31,
+      "timed_out": false,
+      "_shards": {
+        "total": 5,
+        "successful": 5,
+        "failed": 0
+      },
+      "hits": {
+        "total": 3,
+        "max_score": 727.215,
+        "hits": [
+          {
+            "_index": "ons1488357205651",
+            "_type": "product_page",
+            "_id": "/economy/governmentpublicsectorandtaxes/taxesandrevenue",
+            "_score": 727.215,
+            "_source": {
+              "uri": "/economy/governmentpublicsectorandtaxes/taxesandrevenue",
+              "type": "product_page",
+              "description": {
+                "title": "Taxes and revenue",
+                "summary": "The effect of taxes and benefits on UK household’s income. ",
+                "unit": "",
+                "preUnit": "",
+                "source": ""
+              },
+              "searchBoost": [],
+              "downloads": [],
+              "pageData": [
+                "/peoplepopulationandcommunity/personalandhouseholdfinances/incomeandwealth/bulletins/theeffectsoftaxesandbenefitsonhouseholdincome/latest\t4\tproduct_page\t/economy/governmentpublicsectorandtaxes/taxesandrevenue\tTaxes and revenue\tThe effect of taxes and benefits on UK household’s income. \t"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "took": 26,
+      "timed_out": false,
+      "_shards": {
+        "total": 1,
+        "successful": 1,
+        "failed": 0
+      },
+      "hits": {
+        "total": 2,
+        "max_score": 2.0281482,
+        "hits": [
+          {
+            "_index": "departments",
+            "_type": "departments",
+            "_id": "hmrc",
+            "_score": 2.0281482,
+            "_source": {
+              "code": "hmrc",
+              "name": "HM Revenue & Customs",
+              "url": "https://www.gov.uk/government/statistics?keywords=&topics%5B%5D=all&departments%5B%5D=hm-revenue-customs",
+              "terms": [
+                "HMRC",
+                "tax",
+                "benefit",
+                "paye",
+                "national insurance",
+                "vat",
+                "tobacco"
+              ]
+            },
+            "highlight": {
+              "terms": [
+                "<strong>tax</strong>"
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

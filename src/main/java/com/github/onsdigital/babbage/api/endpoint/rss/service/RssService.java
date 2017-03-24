@@ -174,8 +174,7 @@ public class RssService {
 				.sortBy(SortBy.release_date)
 				.highlight(false);
 
-		SearchQueries searchQueries = () -> toList(onsQuery);
-		return searchQueries;
+		return () -> toList(onsQuery);
 	}
 
 	private Optional<SearchResult> search(SearchQueries searchQueries) {
@@ -198,7 +197,7 @@ public class RssService {
 	}
 
 	/**
-	 * Convert the Search Response to a {@link List} of {@link SyndEntry}.
+	 * Convert the Search QueryType to a {@link List} of {@link SyndEntry}.
 	 */
 	private List<SyndEntry> searchResultsToSyndEntries(Optional<SearchResult> results) {
 		List<SyndEntry> feed = new ArrayList<>();

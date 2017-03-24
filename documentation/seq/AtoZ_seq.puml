@@ -34,12 +34,12 @@ activate AtoZ
             deactivate SearchRequestBuilder
 
         create ONSSearchResponse
-        SearchHelper -> ONSSearchResponse : //new(response)//
+        SearchHelper -> ONSSearchResponse : //new(queryType)//
 
-        SearchHelper -> SearchHelper : resolveDetails(ONSQuery queryBuilder,\n ONSSearchResponse response)
+        SearchHelper -> SearchHelper : resolveDetails(ONSQuery queryBuilder,\n ONSSearchResponse queryType)
             activate SearchHelper
-            func(SearchHelper, SearchHelper, "resolvePaginator(ONSQuery queryBuilder,\n ONSSearchResponse response)")
-            func(SearchHelper, SearchHelper, "resolveSortBy(ONSQuery queryBuilder,\n ONSSearchResponse response)")
+            func(SearchHelper, SearchHelper, "resolvePaginator(ONSQuery queryBuilder,\n ONSSearchResponse queryType)")
+            func(SearchHelper, SearchHelper, "resolveSortBy(ONSQuery queryBuilder,\n ONSSearchResponse queryType)")
             deactivate SearchHelper
     AtoZ <-- SearchHelper : countResults
     deactivate SearchHelper

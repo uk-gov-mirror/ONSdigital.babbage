@@ -1,0 +1,28 @@
+{
+  "took": 6,
+  "timed_out": false,
+  "_shards": {
+    "total": 5,
+    "successful": 5,
+    "failed": 0
+  },
+  "hits": {
+    "total": 1,
+    "max_score": null,
+    "hits": [
+      {
+        "_index": "ons1488357205651",
+        "_type": "timeseries",
+        "_id": "/economy/nationalaccounts/uksectoraccounts/timeseries/ml4d/capstk",
+        "_score": 0.0,
+        "_source": {
+          "uri": "/economy/nationalaccounts/uksectoraccounts/timeseries/ml4d/capstk"
+        },
+        "sort": [
+          1470351600000,
+          0.0
+        ]
+      }
+    ]
+  }
+}
