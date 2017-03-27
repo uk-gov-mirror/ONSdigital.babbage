@@ -185,6 +185,7 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 			useHTML:true,
 			enabled:{{#if_eq series.size 1}}false{{else}}true{{/if_eq}},
 			align:'left',
+			itemMarginBottom:8,
 			itemStyle: {
 				fontWeight: 'normal',
 				color:'rgb(112, 112,112)'{{#if_eq chartType 'small-multiples'}},
@@ -296,23 +297,23 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 	{{#unless rotated}}
 	var textWidth = options.yAxis.title.text.length * 6;
 	{{#if_eq xAxisPos "top"}}
-    	{{#if_eq yAxisPos "left"}}
+    	{{#if_eq yAxisPos "right"}}
 	options.yAxis.title.align = 'low';
-	options.yAxis.title.offset = 0;
+	options.yAxis.title.offset = (-1 * textWidth);
 	options.yAxis.title.y = 10;
     	{{else}}
 	options.yAxis.title.align = 'low';
-	options.yAxis.title.offset = (-1 * textWidth);
+	options.yAxis.title.offset = 0;
 	options.yAxis.title.y = 10;
     	{{/if_eq}}
     {{else}}
-    	{{#if_eq yAxisPos "left"}}
+    	{{#if_eq yAxisPos "right"}}
 	options.yAxis.title.align = 'high';
-	options.yAxis.title.offset = 0;
+	//options.yAxis.title.offset = (-1 * textWidth);
 	options.yAxis.title.y = -10;
     	{{else}}
 	options.yAxis.title.align = 'high';
-	options.yAxis.title.offset = (-1 * textWidth);
+	options.yAxis.title.offset = 0;
 	options.yAxis.title.y = -10;
     	{{/if_eq}}
     {{/if_eq}}

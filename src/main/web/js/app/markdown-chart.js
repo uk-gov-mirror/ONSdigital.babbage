@@ -135,8 +135,8 @@ $(function() {
 
                 // remove the title, subtitle and any renderers for client side display
                 // these are only used by the template for export/printing
-                chartConfig.chart.marginTop = 50;
-                chartConfig.chart.marginBottom = 50;
+                chartConfig.chart.marginTop = null;
+                chartConfig.chart.marginBottom = null;
                 //use this to adjust the render y position based on the height of marginTop
                 chartConfig.chart.offset = 0;
                 chartConfig.title = {text:''};
