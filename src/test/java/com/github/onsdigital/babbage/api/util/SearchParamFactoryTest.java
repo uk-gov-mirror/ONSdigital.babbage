@@ -1,6 +1,8 @@
 package com.github.onsdigital.babbage.api.util;
 
 import com.github.onsdigital.babbage.search.input.SortBy;
+
+import com.google.common.collect.Lists;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -8,6 +10,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import javax.servlet.http.HttpServletRequest;
 
+import static com.github.onsdigital.babbage.search.model.QueryType.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.mockito.Matchers.eq;
@@ -27,7 +30,8 @@ public class SearchParamFactoryTest {
         when(request.getParameter(eq("size"))).thenReturn("66");
         when(request.getParameter(eq("page"))).thenReturn("99");
         when(request.getParameter(eq("sortBy"))).thenReturn("title");
-        final SearchParam instance = SearchParamFactory.getInstance(request, SortBy.release_date_asc);
+        final SearchParam instance = SearchParamFactory.getInstance(request, SortBy.release_date_asc,
+                                                                    Lists.newArrayList(SEARCH));
         assertEquals("bananas", instance.getSearchTerm());
         assertEquals(Integer.valueOf(66), instance.getSize());
         assertEquals(Integer.valueOf(99), instance.getPage());
@@ -41,7 +45,9 @@ public class SearchParamFactoryTest {
         when(request.getParameter(eq("size"))).thenReturn(null);
         when(request.getParameter(eq("page"))).thenReturn(null);
         when(request.getParameter(eq("sortBy"))).thenReturn(null);
-        final SearchParam instance = SearchParamFactory.getInstance(request, SortBy.release_date_asc);
+        final SearchParam instance = SearchParamFactory.getInstance(request,
+                                                                    SortBy.release_date_asc,
+                                                                    Lists.newArrayList(SEARCH));
         assertNull(instance.getSearchTerm());
         assertEquals(10, (int) instance.getSize());
         assertEquals(1, (int) instance.getPage());

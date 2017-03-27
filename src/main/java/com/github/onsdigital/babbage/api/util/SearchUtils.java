@@ -55,6 +55,7 @@ import static com.github.onsdigital.babbage.configuration.Configuration.GENERAL.
 import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.*;
 import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.extractSelectedFilters;
 import static com.github.onsdigital.babbage.search.input.TypeFilter.contentTypes;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 import static org.elasticsearch.index.query.QueryBuilders.matchAllQuery;
 import static org.elasticsearch.search.suggest.SuggestBuilders.phraseSuggestion;
@@ -78,45 +79,40 @@ public class SearchUtils {
         final URIBuilder uriBuilder = new URIBuilder().setScheme(SEARCH_SERVICE_SCHEME)
                                                       .setHost("localhost")
                                                       .setPort(10001)
-                                                      .setPath("search")
-                                                      .addParameter("size",
-                                                                    Integer.toString(searchParam.getSize()))
-                                                      .addParameter("from",
-                                                                    Integer.toString(from(searchParam.getPage(),
-                                                                                          searchParam.getSize())))
-                                                      .addParameter("term",
-                                                                    searchParam.getSearchTerm());
+                                                      .setPath("search");
+        addParam(uriBuilder, "size", Integer.toString(searchParam.getSize()));
+        addParam(uriBuilder, "from", Integer.toString(from(searchParam.getPage(), searchParam.getSize())));
+        addParam(uriBuilder, "term", searchParam.getSearchTerm());
+
+        addParam(uriBuilder, "uriPrefix", searchParam.getPrefixURI());
+
 
         if (null != searchParam.getSortBy()) {
-            uriBuilder.addParameter("sort",
-                                    searchParam.getSortBy()
-                                               .name());
+            addParam(uriBuilder,
+                     "sort",
+                     searchParam.getSortBy()
+                                .name());
         }
 
-        if (StringUtils.isNotBlank(searchParam.getAggregationField())) {
-            uriBuilder.addParameter("aggField",
-                                    searchParam.getAggregationField());
-        }
+        addParam(uriBuilder, searchParam.getAggregationField(), "aggField");
 
         if (null != searchParam.getFilters()) {
             searchParam.getFilters()
-                       .forEach(f -> uriBuilder.addParameter(f.getKey(),
-                                                             f.getValue()));
-
+                       .forEach(f -> addParam(uriBuilder, f.getKey(), f.getValue()));
         }
 
         if (null != searchParam.getDocTypes()) {
             for (ContentType s : searchParam.getDocTypes()) {
-                uriBuilder.addParameter("type",
-                                        s.name());
+                addParam(uriBuilder, "type", s.name());
             }
         }
 
         if (ListUtil.isNotEmpty(searchParam.getQueryTypes())) {
             searchParam.getQueryTypes()
-                       .forEach(s -> uriBuilder.addParameter("query",
-                                                             s.name()
-                                                              .toLowerCase()));
+                       .forEach(s -> addParam(uriBuilder,
+                                              "query",
+                                              s.name()
+                                               .toLowerCase()));
         }
 
         if (null != searchParam.getPublishDates()) {
@@ -145,6 +141,13 @@ public class SearchUtils {
 
     }
 
+    private static void addParam(final URIBuilder uriBuilder, final String key, final String value) {
+        if (isNotBlank(value) && isNotBlank(key)) {
+            uriBuilder.addParameter(key,value);
+
+        }
+    }
+
     private static byte[] executeGet(final URI searchUri) throws IOException {
         HttpGet httpget = new HttpGet(searchUri);
 
@@ -171,8 +174,8 @@ public class SearchUtils {
      * @return
      */
     public static BabbageResponse search(boolean isDataRequest,
-                                        String listType,
-                                        SearchParam searchParam) throws IOException, URISyntaxException {
+                                         String listType,
+                                         SearchParam searchParam) throws IOException, URISyntaxException {
 
         final TimeSeriesResult ts = searchTimeSeriesUri(searchParam.getSearchTerm());
         final BabbageResponse babbageResponse;

@@ -41,8 +41,8 @@ public class SearchPublication {
         final Set<TypeFilter> typeFilters = HttpRequestUtil.extractFilters(filters,
                                                                            TypeFilter.getPublicationFilters());
 
-        SearchParam param = SearchParamFactory.getInstance(request, SortBy.relevance)
-                                              .addQueryTypes(BASE_QUERIES)
+        SearchParam param = SearchParamFactory.getInstance(request, SortBy.relevance,BASE_QUERIES)
+
                                               .addDocTypes(contentTypes(typeFilters));
 
         search(dataRequest,

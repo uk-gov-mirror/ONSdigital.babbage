@@ -6,11 +6,11 @@ import com.github.onsdigital.babbage.api.util.SearchParamFactory;
 import com.github.onsdigital.babbage.api.util.SearchUtils;
 import com.github.onsdigital.babbage.search.input.SortBy;
 import com.github.onsdigital.babbage.search.model.ContentType;
-import com.github.onsdigital.babbage.search.model.QueryType;
 import com.github.onsdigital.babbage.search.model.SearchResult;
 import com.github.onsdigital.babbage.search.model.field.Field;
 import com.github.onsdigital.babbage.search.model.filter.FirstLetterFilter;
 import com.github.onsdigital.babbage.search.model.filter.LatestFilter;
+import com.google.common.collect.Lists;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,6 +18,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.GET;
 import java.util.Map;
 
+import static com.github.onsdigital.babbage.search.model.QueryType.COUNTS;
+import static com.github.onsdigital.babbage.search.model.QueryType.SEARCH;
 import static com.github.onsdigital.babbage.util.RequestUtil.getParam;
 import static com.github.onsdigital.babbage.util.URIUtil.isDataRequest;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
@@ -32,10 +34,9 @@ public class AtoZ {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         final String firstLetter = getFirstLetter(request);
-        final SearchParam searchParam = SearchParamFactory.getInstance(request, SortBy.first_letter);
+        final SearchParam searchParam = SearchParamFactory.getInstance(request, SortBy.first_letter,
+                                                                       Lists.newArrayList(SEARCH, COUNTS));
         searchParam.addDocType(ContentType.bulletin)
-                   .addQueryType(QueryType.SEARCH)
-                   .addQueryType(QueryType.COUNTS)
                    .setAggregationField(Field.title_first_letter.fieldName())
                    .addFilter(new LatestFilter())
                    .addFilter(new FirstLetterFilter(getFirstLetter(request)));
@@ -43,7 +44,7 @@ public class AtoZ {
         final Map<String, SearchResult> results = SearchUtils.search(searchParam);
 
 
-        final SearchResult countSearchResult = results.get(QueryType.COUNTS.getText());
+        final SearchResult countSearchResult = results.get(COUNTS.getText());
         Long count = countSearchResult.getDocCounts()
                                       .get(firstLetter);
 
@@ -51,7 +52,7 @@ public class AtoZ {
         if (isNotBlank(firstLetter) && (count == null)) {//no result for selected letter
             //query all not just that letter
             final Map<String, SearchResult> searchOnly = SearchUtils.search(searchParam.setSearchTerm(null));
-            results.put(QueryType.SEARCH.getText(), searchOnly.get(QueryType.SEARCH.getText()));
+            results.put(SEARCH.getText(), searchOnly.get(SEARCH.getText()));
         }
 
         final boolean dataRequest = isDataRequest(request.getRequestURI());

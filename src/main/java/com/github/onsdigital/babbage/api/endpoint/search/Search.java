@@ -47,13 +47,13 @@ public class Search {
         int page = extractPage(request);
         final int size = extractSize(request);
         final boolean dataRequest = isDataRequest(request.getRequestURI());
-        final SearchParam searchParam = SearchParamFactory.getInstance(request, SortBy.relevance)
-                .addDocTypes(contentTypes(typeFilters))
-                .addQueryTypes(queries);
+        final SearchParam searchParam = SearchParamFactory.getInstance(request, SortBy.relevance, queries)
+                                                          .addDocTypes(contentTypes(typeFilters));
+
 
         search(dataRequest,
-              getClass().getSimpleName(),
-              searchParam).apply(request, response);
+               getClass().getSimpleName(),
+               searchParam).apply(request, response);
     }
 
 }
