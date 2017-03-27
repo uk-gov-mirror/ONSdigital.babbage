@@ -1,5 +1,6 @@
 package com.github.onsdigital.babbage.api.util;
 
+import com.github.onsdigital.babbage.search.helpers.dates.PublishDates;
 import com.github.onsdigital.babbage.search.input.SortBy;
 import com.github.onsdigital.babbage.search.model.ContentType;
 import com.github.onsdigital.babbage.search.model.QueryType;
@@ -19,6 +20,7 @@ public class SearchParam {
     private List<QueryType> queryTypes = new ArrayList<>();
     private List<Filter> filters = new ArrayList<>();
     private String aggregationField;
+    private PublishDates publishDates;
 
 
     SearchParam() {
@@ -105,5 +107,14 @@ public class SearchParam {
     public SearchParam addQueryTypes(final List<QueryType> queryTypes) {
         this.queryTypes.addAll(queryTypes);
         return this;
+    }
+
+    public SearchParam setPublishDates(final PublishDates publishDates) {
+        this.publishDates = publishDates;
+        return this;
+    }
+
+    public PublishDates getPublishDates() {
+        return publishDates;
     }
 }

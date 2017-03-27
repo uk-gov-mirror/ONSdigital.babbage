@@ -70,7 +70,7 @@ public class SearchResultsFactory {
                         extractSuggestions(data, result);
 
                         if (QueryType.SEARCH.equals(queryType)) {
-                            result.setSortBy(sortBy.name());
+                            result.setSortBy((null != sortBy ? sortBy.name() : null));
                             final Long numberOfResults = result.getNumberOfResults();
                             Paginator paginator = new Paginator((null != numberOfResults ? numberOfResults : 0),
                                                                 getMaxVisiblePaginatorLink(),

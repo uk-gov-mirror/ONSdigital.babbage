@@ -8,7 +8,6 @@ import com.github.onsdigital.babbage.search.input.SortBy;
 import com.github.onsdigital.babbage.search.model.ContentType;
 import com.github.onsdigital.babbage.search.model.QueryType;
 import com.github.onsdigital.babbage.search.model.SearchResult;
-import com.github.onsdigital.babbage.search.model.SearchResults;
 import com.github.onsdigital.babbage.search.model.field.Field;
 import com.github.onsdigital.babbage.search.model.filter.FirstLetterFilter;
 import com.github.onsdigital.babbage.search.model.filter.LatestFilter;
@@ -17,7 +16,6 @@ import org.apache.commons.lang3.StringUtils;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.GET;
-import java.util.HashMap;
 import java.util.Map;
 
 import static com.github.onsdigital.babbage.util.RequestUtil.getParam;
@@ -42,22 +40,18 @@ public class AtoZ {
                    .addFilter(new LatestFilter())
                    .addFilter(new FirstLetterFilter(getFirstLetter(request)));
 
-        final SearchResults search = SearchUtils.search(searchParam);
+        final Map<String, SearchResult> results = SearchUtils.search(searchParam);
 
-        final SearchResult countSearchResult = search.getResults(QueryType.COUNTS);
+
+        final SearchResult countSearchResult = results.get(QueryType.COUNTS.getText());
         Long count = countSearchResult.getDocCounts()
                                       .get(firstLetter);
 
-        final Map<String, SearchResult> results = new HashMap<>();
-        results.put(QueryType.COUNTS.getText(), countSearchResult);
 
         if (isNotBlank(firstLetter) && (count == null)) {//no result for selected letter
-            //search all not just that letter
-            final SearchResults searchOnly = SearchUtils.search(searchParam.setSearchTerm(null));
-            results.put(QueryType.SEARCH.getText(), searchOnly.getResults(QueryType.SEARCH));
-        }
-        else {
-            results.put(QueryType.SEARCH.getText(), search.getResults(QueryType.SEARCH));
+            //query all not just that letter
+            final Map<String, SearchResult> searchOnly = SearchUtils.search(searchParam.setSearchTerm(null));
+            results.put(QueryType.SEARCH.getText(), searchOnly.get(QueryType.SEARCH.getText()));
         }
 
         final boolean dataRequest = isDataRequest(request.getRequestURI());

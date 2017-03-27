@@ -52,8 +52,8 @@ public class Search {
                 .addQueryTypes(queries);
 
         search(dataRequest,
-               getClass().getSimpleName(),
-               searchParam).apply(request, response);
+              getClass().getSimpleName(),
+              searchParam).apply(request, response);
     }
 
 }

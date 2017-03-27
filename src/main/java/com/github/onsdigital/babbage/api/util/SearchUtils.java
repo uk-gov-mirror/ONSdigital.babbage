@@ -1,5 +1,6 @@
 package com.github.onsdigital.babbage.api.util;
 
+import com.fasterxml.jackson.databind.util.ISO8601DateFormat;
 import com.github.onsdigital.babbage.configuration.Configuration;
 import com.github.onsdigital.babbage.error.ValidationError;
 import com.github.onsdigital.babbage.response.BabbageRedirectResponse;
@@ -12,6 +13,7 @@ import com.github.onsdigital.babbage.search.helpers.ONSSearchResponse;
 import com.github.onsdigital.babbage.search.helpers.SearchHelper;
 import com.github.onsdigital.babbage.search.helpers.base.SearchFilter;
 import com.github.onsdigital.babbage.search.helpers.base.SearchQueries;
+import com.github.onsdigital.babbage.search.helpers.dates.PublishDates;
 import com.github.onsdigital.babbage.search.input.SortBy;
 import com.github.onsdigital.babbage.search.input.TypeFilter;
 import com.github.onsdigital.babbage.search.model.*;
@@ -40,6 +42,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.text.DateFormat;
 import java.text.MessageFormat;
 import java.util.*;
 
@@ -62,13 +65,14 @@ import static org.elasticsearch.search.suggest.SuggestBuilders.phraseSuggestion;
  * Commons search functionality for search, search publications and search data pages.
  */
 public class SearchUtils {
+    private final static DateFormat ISO_DATE_FORMAT = new ISO8601DateFormat();
     private static final String TIMESERIES_PATH = "timeseries/%1$s";
     private static final String SEARCH_SERVICE_SCHEME = "http";
     private static final Logger LOGGER = LoggerFactory.getLogger(SearchUtils.class);
     private static final String ERRORS_KEY = "errors";
     private static final CloseableHttpClient httpClient = HttpClients.createDefault();
 
-    public static SearchResults search(final SearchParam searchParam) throws IOException, URISyntaxException {
+    private static SearchResults query(final SearchParam searchParam) throws IOException, URISyntaxException {
         //If it is a Timeseries return
 
         final URIBuilder uriBuilder = new URIBuilder().setScheme(SEARCH_SERVICE_SCHEME)
@@ -115,6 +119,20 @@ public class SearchUtils {
                                                               .toLowerCase()));
         }
 
+        if (null != searchParam.getPublishDates()) {
+            final PublishDates publishDates = searchParam.getPublishDates();
+            if (null != publishDates.publishedFrom()) {
+
+                uriBuilder.addParameter("releasedAfter",
+                                        ISO_DATE_FORMAT.format(publishDates.publishedFrom()));
+            }
+            if (null != publishDates.publishedTo()) {
+                uriBuilder.addParameter("releasedBefore",
+                                        ISO_DATE_FORMAT.format(publishDates.publishedTo()));
+            }
+        }
+
+
         final URI searchUri = uriBuilder.build();
 
         byte[] responseBytes = executeGet(searchUri);
@@ -143,18 +161,18 @@ public class SearchUtils {
 
 
     /**
-     * Performs search for requested search term against filtered content types and counts contents types.
+     * Performs query for requested query term against filtered content types and counts contents types.
      * Content results are serialised into json with key "result" and document counts are serialised as "counts".
      * <p>
-     * Accepts extra searches to perform along with content search and document counts.
+     * Accepts extra searches to perform along with content query and document counts.
      *
      * @param
      * @param
      * @return
      */
     public static BabbageResponse search(boolean isDataRequest,
-                                         String listType,
-                                         SearchParam searchParam) throws IOException, URISyntaxException {
+                                        String listType,
+                                        SearchParam searchParam) throws IOException, URISyntaxException {
 
         final TimeSeriesResult ts = searchTimeSeriesUri(searchParam.getSearchTerm());
         final BabbageResponse babbageResponse;
@@ -163,12 +181,7 @@ public class SearchUtils {
                                                           Configuration.GENERAL.getSearchResponseCacheTime());
         }
         else {
-            final SearchResults search = search(searchParam);
-
-            final Map<String, SearchResult> results = new HashMap<>();
-            search.getResults()
-                  .forEach(sr -> results.put(sr.getQueryType()
-                                               .getText(), sr));
+            final Map<String, SearchResult> results = search(searchParam);
 
 
             // TODO Put logging back
@@ -183,11 +196,22 @@ public class SearchUtils {
         return babbageResponse;
     }
 
+    public static Map<String, SearchResult> search(
+            final SearchParam searchParam) throws IOException, URISyntaxException {
+        final SearchResults search = query(searchParam);
+
+        final Map<String, SearchResult> results = new HashMap<>();
+        search.getResults()
+              .forEach(sr -> results.put(sr.getQueryType()
+                                           .getText(), sr));
+        return results;
+    }
+
     /**
-     * Performs search for requested search term against filtered content types and counts contents types.
+     * Performs query for requested query term against filtered content types and counts contents types.
      * Content results are serialised into json with key "result" and document counts are serialised as "counts".
      * <p>
-     * Accepts extra searches to perform along with content search and document counts.
+     * Accepts extra searches to perform along with content query and document counts.
      *
      * @param
      * @return
@@ -248,11 +272,11 @@ public class SearchUtils {
     }
 
     /**
-     * Builds search query by resolving search term, page and sort parameters
+     * Builds query query by resolving query term, page and sort parameters
      *
      * @param request
      * @param searchTerm
-     * @return ONSQuery, null if no search term given
+     * @return ONSQuery, null if no query term given
      */
     public static ONSQuery buildSearchQuery(HttpServletRequest request, String searchTerm,
                                             Set<TypeFilter> defaultFilters) {
@@ -285,7 +309,7 @@ public class SearchUtils {
     }
 
     /**
-     * Advanced search query corresponds to elastic search simple query string query, allowing user to control search results using special characters (+ for AND, | for OR etc)
+     * Advanced query query corresponds to elastic query simple query string query, allowing user to control query results using special characters (+ for AND, | for OR etc)
      *
      * @return
      */
@@ -321,20 +345,6 @@ public class SearchUtils {
                               null,
                               filter,
                               defaultSort);
-    }
-
-    public static ONSQuery buildListQuery(HttpServletRequest request) {
-        return buildListQuery(request,
-                              null,
-                              null,
-                              null);
-    }
-
-    public static ONSQuery buildListQuery(HttpServletRequest request, Set<TypeFilter> defaultFilters) {
-        return buildListQuery(request,
-                              defaultFilters,
-                              null,
-                              null);
     }
 
 
@@ -473,8 +483,10 @@ public class SearchUtils {
 
     public static BabbageResponse buildPageResponse(String listType,
                                                     Map<String, SearchResult> results) throws IOException {
+
         LinkedHashMap<String, Object> data = buildResults(listType,
                                                           results);
+
         return new BabbageStringResponse(TemplateService.getInstance()
                                                         .renderContent(data),
                                          MediaType.TEXT_HTML,
@@ -511,7 +523,7 @@ public class SearchUtils {
     }
 
     /**
-     * search time series for a given uri without dealing with request / response objects.
+     * query time series for a given uri without dealing with request / response objects.
      *
      * @param uriString
      * @return

@@ -44,8 +44,8 @@ public class SearchData {
                                               .addDocTypes(contentTypes(typeFilters));
 
         search(dataRequest,
-               getClass().getSimpleName(),
-               param).apply(request,
+              getClass().getSimpleName(),
+              param).apply(request,
                             response);
     }
 
