@@ -256,6 +256,7 @@ $(function() {
                         }else{
                             // Build chart from config endpoint
                             chartConfig.chart.renderTo = id;
+                            chartConfig.annotations = [];
                             //need to set height to override extra height for print version
                             chartConfig.chart.height = chartConfig.chart.width * aspectRatio;
                             chart = new Highcharts.Chart(chartConfig);
