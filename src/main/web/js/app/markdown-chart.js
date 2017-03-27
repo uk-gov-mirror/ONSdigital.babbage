@@ -139,10 +139,9 @@ $(function() {
                 chartConfig.chart.marginBottom = 50;
                 //use this to adjust the render y position based on the height of marginTop
                 chartConfig.chart.offset = 0;
-                // Babbage uses the render instead of annotations
-                chartConfig.annotations = [];
                 chartConfig.title = {text:''};
                 chartConfig.subtitle = {text:''};
+                chartConfig.source = {text:''};
                 
                 if(chartConfig.legend.verticalAlign==='top'){
                     chartConfig.legend.y = -10;
@@ -159,9 +158,8 @@ $(function() {
                     var smallMultipleRef = id.split("-")[2];
 
                     //adjust size and notes to match viewport
-
-                    var aspectRatio = 1;
-                    var labelInterval = 1;
+                    var aspectRatio = parseFloat(chartConfig.aspectRatio);
+                    
                     //if we have devices then set annotations dependant on viewport
                     if(chartConfig.devices){
                         if(chartConfig.devices[viewport]){
@@ -258,6 +256,7 @@ $(function() {
                         }else{
                             // Build chart from config endpoint
                             chartConfig.chart.renderTo = id;
+                            //need to set height to override extra height for print version
                             chartConfig.chart.height = chartConfig.chart.width * aspectRatio;
                             chart = new Highcharts.Chart(chartConfig);
 
