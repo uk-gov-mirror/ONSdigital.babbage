@@ -83,17 +83,23 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 			events: {
                 load: function () {
 
+                var hideNotes = {
+					{{#each devices}}'{{@key}}':{{isHidden}},{{/each}}
+				};
+				var isHidden = false;
+				if(hideNotes[this.options.viewport]){
+					isHidden = hideNotes[this.options.viewport]
+				}
                 {{#each annotations}}
-					{{#if_ne isHidden true}}
 					{{#if title}}
 					var text  = '<div>{{{title}}}</div>';
 					var devices = {
-					{{#each devices}}
-					'{{@key}}':{x:{{x}}, y:{{y}} },
-					{{/each}}
+					{{#each devices}}'{{@key}}':{x:{{x}}, y:{{y}} },{{/each}}
 					};
 					var x = devices[this.options.viewport].x;
 					var y = devices[this.options.viewport].y;
+					
+					if(!isHidden){
 
                     var note_{{@index}} = this.renderer.label(text, x, y+this.options.chart.offset, 0, 0, true)
                     	.css({
@@ -107,8 +113,7 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 				        })
                         .add();
 
-                        {{/if}}
-					{{/if_ne}}
+					}{{/if}}
 				{{/each}}
 
                     //source
@@ -165,8 +170,7 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 			categories: [{{#each categories}}'{{{sub (sup this)}}}',{{/each}}],
 			{{#if labelInterval}}tickInterval: {{labelInterval}},{{/if}}
 			labels: {
-				useHTML : true{{#if labelInterval}},
-				step:({{labelInterval}}/4){{/if}}
+				useHTML : true
 			},
 			title: {
 				useHTML:true,
@@ -181,6 +185,7 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 			useHTML:true,
 			enabled:{{#if_eq series.size 1}}false{{else}}true{{/if_eq}},
 			align:'left',
+			itemMarginBottom:8,
 			itemStyle: {
 				fontWeight: 'normal',
 				color:'rgb(112, 112,112)'{{#if_eq chartType 'small-multiples'}},
@@ -231,7 +236,7 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 		{{/if}}
 
 		},
-
+		aspectRatio:{{aspectRatio}},
 		tooltip: {
 			valueDecimals: "{{decimalPlaces}}",
 			shared: true,
@@ -292,23 +297,23 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 	{{#unless rotated}}
 	var textWidth = options.yAxis.title.text.length * 6;
 	{{#if_eq xAxisPos "top"}}
-    	{{#if_eq yAxisPos "left"}}
+    	{{#if_eq yAxisPos "right"}}
 	options.yAxis.title.align = 'low';
-	options.yAxis.title.offset = 0;
+	options.yAxis.title.offset = (-1 * textWidth);
 	options.yAxis.title.y = 10;
     	{{else}}
 	options.yAxis.title.align = 'low';
-	options.yAxis.title.offset = (-1 * textWidth);
+	options.yAxis.title.offset = 0;
 	options.yAxis.title.y = 10;
     	{{/if_eq}}
     {{else}}
-    	{{#if_eq yAxisPos "left"}}
+    	{{#if_eq yAxisPos "right"}}
 	options.yAxis.title.align = 'high';
-	options.yAxis.title.offset = 0;
+	//options.yAxis.title.offset = (-1 * textWidth);
 	options.yAxis.title.y = -10;
     	{{else}}
 	options.yAxis.title.align = 'high';
-	options.yAxis.title.offset = (-1 * textWidth);
+	options.yAxis.title.offset = 0;
 	options.yAxis.title.y = -10;
     	{{/if_eq}}
     {{/if_eq}}
