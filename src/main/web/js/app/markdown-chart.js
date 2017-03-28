@@ -259,6 +259,11 @@ $(function() {
                             chartConfig.annotations = [];
                             //need to set height to override extra height for print version
                             chartConfig.chart.height = chartConfig.chart.width * aspectRatio;
+                            if(viewport==='sm' && chartConfig.series.length>3){
+                                chartConfig.chart.height = chartConfig.chart.height + 200;
+                                chartConfig.chart.marginBottom = 200;
+                                chartConfig.legend.verticalAlign = 'bottom';
+                            }
                             chart = new Highcharts.Chart(chartConfig);
 
                             charts[chartId] = chart;
