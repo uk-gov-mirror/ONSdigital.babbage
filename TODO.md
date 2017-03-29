@@ -20,7 +20,7 @@ Current list of Handlers that need to be refactored to use the new `dp-search-qu
 * ~~PreviousReleasesRequestHandler~~
 * TopicSpecificMethodologyRequestHandler
 * ~~PublicationsRequestHandler~~
-* RssService
+* RssService - in progress
 * DataListRequestHandler
 * RelatedDataRequestHandler
 * RelatedDataRequestHandler
