@@ -1,6 +1,7 @@
 $(function() {
     var viewport;
     var nominalWidth = 700;
+    var smallWidth = 230;
     var charts = {};
     // Global options for markdown charts
     Highcharts.setOptions({
@@ -18,9 +19,11 @@ $(function() {
     if ($("body").hasClass("viewport-sm")) {
         viewport = 'sm';
         nominalWidth = 360;
+        smallWidth = 300
     }else if ($("body").hasClass("viewport-md")) {
         viewport = 'md';
         nominalWidth = 520;
+        smallWidth = 250
     }else  {
         viewport = 'lg';
     }
@@ -123,6 +126,7 @@ $(function() {
         var chartWidth = $this.width();
         var chartUri = $this.data('uri'); 
 
+        $this.width(smallWidth);
         $this.empty();
 
         //Read chart configuration from server using container's width
@@ -238,15 +242,17 @@ $(function() {
                     }
 
                     if(smallMultipleSeries){
-                        //loop through series and create mini-charts
+                        $('.sm-multiple-holder').width(nominalWidth);
+                        //pick individual series from whole chart series and create mini-charts
                         var tempSeries = chartConfig.series;
-                        chartConfig.chart.width = chartWidth/3;
-                        chartConfig.chart.height = chartWidth/3;
+                        chartConfig.chart.width = smallWidth;
+                        chartConfig.chart.height = smallWidth;
                         chartConfig.isSmallMultiple = 'small-multiples';
                         
                         chartConfig.series = [tempSeries[smallMultipleRef]];
                         chartConfig.chart.renderTo = id;
                         chart = new Highcharts.Chart(chartConfig);
+                        //add to array for printing
                         chartList.push(chart);
 
                     }else{
@@ -259,7 +265,7 @@ $(function() {
                             chartConfig.annotations = [];
                             //need to set height to override extra height for print version
                             chartConfig.chart.height = chartConfig.chart.width * aspectRatio;
-                            if(viewport==='sm' && chartConfig.series.length>3){
+                            if(viewport==='sm' && chartConfig.series.length>3 ){
                                 chartConfig.chart.height = chartConfig.chart.height + 200;
                                 chartConfig.chart.marginBottom = 200;
                                 chartConfig.legend.verticalAlign = 'bottom';
