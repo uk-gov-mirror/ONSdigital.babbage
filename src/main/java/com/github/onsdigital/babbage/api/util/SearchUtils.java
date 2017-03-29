@@ -55,6 +55,7 @@ import static com.github.onsdigital.babbage.configuration.Configuration.GENERAL.
 import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.*;
 import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.extractSelectedFilters;
 import static com.github.onsdigital.babbage.search.input.TypeFilter.contentTypes;
+import static org.apache.commons.lang3.StringUtils.endsWith;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 import static org.elasticsearch.index.query.QueryBuilders.matchAllQuery;
@@ -84,7 +85,8 @@ public class SearchUtils {
         addParam(uriBuilder, "from", Integer.toString(from(searchParam.getPage(), searchParam.getSize())));
         addParam(uriBuilder, "term", searchParam.getSearchTerm());
 
-        addParam(uriBuilder, "uriPrefix", searchParam.getPrefixURI());
+        final String uri = searchParam.getPrefixURI();
+        addParam(uriBuilder, "uriPrefix", endsWith(uri, "/") ? uri : uri + "/");
 
 
         if (null != searchParam.getSortBy()) {

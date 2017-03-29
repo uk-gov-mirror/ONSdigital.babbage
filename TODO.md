@@ -8,9 +8,10 @@ Currently the `dp-search-query ` Micro Service has implemented a limited set of 
 1. ~~Date Range (fromDate and/or toDate)~~
 2. ~~URL Prefix~~
 3. URI _this might be a new lookup query_
-4. Topic Wildcard
-5. Upcoming
-6. Published
+4. ~~Topic Wildcard~~
+5. ~~Topic filter~~
+6. Upcoming
+7. Published
 
 
 ##Handlers
@@ -32,3 +33,8 @@ Current list of Handlers that need to be refactored to use the new `dp-search-qu
 * ReleaseCalendar
 * AllAdhocsRequestHandler
 * ReleaseCalendar
+
+
+##BDD tests
+Currently we are have series of Cucumber tests that are integrated into the query
+architecture of the querybuilder's these will now need to be refactored to either interface into the Babbage interface or (and probably the preferred solution) to include the queries into the dp-search-query service.

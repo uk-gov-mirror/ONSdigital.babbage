@@ -163,7 +163,6 @@ public class RssService {
 						boolQuery().should(QueryBuilders.wildcardQuery(Field.topics.fieldName(), uri + "*"))
 								.should(prefixQuery(Field.uri.fieldName(), endsWith(uri, "/") ? uri : uri + "/")));
 			}
-
 			listQuery.filter(QueryBuilders.rangeQuery(releaseDate.fieldName()).gte(
 					PropertiesService.getInstance().get(FEED_DATE_RANGE_KEY))
 			);
