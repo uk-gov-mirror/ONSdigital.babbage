@@ -1,17 +1,18 @@
 {{!--
-This template forms a base configuration for all chart types, this is included in client side as javascript source file. 
+Version 1: This template forms a base configuration for all chart types, this is included in client side as javascript source file. 
 It is used to render highchart configuration and attach it to window object when run in a browser. Since Highcharts configurations are javascript objects it is not possible to read complex chart configurations ( objects with functions as members) as json objects, that is why it has to be rendered dynamically as a javascript source file.
 The chart configurations are used both by Babbage and Florence, thats why it is rendered on server side using handlebars to make it possible to edit configuration without the need of rebuilding.
+--}}
+{{!-- Version 2: The template is called by Babbage and used directly to print the charts. It is also used when generating PDFs.
+There are additional templates to render a graphic line break on axes that do not start at 0, and also to position and edit text labels on the charts.
+NB Babbage uses https://github.com/jknack/handlebars.java
+TODO: split out colours palette selection, axis alignment and positioning
 --}}
 (function(){
 
 	Highcharts.setOptions({lang: {thousandsSep: ','}});
 
-	// Highlight colour
-	{{#if_eq palette "legacy"}}HIGHLIGHT_COLOUR  = 'gold';{{else}}
-	var HIGHLIGHT_COLOUR  = 'rgba(243,148,49,0.9)';{{/if_eq}}
-
-
+	var HIGHLIGHT_COLOUR  = {{#if_eq palette "legacy"}}'gold';{{else}}'rgba(243,148,49,0.9)';{{/if_eq}}
 	var PLOTBAND_COLOUR  = '#B5CE94';
 
 	// use rgba in order to set opacity/alpha
@@ -41,13 +42,12 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 			'rgba(38,109,74,0.9)'		// green
 		];
 
-	var base = {{#if yMin }}{{yMin}}{{else}}0{{/if}};
-
-
 	// set chart palette based on chart object
 	var palette = legacy;
 	{{#if_eq palette "blue"}}palette = bluemono;{{/if_eq}}
 	{{#if_eq palette "colour"}}palette = color;{{/if_eq}}
+
+	var base = {{#if yMin }}{{yMin}}{{else}}0{{/if}};
 
 	var hasTooltip = '{{showTooltip}}';// cast it as a string to handle missing values
 
@@ -69,7 +69,7 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 	var bottom = 150;
 	{{!-- chart-config block is to be overriden by chart types inheriting this template --}}
 	var options = {
-	viewport:'lg',
+		viewport:'lg',
 		chart: {
 			height: ht + top + bottom,
 			width: {{width}},
@@ -161,7 +161,7 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 			{{#if hasLineBreak }}lineColor: '#929292',
 			lineWidth: 1,    
 			events: {
-			{{#if_eq chartType 'column'}}pointBreak: pointBreakColumn{{/if_eq}}
+			{{#if_eq chartType 'column'}}pointBreak: pointBreakColumn{{/if_eq}} {{!-- this updates the graphic to show break lines on bar charts - see line-break-config.handlebars --}}
 			{{#if_eq chartType 'bar'}}pointBreak: pointBreakColumn{{/if_eq}}
 			}{{/if}}
 		},
