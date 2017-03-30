@@ -83,12 +83,19 @@ public class HttpRequestUtil {
         String query = getParam(request,
                                 "q",
                                 getParam(request, "query"));//get query if q not given, list pages use query
-        if (org.apache.commons.lang3.StringUtils.isEmpty(query)) {
+        if (isEmpty(query)) {
             return null;
         }
         if (query.length() > 200) {
             throw new BadRequestException("Search query contains too many characters");
         }
         return query;
+    }
+
+    public static Set<TypeFilter> extractTypeFilters(final HttpServletRequest request,
+                                                     final Set<TypeFilter> dataFilters) {
+        String[] filters = request.getParameterValues("filter");
+        return extractFilters(filters,
+                              dataFilters);
     }
 }

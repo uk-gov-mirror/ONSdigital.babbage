@@ -18,44 +18,60 @@ import java.util.List;
  */
 public class PublishDates {
 
-    static SimpleDateFormat SDF = new SimpleDateFormat("dd/MM/yy");
-
     public static final String UPDATED_TODAY = "today";
+    public static final String UPDATED_YESTERDAY = "yesterday";
+    public static final String UPDATED_TWO_DAYS_AGO = "twodaysago";
     public static final String UPDATED_WITHIN_A_WEEK = "week";
     public static final String UPDATED_WITHIN_A_MONTH = "month";
+    public static final int TODAY = 0;
     public static final int ONE_DAY_BEFORE = 1;
-    public static final int SEVEN_DAYS_BEFORE = 7;
-    public static final int THIRTY_DAYS_BEFORE = 30;
-
+    public static final int TWO_DAY_BEFORE = 2;
+    public static final int SEVEN_DAYS_BEFORE = 6; // last week is 6days from first thing this morning as we are still in today
+    public static final int THIRTY_DAYS_BEFORE = 30; // 30 days because the today starts at midnight
     public static final String PUBLISHED_FROM = "publishedFrom";
     public static final String PUBLISHED_BEFORE = "publishedBefore";
     public static final String DATE_INVALID_MSG = "Date was invalid";
-
     public static final ValidationError PUBLISHED_FROM_INVALID =
             new ValidationError(PUBLISHED_FROM, "Invalid date.");
-
     public static final ValidationError PUBLISHED_BEFORE_INVALID =
             new ValidationError(PUBLISHED_BEFORE, "Date was invalid.");
-
     public static final ValidationError PUBLISHED_FROM_DATE_IN_FUTURE_ERROR =
             new ValidationError(PUBLISHED_FROM, "Published after cannot be in the future.");
-
     public static final ValidationError PUBLISHED_FROM_AFTER_END_DATE_ERROR =
             new ValidationError(PUBLISHED_FROM, "Published After begins after Published Before.");
-
+    static SimpleDateFormat SDF = new SimpleDateFormat("dd/MM/yy");
     private Date publishedFrom = null;
     private Date publishedTo = null;
 
-    private static Date daysBefore(int days) {
+    private PublishDates() {
+        this.publishedTo = null;
+        this.publishedFrom = null;
+    }
+
+    private PublishDates(Date from, Date to) {
+        this.publishedFrom = from;
+        this.publishedTo = to;
+    }
+
+    static Date daysBefore(int days) {
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.DAY_OF_MONTH, -1 * days);
+        cal.set(Calendar.HOUR, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
         return cal.getTime();
     }
 
     public static PublishDates updatedWithinPeriod(String period) {
         switch (period) {
             case UPDATED_TODAY:
+                return new PublishDates(daysBefore(TODAY), null);
+            case UPDATED_YESTERDAY:
                 return new PublishDates(daysBefore(ONE_DAY_BEFORE), null);
+            case UPDATED_TWO_DAYS_AGO:
+                return new PublishDates(daysBefore(TWO_DAY_BEFORE), null);
             case UPDATED_WITHIN_A_WEEK:
                 return new PublishDates(daysBefore(SEVEN_DAYS_BEFORE), null);
             case UPDATED_WITHIN_A_MONTH:
@@ -77,14 +93,16 @@ public class PublishDates {
         Date publishedToDate;
         try {
             publishedFromDate = formatDate(publishedAfter);
-        } catch (ParseException pEx) {
+        }
+        catch (ParseException pEx) {
             validationErrors.add(PUBLISHED_FROM_INVALID);
             publishedFromDate = null;
         }
 
         try {
             publishedToDate = formatDate(publishedBefore);
-        } catch (ParseException pEx) {
+        }
+        catch (ParseException pEx) {
             validationErrors.add(PUBLISHED_BEFORE_INVALID);
             publishedToDate = null;
         }
@@ -102,7 +120,8 @@ public class PublishDates {
     private static List<ValidationError> validateDateRange(Date from, Date to, List<ValidationError> validationErrors,
                                                            boolean allowFutureAfterDate) {
         if (!allowFutureAfterDate) {
-            if (from != null && from.after(Calendar.getInstance().getTime())) {
+            if (from != null && from.after(Calendar.getInstance()
+                                                   .getTime())) {
                 validationErrors.add(PUBLISHED_FROM_DATE_IN_FUTURE_ERROR);
             }
         }
@@ -129,7 +148,10 @@ public class PublishDates {
      * @throws PublishDatesException the date value provided were invalid.
      */
     public static PublishDates publishedDates(Date publishedFrom, Date publishedTo) throws PublishDatesException {
-        List<ValidationError> validationErrors = validateDateRange(publishedFrom, publishedTo, new ArrayList<>(), false);
+        List<ValidationError> validationErrors = validateDateRange(publishedFrom,
+                                                                   publishedTo,
+                                                                   new ArrayList<>(),
+                                                                   false);
         if (!validationErrors.isEmpty()) {
             throw new PublishDatesException(validationErrors);
         }
@@ -142,16 +164,6 @@ public class PublishDates {
         }
         SDF.setLenient(false);
         return SDF.parse(input);
-    }
-
-    private PublishDates() {
-        this.publishedTo = null;
-        this.publishedFrom = null;
-    }
-
-    private PublishDates(Date from, Date to) {
-        this.publishedFrom = from;
-        this.publishedTo = to;
     }
 
     public Date publishedFrom() {

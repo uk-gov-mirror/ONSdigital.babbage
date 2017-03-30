@@ -1,6 +1,8 @@
 package com.github.onsdigital.babbage.request.handler.list;
 
 import com.github.onsdigital.babbage.api.endpoint.rss.service.RssService;
+import com.github.onsdigital.babbage.api.util.SearchParam;
+import com.github.onsdigital.babbage.api.util.SearchParamFactory;
 import com.github.onsdigital.babbage.api.util.SearchUtils;
 import com.github.onsdigital.babbage.error.BadRequestException;
 import com.github.onsdigital.babbage.request.handler.base.BaseRequestHandler;
@@ -10,21 +12,24 @@ import com.github.onsdigital.babbage.search.helpers.ONSQuery;
 import com.github.onsdigital.babbage.search.helpers.base.SearchFilter;
 import com.github.onsdigital.babbage.search.helpers.base.SearchQueries;
 import com.github.onsdigital.babbage.search.helpers.dates.PublishDates;
-import com.github.onsdigital.babbage.search.helpers.dates.PublishDatesException;
 import com.github.onsdigital.babbage.search.input.TypeFilter;
 import com.github.onsdigital.babbage.search.model.ContentType;
+import com.github.onsdigital.babbage.search.model.SearchResult;
 import com.github.onsdigital.babbage.search.model.field.Field;
+import com.google.common.collect.Lists;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.util.Map;
 import java.util.Set;
 
-import static com.github.onsdigital.babbage.api.util.SearchUtils.*;
+import static com.github.onsdigital.babbage.api.util.SearchUtils.buildDataResponse;
+import static com.github.onsdigital.babbage.api.util.SearchUtils.buildPageResponse;
 import static com.github.onsdigital.babbage.search.builders.ONSFilterBuilders.filterUriAndTopics;
 import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.toList;
 import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.typeCountsQuery;
-import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.extractPublishDates;
-import static com.github.onsdigital.babbage.search.helpers.dates.PublishDates.publishedAnyTime;
+import static com.github.onsdigital.babbage.search.model.QueryType.SEARCH;
 import static org.elasticsearch.index.query.QueryBuilders.rangeQuery;
 
 /**
@@ -39,28 +44,30 @@ public class DataListRequestHandler extends BaseRequestHandler implements ListRe
     private RssService rssService = RssService.getInstance();
 
     @Override
-    public BabbageResponse get(String uri, HttpServletRequest request) throws IOException, BadRequestException {
-        if (rssService.isRssRequest(request)) {
-            return rssService.getDataListFeedResponse(request);
-        } else {
-            try {
-                return listPage(REQUEST_TYPE, queries(request, extractPublishDates(request), uri));
-            } catch (PublishDatesException pEx) {
-                return listPageWithValidationErrors(REQUEST_TYPE, queries(request, publishedAnyTime(), uri),
-                        pEx.getErrors());
-            }
+    public BabbageResponse get(String uri,
+                               HttpServletRequest request) throws IOException, BadRequestException, URISyntaxException {
+        final SearchParam params = SearchParamFactory.getInstance(request, null, Lists.newArrayList(SEARCH));
+        if (params.isRssFeed()) {
+            params.setRequestType(REQUEST_TYPE);
+            return rssService.getDataListFeedResponse(params, uri);
+        }
+        else {
+            params.addTopic(uri)
+                  .setPrefixURI(uri);
+            final Map<String, SearchResult> search = SearchUtils.search(params);
+            return buildPageResponse(REQUEST_TYPE, search);
         }
     }
 
     @Override
-    public BabbageResponse getData(String uri, HttpServletRequest request) throws IOException, BadRequestException {
-        PublishDates publishDates;
-        try {
-            publishDates = extractPublishDates(request);
-        } catch (PublishDatesException ex) {
-            publishDates = publishedAnyTime();
-        }
-        return listJson(REQUEST_TYPE, queries(request, publishDates, uri));
+    public BabbageResponse getData(String uri,
+                                   HttpServletRequest request) throws IOException, BadRequestException, URISyntaxException {
+        final SearchParam params = SearchParamFactory.getInstance(request, null, Lists.newArrayList(SEARCH))
+                                                     .addTopic(uri)
+                                                     .setPrefixURI(uri);
+        final Map<String, SearchResult> search = SearchUtils.search(params);
+        return buildDataResponse(REQUEST_TYPE, search);
+
     }
 
     private SearchQueries queries(HttpServletRequest request, PublishDates publishDates, String uri) {
@@ -68,15 +75,15 @@ public class DataListRequestHandler extends BaseRequestHandler implements ListRe
         return () -> toList(
                 listQuery,
                 typeCountsQuery(listQuery.query()).types(contentTypesToCount)
-        );
+                           );
     }
 
     private SearchFilter filters(PublishDates publishDates, String uri) {
         return (listQuery) -> {
             filterUriAndTopics(uri, listQuery);
             listQuery.filter(rangeQuery(Field.releaseDate.fieldName())
-                    .from(publishDates.publishedFrom())
-                    .to(publishDates.publishedTo()));
+                                     .from(publishDates.publishedFrom())
+                                     .to(publishDates.publishedTo()));
         };
     }
 

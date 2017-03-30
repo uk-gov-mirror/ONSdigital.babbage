@@ -43,7 +43,6 @@ public class PublishedRequestsRequestHandler extends BaseRequestHandler implemen
 
     private Map<String, SearchResult> search(final HttpServletRequest request) throws IOException, URISyntaxException {
         final SearchParam param = SearchParamFactory.getInstance(request, null, Lists.newArrayList(QueryType.SEARCH));
-
         return SearchUtils.search(param);
     }
 

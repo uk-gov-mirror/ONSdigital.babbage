@@ -21,12 +21,26 @@ public class SearchParam {
     private SortBy sortBy;
     private List<QueryType> queryTypes = new ArrayList<>();
     private List<Filter> filters = new ArrayList<>();
+    private List<String> topics = new ArrayList<>();
+    private List<String> topicWildcards = new ArrayList<>();
     private String aggregationField;
     private PublishDates publishDates;
     private String prefixURI;
-
+    private boolean rssFeed;
+    private String requestType;
+    private Boolean highlights;
+    private Boolean latest;
 
     SearchParam() {
+    }
+
+    public Boolean isLatest() {
+        return latest;
+    }
+
+    public SearchParam setLatest(final Boolean latest) {
+        this.latest = latest;
+        return this;
     }
 
     public String getSearchTerm() {
@@ -56,6 +70,25 @@ public class SearchParam {
     public SearchParam addDocTypes(ContentType... docTypes) {
         this.docTypes.addAll(Arrays.asList(docTypes));
         return this;
+    }
+
+
+    public SearchParam addTopic(String... topics) {
+        this.topics.addAll(Arrays.asList(topics));
+        return this;
+    }
+
+    public SearchParam addTopicWildcard(String... topicWildcard) {
+        this.topicWildcards.addAll(Arrays.asList(topicWildcard));
+        return this;
+    }
+
+    public List<String> getTopics() {
+        return topics;
+    }
+
+    public List<String> getTopicWildcards() {
+        return topicWildcards;
     }
 
     public Integer getPage() {
@@ -132,6 +165,33 @@ public class SearchParam {
 
     public SearchParam setPrefixURI(final String prefixURI) {
         this.prefixURI = prefixURI;
+        return this;
+    }
+
+    public boolean isRssFeed() {
+        return rssFeed;
+    }
+
+    public SearchParam setRssFeed(final boolean rssFeed) {
+        this.rssFeed = rssFeed;
+        return this;
+    }
+
+    public String getRequestType() {
+        return requestType;
+    }
+
+    public SearchParam setRequestType(final String requestType) {
+        this.requestType = requestType;
+        return this;
+    }
+
+    public Boolean isHighlights() {
+        return highlights;
+    }
+
+    public SearchParam setHighlights(final boolean highlights) {
+        this.highlights = highlights;
         return this;
     }
 }

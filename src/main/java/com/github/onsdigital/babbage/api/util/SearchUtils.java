@@ -81,27 +81,25 @@ public class SearchUtils {
                                                       .setHost("localhost")
                                                       .setPort(10001)
                                                       .setPath("search");
+
+        //TODO Externalise Keys?
         addParam(uriBuilder, "size", Integer.toString(searchParam.getSize()));
         addParam(uriBuilder, "from", Integer.toString(from(searchParam.getPage(), searchParam.getSize())));
         addParam(uriBuilder, "term", searchParam.getSearchTerm());
-
+        addParam(uriBuilder, "highlight", searchParam.isHighlights());
+        addParam(uriBuilder, "latest", searchParam.isLatest());
         final String uri = searchParam.getPrefixURI();
         addParam(uriBuilder, "uriPrefix", endsWith(uri, "/") ? uri : uri + "/");
-
-
-        if (null != searchParam.getSortBy()) {
-            addParam(uriBuilder,
-                     "sort",
-                     searchParam.getSortBy()
-                                .name());
-        }
-
-        addParam(uriBuilder, searchParam.getAggregationField(), "aggField");
+        addParam(uriBuilder, "sort", searchParam.getSortBy());
+        addParam(uriBuilder, "aggField", searchParam.getAggregationField());
+        addParams(uriBuilder, "topicWildcard", searchParam.getTopicWildcards());
+        addParams(uriBuilder, "topic", searchParam.getTopics());
 
         if (null != searchParam.getFilters()) {
             searchParam.getFilters()
                        .forEach(f -> addParam(uriBuilder, f.getKey(), f.getValue()));
         }
+
 
         if (null != searchParam.getDocTypes()) {
             for (ContentType s : searchParam.getDocTypes()) {
@@ -119,22 +117,12 @@ public class SearchUtils {
 
         if (null != searchParam.getPublishDates()) {
             final PublishDates publishDates = searchParam.getPublishDates();
-            if (null != publishDates.publishedFrom()) {
-
-                uriBuilder.addParameter("releasedAfter",
-                                        ISO_DATE_FORMAT.format(publishDates.publishedFrom()));
-            }
-            if (null != publishDates.publishedTo()) {
-                uriBuilder.addParameter("releasedBefore",
-                                        ISO_DATE_FORMAT.format(publishDates.publishedTo()));
-            }
+            addParam(uriBuilder, "releasedAfter", publishDates.publishedFrom());
+            addParam(uriBuilder, "releasedBefore", publishDates.publishedTo());
         }
 
-
         final URI searchUri = uriBuilder.build();
-
         byte[] responseBytes = executeGet(searchUri);
-
         return SearchResultsFactory.getInstance(responseBytes,
                                                 searchParam.getSortBy(),
                                                 searchParam.getPage(),
@@ -143,10 +131,37 @@ public class SearchUtils {
 
     }
 
+    private static void addParam(final URIBuilder uriBuilder, final String key, final Boolean value) {
+        if (null != value && isNotBlank(key)){
+            uriBuilder.addParameter(key, value.toString());
+        }
+    }
+
+    private static void addParam(final URIBuilder uriBuilder, final String key, final Date value) {
+        if (null != value && isNotBlank(key)){
+            uriBuilder.addParameter(key, ISO_DATE_FORMAT.format(value));
+
+        }
+    }
+
     private static void addParam(final URIBuilder uriBuilder, final String key, final String value) {
         if (isNotBlank(value) && isNotBlank(key)) {
-            uriBuilder.addParameter(key,value);
+            uriBuilder.addParameter(key, value);
 
+        }
+    }
+
+    private static void addParam(final URIBuilder uriBuilder, final String key, final Enum value) {
+        if (null != value && isNotBlank(key)) {
+            uriBuilder.addParameter(key, value.name());
+
+        }
+    }
+
+    private static void addParams(final URIBuilder uriBuilder, final String key, final Collection values) {
+
+        if (null != values && values.size() > 0 && isNotBlank(key)) {
+            values.forEach(v -> addParam(uriBuilder, key, Objects.toString(v)));
         }
     }
 

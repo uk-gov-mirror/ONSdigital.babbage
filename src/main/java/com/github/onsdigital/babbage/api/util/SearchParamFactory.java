@@ -21,12 +21,14 @@ import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.e
  */
 public class SearchParamFactory {
     private static final Logger LOGGER = LoggerFactory.getLogger(SearchParamFactory.class);
+    public static final String RSS_PARAM = "rss";
 
     private SearchParamFactory() {
         //FACTORY DO NOT INSTANTIATE
     }
 
-    public static SearchParam getInstance(HttpServletRequest request, SortBy defaultSortBy, Collection<QueryType> queryTypes) {
+    public static SearchParam getInstance(HttpServletRequest request, SortBy defaultSortBy,
+                                          Collection<QueryType> queryTypes) {
 
         PublishDates publishDates = null;
         try {
@@ -41,7 +43,13 @@ public class SearchParamFactory {
                             .setPage(extractPage(request))
                             .setSortBy(extractSortBy(request, defaultSortBy))
                             .setPublishDates(publishDates)
-                            .addQueryTypes(queryTypes);
+                            .addQueryTypes(queryTypes)
+                            .setRssFeed(extractRssFeed(request));
+    }
+
+    private static boolean extractRssFeed(final HttpServletRequest request) {
+        return request.getParameterMap()
+                      .containsKey(RSS_PARAM);
     }
 
     public static SearchParam getInstance() {

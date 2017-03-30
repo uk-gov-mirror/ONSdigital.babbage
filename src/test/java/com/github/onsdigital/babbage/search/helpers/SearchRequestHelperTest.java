@@ -37,6 +37,7 @@ import static com.github.onsdigital.babbage.search.helpers.dates.PublishDates.pu
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
 public class SearchRequestHelperTest {
@@ -198,7 +199,7 @@ public class SearchRequestHelperTest {
     @Test
     public void shouldReturnPublishDateWithinADayOfCurrentDate() throws Exception {
         when(mockRequest.getParameter(UPDATED_PARAM)).thenReturn(UPDATED_TODAY);
-        verifyDateUpdated(extractPublishDates(mockRequest), 1);
+        verifyDateUpdated(extractPublishDates(mockRequest), 0);
     }
 
     /**
@@ -208,7 +209,7 @@ public class SearchRequestHelperTest {
     @Test
     public void shouldReturnPublishDateWithinAWeekOfCurrentDate() throws Exception {
         when(mockRequest.getParameter(UPDATED_PARAM)).thenReturn(UPDATED_WITHIN_A_WEEK);
-        verifyDateUpdated(extractPublishDates(mockRequest), 7);
+        verifyDateUpdated(extractPublishDates(mockRequest), 6);
     }
 
     /**
@@ -265,7 +266,7 @@ public class SearchRequestHelperTest {
 
         LocalDate expectedDate = new DateTime().minusDays(range).toLocalDate();
         LocalDate actualDate = new DateTime(result.publishedFrom()).toLocalDate();
-
+        assertEquals(expectedDate, actualDate);
         assertThat("From date is incorrect.", actualDate.compareTo(expectedDate), equalTo(0));
     }
 
