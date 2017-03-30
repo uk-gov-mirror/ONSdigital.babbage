@@ -1,6 +1,5 @@
 package com.github.onsdigital.babbage.api.endpoint.rss.service;
 
-import com.github.onsdigital.babbage.api.endpoint.rss.RssSearchFilter;
 import com.github.onsdigital.babbage.api.endpoint.rss.builder.SyndEntryBuilder;
 import com.github.onsdigital.babbage.api.endpoint.rss.builder.SyndFeedBuilder;
 import com.github.onsdigital.babbage.api.util.SearchParam;
@@ -8,18 +7,14 @@ import com.github.onsdigital.babbage.api.util.SearchParamFactory;
 import com.github.onsdigital.babbage.api.util.SearchUtils;
 import com.github.onsdigital.babbage.response.BabbageRssResponse;
 import com.github.onsdigital.babbage.search.helpers.ONSQuery;
-import com.github.onsdigital.babbage.search.helpers.base.SearchFilter;
 import com.github.onsdigital.babbage.search.helpers.base.SearchQueries;
 import com.github.onsdigital.babbage.search.helpers.dates.PublishDates;
 import com.github.onsdigital.babbage.search.input.SortBy;
 import com.github.onsdigital.babbage.search.model.ContentType;
 import com.github.onsdigital.babbage.search.model.SearchResult;
-import com.github.onsdigital.babbage.search.model.field.Field;
 import com.github.onsdigital.babbage.util.ThreadContext;
 import com.sun.syndication.feed.synd.SyndEntry;
 import com.sun.syndication.feed.synd.SyndFeed;
-import org.apache.commons.lang3.StringUtils;
-import org.elasticsearch.index.query.QueryBuilders;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -27,16 +22,11 @@ import java.net.URISyntaxException;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.toList;
 import static com.github.onsdigital.babbage.search.model.QueryType.SEARCH;
-import static com.github.onsdigital.babbage.search.model.field.Field.releaseDate;
 import static com.github.onsdigital.babbage.util.RequestUtil.LOCATION_KEY;
 import static com.github.onsdigital.babbage.util.RequestUtil.Location;
-import static org.apache.commons.lang3.StringUtils.endsWith;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.apache.commons.lang3.StringUtils.join;
-import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
-import static org.elasticsearch.index.query.QueryBuilders.prefixQuery;
 
 /**
  * Service provides functionality required for the ONS RSS feed.
@@ -92,17 +82,11 @@ public class RssService {
     }
 
     /**
-     * @return a {@link SyndFeed} for the Publication RSS feed defined by the requested parameters.
-     */
-    public SyndFeed getPublicationListFeed(HttpServletRequest request) {
-        return listFeed(request);
-    }
-
-    /**
      * @return a {@link BabbageRssResponse} for the Publications RSS feed defined by the requested parameters.
      */
-    public BabbageRssResponse getPublicationListFeedResponse(HttpServletRequest request) {
-        return writeToResponse(listFeed(request));
+    public BabbageRssResponse getPublicationListFeedResponse(SearchParam request,
+                                                             String uri) throws IOException, URISyntaxException {
+        return writeToResponse(listFeed(request, uri));
     }
 
     /**
@@ -150,13 +134,6 @@ public class RssService {
         return new BabbageRssResponse.Builder().build(feed);
     }
 
-    //TODO REMOVE
-    private SyndFeed listFeed(HttpServletRequest request) {
-        RssSearchFilter searchFilter = new RssSearchFilter.Builder().build(request);
-        SearchQueries searchQueries = generateListQuery(searchFilter);
-        Optional<SearchResult> searchResult = search(searchQueries);
-        return generateSyndFeed(searchResult, searchFilter);
-    }
 
     private SyndFeed listFeed(SearchParam params, String uri) throws IOException, URISyntaxException {
 
@@ -184,30 +161,6 @@ public class RssService {
 
     }
 
-    private SearchQueries generateListQuery(RssSearchFilter filter) {
-        SearchFilter searchFilter = (listQuery) -> {
-            if (!StringUtils.isEmpty(filter.getUri())) {
-
-                String uri = filter.getUri();
-                listQuery.filter(
-                        boolQuery().should(QueryBuilders.wildcardQuery(Field.topics.fieldName(), uri + "*"))
-                                   .should(prefixQuery(Field.uri.fieldName(), endsWith(uri, "/") ? uri : uri + "/")));
-            }
-            listQuery.filter(QueryBuilders.rangeQuery(releaseDate.fieldName())
-                                          .gte(
-                                                  PropertiesService.getInstance()
-                                                                   .get(FEED_DATE_RANGE_KEY))
-                            );
-        };
-
-        ONSQuery onsQuery = SearchUtils.buildListQuery(filter.getRequest(), filter.getTypeFilters(), searchFilter)
-                                       .size(Integer.valueOf(PropertiesService.getInstance()
-                                                                              .get(RSS_MAX_FEED_SIZE_KEY)))
-                                       .sortBy(SortBy.release_date)
-                                       .highlight(false);
-
-        return () -> toList(onsQuery);
-    }
 
     private Optional<SearchResult> search(SearchQueries searchQueries) {
         LinkedHashMap<String, SearchResult> results = SearchUtils.searchAll(searchQueries);
@@ -246,16 +199,7 @@ public class RssService {
         return (isNotBlank(detail) ? String.format(propertiesService.get(key), detail) : null);
     }
 
-    //TODO REMOVE
-    private SyndFeed generateSyndFeed(Optional<SearchResult> results, RssSearchFilter filter) {
-        return new SyndFeedBuilder()
-                .type(rssType)
-                .link(((Location) ThreadContext.getData(LOCATION_KEY)).getHost())
-                .category(filter.getUri())
-                .entries(searchResultsToSyndEntries(results))
-                .title(filter)
-                .build();
-    }
+
 
     private String calendarTitle(HttpServletRequest request) {
         return "upcoming".equalsIgnoreCase(request.getParameter("view")) ? calendarUpcomingTitle : calendarPublishedTitle;
