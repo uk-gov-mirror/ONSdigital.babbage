@@ -10,8 +10,8 @@ Currently the `dp-search-query ` Micro Service has implemented a limited set of 
 3. URI _this might be a new lookup query_
 4. ~~Topic Wildcard~~
 5. ~~Topic filter~~
-6. Upcoming
-7. Published
+6. ~~Upcoming~~
+7. ~~Published~~
 
 
 ##Handlers
@@ -21,11 +21,11 @@ Current list of Handlers that need to be refactored to use the new `dp-search-qu
 * TopicSpecificMethodologyRequestHandler
 * ~~PublicationsRequestHandler~~
 * RssService - in progress
-* DataListRequestHandler
+* ~~DataListRequestHandler~~
 * RelatedDataRequestHandler
 * RelatedDataRequestHandler
 * DataListRequestHandler
-* PublicationsRequestHandler
+* ~~PublicationsRequestHandler~~
 * Calendar
 * PublishingManager
 * TimeSeriesTool
@@ -38,3 +38,9 @@ Current list of Handlers that need to be refactored to use the new `dp-search-qu
 ##BDD tests
 Currently we are have series of Cucumber tests that are integrated into the query
 architecture of the querybuilder's these will now need to be refactored to either interface into the Babbage interface or (and probably the preferred solution) to include the queries into the dp-search-query service.
+
+
+##Clean up
+Not until we have removed all references to the querybuilders can we remove them and therefore the dependencies
+from the `pom`.
+So once the above is complete, look to remove the ElasticSearch client dependencies

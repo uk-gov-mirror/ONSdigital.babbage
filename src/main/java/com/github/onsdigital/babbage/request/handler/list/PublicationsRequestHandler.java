@@ -7,8 +7,6 @@ import com.github.onsdigital.babbage.api.util.SearchUtils;
 import com.github.onsdigital.babbage.request.handler.base.BaseRequestHandler;
 import com.github.onsdigital.babbage.request.handler.base.ListRequestHandler;
 import com.github.onsdigital.babbage.response.base.BabbageResponse;
-import com.github.onsdigital.babbage.search.input.TypeFilter;
-import com.github.onsdigital.babbage.search.model.ContentType;
 import com.github.onsdigital.babbage.search.model.SearchResult;
 import com.google.common.collect.Lists;
 
@@ -16,7 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.Map;
-import java.util.Set;
 
 import static com.github.onsdigital.babbage.api.util.SearchUtils.buildDataResponse;
 import static com.github.onsdigital.babbage.api.util.SearchUtils.buildPageResponse;
@@ -28,8 +25,7 @@ import static com.github.onsdigital.babbage.search.model.QueryType.SEARCH;
 public class PublicationsRequestHandler extends BaseRequestHandler implements ListRequestHandler {
 
     private final static String REQUEST_TYPE = "publications";
-    private static Set<TypeFilter> publicationFilters = TypeFilter.getPublicationFilters();
-    private static ContentType[] contentTypesToCount = TypeFilter.contentTypes(publicationFilters);
+
     private static RssService rssService = RssService.getInstance();
 
     @Override
