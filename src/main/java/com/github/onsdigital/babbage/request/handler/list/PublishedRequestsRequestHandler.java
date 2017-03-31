@@ -6,6 +6,7 @@ import com.github.onsdigital.babbage.api.util.SearchUtils;
 import com.github.onsdigital.babbage.request.handler.base.BaseRequestHandler;
 import com.github.onsdigital.babbage.request.handler.base.ListRequestHandler;
 import com.github.onsdigital.babbage.response.base.BabbageResponse;
+import com.github.onsdigital.babbage.search.model.ContentType;
 import com.github.onsdigital.babbage.search.model.QueryType;
 import com.github.onsdigital.babbage.search.model.SearchResult;
 import com.google.common.collect.Lists;
@@ -31,9 +32,7 @@ public class PublishedRequestsRequestHandler extends BaseRequestHandler implemen
 
     @Override
     public BabbageResponse get(String uri, HttpServletRequest request) throws Exception {
-
         return buildPageResponse(REQUEST_TYPE, search(request));
-
     }
 
     @Override
@@ -42,7 +41,8 @@ public class PublishedRequestsRequestHandler extends BaseRequestHandler implemen
     }
 
     private Map<String, SearchResult> search(final HttpServletRequest request) throws IOException, URISyntaxException {
-        final SearchParam param = SearchParamFactory.getInstance(request, null, Lists.newArrayList(QueryType.SEARCH));
+        final SearchParam param = SearchParamFactory.getInstance(request, null, Lists.newArrayList(QueryType.SEARCH))
+                                                    .addDocType(ContentType.static_foi);
         return SearchUtils.search(param);
     }
 

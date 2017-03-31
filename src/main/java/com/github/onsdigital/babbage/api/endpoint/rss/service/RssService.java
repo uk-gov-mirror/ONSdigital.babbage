@@ -137,8 +137,7 @@ public class RssService {
 
     private SyndFeed listFeed(SearchParam params, String uri) throws IOException, URISyntaxException {
 
-        params.addTopicWildcard(uri + "*")
-              .setPrefixURI(uri);
+
         params.setSize(getRssSize());
         params.setPublishDates(getFeedRange());
         params.setSortBy(SortBy.release_date);
