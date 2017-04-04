@@ -1,7 +1,9 @@
-<section id="{{slugify title}}" class="section__content--markdown">
-	<header>
-		<h2><span class="section__content-number">{{@index_1}}.</span> {{title}}</h2>
-	</header>
-	{{md markdown}}
-	<a class="print--hide js-scroll" href="#toc">{{labels.back-to-table-of-contents}}</a>
-</section>
+<div id="{{slugify title}}" class="section__content--markdown">
+	<section>
+		<header>
+			<h2><span class="section__content-number">{{@index_1}}.</span> {{title}}</h2>
+		</header>
+		{{md markdown}}
+		<a class="print--hide js-scroll" href="#toc">{{labels.back-to-table-of-contents}}</a>
+	</section>
+</div>
