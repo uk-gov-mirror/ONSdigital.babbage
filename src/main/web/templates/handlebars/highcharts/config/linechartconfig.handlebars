@@ -46,7 +46,7 @@ var linechart = {
      }
    },
    xAxis: {
-     categories: [],
+     categories: [{{#each series}}"{{name}}",{{/each}}],
       tickPositioner: function () {
        var positions = [];
        var increment = Math.ceil(((this.dataMax) - (this.dataMin)) / 16);
@@ -64,22 +64,22 @@ var linechart = {
        return positions;
      },
      labels: {
-       formatter: function() {
-         var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
-         var response = '';
-         if (w < 768) {
-           if (this.isFirst) {
-             count = 0;
-           }
-           if (count % 4 === 0 || this.isLast) {
-             response = this.value;
-           }
-           count++;
-         } else {
-           response = this.value;
-         }
-         return response;
-       }
+        formatter: function() {
+          var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+          var response = '';
+          if (w < 768) {
+            if (this.isFirst) {
+              count = 0;
+            }
+            if (count % 4 === 0 || this.isLast) {
+              response = this.value;
+            }
+            count++;
+          } else {
+            response = this.value;
+          }
+          return response;
+        }
      },
      tickmarkPlacement: 'on'
    },
