@@ -1,5 +1,6 @@
 package com.github.onsdigital.babbage.api.util;
 
+import com.fasterxml.jackson.databind.util.ISO8601DateFormat;
 import com.github.onsdigital.babbage.configuration.Configuration;
 import com.github.onsdigital.babbage.error.ValidationError;
 import com.github.onsdigital.babbage.response.BabbageRedirectResponse;
@@ -12,6 +13,7 @@ import com.github.onsdigital.babbage.search.helpers.ONSSearchResponse;
 import com.github.onsdigital.babbage.search.helpers.SearchHelper;
 import com.github.onsdigital.babbage.search.helpers.base.SearchFilter;
 import com.github.onsdigital.babbage.search.helpers.base.SearchQueries;
+import com.github.onsdigital.babbage.search.helpers.dates.PublishDates;
 import com.github.onsdigital.babbage.search.input.SortBy;
 import com.github.onsdigital.babbage.search.input.TypeFilter;
 import com.github.onsdigital.babbage.search.model.*;
@@ -41,6 +43,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.text.DateFormat;
 import java.text.MessageFormat;
 import java.util.*;
 
@@ -53,6 +56,8 @@ import static com.github.onsdigital.babbage.configuration.Configuration.GENERAL.
 import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.*;
 import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.extractSelectedFilters;
 import static com.github.onsdigital.babbage.search.input.TypeFilter.contentTypes;
+import static org.apache.commons.lang3.StringUtils.endsWith;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 import static org.elasticsearch.index.query.QueryBuilders.matchAllQuery;
 import static org.elasticsearch.search.suggest.SuggestBuilders.phraseSuggestion;
@@ -63,69 +68,102 @@ import static org.elasticsearch.search.suggest.SuggestBuilders.phraseSuggestion;
  * Commons search functionality for search, search publications and search data pages.
  */
 public class SearchUtils {
+    private final static DateFormat ISO_DATE_FORMAT = new ISO8601DateFormat();
     private static final String TIMESERIES_PATH = "timeseries/%1$s";
     private static final String SEARCH_SERVICE_SCHEME = "http";
     private static final Logger LOGGER = LoggerFactory.getLogger(SearchUtils.class);
     private static final String ERRORS_KEY = "errors";
     private static final CloseableHttpClient httpClient = HttpClients.createDefault();
 
-    public static SearchResults search(final SearchParam searchParam) throws IOException, URISyntaxException {
+    private static SearchResults query(final SearchParam searchParam) throws IOException, URISyntaxException {
         //If it is a Timeseries return
 
         final URIBuilder uriBuilder = new URIBuilder().setScheme(SEARCH_SERVICE_SCHEME)
                                                       .setHost("localhost")
                                                       .setPort(10001)
-                                                      .setPath("search")
-                                                      .addParameter("size",
-                                                                    Integer.toString(searchParam.getSize()))
-                                                      .addParameter("from",
-                                                                    Integer.toString(from(searchParam.getPage(),
-                                                                                          searchParam.getSize())))
-                                                      .addParameter("term",
-                                                                    searchParam.getSearchTerm());
+                                                      .setPath("search");
 
-        if (null != searchParam.getSortBy()) {
-            uriBuilder.addParameter("sort",
-                                    searchParam.getSortBy()
-                                               .name());
-        }
-
-        if (StringUtils.isNotBlank(searchParam.getAggregationField())) {
-            uriBuilder.addParameter("aggField",
-                                    searchParam.getAggregationField());
-        }
+        //TODO Externalise Keys?
+        addParam(uriBuilder, "size", Integer.toString(searchParam.getSize()));
+        addParam(uriBuilder, "from", Integer.toString(from(searchParam.getPage(), searchParam.getSize())));
+        addParam(uriBuilder, "term", searchParam.getSearchTerm());
+        addParam(uriBuilder, "highlight", searchParam.isHighlights());
+        addParam(uriBuilder, "latest", searchParam.isLatest());
+        final String uri = searchParam.getPrefixURI();
+        addParam(uriBuilder, "uriPrefix", endsWith(uri, "/") ? uri : uri + "/");
+        addParam(uriBuilder, "sort", searchParam.getSortBy());
+        addParam(uriBuilder, "aggField", searchParam.getAggregationField());
+        addParams(uriBuilder, "topicWildcard", searchParam.getTopicWildcards());
+        addParams(uriBuilder, "topic", searchParam.getTopics());
 
         if (null != searchParam.getFilters()) {
             searchParam.getFilters()
-                       .forEach(f -> uriBuilder.addParameter(f.getKey(),
-                                                             f.getValue()));
-
+                       .forEach(f -> addParam(uriBuilder, f.getKey(), f.getValue()));
         }
+
 
         if (null != searchParam.getDocTypes()) {
             for (ContentType s : searchParam.getDocTypes()) {
-                uriBuilder.addParameter("type",
-                                        s.name());
+                addParam(uriBuilder, "type", s.name());
             }
         }
 
         if (ListUtil.isNotEmpty(searchParam.getQueryTypes())) {
             searchParam.getQueryTypes()
-                       .forEach(s -> uriBuilder.addParameter("query",
-                                                             s.name()
-                                                              .toLowerCase()));
+                       .forEach(s -> addParam(uriBuilder,
+                                              "query",
+                                              s.name()
+                                               .toLowerCase()));
+        }
+
+        if (null != searchParam.getPublishDates()) {
+            final PublishDates publishDates = searchParam.getPublishDates();
+            addParam(uriBuilder, "releasedAfter", publishDates.publishedFrom());
+            addParam(uriBuilder, "releasedBefore", publishDates.publishedTo());
         }
 
         final URI searchUri = uriBuilder.build();
-
         byte[] responseBytes = executeGet(searchUri);
-
         return SearchResultsFactory.getInstance(responseBytes,
                                                 searchParam.getSortBy(),
                                                 searchParam.getPage(),
                                                 searchParam.getSize(),
                                                 searchParam.getQueryTypes());
 
+    }
+
+    private static void addParam(final URIBuilder uriBuilder, final String key, final Boolean value) {
+        if (null != value && isNotBlank(key)){
+            uriBuilder.addParameter(key, value.toString());
+        }
+    }
+
+    private static void addParam(final URIBuilder uriBuilder, final String key, final Date value) {
+        if (null != value && isNotBlank(key)){
+            uriBuilder.addParameter(key, ISO_DATE_FORMAT.format(value));
+
+        }
+    }
+
+    private static void addParam(final URIBuilder uriBuilder, final String key, final String value) {
+        if (isNotBlank(value) && isNotBlank(key)) {
+            uriBuilder.addParameter(key, value);
+
+        }
+    }
+
+    private static void addParam(final URIBuilder uriBuilder, final String key, final Enum value) {
+        if (null != value && isNotBlank(key)) {
+            uriBuilder.addParameter(key, value.name());
+
+        }
+    }
+
+    private static void addParams(final URIBuilder uriBuilder, final String key, final Collection values) {
+
+        if (null != values && values.size() > 0 && isNotBlank(key)) {
+            values.forEach(v -> addParam(uriBuilder, key, Objects.toString(v)));
+        }
     }
 
     private static byte[] executeGet(final URI searchUri) throws IOException {
@@ -144,10 +182,10 @@ public class SearchUtils {
 
 
     /**
-     * Performs search for requested search term against filtered content types and counts contents types.
+     * Performs query for requested query term against filtered content types and counts contents types.
      * Content results are serialised into json with key "result" and document counts are serialised as "counts".
      * <p>
-     * Accepts extra searches to perform along with content search and document counts.
+     * Accepts extra searches to perform along with content query and document counts.
      *
      * @param
      * @param
@@ -164,12 +202,7 @@ public class SearchUtils {
                                                           Configuration.GENERAL.getSearchResponseCacheTime());
         }
         else {
-            final SearchResults search = search(searchParam);
-
-            final Map<String, SearchResult> results = new HashMap<>();
-            search.getResults()
-                  .forEach(sr -> results.put(sr.getQueryType()
-                                               .getText(), sr));
+            final Map<String, SearchResult> results = search(searchParam);
 
 
             // TODO Put logging back
@@ -184,11 +217,22 @@ public class SearchUtils {
         return babbageResponse;
     }
 
+    public static Map<String, SearchResult> search(
+            final SearchParam searchParam) throws IOException, URISyntaxException {
+        final SearchResults search = query(searchParam);
+
+        final Map<String, SearchResult> results = new HashMap<>();
+        search.getResults()
+              .forEach(sr -> results.put(sr.getQueryType()
+                                           .getText(), sr));
+        return results;
+    }
+
     /**
-     * Performs search for requested search term against filtered content types and counts contents types.
+     * Performs query for requested query term against filtered content types and counts contents types.
      * Content results are serialised into json with key "result" and document counts are serialised as "counts".
      * <p>
-     * Accepts extra searches to perform along with content search and document counts.
+     * Accepts extra searches to perform along with content query and document counts.
      *
      * @param
      * @return
@@ -231,14 +275,13 @@ public class SearchUtils {
     }
 
     public static BabbageResponse listPage(String listType, String uri, HttpServletRequest requests, ContentType... docTypes) throws IOException {
-        final SearchParam searchParam = SearchParamFactory.getInstance(requests, SortBy.first_letter);
+        final SearchParam searchParam = SearchParamFactory.getInstance(requests, SortBy.first_letter, Collections.singleton(QueryType.SEARCH));
         searchParam
                 .addFilter(new PrefixFilter(uri))
-                .addQueryType(QueryType.SEARCH)
                 .addDocTypes(docTypes);
         // Filter on dates!!!
 
-        SearchResults search = null;
+        Map<String, SearchResult> search = null;
         try {
             search = SearchUtils.search(searchParam);
         } catch (IOException | URISyntaxException e) {
@@ -247,19 +290,18 @@ public class SearchUtils {
         final Map<String, SearchResult> results = new HashMap<>();
 
 
-        results.put(QueryType.SEARCH.getText(), search.getResults(QueryType.SEARCH));
+        results.put(QueryType.SEARCH.getText(), search.get(QueryType.SEARCH));
         return buildPageResponse(listType, results);
     }
 
     public static BabbageResponse listPage(String listType, List<Map> uris, HttpServletRequest requests, ContentType... docTypes) throws IOException {
-        final SearchParam searchParam = SearchParamFactory.getInstance(requests, SortBy.first_letter);
+        final SearchParam searchParam = SearchParamFactory.getInstance(requests, SortBy.first_letter, Collections.singleton(QueryType.SEARCH));
         searchParam
-                .addQueryType(QueryType.SEARCH)
                 .addDocTypes(docTypes);
         uris.forEach(map -> searchParam.addFilter( new PrefixFilter((String)map.get("uri"))));
         // Filter on dates!!!
 
-        SearchResults search = null;
+        Map<String, SearchResult> search = null;
         try {
             search = SearchUtils.search(searchParam);
         } catch (IOException | URISyntaxException e) {
@@ -268,7 +310,7 @@ public class SearchUtils {
         final Map<String, SearchResult> results = new HashMap<>();
 
 
-        results.put(QueryType.SEARCH.getText(), search.getResults(QueryType.SEARCH));
+        results.put(QueryType.SEARCH.getText(), search.get(QueryType.SEARCH));
         return buildPageResponse(listType, results);
     }
 
@@ -291,11 +333,11 @@ public class SearchUtils {
     }
 
     /**
-     * Builds search query by resolving search term, page and sort parameters
+     * Builds query query by resolving query term, page and sort parameters
      *
      * @param request
      * @param searchTerm
-     * @return ONSQuery, null if no search term given
+     * @return ONSQuery, null if no query term given
      */
     public static ONSQuery buildSearchQuery(HttpServletRequest request, String searchTerm,
                                             Set<TypeFilter> defaultFilters) {
@@ -328,7 +370,7 @@ public class SearchUtils {
     }
 
     /**
-     * Advanced search query corresponds to elastic search simple query string query, allowing user to control search results using special characters (+ for AND, | for OR etc)
+     * Advanced query query corresponds to elastic query simple query string query, allowing user to control query results using special characters (+ for AND, | for OR etc)
      *
      * @return
      */
@@ -364,20 +406,6 @@ public class SearchUtils {
                               null,
                               filter,
                               defaultSort);
-    }
-
-    public static ONSQuery buildListQuery(HttpServletRequest request) {
-        return buildListQuery(request,
-                              null,
-                              null,
-                              null);
-    }
-
-    public static ONSQuery buildListQuery(HttpServletRequest request, Set<TypeFilter> defaultFilters) {
-        return buildListQuery(request,
-                              defaultFilters,
-                              null,
-                              null);
     }
 
 
@@ -516,8 +544,10 @@ public class SearchUtils {
 
     public static BabbageResponse buildPageResponse(String listType,
                                                     Map<String, SearchResult> results) throws IOException {
+
         LinkedHashMap<String, Object> data = buildResults(listType,
                                                           results);
+
         return new BabbageStringResponse(TemplateService.getInstance()
                                                         .renderContent(data),
                                          MediaType.TEXT_HTML,
@@ -554,7 +584,7 @@ public class SearchUtils {
     }
 
     /**
-     * search time series for a given uri without dealing with request / response objects.
+     * query time series for a given uri without dealing with request / response objects.
      *
      * @param uriString
      * @return

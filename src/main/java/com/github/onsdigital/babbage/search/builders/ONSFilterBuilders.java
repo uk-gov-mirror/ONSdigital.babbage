@@ -25,12 +25,13 @@ public class ONSFilterBuilders {
         PublishDates publishDates;
         try {
             publishDates = extractPublishDates(request);
-        } catch (PublishDatesException ex) {
+        }
+        catch (PublishDatesException ex) {
             publishDates = publishedAnyTime();
         }
         listQuery.filter(rangeQuery(Field.releaseDate.fieldName())
-                .from(publishDates.publishedFrom())
-                .to(publishDates.publishedTo()));
+                                 .from(publishDates.publishedFrom())
+                                 .to(publishDates.publishedTo()));
     }
 
     public static void filterUriPrefix(String uri, BoolQueryBuilder listQuery) {
@@ -44,8 +45,8 @@ public class ONSFilterBuilders {
     public static void filterUriAndTopics(String uri, BoolQueryBuilder listQuery) {
         listQuery.filter(
                 boolQuery().should(termQuery(Field.topics.fieldName(), uri))
-                .should(prefixQuery(Field.uri.fieldName(), endsWith(uri, "/") ? uri : uri + "/"))
-        );
+                           .should(prefixQuery(Field.uri.fieldName(), endsWith(uri, "/") ? uri : uri + "/"))
+                        );
 
     }
 

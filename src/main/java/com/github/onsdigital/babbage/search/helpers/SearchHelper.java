@@ -87,7 +87,7 @@ public class SearchHelper {
         }
 
         List<ONSSearchResponse> helpers = new ArrayList<>();
-        LOGGER.info("search([queries]) : multiSearch",
+        LOGGER.info("searchMultiple([queries]) : multiSearch",
                     multiSearchRequestBuilder);
 
         MultiSearchResponse response = multiSearchRequestBuilder.get();

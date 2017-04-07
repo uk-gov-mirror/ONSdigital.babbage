@@ -51,40 +51,7 @@ public class ElasticSearchClient {
                 .addTransportAddress(new InetSocketTransportAddress(new InetSocketAddress(getElasticSearchServer(), Configuration.ELASTIC_SEARCH.getElasticSearchPort())));
     }
 
-    protected static void initNodeClient() throws IOException {
-        searchHome = Files.createTempDirectory("babbage_search_client");
-        Settings settings = Settings.builder().put("http.enabled", false)
-                .put("cluster.name", getElasticSearchCluster())
-                .put("discovery.zen.ping.multicast.enabled", true)
-                .put("network.host", "_non_loopback_")
-                .put("path.home", searchHome).build();
-        Node node =
-                nodeBuilder()
-                        .settings(settings)
-                        .data(false)
-                        .node();
 
-        client = node.client();
-        Runtime.getRuntime().addShutdownHook(new ShutDownNodeThread(client));
-    }
 
-    private static class ShutDownNodeThread extends Thread {
-        private Client client;
-
-        public ShutDownNodeThread(Client client) {
-            this.client = client;
-        }
-
-        @Override
-        public void run() {
-            client.close();
-            try {
-                Files.deleteIfExists(searchHome);
-            } catch (IOException e) {
-                System.err.println("Failed cleaning temporary search client directory");
-                e.printStackTrace();
-            }
-        }
-    }
 
 }

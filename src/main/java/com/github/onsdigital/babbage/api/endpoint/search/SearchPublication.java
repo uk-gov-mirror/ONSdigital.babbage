@@ -1,7 +1,6 @@
 package com.github.onsdigital.babbage.api.endpoint.search;
 
 import com.github.davidcarboni.restolino.framework.Api;
-import com.github.onsdigital.babbage.api.util.HttpRequestUtil;
 import com.github.onsdigital.babbage.api.util.SearchParam;
 import com.github.onsdigital.babbage.api.util.SearchParamFactory;
 import com.github.onsdigital.babbage.search.input.SortBy;
@@ -15,6 +14,7 @@ import javax.ws.rs.GET;
 import java.util.List;
 import java.util.Set;
 
+import static com.github.onsdigital.babbage.api.util.HttpRequestUtil.extractTypeFilters;
 import static com.github.onsdigital.babbage.api.util.SearchUtils.search;
 import static com.github.onsdigital.babbage.search.input.TypeFilter.contentTypes;
 import static com.github.onsdigital.babbage.search.model.QueryType.COUNTS;
@@ -36,18 +36,14 @@ public class SearchPublication {
 
         final boolean dataRequest = isDataRequest(request.getRequestURI());
 
+        final Set<TypeFilter> typeFilters = extractTypeFilters(request, TypeFilter.getPublicationFilters());
 
-        String[] filters = request.getParameterValues("filter");
-        final Set<TypeFilter> typeFilters = HttpRequestUtil.extractFilters(filters,
-                                                                           TypeFilter.getPublicationFilters());
-
-        SearchParam param = SearchParamFactory.getInstance(request, SortBy.relevance)
-                                              .addQueryTypes(BASE_QUERIES)
+        SearchParam param = SearchParamFactory.getInstance(request, SortBy.relevance,BASE_QUERIES)
                                               .addDocTypes(contentTypes(typeFilters));
 
         search(dataRequest,
-               getClass().getSimpleName(),
-               param).apply(request,
+              getClass().getSimpleName(),
+              param).apply(request,
                             response);
 
     }

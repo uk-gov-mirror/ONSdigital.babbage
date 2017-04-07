@@ -82,19 +82,17 @@ public class TimeseriesLandingRequestHandler extends BaseRequestHandler {
                 .setSortBy(SortBy.first_letter);
         // Filter on dates!!!
 
-        SearchResults search = null;
+        Map<String, SearchResult> results = null;
         try {
-            search = SearchUtils.search(searchParam);
+            results = SearchUtils.search(searchParam);
         } catch (IOException | URISyntaxException e) {
             e.printStackTrace();
         }
-        final Map<String, SearchResult> results = new HashMap<>();
 
 
-        results.put(QueryType.SEARCH.getText(), search.getResults(QueryType.SEARCH));
 
         // the first timeseries result in the list is the most recent so use that.
-        return search.getResults(QueryType.SEARCH).getResults().get(0).get("uri").toString();
+        return results.get(QueryType.SEARCH).getResults().get(0).get("uri").toString();
     }
 
     @Override

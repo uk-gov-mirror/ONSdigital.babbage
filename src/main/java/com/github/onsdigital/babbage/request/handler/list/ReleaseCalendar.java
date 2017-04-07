@@ -27,9 +27,7 @@ import org.elasticsearch.index.query.QueryBuilder;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import static com.github.onsdigital.babbage.api.util.SearchUtils.buildListQuery;
 import static com.github.onsdigital.babbage.api.util.SearchUtils.buildPageResponse;
@@ -59,25 +57,20 @@ public class ReleaseCalendar extends BaseRequestHandler implements ListRequestHa
 
 			// Not ideal but the lack of cohesion & encapsulation in search makes this very messy to do properly.
 			ContentType[] dataFilters = new ContentType[]{ ContentType.release};
-			final SearchParam searchParam = SearchParamFactory.getInstance(request, SortBy.first_letter);
+			final SearchParam searchParam = SearchParamFactory.getInstance(request, SortBy.first_letter, Collections.singleton(QueryType.SEARCH));
 			searchParam
 					.addFilter(new UpcomingFilter())
-					.addQueryType(QueryType.SEARCH)
 					.addDocTypes(ContentType.release);
 
 			// Filter on dates!!!
 
-			SearchResults search = null;
+			Map<String, SearchResult> results = null;
 			try {
-				search = SearchUtils.search(searchParam);
+				results = SearchUtils.search(searchParam);
 			} catch (IOException | URISyntaxException e) {
 				e.printStackTrace();
 			}
-			final Map<String, SearchResult> results = new HashMap<>();
-
-
-			results.put(QueryType.SEARCH.getText(), search.getResults(QueryType.SEARCH));;
-				return buildPageResponse(getClass().getSimpleName(), results);
+			return buildPageResponse(getClass().getSimpleName(), results);
 		}
 	}
 

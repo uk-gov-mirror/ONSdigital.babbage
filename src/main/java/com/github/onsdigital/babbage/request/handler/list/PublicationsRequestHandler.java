@@ -1,63 +1,58 @@
 package com.github.onsdigital.babbage.request.handler.list;
 
 import com.github.onsdigital.babbage.api.endpoint.rss.service.RssService;
+import com.github.onsdigital.babbage.api.util.SearchParam;
+import com.github.onsdigital.babbage.api.util.SearchParamFactory;
+import com.github.onsdigital.babbage.api.util.SearchUtils;
 import com.github.onsdigital.babbage.request.handler.base.BaseRequestHandler;
 import com.github.onsdigital.babbage.request.handler.base.ListRequestHandler;
 import com.github.onsdigital.babbage.response.base.BabbageResponse;
-import com.github.onsdigital.babbage.search.helpers.ONSQuery;
-import com.github.onsdigital.babbage.search.helpers.base.SearchFilter;
-import com.github.onsdigital.babbage.search.helpers.base.SearchQueries;
-import com.github.onsdigital.babbage.search.input.TypeFilter;
-import com.github.onsdigital.babbage.search.model.ContentType;
+import com.github.onsdigital.babbage.search.model.SearchResult;
+import com.google.common.collect.Lists;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.Set;
+import java.net.URISyntaxException;
+import java.util.Map;
 
-import static com.github.onsdigital.babbage.api.util.SearchUtils.*;
-import static com.github.onsdigital.babbage.search.builders.ONSFilterBuilders.filterLatest;
-import static com.github.onsdigital.babbage.search.builders.ONSFilterBuilders.filterUriAndTopics;
-import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.toList;
-import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.typeCountsQuery;
+import static com.github.onsdigital.babbage.api.util.SearchUtils.buildDataResponse;
+import static com.github.onsdigital.babbage.api.util.SearchUtils.buildPageResponse;
+import static com.github.onsdigital.babbage.search.model.QueryType.SEARCH;
 
 /**
  * Render a list page for bulletins under the given URI.
  */
 public class PublicationsRequestHandler extends BaseRequestHandler implements ListRequestHandler {
 
-    private static Set<TypeFilter> publicationFilters = TypeFilter.getPublicationFilters();
-    private static ContentType[] contentTypesToCount = TypeFilter.contentTypes(publicationFilters);
+    private final static String REQUEST_TYPE = "publications";
 
     private static RssService rssService = RssService.getInstance();
 
-    private final static String REQUEST_TYPE = "publications";
-
     @Override
     public BabbageResponse get(String uri, HttpServletRequest request) throws Exception {
-        if (rssService.isRssRequest(request)) {
-            return rssService.getPublicationListFeedResponse(request);
+
+        final SearchParam params = SearchParamFactory.getInstance(request, null, Lists.newArrayList(SEARCH));
+        if (params.isRssFeed()) {
+            params.setRequestType(REQUEST_TYPE);
+            return rssService.getPublicationListFeedResponse(params, uri);
         }
-        return listPage(REQUEST_TYPE, uri, request, contentTypesToCount);
+        else {
+            params.addTopic(uri)
+                  .setPrefixURI(uri);
+            final Map<String, SearchResult> search = SearchUtils.search(params);
+            return buildPageResponse(REQUEST_TYPE, search);
+        }
     }
 
     @Override
-    public BabbageResponse getData(String uri, HttpServletRequest request) throws IOException {
-        return listJson(REQUEST_TYPE, queries(request, uri));
-    }
+    public BabbageResponse getData(String uri, HttpServletRequest request) throws IOException, URISyntaxException {
+        final SearchParam params = SearchParamFactory.getInstance(request, null, Lists.newArrayList(SEARCH));
+        params.addTopic(uri)
+              .setPrefixURI(uri)
+              .setLatest(true);
+        final Map<String, SearchResult> search = SearchUtils.search(params);
+        return buildDataResponse(REQUEST_TYPE, search);
 
-    private SearchQueries queries(HttpServletRequest request, String uri) {
-        ONSQuery listQuery = buildListQuery(request, publicationFilters, filters(request, uri));
-        return () -> toList(
-                listQuery,
-                typeCountsQuery(listQuery.query()).types(contentTypesToCount)
-        );
-    }
-
-    private SearchFilter filters(HttpServletRequest request, String uri) {
-        return (listQuery) -> {
-            filterUriAndTopics(uri, listQuery);
-            filterLatest(request, listQuery);
-        };
     }
 
     @Override

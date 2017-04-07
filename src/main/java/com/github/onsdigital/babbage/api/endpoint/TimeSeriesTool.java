@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.GET;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,17 +43,16 @@ public class TimeSeriesTool {
 
         final boolean dataRequest = isDataRequest(request.getRequestURI());
         final String topic = request.getParameter("topic");
-        final SearchParam searchParam = SearchParamFactory.getInstance(request, SortBy.first_letter);
+        final SearchParam searchParam = SearchParamFactory.getInstance(request, SortBy.first_letter, Collections.singleton(QueryType.SEARCH));
         searchParam.addDocType(ContentType.timeseries)
-                .addQueryType(QueryType.SEARCH)
                 .addFilter(new PrefixFilter(topic));
         // Filter on dates!!!
 
-        final SearchResults search = SearchUtils.search(searchParam);
+        final Map<String, SearchResult> search = SearchUtils.search(searchParam);
         final Map<String, SearchResult> results = new HashMap<>();
 
 
-        results.put(QueryType.SEARCH.getText(), search.getResults(QueryType.SEARCH));
+        results.put(QueryType.SEARCH.getText(), search.get(QueryType.SEARCH));
 
 
         SearchUtils.buildResponse(dataRequest,
