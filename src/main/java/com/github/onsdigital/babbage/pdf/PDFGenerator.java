@@ -10,17 +10,21 @@ import org.dom4j.DocumentException;
 import org.jsoup.Jsoup;
 import org.jsoup.parser.Parser;
 import org.w3c.dom.Document;
-import org.xhtmlrenderer.pdf.ITextOutputDevice;
 import org.xhtmlrenderer.pdf.ITextRenderer;
-import org.xhtmlrenderer.pdf.ITextUserAgent;
 import org.xhtmlrenderer.resource.XMLResource;
 import org.xml.sax.InputSource;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -73,30 +77,14 @@ public class PDFGenerator {
 
         try {
             os = new FileOutputStream(outputFile);
-
-           /* standard approach
-           ITextRenderer renderer = new ITextRenderer();
-           renderer.setDocument(url);
-           renderer.layout();
-           renderer.createPDF(os);
-           */
-
-            // ITextRenderer renderer = new ITextRenderer();
             ITextRenderer renderer = new ITextRenderer(4.1666f, 3);
 
-//            ResourceLoaderUserAgent callback = new ResourceLoaderUserAgent(renderer.getOutputDevice());
-//            callback.setSharedContext(renderer.getSharedContext());
-//            renderer.getSharedContext().setUserAgentCallback(callback);
-//
-//            renderer.getSharedContext().setPrint(true);
-
-//            renderer.getSharedContext().setDotsPerPixel(1);
-
-            // add a custom image replacer
+            // Create a chain of custom classes to manipulate the HTML.
             renderer.getSharedContext().setReplacedElementFactory(
                     new HtmlImageReplacedElementFactory(
-                            new ChartImageReplacedElementFactory(
-                                    renderer.getSharedContext().getReplacedElementFactory())));
+                            new EquationImageInserter(
+                                    new ChartImageReplacedElementFactory(
+                                            renderer.getSharedContext().getReplacedElementFactory()))));
 
             Document doc = XMLResource.load(new InputSource(input)).getDocument();
 
@@ -114,57 +102,6 @@ public class PDFGenerator {
                     // ignore
                 }
             }
-        }
-    }
-
-    private static class ResourceLoaderUserAgent extends ITextUserAgent {
-        public ResourceLoaderUserAgent(ITextOutputDevice outputDevice) {
-            super(outputDevice);
-        }
-
-        protected InputStream resolveAndOpenStream(String uri) {
-            InputStream is = super.resolveAndOpenStream(uri);
-            System.out.println("IN resolveAndOpenStream() " + uri);
-            return is;
-        }
-    }
-
-    public static Path generatePdfUsingPhantom(String uri, String fileName, Map<String, String> cookies, String pdfTable) {
-        String[] command = {
-                Configuration.PHANTOMJS.getPhantomjsPath(), "target/web/js/generatepdf.js", URL + uri + "?pdf=1", "" + TEMP_DIRECTORY_PATH + "/" + fileName + ".pdf"
-        };
-
-        Iterator<Map.Entry<String, String>> iterator = cookies.entrySet().iterator();
-        while (iterator.hasNext()) {
-            Map.Entry<String, String> next = iterator.next();
-            command = ArrayUtils.add(command, next.getKey());
-            command = ArrayUtils.add(command, next.getValue());
-        }
-        try {
-            // Execute command, redirect error to output to print all in the console
-            Process process = new ProcessBuilder(command).redirectErrorStream(true).start();
-            System.out.println(ArrayUtils.toString(command));
-            int exitStatus = process.waitFor();
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            String currentLine;
-            StringBuilder stringBuilder = new StringBuilder(exitStatus == 0 ? "SUCCESS:" : "ERROR:");
-            currentLine = bufferedReader.readLine();
-            while (currentLine != null) {
-                stringBuilder.append(currentLine);
-                currentLine = bufferedReader.readLine();
-            }
-            System.out.println(stringBuilder.toString());
-            Path pdfFile = FileSystems.getDefault().getPath(TEMP_DIRECTORY_PATH).resolve(fileName + ".pdf");
-            if (!Files.exists(pdfFile)) {
-                throw new RuntimeException("Failed generating pdf, file not created");
-            }
-
-            addDataTableToPdf(fileName, pdfTable, bufferedReader, pdfFile);
-
-            return pdfFile;
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            throw new RuntimeException("Failed generating pdf", ex);
         }
     }
 
@@ -198,7 +135,6 @@ public class PDFGenerator {
 
             Files.delete(pdfFile);
             Files.move(gsPdfFile, pdfFile);
-
         }
     }
 }

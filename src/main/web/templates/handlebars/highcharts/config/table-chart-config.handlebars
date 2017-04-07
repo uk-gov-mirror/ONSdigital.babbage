@@ -1,0 +1,16 @@
+{{#partial "additional-chart-config"}}
+    options.chart.type="table";
+    options.xAxis.tickmarkPlacement='on';
+
+    options.xAxis.tickPositioner=function() {
+        var positions = [];
+        var tick = Math.floor(this.dataMax);
+        for (tick; tick >= this.dataMin; tick -= this.tickInterval) {
+        positions.push(tick);
+        }
+        return positions;
+    };
+
+{{/partial}}
+{{!-- This denotes the template inherits from simple-chart-config--}}
+ {{> highcharts/config/base/simple-chart-config}}  

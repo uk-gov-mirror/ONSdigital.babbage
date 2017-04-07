@@ -1,15 +1,37 @@
 {{#partial "chart-config"}}
 options.legend.enabled=false; 
+
+//clear the main chart tooltip
+options.tooltip = {};
+
+
+
+
 options.series=[{
 			name: "{{{sub (sup headers.1)}}}",
+			{{#if scatter}}type: "scatter",{{else}}
 			type: "{{#if rotated}}bar{{else}}column{{/if}}",
-			data: [{{#each data}}{{num (lookup this headers.1)}},{{/each}}]
+			{{/if}}
+			data: [{{#each data}}
+			{{#if_eq highlight (lookup categories @index)}}
+				{color:HIGHLIGHT_COLOUR,y:{{num (lookup this headers.1)}} },
+			{{else}}
+				{{num (lookup this headers.1)}},
+			{{/if_eq}}
+			{{/each}}
+			],
+			tooltip: {
+				headerFormat: '<span style="font-weight: bold;">{series.name}</span><br>',
+	            pointFormat: '<span style="font-weight: bold; color: {series.color}">{point.category}</span>: <b>{point.y:.1f}</b> '
+	        } 
 	    },{
 	    	name: "{{{sub (sup headers.2)}}} - {{sub (sup headers.3)}}",
 	    	type: "errorbar",
 	    	data: [{{#each data}}[{{num (lookup this headers.2)}},{{num (lookup this headers.3)}}],{{/each}}]
 	    }];
 {{/partial}}
+
+
 
 {{!-- This denotes the template inherits from base-chart-config--}}
 {{> highcharts/config/base/base-chart-config}} 

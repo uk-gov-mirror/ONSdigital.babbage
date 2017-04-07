@@ -46,7 +46,7 @@ var linechart = {
      }
    },
    xAxis: {
-     categories: [],
+     categories: [{{#each series}}"{{name}}",{{/each}}],
       tickPositioner: function () {
        var positions = [];
        var increment = Math.ceil(((this.dataMax) - (this.dataMin)) / 16);
@@ -99,6 +99,10 @@ var linechart = {
    credits: {
      enabled: false
    },
+
+    annotationsOptions: {
+        enabledButtons: false
+    },
 
    plotOptions: {
      series: {
