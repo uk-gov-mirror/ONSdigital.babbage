@@ -25,7 +25,7 @@ public class PublishedRequestsRequestHandler extends BaseRequestHandler implemen
 
     @Override
     public BabbageResponse get(String uri, HttpServletRequest request) throws Exception {
-        return listPage(REQUEST_TYPE, queries(request));
+        return listPage(REQUEST_TYPE, uri, request, ContentType.static_foi);
     }
 
     @Override

@@ -35,7 +35,7 @@ public class PreviousReleasesRequestHandler extends BaseRequestHandler implement
     @Override
     public BabbageResponse get(String uri, HttpServletRequest request) throws Exception {
         assertPageContentType(uri);
-        return listPage(REQUEST_TYPE, queries(request, uri));
+        return listPage(REQUEST_TYPE, uri, request, TypeFilter.contentTypes(publicationFilters));
     }
 
     @Override

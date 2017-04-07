@@ -1,5 +1,7 @@
 package com.github.onsdigital.babbage.request.handler;
 
+import com.github.onsdigital.babbage.api.util.SearchParam;
+import com.github.onsdigital.babbage.api.util.SearchParamFactory;
 import com.github.onsdigital.babbage.api.util.SearchUtils;
 import com.github.onsdigital.babbage.content.client.ContentClient;
 import com.github.onsdigital.babbage.content.client.ContentResponse;
@@ -7,10 +9,19 @@ import com.github.onsdigital.babbage.error.ResourceNotFoundException;
 import com.github.onsdigital.babbage.request.handler.base.BaseRequestHandler;
 import com.github.onsdigital.babbage.response.BabbageContentBasedStringResponse;
 import com.github.onsdigital.babbage.response.base.BabbageResponse;
+import com.github.onsdigital.babbage.search.input.SortBy;
+import com.github.onsdigital.babbage.search.model.ContentType;
+import com.github.onsdigital.babbage.search.model.QueryType;
 import com.github.onsdigital.babbage.search.model.SearchResult;
+import com.github.onsdigital.babbage.search.model.SearchResults;
+import com.github.onsdigital.babbage.search.model.filter.PrefixFilter;
+import com.github.onsdigital.babbage.search.model.sort.SortField;
 import com.github.onsdigital.babbage.util.URIUtil;
+import org.elasticsearch.search.sort.SortOrder;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -62,15 +73,28 @@ public class TimeseriesLandingRequestHandler extends BaseRequestHandler {
 
     public static String getLatestTimeseriesUri(String uri) {
         // search the timeseries that live under this CDID
-        HashMap<String, SearchResult> data = SearchUtils.searchTimeseriesForUri(uri);
+        final SearchParam searchParam = SearchParamFactory.getInstance();
+        searchParam.addDocType(ContentType.timeseries)
+                .addQueryType(QueryType.SEARCH)
+                .addFilter(new PrefixFilter(uri))
+                .setSize(1)
+                .setPage(1)
+                .setSortBy(SortBy.first_letter);
+        // Filter on dates!!!
 
-        List<Map<String, Object>> results = data.get("result").getResults();
-        if (results.size() == 0) {
-            throw new ResourceNotFoundException();
+        SearchResults search = null;
+        try {
+            search = SearchUtils.search(searchParam);
+        } catch (IOException | URISyntaxException e) {
+            e.printStackTrace();
         }
+        final Map<String, SearchResult> results = new HashMap<>();
+
+
+        results.put(QueryType.SEARCH.getText(), search.getResults(QueryType.SEARCH));
 
         // the first timeseries result in the list is the most recent so use that.
-        return results.get(0).get("uri").toString();
+        return search.getResults(QueryType.SEARCH).getResults().get(0).get("uri").toString();
     }
 
     @Override

@@ -26,7 +26,7 @@ public class AllMethodologiesRequestHandler extends BaseRequestHandler implement
 
     @Override
     public BabbageResponse get(String uri, HttpServletRequest request) throws Exception {
-        return listPage(REQUEST_TYPE, queries(request));
+        return listPage(REQUEST_TYPE, uri, request, TypeFilter.contentTypes(methodologyFilters));
     }
 
     @Override

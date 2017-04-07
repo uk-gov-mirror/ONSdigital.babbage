@@ -1,6 +1,8 @@
 package com.github.onsdigital.babbage.request.handler.list;
 
 import com.github.onsdigital.babbage.api.endpoint.rss.service.RssService;
+import com.github.onsdigital.babbage.api.util.SearchParam;
+import com.github.onsdigital.babbage.api.util.SearchParamFactory;
 import com.github.onsdigital.babbage.api.util.SearchUtils;
 import com.github.onsdigital.babbage.error.BadRequestException;
 import com.github.onsdigital.babbage.request.handler.base.BaseRequestHandler;
@@ -11,12 +13,20 @@ import com.github.onsdigital.babbage.search.helpers.base.SearchFilter;
 import com.github.onsdigital.babbage.search.helpers.base.SearchQueries;
 import com.github.onsdigital.babbage.search.helpers.dates.PublishDates;
 import com.github.onsdigital.babbage.search.helpers.dates.PublishDatesException;
+import com.github.onsdigital.babbage.search.input.SortBy;
 import com.github.onsdigital.babbage.search.input.TypeFilter;
 import com.github.onsdigital.babbage.search.model.ContentType;
+import com.github.onsdigital.babbage.search.model.QueryType;
+import com.github.onsdigital.babbage.search.model.SearchResult;
+import com.github.onsdigital.babbage.search.model.SearchResults;
 import com.github.onsdigital.babbage.search.model.field.Field;
+import com.github.onsdigital.babbage.search.model.filter.PrefixFilter;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 import static com.github.onsdigital.babbage.api.util.SearchUtils.*;
@@ -39,16 +49,25 @@ public class DataListRequestHandler extends BaseRequestHandler implements ListRe
     private RssService rssService = RssService.getInstance();
 
     @Override
-    public BabbageResponse get(String uri, HttpServletRequest request) throws IOException, BadRequestException {
+    public BabbageResponse get(String uri, HttpServletRequest request) throws IOException, BadRequestException, URISyntaxException {
         if (rssService.isRssRequest(request)) {
             return rssService.getDataListFeedResponse(request);
         } else {
-            try {
-                return listPage(REQUEST_TYPE, queries(request, extractPublishDates(request), uri));
-            } catch (PublishDatesException pEx) {
-                return listPageWithValidationErrors(REQUEST_TYPE, queries(request, publishedAnyTime(), uri),
-                        pEx.getErrors());
-            }
+                //TODO Count is wrong, no search by dates, filter on doctyoe!
+                final SearchParam searchParam = SearchParamFactory.getInstance(request, SortBy.first_letter);
+                searchParam
+                        .addDocType(ContentType.timeseries) //?? from uri??
+                        .addDocType(ContentType.dataset)
+                        .addQueryType(QueryType.SEARCH)
+                        .addQueryType(QueryType.COUNTS)
+                        .addFilter(new PrefixFilter(uri));
+                // Filter on dates!!!
+
+                final SearchResults search = SearchUtils.search(searchParam);
+                final Map<String, SearchResult> results = new HashMap<>();
+                results.put(QueryType.SEARCH.getText(), search.getResults(QueryType.SEARCH));
+                results.put(QueryType.COUNTS.getText(), search.getResults(QueryType.COUNTS));
+                return SearchUtils.buildPageResponse(REQUEST_TYPE, results);
         }
     }
 

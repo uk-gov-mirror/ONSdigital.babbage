@@ -32,7 +32,7 @@ public class TopicSpecificMethodologyRequestHandler extends BaseRequestHandler i
 
     @Override
     public BabbageResponse get(String uri, HttpServletRequest request) throws Exception {
-        return listPage(REQUEST_TYPE, queries(uri, request));
+        return listPage(REQUEST_TYPE, uri, request, contentTypesToCount);
     }
 
     @Override

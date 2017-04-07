@@ -19,8 +19,10 @@ import org.elasticsearch.index.query.QueryBuilders;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import static com.github.onsdigital.babbage.api.util.SearchUtils.*;
 import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.toList;
@@ -30,33 +32,11 @@ import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.toL
  */
 public class RelatedDataRequestHandler extends BaseRequestHandler implements ListRequestHandler {
 
-
-    private boolean isPublication(Object typeName) {
-        if (typeName == null) {
-            return false;
-        }
-        ContentType contentType;
-        try {
-            contentType = ContentType.valueOf(String.valueOf(typeName));
-        } catch (IllegalArgumentException e) {
-            return false;
-        }
-
-        TypeFilter.getPublicationFilters();
-        for (TypeFilter typeFilter : TypeFilter.getPublicationFilters()) {
-            for (ContentType type : typeFilter.getTypes()) {
-                if (type == contentType) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
     @Override
     public BabbageResponse get(String uri, HttpServletRequest request) throws Exception {
+        ContentType[] dataFilters = new ContentType[]{ ContentType.dataset_landing_page, ContentType.reference_tables};
         List<Map> uriList = getRelatedDataUris(uri);
-        return isEmpty(uriList) ? buildPageResponse(getRequestType(), null) : listPage(getRequestType(), queries(uriList, request));
+            return isEmpty(uriList) ? buildPageResponse(getRequestType(), null) : listPage(getRequestType(), uriList, request, dataFilters);
     }
 
 
@@ -98,6 +78,28 @@ public class RelatedDataRequestHandler extends BaseRequestHandler implements Lis
             throw new ResourceNotFoundException();
         }
         return (List) objectMap.get("relatedData");
+    }
+
+    private boolean isPublication(Object typeName) {
+        if (typeName == null) {
+            return false;
+        }
+        ContentType contentType;
+        try {
+            contentType = ContentType.valueOf(String.valueOf(typeName));
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
+
+        TypeFilter.getPublicationFilters();
+        for (TypeFilter typeFilter : TypeFilter.getPublicationFilters()) {
+            for (ContentType type : typeFilter.getTypes()) {
+                if (type == contentType) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
 }

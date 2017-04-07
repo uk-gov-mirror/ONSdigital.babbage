@@ -16,6 +16,7 @@ import com.github.onsdigital.babbage.search.input.SortBy;
 import com.github.onsdigital.babbage.search.input.TypeFilter;
 import com.github.onsdigital.babbage.search.model.*;
 import com.github.onsdigital.babbage.search.model.field.Field;
+import com.github.onsdigital.babbage.search.model.filter.PrefixFilter;
 import com.github.onsdigital.babbage.template.TemplateService;
 import com.github.onsdigital.babbage.util.ListUtil;
 import com.github.onsdigital.babbage.util.RequestUtil;
@@ -227,6 +228,48 @@ public class SearchUtils {
     public static BabbageResponse listPage(String listType, SearchQueries queries) throws IOException {
         return buildPageResponse(listType,
                                  searchAll(queries));
+    }
+
+    public static BabbageResponse listPage(String listType, String uri, HttpServletRequest requests, ContentType... docTypes) throws IOException {
+        final SearchParam searchParam = SearchParamFactory.getInstance(requests, SortBy.first_letter);
+        searchParam
+                .addFilter(new PrefixFilter(uri))
+                .addQueryType(QueryType.SEARCH)
+                .addDocTypes(docTypes);
+        // Filter on dates!!!
+
+        SearchResults search = null;
+        try {
+            search = SearchUtils.search(searchParam);
+        } catch (IOException | URISyntaxException e) {
+            e.printStackTrace();
+        }
+        final Map<String, SearchResult> results = new HashMap<>();
+
+
+        results.put(QueryType.SEARCH.getText(), search.getResults(QueryType.SEARCH));
+        return buildPageResponse(listType, results);
+    }
+
+    public static BabbageResponse listPage(String listType, List<Map> uris, HttpServletRequest requests, ContentType... docTypes) throws IOException {
+        final SearchParam searchParam = SearchParamFactory.getInstance(requests, SortBy.first_letter);
+        searchParam
+                .addQueryType(QueryType.SEARCH)
+                .addDocTypes(docTypes);
+        uris.forEach(map -> searchParam.addFilter( new PrefixFilter((String)map.get("uri"))));
+        // Filter on dates!!!
+
+        SearchResults search = null;
+        try {
+            search = SearchUtils.search(searchParam);
+        } catch (IOException | URISyntaxException e) {
+            e.printStackTrace();
+        }
+        final Map<String, SearchResult> results = new HashMap<>();
+
+
+        results.put(QueryType.SEARCH.getText(), search.getResults(QueryType.SEARCH));
+        return buildPageResponse(listType, results);
     }
 
     public static BabbageResponse listPageWithValidationErrors(

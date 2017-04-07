@@ -37,7 +37,7 @@ public class PublicationsRequestHandler extends BaseRequestHandler implements Li
         if (rssService.isRssRequest(request)) {
             return rssService.getPublicationListFeedResponse(request);
         }
-        return listPage(REQUEST_TYPE, queries(request, uri));
+        return listPage(REQUEST_TYPE, uri, request, contentTypesToCount);
     }
 
     @Override

@@ -1,6 +1,9 @@
 package com.github.onsdigital.babbage.request.handler.list;
 
 import com.github.onsdigital.babbage.api.endpoint.rss.service.RssService;
+import com.github.onsdigital.babbage.api.util.SearchParam;
+import com.github.onsdigital.babbage.api.util.SearchParamFactory;
+import com.github.onsdigital.babbage.api.util.SearchUtils;
 import com.github.onsdigital.babbage.content.client.ContentReadException;
 import com.github.onsdigital.babbage.request.handler.base.BaseRequestHandler;
 import com.github.onsdigital.babbage.request.handler.base.ListRequestHandler;
@@ -12,15 +15,25 @@ import com.github.onsdigital.babbage.search.helpers.base.SearchQueries;
 import com.github.onsdigital.babbage.search.helpers.dates.PublishDatesException;
 import com.github.onsdigital.babbage.search.input.SortBy;
 import com.github.onsdigital.babbage.search.model.ContentType;
+import com.github.onsdigital.babbage.search.model.QueryType;
+import com.github.onsdigital.babbage.search.model.SearchResult;
+import com.github.onsdigital.babbage.search.model.SearchResults;
 import com.github.onsdigital.babbage.search.model.field.Field;
+import com.github.onsdigital.babbage.search.model.filter.PrefixFilter;
+import com.github.onsdigital.babbage.search.model.filter.UpcomingFilter;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.github.onsdigital.babbage.api.util.SearchUtils.buildListQuery;
+import static com.github.onsdigital.babbage.api.util.SearchUtils.buildPageResponse;
+import static com.github.onsdigital.babbage.api.util.SearchUtils.listPage;
 import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.toList;
 import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
 import static org.elasticsearch.index.query.QueryBuilders.rangeQuery;
@@ -43,14 +56,28 @@ public class ReleaseCalendar extends BaseRequestHandler implements ListRequestHa
 		if (rssService.isRssRequest(request)) {
 			return rssService.getReleaseCalendarFeedResponse(request, queries(request, false));
 		} else {
+
+			// Not ideal but the lack of cohesion & encapsulation in search makes this very messy to do properly.
+			ContentType[] dataFilters = new ContentType[]{ ContentType.release};
+			final SearchParam searchParam = SearchParamFactory.getInstance(request, SortBy.first_letter);
+			searchParam
+					.addFilter(new UpcomingFilter())
+					.addQueryType(QueryType.SEARCH)
+					.addDocTypes(ContentType.release);
+
+			// Filter on dates!!!
+
+			SearchResults search = null;
 			try {
-				// Not ideal but the lack of cohesion & encapsulation in search makes this very messy to do properly.
-				searchService.extractPublishDates(request);
-				return searchService.listPage(getClass().getSimpleName(), queries(request, true));
-			} catch (PublishDatesException ex) {
-				return searchService.listPageWithValidationErrors(getClass().getSimpleName(), queries(request, true),
-						ex.getErrors());
+				search = SearchUtils.search(searchParam);
+			} catch (IOException | URISyntaxException e) {
+				e.printStackTrace();
 			}
+			final Map<String, SearchResult> results = new HashMap<>();
+
+
+			results.put(QueryType.SEARCH.getText(), search.getResults(QueryType.SEARCH));;
+				return buildPageResponse(getClass().getSimpleName(), results);
 		}
 	}
 

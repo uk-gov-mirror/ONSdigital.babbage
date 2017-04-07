@@ -22,7 +22,7 @@ public class StaticsRequestHandler extends BaseRequestHandler implements ListReq
 
     @Override
     public BabbageResponse get(String uri, HttpServletRequest request) throws Exception {
-        return listPage(REQUEST_TYPE, queries(uri,request));
+        return listPage(REQUEST_TYPE, uri, request, ContentType.static_page);
     }
 
     @Override
