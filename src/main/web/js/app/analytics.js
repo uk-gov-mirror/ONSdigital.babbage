@@ -15,7 +15,10 @@ var trackEvent = function(category, label) {
 
 $(function() {
     // external link tracking
-    $("a[target='_blank']").on( "click", function() {
+    var $externalLinks = $("a").filter(function() {
+        return this.hostname && this.hostname !== location.hostname;
+    });
+    $externalLinks.on( "click", function(evt) {
         var href = $(this).attr("href");
         trackEvent("outbound", href);
     });
