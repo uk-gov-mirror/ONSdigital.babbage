@@ -43,7 +43,6 @@ public class AtoZ {
 
         final Map<String, SearchResult> results = SearchUtils.search(searchParam);
 
-
         final SearchResult countSearchResult = results.get(COUNTS.getText());
         Long count = countSearchResult.getDocCounts()
                                       .get(firstLetter);

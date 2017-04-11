@@ -10,9 +10,7 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Collection;
 
-import static com.github.onsdigital.babbage.api.util.HttpRequestUtil.extractPage;
-import static com.github.onsdigital.babbage.api.util.HttpRequestUtil.extractSearchTerm;
-import static com.github.onsdigital.babbage.api.util.HttpRequestUtil.extractSortBy;
+import static com.github.onsdigital.babbage.api.util.HttpRequestUtil.*;
 import static com.github.onsdigital.babbage.api.util.SearchUtils.extractSize;
 import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.extractPublishDates;
 
@@ -44,6 +42,7 @@ public class SearchParamFactory {
                             .setSortBy(extractSortBy(request, defaultSortBy))
                             .setPublishDates(publishDates)
                             .addQueryTypes(queryTypes)
+                            .addTypeFilters(extractTypeFilters(request, null))
                             .setRssFeed(extractRssFeed(request));
     }
 

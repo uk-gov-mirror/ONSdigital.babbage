@@ -76,7 +76,7 @@ public class TimeseriesLandingRequestHandler extends BaseRequestHandler {
         final SearchParam searchParam = SearchParamFactory.getInstance();
         searchParam.addDocType(ContentType.timeseries)
                 .addQueryType(QueryType.SEARCH)
-                .addFilter(new PrefixFilter(uri))
+                .setPrefixURI(uri)
                 .setSize(1)
                 .setPage(1)
                 .setSortBy(SortBy.first_letter);
@@ -92,7 +92,7 @@ public class TimeseriesLandingRequestHandler extends BaseRequestHandler {
 
 
         // the first timeseries result in the list is the most recent so use that.
-        return results.get(QueryType.SEARCH).getResults().get(0).get("uri").toString();
+        return results.get("result").getResults().get(0).get("uri").toString();
     }
 
     @Override

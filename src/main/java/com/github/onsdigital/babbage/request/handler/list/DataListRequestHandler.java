@@ -25,6 +25,7 @@ import java.util.Set;
 
 import static com.github.onsdigital.babbage.api.util.SearchUtils.buildDataResponse;
 import static com.github.onsdigital.babbage.api.util.SearchUtils.buildPageResponse;
+import static com.github.onsdigital.babbage.search.model.QueryType.COUNTS;
 import static com.github.onsdigital.babbage.search.model.QueryType.SEARCH;
 
 /**
@@ -41,10 +42,13 @@ public class DataListRequestHandler extends BaseRequestHandler implements ListRe
     @Override
     public BabbageResponse get(String uri,
                                HttpServletRequest request) throws IOException, BadRequestException, URISyntaxException {
-        final SearchParam params = SearchParamFactory.getInstance(request, null, Lists.newArrayList(SEARCH))
+        final SearchParam params = SearchParamFactory.getInstance(request, null, Lists.newArrayList(SEARCH, COUNTS))
                                                      .addTopic(uri)
-                                                     .setPrefixURI(uri)
-                                                     .addTypeFilters(TypeFilter.getDataFilters());
+                                                     .setPrefixURI(uri);
+
+        if (params.getDocTypes().isEmpty()) {
+            params.addTypeFilters(TypeFilter.getDataFilters());
+        }
 
         if (params.isRssFeed()) {
             params.setRequestType(REQUEST_TYPE);

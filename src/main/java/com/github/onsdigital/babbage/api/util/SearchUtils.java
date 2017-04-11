@@ -90,7 +90,11 @@ public class SearchUtils {
         addParam(uriBuilder, "highlight", searchParam.isHighlights());
         addParam(uriBuilder, "latest", searchParam.isLatest());
         final String uri = searchParam.getPrefixURI();
-        addParam(uriBuilder, "uriPrefix", endsWith(uri, "/") ? uri : uri + "/");
+        if (uri != null) {
+            addParam(uriBuilder, "uriPrefix", endsWith(uri, "/") ? uri : uri + "/");
+        } else {
+            addParam(uriBuilder, "uriPrefix", "/");
+        }
         addParam(uriBuilder, "sort", searchParam.getSortBy());
         addParam(uriBuilder, "aggField", searchParam.getAggregationField());
         addParams(uriBuilder, "topicWildcard", searchParam.getTopicWildcards());
