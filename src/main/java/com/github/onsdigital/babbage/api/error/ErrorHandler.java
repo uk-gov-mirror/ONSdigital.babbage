@@ -1,9 +1,11 @@
 package com.github.onsdigital.babbage.api.error;
 
+import ch.qos.logback.classic.Level;
 import com.github.davidcarboni.restolino.api.RequestHandler;
 import com.github.davidcarboni.restolino.framework.ServerError;
 import com.github.onsdigital.babbage.content.client.ContentReadException;
 import com.github.onsdigital.babbage.error.LegacyPDFException;
+import com.github.onsdigital.babbage.logging.Log;
 import com.github.onsdigital.babbage.template.TemplateService;
 import com.github.onsdigital.babbage.error.ResourceNotFoundException;
 import org.apache.commons.io.IOUtils;
@@ -44,7 +46,8 @@ public class ErrorHandler implements ServerError {
             logError(t);
             return;
         } else if (t instanceof ResourceNotFoundException) {
-            System.err.println(t.getMessage() + ", cause: " + (t.getCause() != null ? t.getCause().getMessage() : ""));
+            Log.build(t.getMessage() + ", cause: " + (t.getCause() != null ? t.getCause().getMessage() : ""),
+                    Level.INFO).log();
             renderErrorPage(404, response);
             return;
         } else if (t instanceof LegacyPDFException) {
