@@ -42,8 +42,7 @@ public class Search {
         }
 
         final boolean dataRequest = isDataRequest(request.getRequestURI());
-        final SearchParam searchParam = SearchParamFactory.getInstance(request, SortBy.relevance, queries)
-                                                          .addDocTypes(contentTypes(typeFilters));
+        final SearchParam searchParam = SearchParamFactory.getInstance(request, SortBy.relevance, queries);
 
 
         search(dataRequest,

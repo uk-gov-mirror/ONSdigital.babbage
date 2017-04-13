@@ -298,24 +298,28 @@ public class SearchUtils {
         return buildPageResponse(listType, results);
     }
 
-    public static BabbageResponse listPage(String listType, List<Map> uris, HttpServletRequest requests, ContentType... docTypes) throws IOException {
-        final SearchParam searchParam = SearchParamFactory.getInstance(requests, SortBy.first_letter, Collections.singleton(QueryType.SEARCH));
-        searchParam
-                .addDocTypes(docTypes);
-        uris.forEach(map -> searchParam.addFilter( new PrefixFilter((String)map.get("uri"))));
-        // Filter on dates!!!
+    private static Map<String, SearchResult> listRelatedPages(final List<Map> uris, ContentType... docTypes) throws IOException, URISyntaxException {
+        final URIBuilder builder = new URIBuilder().setScheme(SEARCH_SERVICE_SCHEME)
+                .setHost("localhost")
+                .setPort(10001)
+                .setPath("data");
 
-        Map<String, SearchResult> search = null;
-        try {
-            search = SearchUtils.search(searchParam);
-        } catch (IOException | URISyntaxException e) {
-            e.printStackTrace();
-        }
+        uris.forEach(map -> builder.addParameter("uris", (String)map.get("uri")));
+
+        Arrays.asList(docTypes).forEach(docType -> builder.addParameter("types", docType.name()));
+        byte[] responseBytes = executeGet(builder.build());
+        SearchResults search = SearchResultsFactory.getInstance(responseBytes, SortBy.first_letter, 10, 10, Arrays.asList(QueryType.SEARCH));
         final Map<String, SearchResult> results = new HashMap<>();
+        search.getResults()
+                .forEach(sr -> results.put(sr.getQueryType().getText(), sr));
+        return results;
+    }
 
+    public static BabbageResponse listRelatedPage(String listType, List<Map> uris, HttpServletRequest requests, ContentType... docTypes) throws IOException, URISyntaxException {
 
-        results.put(QueryType.SEARCH.getText(), search.get(QueryType.SEARCH));
-        return buildPageResponse(listType, results);
+        final Map<String, SearchResult> search = listRelatedPages(uris, docTypes);
+
+        return buildPageResponse(listType, search);
     }
 
     public static BabbageResponse listPageWithValidationErrors(

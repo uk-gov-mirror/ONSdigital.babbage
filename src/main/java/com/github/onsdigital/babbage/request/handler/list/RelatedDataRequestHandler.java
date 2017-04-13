@@ -36,7 +36,7 @@ public class RelatedDataRequestHandler extends BaseRequestHandler implements Lis
     public BabbageResponse get(String uri, HttpServletRequest request) throws Exception {
         ContentType[] dataFilters = new ContentType[]{ ContentType.dataset_landing_page, ContentType.reference_tables};
         List<Map> uriList = getRelatedDataUris(uri);
-            return isEmpty(uriList) ? buildPageResponse(getRequestType(), null) : listPage(getRequestType(), uriList, request, dataFilters);
+            return isEmpty(uriList) ? buildPageResponse(getRequestType(), null) : listRelatedPage(getRequestType(), uriList, request, dataFilters);
     }
 
 
