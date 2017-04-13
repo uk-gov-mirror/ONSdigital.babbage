@@ -5,10 +5,12 @@ import com.github.onsdigital.babbage.configuration.Configuration;
 import com.github.onsdigital.babbage.logging.Log;
 import com.github.onsdigital.babbage.util.http.ClientConfiguration;
 import com.github.onsdigital.babbage.util.http.PooledHttpClient;
+import org.apache.commons.io.IOUtils;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.message.BasicNameValuePair;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -50,6 +52,9 @@ public class HighChartsExportClient {
         return getImage(chartConfig, width, null);
     }
 
+    /**
+     * Retrived the image from Highcharts. <b>Caller is responsible for closing the returned {@link InputStream}</b>
+     */
     public InputStream getImage(String chartConfig, Integer width, Double scale) throws IOException {
         Log.debug("Calling Highcharts export server");
         List<NameValuePair> postParameters = new ArrayList<>();
@@ -61,13 +66,16 @@ public class HighChartsExportClient {
         if (scale != null) {
             postParameters.add(new BasicNameValuePair("scale", scale.toString()));
         }
-        //postParameters.add(new BasicNameValuePair("async", "false"));
-        try {
-            CloseableHttpResponse response = client.sendPost("/", null, postParameters);
+
+        try (CloseableHttpResponse response = client.sendPost("/", null, postParameters)) {
             Log.build("Highcharts export response", Level.DEBUG)
                     .addParameter("HTTP Status", response.getStatusLine())
                     .log();
-            return response.getEntity().getContent();
+
+            // try with resources block will close the response InputStream when the method returns.
+            // take a copy of the bytes and return a new Inputstream which is the callers responsibility to close.
+            byte[] content = IOUtils.toByteArray(response.getEntity().getContent());
+            return new ByteArrayInputStream(content);
         } catch (IOException ex) {
             throw Log.build("Unexpected error while requesting highcharts image", Level.INFO)
                     .logAndCreateException(404, ex);

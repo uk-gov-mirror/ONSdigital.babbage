@@ -21,7 +21,7 @@ public class ChartImage {
     public void get(@Context HttpServletRequest request, @Context HttpServletResponse response) throws IOException, ContentReadException {
         try {
             ChartRenderer.getInstance().renderChartImage(request, response);
-        } catch (Exception ex) {
+        } catch (IOException | ContentReadException ex) {
             ErrorHandler.handle(request, response, ex);
         }
     }

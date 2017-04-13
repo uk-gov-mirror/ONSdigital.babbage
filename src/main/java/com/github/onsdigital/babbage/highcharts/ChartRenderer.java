@@ -68,9 +68,10 @@ public class ChartRenderer {
             ContentResponse contentResponse = contentClient.getContent(uri);
             Map<String, Object> additionalData = new ChartConfigBuilder().width(getWidth(request)).getMap();
 
-            String chartConfig = templateService.renderChartConfiguration(contentResponse.getDataStream(),
-                    additionalData);
-            new BabbageContentBasedStringResponse(contentResponse, chartConfig).apply(request, response);
+            try (InputStream inputStream = contentResponse.getDataStream()) {
+                String chartConfig = templateService.renderChartConfiguration(inputStream, additionalData);
+                new BabbageContentBasedStringResponse(contentResponse, chartConfig).apply(request, response);
+            }
         }
     }
 
@@ -91,10 +92,12 @@ public class ChartRenderer {
                     .showNotes(request)
                     .getMap();
 
-            String renderedTemplate = templateService.renderTemplate(EMBEDED_HIGHCHARTS_TEMPLATE,
-                    contentResponse.getDataStream(), additionData);
-            new BabbageContentBasedStringResponse(contentResponse, renderedTemplate, MediaType.TEXT_HTML)
-                    .applyEmbedded(request, response);
+            try (InputStream inputStream = contentResponse.getDataStream()) {
+                String renderedTemplate = templateService.renderTemplate(EMBEDED_HIGHCHARTS_TEMPLATE, inputStream,
+                        additionData);
+                new BabbageContentBasedStringResponse(contentResponse, renderedTemplate, MediaType.TEXT_HTML)
+                        .applyEmbedded(request, response);
+            }
         }
     }
 
@@ -105,12 +108,19 @@ public class ChartRenderer {
             Integer width = getWidth(request);
             Map<String, Object> additionalData = new ChartConfigBuilder().width(width).getMap();
 
-            String chartConfig = templateService.renderChartConfiguration(contentResponse.getDataStream(), additionalData);
-            InputStream stream = highChartsExportClient.getImage(chartConfig, width);
+            String chartConfig;
+            try (InputStream in = contentResponse.getDataStream()) {
+                chartConfig = templateService.renderChartConfiguration(in, additionalData);
 
-            BabbageResponse babbabeResp = new BabbageContentBasedBinaryResponse(contentResponse, stream, PNG_MIME_TYPE);
-            babbabeResp.addHeader(CONTENT_DISPOSITION_HEADER, getImageContentDispositionHeader(uri, contentResponse.getDataStream()));
-            babbabeResp.apply(request, response);
+                try (
+                        InputStream imageInputStream = highChartsExportClient.getImage(chartConfig, width);
+                        InputStream contentResponseInputStream = contentResponse.getDataStream()
+                ) {
+                    BabbageResponse babbabeResp = new BabbageContentBasedBinaryResponse(contentResponse, imageInputStream, PNG_MIME_TYPE);
+                    babbabeResp.addHeader(CONTENT_DISPOSITION_HEADER, getImageContentDispositionHeader(uri, contentResponseInputStream));
+                    babbabeResp.apply(request, response);
+                }
+            }
         }
     }
 
@@ -149,11 +159,11 @@ public class ChartRenderer {
         if (assertUri(uri, request, response)) {
             ContentResponse contentResponse = contentClient.getContent(uri);
             Map<String, Object> additionalData = new ChartConfigBuilder().width(getWidth(request)).getMap();
-            String renderedTemplate = templateService.renderTemplate(HIGHCHARTS_TEMPLATE,
-                    contentResponse.getDataStream(), additionalData);
-
-            new BabbageContentBasedStringResponse(contentResponse, renderedTemplate, MediaType.TEXT_HTML)
-                    .apply(request, response);
+            try (InputStream inputStream = contentResponse.getDataStream()) {
+                String renderedTemplate = templateService.renderTemplate(HIGHCHARTS_TEMPLATE, inputStream, additionalData);
+                new BabbageContentBasedStringResponse(contentResponse, renderedTemplate, MediaType.TEXT_HTML)
+                        .apply(request, response);
+            }
         }
     }
 
