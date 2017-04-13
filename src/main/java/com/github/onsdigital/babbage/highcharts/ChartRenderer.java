@@ -1,14 +1,17 @@
 package com.github.onsdigital.babbage.highcharts;
 
+import ch.qos.logback.classic.Level;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.onsdigital.babbage.content.client.ContentClient;
 import com.github.onsdigital.babbage.content.client.ContentReadException;
 import com.github.onsdigital.babbage.content.client.ContentResponse;
+import com.github.onsdigital.babbage.logging.Log;
 import com.github.onsdigital.babbage.response.BabbageContentBasedBinaryResponse;
 import com.github.onsdigital.babbage.response.BabbageContentBasedStringResponse;
 import com.github.onsdigital.babbage.response.BabbageStringResponse;
+import com.github.onsdigital.babbage.response.base.BabbageResponse;
 import com.github.onsdigital.babbage.template.TemplateService;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,20 +19,41 @@ import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.core.MediaType;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.LinkedHashMap;
+import java.nio.file.Paths;
+import java.util.Map;
+
+import static com.github.onsdigital.babbage.highcharts.ChartConfigBuilder.TITLE_PARAM;
+import static com.github.onsdigital.babbage.highcharts.ChartConfigBuilder.URI_PARAM;
+import static com.github.onsdigital.babbage.highcharts.ChartConfigBuilder.WIDTH_PARAM;
+import static java.text.MessageFormat.format;
 
 /**
  * Created by bren on 09/10/15.
  */
 public class ChartRenderer {
-    private static ChartRenderer instance = new ChartRenderer();
+
+    static final String CONTENT_DISPOSITION_HEADER = "Content-Disposition";
+    static final String CONTENT_DISPOSITION_HEADER_FMT = "filename={0}.png";
+    static final String DEFAULT_CONTENT_DISPOSITION_HEADER_FMT = "filename=Chart-{0}.png";
+    static final String HIGHCHARTS_TEMPLATE = "highcharts/chart";
+    static final String EMBEDED_HIGHCHARTS_TEMPLATE = "partials/highcharts/embeddedchart";
+    static final String PNG_MIME_TYPE = "image/png";
+    static final String DATA_PARAM = "data";
+    static final String DEFAULT_TITLE_VALUE = "[Title]";
     public static final int DEFAULT_CHART_WIDTH = 700;
     public static final int MAX_CHART_WIDTH = 1600;
+    private static final ObjectMapper mapper = new ObjectMapper();
+
+    private static ChartRenderer instance = new ChartRenderer();
+    private ContentClient contentClient = ContentClient.getInstance();
+    private TemplateService templateService = TemplateService.getInstance();
+    private HighChartsExportClient highChartsExportClient = HighChartsExportClient.getInstance();
 
     public static ChartRenderer getInstance() {
         return instance;
     }
 
+    // Singleton use getInstance method instead.
     private ChartRenderer() {
     }
 
@@ -39,18 +63,14 @@ public class ChartRenderer {
      * Optionally takes a width parameter, width is 700 by default, if width exceeds max, max width will be applied, if it is smaller than min, min width will apply
      */
     public void renderChartConfig(HttpServletRequest request, HttpServletResponse response) throws IOException, ContentReadException {
-        String uri = request.getParameter("uri");
+        String uri = request.getParameter(URI_PARAM);
         if (assertUri(uri, request, response)) {
-            ContentResponse contentResponse = ContentClient.getInstance().getContent(uri);
-            LinkedHashMap<String, Object> additionalData = new LinkedHashMap<>();
-            Integer width = getWidth(request);
-            if (width == null) {
-                width = DEFAULT_CHART_WIDTH;
-            }
-            additionalData.put("width", width);
-            String chartConfig = TemplateService.getInstance().renderChartConfiguration(contentResponse.getDataStream(),
+            ContentResponse contentResponse = contentClient.getContent(uri);
+            Map<String, Object> additionalData = new ChartConfigBuilder().width(getWidth(request)).getMap();
+
+            String chartConfig = templateService.renderChartConfiguration(contentResponse.getDataStream(),
                     additionalData);
-            new BabbageContentBasedStringResponse(contentResponse,chartConfig).apply(request, response);
+            new BabbageContentBasedStringResponse(contentResponse, chartConfig).apply(request, response);
         }
     }
 
@@ -60,62 +80,48 @@ public class ChartRenderer {
      * Optionally takes a width parameter, width is 600 by default, if width exceeds max, max width will be applied, if it is smaller than min, min width will apply
      */
     public void renderEmbeddedChart(HttpServletRequest request, HttpServletResponse response) throws IOException, ContentReadException {
-        String uri = request.getParameter("uri");
+        String uri = request.getParameter(URI_PARAM);
         if (assertUri(uri, request, response)) {
-            ContentResponse contentResponse = ContentClient.getInstance().getContent(uri);
-            LinkedHashMap<String, Object> additionalData = new LinkedHashMap<>();
-            additionalData.put("width", getWidth(request));
+            ContentResponse contentResponse = contentClient.getContent(uri);
+            Map<String, Object> additionData = new ChartConfigBuilder()
+                    .width(getWidth(request))
+                    .showTitle(request)
+                    .showSubTitle(request)
+                    .showSource(request)
+                    .showNotes(request)
+                    .getMap();
 
-            Boolean showTitle = true;
-            String showTitleInput = request.getParameter("title");
-            if (StringUtils.isNotBlank(showTitleInput)) {
-                showTitle = BooleanUtils.toBoolean(showTitleInput);
-            }
-            additionalData.put("showTitle", showTitle);
-
-            Boolean showSubTitle = true;
-            String showSubTitleInput = request.getParameter("subtitle");
-            if (StringUtils.isNotBlank(showSubTitleInput)) {
-                showSubTitle = BooleanUtils.toBoolean(showSubTitleInput);
-            }
-            additionalData.put("showSubTitle", showSubTitle);
-
-            Boolean showSource = true;
-            String showSourceInput = request.getParameter("source");
-            if (StringUtils.isNotBlank(showSourceInput)) {
-                showSource = BooleanUtils.toBoolean(showSourceInput);
-            }
-            additionalData.put("showSource", showSource);
-
-            Boolean showNotes = true;
-            String showNotesInput = request.getParameter("notes");
-            if (StringUtils.isNotBlank(showNotesInput)) {
-                showNotes = BooleanUtils.toBoolean(showNotesInput);
-            }
-            additionalData.put("showNotes", showNotes);
-
-            new BabbageContentBasedStringResponse(contentResponse, TemplateService.getInstance().renderTemplate("partials/highcharts/embeddedchart", contentResponse.getDataStream(), additionalData),
-                    MediaType.TEXT_HTML).applyEmbedded(request, response);
+            String renderedTemplate = templateService.renderTemplate(EMBEDED_HIGHCHARTS_TEMPLATE,
+                    contentResponse.getDataStream(), additionData);
+            new BabbageContentBasedStringResponse(contentResponse, renderedTemplate, MediaType.TEXT_HTML)
+                    .applyEmbedded(request, response);
         }
     }
 
     public void renderChartImage(HttpServletRequest request, HttpServletResponse response) throws IOException, ContentReadException {
-        String uri = request.getParameter("uri");
+        String uri = request.getParameter(URI_PARAM);
         if (assertUri(uri, request, response)) {
-            ContentResponse contentResponse = ContentClient.getInstance().getContent(uri);
+            ContentResponse contentResponse = contentClient.getContent(uri);
             Integer width = getWidth(request);
-            if (width == null) {
-                width = DEFAULT_CHART_WIDTH;
-            }
-            LinkedHashMap<String, Object> additionalData = new LinkedHashMap<>();
-            additionalData.put("width", width);
-            String chartConfig = TemplateService.getInstance().renderChartConfiguration(contentResponse.getDataStream(),
-                    additionalData);
-            InputStream stream = HighChartsExportClient.getInstance().getImage(chartConfig, getWidth(request));
-            new BabbageContentBasedBinaryResponse(contentResponse,stream, "image/png").apply(request, response);
+            Map<String, Object> additionalData = new ChartConfigBuilder().width(width).getMap();
+
+            String chartConfig = templateService.renderChartConfiguration(contentResponse.getDataStream(), additionalData);
+            InputStream stream = highChartsExportClient.getImage(chartConfig, width);
+
+            BabbageResponse babbabeResp = new BabbageContentBasedBinaryResponse(contentResponse, stream, PNG_MIME_TYPE);
+            babbabeResp.addHeader(CONTENT_DISPOSITION_HEADER, getImageContentDispositionHeader(uri, contentResponse.getDataStream()));
+            babbabeResp.apply(request, response);
         }
     }
 
+    private String getImageContentDispositionHeader(String uri, InputStream chartConfig) throws IOException {
+        Map<String, Object> map = mapper.readValue(chartConfig, Map.class);
+        String chartTitle = (String) map.get(TITLE_PARAM);
+        if (StringUtils.isEmpty(chartTitle) || StringUtils.equalsIgnoreCase(chartTitle, DEFAULT_TITLE_VALUE)) {
+            return format(DEFAULT_CONTENT_DISPOSITION_HEADER_FMT, Paths.get(uri).getFileName().toString());
+        }
+        return format(CONTENT_DISPOSITION_HEADER_FMT, chartTitle);
+    }
 
     /**
      * Converts given data into chart configuration and renders using Handlebars templates for the chart type.
@@ -123,19 +129,14 @@ public class ChartRenderer {
      * Optionally takes a width parameter, width is 600 by default, if width exceeds max, max width will be applied, if it is smaller than min, min width will apply
      */
     public void renderChartConfigFor(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String data = request.getParameter("data");
+        String data = request.getParameter(DATA_PARAM);
         if (StringUtils.isEmpty(data)) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             IOUtils.write("Please specify chart data to get chart configuration for", response.getOutputStream());
         }
-        LinkedHashMap<String, Object> additionalData = new LinkedHashMap<>();
-        Integer width = getWidth(request);
-        if (width == null) {
-            width = DEFAULT_CHART_WIDTH;
-        }
-        additionalData.put("width", width);
-        new BabbageStringResponse(TemplateService.getInstance().renderChartConfiguration(data,
-                additionalData)).apply(request, response);
+        Map<String, Object> additionalData = new ChartConfigBuilder().width(getWidth(request)).getMap();
+        String renderedTemplate = templateService.renderChartConfiguration(data, additionalData);
+        new BabbageStringResponse(renderedTemplate).apply(request, response);
     }
 
     /**
@@ -144,13 +145,15 @@ public class ChartRenderer {
      * Optionally takes a width parameter, width is 600 by default, if width exceeds max, max width will be applied, if it is smaller than min, min width will apply
      */
     public void renderChart(HttpServletRequest request, HttpServletResponse response) throws IOException, ContentReadException {
-        String uri = request.getParameter("uri");
+        String uri = request.getParameter(URI_PARAM);
         if (assertUri(uri, request, response)) {
-            ContentResponse contentResponse = ContentClient.getInstance().getContent(uri);
-            LinkedHashMap<String, Object> additionalData = new LinkedHashMap<>();
-            additionalData.put("width", getWidth(request));
-            new BabbageContentBasedStringResponse(contentResponse, TemplateService.getInstance().renderTemplate("highcharts/chart", contentResponse.getDataStream(), additionalData),
-                    MediaType.TEXT_HTML).apply(request, response);
+            ContentResponse contentResponse = contentClient.getContent(uri);
+            Map<String, Object> additionalData = new ChartConfigBuilder().width(getWidth(request)).getMap();
+            String renderedTemplate = templateService.renderTemplate(HIGHCHARTS_TEMPLATE,
+                    contentResponse.getDataStream(), additionalData);
+
+            new BabbageContentBasedStringResponse(contentResponse, renderedTemplate, MediaType.TEXT_HTML)
+                    .apply(request, response);
         }
     }
 
@@ -163,14 +166,14 @@ public class ChartRenderer {
         return true;
     }
 
-
     public static Integer getWidth(HttpServletRequest request) {
         try {
-            String width = request.getParameter("width");
+            String width = request.getParameter(WIDTH_PARAM);
             if (StringUtils.isNotEmpty(width)) {
                 return calculateWidth(Integer.parseInt(width));
             }
         } catch (NumberFormatException e) {
+            Log.build("Chart width not a valid number, default width will be used.", Level.DEBUG).log();
         }
         return DEFAULT_CHART_WIDTH;
     }
@@ -184,5 +187,4 @@ public class ChartRenderer {
         }
         return w;
     }
-
 }

@@ -1,9 +1,16 @@
 package com.github.onsdigital.babbage.highcharts;
 
+import ch.qos.logback.classic.Level;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.onsdigital.babbage.configuration.Configuration;
+import com.github.onsdigital.babbage.error.BabbageException;
+import com.github.onsdigital.babbage.error.BadRequestException;
+import com.github.onsdigital.babbage.error.ResourceNotFoundException;
+import com.github.onsdigital.babbage.logging.Log;
 import com.github.onsdigital.babbage.util.http.ClientConfiguration;
 import com.github.onsdigital.babbage.util.http.PooledHttpClient;
 import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.message.BasicNameValuePair;
 
@@ -11,6 +18,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by bren on 17/06/15.
@@ -61,9 +69,15 @@ public class HighChartsExportClient {
             postParameters.add(new BasicNameValuePair("scale", scale.toString()));
         }
         //postParameters.add(new BasicNameValuePair("async", "false"));
-        CloseableHttpResponse response = client.sendPost("/", null, postParameters);
-        System.out.println("Highcharts export response: " + response.getStatusLine());
-        return response.getEntity().getContent();
+        try {
+            CloseableHttpResponse response = client.sendPost("/", null, postParameters);
+            System.out.println("Highcharts export response: " + response.getStatusLine());
+            return response.getEntity().getContent();
+        } catch(IOException ex) {
+            Log.build("Unexpected error while requesting highcharts image", Level.INFO)
+                    .addParameter("postParameters", postParameters).log();
+            throw new ResourceNotFoundException("Unexpected error while requesting highcharts image");
+        }
     }
 
 }
