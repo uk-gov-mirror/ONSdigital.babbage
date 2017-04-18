@@ -23,7 +23,7 @@ import java.util.LinkedHashMap;
  */
 public class ChartRenderer {
     private static ChartRenderer instance = new ChartRenderer();
-    public static final int DEFAULT_CHART_WIDTH = 600;
+    public static final int DEFAULT_CHART_WIDTH = 700;
     public static final int MAX_CHART_WIDTH = 1600;
 
     public static ChartRenderer getInstance() {
@@ -36,7 +36,7 @@ public class ChartRenderer {
     /**
      * Fetches configuration from Zebedee Reader and converts it into chart configuration and renders using Handlebars templates for the chart type.
      * <p>
-     * Optionally takes a width parameter, width is 600 by default, if width exceeds max, max width will be applied, if it is smaller than min, min width will apply
+     * Optionally takes a width parameter, width is 700 by default, if width exceeds max, max width will be applied, if it is smaller than min, min width will apply
      */
     public void renderChartConfig(HttpServletRequest request, HttpServletResponse response) throws IOException, ContentReadException {
         String uri = request.getParameter("uri");

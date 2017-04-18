@@ -1,0 +1,24 @@
+
+{{#partial "chart-config"}}
+
+	options.series=[{{#each series}}{
+			name: "{{{sub (sup this)}}}",
+			data: [
+			{{#each data}}
+			{{#if_eq highlight label}}
+			{
+			name:"{{{sup (sub (lookup this label))}}}",
+			color:HIGHLIGHT_COLOUR,
+			y:{{num (lookup this ../this)}}
+			},{{else}}{{num (lookup this ../this)}},{{/if_eq}}
+
+			{{/each}}]
+		},{{/each}} ];
+
+
+
+{{/partial}}
+
+{{!-- This denotes the template inherits from line-chart-config
+	used to set the tick interval and other line chart options --}}
+{{> highcharts/config/line-chart-config}}

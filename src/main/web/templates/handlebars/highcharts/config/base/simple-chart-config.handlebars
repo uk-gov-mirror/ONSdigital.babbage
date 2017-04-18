@@ -1,9 +1,21 @@
 {{!-- Charts with an array of series data inherits from this base template --}}
+{{!-- NOTE: the data output needs to be a continous string and whitespace (line returns) break it --}}
 {{#partial "chart-config"}}
-	options.series=[{{#each series}}{
-			name: "{{{sub (sup this)}}}",
-			data: [{{#each data}}{{num (lookup this ../this)}},{{/each}}]
-		},{{/each}} ];
+{{#if isStacked }}// reverse legend order for stacked bars with a descending order{{/if}} 
+	options.series=[{{#each series }}{
+		name: "{{{sub (sup this)}}}",
+			{{#if_eq highlight this}}color:HIGHLIGHT_COLOUR,{{/if_eq}}
+			{{#if isReversed }}legendIndex: (-{{@index}}),{{/if}} 
+			{{#if lineTypes }}dashStyle: '{{{lookup lineTypes this}}}',{{/if}} 
+			data: [{{#each data}}{{#if_eq highlight (lookup categories @index)}}
+						{
+						name:"{{{sup (sub (lookup categories @index))}}}",
+						color:HIGHLIGHT_COLOUR,
+						y:{{num (lookup this ../this)}}
+						},{{else}}{{num (lookup this ../this)}},{{/if_eq}}{{/each}}]
+},{{/each}} 
+		{{#if_eq highlight this}}zIndex:50,{{/if_eq}}
+		];
 	{{#block "additional-chart-config"}}
 	{{/block}}
 

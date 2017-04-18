@@ -1,0 +1,63 @@
+{{#partial "chart-config"}}
+
+        options.chart.type= "heatmap";
+
+        options.xAxis= {
+            categories: [{{#each categories}}'{{{sub (sup this)}}}',{{/each}}],
+        };
+
+        options.yAxis= {
+            categories: [{{#each series}}'{{{sub (sup this)}}}',{{/each}}],
+            title: null
+        };
+        //var yMin = {{#if yMin }}{{yMin}}{{else}}{{yAxisMin}}{{/if}}
+        options.colorAxis= {
+            stops: [
+                [0, palette[0]],
+                [0.5, '#fffbbc'],
+                [1, palette[1]]
+            ]{{!-- ,
+            min:-1,
+            max:1 --}}
+        };
+
+        options.legend = {};
+
+        options.legend = {
+            enabled: true,
+            //layout: 'vertical',
+            //align: 'right',
+            //verticalAlign: 'top',
+            //y: 28,
+            //margin: 50,
+           // symbolHeight: 280
+        };
+
+        options.series=[
+            {
+                borderWidth: 1,
+                data: [
+                {{#each data as |datum line|}}
+                    {{#each series as |header col|}}
+                       [ {{line}}, {{col}}, {{num (lookup this header)}}],
+                    {{/each}}
+                {{/each}}
+                ],
+                dataLabels: {
+                    enabled: true,
+                    color: '#000000'
+                }
+            }  
+        ];
+
+        options.tooltip = {
+            formatter: function () {
+                return '<b>' + this.series.xAxis.categories[this.point.x] + '</b>: <br>' +
+                    this.series.yAxis.categories[this.point.y] + ', ' + this.point.value;
+            }
+        };
+
+{{/partial}}
+
+{{!-- This denotes the template inherits from base-chart-config--}}
+{{> highcharts/config/base/base-chart-config}} 
