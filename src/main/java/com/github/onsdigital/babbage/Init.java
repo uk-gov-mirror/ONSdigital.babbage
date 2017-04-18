@@ -13,13 +13,5 @@ public class Init implements Startup {
 
     @Override
     public void init() {
-        try {
-            ElasticSearchClient.init();
-            PublishingManager.init();
-        } catch (Exception e) {
-            System.err.println("!!!!Failed initializing publish dates index for caching");
-            e.printStackTrace();
-            System.exit(1);
-        }
     }
 }
