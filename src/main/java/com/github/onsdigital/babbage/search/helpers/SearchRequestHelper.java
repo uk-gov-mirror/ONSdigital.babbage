@@ -48,7 +48,7 @@ public class SearchRequestHelper {
         String updatedPeriod = request.getParameter(UPDATED_PARAM);
         PublishDates publishDates;
 
-        if (StringUtils.isEmpty(updatedPeriod)) {
+        if (StringUtils.isEmpty(updatedPeriod) || updatedPeriod.equals("custom")) {
             publishDates = parseDates(request);
         } else {
             publishDates = updatedWithinPeriod(updatedPeriod);

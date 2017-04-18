@@ -43,21 +43,15 @@ public class TimeSeriesTool {
 
         final boolean dataRequest = isDataRequest(request.getRequestURI());
         final String topic = request.getParameter("topic");
-        final SearchParam searchParam = SearchParamFactory.getInstance(request, SortBy.first_letter, Collections.singleton(QueryType.SEARCH));
+        final SearchParam searchParam = SearchParamFactory.getInstance(request, SortBy.release_date, Collections.singleton(QueryType.SEARCH));
         searchParam.addDocType(ContentType.timeseries)
-                .addFilter(new PrefixFilter(topic));
-        // Filter on dates!!!
+                .setPrefixURI(topic);
 
         final Map<String, SearchResult> search = SearchUtils.search(searchParam);
-        final Map<String, SearchResult> results = new HashMap<>();
-
-
-        results.put(QueryType.SEARCH.getText(), search.get(QueryType.SEARCH));
-
 
         SearchUtils.buildResponse(dataRequest,
                 getClass().getSimpleName(),
-                results)
+                search)
                 .apply(request, response);
     }
 
