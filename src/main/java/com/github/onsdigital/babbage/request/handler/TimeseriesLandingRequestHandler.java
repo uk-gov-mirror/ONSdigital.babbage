@@ -71,7 +71,7 @@ public class TimeseriesLandingRequestHandler extends BaseRequestHandler {
         }
     }
 
-    public static String getLatestTimeseriesUri(String uri) {
+    private static String getLatestTimeseriesUri(String uri) {
         // search the timeseries that live under this CDID
         final SearchParam searchParam = SearchParamFactory.getInstance();
         searchParam.addDocType(ContentType.timeseries)

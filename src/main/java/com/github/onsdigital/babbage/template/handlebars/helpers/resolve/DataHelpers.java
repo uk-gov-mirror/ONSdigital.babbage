@@ -2,11 +2,14 @@ package com.github.onsdigital.babbage.template.handlebars.helpers.resolve;
 
 import com.github.jknack.handlebars.Handlebars;
 import com.github.jknack.handlebars.Options;
+import com.github.onsdigital.babbage.api.util.SearchParam;
+import com.github.onsdigital.babbage.api.util.SearchParamFactory;
 import com.github.onsdigital.babbage.api.util.SearchUtils;
 import com.github.onsdigital.babbage.content.client.ContentClient;
 import com.github.onsdigital.babbage.content.client.ContentFilter;
 import com.github.onsdigital.babbage.content.client.ContentResponse;
 import com.github.onsdigital.babbage.request.handler.TimeseriesLandingRequestHandler;
+import com.github.onsdigital.babbage.search.model.QueryType;
 import com.github.onsdigital.babbage.search.model.SearchResult;
 import com.github.onsdigital.babbage.template.handlebars.helpers.base.BabbageHandlebarsHelper;
 import com.github.onsdigital.babbage.util.URIUtil;
@@ -14,6 +17,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -42,8 +46,8 @@ public enum DataHelpers implements BabbageHandlebarsHelper<Object> {
                 validateUri(uri);
                 String uriString = (String) uri;
 
-                if (TimeseriesLandingRequestHandler.isTimeseriesLandingUri(uriString)) {
-                    uriString = TimeseriesLandingRequestHandler.getLatestTimeseriesUri(uriString);
+                if (uriString.contains("/timeseries/") || uriString.contains("/bulletins/") || uriString.contains("/articles/")) {
+                    uriString = getUriFromSearchApi(uriString);
                 }
 
                 ContentFilter filter = null;
@@ -285,6 +289,24 @@ public enum DataHelpers implements BabbageHandlebarsHelper<Object> {
     private static void logResolveError(Object uri, Exception e) {
         System.err.printf("Failed resolving data, uri: %s cause: %s", uri, e.getMessage());
         //e.printStackTrace();
+    }
+
+    private static String getUriFromSearchApi(final String uri) throws IOException, URISyntaxException {
+        String searchUri = null;
+        if (uri.contains("/latest")) {
+            searchUri = uri.substring(0, uri.length() - "/latest".length());
+        } else {
+            searchUri = uri;
+        }
+
+        final SearchParam param = SearchParamFactory.getInstance();
+        param.addQueryType(QueryType.SEARCH);
+        param.setPrefixURI(searchUri);
+        param.setSize(1);
+        param.setPage(1);
+        final Map<String, SearchResult> search = SearchUtils.search(param);
+
+        return search.get("result").getResults().get(0).get("uri").toString();
     }
 
 }
