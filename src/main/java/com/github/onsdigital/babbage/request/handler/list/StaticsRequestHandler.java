@@ -1,20 +1,26 @@
 package com.github.onsdigital.babbage.request.handler.list;
 
+import com.github.onsdigital.babbage.api.util.SearchParam;
+import com.github.onsdigital.babbage.api.util.SearchParamFactory;
 import com.github.onsdigital.babbage.api.util.SearchUtils;
 import com.github.onsdigital.babbage.request.handler.base.BaseRequestHandler;
 import com.github.onsdigital.babbage.request.handler.base.ListRequestHandler;
 import com.github.onsdigital.babbage.response.base.BabbageResponse;
 import com.github.onsdigital.babbage.search.builders.ONSFilterBuilders;
 import com.github.onsdigital.babbage.search.helpers.base.SearchFilter;
-import com.github.onsdigital.babbage.search.helpers.base.SearchQueries;
+import com.github.onsdigital.babbage.search.input.SortBy;
 import com.github.onsdigital.babbage.search.model.ContentType;
+import com.github.onsdigital.babbage.search.model.QueryType;
+import com.github.onsdigital.babbage.search.model.SearchResult;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.util.Collections;
+import java.util.Map;
 
-import static com.github.onsdigital.babbage.api.util.SearchUtils.listJson;
-import static com.github.onsdigital.babbage.api.util.SearchUtils.listPage;
-import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.toList;
+import static com.github.onsdigital.babbage.api.util.SearchUtils.buildDataResponse;
+import static com.github.onsdigital.babbage.api.util.SearchUtils.buildPageResponse;
 
 public class StaticsRequestHandler extends BaseRequestHandler implements ListRequestHandler {
 
@@ -22,24 +28,18 @@ public class StaticsRequestHandler extends BaseRequestHandler implements ListReq
 
     @Override
     public BabbageResponse get(String uri, HttpServletRequest request) throws Exception {
-        return listPage(REQUEST_TYPE, uri, request, ContentType.static_page);
+        return buildPageResponse(REQUEST_TYPE, queries(request));
     }
 
     @Override
-    public BabbageResponse getData(String uri, HttpServletRequest request) throws IOException {
-        return listJson(REQUEST_TYPE, queries(uri,request));
+    public BabbageResponse getData(String uri, HttpServletRequest request) throws IOException, URISyntaxException {
+        return buildDataResponse(REQUEST_TYPE, queries(request));
     }
 
-    private SearchQueries queries(String uri, HttpServletRequest request) {
-        return () -> toList(
-                SearchUtils
-                        .buildListQuery(request, filters(uri))
-                        .types(ContentType.static_page)
-        );
-    }
-
-    private SearchFilter filters(String uri) {
-        return (listQuery) -> ONSFilterBuilders.filterUriPrefix(uri, listQuery);
+    private Map<String, SearchResult> queries(HttpServletRequest request) throws IOException, URISyntaxException {
+        final SearchParam params = SearchParamFactory.getInstance(request, SortBy.release_date, Collections.singleton(QueryType.SEARCH));
+        params.addDocTypes(ContentType.static_page);
+        return SearchUtils.search(params);
     }
 
     @Override

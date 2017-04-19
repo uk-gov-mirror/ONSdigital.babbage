@@ -89,8 +89,9 @@ public class TimeseriesLandingRequestHandler extends BaseRequestHandler {
             e.printStackTrace();
         }
 
-
-
+        if(results.get("result").getResults().isEmpty()) {
+           return "";
+        }
         // the first timeseries result in the list is the most recent so use that.
         return results.get("result").getResults().get(0).get("uri").toString();
     }

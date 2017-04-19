@@ -298,7 +298,7 @@ public class SearchUtils {
         return buildPageResponse(listType, results);
     }
 
-    private static Map<String, SearchResult> listRelatedPages(final List<Map> uris, ContentType... docTypes) throws IOException, URISyntaxException {
+    public static Map<String, SearchResult> listRelatedPages(final List<Map> uris, ContentType... docTypes) throws IOException, URISyntaxException {
         final URIBuilder builder = new URIBuilder().setScheme(SEARCH_SERVICE_SCHEME)
                 .setHost("localhost")
                 .setPort(10001)

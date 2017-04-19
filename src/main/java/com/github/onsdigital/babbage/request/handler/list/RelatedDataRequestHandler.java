@@ -1,5 +1,7 @@
 package com.github.onsdigital.babbage.request.handler.list;
 
+import com.github.onsdigital.babbage.api.util.SearchParam;
+import com.github.onsdigital.babbage.api.util.SearchParamFactory;
 import com.github.onsdigital.babbage.api.util.SearchUtils;
 import com.github.onsdigital.babbage.content.client.ContentClient;
 import com.github.onsdigital.babbage.content.client.ContentReadException;
@@ -13,16 +15,16 @@ import com.github.onsdigital.babbage.search.helpers.base.SearchQueries;
 import com.github.onsdigital.babbage.search.input.SortBy;
 import com.github.onsdigital.babbage.search.input.TypeFilter;
 import com.github.onsdigital.babbage.search.model.ContentType;
+import com.github.onsdigital.babbage.search.model.QueryType;
+import com.github.onsdigital.babbage.search.model.SearchResult;
 import com.github.onsdigital.babbage.search.model.field.Field;
 import com.github.onsdigital.babbage.util.json.JsonUtil;
 import org.elasticsearch.index.query.QueryBuilders;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.net.URISyntaxException;
+import java.util.*;
 
 import static com.github.onsdigital.babbage.api.util.SearchUtils.*;
 import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.toList;
@@ -32,33 +34,20 @@ import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.toL
  */
 public class RelatedDataRequestHandler extends BaseRequestHandler implements ListRequestHandler {
 
+    private ContentType[] dataFilters = new ContentType[]{ ContentType.dataset_landing_page, ContentType.reference_tables};
+
     @Override
     public BabbageResponse get(String uri, HttpServletRequest request) throws Exception {
-        ContentType[] dataFilters = new ContentType[]{ ContentType.dataset_landing_page, ContentType.reference_tables};
         List<Map> uriList = getRelatedDataUris(uri);
             return isEmpty(uriList) ? buildPageResponse(getRequestType(), null) : listRelatedPage(getRequestType(), uriList, request, dataFilters);
     }
 
 
     @Override
-    public BabbageResponse getData(String uri, HttpServletRequest request) throws IOException, ContentReadException {
+    public BabbageResponse getData(String uri, HttpServletRequest request) throws IOException, ContentReadException, URISyntaxException {
         List<Map> uriList = getRelatedDataUris(uri);
-        return isEmpty(uriList) ? buildDataResponse(getRequestType(), null) : listJson(getRequestType(), queries(uriList, request));
-    }
-
-    private SearchQueries queries(List<Map> uriList, HttpServletRequest request) throws IOException, ContentReadException {
-        String[] uriArray = new String[uriList.size()];
-        for (int i = 0; i < uriList.size(); i++) {
-            uriArray[i] = (String) uriList.get(i).get(Field.uri.name());
-
-        }
-        return () -> toList(
-                SearchUtils.buildListQuery(request, filters(uriArray), SortBy.title).types(ContentType.dataset_landing_page, ContentType.reference_tables)
-        );
-    }
-
-    private SearchFilter filters(String[] uriArray) {
-        return (query) -> query.filter(QueryBuilders.termsQuery(Field.uri.fieldName(), uriArray));
+        return isEmpty(uriList) ? buildDataResponse(getRequestType(), null) : buildDataResponse(getRequestType(),
+                SearchUtils.listRelatedPages(uriList, dataFilters));
     }
 
     private boolean isEmpty(List<Map> relatedDataUris) {
