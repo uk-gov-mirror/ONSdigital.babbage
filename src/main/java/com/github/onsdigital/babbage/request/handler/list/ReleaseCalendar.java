@@ -21,6 +21,7 @@ import com.github.onsdigital.babbage.search.model.SearchResults;
 import com.github.onsdigital.babbage.search.model.field.Field;
 import com.github.onsdigital.babbage.search.model.filter.PrefixFilter;
 import com.github.onsdigital.babbage.search.model.filter.UpcomingFilter;
+import com.github.onsdigital.babbage.search.model.filter.PublishedFilter;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 
@@ -58,10 +59,12 @@ public class ReleaseCalendar extends BaseRequestHandler implements ListRequestHa
 			// Not ideal but the lack of cohesion & encapsulation in search makes this very messy to do properly.
 			ContentType[] dataFilters = new ContentType[]{ ContentType.release};
 			final SearchParam searchParam = SearchParamFactory.getInstance(request, SortBy.first_letter, Collections.singleton(QueryType.SEARCH));
-			searchParam
-					.addFilter(new UpcomingFilter())
-					.addDocTypes(ContentType.release);
-
+			searchParam.addDocTypes(ContentType.release);
+			if (isUpcoming(request)) {
+				searchParam.addFilter(new UpcomingFilter());
+			} else {
+				searchParam.addFilter(new PublishedFilter());
+			}
 			// Filter on dates!!!
 
 			Map<String, SearchResult> results = null;
