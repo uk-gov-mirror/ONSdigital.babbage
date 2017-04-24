@@ -225,8 +225,8 @@ var renderLineChart = function (timeseries) {
 
 
     function renderChart() {
-        //console.log(chartData);
         chart.series[0].data = chartData.values;
+        chart.xAxis.categories = categories(chartData.values);
         chart.xAxis.tickInterval = tickInterval(chartData.values.length);
         if (!timeseries.description.isIndex) {
             var min = chartData.min;
@@ -252,6 +252,18 @@ var renderLineChart = function (timeseries) {
         } else if (to < from) {
             throw new Error('Sorry, the chosen date range is not valid');
         }
+    }
+
+    function categories(values) {
+        var length = values.length;
+        var index = 0;
+        var categories = [];
+
+        for (index; index < length; index++) {
+            categories.push(values[index].label)
+        }
+
+        return categories;
     }
 
     function tickInterval(length) {
