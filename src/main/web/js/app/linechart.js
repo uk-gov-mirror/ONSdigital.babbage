@@ -600,9 +600,6 @@ var renderLineChart = function (timeseries) {
                 var fromYear;
                 var fromMonth;
                 var fromQuarter;
-                var $fromMonth = $('[data-chart-controls-from-month]', element);
-                var $fromQuarter = $('[data-chart-controls-from-quarter]', element);
-                var $fromYear = $('[data-chart-controls-from-year]', element);
                 e.preventDefault();
                 // toggleSelectedLink(elem);
                 // toggleTimePeriodButton(elem);
@@ -640,9 +637,9 @@ var renderLineChart = function (timeseries) {
                 /*
                  * Set the select options
                  */
-                $fromMonth.val(pad(fromMonth, 2));
-                $fromQuarter.val(fromQuarter);
-                $fromYear.val(fromYear);
+                $('[data-chart-controls-from-month]', element).val(pad(fromMonth, 2));
+                $('[data-chart-controls-from-quarter]', element).val(fromQuarter);
+                $('[data-chart-controls-from-year]', element).val(fromYear);
 
                 filter();
             });
