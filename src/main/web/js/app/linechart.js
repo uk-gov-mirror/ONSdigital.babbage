@@ -609,7 +609,6 @@ var renderLineChart = function (timeseries) {
                     return;
                 }
                 currentFilter = filterValue;
-                resetFilters();
 
                 /*
                  * Work out what the dates are
@@ -638,9 +637,9 @@ var renderLineChart = function (timeseries) {
                 /*
                  * Set the select options
                  */
-                $('[data-chart-controls-from-month]', element).find('option[value="' + pad(fromMonth, 2) + '"]').attr('selected', true);
-                $('[data-chart-controls-from-quarter]', element).find('option[value="' + fromQuarter + '"]').attr('selected', true);
-                $('[data-chart-controls-from-year]', element).find('option[value="' + fromYear + '"]').attr('selected', true);
+                $('[data-chart-controls-from-month]', element).val(pad(fromMonth, 2));
+                $('[data-chart-controls-from-quarter]', element).val(fromQuarter);
+                $('[data-chart-controls-from-year]', element).val(fromYear);
 
                 filter();
             });

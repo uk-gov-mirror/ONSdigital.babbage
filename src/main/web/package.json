@@ -10,7 +10,7 @@
     },
     "scripts": {
         "build-js": "node ./node_modules/uglify-js/bin/uglifyjs $npm_package_config_js -o js/app.js",
-        "build-pretty-js": "uglifyjs $npm_package_config_js --source-map-inline --beautify --verbose -o js/app.js",
+        "build-pretty-js": "uglifyjs $npm_package_config_js --source-map base --beautify --verbose -o js/app.js",
         "watch-js": "watch 'npm run build-pretty-js' js/app/",
         "postinstall": "npm run build-js"
     },
