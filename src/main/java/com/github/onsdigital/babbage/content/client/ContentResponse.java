@@ -94,7 +94,7 @@ public class ContentResponse implements Serializable {
         Header[] contentDisposition = response.getHeaders("Content-Disposition");
         if (contentDisposition != null && contentDisposition.length > 0) {
             HeaderElement[] elements = contentDisposition[0].getElements();
-            if (elements != null && elements.length>0) {
+            if (elements != null && elements.length > 0) {
                 NameValuePair filename = elements[0].getParameterByName("filename");
                 return filename == null ? null : filename.getValue();
 
