@@ -10,7 +10,7 @@
 		}
 		return positions;
 	};
-{{!-- {{#if startFromZero}} --}}
+{{#if startFromZero}}
 	var min;
 	var currentMin;
 	var data;
@@ -22,7 +22,7 @@
 	if(min > 0) {
 		options.yAxis.min = 0;
 	}
-{{!-- {{/if}} --}}
+{{/if}}
 {{/partial}}
 {{!-- This denotes the template inherits from base-chart-config--}}
 {{> highcharts/config/base/simple-chart-config}} 
