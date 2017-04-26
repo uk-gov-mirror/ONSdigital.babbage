@@ -325,7 +325,7 @@ public class ContentClient {
         if (filter == null) {
             return Collections.emptyMap();
         }
-        return params(filter.name().toLowerCase(), null);
+        return params("filter", filter.name().toLowerCase());
     }
 
     /**
