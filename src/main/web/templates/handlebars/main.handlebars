@@ -32,7 +32,7 @@
 			dataLayer = [{
 				"pageType": "{{type}}",
 				{{#if_eq type "list"}}
-					"numberOfResults": {{#if parameters.size.0}}{{parameters.size.0}}{{else}}10{{/if}}
+					"numberOfResults": {{result.numberOfResults}}
 				{{/if_eq}}
 			}];
 		</script>
