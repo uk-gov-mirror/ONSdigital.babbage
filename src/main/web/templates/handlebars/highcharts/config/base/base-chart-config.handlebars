@@ -1,75 +1,216 @@
 {{!--
-This template forms a base configuration for all chart types, this is included in client side as javascript source file. 
+Version 1: This template forms a base configuration for all chart types, this is included in client side as javascript source file. 
 It is used to render highchart configuration and attach it to window object when run in a browser. Since Highcharts configurations are javascript objects it is not possible to read complex chart configurations ( objects with functions as members) as json objects, that is why it has to be rendered dynamically as a javascript source file.
 The chart configurations are used both by Babbage and Florence, thats why it is rendered on server side using handlebars to make it possible to edit configuration without the need of rebuilding.
 --}}
-
+{{!-- Version 2: The template is called by Babbage and used directly to print the charts. It is also used when generating PDFs.
+There are additional templates to render a graphic line break on axes that do not start at 0, and also to position and edit text labels on the charts.
+NB Babbage uses https://github.com/jknack/handlebars.java
+TODO: split out colours palette selection, axis alignment and positioning
+--}}
 (function(){
 
 	Highcharts.setOptions({lang: {thousandsSep: ','}});
 
+	var HIGHLIGHT_COLOUR  = {{#if_eq palette "legacy"}}'gold';{{else}}'rgba(243,148,49,0.9)';{{/if_eq}}
+	var PLOTBAND_COLOUR  = '#B5CE94';
+
+	// use rgba in order to set opacity/alpha
+	var legacy = [
+			'rgba(39,71,150,0.9)',
+			'rgba(245,148,47,0.9)',
+			'rgba(231,63,64,0.9)',
+			'rgba(123,202,226,0.9)',
+			'rgba(151,151,150,0.9)',
+			'rgba(233,225,23,0.9)',
+			'rgba(116,182,48,0.9)',
+			'rgba(103,71,150,0.9)',
+			'rgba(189,91,158,0.9)'
+		];
+	var bluemono = [
+			'rgba(0,100,185,0.9)',
+			'rgba(170,214,232,0.9)',
+			'rgba(17,41,65,0.9)',
+			'rgba(0,159,227,0.9)',
+			'rgba(91,197,242,0.9)'
+		];
+	var color = [						// use US spelling to keep consistency with Highcharts
+			'rgba(0,117,163,0.9)',		// blue
+			'rgba(226,188,34,0.9)',		// gold
+			'rgba(35,77,112,0.9)',		// dk blue
+			'rgba(54,173,217,0.9)',		// lt blue
+			'rgba(38,109,74,0.9)'		// green
+		];
+
+	// set chart palette based on chart object
+	var palette = legacy;
+	{{#if_eq palette "blue"}}palette = bluemono;{{/if_eq}}
+	{{#if_eq palette "colour"}}palette = color;{{/if_eq}}
+
+	var base = {{#if yMin }}{{yMin}}{{else}}0{{/if}};
+
+	var hasTooltip = '{{showTooltip}}';// cast it as a string to handle missing values
+
+	{{#if hasLineBreak }}
+		{{> highcharts/config/line-break-config}}
+	{{/if}}
+
+	{{#if isEditor }}// set the vars on the page as a way of passing them back to the chart object
+	function setBoxPosHandle(id, x,y) {
+		x = x.toFixed(2);
+		y = y.toFixed(2);
+		// important! trigger the change event after setting the value
+		$('#note-x-'+id).val(x).change();
+		$('#note-y-'+id).val(y).change();
+	}{{/if}}
+
+	var ht = ({{width}} * {{aspectRatio}});
+	var top = 150;
+	var bottom = 150;
 	{{!-- chart-config block is to be overriden by chart types inheriting this template --}}
 	var options = {
+		viewport:'lg',
 		chart: {
-			height: {{width}} * {{aspectRatio}},
+			height: ht + top + bottom,
 			width: {{width}},
 			marginRight: 35,
+			marginTop: top,
+			marginBottom: bottom,
+			spacingTop: 16,
+			offset: top,
 			style: {
-				fontFamily: 'Tahoma, Verdana, Arial'
-			}
+				fontFamily: '"Open Sans", Tahoma, Verdana, Arial'
+			},
+			events: {
+                load: function () {
+
+                var hideNotes = {
+					{{#each devices}}'{{@key}}':{{isHidden}},{{/each}}
+				};
+				var isHidden = false;
+				if(hideNotes[this.options.viewport]){
+					isHidden = hideNotes[this.options.viewport]
+				}
+                {{#each annotations}}
+					{{#if title}}
+					var text  = '<div>{{{title}}}</div>';
+					var devices = {
+					{{#each devices}}'{{@key}}':{x:{{x}}, y:{{y}} },{{/each}}
+					};
+					var x = devices[this.options.viewport].x;
+					var y = devices[this.options.viewport].y;
+					
+					if(!isHidden){
+
+                    var note_{{@index}} = this.renderer.label(text, x, y+this.options.chart.offset, 0, 0, true)
+                    	.css({
+				            color: '#000'
+				        })
+				        .attr({
+				            //fill: 'rgba(0, 0, 0, 0.15)',
+				            //paddingTop: 12,
+				            //r: 5,
+				            zIndex: 6
+				        })
+                        .add();
+
+					}{{/if}}
+				{{/each}}
+
+                    //source
+                    var source = this.renderer.text('Source: {{source}}', 50 , {{y}}+ht+top+110)
+                        	.attr({
+		                    	zIndex: 10
+		                    })
+                            .add();
+
+                }
+            } 
 		},
-		colors: [
-			"#274796",
-			"#F5942F",
-			"#E73F40",
-			"#7BCAE2",
-			"#979796",
-			"#E9E117",
-			"#74B630",
-			"#674796",
-			"#BD5B9E"
-		],
+		colors: palette,
 		series: [],
 		title: {
-			text: ""
+			text: "{{title}}",
+			y:30
+		},
+		subtitle: {
+			text: "{{subtitle}}",
+			y:80
 		},
 		yAxis: {
+			plotBands:[],
+			plotLines:[],
+			{{#if yMin }}min: base,{{/if}}
+			{{#if yMax }}max: {{yMax}},{{/if}}
+			{{#if hasLineBreak }}breaks: [{
+						from: yAxisBreakStart,
+						to: yAxisBreakEnd
+				}], {{/if}}
 			title: {
-				text: "",
-				useHTML:true
+				text: "{{{sub (sup unit)}}}",
+				useHTML:true,
+				align:"high"
 			},
 			labels: {
-				format: "{value:,f}",
+				format: "{value:,.{{decimalPlacesYaxis}}f}",
 				useHTML:true
 			},
-			plotLines: [{color: 'gray',width: 2,value: 0,zIndex: -100}],
-			gridZIndex: -200
+			gridZIndex: -200,
+			opposite:{{#if_eq yAxisPos "right"}}true{{else}}false{{/if_eq}},
+			{{#if yMax }}endOnTick: false,// avoids label rounding in order to have exact axis values{{/if}}
+			{{#if hasLineBreak }}lineColor: '#929292',
+			lineWidth: 1,    
+			events: {
+			{{#if_eq chartType 'column'}}pointBreak: pointBreakColumn{{/if_eq}} {{!-- this updates the graphic to show break lines on bar charts - see line-break-config.handlebars --}}
+			{{#if_eq chartType 'bar'}}pointBreak: pointBreakColumn{{/if_eq}}
+			}{{/if}}
 		},
 		xAxis: {
+			plotBands:[],
+			plotLines:[],
 			categories: [{{#each categories}}'{{{sub (sup this)}}}',{{/each}}],
-			tickInterval: "{{labelInterval}}",
+			{{#if labelInterval}}tickInterval: {{labelInterval}},{{/if}}
 			labels: {
-				useHTML : true,
+				useHTML : true
 			},
 			title: {
 				useHTML:true,
 				text: "{{{sub (sup xAxisLabel)}}}"
-			}
+			},
+			opposite:{{#if_eq xAxisPos "top"}}true{{else}}false{{/if_eq}}
 		},
 		legend: {
-			verticalAlign: "top",
+			verticalAlign: {{#if_eq xAxisPos "top"}}"bottom"{{else}}"top"{{/if_eq}},
+			y:(ht+top+40),
+			x:30,
 			useHTML:true,
-			enabled:{{#if_eq series.size 1}}false{{else}}true{{/if_eq}}
+			enabled:{{#if_eq series.size 1}}false{{else}}true{{/if_eq}},
+			align:'left',
+			itemMarginBottom:8,
+			itemStyle: {
+				fontWeight: 'normal',
+				color:'rgb(112, 112,112)'{{#if_eq chartType 'small-multiples'}},
+				width: 110{{/if_eq}}
+	        }
 		},
 		plotOptions: {
-			series: {
+			series: { {{#if isStacked }}
+				stacking: 'normal',{{/if}}
+				borderWidth:0,
 				animation: false,
 				pointPadding: 0,
-				groupPadding: 0.1
+				groupPadding: 0.1,
+				states: {
+					hover: {
+						enabled: true
+	                } 
+                }{{#if hasConnectNull}},
+				connectNulls: true{{/if}}
 			},
 			line: {
-				lineWidth: 1,
+				lineWidth: 2,
 				marker: {
+					enabled:{{#if showMarker }}true{{else}}false{{/if}},
 					radius: 2,
 					symbol: "circle"
 				}
@@ -78,53 +219,107 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 				stacking: "normal"
 			}
 		},
+		annotationsOptions: {
+			enabledButtons: false 
+		},
+		annotations: [ 
+		],
+		//add devices property -not used by highcharts but stores layout sizes
+		devices:{
+		{{#if devices}}
+			{{#each devices as |device name|}}
+			'{{name}}': {
+					aspectRatio: {{aspectRatio}},
+					labelInterval: {{#if labelInterval }}{{labelInterval}}{{else}}0{{/if}},
+					isHidden: {{isHidden}}
+				},
+			{{/each}}
+		{{/if}}
 
+		},
+		aspectRatio:{{aspectRatio}},
 		tooltip: {
 			valueDecimals: "{{decimalPlaces}}",
 			shared: true,
 			useHTML:true,
-            style: {
-                padding: 0
-            },
-            formatter: function() {
-            var div = '<div id="custom-tooltip"><div class="maintext">';
-            {{#block "tooltip-config"}}
-                var str = '<b>'+ this.x +'</b>';
-
-                $.each(this.points, function(i, point) {
-                    str += '<br/><span style="color:'+ point.series.color +'">\u25CF</span> ' + point.series.name + ': ' + point.y{{#if decimalPlaces}}.toFixed({{decimalPlaces}}){{/if}};
-                    });
-
-            {{/block}}
-
-                div += str + '</div></div>';
-
-            return div;
-
-            },
-            backgroundColor: 'rgba(208,210,211, 1)',
-            borderWidth: 0,
-            borderRadius: 0,
-            borderColor: 'rgba(255, 255, 255, 0)',
-            shadow: false
+			style: {
+				padding: 0
+			},
+			formatter: function() {
+				{{!-- leave the tooltip toggle here then can set in the page?
+				better to render it earlier as it is done on the server  --}}
+				if (hasTooltip!=='false') {
+					var div = '<div id="custom-tooltip"><div class="maintext">';
+					{{#block "tooltip-config"}}
+					var i = 0;
+					var len = this.points.length;
+					var point;
+					var str = '<b>'+ this.x +'</b>';
+					for (i = 0; i <len; i++){
+						point = this.points[i];
+						str += '<br/><span style="color:'+ point.series.color +'">\u25CF</span> ' + point.series.name + ': ' + Highcharts.numberFormat(point.y,{{#if decimalPlaces}}{{decimalPlaces}}{{else}}0{{/if}});
+					}
+					{{/block}}
+					div += str + '</div></div>';
+					return div;
+				}else{
+					return false;
+				}
+			},
+			backgroundColor: 'rgba(208,210,211, 1)',
+			borderWidth: 0,
+            padding: 0,
+			borderRadius: 0,
+			borderColor: 'rgba(255, 255, 255, 0)',
+			shadow: false
 		},
 		credits: {
 			enabled: false
 		},
 		labels: {
 			useHTML:true
-		}
+		},
+		exporting: {
+        	enabled: false
+    	}
+
 	};
 
-	var unit = "{{{sub (sup unit)}}}";
+	// disable hover state when tooltip is hidden
+	if (hasTooltip!=='false') {
+		options.plotOptions.series.states.hover.enabled = true;
+	}else{
+		options.plotOptions.series.states.hover.enabled = false;
+	}
 
-	options.yAxis.title.text=unit;
-	options.yAxis.title.align="high";
+	{{#if annotations }}
+		{{> highcharts/config/annotations-config}}
+	{{/if}}
+
 	{{#unless rotated}}
-    options.yAxis.title.offset=0;
-
-    {{#if options.legend.enabled}}options.yAxis.title.y=-2;{{/if}}
-    {{!-- Setting rotation to 0 causes axis lable push chart to the right for some text (e.g. "GDP growth percentage" ) and shrinks it in size. Funny enough, rotating 360 degrees eliminates this issue and still keeps the label horizontal.  --}}
+	var textWidth = options.yAxis.title.text.length * 6;
+	{{#if_eq xAxisPos "top"}}
+    	{{#if_eq yAxisPos "right"}}
+	options.yAxis.title.align = 'low';
+	options.yAxis.title.offset = (-1 * textWidth);
+	options.yAxis.title.y = 10;
+    	{{else}}
+	options.yAxis.title.align = 'low';
+	options.yAxis.title.offset = 0;
+	options.yAxis.title.y = 10;
+    	{{/if_eq}}
+    {{else}}
+    	{{#if_eq yAxisPos "right"}}
+	options.yAxis.title.align = 'high';
+	//options.yAxis.title.offset = (-1 * textWidth);
+	options.yAxis.title.y = -4;
+    	{{else}}
+	options.yAxis.title.align = 'high';
+	options.yAxis.title.offset = 0;
+	options.yAxis.title.y = -4;
+    	{{/if_eq}}
+    {{/if_eq}}
+    {{!-- Setting rotation to 0 causes axis label to push chart to the right for some text (e.g. "GDP growth percentage" ) and shrinks it in size. Funny enough, rotating 360 degrees eliminates this issue and still keeps the label horizontal.  --}}
 	options.yAxis.title.rotation=360;
 	options.yAxis.title.style={
 		left:"0px",
@@ -134,15 +329,13 @@ The chart configurations are used both by Babbage and Florence, thats why it is 
 	{{/unless}}
 
 	{{#block "chart-config"}}
-	{{!-- Overridde this block for altering chart configuration for individual chart types --}}
+	{{!-- Override this block for altering chart configuration for individual chart types --}}
 	{{/block}}
 
 	{{!-- Chart id is the file name for Florence chart builder generated charts, and cdid for time series --}}
 	var chartId = "{{#if filename}}{{filename}}{{else}}{{description.cdid}}{{/if}}";
-
 	{{!-- attaching id to window object to be used on client side --}}
 	window["chart-" + chartId] = options;
-
 	{{!-- Returning chart to be used by highcharts export server for server side image rendering --}}
 	return options;
 

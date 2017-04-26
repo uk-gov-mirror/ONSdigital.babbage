@@ -1,19 +1,34 @@
 {{#partial "chart-config"}}
 delete options.chart.marginRight;
 
-options.series=[{
+options.series=[
+	{
 		name: "{{{sub (sup headers.1)}}}",
 		type: "{{#if_eq (lookup  chartTypes headers.1) "bar"}}column{{else}}line{{/if_eq}}",
 		zIndex: {{#if_eq (lookup  chartTypes headers.1) "line"}}100{{else}}0{{/if_eq}},
 		yAxis: 0,
-		data: [{{#each data}}{{num (lookup this headers.1)}},{{/each}}]
+		data: [{{#each data}} 
+		{{#if_eq highlight (lookup categories @index)}}
+			{y:{{num (lookup this headers.1)}}, color:HIGHLIGHT_COLOUR},
+		{{else}}
+			{{num (lookup this headers.1)}},
+		{{/if_eq}}
+
+		{{/each}}]
 	},{
 		name: "{{{sub (sup headers.2)}}}",
 		type: "{{#if_eq (lookup  chartTypes headers.2) "bar"}}column{{else}}line{{/if_eq}}",
 		zIndex: {{#if_eq (lookup  chartTypes headers.2) "line"}}100{{else}}0{{/if_eq}},
 		yAxis: 1,
-		data: [{{#each data}}{{num (lookup this headers.2)}},{{/each}}]
-	}];
+		data: [{{#each data}}
+		{{#if_eq highlight (lookup categories @index)}}
+			{y:{{num (lookup this headers.2)}} ,color:HIGHLIGHT_COLOUR},
+		{{else}}
+			{{num (lookup this headers.2)}},
+		{{/if_eq}}
+		{{/each}}]
+	} 
+		];
 
 options.yAxis=[
 			{

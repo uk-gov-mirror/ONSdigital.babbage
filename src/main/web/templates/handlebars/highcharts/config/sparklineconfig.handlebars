@@ -27,7 +27,7 @@ var sparkline{{description.cdid}} = {
 		enabled: false
 	},
 	xAxis: {
-		categories: [],
+		categories: [{{#each series}}"{{name}}",{{/each}}],
 		labels: {
 			crop: false,
 			style: {
@@ -93,6 +93,9 @@ var sparkline{{description.cdid}} = {
 	},
 	exporting: {
 		enabled: false
+	},
+	annotationsOptions: {
+		enabledButtons: false 
 	},
 	series: [{
 		name: '',

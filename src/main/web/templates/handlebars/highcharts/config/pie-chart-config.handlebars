@@ -1,5 +1,6 @@
 {{#partial "chart-config"}}
 options.chart.type="pie";
+options.chart.marginTop = 100;
 options.labels={};
 options.legend.enabled={{#if_eq data.size 1}}false{{else}}true{{/if_eq}}; {{!-- Hide legends if only single category on chart--}}
 
@@ -7,10 +8,22 @@ options.series=[{
 		name: "{{{sub (sup headers.1)}}}",
 		sliced:true,
 		colorByPoint: true,
-		data: [{{#each data}} {name:"{{{sup (sub (lookup this headers.0))}}}",y:{{num (lookup this headers.1)}} },{{/each}}]
+		data: [{{#each data}} 
+			{
+				name:"{{{sup (sub (lookup this headers.0))}}}",{{#if_eq highlight (lookup this headers.0)}}
+				color:HIGHLIGHT_COLOUR, {{/if_eq}}
+				y:{{num (lookup this headers.1)}}
+			},{{/each}}
+		]
 	}];
+
+var offsetX = (ht/2 ) +'px'; // based on half height
+var offsetY = 45  +'%';
+
 options.plotOptions={
 	     pie: {
+	     	center: [offsetX,offsetY],
+	     	{{#if donut}}innerSize: '50%',{{/if}}
 	         allowPointSelect: true,
 	         cursor: 'pointer',
 	         showInLegend: true,
@@ -25,8 +38,11 @@ options.legend.verticalAlign="bottom";
 {{/partial}}
 
 {{#partial "tooltip-config"}}
-    if (this.point.options.extraValue) str = 'name: ' + this.key + ' <br/>y:' + this.y + '<br/>Extra value' + this.point.options.extraValue;
-    else str = '<b>' + this.key + ' </b><br/>' + this.y;
+    if (this.point.options.extraValue) {
+    	str = 'name: ' + this.key + ' <br/>y:' + Highcharts.numberFormat(this.y,{{#if decimalPlaces}}{{decimalPlaces}}{{else}}0{{/if}}) {{#if unit}}+ ' ({{unit}})'{{/if}} + '<br/>Extra value' + this.point.options.extraValue;
+    } else {
+    	str = '<b>' + this.key + ' </b><br/>' + Highcharts.numberFormat(this.y,{{#if decimalPlaces}}{{decimalPlaces}}{{else}}0{{/if}}) {{#if unit}}+ ' ({{unit}})'{{/if}};
+    }
 {{/partial}}
 
 {{!-- This denotes the template inherits from base-chart-config--}}

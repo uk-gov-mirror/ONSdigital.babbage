@@ -1,26 +1,95 @@
-<div class="markdown-chart-container panel--bottom-mar print--avoid-break">
+{{#if_eq chartType "small-multiples"}}
 
-  <h4 class="flush--third--vertical">{{{sub (sup title)}}}</h4>
+
+  <div class="markdown-chart-container panel--bottom-mar print--avoid-break">
+          <h4 class="flush--third--vertical">{{{sub (sup title)}}}</h4>
+          {{#if subtitle}}
+              <h5 class="flush--third--bottom">{{{sub (sup subtitle)}}}</h5>
+          {{/if}}
+   <div class="sm-multiple-holder">
+  {{#each series}}
+    <div class="sm-multiple">
+        
+      <div id="chart-{{filename}}-{{@index}}" data-filename="{{filename}}" data-uri="{{uri}}" class="markdown-chart" data-series="{{this}}">
+        <!--[if gt IE 8]><!--><noscript><!--[endif]-->
+        <img src="/chartimage?uri={{uri}}&width={{width}}" alt="{{alt-text}}" />
+        <!--[if gt IE 8]><!--></noscript><!--[endif]-->
+      </div>
+    </div>
+  {{/each}}
+  </div>
+
+
+{{else}}
+
+
+  {{#if_eq chartType "table"}}
+  <div class="markdown-table-container panel--bottom-mar print--avoid-break">
+    <h4 class="flush--third--vertical">{{{sub (sup title)}}}</h4>
     {{#if subtitle}}
         <h5 class="flush--third--bottom">{{{sub (sup subtitle)}}}</h5>
     {{/if}}
 
-  <div id="chart-{{filename}}" data-filename="{{filename}}" data-uri="{{uri}}" class="markdown-chart">
-      <!--[if gt IE 8]><!--><noscript><!--[endif]-->
-      <img src="/chartimage?uri={{uri}}&width={{width}}" alt="{{alt-text}}" />
-      <!--[if gt IE 8]><!--></noscript><!--[endif]-->
-  </div>
+    <table class="t1 table-chart">
+      <thead>
+          <tr>
+              {{#each headers}}<th scope ='col'>{{{sub (sup this)}}}</th>{{/each}}
+          </tr>
+      </thead>
+      <tfoot>
+          <tr>
+              {{!-- //footer goes here --}}
+          </tr>
+      </tfoot>
 
-  {{#if source}}<h5 class="flush--third--bottom font-size--h6">Source: {{source}}</h5>{{/if}}
+      <tbody>
+      {{#each data as |datum line|}}
+          <tr>
+              <th class="left" scope='row'>{{lookup ../categories @index}}</th>{{#each series as |header col|}}
+              <td>{{num (lookup this header)}}</td>{{/each}}
+          </tr>
+          {{/each}}
+      </tbody>
+    </table>
+
+  {{else}}
+
+    <div class="markdown-chart-container panel--bottom-mar print--avoid-break">
+
+      <h4 class="flush--third--vertical">{{{sub (sup title)}}}</h4>
+        {{#if subtitle}}
+            <h5 class="flush--third--bottom">{{{sub (sup subtitle)}}}</h5>
+        {{/if}}
+
+      <div id="chart-{{filename}}" data-filename="{{filename}}" data-uri="{{uri}}" class="markdown-chart">
+          <!--[if gt IE 8]><!--><noscript><!--[endif]-->
+          <img src="/chartimage?uri={{uri}}&width={{width}}" alt="{{alt-text}}" />
+          <!--[if gt IE 8]><!--></noscript><!--[endif]-->
+      </div>
+  
+  {{/if_eq}}
+
+
+{{/if_eq}}
+
+
+
+  {{#if source}}<h5 class="flush--third--bottom font-size--h6 clear-left">Source: {{source}}</h5>{{/if}}
+      <div id="notes-{{filename}}" class="notes-holder-js">
   {{#if notes}}
-      <h6 class="flush--third--bottom">Notes:</h6>
+      <h6 class="flush--third--bottom js-notes-title">Notes:</h6>
       {{md notes}}
   {{/if}}
+      </div>
   
-    <h5 class="print--hide font-size--h6">Download this chart</h5>
-
-    <a class="btn btn--primary print--hide js-chart-image-src" href="/chartimage?uri={{uri}}"
+    <h5 class="print--hide font-size--h6 clear-left">Download this chart</h5>
+{{#if_ne chartType "small-multiples"}}
+    <a class="btn btn--primary print--hide js-chart-image-src " data-filename="{{filename}}" href="/chartimage?uri={{uri}}"
         data-ga-event="" data-ga-event-category="download-image" data-ga-event-label="{{{sub (sup title)}}}" download="{{{sub (sup title)}}}">Image</a>
+      {{else}}
+    <a class="btn btn--primary print--hide js-chart-image-src" id="export-png" {{!-- href="/chartimage?uri={{uri}}"
+        data-ga-event="" data-ga-event-category="download-image" data-ga-event-label="{{{sub (sup title)}}}" download="{{{sub (sup title)}}}" --}}>Image</a>
+{{/if_ne}}
     {{> partials/highcharts/download format='csv'}}
     {{> partials/highcharts/download format='xls'}}
 
