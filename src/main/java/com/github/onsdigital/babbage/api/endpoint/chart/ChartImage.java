@@ -1,6 +1,7 @@
 package com.github.onsdigital.babbage.api.endpoint.chart;
 
 import com.github.davidcarboni.restolino.framework.Api;
+import com.github.onsdigital.babbage.api.error.ErrorHandler;
 import com.github.onsdigital.babbage.content.client.ContentReadException;
 import com.github.onsdigital.babbage.highcharts.ChartRenderer;
 
@@ -18,6 +19,10 @@ public class ChartImage {
 
     @GET
     public void get(@Context HttpServletRequest request, @Context HttpServletResponse response) throws IOException, ContentReadException {
-        ChartRenderer.getInstance().renderChartImage(request, response);
+        try {
+            ChartRenderer.getInstance().renderChartImage(request, response);
+        } catch (IOException | ContentReadException ex) {
+            ErrorHandler.handle(request, response, ex);
+        }
     }
 }
