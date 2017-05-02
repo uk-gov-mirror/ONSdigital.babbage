@@ -134,11 +134,13 @@
 
                 {{!-- MARKDOWN --}}
                 <div class="col {{#if_any relatedDocuments relatedDatasets description.contact}}col--md-two-thirds col--lg-two-thirds{{/if_any}}">
-                    <section class="section__content--static-markdown">
-                        {{#each markdown}}
-                            {{md this}}
-                        {{/each}}
-                    </section>
+                    <div class="section__content--static-markdown">
+                        <section>
+                            {{#each markdown}}
+                                {{md this}}
+                            {{/each}}
+                        </section>
+                    </div>
 
                     <div class="tiles__item tiles__item--nav-type col--md-31 col--lg-19 flush-col">
                         <h3 class="tiles__title-h3 tiles__title-h3--nav">{{labels.download-this-methodology}}</h3>

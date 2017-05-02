@@ -3,45 +3,49 @@
 	{{!-- For dataset pages that have 'correction alerts' instead of versions and 'alert alerts' for normal alerts --}}
 	{{#if_any has-corrections has-alerts}}
 		{{#if has-corrections}}
-			<section class="show-hide__content alert--warning__content section__content--markdown">
-				{{#if_all has-corrections has-alerts}}
-					<h3 class="alert--notice__title">{{labels.corrections}}</h3>
-				{{/if_all}}
-				{{#loop alerts orderBy="date" reverse=true}}
-					{{#if_eq type "correction"}}
-						<p class="alert__date">{{df date}}</p>
-						{{md markdown}}
-					{{/if_eq}}
-				{{/loop}}
-			</section>
+			<div class="show-hide__content alert--warning__content section__content--markdown">
+				<section>
+					{{#if_all has-corrections has-alerts}}
+						<h3 class="alert--notice__title">{{labels.corrections}}</h3>
+					{{/if_all}}
+					{{#loop alerts orderBy="date" reverse=true}}
+						{{#if_eq type "correction"}}
+							<p class="alert__date">{{df date}}</p>
+							{{md markdown}}
+						{{/if_eq}}
+					{{/loop}}
+				</section>
+			</div>
 		{{/if}}
 		{{#if has-alerts}}
-			<section class="show-hide__content alert--warning__content section__content--markdown">
-				{{#if_all has-corrections has-alerts}}
-					<h3 class="alert--notice__title">{{labels.notices}}</h3>
-				{{/if_all}}
-				{{#loop alerts orderBy="date" reverse=true}}
-					{{#if_eq type "alert"}}
-						<p class="alert__date">{{df date}}</p>
-						{{md markdown}}
-					{{/if_eq}}
-				{{/loop}}
-			</section>
+			<div class="show-hide__content alert--warning__content section__content--markdown">
+				<section>
+					{{#if_all has-corrections has-alerts}}
+						<h3 class="alert--notice__title">{{labels.notices}}</h3>
+					{{/if_all}}
+					{{#loop alerts orderBy="date" reverse=true}}
+						{{#if_eq type "alert"}}
+							<p class="alert__date">{{df date}}</p>
+							{{md markdown}}
+						{{/if_eq}}
+					{{/loop}}
+				</section>
+			</div>
 		{{/if}}
 
 	{{else}}
 
 		{{!-- Normal alerts --}}
-		<section class="show-hide__content alert--warning__content section__content--markdown">
-			{{#if_all versions alerts}}
-				<h3 class="alert--notice__title">{{labels.notices}}</h3>
-			{{/if_all}}
-			{{#loop alerts orderBy="date" reverse=true}}
-				<p class="alert__date">{{df date}}</p>
-				{{md markdown}}
-			{{/loop}}
-		</section>
-
+		<div class="show-hide__content alert--warning__content section__content--markdown">
+			<section>
+				{{#if_all versions alerts}}
+					<h3 class="alert--notice__title">{{labels.notices}}</h3>
+				{{/if_all}}
+				{{#loop alerts orderBy="date" reverse=true}}
+					<p class="alert__date">{{df date}}</p>
+					{{md markdown}}
+				{{/loop}}
+			</section>
+		</div>
 	{{/if_any}}
 {{/if}}
-

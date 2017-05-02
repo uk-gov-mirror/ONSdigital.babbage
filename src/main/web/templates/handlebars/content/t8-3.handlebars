@@ -29,20 +29,18 @@
 
 
 {{#partial "block-content"}}
-    <div class="wrapper">
+    <div class="wrapper margin-bottom-sm--2 margin-bottom-md--4">
         <div class="col-wrap">
             <div class="col col--lg-two-thirds col--md-two-thirds">
-
-                <div class="col col--md-31 col--lg-39">
-
-                    {{#if description.summary}}
-
+                {{#if description.summary}}
+                    <section>
                         <h2>About this dataset</h2>
                         <p class="margin-top-sm--0 margin-top-md--0">{{description.summary}}</p>
+                    </section>
+                {{/if}}
 
-                    {{/if}}
-
-                    {{#if datasets}}
+                {{#if datasets}}
+                    <section>
                         <h2 class="margin-top-sm--0 margin-top-md--0 margin-bottom-sm--1 margin-bottom-md--1">{{labels.dataset-downloads}}</h2>
 
                         {{#each datasets}}
@@ -59,19 +57,19 @@
                                                 {{!-- TIMESERIES DATASETS --}}
                                         {{!-- <div class="col col--md-8 col--lg-9"> --}}
                                                     <a href="/file?uri={{concat uri "/" this.file}}"
-                                                       title="Download as {{fe (lowercase (concat uri "/" this.file))}}"
-                                                       class="btn btn--primary btn--thick" data-ga-event
-                                                       data-ga-event-category='download-{{fe (lowercase (concat uri "/" this.file))}}'
-                                                       data-ga-event-label="{{../../../description.title}} - {{description.edition}}">
+                                                        title="Download as {{fe (lowercase (concat uri "/" this.file))}}"
+                                                        class="btn btn--primary btn--thick" data-ga-event
+                                                        data-ga-event-category='download-{{fe (lowercase (concat uri "/" this.file))}}'
+                                                        data-ga-event-label="{{../../../description.title}} - {{description.edition}}">
                                                         {{#if_eq (fe file) 'csdb'}}structured text{{else}}{{fe (lowercase (concat uri "/" file))}}{{/if_eq}}
                                                         ({{fs (lowercase (concat uri "/" this.file))}})
                                                     </a>
                                                     {{!-- <form method="get" action="/file">
-                                                         <button type="submit" title="Latest version" class="btn btn--primary btn--thick download-analytics">
-                                                             {{fe (lowercase (concat uri "/" this.file))}} ({{fs (lowercase (concat uri "/" this.file))}})
-                                                         </button>
-                                                         <input type="hidden" name="uri" value="{{concat uri "/" this.file}}"/>
-                                                     </form> --}}
+                                                            <button type="submit" title="Latest version" class="btn btn--primary btn--thick download-analytics">
+                                                                {{fe (lowercase (concat uri "/" this.file))}} ({{fs (lowercase (concat uri "/" this.file))}})
+                                                            </button>
+                                                            <input type="hidden" name="uri" value="{{concat uri "/" this.file}}"/>
+                                                        </form> --}}
                                         {{!-- </div> --}}
 
                                         {{/if}}
@@ -123,7 +121,7 @@
                                         {{#if file}}
 
                                             {{!-- NON-TIMESERIES DATASETS --}}
-                                            <div id="{{slugify description.edition}}" class="show-hide show-hide--light border-top--abbey-sm border-top--abbey-md border-top--abbey-lg {{#if_eq is-last "true"}}border-bottom--abbey-sm border-bottom--abbey-md border-bottom--abbey-lg margin-top--negative-two-fix margin-bottom--6{{/if_eq}} js-show-hide">
+                                            <div id="{{slugify description.edition}}" class="show-hide show-hide--light border-top--abbey-sm border-top--abbey-md border-top--abbey-lg {{#if_eq is-last "true"}}border-bottom--abbey-sm border-bottom--abbey-md border-bottom--abbey-lg margin-top--negative-two-fix margin-bottom--1{{/if_eq}} js-show-hide">
                                                 <div class="js-show-hide__title {{#if_eq is-first "true"}}is-shown{{/if_eq}}">
                                                     <h3 class="margin-top-sm--0 margin-top-md--0 margin-bottom-sm--0 margin-bottom-md--0">{{description.edition}}{{#if description.versionLabel}}: {{description.versionLabel}}{{/if}}</h3>
                                                 </div>
@@ -137,11 +135,11 @@
                                                                 {{fe (lowercase (concat uri "/" this.file))}} ({{fs (lowercase (concat uri "/" this.file))}})
                                                             </a>
                                                             {{!-- <form method="get" action="/file">
-                                                                 <button type="submit" title="Latest version" class="btn btn--primary btn--thick download-analytics">
-                                                                     {{fe (lowercase (concat uri "/" this.file))}} ({{fs (lowercase (concat uri "/" this.file))}})
-                                                                 </button>
-                                                                 <input type="hidden" name="uri" value="{{concat uri "/" this.file}}"/>
-                                                             </form> --}}
+                                                                    <button type="submit" title="Latest version" class="btn btn--primary btn--thick download-analytics">
+                                                                        {{fe (lowercase (concat uri "/" this.file))}} ({{fs (lowercase (concat uri "/" this.file))}})
+                                                                    </button>
+                                                                    <input type="hidden" name="uri" value="{{concat uri "/" this.file}}"/>
+                                                                </form> --}}
                                                         </div>
 
                                                     </div>
@@ -162,27 +160,24 @@
                                                         </ul>
                                                     {{/if}}
                                                 </div>
-
                                             </div>
-
                                         {{/if}}
                                     {{/each}}
                                 {{/if}}
                             {{/resolve}}
                         {{/each}}
-                    {{/if}}
-                </div>
+                    </section>
+                {{/if}}
 
                 {{!-- INFORMATION AND NOTES --}}
                 {{#if section.markdown}}
-                    <div class="section__content--static-markdown float-left">
+                    <div class="section__content--static-markdown margin-top-sm--2 margin-top-md--3">
                         <section>
                             <h3>{{labels.dataset-notes}}</h3>
                             {{md section.markdown}}
                         </section>
                     </div>
                 {{/if}}
-
             </div>
 
             {{!-- RELATED DATA AND DOCUMENTS --}}

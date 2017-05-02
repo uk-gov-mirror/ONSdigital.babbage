@@ -18,29 +18,33 @@
             <article class="col col--md-two-thirds col--lg-two-thirds margin-bottom--double">
 
                 {{!-- SUMMARY --}}
-                <section class="section__content--static-markdown">
-                    <h2>{{labels.summary-of-request}}</h2>
-                    {{#each markdown}}
-                        {{md this}}
-                    {{/each}}
-                </section>
+                <div class="section__content--static-markdown">
+                    <section>
+                        <h2>{{labels.summary-of-request}}</h2>
+                        {{#each markdown}}
+                            {{md this}}
+                        {{/each}}
+                    </section>
+                </div>
 
-                <section class="section__content--static-markdown">
-                    <h2>{{#if_eq downloads.size 1}}{{labels.download-associated-with-request}}{{/if_eq}} {{#if_ne downloads.size 1}}{{labels.urd-downloads}}{{/if_ne}}</h2>
-                    <div class="box__content">
-                        <ul class="list--neutral">
-                            {{#each downloads}}
-                                <li>
-                                    <a href="/file?uri={{concat uri "/" (fn file)}}">{{title}}</a>
-                                    ({{fs (concat uri "/"  (fn file))}} {{fe (concat uri "/" (fn file))}})
-                                </li>
-                            {{/each}}
-                        </ul>
-                    </div>
-                    {{!-- {{#each downloads}}
-                         <p><a href="/file?uri={{concat uri "/" (fn file)}}">{{title}}</a> ({{fs (concat uri "/"  (fn file))}} {{fe (concat uri "/" (fn file))}})</p>
-                     {{/each}} --}}
-                </section>
+                <div class="section__content--static-markdown">
+                    <section>
+                        <h2>{{#if_eq downloads.size 1}}{{labels.download-associated-with-request}}{{/if_eq}} {{#if_ne downloads.size 1}}{{labels.urd-downloads}}{{/if_ne}}</h2>
+                        <div class="box__content">
+                            <ul class="list--neutral">
+                                {{#each downloads}}
+                                    <li>
+                                        <a href="/file?uri={{concat uri "/" (fn file)}}">{{title}}</a>
+                                        ({{fs (concat uri "/"  (fn file))}} {{fe (concat uri "/" (fn file))}})
+                                    </li>
+                                {{/each}}
+                            </ul>
+                        </div>
+                        {{!-- {{#each downloads}}
+                            <p><a href="/file?uri={{concat uri "/" (fn file)}}">{{title}}</a> ({{fs (concat uri "/"  (fn file))}} {{fe (concat uri "/" (fn file))}})</p>
+                        {{/each}} --}}
+                    </section>
+                </div>
 
             </article>
 
