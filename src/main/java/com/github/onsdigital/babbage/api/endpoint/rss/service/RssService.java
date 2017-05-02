@@ -101,8 +101,13 @@ public class RssService {
     /**
      * @return a {@link SyndFeed} for the Release Calendar RSS feed defined by the requested parameters.
      */
-    public SyndFeed getReleaseCalendarFeed(HttpServletRequest request, SearchQueries searchQueries) {
-        Optional<SearchResult> results = search(searchQueries);
+    public SyndFeed getReleaseCalendarFeed(HttpServletRequest request, SearchParam param) {
+        Optional<SearchResult> result = null;
+        try {
+            result = Optional.of(SearchUtils.search(param).get("result"));
+        } catch (IOException | URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
         StringBuilder title = new StringBuilder(calendarTitle(request));
         String query;
 
@@ -115,7 +120,7 @@ public class RssService {
                 .type(rssType)
                 .link(((Location) ThreadContext.getData(LOCATION_KEY)).getHost())
                 .category(title.toString())
-                .entries(searchResultsToSyndEntries(results))
+                .entries(searchResultsToSyndEntries(result))
                 .title(title.toString())
                 .build();
     }
@@ -123,8 +128,8 @@ public class RssService {
     /**
      * @return a {@link BabbageRssResponse} for the Release Calendar RSS feed defined by the requested parameters.
      */
-    public BabbageRssResponse getReleaseCalendarFeedResponse(HttpServletRequest request, SearchQueries searchQueries) {
-        return writeToResponse(getReleaseCalendarFeed(request, searchQueries));
+    public BabbageRssResponse getReleaseCalendarFeedResponse(HttpServletRequest request, SearchParam param) {
+        return writeToResponse(getReleaseCalendarFeed(request, param));
     }
 
     /**
