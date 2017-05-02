@@ -1,11 +1,19 @@
 package com.github.onsdigital.babbage.api.endpoint;
 
 import com.github.davidcarboni.restolino.framework.Api;
+import com.github.onsdigital.babbage.api.util.SearchParam;
+import com.github.onsdigital.babbage.api.util.SearchParamFactory;
+import com.github.onsdigital.babbage.api.util.SearchUtils;
 import com.github.onsdigital.babbage.configuration.Configuration;
 import com.github.onsdigital.babbage.search.helpers.ONSSearchResponse;
 import com.github.onsdigital.babbage.search.helpers.SearchHelper;
+import com.github.onsdigital.babbage.search.input.SortBy;
 import com.github.onsdigital.babbage.search.model.ContentType;
+import com.github.onsdigital.babbage.search.model.QueryType;
+import com.github.onsdigital.babbage.search.model.SearchResult;
 import com.github.onsdigital.babbage.search.model.field.Field;
+import com.github.onsdigital.babbage.search.model.filter.PublishedFilter;
+import com.github.onsdigital.babbage.search.model.filter.UpcomingFilter;
 import com.github.onsdigital.babbage.util.ThreadContext;
 import net.fortuna.ical4j.data.CalendarOutputter;
 import net.fortuna.ical4j.model.PropertyList;
@@ -19,12 +27,15 @@ import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.GET;
 import javax.ws.rs.core.Context;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.onsQuery;
+import static com.github.onsdigital.babbage.search.model.QueryType.SEARCH;
 import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
 import static org.elasticsearch.index.query.QueryBuilders.rangeQuery;
 
@@ -51,7 +62,7 @@ public class Calendar {
         properties.add(new ProdId("-//Office for National Statistics//NONSGML//EN"));
         properties.add(Version.VERSION_2_0);
         properties.add(CalScale.GREGORIAN);
-        addReleaseEvents(calendar);
+        addReleaseEvents(calendar, httpServletRequest);
         try {
             calendar.validate();
         } catch (ValidationException e) {
@@ -62,15 +73,9 @@ public class Calendar {
     }
 
 
-    public void addReleaseEvents(net.fortuna.ical4j.model.Calendar calendar) throws IOException {
-        BoolQueryBuilder releaseQuery = boolQuery()
-                .filter(rangeQuery(Field.releaseDate.fieldName())
-                .from(getThreeMonthsAgo()));
-        ONSSearchResponse searchResponse = SearchHelper
-                .search(onsQuery(releaseQuery)
-                        .fetchFields(Field.title,Field.edition,Field.releaseDate, Field.summary)
-                        .types(ContentType.release).size(10000));
-        List<Map<String, Object>> releases = searchResponse.getResult().getResults();
+    public void addReleaseEvents(net.fortuna.ical4j.model.Calendar calendar, HttpServletRequest request) throws IOException {
+        Map<String, SearchResult> results = query(request);
+        List<Map<String, Object>> releases = results.get("result").getResults();
         for (Map<String, Object> release : releases) {
             calendar.getComponents().add(toEvent(release));
         }
@@ -120,11 +125,33 @@ public class Calendar {
     }
 
 
-    public Date getThreeMonthsAgo() {
+    private Date getThreeMonthsAgo() {
         java.util.Calendar cal = java.util.Calendar.getInstance();
         cal.setTime(new Date());
         cal.add(java.util.Calendar.MONTH, -3);
         return cal.getTime();
+    }
+
+    private boolean isUpcoming(HttpServletRequest request) {
+        return "upcoming".equalsIgnoreCase(request.getParameter("view"));
+    }
+
+    private Map<String, SearchResult> query(HttpServletRequest request) {
+        final SearchParam searchParam = SearchParamFactory.getInstance(request, SortBy.first_letter, Collections.singleton(QueryType.SEARCH));
+        searchParam.addDocTypes(ContentType.release);
+        if (isUpcoming(request)) {
+            searchParam.addFilter(new UpcomingFilter());
+        } else {
+            searchParam.addFilter(new PublishedFilter());
+        }
+        searchParam.setSize(10000);
+        Map<String, SearchResult> results = null;
+        try {
+            results = SearchUtils.search(searchParam);
+        } catch (IOException | URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+        return results;
     }
 
 

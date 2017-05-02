@@ -53,102 +53,35 @@ public class ReleaseCalendar extends BaseRequestHandler implements ListRequestHa
 	@Override
 	public BabbageResponse get(String uri, HttpServletRequest request) throws Exception {
 		if (rssService.isRssRequest(request)) {
-			return rssService.getReleaseCalendarFeedResponse(request, queries(request, false));
+			return rssService.getReleaseCalendarFeedResponse(request, query(request));
 		} else {
-
-			// Not ideal but the lack of cohesion & encapsulation in search makes this very messy to do properly.
-			ContentType[] dataFilters = new ContentType[]{ ContentType.release};
-			final SearchParam searchParam = SearchParamFactory.getInstance(request, SortBy.first_letter, Collections.singleton(QueryType.SEARCH));
-			searchParam.addDocTypes(ContentType.release);
-			if (isUpcoming(request)) {
-				searchParam.addFilter(new UpcomingFilter());
-			} else {
-				searchParam.addFilter(new PublishedFilter());
-			}
-			// Filter on dates!!!
-
-			Map<String, SearchResult> results = null;
-			try {
-				results = SearchUtils.search(searchParam);
-			} catch (IOException | URISyntaxException e) {
-				e.printStackTrace();
-			}
-			return buildPageResponse(getClass().getSimpleName(), results);
+			return searchService.getBabbageResponseListPage(getClass().getSimpleName(), query(request));
 		}
 	}
 
 	@Override
-	public BabbageResponse getData(String uri, HttpServletRequest request) throws IOException, ContentReadException {
-		return searchService.listJson(getClass().getSimpleName(), queries(request, true));
+	public BabbageResponse getData(String uri, HttpServletRequest request) throws IOException, ContentReadException, URISyntaxException {
+		return searchService.listJson(getClass().getSimpleName(), query(request));
 	}
-
-	private SearchQueries queries(HttpServletRequest request, boolean highlight) {
-		boolean upcoming = isUpcoming(request);
-		SortBy defaultSort = upcoming ? SortBy.release_date_asc : SortBy.release_date;
-		return () -> toList(
-				buildListQuery(request, filters(request, upcoming), defaultSort)
-						.types(ContentType.release)
-						.highlight(highlight)
-		);
-	}
-
-	private boolean isUpcoming(HttpServletRequest request) {
-		return UPCOMING_VIEW.equalsIgnoreCase(request.getParameter(VIEW_PARAM));
-	}
-
-	private SearchFilter filters(HttpServletRequest request, boolean upcoming) {
-		return (query) -> {
-			ONSFilterBuilders.filterDates(request, query);
-			if (upcoming) {
-				filterUpcoming(query);
-			} else {//published
-				filterPublished(query);
-			}
-		};
-	}
-
-	private void filterUpcoming(BoolQueryBuilder query) {
-		QueryBuilder notPublishedNotCancelled = and(not(published()), not(cancelled()));
-		QueryBuilder cancelledButNotDue = and(cancelled(), not(due()));
-		query.filter(or(notPublishedNotCancelled, cancelledButNotDue));
-	}
-
-	private void filterPublished(BoolQueryBuilder query) {
-		QueryBuilder publishedNotCancelled = and(published(), not(cancelled()));
-		QueryBuilder cancelledAndDue = and(cancelled(), due());
-		query.filter(or(publishedNotCancelled, cancelledAndDue));
-	}
-
 
 	@Override
 	public String getRequestType() {
 		return REQUEST_TYPE;
 	}
 
-
-	private QueryBuilder published() {
-		return termQuery(Field.published.fieldName(), true);
+	private boolean isUpcoming(HttpServletRequest request) {
+		return UPCOMING_VIEW.equalsIgnoreCase(request.getParameter(VIEW_PARAM));
 	}
 
-	private QueryBuilder cancelled() {
-		return termQuery(Field.cancelled.fieldName(), true);
-	}
+	private SearchParam query(HttpServletRequest request) {
+		final SearchParam searchParam = SearchParamFactory.getInstance(request, SortBy.first_letter, Collections.singleton(QueryType.SEARCH));
+		searchParam.addDocTypes(ContentType.release);
+		if (isUpcoming(request)) {
+			searchParam.addFilter(new UpcomingFilter());
+		} else {
+			searchParam.addFilter(new PublishedFilter());
+		}
 
-	private QueryBuilder due() {
-		return rangeQuery(Field.releaseDate.fieldName()).to(new Date());
+		return searchParam;
 	}
-
-	private QueryBuilder not(QueryBuilder query) {
-		return boolQuery().mustNot(query);
-	}
-
-	//Or query for given two queries. Database would help a lot , wouldn't it ?
-	private QueryBuilder or(QueryBuilder q1, QueryBuilder q2) {
-		return boolQuery().should(q1).should(q2);
-	}
-
-	private QueryBuilder and(QueryBuilder q1, QueryBuilder q2) {
-		return boolQuery().must(q1).must(q2);
-	}
-
 }
