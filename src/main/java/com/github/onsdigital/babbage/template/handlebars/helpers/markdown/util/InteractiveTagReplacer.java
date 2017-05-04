@@ -8,12 +8,10 @@ import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * Created by crispin on 11/12/2015.
- */
 public class InteractiveTagReplacer extends TagReplacementStrategy {
 
-    private static final Pattern pattern = Pattern.compile("<ons-interactive\\surl=\"([-A-Za-z0-9+&@#/%?=~_|!:,.;()*$]+)\"?\\s?/>");
+    //private static final Pattern pattern = Pattern.compile("<ons-interactive\\surl=\"([-A-Za-z0-9+&@#/%?=~_|!:,.;()*$]+)\"?\\s?/>");
+    private static final Pattern pattern = Pattern.compile("<ons-interactive\\surl=\"([-A-Za-z0-9+&@#/%?=~_|!:,.;()*$]+)\"\\s?(?:\\s?full-width=\"(.*[^\"])\")?/>");
     private final String template;
 
     /**
@@ -36,9 +34,11 @@ public class InteractiveTagReplacer extends TagReplacementStrategy {
     @Override
     String replace(Matcher matcher) throws IOException {
         String tagPath = matcher.group(1);
+        String fullWidth = matcher.group(2);
         LinkedHashMap<String, Object> additionalData = new LinkedHashMap<>();
         additionalData.put("id", UUID.randomUUID().toString().substring(10));
         additionalData.put("url", tagPath);
+        additionalData.put("full-width", fullWidth);
         return TemplateService.getInstance().renderTemplate(template, null, additionalData);
     }
 }
