@@ -221,92 +221,98 @@
                     <div class="col margin-bottom--double">
                         {{!-- RELEASE INFORMATION --}}
                         {{#if description.nationalStatistic}}
-                            <section class="section__content--static-markdown">
-                                <p> The United Kingdom Statistics Authority has designated these statistics as National
+                            <div class="section__content--static-markdown">
+                                <section>
+                                    <p> The United Kingdom Statistics Authority has designated these statistics as National
                                     Statistics, in accordance with the <a href="http://www.legislation.gov.uk/ukpga/2007/18/contents">Statistics and Registration Service
                                         Act 2007</a> and
                                     signifying compliance with the <a href="http://www.statisticsauthority.gov.uk/assessment/code-of-practice/">Code of Practice for Official
                                         Statistics</a>.
-                                </p>
+                                    </p>
 
-                                <p>
-                                    Designation can be broadly interpreted to mean that the statistics:
-                                </p>
-                                <ul>
-                                    <li>meet identified user needs</li>
-                                    <li>are well explained and readily accessible</li>
-                                    <li>are produced according to sound methods</li>
-                                    <li>are managed impartially and objectively in the public interest</li>
-                                </ul>
-                                <p>
-                                    Once statistics have been designated as National Statistics it is a statutory
-                                    requirement that the Code of Practice shall continue to be observed.
-                                </p>
-                            </section>
+                                    <p>
+                                        Designation can be broadly interpreted to mean that the statistics:
+                                    </p>
+                                    <ul>
+                                        <li>meet identified user needs</li>
+                                        <li>are well explained and readily accessible</li>
+                                        <li>are produced according to sound methods</li>
+                                        <li>are managed impartially and objectively in the public interest</li>
+                                    </ul>
+                                    <p>
+                                        Once statistics have been designated as National Statistics it is a statutory
+                                        requirement that the Code of Practice shall continue to be observed.
+                                    </p>
+                                </section>
+                            </div>
                         {{/if}}
 
                         <div class="padding-top--1 padding-bottom--1">
                             {{!-- PRE-RELEASE ACCESS LIST --}}
                             {{#if markdown}}
-                                <section id="prereleaseaccesslist"
-                                         class="js-show-hide border-top--iron-sm border-top--iron-md border-bottom--iron-sm border-bottom--iron-md padding-bottom--0">
-                                    <div class="show-hide show-hide--light">
-                                        <div class="js-show-hide__title">
-                                            <h2 class="show-hide__title flush">Pre-release access list
-                                                for {{description.title}}{{#if description.edition}}
-                                                    : {{description.edition}}{{/if}}</h2>
-                                        </div>
-                                        <div class="js-show-hide__content">
-                                            <p>
-                                                The phrase 'Pre-release Access' refers to the practice whereby official
-                                                statistics
-                                                in their final form, and any accompanying written commentary, are made
-                                                available
-                                                to
-                                                an eligible person in advance of their publication. The rules and
-                                                principles
-                                                which
-                                                govern pre-release access are featured within the Pre-release Access to
-                                                Official
-                                                Statistics Order 2008.
-                                            </p>
+                                <div id="prereleaseaccesslist"
+                                        class="js-show-hide border-top--iron-sm border-top--iron-md border-bottom--iron-sm border-bottom--iron-md padding-bottom--0">
+                                    <section>
+                                        <div class="show-hide show-hide--light">
+                                            <div class="js-show-hide__title">
+                                                <h2 class="show-hide__title flush">Pre-release access list
+                                                    for {{description.title}}{{#if description.edition}}
+                                                        : {{description.edition}}{{/if}}</h2>
+                                            </div>
+                                            <div class="js-show-hide__content">
+                                                <p>
+                                                    The phrase 'Pre-release Access' refers to the practice whereby official
+                                                    statistics
+                                                    in their final form, and any accompanying written commentary, are made
+                                                    available
+                                                    to
+                                                    an eligible person in advance of their publication. The rules and
+                                                    principles
+                                                    which
+                                                    govern pre-release access are featured within the Pre-release Access to
+                                                    Official
+                                                    Statistics Order 2008.
+                                                </p>
 
-                                            <p>
-                                                Besides ONS staff, the following persons are given pre-release access by
-                                                the
-                                                period
-                                                indicated before release.
-                                            </p>
-                                            {{md markdown.0}}
+                                                <p>
+                                                    Besides ONS staff, the following persons are given pre-release access by
+                                                    the
+                                                    period
+                                                    indicated before release.
+                                                </p>
+                                                {{md markdown.0}}
+                                            </div>
                                         </div>
-                                    </div>
-                                </section>
+                                    </section>
+                                </div>
                             {{/if}}
 
                             {{!-- DATE CHANGES --}}
                             {{#if dateChanges}}
-                                <section id="datechanges"
-                                         class="js-show-hide border-top--iron-sm border-top--iron-md border-bottom--iron-sm border-bottom--iron-md padding-bottom--0">
-                                    <div class="show-hide show-hide--light">
-                                        <div class="js-show-hide__title">
-                                            <h2 class="show-hide__title flush">Changes to this release date</h2>
+                                <div id="datechanges"
+                                    class="js-show-hide border-top--iron-sm border-top--iron-md border-bottom--iron-sm border-bottom--iron-md padding-bottom--0">
+                                    <section>
+                                        <div class="show-hide show-hide--light">
+                                            <div class="js-show-hide__title">
+                                                <h2 class="show-hide__title flush">Changes to this release date</h2>
+                                            </div>
+                                            <div class="js-show-hide__content">
+                                                <ul class="list--neutral margin-top">
+                                                    {{#loop dateChanges orderBy="previousDate" reverse=true}}
+                                                        <li class="margin-bottom overflow--hidden">
+                                                            <dl>
+                                                                <dt class="col col--md-10 col--lg-10">Previous date:</dt>
+                                                                <dd class="col col--md-37 col--lg-49">{{df previousDate}}</dd>
+                                                                <dt class="col col--md-10 col--lg-10">Reason for change:</dt>
+                                                                <dd class="col col--md-37 col--lg-49">{{changeNotice}}</dd>
+                                                            </dl>
+                                                        </li>
+                                                    {{/loop}}
+                                                </ul>
+                                            </div>
                                         </div>
-                                        <div class="js-show-hide__content">
-                                            <ul class="list--neutral margin-top">
-                                                {{#loop dateChanges orderBy="previousDate" reverse=true}}
-                                                    <li class="margin-bottom overflow--hidden">
-                                                        <dl>
-                                                            <dt class="col col--md-10 col--lg-10">Previous date:</dt>
-                                                            <dd class="col col--md-37 col--lg-49">{{df previousDate}}</dd>
-                                                            <dt class="col col--md-10 col--lg-10">Reason for change:</dt>
-                                                            <dd class="col col--md-37 col--lg-49">{{changeNotice}}</dd>
-                                                        </dl>
-                                                    </li>
-                                                {{/loop}}
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </section>
+                                    </section>
+                                </div>
                             {{/if}}
                         </div>
                     </div>

@@ -2,10 +2,12 @@
     <div class="wrapper">
         <article class="col col--md-36 col--lg-39 page-content__main-content">
             {{#if markdown.0}}
-                <section class="section__content--static-markdown">
-                    <h2>About this article</h2>
-                    {{md markdown.0}}
-                </section>
+                <div class="section__content--static-markdown">
+                    <section>
+                        <h2>About this article</h2>
+                        {{md markdown.0}}
+                    </section>
+                </div>
             {{/if}}
 
             {{!-- TODO Remove this {{if}}, any publication downloads should be storing uri for PDF in the same node --}}

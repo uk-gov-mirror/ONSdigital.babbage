@@ -1,9 +1,11 @@
-<section id="{{slugify title}}" class="accordion is-collapsed section__content--markdown">
-	<h2 class="accordion__title" aria-controls="content-{{@index_1}}">
-	<span class="section__content-number">{{nf (add sections.size @index_1)}}.</span>{{title}}
-	</h2>
-	<div class="accordion__content" aria-labelledby="sc-{{@index_1}}">
-		{{md markdown}}
-		<a class="print--hide js-scroll" href="#toc" class="">{{labels.back-to-table-of-contents}}</a>
-	</div>
-</section>
+<div id="{{slugify title}}" class="accordion is-collapsed section__content--markdown">
+	<section>
+		<h2 class="accordion__title" aria-controls="content-{{@index_1}}">
+		<span class="section__content-number">{{nf (add sections.size @index_1)}}.</span>{{title}}
+		</h2>
+		<div class="accordion__content" aria-labelledby="sc-{{@index_1}}">
+			{{md markdown}}
+			<a class="print--hide js-scroll" href="#toc" class="">{{labels.back-to-table-of-contents}}</a>
+		</div>
+	</section>
+</div>
