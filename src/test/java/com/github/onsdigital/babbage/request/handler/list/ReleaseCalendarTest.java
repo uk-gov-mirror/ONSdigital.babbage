@@ -6,7 +6,6 @@ import com.github.onsdigital.babbage.error.ValidationError;
 import com.github.onsdigital.babbage.response.BabbageRssResponse;
 import com.github.onsdigital.babbage.response.base.BabbageResponse;
 import com.github.onsdigital.babbage.search.SearchService;
-import com.github.onsdigital.babbage.search.helpers.base.SearchQueries;
 import com.github.onsdigital.babbage.search.helpers.dates.PublishDates;
 import com.github.onsdigital.babbage.search.helpers.dates.PublishDatesException;
 
@@ -18,15 +17,12 @@ import org.mockito.MockitoAnnotations;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-import java.util.Map;
 
 import static com.github.onsdigital.babbage.util.TestsUtil.setPrivateStaticField;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyListOf;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -110,7 +106,7 @@ public class ReleaseCalendarTest {
         assertThat("Incorrect response returned", response, equalTo(babbageResponseMock));
         verify(rssServiceMock, times(1)).isRssRequest(requestMock);
         //verify(searchServiceMock, times(1)).extractPublishDates(requestMock);
-        verify(searchServiceMock, never()).listPage(eq(CLASS_NAME), any(SearchQueries.class));
+        //verify(searchServiceMock, never()).listPage(eq(CLASS_NAME), any(SearchQueries.class));
         verify(searchServiceMock, times(1)).getBabbageResponseListPage(eq(CLASS_NAME), any(SearchParam.class));
         verifyNoMoreInteractions(rssServiceMock);
     }

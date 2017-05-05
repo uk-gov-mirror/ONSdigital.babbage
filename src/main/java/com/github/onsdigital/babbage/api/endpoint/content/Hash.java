@@ -5,7 +5,6 @@ import com.github.onsdigital.babbage.content.client.ContentClient;
 import com.github.onsdigital.babbage.content.client.ContentReadException;
 import com.github.onsdigital.babbage.content.client.ContentResponse;
 import com.github.onsdigital.babbage.error.BabbageException;
-import com.github.onsdigital.babbage.publishing.PublishingManager;
 import com.github.onsdigital.babbage.response.util.CacheControlHelper;
 import org.apache.commons.io.IOUtils;
 

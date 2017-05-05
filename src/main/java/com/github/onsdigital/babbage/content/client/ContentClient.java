@@ -2,8 +2,6 @@ package com.github.onsdigital.babbage.content.client;
 
 import com.github.onsdigital.babbage.configuration.Configuration;
 import com.github.onsdigital.babbage.error.ResourceNotFoundException;
-import com.github.onsdigital.babbage.publishing.PublishingManager;
-import com.github.onsdigital.babbage.publishing.model.PublishInfo;
 import com.github.onsdigital.babbage.util.ThreadContext;
 import com.github.onsdigital.babbage.util.http.ClientConfiguration;
 import com.github.onsdigital.babbage.util.http.PooledHttpClient;
@@ -128,31 +126,6 @@ public class ContentClient {
         if (!Configuration.GENERAL.isCacheEnabled()) {
             return response;
         }
-
-        try {
-            PublishInfo nextPublish = PublishingManager.getInstance().getNextPublishInfo(uri);
-            Date nextPublishDate = nextPublish == null ? null : nextPublish.getPublishDate();
-            int maxAge = Configuration.GENERAL.getDefaultContentCacheTime();
-            Integer timeToExpire = null;
-            if (nextPublishDate != null) {
-                Long time = (nextPublishDate.getTime() - new Date().getTime()) / 1000;
-                timeToExpire = time.intValue();
-            }
-
-            if (timeToExpire == null) {
-                response.setMaxAge(maxAge);
-            } else if (timeToExpire > 0) {
-                response.setMaxAge(timeToExpire < maxAge ? timeToExpire : maxAge);
-            } else if (timeToExpire < 0 && Math.abs(timeToExpire) > Configuration.GENERAL.getPublishCacheTimeout()) {
-                //if publish is due but there is still a publish date record after an hour drop it
-                System.out.println("Dropping publish date record due to publish wait timeout for " + uri);
-                PublishingManager.getInstance().dropPublishDate(nextPublish);
-                return resolveMaxAge(uri, response);//resolve for next publish date if any
-            }
-        } catch (Exception e) {
-            System.err.println("!!!!!!!!!!!!Warning: Managing publish date failed  for uri " + uri + ". Skipping setting cache times");
-            e.printStackTrace();
-        }
         return response;
     }
 
@@ -173,28 +146,6 @@ public class ContentClient {
             }
         }
         return sendPost(getPath(getExportEndpoint()), parameters);
-    }
-
-    public ContentResponse reIndex(String key, String uri) throws ContentReadException {
-        List<NameValuePair> parameters = new ArrayList<>();
-        parameters.add(new BasicNameValuePair("key", key));
-        parameters.add(new BasicNameValuePair("uri", uri));
-        return sendPost(getReindexEndpoint(), parameters);
-    }
-
-    public ContentResponse deleteIndex(String key, String uri, String contentType) throws ContentReadException {
-        List<NameValuePair> parameters = new ArrayList<>();
-        parameters.add(new BasicNameValuePair("key", key));
-        parameters.add(new BasicNameValuePair("uri", uri));
-        parameters.add(new BasicNameValuePair("pageType", contentType));
-        return sendDelete(getReindexEndpoint(), parameters);
-    }
-
-    public ContentResponse reIndexAll(String key) throws ContentReadException {
-        List<NameValuePair> parameters = new ArrayList<>();
-        parameters.add(new BasicNameValuePair("key", key));
-        parameters.add(new BasicNameValuePair("all", "1"));
-        return sendPost(getReindexEndpoint(), parameters);
     }
 
     private ContentResponse sendGet(String path, List<NameValuePair> getParameters) throws ContentReadException {
@@ -219,19 +170,6 @@ public class ContentClient {
         CloseableHttpResponse response = null;
         try {
             return new ContentResponse(client.sendPost(path, getHeaders(), postParameters));
-        } catch (HttpResponseException e) {
-            IOUtils.closeQuietly(response);
-            throw wrapException(e);
-        } catch (IOException e) {
-            IOUtils.closeQuietly(response);
-            throw wrapException(e);
-        }
-    }
-
-    private ContentResponse sendDelete(String path, List<NameValuePair> postParameters) throws ContentReadException {
-        CloseableHttpResponse response = null;
-        try {
-            return new ContentResponse(client.sendDelete(path, getHeaders(), postParameters));
         } catch (HttpResponseException e) {
             IOUtils.closeQuietly(response);
             throw wrapException(e);

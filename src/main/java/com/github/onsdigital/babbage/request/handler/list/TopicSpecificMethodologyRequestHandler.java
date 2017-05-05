@@ -3,8 +3,6 @@ package com.github.onsdigital.babbage.request.handler.list;
 import com.github.onsdigital.babbage.request.handler.base.BaseRequestHandler;
 import com.github.onsdigital.babbage.request.handler.base.ListRequestHandler;
 import com.github.onsdigital.babbage.response.base.BabbageResponse;
-import com.github.onsdigital.babbage.search.helpers.base.SearchFilter;
-import com.github.onsdigital.babbage.search.helpers.base.SearchQueries;
 import com.github.onsdigital.babbage.search.input.TypeFilter;
 import com.github.onsdigital.babbage.search.model.ContentType;
 
@@ -12,10 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.Set;
 
-import static com.github.onsdigital.babbage.api.util.SearchUtils.*;
-import static com.github.onsdigital.babbage.search.builders.ONSFilterBuilders.filterUriPrefix;
-import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.toList;
-import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.typeCountsAggregate;
 import static com.github.onsdigital.babbage.search.input.TypeFilter.contentTypes;
 
 /**
@@ -32,23 +26,23 @@ public class TopicSpecificMethodologyRequestHandler extends BaseRequestHandler i
 
     @Override
     public BabbageResponse get(String uri, HttpServletRequest request) throws Exception {
-        return listPage(REQUEST_TYPE, uri, request, contentTypesToCount);
+        return  null; //listPage(REQUEST_TYPE, uri, request, contentTypesToCount);
     }
 
     @Override
     public BabbageResponse getData(String uri, HttpServletRequest request) throws IOException {
-        return listJson(REQUEST_TYPE, queries(uri, request));
+        return null; //listJson(REQUEST_TYPE, queries(uri, request));
     }
-
-    private SearchQueries queries(String uri, HttpServletRequest request) {
-        return () -> toList(
-                buildListQuery(request, methodologyFilters, filters(uri)).aggregate(typeCountsAggregate())
-        );
-    }
-
-    private SearchFilter filters(String uri) {
-        return (listQuery) -> filterUriPrefix(uri, listQuery);
-    }
+//
+//    private SearchQueries queries(String uri, HttpServletRequest request) {
+//        return () -> toList(
+//                buildListQuery(request, methodologyFilters, filters(uri)).aggregate(typeCountsAggregate())
+//        );
+//    }
+//
+//    private SearchFilter filters(String uri) {
+//        return (listQuery) -> filterUriPrefix(uri, listQuery);
+//    }
 
     @Override
     public String getRequestType() {

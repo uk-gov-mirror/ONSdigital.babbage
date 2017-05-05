@@ -3,40 +3,22 @@ package com.github.onsdigital.babbage.request.handler.list;
 import com.github.onsdigital.babbage.api.endpoint.rss.service.RssService;
 import com.github.onsdigital.babbage.api.util.SearchParam;
 import com.github.onsdigital.babbage.api.util.SearchParamFactory;
-import com.github.onsdigital.babbage.api.util.SearchUtils;
 import com.github.onsdigital.babbage.content.client.ContentReadException;
 import com.github.onsdigital.babbage.request.handler.base.BaseRequestHandler;
 import com.github.onsdigital.babbage.request.handler.base.ListRequestHandler;
 import com.github.onsdigital.babbage.response.base.BabbageResponse;
 import com.github.onsdigital.babbage.search.SearchService;
-import com.github.onsdigital.babbage.search.builders.ONSFilterBuilders;
-import com.github.onsdigital.babbage.search.helpers.base.SearchFilter;
-import com.github.onsdigital.babbage.search.helpers.base.SearchQueries;
-import com.github.onsdigital.babbage.search.helpers.dates.PublishDatesException;
 import com.github.onsdigital.babbage.search.input.SortBy;
 import com.github.onsdigital.babbage.search.model.ContentType;
 import com.github.onsdigital.babbage.search.model.QueryType;
-import com.github.onsdigital.babbage.search.model.SearchResult;
-import com.github.onsdigital.babbage.search.model.SearchResults;
-import com.github.onsdigital.babbage.search.model.field.Field;
-import com.github.onsdigital.babbage.search.model.filter.PrefixFilter;
 import com.github.onsdigital.babbage.search.model.filter.UpcomingFilter;
 import com.github.onsdigital.babbage.search.model.filter.PublishedFilter;
-import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.*;
 
-import static com.github.onsdigital.babbage.api.util.SearchUtils.buildListQuery;
-import static com.github.onsdigital.babbage.api.util.SearchUtils.buildPageResponse;
-import static com.github.onsdigital.babbage.api.util.SearchUtils.listPage;
-import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.toList;
-import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
-import static org.elasticsearch.index.query.QueryBuilders.rangeQuery;
-import static org.elasticsearch.index.query.QueryBuilders.termQuery;
 
 /**
  * Created by bren on 22/09/15.

@@ -5,13 +5,10 @@ import com.github.onsdigital.babbage.api.util.SearchParam;
 import com.github.onsdigital.babbage.api.util.SearchParamFactory;
 import com.github.onsdigital.babbage.api.util.SearchUtils;
 import com.github.onsdigital.babbage.configuration.Configuration;
-import com.github.onsdigital.babbage.search.helpers.ONSSearchResponse;
-import com.github.onsdigital.babbage.search.helpers.SearchHelper;
 import com.github.onsdigital.babbage.search.input.SortBy;
 import com.github.onsdigital.babbage.search.model.ContentType;
 import com.github.onsdigital.babbage.search.model.QueryType;
 import com.github.onsdigital.babbage.search.model.SearchResult;
-import com.github.onsdigital.babbage.search.model.field.Field;
 import com.github.onsdigital.babbage.search.model.filter.PublishedFilter;
 import com.github.onsdigital.babbage.search.model.filter.UpcomingFilter;
 import com.github.onsdigital.babbage.util.ThreadContext;
@@ -20,7 +17,6 @@ import net.fortuna.ical4j.model.PropertyList;
 import net.fortuna.ical4j.model.ValidationException;
 import net.fortuna.ical4j.model.component.VEvent;
 import net.fortuna.ical4j.model.property.*;
-import org.elasticsearch.index.query.BoolQueryBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -33,11 +29,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
-import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.onsQuery;
-import static com.github.onsdigital.babbage.search.model.QueryType.SEARCH;
-import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
-import static org.elasticsearch.index.query.QueryBuilders.rangeQuery;
 
 
 /**

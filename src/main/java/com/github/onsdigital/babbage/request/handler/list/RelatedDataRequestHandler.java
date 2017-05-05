@@ -10,16 +10,9 @@ import com.github.onsdigital.babbage.error.ResourceNotFoundException;
 import com.github.onsdigital.babbage.request.handler.base.BaseRequestHandler;
 import com.github.onsdigital.babbage.request.handler.base.ListRequestHandler;
 import com.github.onsdigital.babbage.response.base.BabbageResponse;
-import com.github.onsdigital.babbage.search.helpers.base.SearchFilter;
-import com.github.onsdigital.babbage.search.helpers.base.SearchQueries;
-import com.github.onsdigital.babbage.search.input.SortBy;
 import com.github.onsdigital.babbage.search.input.TypeFilter;
 import com.github.onsdigital.babbage.search.model.ContentType;
-import com.github.onsdigital.babbage.search.model.QueryType;
-import com.github.onsdigital.babbage.search.model.SearchResult;
-import com.github.onsdigital.babbage.search.model.field.Field;
 import com.github.onsdigital.babbage.util.json.JsonUtil;
-import org.elasticsearch.index.query.QueryBuilders;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -27,7 +20,6 @@ import java.net.URISyntaxException;
 import java.util.*;
 
 import static com.github.onsdigital.babbage.api.util.SearchUtils.*;
-import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.toList;
 
 /**
  * Created by bren on 25/11/15.

@@ -16,26 +16,6 @@ public class URIUtil {
 
     private final static Pattern uriPattern = Pattern.compile("/(([^/]+)/?)*");
 
-    /**
-     * Removes endpoint from given uri ( the first uri segment )
-     * <p>
-     * e.g. uri for /data/economy/inflationandpriceindices is /economy/inflationandpriceindices
-     *
-     * @return The URI path, lowercased, without the endpoint title or trailing
-     * slash.
-     */
-    public static String removeEndpoint(String uriString) {
-        uriString = cleanUri(uriString);
-        //TODO: Java regex does not return when there are two slashes in the uri cpu usage goes all the way up. Faulty regex ? Reactivate validation handle errors approprieately
-//        validate(uriString);
-        int indexOfSecondSlash = StringUtils.indexOf(uriString, "/", 1);
-        if (indexOfSecondSlash == -1) {
-            return "/";
-        } else {
-            return StringUtils.substring(uriString, indexOfSecondSlash);  //Remove endpoint title
-        }
-    }
-
 
     /**
      * Extracts request type from request type suffixed uris (the last uri segment)

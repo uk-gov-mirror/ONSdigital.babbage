@@ -6,8 +6,6 @@ import com.github.onsdigital.babbage.api.util.SearchParam;
 import com.github.onsdigital.babbage.api.util.SearchParamFactory;
 import com.github.onsdigital.babbage.api.util.SearchUtils;
 import com.github.onsdigital.babbage.response.BabbageRssResponse;
-import com.github.onsdigital.babbage.search.helpers.ONSQuery;
-import com.github.onsdigital.babbage.search.helpers.base.SearchQueries;
 import com.github.onsdigital.babbage.search.helpers.dates.PublishDates;
 import com.github.onsdigital.babbage.search.input.SortBy;
 import com.github.onsdigital.babbage.search.model.ContentType;
@@ -31,7 +29,7 @@ import static org.apache.commons.lang3.StringUtils.join;
 /**
  * Service provides functionality required for the ONS RSS feed.
  * <ul>
- * <li>Generates the {@link ONSQuery} to search for feed entries by {@link ContentType}.</li>
+ * <li>Generates a search for feed entries by {@link ContentType}.</li>
  * <li>Converts search results the required {@link SyndEntry} format.</li>
  * <li>Generates a {@link SyndFeed} from a {@link List} of {@link SyndEntry}</li>
  * </ul>
@@ -164,13 +162,6 @@ public class RssService {
         return PublishDates.updatedWithinPeriod(age);
 
     }
-
-
-    private Optional<SearchResult> search(SearchQueries searchQueries) {
-        LinkedHashMap<String, SearchResult> results = SearchUtils.searchAll(searchQueries);
-        return Optional.ofNullable(results.get(RESULTS_KEY));
-    }
-
 
     private SyndFeed generateSyndFeed(Optional<SearchResult> results, SearchParam params, String uri) {
         return new SyndFeedBuilder()

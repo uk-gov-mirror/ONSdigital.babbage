@@ -2,7 +2,7 @@ package com.github.onsdigital.babbage.search.input;
 
 import com.github.onsdigital.babbage.search.model.field.Field;
 import com.github.onsdigital.babbage.search.model.sort.SortField;
-import org.elasticsearch.search.sort.SortOrder;
+
 
 /**
  * Created by bren on 11/09/15.

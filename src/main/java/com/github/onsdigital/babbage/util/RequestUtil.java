@@ -109,10 +109,6 @@ public class RequestUtil {
         return location;
     }
 
-    public static String[] getParams(HttpServletRequest request, String name) {
-        return request.getParameterValues(name);
-    }
-
     public static String getParam(HttpServletRequest request, String name) {
         return request.getParameter(name);
     }
@@ -165,30 +161,6 @@ public class RequestUtil {
         }
         return queryParameters;
     }
-
-    /*Converts given request parameters to a get query string*/
-    public static String toQueryString(Map<String, String[]> parameters) {
-        if(parameters == null) {
-            return "";
-        }
-
-        Iterator<Map.Entry<String, String[]>> iterator = parameters.entrySet().iterator();
-        StringBuilder builder = new StringBuilder();
-        while (iterator.hasNext()) {
-            Map.Entry<String, String[]> next = iterator.next();
-            if(next.getValue() == null) {
-                builder.append(next.getKey()).append("&");
-                continue;
-            }
-            for (int i = 0; i < next.getValue().length; i++) {
-                String[] values = next.getValue();
-                builder.append(next.getKey()).append("=").append(values[i]).append("&");
-            }
-        }
-
-        return builder.toString();
-    }
-
 
     /**
      * Current location information to be extracted from HTTP request

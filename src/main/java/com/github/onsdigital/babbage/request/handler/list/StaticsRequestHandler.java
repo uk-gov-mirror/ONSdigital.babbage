@@ -6,8 +6,6 @@ import com.github.onsdigital.babbage.api.util.SearchUtils;
 import com.github.onsdigital.babbage.request.handler.base.BaseRequestHandler;
 import com.github.onsdigital.babbage.request.handler.base.ListRequestHandler;
 import com.github.onsdigital.babbage.response.base.BabbageResponse;
-import com.github.onsdigital.babbage.search.builders.ONSFilterBuilders;
-import com.github.onsdigital.babbage.search.helpers.base.SearchFilter;
 import com.github.onsdigital.babbage.search.input.SortBy;
 import com.github.onsdigital.babbage.search.model.ContentType;
 import com.github.onsdigital.babbage.search.model.QueryType;

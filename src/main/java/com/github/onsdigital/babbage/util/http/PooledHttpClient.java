@@ -100,14 +100,6 @@ public class PooledHttpClient {
         return validate(httpClient.execute(request));
     }
 
-
-    public CloseableHttpResponse sendDelete(String path, Map<String, String> headers, List<NameValuePair> queryParameters) throws IOException {
-        URI uri = buildGetUri(path, queryParameters);
-        HttpDelete request = new HttpDelete(uri);
-        addHeaders(headers, request);
-        return validate(httpClient.execute(request));
-    }
-
     /**
      * @param path           path, should not contain any query string, only path info
      * @param headers        key-value map to to be added to request as headers
@@ -125,15 +117,6 @@ public class PooledHttpClient {
         if (postParameters != null) {
             request.setEntity(new UrlEncodedFormEntity(postParameters, Charsets.UTF_8));
         }
-        return validate(httpClient.execute(request));
-    }
-
-    public CloseableHttpResponse sendPost(String path, Map<String, String> headers, String content) throws IOException {
-        URI uri = buildPath(path);
-        HttpPost request = new HttpPost(uri);
-        addHeaders(headers, request);
-
-        request.setEntity(new StringEntity(content));
         return validate(httpClient.execute(request));
     }
 

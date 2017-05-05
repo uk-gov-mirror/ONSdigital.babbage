@@ -16,11 +16,6 @@ public class Configuration {
         private static int PUBLISH_CACHE_TIMEOUT  = 60 * 60; //If content that should be published is more than an hour due delete publish date to get it caching again
         private static long SEARCH_RESPONSE_CACHE_TIME = 5; //in seconds , search results max age header
 
-
-        public static int getDefaultContentCacheTime() {
-            return DEFAULT_CACHE_TIME;
-        }
-
         public static long getSearchResponseCacheTime() {
             return SEARCH_RESPONSE_CACHE_TIME;
         }
@@ -52,9 +47,6 @@ public class Configuration {
             return "Y".equals(isPublishing);
         }
 
-        public static int getPublishCacheTimeout() {
-            return PUBLISH_CACHE_TIMEOUT;
-        }
     }
 
     /*External content server configuration*/
@@ -119,16 +111,11 @@ public class Configuration {
 
     public static class ELASTIC_SEARCH {
         private static String elasticSearchServer = defaultIfBlank(getValue("ELASTIC_SEARCH_SERVER"), "localhost");
-        private static String elasticSearchIndexAlias = defaultIfBlank(getValue("ELASTIC_SEARCH_INDEX_ALIAS"), "ons");
         private static Integer elasticSearchPort = Integer.parseInt(defaultIfBlank(getValue("ELASTIC_SEARCH_PORT"), "9300"));
         private static String elasticSearchCluster = defaultIfBlank(getValue("ELASTIC_SEARCH_CLUSTER"), "");
 
         public static String getElasticSearchServer() {
             return elasticSearchServer;
-        }
-
-        public static String getElasticSearchIndexAlias() {
-            return elasticSearchIndexAlias;
         }
 
         public static Integer getElasticSearchPort() {
@@ -204,16 +191,6 @@ public class Configuration {
 
         public static int getMaxHighchartsServerConnection() {
             return MAX_HIGHCHARTS_SERVER_CONNECTION;
-        }
-    }
-
-    /*Mathjax server side rendering configuration*/
-    public static class MATHJAX {
-        //Trailing slash seems to be important. Export server redirects to trailing slash url if not there
-        private static final String MATHJAX_SERVER_URL = getValue("MATHJAX_EXPORT_SERVER");
-
-        public static String getExportSeverUrl() {
-            return MATHJAX_SERVER_URL;
         }
     }
 

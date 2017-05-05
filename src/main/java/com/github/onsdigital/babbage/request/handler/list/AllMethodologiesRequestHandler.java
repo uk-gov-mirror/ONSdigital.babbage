@@ -6,11 +6,8 @@ import com.github.onsdigital.babbage.api.util.SearchUtils;
 import com.github.onsdigital.babbage.request.handler.base.BaseRequestHandler;
 import com.github.onsdigital.babbage.request.handler.base.ListRequestHandler;
 import com.github.onsdigital.babbage.response.base.BabbageResponse;
-import com.github.onsdigital.babbage.search.helpers.base.SearchFilter;
-import com.github.onsdigital.babbage.search.helpers.base.SearchQueries;
 import com.github.onsdigital.babbage.search.input.SortBy;
 import com.github.onsdigital.babbage.search.input.TypeFilter;
-import com.github.onsdigital.babbage.search.model.ContentType;
 import com.github.onsdigital.babbage.search.model.QueryType;
 import com.github.onsdigital.babbage.search.model.SearchResult;
 
@@ -22,8 +19,6 @@ import java.util.Map;
 import java.util.Set;
 
 import static com.github.onsdigital.babbage.api.util.SearchUtils.*;
-import static com.github.onsdigital.babbage.search.builders.ONSFilterBuilders.filterTopic;
-import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.*;
 
 /**
  * Created by bren on 21/09/15.

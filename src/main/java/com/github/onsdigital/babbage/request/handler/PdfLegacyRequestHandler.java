@@ -4,21 +4,14 @@ import com.github.onsdigital.babbage.content.client.ContentClient;
 import com.github.onsdigital.babbage.content.client.ContentReadException;
 import com.github.onsdigital.babbage.content.client.ContentResponse;
 import com.github.onsdigital.babbage.error.LegacyPDFException;
-import com.github.onsdigital.babbage.pdf.PdfGeneratorLegacy;
 import com.github.onsdigital.babbage.request.handler.base.BaseRequestHandler;
-import com.github.onsdigital.babbage.response.BabbageBinaryResponse;
 import com.github.onsdigital.babbage.response.base.BabbageResponse;
-import com.github.onsdigital.babbage.util.RequestUtil;
 import com.github.onsdigital.babbage.util.json.JsonUtil;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 

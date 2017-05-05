@@ -70,31 +70,6 @@ public class SearchRequestHelper {
         return stringDate.toString();
     }
 
-    /**
-     * Extracts filter parameters requested, including only filter if given default filters, otherwise ignores.
-     * <p>
-     * If there are no valid filters will return default filters
-     *
-     * @param request
-     * @param defaultFilters
-     * @return
-     */
-    public static Set<TypeFilter> extractSelectedFilters(HttpServletRequest request, Set<TypeFilter> defaultFilters) {
-        String[] filters = request.getParameterValues("filter");
-        if (filters == null) {
-            return defaultFilters;
-        }
-
-        HashSet<TypeFilter> selectedFilters = new HashSet<>();
-        for (final String filter : filters) {
-            TypeFilter typeFilter = getEnum(TypeFilter.class, upperCase(filter));
-            if (defaultFilters.contains(typeFilter)) {
-                selectedFilters.add(typeFilter);
-            }
-        }
-        return selectedFilters.isEmpty() ? defaultFilters : selectedFilters;
-    }
-
 
     private static boolean allowFutureAfterDate(HttpServletRequest request) {
         return UPCOMING_PARAM.equalsIgnoreCase(request.getParameter(VIEW_PARAM));

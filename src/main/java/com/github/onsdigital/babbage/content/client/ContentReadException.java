@@ -12,10 +12,6 @@ public class ContentReadException extends Exception {
     //http status code to be sent to the client
     private final int statusCode;
 
-    ContentReadException(final int statusCode, final String s) {
-        this(statusCode, s, null);
-    }
-
     ContentReadException(final int statusCode, final String s, Throwable cause) {
         super(s, cause);
         this.statusCode = statusCode;

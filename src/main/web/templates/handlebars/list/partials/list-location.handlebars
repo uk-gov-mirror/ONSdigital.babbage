@@ -1,8 +1,8 @@
 {{!-- Need separate resolve for list page title location in taxonomy because breadcrumb isn't available from main.handlebars --}}
-{{#resolve (parentPath uri) filter="title"}}
+{{#resolve (parentPath uri) filter="description"}}
     {{#if upper}}
-        {{title}}{{#if edition}}: {{edition}}{{/if}}
+        {{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}
     {{else}}
-        {{lower title}}
+        {{lower description.title}}
     {{/if}}
 {{/resolve}}
