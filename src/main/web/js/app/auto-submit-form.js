@@ -58,6 +58,7 @@ function autoSubmitForm() {
                 submitForm($target);
             }
         } else if ($targetId == 'page-size') {
+            dataLayer.push({"numberOfResults": parseInt($target.val())})
             scrollToTop = true;
             submitForm($target);
         } else if ($targetId == $selectUpdated.attr('id')) { //Clear custom dates on timeseries tool if 'Custom' not selected

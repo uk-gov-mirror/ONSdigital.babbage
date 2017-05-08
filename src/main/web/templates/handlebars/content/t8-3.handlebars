@@ -174,7 +174,8 @@
 
                     {{!-- DATA DISCOVERY JS ENHANCEMENT --}}
                     <div id="js-dd-block" style="display:none">
-
+                        {{!-- GEOGRAPHIES --}}
+                        <div id="js-dd-geographies"></div>
 
                         {{!-- DIMENSIONS --}}
                         <div id="js-dd-dimensions"></div>
@@ -207,7 +208,6 @@
                                 </div>
                             </div>
                         {{/loop}}
-
                     </div>
                 </div>
 
@@ -291,35 +291,31 @@
         var datasetPath = datasetID + '/editions/' + datasetEdition + '/versions/' + datasetVersion;
         var apiPath = '/dd/api/datasets/' + datasetID;
 
-        function getData(callback, url) {
-            fetch(apiPath, {method: 'GET', credentials: 'include'})
-                    .then(function(response){
-                        return response.json()
-                    })
-                    .then(function(response){
-                        callback(response);
-                    });
+        function get(uri, callback) {
+            fetch(uri, {method: 'GET', credentials: 'include'})
+                .then(function(response){
+                    return response.json()
+                })
+                .then(function(response){
+                    callback(response);
+                });
         }
 
         function getAndBuildVersions(url, index, button) {
-            fetch(url, {method: 'GET', credentials: 'include'})
-                    .then(function(response){
-                        return response.json()
-                    })
-                    .then(function(response){
-                        var title = response.edition;
-                        var body = '<p class="flush">Release date: ' + response.metadata.releaseDate + ' <br/>' +
-                                'Last updated: ' + response.metadata.releaseDate + ' </p>' +
-                                '<a class="btn btn--primary btn--thick btn--wide font-size--17 margin-top--1" href="'+button.customise+'">' +
-                                'Filter and download</a>' +
-                                '<p class="font-size--16"><a href="'+button.downloadFull+'">Download the complete dataset</a> | <a href="'+button.viewDetails+'">View details</a></p>';
-                        document.getElementById('js-show-hide__title--' + index).innerHTML = title;
-                        document.getElementById('js-show-hide__content--' + index ).innerHTML = body;
-                        document.getElementById('js-show-hide--' + index).style.display = 'block';
-                    });
+            get(url, function(response) {
+                var title = response.edition;
+                var body = '<p class="flush">Release date: ' + response.metadata.releaseDate + ' <br/>' +
+                        'Last updated: ' + response.metadata.releaseDate + ' </p>' +
+                        '<a class="btn btn--primary btn--thick btn--wide font-size--17 margin-top--1" href="'+button.customise+'">' +
+                        'Filter and download</a>' +
+                        '<p class="font-size--16"><a href="'+button.downloadFull+'">Download the complete dataset</a> | <a href="'+button.viewDetails+'">View details</a></p>';
+                document.getElementById('js-show-hide__title--' + index).innerHTML = title;
+                document.getElementById('js-show-hide__content--' + index ).innerHTML = body;
+                document.getElementById('js-show-hide--' + index).style.display = 'block';
+            });
         }
 
-        function buildVersions(data) {
+        function renderVersions(data) {
             var versionsLength = data.length;
             var i = 1;
 
@@ -337,29 +333,65 @@
             }
         }
 
-        function getDimensions(uri, callback) {
-            fetch(uri, {method: 'GET', credentials: 'include'})
-                    .then(function(response){
-                        return response.json()
-                    })
-                    .then(function(response){
-                        callback(response);
-                    });
-        }
+        function renderMetadata(data) {
+            var geographyObject;
 
-        function buildDimensions(data) {
-            var HTML = ['<h3>Dimensions</h3><ul>'];
-            var dimensionsLength = data.dimensions.length;
-            var i = 0;
-
-            for (i; i < dimensionsLength; i++) {
-                HTML.push(
-                    '<li class="flush">' + data.dimensions[i].name+ '</li>'
-                )
+            for(var i = 0; i < data.dimensions.length; i++) {
+                if (data.dimensions[i].type === "geography") {
+                    geographyObject = data.dimensions[i];
+                    break;
+                }
             }
 
-            HTML.push('</ul>');
-            return HTML.join('');
+            function buildDimensions() {
+                var dimensionsHTML = ['<h3>Dimensions</h3><ul>'];
+                var dimensionsLength = data.dimensions.length;
+                var i = 0;
+
+                for (i; i < dimensionsLength; i++) {
+                    dimensionsHTML.push(
+                        '<li class="flush">' + data.dimensions[i].name+ '</li>'
+                    )
+                }
+
+                dimensionsHTML.push('</ul>');
+                return dimensionsHTML.join('');
+            }
+
+            function buildGeographies(response) {
+                var geographyOptions = response.options;
+                var geographiesHTML = [];
+                var geographyNames = [];
+                var index;
+                var optionsLength = geographyOptions.length;
+
+                geographiesHTML.push('<h3>Geography</h3><ul>')
+
+                for(index = 0; index < optionsLength; index++) {
+                    if (geographyNames.indexOf(geographyOptions[index].levelType.name) === -1) {
+                        geographyNames.push(geographyOptions[index].levelType.name);
+                        var geographyHTML = (
+                            '<li class="flush">' +
+                                geographyOptions[index].levelType.name +
+                            '</li>'
+                        )
+                        geographiesHTML.push(geographyHTML)
+                    }
+                }
+
+                geographiesHTML.push('</ul>');
+
+                return geographiesHTML.join('');
+            }
+
+
+            document.getElementById('js-dd-dimensions').innerHTML = buildDimensions();
+
+            if (geographyObject) {
+                get(geographyObject.url, function(response) {
+                    document.getElementById('js-dd-geographies').innerHTML = buildGeographies(response);
+                });
+            }
         }
 
         function renderDDBlock() {
@@ -398,13 +430,13 @@
                 return;
             }
 
-            getData(function(response){
+            get(apiPath, function(response){
                 if (response.editions.length > 1) {
-                    buildVersions(response.editions);
+                    renderVersions(response.editions);
                 }
 
-                getDimensions(response.latest.url, function(response) {
-                    document.getElementById('js-dd-dimensions').innerHTML = buildDimensions(response);
+                get(response.latest.url, function(response) {
+                    renderMetadata(response);
                 });
             });
 
