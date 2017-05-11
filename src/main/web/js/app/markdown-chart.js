@@ -196,7 +196,7 @@ $(function() {
 
                                     if(chartConfig.xAxis.plotBands.length>0){
                                         $.each(chartConfig.xAxis.plotBands, function(idx, itm){
-                                            chartConfig.xAxis.plotBands[idx].value = chartConfig.xAxis.plotBands[idx]['position_'+viewport].x;
+                                            // chartConfig.xAxis.plotBands[idx].value = chartConfig.xAxis.plotBands[idx]['position_'+viewport].x;
                                         })
                                     }
 
@@ -215,7 +215,7 @@ $(function() {
 
                                     if(chartConfig.yAxis.plotBands.length>0){
                                         $.each(chartConfig.yAxis.plotBands, function(idx, itm){
-                                            chartConfig.yAxis.plotBands[idx].value = chartConfig.yAxis.plotBands[idx]['position_'+viewport].y;
+                                            // chartConfig.yAxis.plotBands[idx].value = chartConfig.yAxis.plotBands[idx]['position_'+viewport].y;
                                         })
                                     }
 
