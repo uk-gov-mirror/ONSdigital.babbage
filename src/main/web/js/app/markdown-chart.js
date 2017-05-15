@@ -182,7 +182,7 @@ $(function() {
                                         chartConfig.annotations[idx].y = chartConfig.annotations[idx]['position_'+viewport].y;
                                     })
                                 }
-                                //loop thru X AXIS plotline/plotbands
+                                //loop thru X AXIS plotline
                                 if(chartConfig.xAxis.plotLines){
 
                                     if(chartConfig.xAxis.plotLines.length>0){
@@ -192,30 +192,13 @@ $(function() {
                                     }
 
                                 }
-                                if(chartConfig.xAxis.plotBands){
 
-                                    if(chartConfig.xAxis.plotBands.length>0){
-                                        $.each(chartConfig.xAxis.plotBands, function(idx, itm){
-                                            chartConfig.xAxis.plotBands[idx].value = chartConfig.xAxis.plotBands[idx]['position_'+viewport].x;
-                                        })
-                                    }
-
-                                }
-                                //loop thru Y AXIS plotline/plotbands
+                                //loop thru Y AXIS plotline
                                 if(chartConfig.yAxis.plotLines){
 
                                     if(chartConfig.yAxis.plotLines.length>0){
                                         $.each(chartConfig.yAxis.plotLines, function(idx, itm){
                                             chartConfig.yAxis.plotLines[idx].value = chartConfig.yAxis.plotLines[idx]['position_'+viewport].y;
-                                        })
-                                    }
-
-                                }
-                                if(chartConfig.yAxis.plotBands){
-
-                                    if(chartConfig.yAxis.plotBands.length>0){
-                                        $.each(chartConfig.yAxis.plotBands, function(idx, itm){
-                                            chartConfig.yAxis.plotBands[idx].value = chartConfig.yAxis.plotBands[idx]['position_'+viewport].y;
                                         })
                                     }
 
