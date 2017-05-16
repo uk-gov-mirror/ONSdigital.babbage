@@ -138,6 +138,7 @@ TODO: split out colours palette selection, axis alignment and positioning
 			y:80
 		},
 		yAxis: {
+            {{#if yAxisInterval}}tickInterval: {{yAxisInterval}},{{/if}}
 			plotBands:[],
 			plotLines:[],
 			{{#if yMin }}min: base,{{/if}}
