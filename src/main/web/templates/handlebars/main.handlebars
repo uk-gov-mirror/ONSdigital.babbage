@@ -27,7 +27,7 @@
         <![endif]-->
 
 		{{!-- Testing Google Tag Manager on a few specific URLs --}}
-		{{#if_any (eq uri "/aboutus") (eq uri "/surveys")}}
+		{{#if_any (startsWith uri "/aboutus") (startsWith uri "/surveys")}}
 			<!-- Google Tag Manager -->
 			<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 			new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -143,9 +143,10 @@
         {{/if}}
 
         <![endif]-->
-
 		{{!-- Testing Google Tag Manager on a few specific URLs, so removing old GA code on them --}}
-		{{#if_all (ne uri "/aboutus") (ne uri "/surveys")}}
+		{{!-- This conditional is pretty ugly - it is basically saying that we want this code block to 
+		render on any page that doesn't start with '/aboutus' or '/surveys' --}}
+		{{#if_all (ne (startsWith uri "/aboutus") "true") (ne (startsWith uri "/surveys") "true")}}
 			<script>
 				(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 				(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
