@@ -40,7 +40,7 @@
 	<body class="{{type}}">
 
 		{{!-- Testing Google Tag Manager on a few specific URLs --}}
-		{{#if_any (eq uri "/aboutus") (eq uri "/surveys")}}
+		{{#if_any (startsWith uri "/aboutus") (startsWith uri "/surveys")}}
 			<!-- Google Tag Manager (noscript) -->
 			<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MBCBVQS"
 			height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
