@@ -49,6 +49,21 @@ public enum StringHelper implements BabbageHandlebarsHelper<String> {
         }
     },
 
+    startsWith {
+        @Override
+        public CharSequence apply(String context, Options options) throws IOException {
+            if (options.isFalsy(context) || options.params.length == 0) {
+                return null;
+            }
+            return context.startsWith(options.<String>param(0)) ? "true" : null;
+        }
+
+        @Override
+        public void register(Handlebars handlebars) {
+            handlebars.registerHelper(this.name(), this);
+        }
+    },
+
     endsWith {
         @Override
         public CharSequence apply(String context, Options options) throws IOException {
