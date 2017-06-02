@@ -23,38 +23,33 @@ public class StaticFilesFilter implements Filter {
     @Override
     public boolean filter(HttpServletRequest request, HttpServletResponse response) {
 
-        try {
-            String uri = request.getRequestURI();
-            Path requestPath = Paths.get(uri);
-
-            if (requestPath.getNameCount() < 2) // requires two parts to the path to be a valid visualisation: /visualisation/code/
-                return true; // there is no path, do not try and handle it.
-
-
-            // only go in here if we have a URI that starts /visualisation/....
-            Path endpoint = requestPath.getName(0); // /visualisations
+        final String uri = request.getRequestURI();
+        final Path requestPath = Paths.get(uri);
+        // requires two parts to the path to be a valid visualisation: /visualisation/code/
+        if (requestPath.getNameCount() < 2) {
+            final Path endpoint = requestPath.getName(0); // /visualisations
             if (endpoint.toString().equalsIgnoreCase(visualisationRoot)) {
+                final Path uid = Paths.get(uri).getName(1);  // dvc123
+                final String content = uri.substring(uri.indexOf(uid + "/") + uid.toString().length() + 1);
+                final String visualisationPath = String.format("/%s/%s/content/%s", visualisationRoot, uid, content);
 
-                Path uid = Paths.get(uri).getName(1);  // dvc123
-                String path = Paths.get("/" + visualisationRoot + "/" + uid).relativize(requestPath).toString();
-
-                String visualisationPath = String.format("/%s/%s/content/%s", visualisationRoot, uid, path);
-                ContentResponse contentResponse = ContentClient.getInstance().getResource(visualisationPath);
-                new BabbageContentBasedBinaryResponse(
-                        contentResponse,
-                        contentResponse.getDataStream(),
-                        contentResponse.getMimeType()).apply(request, response);
-
-                return false; // we have the response we require, do not continue to process this request.
-            }
-        } catch (Throwable t) {
-            try {
-                handle(request, response, t);
-            } catch (IOException e) {
-                return true;
+                try {
+                    // only go in here if we have a URI that starts /visualisation/....
+                    ContentResponse contentResponse = ContentClient.getInstance().getResource(visualisationPath);
+                    new BabbageContentBasedBinaryResponse(
+                            contentResponse,
+                            contentResponse.getDataStream(),
+                            contentResponse.getMimeType()).apply(request, response);
+                    return false;
+                } catch (IOException | ContentReadException e) {
+                    try {
+                        handle(request, response, e);
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
+                }
             }
         }
-
         return true; // continue onto other filters / handlers
     }
 
