@@ -62,6 +62,14 @@
 			</div>
 		</div>
 	{{!-- /wrapper --}}
+
+	{{!-- Banner needs to be above the 'menu' and 'search' buttons on search pages on mobile --}}
+	{{#if_any (eq listType "search") (eq listType "searchdata") (eq listType "searchpublication")}}
+		<div class="hide--md hide--lg">
+			{{> partials/banner}}
+		</div>
+	{{/if_any}}
+
 	{{!-- MAIN NAV --}}
 	<div class="primary-nav print--hide">
 		<nav>
@@ -122,23 +130,7 @@
 				</form>
 			</div>
 		</div>
+		{{> partials/banner}}
 	{{/block}}
-
-	{{!-- BANNER --}}
-	{{#resolve "/"}}
-		{{#if serviceMessage}}
-			<div class="banner">
-				<div class="wrapper">
-					<div class="col-wrap">
-						<div class="col">
-							<span class="banner__icon icon icon-info"></span>
-							<div class="banner__body">
-								{{md serviceMessage}}
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		{{/if}}
-	{{/resolve}}
+	
 </header>
