@@ -1,0 +1,16 @@
+{{#resolve "/"}}
+		{{#if serviceMessage}}
+			<div class="banner">
+				<div class="wrapper">
+					<div class="col-wrap">
+						<div class="col">
+							<span class="banner__icon icon icon-info"></span>
+							<div class="banner__body">
+								{{md serviceMessage}}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		{{/if}}
+	{{/resolve}}
