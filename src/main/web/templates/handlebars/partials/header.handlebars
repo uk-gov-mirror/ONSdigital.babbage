@@ -5,12 +5,6 @@
     </a>
 	{{!-- produced for download analytics function --}}
 	<div id="pagePath" class="hide">{{uri}}</div>
-	{{!-- Prototype banner --}}
-	<div class="beta-banner">
-		<div class="wrapper">
-			{{#resolve "/"}}{{md serviceMessage}}{{/resolve}}
-		</div>
-	</div>
 	{{!-- LANGUAGE TOGGLE AND SECONDARY NAV - DESKTOP --}}
 		<div class="wrapper">
 			<div class="header col-wrap">
@@ -129,4 +123,22 @@
 			</div>
 		</div>
 	{{/block}}
+
+	{{!-- BANNER --}}
+	{{#resolve "/"}}
+		{{#if serviceMessage}}
+			<div class="banner">
+				<div class="wrapper">
+					<div class="col-wrap">
+						<div class="col">
+							<span class="banner__icon icon icon-info"></span>
+							<div class="banner__body">
+								{{md serviceMessage}}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		{{/if}}
+	{{/resolve}}
 </header>
