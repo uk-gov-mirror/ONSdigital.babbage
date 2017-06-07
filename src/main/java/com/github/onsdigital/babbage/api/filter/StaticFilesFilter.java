@@ -26,7 +26,7 @@ public class StaticFilesFilter implements Filter {
         final String uri = request.getRequestURI();
         final Path requestPath = Paths.get(uri);
         // requires two parts to the path to be a valid visualisation: /visualisation/code/
-        if (requestPath.getNameCount() < 2) {
+        if (requestPath.getNameCount() > 2) {
             final Path endpoint = requestPath.getName(0); // /visualisations
             if (endpoint.toString().equalsIgnoreCase(visualisationRoot)) {
                 final Path uid = Paths.get(uri).getName(1);  // dvc123
@@ -34,8 +34,14 @@ public class StaticFilesFilter implements Filter {
                 final String visualisationPath = String.format("/%s/%s/content/%s", visualisationRoot, uid, content);
 
                 try {
+                    final ContentResponse contentResponse;
                     // only go in here if we have a URI that starts /visualisation/....
-                    ContentResponse contentResponse = ContentClient.getInstance().getResource(visualisationPath);
+                    if (visualisationPath.contains(".json")) {
+                        // All JSON content is stored
+                        contentResponse = ContentClient.getInstance().getContent(visualisationPath.replace(".json", ""));
+                    } else {
+                        contentResponse = ContentClient.getInstance().getResource(visualisationPath);
+                    }
                     new BabbageContentBasedBinaryResponse(
                             contentResponse,
                             contentResponse.getDataStream(),
