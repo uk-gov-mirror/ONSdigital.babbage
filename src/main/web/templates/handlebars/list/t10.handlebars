@@ -2,6 +2,10 @@
 {{/partial}}
 
 {{#partial "block-search-bar"}}
+    {{!-- Banner on small on search pages goes above 'menu' and 'search' buttons, so is in header.handlers file --}}
+    <div class="hide--sm">
+		{{> partials/banner}}
+	</div>
 	{{> list/partials/search-header}}
 	<div class="background--ship-grey padding-top-sm--2">
 		<div class="wrapper">

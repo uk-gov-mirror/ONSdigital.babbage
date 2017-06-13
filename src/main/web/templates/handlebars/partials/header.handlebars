@@ -5,12 +5,6 @@
     </a>
 	{{!-- produced for download analytics function --}}
 	<div id="pagePath" class="hide">{{uri}}</div>
-	{{!-- Prototype banner --}}
-	<div class="beta-banner">
-		<div class="wrapper">
-			{{#resolve "/"}}{{md serviceMessage}}{{/resolve}}
-		</div>
-	</div>
 	{{!-- LANGUAGE TOGGLE AND SECONDARY NAV - DESKTOP --}}
 		<div class="wrapper">
 			<div class="header col-wrap">
@@ -68,6 +62,14 @@
 			</div>
 		</div>
 	{{!-- /wrapper --}}
+
+	{{!-- Banner needs to be above the 'menu' and 'search' buttons on search pages on mobile --}}
+	{{#if_any (eq listType "search") (eq listType "searchdata") (eq listType "searchpublication")}}
+		<div class="hide--md hide--lg">
+			{{> partials/banner}}
+		</div>
+	{{/if_any}}
+
 	{{!-- MAIN NAV --}}
 	<div class="primary-nav print--hide">
 		<nav>
@@ -128,5 +130,7 @@
 				</form>
 			</div>
 		</div>
+		{{> partials/banner}}
 	{{/block}}
+	
 </header>

@@ -201,7 +201,37 @@
                 {{> partials/contact }}
 
                 {{!-- Related articles and bulletins --}}
-                {{> partials/related/documents }}
+                {{#if relatedDocuments}}
+                    <div class="tiles__item tiles__item--nav-type flush-col print--hide">
+                            <h3 class="tiles__title-h3 tiles__title-h3--nav">{{labels.publications-that-use-this-data}}</h3>
+                        <div class="tiles__content tiles__content--nav">
+                            <ul class="list--neutral">
+                                {{#each relatedDocuments}}
+                                    {{#resolve this.uri filter="title"}}
+                                        {{!-- Add the related publication into the Google Tag Manager data layer object --}}
+                                        <script>
+                                            dataLayer[0].publications.push({
+                                                title: "{{title}}{{#if edition}}: {{edition}}{{/if}}",
+                                                uri: "{{uri}}"
+                                            });
+                                        </script>
+
+                                        <li>
+                                            <a href="{{uri}}">
+                                                {{title}}
+                                                {{#if edition}}
+                                                    {{#if_ne edition 'yes'}}
+                                                        : {{edition}}
+                                                    {{/if_ne}}
+                                                {{/if}}
+                                            </a>
+                                        </li>
+                                    {{/resolve}}
+                                {{/each}}
+                            </ul>
+                        </div>
+                    </div>
+                {{/if}}
 
                 {{!-- Related methodology --}}
                 {{> partials/related/methodology }}
