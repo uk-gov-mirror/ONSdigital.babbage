@@ -33,8 +33,7 @@ job "babbage" {
         args = [
           "java",
           "-Xmx2048m",
-          "-cp",
-          "/usr/src/target/dependency/*:/usr/src/target/classes/",
+          "-cp target/dependency/*:target/classes/",
           "-Drestolino.files=target/web",
           "-Drestolino.classes=target/classes",
           "-Drestolino.packageprefix=com.github.onsdigital.babbage.api",
@@ -95,8 +94,7 @@ job "babbage" {
         args = [
           "java",
           "-Xmx2048m",
-          "-cp",
-          "/usr/src/target/dependency/*:/usr/src/target/classes/",
+          "-cp target/dependency/*:target/classes/",
           "-Drestolino.files=target/web",
           "-Drestolino.classes=target/classes",
           "-Drestolino.packageprefix=com.github.onsdigital.babbage.api",
