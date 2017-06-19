@@ -41,7 +41,7 @@ job "babbage" {
           "com.github.davidcarboni.restolino.Main",
         ]
 
-        image = "{{ECR_URL}}/babbage:concourse-{{REVISION}}"
+        image = "{{ECR_URL}}:concourse-{{REVISION}}"
 
         port_map {
           http = 8080
@@ -103,7 +103,7 @@ job "babbage" {
           "com.github.davidcarboni.restolino.Main",
         ]
 
-        image = "{{ECR_URL}}/babbage:concourse-{{REVISION}}"
+        image = "{{ECR_URL}}:concourse-{{REVISION}}"
 
         port_map {
           http = 8080
