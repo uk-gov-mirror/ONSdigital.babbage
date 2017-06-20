@@ -1,0 +1,13 @@
+FROM onsdigital/java-node-phantom-ghostscript-component
+
+WORKDIR /usr/src
+
+ADD web target/web
+ADD classes target/classes
+ADD dependency target/dependency
+
+CMD java -Xmx2048m -cp "target/dependency/*:target/classes/"  \
+  -Drestolino.packageprefix=com.github.onsdigital.babbage.api \
+  -Drestolino.files=target/web       \
+  -Drestolino.classes=target/classes \
+  com.github.davidcarboni.restolino.Main

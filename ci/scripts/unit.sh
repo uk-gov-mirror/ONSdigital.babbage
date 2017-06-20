@@ -1,5 +1,5 @@
 #!/bin/bash -eux
 
 pushd babbage
-  mvn clean surefire:test
+  mvn test
 popd
