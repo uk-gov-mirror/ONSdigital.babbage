@@ -20,7 +20,7 @@ job "babbage" {
       value     = "web"
     }
 
-    task "babbage" {
+    task "babbage-web" {
       driver = "docker"
 
       artifact {
@@ -68,7 +68,7 @@ job "babbage" {
       }
 
       vault {
-        policies = ["babbage"]
+        policies = ["babbage-web"]
       }
     }
   }
@@ -81,7 +81,7 @@ job "babbage" {
       value     = "publishing"
     }
 
-    task "babbage" {
+    task "babbage-publishing" {
       driver = "docker"
 
       artifact {
@@ -129,7 +129,7 @@ job "babbage" {
       }
 
       vault {
-        policies = ["babbage"]
+        policies = ["babbage-publishing"]
       }
     }
   }
