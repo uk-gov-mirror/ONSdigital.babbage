@@ -27,8 +27,11 @@
         <![endif]-->
 	</head>
 	<body class="{{type}}">
+
 		<script>
-			var dataLayer = [{}]
+			var dataLayer = [{
+				contentTitle: "{{> partials/page-title}}{{#if description.edition}}: {{description.edition}}{{/if}}"
+			}]
 			{{#if_any (eq type "dataset_landing_page") (eq type "timeseries")}}
 				dataLayer[0]["publications"] = []
 			{{/if_any}}
@@ -143,7 +146,7 @@
 		})(window,document,'script','dataLayer','GTM-MBCBVQS');</script>
 		<!-- End Google Tag Manager -->
 
-		<script>console.log(dataLayer)</script>
+		<script>console.log(dataLayer[0])</script>
 
 		<!-- Google Tag Manager (noscript) -->
 		<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MBCBVQS"
