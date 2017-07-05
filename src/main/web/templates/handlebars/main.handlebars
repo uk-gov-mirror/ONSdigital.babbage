@@ -28,14 +28,14 @@
 	</head>
 	<body class="{{type}}">
 		<script>
-			var dataLayer = []
+			var dataLayer = [{}]
 			{{#if_any (eq type "dataset_landing_page") (eq type "timeseries")}}
-				dataLayer.push({
-					datasetTitle: "{{description.title}}",
-					releaseDate: "{{df description.releaseDate outputFormat='yyyy/MM/dd'}}",
-					publications: []
-				});
+				dataLayer[0]["publications"] = []
 			{{/if_any}}
+			
+			{{#if description.releaseDate}}
+				dataLayer[0]["releaseDate"] = "{{df description.releaseDate outputFormat='yyyy/MM/dd'}}"
+			{{/if}}
 		</script>
 
         {{!-- Sends a message out of window - for Florance preview use, so that she can see when the preview window is loading (rather than looking for the iframe onload event which is only fired after all JS has loaded) --}}
@@ -142,6 +142,8 @@
 		'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
 		})(window,document,'script','dataLayer','GTM-MBCBVQS');</script>
 		<!-- End Google Tag Manager -->
+
+		<script>console.log(dataLayer)</script>
 
 		<!-- Google Tag Manager (noscript) -->
 		<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MBCBVQS"
