@@ -31,13 +31,17 @@
 		<script>
 			var dataLayer = [{
 				contentTitle: "{{> partials/page-title}}{{#if description.edition}}: {{description.edition}}{{/if}}"
-			}]
+			}];
 			{{#if_any (eq type "dataset_landing_page") (eq type "timeseries")}}
-				dataLayer[0]["publications"] = []
+				dataLayer[0]["publications"] = [];
 			{{/if_any}}
 			
 			{{#if description.releaseDate}}
-				dataLayer[0]["releaseDate"] = "{{df description.releaseDate outputFormat='yyyy/MM/dd'}}"
+				dataLayer[0]["releaseDate"] = "{{df description.releaseDate outputFormat='yyyy/MM/dd'}}";
+			{{/if}}
+
+			{{#if result.numberOfResults}}
+				dataLayer[0]["numberOfResults"] = {{result.numberOfResults}};
 			{{/if}}
 		</script>
 
