@@ -68,8 +68,8 @@
                 </div>
 
                 <h3 class="margin-top-md--4">Latest version</h3>
-                <a href="/generator?format=xls&uri={{absolute uri}}" class="btn btn--primary btn--thin btn--narrow btn--small" data-ga-event data-ga-event-category='download-version' data-ga-event-label="latest-xls">Download .xls</a>
-                <a href="/generator?format=csv&uri={{absolute uri}}" class="btn btn--primary btn--thin btn--narrow btn--small" data-ga-event data-ga-event-category='download-version' data-ga-event-label="latest-csv">Download .csv</a>
+                <a href="/generator?format=xls&uri={{absolute uri}}" class="btn btn--primary btn--thin btn--narrow btn--small">Download .xls</a>
+                <a href="/generator?format=csv&uri={{absolute uri}}" class="btn btn--primary btn--thin btn--narrow btn--small">Download .csv</a>
 
                 {{#if versions}}
 
@@ -87,10 +87,10 @@
                         {{#loop versions reverse=true}}
                             <tr>
                                 <td>
-                                    <a href="/generator?format=xls&uri={{absolute uri}}" class="btn btn--primary btn--thin btn--narrow btn--small block width--7" data-ga-event data-ga-event-category="download-version-xls" data-ga-event-label="{{df updateDate}}">
+                                    <a href="/generator?format=xls&uri={{absolute uri}}" class="btn btn--primary btn--thin btn--narrow btn--small block width--7">
                                         Download .xls
                                     </a>
-                                    <a href="/generator?format=csv&uri={{absolute uri}}" class="btn btn--primary btn--thin btn--narrow btn--small block width--7 margin-top--1" data-ga-event data-ga-event-category="download-version-csv" data-ga-event-label="{{df updateDate}}">
+                                    <a href="/generator?format=csv&uri={{absolute uri}}" class="btn btn--primary btn--thin btn--narrow btn--small block width--7 margin-top--1">
                                         Download .csv
                                     </a>
                                 </td>

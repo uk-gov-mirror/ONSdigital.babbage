@@ -62,18 +62,18 @@
                                 <div id="unfiltered-download-controls" class="chart-area__controls__download chart-area__controls__download--unfiltered width--22 padding-top--2 padding-bottom--2" aria-hidden="false">
                                     <div class="chart-area__controls__custom__container">
                                         <p class="flush">{{labels.download-full-time-series-as}}:</p>
-                                        <a href="{{uri}}/linechartimage" title="Download as an image" class="btn btn--primary" data-ga-event data-ga-event-category="download-image" data-ga-event-label="unfiltered" download="{{description.title}}">{{labels.image}}</a>
-                                        <a class="btn btn--primary" title="Download as csv" href="/generator?format=csv&uri={{uri}}" data-ga-event data-ga-event-category="download-csv" data-ga-event-label="unfiltered">.csv</a>
-                                        <a class="btn btn--primary" title="Download as xls" href="/generator?format=xls&uri={{uri}}" data-ga-event data-ga-event-category="download-xls" data-ga-event-label="unfiltered">.xls</a>
+                                        <a href="{{uri}}/linechartimage" title="Download as an image" class="btn btn--primary" download="{{description.title}}">{{labels.image}}</a>
+                                        <a class="btn btn--primary" title="Download as csv" href="/generator?format=csv&uri={{uri}}">.csv</a>
+                                        <a class="btn btn--primary" title="Download as xls" href="/generator?format=xls&uri={{uri}}">.xls</a>
                                     </div>
                                 </div>
                                 {{!-- Filtered - parameters added dynamically--}}
                                 <div id="filtered-download-controls" class="chart-area__controls__download chart-area__controls__download--filtered width--22 padding-top--2 padding-bottom--2" aria-hidden="true">
                                     <div class="chart-area__controls__custom__container">
                                         <p class="flush"> {{labels.download-filtered-time-series-as}}:</p>
-                                        <a href="{{uri}}/linechartimage" title="Download as an image" class="btn btn--primary dlCustomData" data-ga-event data-ga-event-category="download-image" data-ga-event-label="filtered" download="{{description.title}}">{{labels.image}}</a>
-                                        <a class="btn btn--primary dlCustomData" title="Download as csv" href="/generator?format=csv&uri={{uri}}" data-ga-event data-ga-event-category="download-csv" data-ga-event-label="filtered">.csv</a>
-                                        <a class="btn btn--primary dlCustomData" title="Download as xls" href="/generator?format=xls&uri={{uri}}" data-ga-event data-ga-event-category="download-xls" data-ga-event-label="filtered">.xls</a>
+                                        <a href="{{uri}}/linechartimage" title="Download as an image" class="btn btn--primary dlCustomData"  download="{{description.title}}">{{labels.image}}</a>
+                                        <a class="btn btn--primary dlCustomData" title="Download as csv" href="/generator?format=csv&uri={{uri}}">.csv</a>
+                                        <a class="btn btn--primary dlCustomData" title="Download as xls" href="/generator?format=xls&uri={{uri}}">.xls</a>
                                     </div>
                                 </div>
                             </div>
