@@ -7,7 +7,7 @@
                 <ul class="list--neutral">
                         {{#each relatedDatasets}}
                             {{#resolve this.uri filter="title"}}
-                                    <li><a href="{{absolute uri}}">{{title}}</a></li>
+                                    <li><a data-gtm-title="{{title}}" data-gtm-type="related-datasets" href="{{absolute uri}}">{{title}}</a></li>
                             {{/resolve}}
                         {{/each}}
                 </ul>
@@ -17,7 +17,8 @@
 		{{!-- Shows link to view all spreadsheets at that topic level --}}
         {{#if_any (eq type "dataset_landing_page")}}
 			<div class="tiles__extra margin-bottom-md--2">
-				<a href="{{parentPath (parentPath uri)}}/datalist?filter=datasets">{{labels.view-all-data-related-to}} {{#each breadcrumb}}
+				<a href="{{parentPath (parentPath uri)}}/datalist?filter=datasets" data-gtm-title="{{#if @last}}{{description.title}}{{/if}}" data-gtm-type="related-datasets">
+                    {{labels.view-all-data-related-to}} {{#each breadcrumb}}
                     {{#if @last}}
                         {{description.title}}
                     {{/if}}

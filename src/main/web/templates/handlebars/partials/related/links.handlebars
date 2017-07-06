@@ -5,7 +5,9 @@
             <ul class="list--neutral">
                 {{#each links}}
                     <li>
-                        <a href="{{uri}}">{{title}}</a>
+                        <a href="{{uri}}"
+                           data-gtm-title="{{title}}"
+                           data-gtm-type="related-link">{{title}}</a>
                     </li>
                 {{/each}}
             </ul>
