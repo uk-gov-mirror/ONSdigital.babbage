@@ -13,7 +13,7 @@ job "babbage" {
   }
 
   group "web" {
-    count = 2
+    count = "{{WEB_TASK_COUNT}}"
 
     constraint {
       attribute = "${node.class}"
@@ -54,8 +54,8 @@ job "babbage" {
       }
 
       resources {
-        cpu    = 1500
-        memory = 2048
+        cpu    = "{{WEB_RESOURCE_CPU}}"
+        memory = "{{WEB_RESOURCE_MEM}}"
 
         network {
           port "http" {}
@@ -74,7 +74,7 @@ job "babbage" {
   }
 
   group "publising" {
-    count = 1
+    count = "{{PUBLISHING_TASK_COUNT}}"
 
     constraint {
       attribute = "${node.class}"
@@ -115,8 +115,8 @@ job "babbage" {
       }
 
       resources {
-        cpu    = 1000
-        memory = 2048
+        cpu    = "{{PUBLISHING_RESOURCE_CPU}}"
+        memory = "{{PUBLISHING_RESOURCE_MEM}}"
 
         network {
           port "http" {}
