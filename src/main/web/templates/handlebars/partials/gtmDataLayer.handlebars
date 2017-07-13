@@ -2,9 +2,9 @@
     var dataLayer = [{
         contentTitle: "{{> partials/page-title}}{{#if description.edition}}: {{description.edition}}{{/if}}"
     }];
-        {{#if_any (eq type "dataset_landing_page") (eq type "timeseries")}}
+        {{!-- {{#if_any (eq type "dataset_landing_page") (eq type "timeseries")}}  --}}
         dataLayer[0]["publications"] = [];
-        {{/if_any}}
+        {{!--{{/if_any}} --}}
 
         {{#if description.releaseDate}}
         dataLayer[0]["releaseDate"] = "{{df description.releaseDate outputFormat='yyyy/MM/dd'}}";
