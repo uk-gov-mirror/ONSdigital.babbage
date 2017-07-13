@@ -125,7 +125,7 @@
                             {{#resolve this.uri}}
                                 <li class="tiles__item--list-type-simple">
                                     <h3 class="tiles__title-h3">
-                                        <a href="{{uri}}">{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}</a>
+                                        <a data-gtm-type="related-publications" data-gtm-title="{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}" href="{{uri}}">{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}</a>
                                     </h3>
                                     <p class="tiles__content">
                                         {{#if description.summary}}{{description.summary}}{{else}}{{description._abstract}}{{/if}}
@@ -148,9 +148,8 @@
                             {{#resolve this.uri}}
                                 <li class="tiles__item--list-type-simple">
                                     <h3 class="tiles__title-h3">
-                                        <a href="{{uri}}">{{description.title}}</a>
+                                        <a data-gtm-type="related-datasets" data-gtm-title="{{description.title}}" href="{{uri}}">{{description.title}}</a>
                                     </h3>
-
                                     <p class="tiles__content">
                                         {{description.summary}}
                                     </p>
@@ -172,7 +171,7 @@
                             {{#resolve this.uri}}
                                 <li class="tiles__item--list-type-simple">
                                     <h3 class="tiles__title-h3">
-                                        <a href="{{uri}}">{{description.title}}</a>
+                                        <a data-gtm-type="related-methodology" data-gtm-title="{{description.title}}" href="{{uri}}">{{description.title}}</a>
                                     </h3>
 
                                     <p class="tiles__content">
@@ -185,7 +184,7 @@
                             {{#resolve this.uri}}
                                 <li class="tiles__item--list-type-simple">
                                     <h3 class="tiles__title-h3">
-                                        <a href="{{uri}}">{{description.title}}</a>
+                                        <a data-gtm-type="related-methodology" data-gtm-title="{{description.title}}" href="{{uri}}">{{description.title}}</a>
                                     </h3>
 
                                     <p class="tiles__content">
@@ -208,7 +207,7 @@
                         <ul class="list--neutral">
                             {{#each links}}
                                 <li>
-                                    <h3><a href="{{uri}}">{{title}}</a></h3>
+                                    <h3><a data-gtm-type="related-link" data-gtm-title="{{title}}" href="{{uri}}">{{title}}</a></h3>
                                 </li>
                             {{/each}}
                         </ul>
