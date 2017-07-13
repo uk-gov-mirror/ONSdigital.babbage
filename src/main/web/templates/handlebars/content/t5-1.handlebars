@@ -212,13 +212,6 @@
 							<ul class="list--neutral">
 								{{#each relatedDocuments}}
 									{{#resolve this.uri filter="title"}}
-										{{!-- Add the related publication into the Google Tag Manager data layer object --}}
-										<script>
-											dataLayer[0].publications.push({
-												title: "{{title}}{{#if edition}}: {{edition}}{{/if}}",
-												uri: "{{uri}}"
-											});
-										</script>
 										{{#assign "fullTitle"}}{{title}}{{#if edition}}{{#if_ne edition 'yes'}}: {{edition}}{{/if_ne}}{{/if}}{{/assign}}
 										<li>
 											<a href="{{uri}}" data-gtm-type="publications-using-data" data-gtm-title="{{fullTitle}}">

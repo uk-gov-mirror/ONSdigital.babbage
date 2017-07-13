@@ -16,7 +16,7 @@
 		{{/if_eq}}
 	{{/each}}
 
-	{{!-- Update Google Tag Manager data layer with information about corrections --}}
+	{{!-- Update Google Tag Manager data layer with information about corrections and notices --}}
 	{{#if has-corrections}}
 		<script>
 			dataLayer[0]["corrections"] = "yes"
@@ -26,6 +26,15 @@
 			dataLayer[0]["corrections"] = "no"
 		</script>
 	{{/if}}
+    {{#if has-alerts}}
+        <script>
+            dataLayer[0]["notices"] = "yes"
+        </script>
+    {{else}}
+        <script>
+            dataLayer[0]["notices"] = "no"
+        </script>
+    {{/if}}
 
 	{{!-- Show those alerts/corrections --}}
 	{{#if alerts}}

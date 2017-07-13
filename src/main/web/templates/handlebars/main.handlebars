@@ -25,6 +25,8 @@
         <link rel="stylesheet" type="text/css" href="{{#if is_dev}}http://{{location.hostname}}:9000/dist{{else}}//cdn.ons.gov.uk/sixteens/831f6bb{{/if}}/css/main.css">
 		{{#if pdf_style}}<link rel="stylesheet" type="text/css" href="{{#if is_dev}}http://localhost:9000/dist{{else}}//cdn.ons.gov.uk/sixteens/831f6bb{{/if}}/css/pdf.css">{{/if}}
         <![endif]-->
+        
+        {{> partials/gtmDataLayer }}
 
         <!-- Google Tag Manager -->
         <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -41,23 +43,6 @@
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MBCBVQS"
                       height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
-
-		<script>
-			var dataLayer = [{
-				contentTitle: "{{> partials/page-title}}{{#if description.edition}}: {{description.edition}}{{/if}}"
-			}];
-			{{#if_any (eq type "dataset_landing_page") (eq type "timeseries")}}
-				dataLayer[0]["publications"] = [];
-			{{/if_any}}
-
-			{{#if description.releaseDate}}
-				dataLayer[0]["releaseDate"] = "{{df description.releaseDate outputFormat='yyyy/MM/dd'}}";
-			{{/if}}
-
-			{{#if result.numberOfResults}}
-				dataLayer[0]["numberOfResults"] = {{result.numberOfResults}};
-			{{/if}}
-		</script>
 
         {{!-- Sends a message out of window - for Florance preview use, so that she can see when the preview window is loading (rather than looking for the iframe onload event which is only fired after all JS has loaded) --}}
         {{#if is_publishing}}

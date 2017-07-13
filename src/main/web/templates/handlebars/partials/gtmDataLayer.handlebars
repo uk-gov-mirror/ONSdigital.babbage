@@ -1,0 +1,41 @@
+<script>
+    var dataLayer = [{
+        contentTitle: "{{> partials/page-title}}{{#if description.edition}}: {{description.edition}}{{/if}}"
+    }];
+        {{#if_any (eq type "dataset_landing_page") (eq type "timeseries")}}
+        dataLayer[0]["publications"] = [];
+        {{/if_any}}
+
+        {{#if description.releaseDate}}
+        dataLayer[0]["releaseDate"] = "{{df description.releaseDate outputFormat='yyyy/MM/dd'}}";
+        {{/if}}
+
+        {{#if result.numberOfResults}}
+        dataLayer[0]["numberOfResults"] = {{result.numberOfResults}};
+        {{/if}}
+
+        {{!-- Add the related publication into the Google Tag Manager data layer object --}}
+        {{#if relatedDocuments}}
+            {{#each relatedDocuments}}
+                {{#resolve this.uri filter="title"}}
+                    dataLayer[0].publications.push({
+                        title: "{{title}}{{#if edition}}: {{edition}}{{/if}}",
+                        uri: "{{uri}}"
+                    });
+                {{/resolve}}
+            {{/each}}
+        {{/if}}
+
+
+        {{!-- Add latest release info to dataLayer --}}
+        {{#unless (endsWith (parentPath uri) "previous")}}
+            {{#if description.latestRelease}}
+                dataLayer[0]["latestRelease"] = "yes";
+            {{else}}
+                dataLayer[0]["latestRelease"] = "no";
+            {{/if}}
+        {{else}}
+            dataLayer[0]["latestRelease"] = "no";
+        {{/unless}}
+
+</script>
