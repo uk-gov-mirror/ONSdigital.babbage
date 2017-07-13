@@ -214,14 +214,10 @@
                                             });
                                         </script>
 
+                                        {{#assign "fullTitle"}}{{title}}{{#if edition}}{{#if_ne edition 'yes'}}: {{edition}}{{/if_ne}}{{/if}}{{/assign}}
                                         <li>
-                                            <a href="{{uri}}" data-gtm-type="publications-using-data">
-                                                {{title}}
-                                                {{#if edition}}
-                                                    {{#if_ne edition 'yes'}}
-                                                        : {{edition}}
-                                                    {{/if_ne}}
-                                                {{/if}}
+                                            <a href="{{uri}}" data-gtm-type="publications-using-data" data-gtm-title="{{fullTitle}}">
+                                                {{fullTitle}}
                                             </a>
                                         </li>
                                     {{/resolve}}
