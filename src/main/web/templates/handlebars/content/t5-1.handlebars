@@ -160,7 +160,7 @@
 						<ul class="list--neutral box__content">
 							{{#each relatedData}}
 								{{#resolve this.uri filter="description"}}
-									<li class="flush"><a href="{{uri}}">{{#if description.cdid}}{{description.cdid}}
+									<li class="flush"><a href="{{uri}}" data-gtm-type="related-timeseries" data-gtm-title="{{#minify}}{{#if description.cdid}}{{description.cdid}}: {{/if}}{{description.title}}{{/minify}}">{{#if description.cdid}}{{description.cdid}}
 										: {{/if}}{{description.title}}</a></li>
 								{{/resolve}}
 							{{/each}}
@@ -186,7 +186,7 @@
                     {{#each result.results}}
 
                         <li class="flush"><p class="flush">
-                        <a href="{{uri}}">{{ description.cdid }}: {{#resolve description.datasetUri}}{{description.title}}{{/resolve}}</a> ({{description.datasetId}}), released on {{df description.releaseDate}}
+                        <a href="{{uri}}" data-gtm-type="variations-of-data" data-gtm-title="{{ description.cdid }}: {{#resolve description.datasetUri}}{{description.title}}{{/resolve}}">{{ description.cdid }}: {{#resolve description.datasetUri}}{{description.title}}{{/resolve}}</a> ({{description.datasetId}}), released on {{df description.releaseDate}}
                         </p></li>
                     {{/each}}
                 </ul>
