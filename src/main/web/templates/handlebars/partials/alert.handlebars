@@ -16,26 +16,6 @@
 		{{/if_eq}}
 	{{/each}}
 
-	{{!-- Update Google Tag Manager data layer with information about corrections and notices --}}
-	{{#if has-corrections}}
-		<script>
-			dataLayer[0]["corrections"] = "yes"
-		</script>
-	{{else}}
-		<script>
-			dataLayer[0]["corrections"] = "no"
-		</script>
-	{{/if}}
-    {{#if has-alerts}}
-        <script>
-            dataLayer[0]["notices"] = "yes"
-        </script>
-    {{else}}
-        <script>
-            dataLayer[0]["notices"] = "no"
-        </script>
-    {{/if}}
-
 	{{!-- Show those alerts/corrections --}}
 	{{#if alerts}}
 		<div class="alert">
@@ -73,17 +53,6 @@
 	{{/if}}
 
 {{else}}
-
-	{{!-- Update Google Tag Manager data layer with information about corrections --}}
-	{{#if versions}}
-		<script>
-			dataLayer[0]["corrections"] = "yes"
-		</script>
-	{{else}}
-		<script>
-			dataLayer[0]["corrections"] = "no"
-		</script>
-	{{/if}}
 
 	{{#if_any description.latestRelease versions alerts (eq type "bulletin") (eq type "article") (eq type "timeseries") (eq type "compendium_landing_page") (endsWith (parentPath uri) "previous")}} {{!-- Must always show on bulletin & article for 'not latest release' alert or for 'previous versions' alert on dataset-landing-pages --}}
 		{{#unless (eq type "timeseries")}} {{!-- Use a different type of alert block if it is a timeseries page --}}
