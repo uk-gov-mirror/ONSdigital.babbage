@@ -41,6 +41,12 @@ function autoSubmitForm() {
         var $target = $(e.target);
         var $targetId = $target.attr('id');
         $trigger = $target;
+
+        // check window.dataLayer exists and that it's either soft or number of results that has changed
+        if (window.dataLayer && ($targetId === 'sort' || $targetId === 'page-size')) {
+            gtmPushToDataLayer($target);
+        }
+
         if ($targetId !== $keywordSearch.attr('id') && $targetId !== 'select-updated' && $targetId !== 'page-size' && !$target.hasClass('js-auto-submit__input--date')) { //Don't submit again after keyword, select update date, page results size or date input change
             submitForm($target);
         } else if ($target.hasClass('js-auto-submit__input--date')) {
@@ -91,3 +97,16 @@ $(function() {
         autoSubmitForm();
     }
 });
+
+
+function gtmPushToDataLayer(element) {
+    var elementId = element.attr('id').toString();
+    var elementValue = element.val().toString();
+
+    if (elementId === 'sort') {
+        window.dataLayer.push({'results-sort-by': elementValue});
+    } else {
+        window.dataLayer.push({'results-per-page': elementValue});
+    }
+
+}
