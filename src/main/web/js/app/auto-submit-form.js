@@ -104,9 +104,14 @@ function gtmPushToDataLayer(element) {
     var elementValue = element.val().toString();
 
     if (elementId === 'sort') {
-        window.dataLayer.push({'results-sort-by': elementValue});
+        window.dataLayer.push({
+            'event': 'SortBy',
+            'sort-by': elementValue
+        });
     } else {
-        window.dataLayer.push({'results-per-page': elementValue});
+        window.dataLayer.push({
+            'event': 'ResultsPerPage',
+            'results-per-age': elementValue
+        });
     }
-
 }
