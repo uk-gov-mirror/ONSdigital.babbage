@@ -7,6 +7,11 @@ job "babbage" {
     distinct_hosts = true
   }
 
+  constraint {
+    attribute = "${meta.has_disk}"
+    value     = true
+  }
+
   update {
     stagger      = "90s"
     max_parallel = 1
