@@ -111,7 +111,7 @@ function gtmPushToDataLayer(element) {
     } else {
         window.dataLayer.push({
             'event': 'ResultsPerPage',
-            'results-per-age': elementValue
+            'results-per-page': elementValue
         });
     }
 }
