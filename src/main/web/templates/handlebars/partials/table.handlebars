@@ -5,6 +5,10 @@
     <div class="markdown-table-wrap">
         {{{resource}}}
     </div>
+
+    {{!-- 'View table' button for mobile --}}
+    <button class="btn btn--secondary btn--mobile-table-show nojs--hide" data-gtm-title="{{{sub (sup title)}}}" data-gtm-type="view-table">View table</button>
+
     {{/resolveResource}}
     <h5 class="print--hide font-size--h6">Download this table</h5>
     <a href="/file?uri={{uri}}.xls" title="Download as xls" class="btn btn--primary print--hide" data-gtm-title="{{{sub (sup title)}}}" data-gtm-type="download-table-xls">.xls</a>
