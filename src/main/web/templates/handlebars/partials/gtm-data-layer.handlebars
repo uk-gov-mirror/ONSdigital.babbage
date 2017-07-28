@@ -1,8 +1,14 @@
 <script>
 
+    // unescape html entities
+    function htmlUnescape(str){
+        return str
+                .replace(/&#x3D;/g, "=");
+    }
+
     {{!-- Add title to dataLayer. Dont include the edition on dataset versions pages --}}
     var dataLayer = [{
-        contentTitle: "{{> partials/page-title}}{{#if description.edition}}{{#if_ne description.edition "Current"}}: {{description.edition}}{{/if_ne}}{{/if}}"
+        contentTitle: htmlUnescape("{{> partials/page-title}}{{#if description.edition}}{{#if_ne description.edition "Current"}}: {{description.edition}}{{/if_ne}}{{/if}}")
     }];
 
     {{#if description.releaseDate}}
