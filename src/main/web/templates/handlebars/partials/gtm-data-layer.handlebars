@@ -2,7 +2,7 @@
 
     {{!-- Add title to dataLayer. Dont include the edition on dataset versions pages --}}
     var dataLayer = [{
-        contentTitle: "{{> partials/page-title}}{{#if_all (if description.edition) (ne description.edition "current")}}: {{description.edition}}{{/if_all}}"
+        contentTitle: "{{> partials/page-title}}{{#if description.edition}}{{#if_ne description.edition "Current"}}: {{description.edition}}{{/if_ne}}{{/if}}"
     }];
 
     {{#if description.releaseDate}}
