@@ -59,16 +59,18 @@
             {{/if_eq}}
         {{/each}}
 
-        {{#if has-corrections}}
-            dataLayer[0]["corrections"] = "yes";
-        {{else}}
-            dataLayer[0]["corrections"] = "no";
-        {{/if}}
-        {{#if has-alerts}}
-            dataLayer[0]["notices"] = "yes";
-        {{else}}
-            dataLayer[0]["notices"] = "no";
-        {{/if}}
+        {{#if_ne type "dataset"}}
+            {{#if has-corrections}}
+                dataLayer[0]["corrections"] = "yes";
+            {{else}}
+                dataLayer[0]["corrections"] = "no";
+            {{/if}}
+            {{#if has-alerts}}
+                dataLayer[0]["notices"] = "yes";
+            {{else}}
+                dataLayer[0]["notices"] = "no";
+            {{/if}}
+        {{/if_ne}}
 
     {{/if}}
 
@@ -81,11 +83,13 @@
             {{/if}}
         {{/each}}
 
-        {{#if has-corrections}}
-            dataLayer[0]["corrections"] = "yes";
-        {{else}}
-            dataLayer[0]["corrections"] = "no";
-        {{/if}}
+        {{#if_ne type "dataset"}}
+            {{#if has-corrections}}
+                dataLayer[0]["corrections"] = "yes";
+            {{else}}
+                dataLayer[0]["corrections"] = "no";
+            {{/if}}
+        {{/if_ne}}
     {{/if}}
 
 </script>
