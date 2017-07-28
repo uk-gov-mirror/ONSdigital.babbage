@@ -151,7 +151,7 @@
                                                    title="Download as {{fe (lowercase (concat uri "/" this.file))}}"
                                                    class="btn btn--primary btn--thin btn--narrow btn--small clear-left {{#unless @first}}margin-top--1{{/unless}}"
                                                    data-gtm-type="download-version-{{#if_eq (fe file) 'csdb'}}structured-text{{else}}{{fe (lowercase (concat uri "/" file))}}{{/if_eq}}"
-                                                   data-gtm-date="{{df updateDate outputFormat="d MMMM yyyy HH:mm"}}">
+                                                   data-gtm-date="{{df updateDate outputFormat="d MMMM yyyy"}}">
                                                     {{#if_eq (fe file) 'csdb'}}structured text{{else}}{{fe (lowercase (concat uri "/" file))}}{{/if_eq}} ({{fs (lowercase (concat uri "/" this.file))}})
                                                 </a>
                                             {{/if}}
