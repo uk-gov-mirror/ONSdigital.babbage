@@ -95,23 +95,84 @@ function autoSubmitForm() {
 $(function() {
     if (!$('body').hasClass('viewport-sm')) { // on medium viewport and up auto-submit filters form
         autoSubmitForm();
+    } else {
+
+        // Capture changes to sort by and number of results per page and push to GTM dataLayer
+        var $sortBy = $('#sort');
+        var sortByInitialValue = $('#sort').val() || "";
+        var sortByHasNewValue = false;
+        var $numberOfResults = $('#page-size');
+        var numberOfResultsInitialValue = $('#page-size').val() || "";
+        var numberOfResultsHasNewValue = false;
+
+        $sortBy.on('change', function() {
+            if (sortByInitialValue !== $('#sort').val()) {
+                sortByHasNewValue = true;
+            }
+        });
+
+        $numberOfResults.on('change', function() {
+            if (numberOfResultsInitialValue !== $('#sort').val()) {
+                numberOfResultsHasNewValue = true;
+            }
+        });
+
+
+        $('#form').submit(function (e) {
+            e.preventDefault();
+            var $this = this;
+            var submit = this.submit;
+            function submitForm() {
+                $this.submit();
+            }
+            if (sortByHasNewValue) {
+                gtmPushToDataLayer($sortBy, submitForm);
+            } else {
+                this.submit();
+            }
+            sortByHasNewValue = false;
+        });
+
+        $('#js-pagination-container').submit(function (e) {
+            e.preventDefault();
+            var $this = this;
+            var submit = this.submit;
+            if (numberOfResultsHasNewValue) {
+                gtmPushToDataLayer($numberOfResults, submit);
+            } else {
+                this.submit();
+            }
+            numberOfResultsHasNewValue = false;
+        })
     }
 });
 
 
-function gtmPushToDataLayer(element) {
+function gtmPushToDataLayer(element, callback) {
     var elementId = element.attr('id').toString();
     var elementValue = element.val().toString();
 
     if (elementId === 'sort') {
         window.dataLayer.push({
             'event': 'SortBy',
-            'sort-by': elementValue
+            'sort-by': elementValue,
+            'eventCallback': function () {
+                if (callback) {
+                    callback();
+                }
+            }
         });
     } else {
         window.dataLayer.push({
             'event': 'ResultsPerPage',
-            'results-per-page': elementValue
+            'results-per-page': elementValue,
+            'eventCallback': function () {
+                if (callback) {
+                    callback;
+                }
+            }
         });
     }
+
+    console.log(window.dataLayer);
 }
