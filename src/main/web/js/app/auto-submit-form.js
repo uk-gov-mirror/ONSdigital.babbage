@@ -121,7 +121,6 @@ $(function() {
         $('#form').submit(function (e) {
             e.preventDefault();
             var $this = this;
-            var submit = this.submit;
             function submitForm() {
                 $this.submit();
             }
@@ -136,9 +135,11 @@ $(function() {
         $('#js-pagination-container').submit(function (e) {
             e.preventDefault();
             var $this = this;
-            var submit = this.submit;
+            function submitForm() {
+                $this.submit();
+            }
             if (numberOfResultsHasNewValue) {
-                gtmPushToDataLayer($numberOfResults, submit);
+                gtmPushToDataLayer($numberOfResults, submitForm);
             } else {
                 this.submit();
             }
@@ -168,11 +169,9 @@ function gtmPushToDataLayer(element, callback) {
             'results-per-page': elementValue,
             'eventCallback': function () {
                 if (callback) {
-                    callback;
+                    callback();
                 }
             }
         });
     }
-
-    console.log(window.dataLayer);
 }
