@@ -10,7 +10,9 @@
 							{{#resolve this.uri filter="description"}}
 								<li>
 									<h4>
-										<a href="{{uri}}">{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}</a>
+										<a href="{{uri}}"
+                                           data-gtm-title="{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}"
+                                           data-gtm-type="related-publication">{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}</a>
 									</h4>
 									{{description.summary}}
 									{{description._abstract}}
@@ -21,7 +23,7 @@
 
 							{{#resolve this.uri filter="title"}}
 								<li>
-									<a href="{{uri}}">
+									<a href="{{uri}}" data-gtm-title="{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}" data-gtm-type="related-publication">
 										{{title}}
 										{{#if edition}}
 											{{#if_ne edition 'yes'}}

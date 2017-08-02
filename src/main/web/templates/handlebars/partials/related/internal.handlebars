@@ -7,7 +7,9 @@
 			<ul class="list--neutral">
 				{{#each anchors}}
 					{{#resolve this.uri filter="description"}}
-						<li><a href="{{description.uri}}">{{description.title}}</a></li>
+						<li><a href="{{description.uri}}"
+                               data-gtm-title="{{description.title}}"
+                               data-gtm-type="related-internal-link">{{description.title}}</a></li>
 					{{/resolve}}
 				{{/each}}
 			</ul>
