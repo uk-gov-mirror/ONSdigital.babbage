@@ -42,7 +42,7 @@ function autoSubmitForm() {
         var $targetId = $target.attr('id');
         $trigger = $target;
 
-        // check window.dataLayer exists and that it's either soft or number of results that has changed
+        // check window.dataLayer exists and that it's either sort or number of results that has changed
         if (window.dataLayer && ($targetId === 'sort' || $targetId === 'page-size')) {
             gtmPushToDataLayer($target);
         }
