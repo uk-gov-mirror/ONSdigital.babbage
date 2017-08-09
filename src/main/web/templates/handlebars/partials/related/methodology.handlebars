@@ -6,14 +6,18 @@
 				{{#each relatedMethodology}}
 					{{#resolve this.uri filter="title"}}
 						<li>
-							<a href="{{uri}}">{{title}}</a>
+							<a href="{{uri}}"
+                               data-gtm-title="{{title}}"
+                               data-gtm-type="related-methodology">{{title}}</a>
 						</li>
 					{{/resolve}}
 				{{/each}}
                 {{#each relatedMethodologyArticle}}
                     {{#resolve this.uri filter="title"}}
                         <li>
-                            <a href="{{uri}}">{{title}}</a>
+                            <a href="{{uri}}"
+                               data-gtm-title="{{title}}"
+                               data-gtm-type="related-methodology">{{title}}</a>
                         </li>
                     {{/resolve}}
                 {{/each}}

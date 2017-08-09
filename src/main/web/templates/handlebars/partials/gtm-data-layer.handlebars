@@ -1,0 +1,101 @@
+<script>
+
+    // unescape html entities
+    function htmlUnescape(str){
+        return str
+                .replace(/&#x3D;/g, "=");
+    }
+
+    {{!-- Add title to dataLayer. Dont include the edition on dataset versions pages --}}
+    var dataLayer = [{
+        contentTitle: htmlUnescape("{{> partials/page-title}}{{#if description.edition}}{{#if_ne description.edition "Current"}}: {{description.edition}}{{/if_ne}}{{/if}}")
+    }];
+
+    {{#if description.releaseDate}}
+    dataLayer[0]["releaseDate"] = "{{df description.releaseDate outputFormat='yyyy/MM/dd'}}";
+    {{/if}}
+
+    {{#if result.numberOfResults}}
+    dataLayer[0]["numberOfResults"] = {{result.numberOfResults}};
+    {{/if}}
+
+    {{!-- Add the related publication into the Google Tag Manager data layer object --}}
+    {{#if_any (eq type "dataset_landing_page") (eq type "timeseries")}}
+        dataLayer[0]["publications"] = [];
+        {{#if relatedDocuments}}
+            {{#each relatedDocuments}}
+                {{#resolve this.uri filter="title"}}
+                    dataLayer[0].publications.push({
+                        title: "{{title}}{{#if edition}}: {{edition}}{{/if}}",
+                        uri: "{{uri}}"
+                    });
+                {{/resolve}}
+            {{/each}}
+        {{/if}}
+    {{/if_any}}
+
+
+    {{!-- Add latest release info to dataLayer --}}
+    {{#if_any (eq type "bulletin") (eq type "article") (eq type "compendium_landing_page") (eq type "compendium_chapter")}}
+        {{#unless (endsWith (parentPath uri) "previous")}}
+            {{#if description.latestRelease}}
+                dataLayer[0]["latestRelease"] = "yes";
+            {{else}}
+                dataLayer[0]["latestRelease"] = "no";
+            {{/if}}
+        {{else}}
+            dataLayer[0]["latestRelease"] = "no";
+        {{/unless}}
+    {{/if_any}}
+
+
+    {{!-- Update Google Tag Manager data layer with information about corrections and notices --}}
+    {{#if alerts}}
+        {{#each alerts}}
+            {{#if_eq type "correction"}}
+                {{#assign "has-corrections"}}
+                true
+                {{/assign}}
+            {{/if_eq}}
+
+            {{#if_eq type "alert"}}
+                {{#assign "has-alerts"}}
+                true
+                {{/assign}}
+            {{/if_eq}}
+        {{/each}}
+
+        {{#if_ne type "dataset"}}
+            {{#if has-corrections}}
+                dataLayer[0]["corrections"] = "yes";
+            {{else}}
+                dataLayer[0]["corrections"] = "no";
+            {{/if}}
+            {{#if has-alerts}}
+                dataLayer[0]["notices"] = "yes";
+            {{else}}
+                dataLayer[0]["notices"] = "no";
+            {{/if}}
+        {{/if_ne}}
+
+    {{/if}}
+
+    {{#if versions}}
+        {{#each versions}}
+            {{#if correctionNotice}}
+                {{#assign "has-corrections"}}
+                true
+                {{/assign}}
+            {{/if}}
+        {{/each}}
+
+        {{#if_ne type "dataset"}}
+            {{#if has-corrections}}
+                dataLayer[0]["corrections"] = "yes";
+            {{else}}
+                dataLayer[0]["corrections"] = "no";
+            {{/if}}
+        {{/if_ne}}
+    {{/if}}
+
+</script>

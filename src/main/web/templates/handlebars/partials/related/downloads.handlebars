@@ -5,7 +5,9 @@
             <ul class="list--neutral">
                 {{#each downloads}}
                     <li>
-                        <a data-ga-event data-ga-event-category="related-download" data-ga-event-label="{{title}}" href="/file?uri={{absolute (concat uri "/" file)}}">{{title}}</a>
+                        <a data-gtm-title="{{title}}"
+                           data-gtm-type="related-download"
+                           href="/file?uri={{absolute (concat uri "/" file)}}">{{title}}</a>
                     </li>
                 {{/each}}
             </ul>
