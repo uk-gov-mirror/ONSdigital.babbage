@@ -192,7 +192,10 @@ TODO: split out colours palette selection, axis alignment and positioning
 				fontWeight: 'normal',
 				color:'rgb(112, 112,112)'{{#if_eq chartType 'small-multiples'}},
 				width: 110{{/if_eq}}
-	        }
+	        },
+            navigation: {
+                enabled: false
+            }
 		},
 		plotOptions: {
 			series: { {{#if isStacked }}
