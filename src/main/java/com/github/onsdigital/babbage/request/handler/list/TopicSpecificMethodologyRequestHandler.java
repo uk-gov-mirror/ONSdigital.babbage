@@ -42,7 +42,7 @@ public class TopicSpecificMethodologyRequestHandler extends BaseRequestHandler i
 
     private SearchQueries queries(String uri, HttpServletRequest request) {
         return () -> toList(
-                buildListQuery(request, methodologyFilters, filters(uri), false).aggregate(typeCountsAggregate())
+                buildListQuery(request, methodologyFilters, filters(uri), true).aggregate(typeCountsAggregate())
         );
     }
 
