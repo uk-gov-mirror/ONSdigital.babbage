@@ -169,7 +169,7 @@ public class RssService {
 			);
 		};
 
-		ONSQuery onsQuery = SearchUtils.buildListQuery(filter.getRequest(), filter.getTypeFilters(), searchFilter)
+		ONSQuery onsQuery = SearchUtils.buildListQuery(filter.getRequest(), filter.getTypeFilters(), searchFilter, false)
 				.size(Integer.valueOf(PropertiesService.getInstance().get(RSS_MAX_FEED_SIZE_KEY)))
 				.sortBy(SortBy.release_date)
 				.highlight(false);
