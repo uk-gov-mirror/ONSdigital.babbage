@@ -33,8 +33,8 @@ import static java.text.MessageFormat.format;
 public class ChartRenderer {
 
     static final String CONTENT_DISPOSITION_HEADER = "Content-Disposition";
-    static final String CONTENT_DISPOSITION_HEADER_FMT = "filename=\"{0}.png\"";
-    static final String DEFAULT_CONTENT_DISPOSITION_HEADER_FMT = "filename=\"Chart-{0}.png\"";
+    static final String CONTENT_DISPOSITION_HEADER_FMT = "attachment; filename=\"{0}.png\"";
+    static final String DEFAULT_CONTENT_DISPOSITION_HEADER_FMT = "attachment; filename=\"Chart-{0}.png\"";
     static final String HIGHCHARTS_TEMPLATE = "highcharts/chart";
     static final String EMBEDED_HIGHCHARTS_TEMPLATE = "partials/highcharts/embeddedchart";
     static final String PNG_MIME_TYPE = "image/png";
