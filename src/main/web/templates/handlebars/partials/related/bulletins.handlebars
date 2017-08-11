@@ -6,7 +6,10 @@
 				{{#each relatedBulletins}}
 					{{#resolve this.uri filter="description"}}
 						<li>
-							<a href="{{uri}}">{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}</a>
+							<a href="{{uri}}"
+                               data-gtm-title="{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}"
+                               data-gtm-type="related-bulletin"
+                            >{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}</a>
 						</li>
 					{{/resolve}}
 				{{/each}}

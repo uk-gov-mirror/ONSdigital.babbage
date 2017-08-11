@@ -3,7 +3,7 @@
     <ul class="list--neutral padding-top-sm--3 padding-bottom-sm--2 padding-left-sm--1 padding-right-sm--1 padding-top-md--0 padding-right-md--1 padding-bottom-md--1 padding-left-md--1 flush">
         {{#loop relatedDatasets limit=3}}
             {{#resolve this.uri filter="title"}}
-                <li><a href="{{absolute uri}}">{{title}}</a></li>
+                <li><a href="{{absolute uri}}" data-gtm-title="{{title}}" data-gtm-type="related-data">{{title}}</a></li>
             {{/resolve}}
         {{/loop}}
     </ul>

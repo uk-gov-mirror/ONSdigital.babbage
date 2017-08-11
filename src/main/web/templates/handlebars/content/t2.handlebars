@@ -7,11 +7,17 @@
 	<h2 class="margin-top-lg--1">Highlighted content</h2>
 	<ul class="list--neutral margin-top--negative-one-fix">
 		{{#each highlightedLinks}}
-		{{#resolve this.uri}}
-		{{#if_any items datasets statsBulletins relatedArticles sections}}
-		<li><a href="{{uri}}">{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}</a></li>
-		{{/if_any}}
-		{{/resolve}}
+            {{#resolve this.uri}}
+                {{#if_any items datasets statsBulletins relatedArticles sections}}
+                    <li>
+                        <a href="{{uri}}"
+                           data-gtm-title="{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}"
+                           data-gtm-type="highlighted-links"
+                        >{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}
+                        </a>
+                    </li>
+                {{/if_any}}
+            {{/resolve}}
 		{{/each}}
 	</ul>
 </div>

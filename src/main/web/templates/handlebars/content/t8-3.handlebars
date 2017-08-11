@@ -58,9 +58,7 @@
                                         {{!-- <div class="col col--md-8 col--lg-9"> --}}
                                                     <a href="/file?uri={{concat uri "/" this.file}}"
                                                         title="Download as {{fe (lowercase (concat uri "/" this.file))}}"
-                                                        class="btn btn--primary btn--thick" data-ga-event
-                                                        data-ga-event-category='download-{{fe (lowercase (concat uri "/" this.file))}}'
-                                                        data-ga-event-label="{{../../../description.title}} - {{description.edition}}">
+                                                        class="btn btn--primary btn--thick">
                                                         {{#if_eq (fe file) 'csdb'}}structured text{{else}}{{fe (lowercase (concat uri "/" file))}}{{/if_eq}}
                                                         ({{fs (lowercase (concat uri "/" this.file))}})
                                                     </a>
@@ -86,7 +84,7 @@
                                     <ul class="list--neutral flush-top">
                                         {{#each supplementaryFiles}}
                                             <li class="flush">
-                                                <a href="/file?uri={{concat uri "/" this.file}}" data-ga-event data-ga-event-category='download-supporting-file' data-ga-event-label="{{title}}">{{title}}</a>
+                                                <a href="/file?uri={{concat uri "/" this.file}}">{{title}}</a>
                                                 ({{fs (concat uri "/" this.file)}}, {{fe (concat uri "/" this.file)}})
                                             </li>
                                         {{/each}}
@@ -131,7 +129,7 @@
                                                     <div class="col-wrap margin-left-sm--0 margin-left-md--0">
 
                                                         <div class="col col--md-8 col--lg-9 margin-bottom-sm--2 margin-bottom-md--2">
-                                                            <a href="/file?uri={{concat uri "/" this.file}}" title="Download as {{fe (lowercase (concat uri "/" this.file))}}" class="btn btn--primary btn--thick" data-ga-event data-ga-event-category='download-{{fe (lowercase (concat uri "/" this.file))}}' data-ga-event-label="{{../../../description.title}} - {{description.edition}}">
+                                                            <a href="/file?uri={{concat uri "/" this.file}}" title="Download as {{fe (lowercase (concat uri "/" this.file))}}" class="btn btn--primary btn--thick">
                                                                 {{fe (lowercase (concat uri "/" this.file))}} ({{fs (lowercase (concat uri "/" this.file))}})
                                                             </a>
                                                             {{!-- <form method="get" action="/file">
@@ -153,7 +151,7 @@
                                                         <ul class="list--neutral flush-top">
                                                             {{#each supplementaryFiles}}
                                                                 <li class="flush">
-                                                                    <a href="/file?uri={{concat uri "/" this.file}}" data-ga-event data-ga-event-category='download-supporting-file' data-ga-event-label="{{title}}">{{title}}</a>
+                                                                    <a href="/file?uri={{concat uri "/" this.file}}">{{title}}</a>
                                                                     ({{fs (concat uri "/" this.file)}}, {{fe (concat uri "/" this.file)}})
                                                                 </li>
                                                             {{/each}}
@@ -208,22 +206,10 @@
                             <ul class="list--neutral">
                                 {{#each relatedDocuments}}
                                     {{#resolve this.uri filter="title"}}
-                                        {{!-- Add the related publication into the Google Tag Manager data layer object --}}
-                                        <script>
-                                            dataLayer[0].publications.push({
-                                                title: "{{title}}{{#if edition}}: {{edition}}{{/if}}",
-                                                uri: "{{uri}}"
-                                            });
-                                        </script>
-
+                                        {{#assign "fullTitle"}}{{title}}{{#if edition}}{{#if_ne edition 'yes'}}: {{edition}}{{/if_ne}}{{/if}}{{/assign}}
                                         <li>
-                                            <a href="{{uri}}">
-                                                {{title}}
-                                                {{#if edition}}
-                                                    {{#if_ne edition 'yes'}}
-                                                        : {{edition}}
-                                                    {{/if_ne}}
-                                                {{/if}}
+                                            <a href="{{uri}}" data-gtm-type="publications-using-data" data-gtm-title="{{fullTitle}}">
+                                                {{fullTitle}}
                                             </a>
                                         </li>
                                     {{/resolve}}

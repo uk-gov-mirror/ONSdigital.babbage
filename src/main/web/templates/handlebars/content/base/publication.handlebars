@@ -71,12 +71,12 @@
                                         <ul class="list--neutral">
                                             {{#each relatedMethodology}}
                                                 {{#resolve this.uri filter="description"}}
-                                                    <li><a href="{{absolute uri}}">{{description.title}}</a></li>
+                                                    <li><a data-gtm-type="related-methodology" data-gtm-title="{{description.title}}" href="{{absolute uri}}">{{description.title}}</a></li>
                                                 {{/resolve}}
                                             {{/each}}
                                             {{#each relatedMethodologyArticle}}
                                                 {{#resolve this.uri filter="description"}}
-                                                    <li><a href="{{absolute uri}}">{{description.title}}</a></li>
+                                                    <li><a data-gtm-type="related-methodology" data-gtm-title="{{description.title}}" href="{{absolute uri}}">{{description.title}}</a></li>
                                                 {{/resolve}}
                                             {{/each}}
                                         </ul>

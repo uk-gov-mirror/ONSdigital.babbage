@@ -1,4 +1,5 @@
-{{#unless (endsWith (parentPath uri) "previous")}} {{!-- If not a previous version workout the latest link  --}}
+{{#unless (endsWith (parentPath uri) "previous")}} 
+	{{!-- If not a previous version workout the latest link --}}
 	{{#if description.latestRelease}}
 		<p class="alert__title">{{labels.this-is-the-latest-release}}</p>
         <a class="alert__link" href="{{parentPath uri}}/previousReleases">{{labels.view-previous-releases}}</a>
@@ -7,7 +8,8 @@
 			<p class="alert__title">{{labels.this-is-not-the-latest-release}}</p> <a class="btn btn--primary print--hide" href="{{uri}}">{{labels.view-latest-release}}</a>
 		{{/resolve}}
 	{{/if}}
-	{{else}}{{!-- If an older version of any release link to latest version of that release--}}
+{{else}}
+	{{!-- If an older version of any release link to latest version of that release --}}
 	<div class="alert--warning">
 		<div class="alert--warning__icon"></div>
 		<h2 class="alert--warning__title">{{labels.this-has-been-superseded}}</h2> <a class="btn btn--primary print--hide alert--warning__content" href="{{parentPath (parentPath uri)}}">{{labels.view-corrected-version}}</a>

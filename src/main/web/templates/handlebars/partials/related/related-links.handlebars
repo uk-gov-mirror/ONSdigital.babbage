@@ -7,10 +7,15 @@
 			<ul class="list--neutral">
 				{{#each links}}
                     {{#if title}}
-                        <li><a href="{{uri}}">{{title}}</a></li>
+                        <li><a href="{{uri}}"
+                               data-gtm-title="{{title}}"
+                               data-gtm-type="related-link">{{title}}</a></li>
                     {{else}}
                         {{#resolve this.uri}}
-                            <li><a href="{{uri}}">{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}</a></li>
+                            <li><a href="{{uri}}"
+                                   data-gtm-title="{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}"
+                                   data-gtm-type="related-link">{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}
+                            </a></li>
                         {{/resolve}}
                     {{/if}}
 				{{/each}}
