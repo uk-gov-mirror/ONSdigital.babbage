@@ -70,7 +70,10 @@
 			{{else}} 						 				{{> content/t3}}
 			{{/if_eq}}
 		{{else if_eq type "bulletin"}} 						{{> content/t4-1}}
-		{{else if_eq type "article"}} 						{{> content/t4-2}}
+		{{else if_eq type "article"}}
+            {{#if isPrototypeArticle}}                      {{> content/t4-3}}
+            {{else}}                                        {{> content/t4-2}}
+            {{/if}}
         {{else if_eq type "article_download"}} 				{{> content/t4-2}}
 		{{else if_eq type "timeseries"}}
 			{{#if previous}} 								{{> content/t12-2}}
