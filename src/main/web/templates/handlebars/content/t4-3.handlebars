@@ -69,7 +69,7 @@
                 <ul class="list--neutral">
                 {{#each relatedDocuments}}
                     {{#resolve this.uri}}
-                        <li>
+                        <li class="margin-bottom--3">
                             <a href="{{this.uri}}" class="font-size--h4">{{this.description.title}}</a>
                             <p class="flush">
                                 {{> type-label type_code=this.type }}
