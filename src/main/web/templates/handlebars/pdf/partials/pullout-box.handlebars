@@ -1,0 +1,6 @@
+<div class="
+{{#if_any (eq alignment "full") (eq alignment "")}}markdown-box-container {{/if_any}}
+    {{#if_eq alignment "left"}}markdown-box-container-left {{/if_eq}}
+    {{#if_eq alignment "right"}}markdown-box-container-right {{/if_eq}}">
+    {{md content}}
+</div>
