@@ -22,7 +22,7 @@
                         <div class="col col--md-47 col--lg-46">
                             <div class="page-neutral-intro__type">Article</div>
 
-                            <h1 class="page-neutral-intro__title {{#if_any description._abstract description.summary}}{{else}}margin-bottom-sm--4 margin-bottom-md--4{{/if_any}}{{#if_eq type "home_page_census"}}h1--census{{/if_eq}}">
+                                <h1 class="page-neutral-intro__title {{#if_eq type "home_page_census"}}h1--census{{/if_eq}}">
                                 {{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}
                             </h1>
 
@@ -42,7 +42,7 @@
         <div class="col-wrap">
             <article class="col col--md-36 col--lg-36 page-neutral-content__main-content margin-top--4 margin-left-md--1">
                 {{#each sections}}
-                    <div id="{{slugify title}}" class="section__content--markdown section__content--markdown-flush">
+                    <div id="{{slugify title}}" class="section__content--markdown section__content--markdown--neutral-article">
                         <section>
                             {{#if title}}
                                 <header>
@@ -58,26 +58,26 @@
 
         {{!-- Related items ---}}
         {{#if relatedData}}
-            <a class="btn btn--primary width--36 margin-bottom--2" href="{{this.uri}}/relateddata" >
+            <a class="btn btn--primary btn--full-width width-md--36 margin-bottom--2" href="{{this.uri}}/relateddata" >
                 View all data used in this article
             </a>
         {{/if}}
 
         {{#if relatedDocuments}}
-        <div class="tile-neutral width--36 margin-bottom--2">
+        <div class="tile-neutral width-md--36 margin-bottom--2">
             <h3 class="tile-neutral__heading margin-top--1">Related</h3>
-                <ul class="list--neutral">
+                <ul class="list--neutral margin-bottom--0">
                 {{#each relatedDocuments}}
                     {{#resolve this.uri}}
-                        <li class="margin-bottom--3">
-                            <a href="{{this.uri}}" class="font-size--h4">{{this.description.title}}</a>
-                            <p class="flush">
+                        <li class="{{#if @last}}margin-bottom--0{{else}}margin-bottom--3{{/if}}">
+                            <a href="{{this.uri}}" class="tile-neutral-content__title">{{this.description.title}}</a>
+                            <p class="tile-neutral-content__meta">
                                 {{> type-label type_code=this.type }}
                                 {{#if this.description.releaseDate}}
-                                    | Released on {{df this.description.releaseDate}}
+                                    <span class="text--aluminium">|</span> Released on {{df this.description.releaseDate}}
                                 {{/if}}
                             </p>
-                            <p class="margin-top--0">{{this.description.summary}}</p>
+                            <p class="margin-top--0 margin-bottom--0">{{this.description.summary}}</p>
                         </li>
                     {{/resolve}}
                 {{/each}}
@@ -86,7 +86,7 @@
         {{/if}}
 
         {{#if description.contact}}
-            <div class="tile-neutral width--36 margin-bottom--6">
+            <div class="tile-neutral width-md--36 margin-bottom--6">
                 <h3 class="tile-neutral__heading margin-top--1 margin-bottom--1">Contact</h3>
                 <address>
                     {{#if description.contact.name}}{{description.contact.name}}<br/>{{/if}}
