@@ -16,14 +16,14 @@
 
 		<!--[if IE]><![endif]-->
 		<!--[if lte IE 8]>
-		<link rel="stylesheet" href="{{#if is_dev}}http://{{location.hostname}}:9000/dist{{else}}//cdn.ons.gov.uk/sixteens/831f6bb{{/if}}/css/old-ie.css"/>
+		<link rel="stylesheet" href="{{#if is_dev}}http://{{location.hostname}}:9000/dist{{else}}//cdn.ons.gov.uk/sixteens/f5c1b70{{/if}}/css/old-ie.css"/>
 		<![endif]-->
         <!--[if IE 9]>
-              <link rel="stylesheet" type="text/css" href="{{#if is_dev}}http://{{location.hostname}}:9000/dist{{else}}//cdn.ons.gov.uk/sixteens/831f6bb{{/if}}/css/ie-9.css">
+              <link rel="stylesheet" type="text/css" href="{{#if is_dev}}http://{{location.hostname}}:9000/dist{{else}}//cdn.ons.gov.uk/sixteens/f5c1b70{{/if}}/css/ie-9.css">
         <![endif]-->
 		<!--[if gt IE 9]><!-->
-        <link rel="stylesheet" type="text/css" href="{{#if is_dev}}http://{{location.hostname}}:9000/dist{{else}}//cdn.ons.gov.uk/sixteens/831f6bb{{/if}}/css/main.css">
-		{{#if pdf_style}}<link rel="stylesheet" type="text/css" href="{{#if is_dev}}http://localhost:9000/dist{{else}}//cdn.ons.gov.uk/sixteens/831f6bb{{/if}}/css/pdf.css">{{/if}}
+        <link rel="stylesheet" type="text/css" href="{{#if is_dev}}http://{{location.hostname}}:9000/dist{{else}}//cdn.ons.gov.uk/sixteens/f5c1b70{{/if}}/css/main.css">
+		{{#if pdf_style}}<link rel="stylesheet" type="text/css" href="{{#if is_dev}}http://localhost:9000/dist{{else}}//cdn.ons.gov.uk/sixteens/f5c1b70{{/if}}/css/pdf.css">{{/if}}
         <![endif]-->
         
         {{> partials/gtm-data-layer }}
@@ -70,7 +70,10 @@
 			{{else}} 						 				{{> content/t3}}
 			{{/if_eq}}
 		{{else if_eq type "bulletin"}} 						{{> content/t4-1}}
-		{{else if_eq type "article"}} 						{{> content/t4-2}}
+		{{else if_eq type "article"}}
+            {{#if isPrototypeArticle}}                      {{> content/t4-3}}
+            {{else}}                                        {{> content/t4-2}}
+            {{/if}}
         {{else if_eq type "article_download"}} 				{{> content/t4-2}}
 		{{else if_eq type "timeseries"}}
 			{{#if previous}} 								{{> content/t12-2}}
@@ -128,7 +131,7 @@
 
 
         <!--[if gt IE 8]><!-->
-        <script type="text/javascript" src="{{#if is_dev}}//{{location.hostname}}:9000/dist{{else}}//cdn.ons.gov.uk/sixteens/831f6bb{{/if}}/js/main.js"></script>
+        <script type="text/javascript" src="{{#if is_dev}}//{{location.hostname}}:9000/dist{{else}}//cdn.ons.gov.uk/sixteens/f5c1b70{{/if}}/js/main.js"></script>
         <script type="text/javascript" src="/js/app.js"></script>
 
         {{!-- Add extra highcharts source files if page contains any charts --}}
