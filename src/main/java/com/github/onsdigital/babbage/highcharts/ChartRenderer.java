@@ -143,7 +143,6 @@ public class ChartRenderer {
         Integer padding = 10;
         Integer columns = 3;
         Integer chartWidth = (outputWidth-(padding*(columns+1))) / columns;
-        Integer chartHeight = Math.round(Float.parseFloat(json.get("aspectRatio").toString()) * (float)chartWidth);
         Integer rows = (int)Math.ceil((float)series.size() / (float)columns);
         List<Map<String, Object>> originalData = (List<Map<String, Object>>)json.get("data");
         Map<String, Map<String, Object>> charts = new HashMap<>();
@@ -155,9 +154,6 @@ public class ChartRenderer {
 
         for (Integer i = 0; i < series.size(); i++) {
             String title = series.get(i);
-            if (i == 2) {
-                title += title;
-            }
             BufferedImage chartTitle = renderImageText(title, chartWidth);
             chartTitles.add(chartTitle);
             Integer row = i/columns;
@@ -299,7 +295,7 @@ public class ChartRenderer {
             y += lineHeight + lineSpacing;
         }
 
-        Integer titleHeight = (lineHeight * lines.size()) + (padding * lines.size()+1);
+        Integer titleHeight = (lineHeight * lines.size()) + (padding * lines.size()+1) + fm.getDescent();
 
         BufferedImage croppedTitleImage = new BufferedImage(width, titleHeight, BufferedImage.TYPE_INT_ARGB);
         Graphics graphics = croppedTitleImage.getGraphics();
