@@ -322,11 +322,11 @@ TODO: split out colours palette selection, axis alignment and positioning
     	{{#if_eq yAxisPos "right"}}
 	options.yAxis.title.align = 'high';
 	options.yAxis.title.offset = (-1 * textWidth);
-	options.yAxis.title.y = {{#if isSmallMultiple}}18{{else}}-4{{/if}};
+	options.yAxis.title.y = {{#if isSmallMultiple}}20{{else}}-4{{/if}};
     	{{else}}
 	options.yAxis.title.align = 'high';
 	options.yAxis.title.offset = 0;
-	options.yAxis.title.y = {{#if isSmallMultiple}}18{{else}}-4{{/if}};
+	options.yAxis.title.y = {{#if isSmallMultiple}}20{{else}}-4{{/if}};
     	{{/if_eq}}
     {{/if_eq}}
     {{!-- Setting rotation to 0 causes axis label to push chart to the right for some text (e.g. "GDP growth percentage" ) and shrinks it in size. Funny enough, rotating 360 degrees eliminates this issue and still keeps the label horizontal.  --}}

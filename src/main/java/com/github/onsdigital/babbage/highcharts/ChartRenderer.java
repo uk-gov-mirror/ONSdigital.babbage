@@ -34,6 +34,8 @@ import java.awt.Graphics;
 
 import javax.imageio.ImageIO;
 
+import java.awt.*;
+
 import static com.github.onsdigital.babbage.highcharts.ChartConfigBuilder.TITLE_PARAM;
 import static com.github.onsdigital.babbage.highcharts.ChartConfigBuilder.URI_PARAM;
 import static com.github.onsdigital.babbage.highcharts.ChartConfigBuilder.WIDTH_PARAM;
@@ -143,11 +145,29 @@ public class ChartRenderer {
         Integer chartWidth = (outputWidth-(padding*(columns+1))) / columns;
         Integer chartHeight = Math.round(Float.parseFloat(json.get("aspectRatio").toString()) * (float)chartWidth);
         Integer rows = (int)Math.ceil((float)series.size() / (float)columns);
-        Integer height = (rows * (chartHeight + padding)) + padding;
         List<Map<String, Object>> originalData = (List<Map<String, Object>>)json.get("data");
         Map<String, Map<String, Object>> charts = new HashMap<>();
         ArrayList<BufferedImage> chartImages = new ArrayList<>();
+        ArrayList<BufferedImage> chartTitles = new ArrayList<>();
         int[] rowHeights = new int[rows];
+        int[] titleHeights = new int[rows];
+        BufferedImage mainTitle = renderImageText(json.get("title").toString(), outputWidth, 21);
+
+        for (Integer i = 0; i < series.size(); i++) {
+            String title = series.get(i);
+            if (i == 2) {
+                title += title;
+            }
+            BufferedImage chartTitle = renderImageText(title, chartWidth);
+            chartTitles.add(chartTitle);
+            Integer row = i/columns;
+            
+            if (titleHeights[row] < chartTitle.getHeight()) {
+                titleHeights[row] = chartTitle.getHeight();
+            }
+        }
+
+        System.out.println(Arrays.toString(titleHeights));
 
         for (String chart : series) {
             Map<String, Object> chartData = new HashMap<String, Object>();
@@ -188,30 +208,34 @@ public class ChartRenderer {
 
             chartImages.add(bufferedImage);
 
-            Integer row = i/3;
+            Integer row = i/columns;
 
             if (rowHeights[row] < bufferedImage.getHeight()) {
                 rowHeights[row] = bufferedImage.getHeight();
             }
         }
 
-        BufferedImage result = new BufferedImage(outputWidth, IntStream.of(rowHeights).sum(), BufferedImage.TYPE_INT_RGB);
+        Integer outputHeight = IntStream.of(rowHeights).sum() + IntStream.of(titleHeights).sum() + mainTitle.getHeight() + padding;
+        BufferedImage result = new BufferedImage(outputWidth, outputHeight, BufferedImage.TYPE_INT_RGB);
         Graphics graphics = result.getGraphics();
+        graphics.setColor(Color.white);
+        graphics.fillRect(0, 0, outputWidth, outputHeight);
+
+        graphics.drawImage(mainTitle, 0, 0, null);
+
         Integer rowPosition = 0, colPosition = 0;
-        Integer yPosition = 0;
+        Integer yPosition = titleHeights[0] + mainTitle.getHeight() + padding;
+        Integer titleYPosition = mainTitle.getHeight() + padding;
 
         for (Integer i = 0; i < series.size(); i++) {
-            Integer xPosition = (colPosition * chartWidth);
+            Integer xPosition = (colPosition * chartWidth) + ((colPosition + 1) * padding);
 
             if (i % 3 == 0 && i / 3 > 0) {
-                yPosition += rowHeights[i/3-1];
-            }
-
-            if (colPosition == 0) {
-                xPosition += padding;
+                yPosition += (rowHeights[i/3-1] + titleHeights[i/3]);
+                titleYPosition += (rowHeights[i/3-1] + titleHeights[i/3-1]);
             }
             
-            // X is horizontal / Y is vertical
+            graphics.drawImage(chartTitles.get(i), xPosition, titleYPosition, null);
             graphics.drawImage(chartImages.get(i), xPosition, yPosition, null);
             
             if (colPosition == columns-1) {
@@ -223,6 +247,66 @@ public class ChartRenderer {
         }
         
         ImageIO.write(result, "png", new File("result.png"));
+    }
+
+    private static BufferedImage renderImageText(String text, Integer width) throws IOException {
+        return renderImageText(text, width, 14);
+    }
+
+    private static BufferedImage renderImageText(String text, Integer width, Integer fontSize) throws IOException {
+        Integer height = 600;
+        Integer padding = 10;
+        Integer lineSpacing = 7;
+        Integer textSpace = width - (2 * padding);
+
+        BufferedImage i = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g = i.createGraphics();
+
+        Font f = new Font("TimesRoman", Font.PLAIN, fontSize);
+        g.setFont(f);
+        g.setPaint(Color.black);
+        FontMetrics fm = g.getFontMetrics();
+
+        ArrayList<String> lines = new ArrayList<String>();
+        String[] words = text.split(" ");
+
+        String buffer = "";
+        for(String word : words) {
+            String tempBuffer = buffer;
+
+            if(tempBuffer.length() > 0) {
+                tempBuffer += " ";
+            }
+            tempBuffer += word;
+
+            if (fm.stringWidth(tempBuffer) > textSpace) {
+                lines.add(buffer);
+                buffer = word;
+                continue;
+            }
+
+            buffer = tempBuffer;
+        }
+
+        if(buffer.length() > 0) {
+            lines.add(buffer);
+        }
+
+        Integer lineHeight = g.getFontMetrics().getAscent();
+        Integer y = lineHeight + padding;
+        for(String line : lines) {
+            g.drawString(line, padding, y);
+            y += lineHeight + lineSpacing;
+        }
+
+        Integer titleHeight = (lineHeight * lines.size()) + (padding * lines.size()+1);
+
+        BufferedImage croppedTitleImage = new BufferedImage(width, titleHeight, BufferedImage.TYPE_INT_ARGB);
+        Graphics graphics = croppedTitleImage.getGraphics();
+
+        graphics.drawImage(i, 0, 0, null);
+
+        return croppedTitleImage;
     }
     
     private InputStream renderSingleChartImage(String jsonRequest, Integer width) throws IOException {
