@@ -87,6 +87,7 @@ $(function() {
      */
     Highcharts.exportCharts = function (charts, options) {
         var svg;
+        debugger;
         // Merge the options
         options = Highcharts.merge(Highcharts.getOptions().exporting, options);
 
@@ -139,18 +140,18 @@ $(function() {
 
                 // remove the title, subtitle and any renderers for client side display
                 // these are only used by the template for export/printing
-                chartConfig.chart.marginTop = null;
-                chartConfig.chart.marginBottom = null;
+                // chartConfig.chart.marginTop = null;
+                // chartConfig.chart.marginBottom = null;
                 //use this to adjust the render y position based on the height of marginTop
-                chartConfig.chart.offset = 0;
-                chartConfig.title = {text:''};
-                chartConfig.subtitle = {text:''};
-                chartConfig.source = {text:''};
+                // chartConfig.chart.offset = 0;
+                // chartConfig.title = {text:''};
+                // chartConfig.subtitle = {text:''};
+                // chartConfig.source = {text:''};
                 
                 if(chartConfig.legend.verticalAlign==='top'){
-                    chartConfig.legend.y = -10;
+                    // chartConfig.legend.y = -10;
                 }else{
-                    chartConfig.legend.y = 10;
+                    // chartConfig.legend.y = 10;
                 }
                 
                 chartConfig.viewport = viewport;
@@ -253,6 +254,7 @@ $(function() {
                                 chartConfig.chart.marginBottom = 200;
                                 chartConfig.legend.verticalAlign = 'bottom';
                             }
+                            // console.log("JS config:\n", JSON.stringify(chartConfig));
                             chart = new Highcharts.Chart(chartConfig);
 
                             charts[chartId] = chart;

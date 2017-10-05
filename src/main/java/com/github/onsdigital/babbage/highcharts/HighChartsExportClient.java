@@ -53,7 +53,7 @@ public class HighChartsExportClient {
     }
 
     /**
-     * Retrived the image from Highcharts. <b>Caller is responsible for closing the returned {@link InputStream}</b>
+     * Retrieve the image from Highcharts. <b>Caller is responsible for closing the returned {@link InputStream}</b>
      */
     public InputStream getImage(String chartConfig, Integer width, Double scale) throws IOException {
         Log.debug("Calling Highcharts export server");

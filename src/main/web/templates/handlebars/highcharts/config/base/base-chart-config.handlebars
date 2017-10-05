@@ -71,13 +71,13 @@ TODO: split out colours palette selection, axis alignment and positioning
 	var options = {
 		viewport:'lg',
 		chart: {
-			height: ht + top + bottom,
-			width: {{width}},
-			marginRight: 35,
-			marginTop: top,
-			marginBottom: bottom,
-			spacingTop: 16,
-			offset: top,
+			{{!-- height: ht + top + bottom, --}}
+			height: {{#if isSmallMultiple}}230{{else}}ht{{/if}},
+			width: {{#if isSmallMultiple}}230{{else}}{{width}}{{/if}},
+			marginRight: 35, {{!-- Stops last x axis label being cut-off --}}
+			{{!-- marginBottom: null, --}}
+			{{!-- spacingTop: 16, --}}
+			{{!-- offset: null, --}}
 			style: {
 				fontFamily: '"Open Sans", Tahoma, Verdana, Arial'
 			},
@@ -130,12 +130,14 @@ TODO: split out colours palette selection, axis alignment and positioning
 		colors: palette,
 		series: [],
 		title: {
-			text: "{{title}}",
-			y:30
+			{{!-- text: {{#if title}}"{{title}}"{{else}}null{{/if}},
+			align: "left" --}}
+			text: null
 		},
 		subtitle: {
-			text: "{{subtitle}}",
-			y:80
+			text: null
+			{{!-- text: "{{subtitle}}",
+			align: "left" --}}
 		},
 		yAxis: {
             {{#if yAxisInterval}}tickInterval: {{yAxisInterval}},{{/if}}
@@ -182,9 +184,13 @@ TODO: split out colours palette selection, axis alignment and positioning
 		},
 		legend: {
 			verticalAlign: {{#if_eq xAxisPos "top"}}"bottom"{{else}}"top"{{/if_eq}},
-			y:(ht+top+40),
+			{{!-- {{#if_ne xAxisPos "top"}}margin: 40,{{/if_ne}} --}}
+			{{!-- y:40, --}}
+			{{#unless isSmallMultiple}}
 			x:30,
+			{{/unless}}
 			useHTML:true,
+			floating: false,
 			enabled:{{#if_eq series.size 1}}false{{else}}true{{/if_eq}},
 			align:'left',
 			itemMarginBottom:8,
@@ -316,11 +322,11 @@ TODO: split out colours palette selection, axis alignment and positioning
     	{{#if_eq yAxisPos "right"}}
 	options.yAxis.title.align = 'high';
 	options.yAxis.title.offset = (-1 * textWidth);
-	options.yAxis.title.y = -4;
+	options.yAxis.title.y = {{#if isSmallMultiple}}18{{else}}-4{{/if}};
     	{{else}}
 	options.yAxis.title.align = 'high';
 	options.yAxis.title.offset = 0;
-	options.yAxis.title.y = -4;
+	options.yAxis.title.y = {{#if isSmallMultiple}}18{{else}}-4{{/if}};
     	{{/if_eq}}
     {{/if_eq}}
     {{!-- Setting rotation to 0 causes axis label to push chart to the right for some text (e.g. "GDP growth percentage" ) and shrinks it in size. Funny enough, rotating 360 degrees eliminates this issue and still keeps the label horizontal.  --}}
@@ -340,7 +346,10 @@ TODO: split out colours palette selection, axis alignment and positioning
 	var chartId = "{{#if filename}}{{filename}}{{else}}{{description.cdid}}{{/if}}";
 	{{!-- attaching id to window object to be used on client side --}}
 	window["chart-" + chartId] = options;
-	{{!-- Returning chart to be used by highcharts export server for server side image rendering --}}
+
+	{{!-- console.log("Original config:\n", JSON.stringify(options)); --}}
+
+	{{!-- Returning chart to be used by highcharts export se]rver for server side image rendering --}}
 	return options;
 
 {{!-- Don't add semi-colon at end of closing brackets below - it breaks server-side rendering --}}
