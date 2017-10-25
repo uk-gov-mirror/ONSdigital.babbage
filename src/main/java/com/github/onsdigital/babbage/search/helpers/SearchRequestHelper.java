@@ -84,9 +84,9 @@ public class SearchRequestHelper {
      * @param defaultFilters
      * @return
      */
-    public static Set<TypeFilter> extractSelectedFilters(HttpServletRequest request, Set<TypeFilter> defaultFilters) {
+    public static Set<TypeFilter> extractSelectedFilters(HttpServletRequest request, Set<TypeFilter> defaultFilters, Boolean ignoreFilters) {
         String[] filters = request.getParameterValues("filter");
-        if (filters == null) {
+        if (ignoreFilters || filters == null) {
             return defaultFilters;
         }
 

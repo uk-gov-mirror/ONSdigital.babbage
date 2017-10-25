@@ -46,7 +46,7 @@ public class PreviousReleasesRequestHandler extends BaseRequestHandler implement
 
     private SearchQueries queries(HttpServletRequest request, String uri) {
         return () -> toList(
-                buildListQuery(request, publicationFilters, filters(uri))
+                buildListQuery(request, publicationFilters, filters(uri), false)
         );
     }
 

@@ -46,7 +46,7 @@ public class PublicationsRequestHandler extends BaseRequestHandler implements Li
     }
 
     private SearchQueries queries(HttpServletRequest request, String uri) {
-        ONSQuery listQuery = buildListQuery(request, publicationFilters, filters(request, uri));
+        ONSQuery listQuery = buildListQuery(request, publicationFilters, filters(request, uri), false);
         return () -> toList(
                 listQuery,
                 typeCountsQuery(listQuery.query()).types(contentTypesToCount)
