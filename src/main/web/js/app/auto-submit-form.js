@@ -41,6 +41,12 @@ function autoSubmitForm() {
         var $target = $(e.target);
         var $targetId = $target.attr('id');
         $trigger = $target;
+
+        // check window.dataLayer exists and that it's either sort or number of results that has changed
+        if (window.dataLayer && ($targetId === 'sort' || $targetId === 'page-size')) {
+            gtmPushToDataLayer($target);
+        }
+
         if ($targetId !== $keywordSearch.attr('id') && $targetId !== 'select-updated' && $targetId !== 'page-size' && !$target.hasClass('js-auto-submit__input--date')) { //Don't submit again after keyword, select update date, page results size or date input change
             submitForm($target);
         } else if ($target.hasClass('js-auto-submit__input--date')) {
@@ -89,5 +95,83 @@ function autoSubmitForm() {
 $(function() {
     if (!$('body').hasClass('viewport-sm')) { // on medium viewport and up auto-submit filters form
         autoSubmitForm();
+    } else {
+
+        // Capture changes to sort by and number of results per page and push to GTM dataLayer
+        var $sortBy = $('#sort');
+        var sortByInitialValue = $('#sort').val() || "";
+        var sortByHasNewValue = false;
+        var $numberOfResults = $('#page-size');
+        var numberOfResultsInitialValue = $('#page-size').val() || "";
+        var numberOfResultsHasNewValue = false;
+
+        $sortBy.on('change', function() {
+            if (sortByInitialValue !== $('#sort').val()) {
+                sortByHasNewValue = true;
+            }
+        });
+
+        $numberOfResults.on('change', function() {
+            if (numberOfResultsInitialValue !== $('#sort').val()) {
+                numberOfResultsHasNewValue = true;
+            }
+        });
+
+
+        $('#form').submit(function (e) {
+            e.preventDefault();
+            var $this = this;
+            function submitForm() {
+                $this.submit();
+            }
+            if (sortByHasNewValue) {
+                gtmPushToDataLayer($sortBy, submitForm);
+            } else {
+                this.submit();
+            }
+            sortByHasNewValue = false;
+        });
+
+        $('#js-pagination-container').submit(function (e) {
+            e.preventDefault();
+            var $this = this;
+            function submitForm() {
+                $this.submit();
+            }
+            if (numberOfResultsHasNewValue) {
+                gtmPushToDataLayer($numberOfResults, submitForm);
+            } else {
+                this.submit();
+            }
+            numberOfResultsHasNewValue = false;
+        })
     }
 });
+
+
+function gtmPushToDataLayer(element, callback) {
+    var elementId = element.attr('id').toString();
+    var elementValue = element.val().toString();
+
+    if (elementId === 'sort') {
+        window.dataLayer.push({
+            'event': 'SortBy',
+            'sort-by': elementValue,
+            'eventCallback': function () {
+                if (callback) {
+                    callback();
+                }
+            }
+        });
+    } else {
+        window.dataLayer.push({
+            'event': 'ResultsPerPage',
+            'results-per-page': elementValue,
+            'eventCallback': function () {
+                if (callback) {
+                    callback();
+                }
+            }
+        });
+    }
+}

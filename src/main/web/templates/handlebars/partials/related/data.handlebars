@@ -13,7 +13,10 @@
 
 		{{!-- Shows link to view all spreadsheets at that topic level --}}
 		 <div class="tiles__extra margin-bottom-md--2">
-			<a href="{{uri}}/relateddata">{{labels.view-all-data-related-to}} {{description.title}}: {{description.edition}}</a>
+			<a href="{{uri}}/relateddata"
+               data-gtm-title="{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}"
+               data-gtm-type="related-data"
+            >{{labels.view-all-data-related-to}} {{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}</a>
 		</div> 
 	</div>
 {{/if}}
