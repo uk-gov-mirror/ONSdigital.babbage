@@ -64,7 +64,7 @@ public class DataListRequestHandler extends BaseRequestHandler implements ListRe
     }
 
     private SearchQueries queries(HttpServletRequest request, PublishDates publishDates, String uri) {
-        ONSQuery listQuery = SearchUtils.buildListQuery(request, dataFilters, filters(publishDates, uri));
+        ONSQuery listQuery = SearchUtils.buildListQuery(request, dataFilters, filters(publishDates, uri), false);
         return () -> toList(
                 listQuery,
                 typeCountsQuery(listQuery.query()).types(contentTypesToCount)

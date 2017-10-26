@@ -7,6 +7,7 @@ import com.github.onsdigital.babbage.template.handlebars.helpers.markdown.util.I
 import com.github.onsdigital.babbage.template.handlebars.helpers.markdown.util.InteractiveTagReplacer;
 import com.github.onsdigital.babbage.template.handlebars.helpers.markdown.util.MathjaxTagReplacer;
 import com.github.onsdigital.babbage.template.handlebars.helpers.markdown.util.TableTagReplacer;
+import com.github.onsdigital.babbage.template.handlebars.helpers.markdown.util.PulloutBoxTagReplacer;
 
 import java.io.IOException;
 
@@ -31,6 +32,7 @@ public class PdfMarkdownHelper extends CustomMarkdownHelper implements BabbageHa
         markdown = new TableTagReplacer(path, "pdf/partials/table").replaceCustomTags(markdown);
         markdown = new ImageTagReplacer(path, "pdf/partials/image").replaceCustomTags(markdown);
         markdown = new InteractiveTagReplacer(path, "pdf/partials/interactive").replaceCustomTags(markdown);
+        markdown = new PulloutBoxTagReplacer(path, "pdf/partials/pullout-box").replaceCustomTags(markdown);
         return markdown;
     }
 }
