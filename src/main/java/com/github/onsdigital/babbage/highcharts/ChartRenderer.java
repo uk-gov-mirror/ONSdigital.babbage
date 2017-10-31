@@ -276,7 +276,6 @@ public class ChartRenderer {
         try {
             ClassLoader classloader = Thread.currentThread().getContextClassLoader();
             fontURL = classloader.getResource("OpenSans-Regular.ttf");
-            System.out.println(fontURL);
             fontFile = new File(fontURL.toURI());
         } catch (Exception e) {
             System.out.println("Failed to load font file for small multiples image");
