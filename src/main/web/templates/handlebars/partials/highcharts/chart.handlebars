@@ -10,13 +10,12 @@
   {{#each series}}
     <div class="sm-multiple">
         
-      <div id="chart-{{filename}}-{{@index}}" data-filename="{{filename}}" data-uri="{{uri}}" class="markdown-chart" data-series="{{this}}">
-        <!--[if gt IE 8]><!--><noscript><!--[endif]-->
-        <img src="/chartimage?uri={{uri}}&width={{width}}" alt="{{alt-text}}" />
-        <!--[if gt IE 8]><!--></noscript><!--[endif]-->
-      </div>
+      <div id="chart-{{filename}}-{{@index}}" data-filename="{{filename}}" data-uri="{{uri}}" class="markdown-chart" data-series="{{this}}"></div>
     </div>
   {{/each}}
+    <!--[if gt IE 8]><!--><noscript><!--[endif]-->
+        <img src="/chartimage?uri={{uri}}&width={{width}}" alt="{{alt-text}}" />
+    <!--[if gt IE 8]><!--></noscript><!--[endif]-->
   </div>
 
 
@@ -83,13 +82,7 @@
       </div>
   
     <h5 class="print--hide font-size--h6 clear-left">Download this chart</h5>
-{{#if_ne chartType "small-multiples"}}
     <a class="btn btn--primary print--hide js-chart-image-src " data-filename="{{filename}}" href="/chartimage?uri={{uri}}" download="{{{sub (sup title)}}}" data-gtm-title="{{{sub (sup title)}}}" data-gtm-type="download-chart-image">Image</a>
-      {{else}}
-    {{#unless is_publishing}}
-        <a class="btn btn--primary print--hide js-chart-image-src" id="export-png" {{!-- href="/chartimage?uri={{uri}}" download="{{{sub (sup title)}}}" --}}>Image</a>
-    {{/unless}}
-{{/if_ne}}
     {{> partials/highcharts/download format='csv'}}
     {{> partials/highcharts/download format='xls'}}
 

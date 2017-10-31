@@ -20,9 +20,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.core.MediaType;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.nio.file.Paths;
 import java.util.Map;
 import java.util.List;
@@ -117,20 +120,21 @@ public class ChartRenderer {
         }
     }
 
-    public void renderChartImage(HttpServletRequest request, HttpServletResponse response) throws IOException, ContentReadException {
+    public void renderChartImage(HttpServletRequest request, HttpServletResponse response) throws IOException, ContentReadException, FontFormatException {
         String uri = request.getParameter(URI_PARAM);
         if (assertUri(uri, request, response)) {
             ContentResponse contentResponse = contentClient.getContent(uri);
             String jsonRequest = contentResponse.getAsString();
             Map<String, Object> json = (Map<String, Object>)templateService.sanitize(jsonRequest);
             Integer width = getWidth(request);
+            InputStream imageInputStream;
 
             if (json.get("chartType").equals("small-multiples")) {
-                renderMultipleChartImage(request, response, uri, json, width, contentResponse);
-                return;
+                imageInputStream = renderMultipleChartImage(request, response, uri, json, width, contentResponse);
+            } else {
+                imageInputStream = renderSingleChartImage(jsonRequest, width);
             }
 
-            InputStream imageInputStream = renderSingleChartImage(jsonRequest, width);
             BabbageResponse babbabeResp = new BabbageContentBasedBinaryResponse(contentResponse, imageInputStream, PNG_MIME_TYPE);
             babbabeResp.addHeader(CONTENT_DISPOSITION_HEADER, getImageContentDispositionHeader(uri, jsonRequest));
             babbabeResp.apply(request, response);
@@ -138,7 +142,7 @@ public class ChartRenderer {
         }
     }
 
-    private void renderMultipleChartImage(HttpServletRequest request, HttpServletResponse response, String uri, Map<String, Object> json, Integer outputWidth, ContentResponse contentResponse) throws IOException {
+    private InputStream renderMultipleChartImage(HttpServletRequest request, HttpServletResponse response, String uri, Map<String, Object> json, Integer outputWidth, ContentResponse contentResponse) throws IOException, FontFormatException {
         List<String> series = (List<String>)json.get("series");
         Integer padding = 10;
         Integer columns = 3;
@@ -150,7 +154,7 @@ public class ChartRenderer {
         ArrayList<BufferedImage> chartTitles = new ArrayList<>();
         int[] rowHeights = new int[rows];
         int[] titleHeights = new int[rows];
-        BufferedImage mainTitle = renderImageText(json.get("title").toString(), outputWidth, 21);
+        BufferedImage mainTitle = renderImageText(json.get("title").toString(), outputWidth, 18);
 
         for (Integer i = 0; i < series.size(); i++) {
             String title = series.get(i);
@@ -162,8 +166,6 @@ public class ChartRenderer {
                 titleHeights[row] = chartTitle.getHeight();
             }
         }
-
-        System.out.println(Arrays.toString(titleHeights));
 
         for (String chart : series) {
             Map<String, Object> chartData = new HashMap<String, Object>();
@@ -242,25 +244,53 @@ public class ChartRenderer {
             }
         }
         
-        ImageIO.write(result, "png", new File("result.png"));
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        ImageIO.write(result, "png", outputStream);
+        return new ByteArrayInputStream(outputStream.toByteArray());
     }
 
-    private static BufferedImage renderImageText(String text, Integer width) throws IOException {
-        return renderImageText(text, width, 14);
+    private static BufferedImage renderImageText(String text, Integer width) throws IOException, FontFormatException {
+        return renderImageText(text, width, 12);
     }
 
-    private static BufferedImage renderImageText(String text, Integer width, Integer fontSize) throws IOException {
+    private static BufferedImage renderImageText(String text, Integer width, Integer fontSize) throws IOException, FontFormatException {
         Integer height = 600;
         Integer padding = 10;
         Integer lineSpacing = 7;
         Integer textSpace = width - (2 * padding);
+        Color fontColour = new Color(102, 102, 102);
 
         BufferedImage i = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g = i.createGraphics();
 
-        Font f = new Font("TimesRoman", Font.PLAIN, fontSize);
-        g.setFont(f);
-        g.setPaint(Color.black);
+
+        RenderingHints rh = new RenderingHints(
+            RenderingHints.KEY_TEXT_ANTIALIASING,
+            RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+        g.setRenderingHints(rh);
+
+        URL fontURL;
+        File fontFile;
+
+        try {
+            ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+            fontURL = classloader.getResource("OpenSans-Regular.ttf");
+            System.out.println(fontURL);
+            fontFile = new File(fontURL.toURI());
+        } catch (Exception e) {
+            System.out.println("Failed to load font file for small multiples image");
+            e.printStackTrace();
+            return i;
+        }
+
+        Font f = Font.createFont(Font.TRUETYPE_FONT, fontFile);
+        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        ge.registerFont(f);
+        
+        Font openSansFont = new Font("Open Sans", Font.PLAIN, fontSize);
+        g.setFont(openSansFont);
+        g.setPaint(fontColour);
         FontMetrics fm = g.getFontMetrics();
 
         ArrayList<String> lines = new ArrayList<String>();

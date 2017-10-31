@@ -76,7 +76,7 @@ TODO: split out colours palette selection, axis alignment and positioning
 			width: {{#if isSmallMultiple}}230{{else}}{{width}}{{/if}},
 			marginRight: 35, {{!-- Stops last x axis label being cut-off --}}
 			{{!-- marginBottom: null, --}}
-			{{!-- spacingTop: 16, --}}
+			{{#if_eq series.size 1}}marginTop: 16,{{/if_eq}} {{!-- Stop yAxis label being cut off when there's no legend --}}
 			{{!-- offset: null, --}}
 			style: {
 				fontFamily: '"Open Sans", Tahoma, Verdana, Arial'

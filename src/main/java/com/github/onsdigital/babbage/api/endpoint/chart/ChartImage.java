@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.GET;
 import javax.ws.rs.core.Context;
+
+import java.awt.FontFormatException;
 import java.io.IOException;
 
 /**
@@ -18,7 +20,7 @@ import java.io.IOException;
 public class ChartImage {
 
     @GET
-    public void get(@Context HttpServletRequest request, @Context HttpServletResponse response) throws IOException, ContentReadException {
+    public void get(@Context HttpServletRequest request, @Context HttpServletResponse response) throws IOException, ContentReadException, FontFormatException {
         try {
             ChartRenderer.getInstance().renderChartImage(request, response);
         } catch (IOException | ContentReadException ex) {
