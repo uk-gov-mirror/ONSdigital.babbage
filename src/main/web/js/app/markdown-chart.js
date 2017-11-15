@@ -145,7 +145,6 @@ $(function() {
                 chartConfig.chart.offset = 0;
                 chartConfig.title = {text:''};
                 chartConfig.subtitle = {text:''};
-                chartConfig.source = {text:''};
                 
                 if(chartConfig.legend.verticalAlign==='top'){
                     chartConfig.legend.y = -10;
