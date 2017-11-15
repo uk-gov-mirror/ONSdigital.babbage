@@ -11,21 +11,40 @@ import com.github.onsdigital.babbage.response.BabbageContentBasedStringResponse;
 import com.github.onsdigital.babbage.response.BabbageStringResponse;
 import com.github.onsdigital.babbage.response.base.BabbageResponse;
 import com.github.onsdigital.babbage.template.TemplateService;
+import com.lowagie.text.Image;
+
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.core.MediaType;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Map;
 
 import static com.github.onsdigital.babbage.highcharts.ChartConfigBuilder.TITLE_PARAM;
 import static com.github.onsdigital.babbage.highcharts.ChartConfigBuilder.URI_PARAM;
 import static com.github.onsdigital.babbage.highcharts.ChartConfigBuilder.WIDTH_PARAM;
 import static java.text.MessageFormat.format;
+
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontFormatException;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.GraphicsEnvironment;
+import java.awt.RenderingHints;
+import java.awt.image.BufferedImage;
 
 /**
  * Created by bren on 09/10/15.
@@ -101,10 +120,12 @@ public class ChartRenderer {
         }
     }
 
-    public void renderChartImage(HttpServletRequest request, HttpServletResponse response) throws IOException, ContentReadException {
+    public void renderChartImage(HttpServletRequest request, HttpServletResponse response) throws IOException, ContentReadException, FontFormatException {
         String uri = request.getParameter(URI_PARAM);
         if (assertUri(uri, request, response)) {
             ContentResponse contentResponse = contentClient.getContent(uri);
+            String jsonRequest = contentResponse.getAsString();
+            Map<String, Object> json = (Map<String, Object>)templateService.sanitize(jsonRequest);
             Integer width = getWidth(request);
             Map<String, Object> additionalData = new ChartConfigBuilder().width(width).getMap();
 
@@ -113,7 +134,7 @@ public class ChartRenderer {
                 chartConfig = templateService.renderChartConfiguration(in, additionalData);
 
                 try (
-                        InputStream imageInputStream = highChartsExportClient.getImage(chartConfig, width);
+                        InputStream imageInputStream = buildChartImageWithText(json, width, highChartsExportClient.getImage(chartConfig, width));
                         InputStream contentResponseInputStream = contentResponse.getDataStream()
                 ) {
                     BabbageResponse babbabeResp = new BabbageContentBasedBinaryResponse(contentResponse, imageInputStream, PNG_MIME_TYPE);
@@ -123,6 +144,107 @@ public class ChartRenderer {
             }
         }
     }
+
+    private static InputStream buildChartImageWithText(Map<String, Object> json, Integer chartWidth, InputStream chartImageStream) throws IOException, FontFormatException {
+        BufferedImage chartImage = ImageIO.read(chartImageStream);
+        Integer chartHeight = chartImage.getHeight();
+        System.out.println(json.get("source").toString());
+        BufferedImage chartSource = renderImageText("Source: " + json.get("source").toString(), chartWidth, 14);
+        BufferedImage result = new BufferedImage(chartWidth, chartHeight + chartSource.getHeight(), BufferedImage.TYPE_INT_RGB);
+        Graphics graphics = result.getGraphics();
+        
+        graphics.setColor(Color.white);
+        graphics.fillRect(0, 0, chartWidth, chartHeight + chartSource.getHeight());
+        graphics.drawImage(chartImage, 0, 0, null);
+        graphics.drawImage(chartSource, 0, chartHeight, null);
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        ImageIO.write(result, "png", outputStream);
+        return new ByteArrayInputStream(outputStream.toByteArray());
+    }
+
+    private static BufferedImage renderImageText(String text, Integer width) throws IOException, FontFormatException {
+        return renderImageText(text, width, 12);
+    }
+
+    private static BufferedImage renderImageText(String text, Integer width, Integer fontSize) throws IOException, FontFormatException {
+        Integer height = 600;
+        Integer padding = 10;
+        Integer lineSpacing = 7;
+        Integer textSpace = width - (2 * padding);
+        Color fontColour = new Color(102, 102, 102);
+
+        BufferedImage i = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g = i.createGraphics();
+
+        RenderingHints rh = new RenderingHints(
+            RenderingHints.KEY_TEXT_ANTIALIASING,
+            RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+        g.setRenderingHints(rh);
+
+        URL fontURL;
+        File fontFile;
+
+        try {
+            ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+            fontURL = classloader.getResource("OpenSans-Bold.ttf");
+            fontFile = new File(fontURL.toURI());
+            Font f = Font.createFont(Font.TRUETYPE_FONT, fontFile);
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            ge.registerFont(f);
+            Font openSansFont = new Font("Open Sans", Font.BOLD, fontSize);
+            g.setFont(openSansFont);
+        } catch (Exception e) {
+            System.out.println("Failed to load font file for small multiples image");
+            e.printStackTrace();
+            Font openSansFont = new Font("default", Font.BOLD, fontSize);
+            g.setFont(openSansFont);
+        }
+        
+        g.setPaint(fontColour);
+        FontMetrics fm = g.getFontMetrics();
+
+        ArrayList<String> lines = new ArrayList<String>();
+        String[] words = text.split(" ");
+
+        String buffer = "";
+        for(String word : words) {
+            String tempBuffer = buffer;
+
+            if(tempBuffer.length() > 0) {
+                tempBuffer += " ";
+            }
+            tempBuffer += word;
+
+            if (fm.stringWidth(tempBuffer) > textSpace) {
+                lines.add(buffer);
+                buffer = word;
+                continue;
+            }
+
+            buffer = tempBuffer;
+        }
+
+        if(buffer.length() > 0) {
+            lines.add(buffer);
+        }
+
+        Integer lineHeight = g.getFontMetrics().getAscent();
+        Integer y = lineHeight + padding;
+        for(String line : lines) {
+            g.drawString(line, padding, y);
+            y += lineHeight + lineSpacing;
+        }
+
+        Integer titleHeight = (lineHeight * lines.size()) + (padding * lines.size()+1) + fm.getDescent();
+
+        BufferedImage croppedTitleImage = new BufferedImage(width, titleHeight, BufferedImage.TYPE_INT_ARGB);
+        Graphics graphics = croppedTitleImage.getGraphics();
+
+        graphics.drawImage(i, 0, 0, null);
+
+        return croppedTitleImage;
+}
 
     private String getImageContentDispositionHeader(String uri, InputStream chartConfig) throws IOException {
         Map<String, Object> map = mapper.readValue(chartConfig, Map.class);
