@@ -14,6 +14,7 @@ import com.github.onsdigital.babbage.template.TemplateService;
 import com.lowagie.text.Image;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.imageio.ImageIO;
@@ -58,6 +59,7 @@ public class ChartRenderer {
     static final String EMBEDED_HIGHCHARTS_TEMPLATE = "partials/highcharts/embeddedchart";
     static final String PNG_MIME_TYPE = "image/png";
     static final String DATA_PARAM = "data";
+    static final String HIDE_SOURCE_PARAM = "hideSource";
     static final String DEFAULT_TITLE_VALUE = "[Title]";
     public static final int DEFAULT_CHART_WIDTH = 700;
     public static final int MAX_CHART_WIDTH = 1600;
@@ -122,25 +124,29 @@ public class ChartRenderer {
 
     public void renderChartImage(HttpServletRequest request, HttpServletResponse response) throws IOException, ContentReadException, FontFormatException {
         String uri = request.getParameter(URI_PARAM);
+        Boolean hideSource = BooleanUtils.toBoolean(request.getParameter(HIDE_SOURCE_PARAM));
         if (assertUri(uri, request, response)) {
             ContentResponse contentResponse = contentClient.getContent(uri);
             String jsonRequest = contentResponse.getAsString();
             Map<String, Object> json = (Map<String, Object>)templateService.sanitize(jsonRequest);
             Integer width = getWidth(request);
             Map<String, Object> additionalData = new ChartConfigBuilder().width(width).getMap();
+            InputStream imageInputStream;
 
             String chartConfig;
             try (InputStream in = contentResponse.getDataStream()) {
                 chartConfig = templateService.renderChartConfiguration(in, additionalData);
 
-                try (
-                        InputStream imageInputStream = buildChartImageWithText(json, width, highChartsExportClient.getImage(chartConfig, width));
-                        InputStream contentResponseInputStream = contentResponse.getDataStream()
-                ) {
-                    BabbageResponse babbabeResp = new BabbageContentBasedBinaryResponse(contentResponse, imageInputStream, PNG_MIME_TYPE);
-                    babbabeResp.addHeader(CONTENT_DISPOSITION_HEADER, getImageContentDispositionHeader(uri, contentResponseInputStream));
-                    babbabeResp.apply(request, response);
+                if (hideSource) {
+                    imageInputStream = highChartsExportClient.getImage(chartConfig, width);
+                } else {
+                    imageInputStream = buildChartImageWithText(json, width, highChartsExportClient.getImage(chartConfig, width));
                 }
+                
+                InputStream contentResponseInputStream = contentResponse.getDataStream();
+                BabbageResponse babbabeResp = new BabbageContentBasedBinaryResponse(contentResponse, imageInputStream, PNG_MIME_TYPE);
+                babbabeResp.addHeader(CONTENT_DISPOSITION_HEADER, getImageContentDispositionHeader(uri, contentResponseInputStream));
+                babbabeResp.apply(request, response);
             }
         }
     }
