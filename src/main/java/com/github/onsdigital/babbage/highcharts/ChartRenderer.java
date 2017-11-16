@@ -64,6 +64,7 @@ public class ChartRenderer {
     public static final int DEFAULT_CHART_WIDTH = 700;
     public static final int MAX_CHART_WIDTH = 1600;
     private static final ObjectMapper mapper = new ObjectMapper();
+    private static Font f;
 
     private static ChartRenderer instance = new ChartRenderer();
     private ContentClient contentClient = ContentClient.getInstance();
@@ -72,6 +73,17 @@ public class ChartRenderer {
 
     public static ChartRenderer getInstance() {
         return instance;
+    }
+
+    static {
+        try {
+            ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+            URL fontURL = classloader.getResource("OpenSans-Bold.ttf");
+            File fontFile = new File(fontURL.toURI());
+            GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(Font.createFont(Font.TRUETYPE_FONT, fontFile));
+        } catch (Exception e) {
+            Log.build("Unable to load font file: " + e.getMessage(), Level.ERROR).log();
+        }
     }
 
     // Singleton use getInstance method instead.
@@ -131,9 +143,9 @@ public class ChartRenderer {
             Map<String, Object> json = (Map<String, Object>)templateService.sanitize(jsonRequest);
             Integer width = getWidth(request);
             Map<String, Object> additionalData = new ChartConfigBuilder().width(width).getMap();
-            InputStream imageInputStream;
+            InputStream imageInputStream = null;
+            String chartConfig = "";
 
-            String chartConfig;
             try (InputStream in = contentResponse.getDataStream()) {
                 chartConfig = templateService.renderChartConfiguration(in, additionalData);
 
@@ -142,11 +154,16 @@ public class ChartRenderer {
                 } else {
                     imageInputStream = buildChartImageWithText(json, width, highChartsExportClient.getImage(chartConfig, width));
                 }
-                
-                InputStream contentResponseInputStream = contentResponse.getDataStream();
-                BabbageResponse babbabeResp = new BabbageContentBasedBinaryResponse(contentResponse, imageInputStream, PNG_MIME_TYPE);
-                babbabeResp.addHeader(CONTENT_DISPOSITION_HEADER, getImageContentDispositionHeader(uri, contentResponseInputStream));
-                babbabeResp.apply(request, response);
+
+                try (InputStream contentResponseInputStream = contentResponse.getDataStream()) {
+                    BabbageResponse babbabeResp = new BabbageContentBasedBinaryResponse(contentResponse, imageInputStream, PNG_MIME_TYPE);
+                    babbabeResp.addHeader(CONTENT_DISPOSITION_HEADER, getImageContentDispositionHeader(uri, contentResponseInputStream));
+                    babbabeResp.apply(request, response);
+                }
+            } finally {
+                if (imageInputStream != null) {
+                    imageInputStream.close();
+                }
             }
         }
     }
@@ -154,13 +171,14 @@ public class ChartRenderer {
     private static InputStream buildChartImageWithText(Map<String, Object> json, Integer chartWidth, InputStream chartImageStream) throws IOException, FontFormatException {
         BufferedImage chartImage = ImageIO.read(chartImageStream);
         Integer chartHeight = chartImage.getHeight();
-        System.out.println(json.get("source").toString());
         BufferedImage chartSource = renderImageText("Source: " + json.get("source").toString(), chartWidth, 14);
-        BufferedImage result = new BufferedImage(chartWidth, chartHeight + chartSource.getHeight(), BufferedImage.TYPE_INT_RGB);
+        Integer bottomMargin = 16;
+        Integer height = chartHeight + chartSource.getHeight() + bottomMargin;
+        BufferedImage result = new BufferedImage(chartWidth, height, BufferedImage.TYPE_INT_RGB);
         Graphics graphics = result.getGraphics();
         
         graphics.setColor(Color.white);
-        graphics.fillRect(0, 0, chartWidth, chartHeight + chartSource.getHeight());
+        graphics.fillRect(0, 0, chartWidth, height);
         graphics.drawImage(chartImage, 0, 0, null);
         graphics.drawImage(chartSource, 0, chartHeight, null);
 
@@ -188,23 +206,12 @@ public class ChartRenderer {
             RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
         g.setRenderingHints(rh);
 
-        URL fontURL;
-        File fontFile;
-
         try {
-            ClassLoader classloader = Thread.currentThread().getContextClassLoader();
-            fontURL = classloader.getResource("OpenSans-Bold.ttf");
-            fontFile = new File(fontURL.toURI());
-            Font f = Font.createFont(Font.TRUETYPE_FONT, fontFile);
-            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            ge.registerFont(f);
             Font openSansFont = new Font("Open Sans", Font.BOLD, fontSize);
             g.setFont(openSansFont);
         } catch (Exception e) {
-            System.out.println("Failed to load font file for small multiples image");
-            e.printStackTrace();
-            Font openSansFont = new Font("default", Font.BOLD, fontSize);
-            g.setFont(openSansFont);
+            Font defaultFont = new Font("default", Font.BOLD, fontSize);
+            g.setFont(defaultFont);
         }
         
         g.setPaint(fontColour);
