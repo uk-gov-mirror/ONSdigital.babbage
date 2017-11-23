@@ -59,7 +59,7 @@ public class ChartRenderer {
     static final String EMBEDED_HIGHCHARTS_TEMPLATE = "partials/highcharts/embeddedchart";
     static final String PNG_MIME_TYPE = "image/png";
     static final String DATA_PARAM = "data";
-    static final String HIDE_SOURCE_PARAM = "hideSource";
+    public static final String HIDE_SOURCE_PARAM = "hideSource";
     static final String DEFAULT_TITLE_VALUE = "[Title]";
     public static final int DEFAULT_CHART_WIDTH = 700;
     public static final int MAX_CHART_WIDTH = 1600;
@@ -156,9 +156,9 @@ public class ChartRenderer {
                 }
 
                 try (InputStream contentResponseInputStream = contentResponse.getDataStream()) {
-                    BabbageResponse babbabeResp = new BabbageContentBasedBinaryResponse(contentResponse, imageInputStream, PNG_MIME_TYPE);
-                    babbabeResp.addHeader(CONTENT_DISPOSITION_HEADER, getImageContentDispositionHeader(uri, contentResponseInputStream));
-                    babbabeResp.apply(request, response);
+                    BabbageResponse babbageResp = new BabbageContentBasedBinaryResponse(contentResponse, imageInputStream, PNG_MIME_TYPE);
+                    babbageResp.addHeader(CONTENT_DISPOSITION_HEADER, getImageContentDispositionHeader(uri, contentResponseInputStream));
+                    babbageResp.apply(request, response);
                 }
             } finally {
                 if (imageInputStream != null) {
