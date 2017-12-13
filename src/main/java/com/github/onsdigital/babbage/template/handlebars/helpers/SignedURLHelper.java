@@ -37,9 +37,11 @@ public enum SignedURLHelper implements BabbageHandlebarsHelper<String> {
             }
             Integer index = options.param(3);
             String listType = options.param(4);
-            Integer pageSize = options.param(5);
-            if(pageSize == null) {
+            Integer pageSize;
+            if (options.param(5) == null) {
                 pageSize = 10;
+            } else {
+                pageSize = Integer.valueOf(options.param(5));
             }
 
             String token = "";
