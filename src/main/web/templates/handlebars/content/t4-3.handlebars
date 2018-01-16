@@ -30,7 +30,7 @@
                                 <p class="page-neutral-intro__content">{{description._abstract}}</p>
                             {{/if}}
                             {{#if description.releaseDate}}
-                                <p class="margin-top--0 margin-bottom--3">{{df description.releaseDate}}</p>
+                                <p class="page-neutral-intro__meta margin-top--0 margin-bottom--3">{{df description.releaseDate}}</p>
                             {{/if}}
                         </div>
                     {{/block}}
@@ -40,7 +40,7 @@
     </div>
     <div class="wrapper margin-bottom--2">
         <div class="col-wrap">
-            <article class="col col--md-36 col--lg-36 page-neutral-content__main-content margin-top--4 margin-left-md--1">
+            <article class="col col--md-40 col--lg-40 page-neutral-content__main-content margin-top--4 margin-left-md--1">
                 {{#each sections}}
                     <div id="{{slugify title}}" class="section__content--markdown section__content--markdown--neutral-article">
                         <section>
