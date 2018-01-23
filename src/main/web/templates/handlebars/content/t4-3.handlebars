@@ -85,6 +85,19 @@
         </div>
         {{/if}}
 
+        {{#if links}}
+            <div class="tile-neutral width-md--36 margin-bottom--2">
+                <h3 class="tile-neutral__heading margin-top--1">You might also be interested in</h3>
+                <ul class="list--neutral margin-bottom--0">
+                    {{#each links}}
+                        <li class="{{#if @last}}margin-bottom--0{{else}}margin-bottom--3{{/if}}">
+                            <a href="{{this.uri}}" class="tile-neutral-content__title">{{this.title}}</a>
+                        </li>
+                    {{/each}}
+                </ul>
+            </div>
+        {{/if}}
+
         {{#if description.contact}}
             <div class="tile-neutral width-md--36 margin-bottom--6">
                 <h3 class="tile-neutral__heading margin-top--1 margin-bottom--1">Contact</h3>
