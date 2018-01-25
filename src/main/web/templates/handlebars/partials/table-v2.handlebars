@@ -1,0 +1,13 @@
+{{!--Not having line breaks before and after the div markups breaks tables displaying on the page--}}
+<div class="markdown-table-container print--avoid-break">
+    <div class="markdown-table-wrap">
+        {{{tableHtml}}}
+    </div>
+
+    {{!-- 'View table' button for mobile --}}
+    <button class="btn btn--secondary btn--mobile-table-show nojs--hide" data-gtm-title="{{{sub (sup title)}}}" data-gtm-type="view-table">View table</button>
+
+    <h5 class="print--hide font-size--h6">Download this table</h5>
+    <a href="/download/table?format=xlsx&uri={{uri}}" title="Download as xlsx" class="btn btn--primary print--hide" data-gtm-title="{{{sub (sup title)}}}" data-gtm-type="download-table-xlsx">.xlsx</a>
+    <a href="/download/table?format=csv&uri={{uri}}" title="Download as csv" class="btn btn--primary print--hide" data-gtm-title="{{{sub (sup title)}}}" data-gtm-type="download-table-csv">.csv</a>
+</div>
