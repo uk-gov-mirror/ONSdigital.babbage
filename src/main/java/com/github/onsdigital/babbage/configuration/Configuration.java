@@ -219,9 +219,9 @@ public class Configuration {
 
     /** Server side table rendering configuration. */
     public static class TABLE_RENDERER {
-        private static final String HOST = defaultIfBlank(getValue("TABLE_RENDERER_HOST"), "http://localhost:23100");
+        private static final String HOST = defaultIfBlank(getValue("TABLE_RENDERER_HOST"), "http://localhost:23300");
         private static final String HTML_PATH = defaultIfBlank(getValue("TABLE_RENDERER_HTML_PATH"), "/render/html");
-        private static final int MAX_RENDERER_CONNECTIONS = defaultNumberIfBlank(getNumberValue("ABLE_RENDERER_MAX_CONNECTION"), 10);
+        private static final int MAX_RENDERER_CONNECTIONS = defaultNumberIfBlank(getNumberValue("TABLE_RENDERER_MAX_CONNECTIONS"), 10);
 
          /**
          * @return the hostname of the table renderer).
