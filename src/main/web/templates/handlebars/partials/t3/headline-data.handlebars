@@ -2,54 +2,54 @@
 <div class="background--iron-light margin-top-md--1 margin-bottom-md--2 js-hover-click">
     <div class="background--white width-md--23 width-lg--29 height--35 margin-top-sm--0 margin-top-md--0 overflow--hidden">
         <div class="width-md--23 width-lg--29 height--35 border-top--iron-light-md border-right--iron-light-md border-bottom--iron-light-md border-left--iron-light-md flush image-background">
-            {{> partials/highcharts/sparkline data}}
+            {{> partials/highcharts/sparkline highlighted}}
         </div>
     </div>
     <div class="js-equal-height box__content padding-top-sm--2 padding-right-sm--1 padding-bottom-sm--2 padding-left-sm--1 padding-top-md--2 padding-right-md--1 padding-bottom-md--2 padding-left-md--1">
         <h3>
-            <a href="{{data.uri}}">{{data.description.title}}</a>
+            <a class="underline-link" href="{{highlighted.uri}}">{{highlighted.description.title}}</a>
         </h3>
         <p class="margin-bottom-md--1">
-            {{#if data.description.keyNote}}
-                {{data.description.keyNote}}
+            {{#if highlighted.description.keyNote}}
+                {{highlighted.description.keyNote}}
             {{/if}}
         </p>
         <p  class="stand-out">
-            {{#if data.description.preUnit}}
-                {{data.description.preUnit}}
+            {{#if highlighted.description.preUnit}}
+                {{highlighted.description.preUnit}}
             {{/if}}
 
-            {{nf data.description.number}}
+            {{nf highlighted.description.number}}
 
-            {{#if data.description.unit}}
-                {{data.description.unit}}
+            {{#if highlighted.description.unit}}
+                {{highlighted.description.unit}}
             {{/if}}
         </p>
-        {{#if data.description.monthLabelStyle}}
+        {{#if highlighted.description.monthLabelStyle}}
             {{!-- Display custom label styles (eg Labour Market) --}}
-            {{#last data.months}}
+            {{#last highlighted.months}}
                 <p class="stand-out--list">
                     {{label}}
                 </p>
             {{/last}}
         {{else}}
-            {{#if data.description.date}}
+            {{#if highlighted.description.date}}
                 <p class="stand-out--list">
-                    {{data.description.date}}
+                    {{highlighted.description.date}}
                 </p>
             {{/if}}
         {{/if}}
         <dl>
             <dt>{{labels.release-date}}: </dt>
-            <dd>{{df data.description.releaseDate}}</dd>
+            <dd>{{df highlighted.description.releaseDate}}</dd>
             <br>
             <dt>{{labels.next-release}}: </dt>
-            <dd>{{data.description.nextRelease}}</dd>
+            <dd>{{highlighted.description.nextRelease}}</dd>
         </dl>
     </div>
 
     <div class="background--iron-light box__content height--7 border-top--iron-sm border-top--iron-md padding-top-sm--1 padding-left-sm--1 padding-top-md--1 padding-left-md--1 more-link">
-        <a href="{{bulletin.uri}}" class="block">{{labels.view-this-data}}</a>
+        <a href="{{highlighted.uri}}" class="block">{{labels.view-this-data}}</a>
     </div>
 
 </div>
