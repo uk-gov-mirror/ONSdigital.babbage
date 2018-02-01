@@ -1,0 +1,74 @@
+{{#resolve highlightedContent.2.uri assign="highlighted"}}
+
+    <div class="col-wrap background--gallery padding-top--2 padding-bottom--2 padding-left--1 margin-left-md--1 js-hover-click">
+
+    {{#if_eq highlighted.type "timeseries"}}
+        <div class="col col--md-15 col--lg-27">
+            <div class="box__content">
+                <h4>
+                    <a class="underline-link" href="{{uri}}">{{description.title}}</a>
+                </h4>
+                {{#if description.keyNote}}
+                    <p class="flush">{{description.keyNote}}</p>
+                {{/if}}</div>
+        </div>
+        <div class="col col--md-15 col--lg-14">
+            <div style="height:96px;">
+                {{>partials/highcharts/sparkline}}
+            </div>
+        </div>
+        <div class="col col--md-13 col--lg-18">
+            <div class="tiles__content">
+                {{#if description.preUnit}}
+                    <span class="tiles__preunit tiles__preunit--list">{{description.preUnit}}</span>
+                {{/if}}
+                <span class="tiles__figure tiles__figure--list">{{nf description.number}}</span>
+                {{#if description.unit}}
+                    <span class="tiles__unit tiles__unit--list"> {{description.unit}}</span>
+                {{/if}}
+                {{#if description.monthLabelStyle}}
+                {{!-- Display custom label styles (eg Labour Market) --}}
+                    {{#last months}}
+                        <span class="stat__description">
+                            {{label}}
+                        </span>
+                    {{/last}}
+                {{else}}
+                    {{#if description.date}}
+                        <span class="stat__description">
+                            {{description.date}}
+                        </span>
+                    {{/if}}
+                {{/if}}
+                <dl class="tiles__dl">
+                    <dt class="tiles__dt">{{labels.release-date}}:</dt>
+                    <dd class="flush">{{df description.releaseDate}}</dd>
+                    <dt class="tiles__dt">{{labels.next-release}}:</dt>
+                    <dd class="flush">{{description.nextRelease}}</dd>
+                </dl>
+            </div>
+        </div>
+    {{else}}
+        {{#if highlighted.imageUri}}
+        <div class="col col--md-13 col--lg-13 margin-left--0">
+            <img src="/resource?uri={{highlighted.imageUri}}&width=208" />
+        </div>
+        {{/if}}
+        <div class="col col--md-30 col--lg-38 margin-left--0">
+            <div class="box__content {{#if highlighted.imageUri}}padding-left-md--1{{/if}}">
+                <h4>
+                    <a class="underline-link" href="{{absolute highlighted.uri}}">
+                        {{highlighted.description.title}}
+                    </a>
+                </h4>
+                <p class="flush">
+                    {{#if highlighted.description.summary}}{{highlighted.description.summary}}{{/if}}
+                    {{#if highlighted.description._abstract}}{{highlighted.description._abstract}}{{/if}}
+
+                </p>
+            </div>
+        </div>
+    {{/if_eq}}
+    </div>
+{{/resolve}}
+

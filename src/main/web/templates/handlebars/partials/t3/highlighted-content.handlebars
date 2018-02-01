@@ -1,0 +1,55 @@
+<div class="background--gallery margin-top-md--1 margin-bottom-md--2 js-hover-click">
+    {{!-- Image --}}
+        {{#if highlighted.imageUri}}
+            <div class="background--abbey height-sm--35 height-md--27 height-lg--35 overflow--hidden">
+                <img src="/resource?uri={{highlighted.imageUri}}" class="width-md--23 width-lg--29 height-md--27 height-lg--35" alt="" />
+            </div>
+        {{else}}
+            <div class="background--abbey height-sm--35 height-md--27 height-lg--35 overflow--hidden">
+                <img src="//cdn.ons.gov.uk/assets/images/latest-publications.png" class="width-md--23 width-lg--29 height-md--27 height-lg--35" alt="" />
+            </div>
+        {{/if}}
+
+        {{!-- Body --}}
+        <div class="js-equal-height box__content padding-top-sm--2 padding-right-sm--1 padding-bottom-sm--2 padding-left-sm--1 padding-top-md--2 padding-right-md--1 padding-bottom-md--2 padding-left-md--1">
+
+            <h3>
+                <a class="underline-link" href="{{highlighted.uri}}">
+                    {{highlighted.description.title}}{{#if highlighted.description.edition}}: {{highlighted.description.edition}}{{/if}}
+                </a>
+            </h3>
+
+            {{#if_eq highlighted.type "bulletin"}}
+                <h4>{{labels.product-whats-in-bulletin}}</h4>
+                <ul>
+                    {{#if highlighted.description.headline1}}
+                        <li>{{highlighted.description.headline1}}</li>
+                    {{/if}}
+                    {{#if highlighted.description.headline2}}
+                        <li>{{highlighted.description.headline2}}</li>
+                    {{/if}}
+                    {{#if highlighted.description.headline3}}
+                        <li>{{highlighted.description.headline3}}</li>
+                    {{/if}}
+                </ul>
+            {{/if_eq}}
+
+            {{#if_eq highlighted.type "article"}}
+                {{highlighted.description._abstract}}
+            {{/if_eq}}
+
+        </div>
+
+        <div class="background--iron-light box__content height--7 border-top--iron-sm border-top--iron-md padding-top-sm--1 padding-left-sm--1 padding-top-md--1 padding-left-md--1">
+            <a href="{{bulletin.uri}}" class="block">
+                {{#if_eq highlighted.type "bulletin"}}{{labels.read-this-stats-bulletin}}{{/if_eq}}
+                {{#if_eq highlighted.type "article"}}Read this article{{/if_eq}}
+            </a>
+        </div>
+</div>
+{{#if_eq highlighted.type "bulletin"}}
+    <a href="#statistical-bulletins" class="btn btn--primary btn--full-width margin-top--2 js-scroll">{{labels.more-publications}}</a>
+{{/if_eq}}
+{{#if_eq highlighted.type "article"}}
+    <a href="#articles" class="btn btn--primary btn--full-width margin-top--2 js-scroll">More articles</a>
+{{/if_eq}}
