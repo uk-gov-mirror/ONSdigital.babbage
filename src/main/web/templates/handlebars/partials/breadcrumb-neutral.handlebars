@@ -1,0 +1,32 @@
+<nav>
+    <div class="breadcrumb-neutral print--hide">
+        <ol class="breadcrumb-neutral__list">
+            {{#each breadcrumb}}
+                <li class="breadcrumb-neutral__item">
+                    <a class="breadcrumb-neutral__link" href="{{uri}}">{{description.title}}</a>
+                </li>
+            {{/each}}
+
+            {{#if_eq type "release"}}
+            {{!-- Add 'release calendar' into breadcrumb because releases are actually located in root --}}
+                <li class="breadcrumb__item">
+                    <a class="breadcrumb__link" href="/releasecalendar">Release calendar</a>
+                </li>
+
+                {{!-- Add 'published' or 'upcoming' into breadcrumb --}}
+                {{#if description.published}}
+                    <li class="breadcrumb__item">
+                        <a href="/releasecalendar" class="breadcrumb__link">Published</a>
+                    </li>
+                {{else}}
+                    <li class="breadcrumb__item">
+                        <a href="/releasecalendar?view=upcoming" class="breadcrumb__link">Upcoming</a>
+                    </li>
+                {{/if}}
+            {{/if_eq}}
+            <li class="breadcrumb__item">
+                {{description.title}}
+            </li>
+        </ol>
+    </div>
+</nav>
