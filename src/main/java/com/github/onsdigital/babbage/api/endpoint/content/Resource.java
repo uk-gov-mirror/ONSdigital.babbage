@@ -39,41 +39,49 @@ public class Resource {
             contentDispositionHeader += contentResponse.getName() == null ? "" : "filename=\"" + contentResponse.getName() + "\"";
             response.setHeader("Content-Disposition", contentDispositionHeader);
 
-            InputStream contentResponseBody = contentResponse.getDataStream();
-            BufferedImage image = null;
+            try ( InputStream contentResponseBody = contentResponse.getDataStream() ) {
 
-            if (width != null) {
+                BufferedImage image = null;
 
-                try {
-                    Integer w = Integer.parseInt(width, 10);
+                if (width != null) {
 
-                    if (uri.toLowerCase().endsWith(".png") || uri.toLowerCase().endsWith(".jpg") || uri.toLowerCase().endsWith(".jpeg")) {
-                        image = ImageIO.read(contentResponseBody);
-                        Integer clampedWidth = Math.max(1, Math.min(image.getWidth(), w));
+                    try {
+                        Integer w = Integer.parseInt(width, 10);
 
-                        Double w2 = (double)clampedWidth;
-                        Double ratio = w2 / (double)image.getWidth();
-                        Double h = (double)image.getHeight() * ratio;
+                        if (uri.toLowerCase().endsWith(".png") || uri.toLowerCase().endsWith(".jpg") || uri.toLowerCase().endsWith(".jpeg")) {
+                            image = ImageIO.read(contentResponseBody);
+                            Integer clampedWidth = Math.max(1, Math.min(image.getWidth(), w));
 
-                        Image newImage = image.getScaledInstance(clampedWidth, h.intValue(), Image.SCALE_SMOOTH);
-                        image = new BufferedImage(newImage.getWidth(null), newImage.getHeight(null), BufferedImage.TYPE_INT_RGB);
-                        image.getGraphics().drawImage(newImage, 0, 0, null);
+                            Double w2 = (double) clampedWidth;
+                            Double ratio = w2 / (double) image.getWidth();
+                            Double h = (double) image.getHeight() * ratio;
+
+                            Image newImage = image.getScaledInstance(clampedWidth, h.intValue(), Image.SCALE_SMOOTH);
+                            image = new BufferedImage(newImage.getWidth(null), newImage.getHeight(null), BufferedImage.TYPE_INT_RGB);
+                            image.getGraphics().drawImage(newImage, 0, 0, null);
+                        }
+
+                    } catch (IOException e) {
+                        // intentionally swallowing exception so we can return original image if resize fails
+                        e.printStackTrace();
                     }
 
-                } catch (IOException e) {
-                    e.printStackTrace();
                 }
 
+
+                if (image != null) {
+
+                    try (ByteArrayOutputStream os = new ByteArrayOutputStream();
+                         InputStream input = new ByteArrayInputStream(os.toByteArray())) {
+                        ImageIO.write(image, "png", os);
+                        new BabbageContentBasedBinaryResponse(contentResponse, input, contentResponse.getMimeType()).apply(request, response);
+                        return;
+                    }
+                }
+
+
+                new BabbageContentBasedBinaryResponse(contentResponse, contentResponseBody, contentResponse.getMimeType()).apply(request, response);
             }
-
-
-            if (image != null) {
-                ByteArrayOutputStream os = new ByteArrayOutputStream();
-                ImageIO.write(image, "png", os);
-                contentResponseBody = new ByteArrayInputStream(os.toByteArray());
-            }
-
-            new BabbageContentBasedBinaryResponse(contentResponse, contentResponseBody, contentResponse.getMimeType()).apply(request, response);
         } catch (Throwable t) {
             ErrorHandler.handle(request, response, t);
         }
