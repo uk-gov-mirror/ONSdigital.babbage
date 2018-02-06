@@ -71,11 +71,14 @@ public class Resource {
 
                 if (image != null) {
 
-                    try (ByteArrayOutputStream os = new ByteArrayOutputStream();
-                         InputStream input = new ByteArrayInputStream(os.toByteArray())) {
+
+                    try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
                         ImageIO.write(image, "png", os);
-                        new BabbageContentBasedBinaryResponse(contentResponse, input, contentResponse.getMimeType()).apply(request, response);
-                        return;
+                        try ( InputStream input = new ByteArrayInputStream(os.toByteArray())) {
+                            new BabbageContentBasedBinaryResponse(contentResponse, input, contentResponse.getMimeType()).apply(request, response);
+                            return;
+                        }
+
                     }
                 }
 
