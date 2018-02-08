@@ -3,8 +3,13 @@ package com.github.onsdigital.babbage.api.endpoint.content;
 import com.github.davidcarboni.restolino.framework.Api;
 import com.github.onsdigital.babbage.api.error.ErrorHandler;
 import com.github.onsdigital.babbage.content.client.ContentClient;
+import com.github.onsdigital.babbage.content.client.ContentReadException;
 import com.github.onsdigital.babbage.content.client.ContentResponse;
 import com.github.onsdigital.babbage.response.BabbageContentBasedBinaryResponse;
+import com.github.onsdigital.babbage.response.BabbageStringResponse;
+import com.github.onsdigital.babbage.response.base.BabbageResponse;
+import org.apache.commons.lang3.StringUtils;
+import org.jboss.netty.util.internal.StringUtil;
 
 import javax.imageio.IIOException;
 import javax.imageio.ImageIO;
@@ -34,7 +39,16 @@ public class Resource {
             String uri = request.getParameter("uri");
             String width = request.getParameter("width");
 
-            ContentResponse contentResponse = ContentClient.getInstance().getResource(uri);
+            ContentResponse contentResponse = null;
+
+            try {
+                contentResponse = ContentClient.getInstance().getResource(uri);
+            } catch (ContentReadException e) {
+                System.out.println("Get resource returned error response, status: " + e.getStatusCode());
+                ErrorHandler.renderErrorPage(404, response);
+                return;
+            }
+
             String contentDispositionHeader = "inline; ";
             contentDispositionHeader += contentResponse.getName() == null ? "" : "filename=\"" + contentResponse.getName() + "\"";
             response.setHeader("Content-Disposition", contentDispositionHeader);

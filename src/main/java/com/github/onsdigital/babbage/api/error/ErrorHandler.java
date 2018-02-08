@@ -60,7 +60,7 @@ public class ErrorHandler implements ServerError {
     }
 
 
-    private static void renderErrorPage(int statusCode, HttpServletResponse response) throws IOException {
+    public static void renderErrorPage(int statusCode, HttpServletResponse response) throws IOException {
         try {
             response.setStatus(statusCode);
             //Prevent error pages being cached by cdn s
