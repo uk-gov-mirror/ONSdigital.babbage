@@ -77,7 +77,7 @@
                                     <span class="text--aluminium">|</span> Released on {{df this.description.releaseDate}}
                                 {{/if}}
                             </p>
-                            <p class="margin-top--0 margin-bottom--0">{{this.description.summary}}</p>
+                            <p class="tile-neutral-content__description margin-top--0 margin-bottom--0 ">{{this.description.summary}}</p>
                         </li>
                     {{/resolve}}
                 {{/each}}
@@ -101,7 +101,7 @@
         {{#if description.contact}}
             <div class="tile-neutral width-md--40 margin-bottom--6">
                 <h2 class="tile-neutral__heading">Contact</h2>
-                <address>
+                <address class="tile-neutral-content__description">
                     {{#if description.contact.name}}{{description.contact.name}}<br/>{{/if}}
                     <a href="mailto:{{description.contact.email}}">{{description.contact.email}}</a><br/>
                     {{#if description.contact.telephone}}{{labels.telephone}}: {{description.contact.telephone}}{{/if}}
