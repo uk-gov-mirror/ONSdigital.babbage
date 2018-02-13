@@ -44,107 +44,112 @@
 {{!-- Page Content --}}
 {{#partial "block-content"}}
 	{{!-- Hightlights block --}}
-	{{#if_any statsBulletins items}}
-    <div class="slate--alabaster padding-bottom-sm--2 padding-bottom-md--4">
+	{{#if_any statsBulletins items highlightedContent}}
+    <div class="padding-bottom-sm--2 padding-bottom-md--4">
 		<section>
 			<div class="wrapper">
-				<div class="tiles">
-					<div class="col-wrap">
-						<div class="col">
-							<h2>{{labels.highlights}}</h2>
-						</div>
-						{{resolve statsBulletins.0.uri filter="description" assign="bulletin"}}
-						{{#if bulletin}}
-							{{resolve items.0.uri assign="data"}}
-							<!-- <div id="latest" class="col col--md-half col--lg-half tiles__item tiles__item--image-type-headline"> -->
-							{{!-- Check for data and print partial --}}
-							{{#if_any data.years data.quarters data.months}}
-								<div class="col col--md-half col--lg-half">
-											{{> partials/t3/headline-data}}
-								</div>
-							{{/if_any}}
-							<!-- </div> -->
-							{{!-- Latest publication block --}}
-							<div class="col {{#if_any data.years data.quarters data.months}}col--md-half col--lg-half{{/if_any}}">
-                                <div class="background--iron-light margin-top-md--1 margin-bottom-md--2 js-hover-click">
-                                    <div class="background--abbey height--35 overflow--hidden">
+                <div class="col-wrap margin-bottom--2">
+                    <div class="col">
+                        <h2>{{labels.highlights}}</h2>
+                    </div>
 
-                                        <img src="//cdn.ons.gov.uk/assets/images/latest-publications.png" class="width-md--23 width-lg--29 height-md--35" alt="" />
-                                    </div>
-                                    <div class="js-equal-height box__content padding-top-sm--2 padding-right-sm--1 padding-bottom-sm--2 padding-left-sm--1 padding-top-md--2 padding-right-md--1 padding-bottom-md--2 padding-left-md--1">
-                                        <h3>
-                                            <a href="{{bulletin.uri}}">{{bulletin.description.title}}{{#if bulletin.description.edition}}: {{bulletin.description.edition}}{{/if}}</a>
-                                        </h3>
-                                        <h4>{{labels.product-whats-in-bulletin}}</h4>
-                                        <ul>
-                                            {{#if bulletin.description.headline1}}
-                                                <li>{{bulletin.description.headline1}}</li>
-                                            {{/if}}
-                                            {{#if bulletin.description.headline2}}
-                                                <li>{{bulletin.description.headline2}}</li>
-                                            {{/if}}
-                                            {{#if bulletin.description.headline3}}
-                                                <li>{{bulletin.description.headline3}}</li>
-                                            {{/if}}
-                                        </ul>
-                                    </div>
-                                    <div class="background--iron-light box__content height--7 border-top--iron-sm border-top--iron-md padding-top-sm--1 padding-left-sm--1 padding-top-md--1 padding-left-md--1">
-                                        <a href="{{bulletin.uri}}" class="block">{{labels.read-this-stats-bulletin}}</a>
-                                    </div>
+                    {{#if highlightedContent.0}}
+
+                        {{#loop highlightedContent limit=2}}
+                            <div class="col col--md-half col--lg-half margin-bottom--2">
+                                {{resolve uri assign="highlighted"}}
+                                {{#if_eq highlighted.type "timeseries"}}
+                                    {{> partials/t3/headline-data}}
+                                {{else}}
+                                    {{> partials/t3/highlighted-content}}
+                                {{/if_eq}}
+                            </div>
+                        {{/loop}}
+
+                        {{#if highlightedContent.2}}
+                            {{> partials/t3/highlighted-content-small}}
+                        {{/if}}
+
+                    {{else}}
+
+                        {{resolve items.0.uri assign="highlighted"}}
+                        {{!-- Check for data and print partial --}}
+                        {{#if_any highlighted.years highlighted.quarters highlighted.months}}
+                            <div class="col col--md-half col--lg-half">
+                                {{> partials/t3/headline-data}}
+                            </div>
+                        {{/if_any}}
+                        <!-- </div> -->
+
+
+                        {{resolve statsBulletins.0.uri filter="description" assign="bulletin"}}
+                        {{#if bulletin}}
+                        {{!-- Latest publication block --}}
+                        <div class="col {{#if_any highlighted.years highlighted.quarters highlighted.months}}col--md-half col--lg-half{{/if_any}}">
+                            <div class="background--gallery margin-top-md--1 margin-bottom-md--2 js-hover-click">
+                                <div class="background--abbey height--35 overflow--hidden">
+
+                                    <img src="//cdn.ons.gov.uk/assets/images/latest-publications.png" class="width-md--23 width-lg--29 height-md--35" alt="" />
                                 </div>
-								<a href="#publications" class="btn btn--primary btn--full-width margin-top--2 js-scroll">{{labels.more-publications}}</a>
-							</div>
-						{{/if}}
-					</div>
-				</div>
+                                <div class="js-equal-height box__content padding-top-sm--2 padding-right-sm--1 padding-bottom-sm--2 padding-left-sm--1 padding-top-md--2 padding-right-md--1 padding-bottom-md--2 padding-left-md--1">
+                                    <h3>
+                                        <a class="underline-link" href="{{bulletin.uri}}">{{bulletin.description.title}}{{#if bulletin.description.edition}}: {{bulletin.description.edition}}{{/if}}</a>
+                                    </h3>
+                                    <h4>{{labels.product-whats-in-bulletin}}</h4>
+                                    <ul>
+                                        {{#if bulletin.description.headline1}}
+                                            <li>{{bulletin.description.headline1}}</li>
+                                        {{/if}}
+                                        {{#if bulletin.description.headline2}}
+                                            <li>{{bulletin.description.headline2}}</li>
+                                        {{/if}}
+                                        {{#if bulletin.description.headline3}}
+                                            <li>{{bulletin.description.headline3}}</li>
+                                        {{/if}}
+                                    </ul>
+                                </div>
+                                <div class="background--gallery box__content height--7 border-top--iron-sm border-top--iron-md padding-top-sm--1 padding-left-sm--1 padding-top-md--1 padding-left-md--1">
+                                    <a href="{{bulletin.uri}}" class="block">{{labels.read-this-stats-bulletin}}</a>
+                                </div>
+                            </div>
+                            <a href="#publications" class="btn btn--primary btn--full-width margin-top--2 js-scroll">{{labels.more-publications}}</a>
+                        </div>
+                        {{/if}}
+                    {{/if}}
+                </div>
+                <a class="underline-link" href="#">Back to top</a>
 			</div>{{!-- /wrapper --}}
 		</section>
     </div>
 	{{/if_any}}
 	{{!-- Timeseries --}}
 	{{#if items}}
-	<div class="slate--mercury padding-bottom-sm--2 padding-bottom-md--4">
+	<div class="background--gallery padding-bottom-sm--2 padding-bottom-md--4">
 		<section>
 			<div class="wrapper">
 				{{> partials/t3/timeseries-list}}
+                <a class="underline-link" href="#">Back to top</a>
 			</div>
 		</section>
 	</div>
 	{{/if}}
 	{{!-- Datasets --}}
 	{{#if datasets}}
-	<div class="slate--alabaster padding-bottom-sm--2 padding-bottom-md--4">
+	<div class="padding-bottom-sm--2 padding-bottom-md--4">
 		<section>
 			<div class="wrapper">
 				{{> partials/t3/dataset-list}}
-			</div>
-		</section>
-        <div class="wrapper">
-            <div id="user-requested-container" class="section-container">
-                {{!-- User requested data --}}
-                <h2 id="user-requested" class="section-title">{{labels.user-requested-data}}</h2>
-                <div class="background--iron-light js-hover-click">
-                    <div class="box__content padding-top-sm--3 padding-bottom-sm--2 padding-left-sm--1 padding-right-sm--1 padding-top-md--3 padding-right-md--1 padding-bottom-md--2 padding-left-md--1">
-                        <span class="icon icon-arrow-right--dark float-right margin-top-md--2 margin-top-sm--2"></span>
-                        <h3>{{labels.looking-for-our-user-requested-data}}</h3>
-                        <p><a href="{{uri}}/datalist?sortBy=release_date&filter=user_requested_data">{{labels.we-also-produce-data-not-included-in-our-standard-publications}}</a></p>
-                    </div>
-
-                </div>
+                <a class="underline-link" href="#">Back to top</a>
             </div>
-        </div>
+        </section>
 	</div>
 	{{/if}}
 	{{!-- Latest publications --}}
 	{{#if_any statsBulletins relatedArticles}}
-    <div class="{{#if datasets}}slate--mercury{{else}}slate--alabaster{{/if}} padding-bottom-sm--2 padding-bottom-md--4">
+    <div class="{{#if datasets}}background--gallery{{/if}} padding-bottom-sm--2 padding-bottom-md--4">
         <section>
             <div class="wrapper">
-                <div class="col-wrap">
-                    <div class="col">
-                        <h2 id="publications">{{labels.publications-related-to}} {{description.title}}</h2>
-                    </div>
-                </div>
+                <h2 id="publications">{{labels.publications-related-to}} <span class="lowercase">{{description.title}}</span></h2>
                 {{!-- Latest statistical bulletins --}}
                 {{#if statsBulletins}}
                 {{> partials/t3/stats-bulletins}}
@@ -153,6 +158,9 @@
                 {{#if relatedArticles}}
                 {{> partials/t3/related-articles}}
                 {{/if}}
+                <div class="margin-top--2">
+                    <a class="underline-link" href="#">Back to top</a>
+                </div>
             </div>
         </section>
     </div>
@@ -166,19 +174,19 @@
                     <div class="col col--lg-two-thirds">
                         <div class="background--mercury margin-top--0 margin-left-md--0 margin-bottom-sm--2 padding-top--0 padding-right--0 padding-bottom--2 padding-left--0">
                             <div class="background--gallery padding-top--0 padding-left--0 padding-right--0">
-                                <h2 id="methodology" class="tiles__title-h2 tiles__title-h2--nav font-size--h3">{{labels.methodology-related-to}} {{description.title}}</h2>
+                                <h2 id="methodology" class="tiles__title-h2 tiles__title-h2--nav font-size--h3">{{labels.methodology-related-to}} <span class="lowercase">{{description.title}}</span></h2>
                             </div>
                             <div class="border-top--iron-sm border-top--iron-md padding-right--1 padding-left--1">
                                 <div class="box__content padding-top--1 padding-bottom--1">
                                     <ul class="list--neutral">
                                         {{#each relatedMethodology}}
                                             {{#resolve this.uri filter="description"}}
-                                                <li class="flush-top"><a href="{{absolute uri}}">{{description.title}}</a></li>
+                                                <li class="flush-top"><a class="underline-link" href="{{absolute uri}}">{{description.title}}</a></li>
                                             {{/resolve}}
                                         {{/each}}
                                         {{#each relatedMethodologyArticle}}
                                             {{#resolve this.uri filter="description"}}
-                                                <li class="flush-top"><a href="{{absolute uri}}">{{description.title}}</a></li>
+                                                <li class="flush-top"><a class="underline-link" href="{{absolute uri}}">{{description.title}}</a></li>
                                             {{/resolve}}
                                         {{/each}}
                                     </ul>
