@@ -1,0 +1,12 @@
+<h1 class="page-neutral-intro__title margin-top--1{{#if_any description._abstract description.summary}}{{else}}margin-bottom-sm--4 margin-bottom-md--4{{/if_any}}{{#if_eq type "home_page_census"}}h1--census{{/if_eq}}">
+    {{#if typeLabel}}<span class="page-neutral-intro__type">{{typeLabel}}:</span>{{/if}}
+    {{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}
+</h1>
+
+{{#if description._abstract}}
+    <p class="page-neutral-intro__content margin-bottom--3">{{description._abstract}}</p>
+{{else}}
+    {{#if description.summary}}
+        <p class="page-neutral-intro__content margin-bottom--3">{{description.summary}}</p>
+    {{/if}}
+{{/if}}

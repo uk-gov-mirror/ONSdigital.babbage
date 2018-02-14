@@ -1,16 +1,12 @@
-<div class="col-wrap">
-	<div class="col">
-		<h2 id="datasets">{{labels.datasets-related-to}} {{description.title}}</h2>
-	</div>
-</div>
+<h2 id="datasets">{{labels.datasets-related-to}} <span class="lowercase">{{description.title}}</span></h2>
 <ul class="list--neutral margin-top--half">
 	{{#loop datasets limit=6}}
-		<li class="col-wrap background--mercury flush-col padding-top--2 padding-bottom--4 padding-left--1 js-hover-click">
+		<li class="col-wrap background--gallery flush-col padding-top--2 padding-bottom--4 padding-left--1 js-hover-click">
 			{{#resolve (absolute this.uri) filter="description"}}
 			<div class="col col--lg-38">
                 <div class="box__content">
                     <h4>
-                        <a href="{{absolute uri}}">
+                        <a class="underline-link" href="{{absolute uri}}">
                             {{description.title}}
                         </a>
                     </h4>
@@ -25,4 +21,4 @@
 		</li>
 	{{/loop}}
 </ul>
-<a href="{{uri}}/datalist?filter=datasets" class="btn btn--primary btn--full-width">{{labels.view-all-datasets-related-to}} {{description.title}}</a>
+<a href="{{uri}}/datalist?filter=datasets" class="btn btn--primary btn--full-width margin-bottom--2">{{labels.view-all-datasets-related-to}} {{description.title}}</a>

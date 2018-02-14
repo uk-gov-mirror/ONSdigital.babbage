@@ -1,8 +1,4 @@
-<div class="col-wrap">
-	<div class="col">
-		<h2 id="timeseries">{{labels.time-series-related-to}} {{description.title}}</h2>
-	</div>
-</div>
+<h2 id="timeseries">{{labels.time-series-related-to}} <span class="lowercase">{{description.title}}</span></h2>
 
 <ul class="list--neutral margin-top--half">
 	{{#loop items limit=6}}
@@ -11,7 +7,7 @@
                 <div class="col col--md-15 col--lg-27">
                     <div class="box__content">
                         <h4>
-                            <a href="{{uri}}">{{description.title}}</a>
+                            <a class="underline-link" href="{{uri}}">{{description.title}}</a>
                         </h4>
                         {{#if description.keyNote}}
                             <p class="flush">{{description.keyNote}}</p>
@@ -57,4 +53,4 @@
         {{/resolve}}
 	{{/loop}}
 </ul>
-<a href="/timeseriestool?topic={{uri}}" class="btn btn--primary btn--full-width">{{labels.view-all-time-series-related-to}} {{description.title}}</a>
+<a href="/timeseriestool?topic={{uri}}" class="btn btn--primary btn--full-width margin-bottom--2">{{labels.view-all-time-series-related-to}} {{description.title}}</a>
