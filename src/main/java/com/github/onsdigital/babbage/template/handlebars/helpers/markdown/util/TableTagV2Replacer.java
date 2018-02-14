@@ -12,15 +12,12 @@ import com.github.onsdigital.babbage.util.http.ClientConfiguration;
 import com.github.onsdigital.babbage.util.http.PooledHttpClient;
 import com.github.onsdigital.babbage.util.json.JsonUtil;
 import org.apache.commons.io.IOUtils;
-import org.apache.http.HttpStatus;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.methods.CloseableHttpResponse;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -33,7 +30,9 @@ public class TableTagV2Replacer extends TagReplacementStrategy {
     private static final Pattern pattern = Pattern.compile("<ons-table-v2\\spath=\"([-A-Za-z0-9+&@#/%?=~_|!:,.;()*$]+)\"?\\s?/>");
     private static final String RENDERER_HOST = Configuration.TABLE_RENDERER.getHost();
     private static final String RENDERER_PATH = Configuration.TABLE_RENDERER.getHtmlPath();
-    static final PooledHttpClient HTTP_CLIENT = new PooledHttpClient(RENDERER_HOST, createHttpConfiguration());
+    private static final PooledHttpClient HTTP_CLIENT = new PooledHttpClient(RENDERER_HOST, createHttpConfiguration());
+    private static final Map<String, String> HEADERS = Collections.singletonMap("Content-Type", "application/json;charset=utf-8");
+    private static final String CHARSET = StandardCharsets.UTF_8.name();
 
     private final String template;
     private final ContentClient contentClient;
@@ -92,7 +91,7 @@ public class TableTagV2Replacer extends TagReplacementStrategy {
     }
 
     private String invokeTableRenderer(String postBody) throws TableRendererException {
-        try (CloseableHttpResponse response = httpClient.sendPost(RENDERER_PATH, null, postBody)){
+        try (CloseableHttpResponse response = httpClient.sendPost(RENDERER_PATH, HEADERS, postBody, CHARSET)){
             return IOUtils.toString(response.getEntity().getContent());
         } catch (IOException e) {
             throw new TableRendererException(e);
