@@ -23,9 +23,6 @@ import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 public class SearchHelper {
 
-    // List of retired urls to be temporarily black-listed until content is cleared up (Trello card #482)
-    private static List<String> retiredUrls = Configuration.ELASTIC_SEARCH.getHighlightBlacklist();
-
     private static SearchRequestBuilder prepare(ONSQuery query) {
         return prepare(query, null);
     }
@@ -68,17 +65,20 @@ public class SearchHelper {
 
         List<ONSSearchResponse> helpers = new ArrayList<>();
         MultiSearchResponse response = multiSearchRequestBuilder.get();
-        {
-            int i = 0;
-            for (MultiSearchResponse.Item item : response.getResponses()) {
-                if (item.isFailure()) {
-                    throw new ElasticsearchException(item.getFailureMessage());
-                }
-                ONSQuery query = queries.get(i);
-                ONSSearchResponse searchResponse = resolveDetails(query, new ONSSearchResponse(item.getResponse()));
+        MultiSearchResponse.Item[] items = response.getResponses();
 
+        for (int i = 0; i < items.length; i++) {
+            MultiSearchResponse.Item item = items[i];
+
+            if (item.isFailure()) {
+                throw new ElasticsearchException(item.getFailureMessage());
+            }
+
+            ONSQuery query = queries.get(i);
+            ONSSearchResponse searchResponse = resolveDetails(query, new ONSSearchResponse(item.getResponse()));
+
+            if (null != query.types()) {
                 List<ContentType> types = Arrays.asList(query.types());
-
                 // Check for retired product pages
                 if (query.size() == 1 &&
                         types.contains(ContentType.product_page)) {
@@ -88,17 +88,21 @@ public class SearchHelper {
                         SearchHit searchHit = searchHits.getAt(0);
                         // ID is the url
                         String url = searchHit.getId();
-                        if (!retiredUrls.contains(url)) {
+
+                        if (!Configuration.ELASTIC_SEARCH.getHighlightBlacklist().contains(url)) {
                             // OK to add response
                             helpers.add(searchResponse);
-                            i++;
                         }
                     }
                 } else {
                     // Not a topic match query, so go ahead and add the response as usual
                     helpers.add(searchResponse);
-                    i++;
                 }
+            } else {
+                // This should never happen, but 'log' if it does
+                System.out.println("Got null query/types while checking for retired product pages in SearchHelper");
+                // Add the response so something is displayed on the site
+                helpers.add(searchResponse);
             }
         }
         return helpers;

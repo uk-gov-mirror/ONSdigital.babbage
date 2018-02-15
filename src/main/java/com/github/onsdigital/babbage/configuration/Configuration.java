@@ -2,7 +2,11 @@ package com.github.onsdigital.babbage.configuration;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -126,7 +130,13 @@ public class Configuration {
         private static String elasticSearchIndexAlias = defaultIfBlank(getValue("ELASTIC_SEARCH_INDEX_ALIAS"), "ons");
         private static Integer elasticSearchPort = Integer.parseInt(defaultIfBlank(getValue("ELASTIC_SEARCH_PORT"), "9300"));
         private static String elasticSearchCluster = defaultIfBlank(getValue("ELASTIC_SEARCH_CLUSTER"), "");
-        private static final String HIGHLIGHT_URL_BLACKLIST_FILE = "highlight-url-blacklist";
+
+        private static String HIGHLIGHT_URL_BLACKLIST_FILE = defaultIfBlank(getValue("HIGHLIGHT_URL_BLACKLIST_FILE"),
+                "highlight-url-blacklist");
+        
+        private static final List<String> highlightBlacklist = loadHighlightBlacklist();
+
+        public static List<String> getHighlightBlacklist() { return highlightBlacklist; }
 
         public static String getElasticSearchServer() {
             return elasticSearchServer;
@@ -148,21 +158,27 @@ public class Configuration {
          * Method to load the list of retired product pages to be hidden
          * @return List of url strings containing the black listed urls
          */
-        public static List<String> getHighlightBlacklist() {
+        private static List<String> loadHighlightBlacklist() {
             ClassLoader classLoader = Configuration.class.getClassLoader();
-            File file = new File(classLoader.getResource(HIGHLIGHT_URL_BLACKLIST_FILE).getFile());
+            URL fileUrl = classLoader.getResource(HIGHLIGHT_URL_BLACKLIST_FILE);
 
             List<String> urls = new ArrayList<>();
-            try (BufferedReader bw = new BufferedReader(new FileReader(file))) {
-                String url;
+            if (null != fileUrl) {
+                File file = new File(fileUrl.getFile());
+                try (BufferedReader bw = new BufferedReader(new FileReader(file))) {
+                    String url;
 
-                while ((url = bw.readLine()) != null) {
-                    urls.add(url);
+                    while ((url = bw.readLine()) != null) {
+                        urls.add(url);
+                    }
+                } catch (IOException e) {
+                    // Print additional info out to stderr
+                    String message = "Error while attempting to load highlight blacklist file.";
+                    System.out.println(message);
+                    e.printStackTrace();
+                    // Unable to load the file, so return an empty ArrayList (won't black list any urls)
+                    return new ArrayList<>();
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
-                // Unable to load the file, so return an empty ArrayList (won't black list any urls)
-                return new ArrayList<>();
             }
             return urls;
         }
