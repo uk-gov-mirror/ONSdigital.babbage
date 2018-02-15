@@ -1,15 +1,19 @@
 package com.github.onsdigital.babbage.search.helpers;
 
+import com.github.onsdigital.babbage.configuration.Configuration;
 import com.github.onsdigital.babbage.paginator.Paginator;
 import com.github.onsdigital.babbage.search.model.ContentType;
 import com.github.onsdigital.babbage.search.model.field.Field;
 import com.github.onsdigital.babbage.search.model.sort.SortField;
 import org.elasticsearch.ElasticsearchException;
 import org.elasticsearch.action.search.*;
+import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.AbstractAggregationBuilder;
 import org.elasticsearch.search.suggest.SuggestBuilder;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static com.github.onsdigital.babbage.configuration.Configuration.ELASTIC_SEARCH.getElasticSearchIndexAlias;
@@ -18,6 +22,9 @@ import static com.github.onsdigital.babbage.search.ElasticSearchClient.getElasti
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 public class SearchHelper {
+
+    // List of retired urls to be temporarily black-listed until content is cleared up (Trello card #482)
+    private static List<String> retiredUrls = Configuration.ELASTIC_SEARCH.getHighlightBlacklist();
 
     private static SearchRequestBuilder prepare(ONSQuery query) {
         return prepare(query, null);
@@ -67,8 +74,31 @@ public class SearchHelper {
                 if (item.isFailure()) {
                     throw new ElasticsearchException(item.getFailureMessage());
                 }
-                helpers.add(resolveDetails(queries.get(i), new ONSSearchResponse(item.getResponse())));
-                i++;
+                ONSQuery query = queries.get(i);
+                ONSSearchResponse searchResponse = resolveDetails(query, new ONSSearchResponse(item.getResponse()));
+
+                List<ContentType> types = Arrays.asList(query.types());
+
+                // Check for retired product pages
+                if (query.size() == 1 &&
+                        types.contains(ContentType.product_page)) {
+                    // Get the hit - we only queried for 1 document so we should only get 1 back
+                    SearchHits searchHits = searchResponse.response.getHits();
+                    if (searchHits.getHits().length == 1) {
+                        SearchHit searchHit = searchHits.getAt(0);
+                        // ID is the url
+                        String url = searchHit.getId();
+                        if (!retiredUrls.contains(url)) {
+                            // OK to add response
+                            helpers.add(searchResponse);
+                            i++;
+                        }
+                    }
+                } else {
+                    // Not a topic match query, so go ahead and add the response as usual
+                    helpers.add(searchResponse);
+                    i++;
+                }
             }
         }
         return helpers;
