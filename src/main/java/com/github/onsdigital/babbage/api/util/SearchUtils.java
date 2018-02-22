@@ -23,6 +23,7 @@ import com.github.onsdigital.babbage.util.RequestUtil;
 import com.github.onsdigital.babbage.util.ThreadContext;
 import com.github.onsdigital.babbage.util.json.JsonUtil;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.client.utils.URIBuilder;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.common.text.Text;
@@ -32,6 +33,7 @@ import org.elasticsearch.index.query.QueryBuilders;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.MediaType;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.text.MessageFormat;
 import java.util.*;
 
@@ -72,7 +74,18 @@ public class SearchUtils {
             //search time series by cdid, redirect to time series page if found
             String timeSeriesUri = searchTimeSeriesUri(searchTerm);
             if (timeSeriesUri != null) {
-                return new BabbageRedirectResponse(timeSeriesUri, Configuration.GENERAL.getSearchResponseCacheTime());
+                String redirectUri;
+                try {
+                    redirectUri = new URIBuilder(timeSeriesUri)
+                            .addParameter("referrer", "search")
+                            .addParameter("searchTerm", searchTerm)
+                            .build().toString();
+                    return new BabbageRedirectResponse(redirectUri, Configuration.GENERAL.getSearchResponseCacheTime());
+                } catch (URISyntaxException e) {
+                    System.out.println("Unable to encode referrer in timeSeriesUri");
+                    e.printStackTrace();
+                    return new BabbageRedirectResponse(timeSeriesUri, Configuration.GENERAL.getSearchResponseCacheTime());
+                }
             }
         }
         LinkedHashMap<String, SearchResult> results = searchAll(queries);
