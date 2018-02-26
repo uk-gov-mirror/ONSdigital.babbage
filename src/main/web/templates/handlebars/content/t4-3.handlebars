@@ -30,7 +30,7 @@
                                 <p class="page-neutral-intro__content">{{description._abstract}}</p>
                             {{/if}}
                             {{#if description.releaseDate}}
-                                <p class="margin-top--0 margin-bottom--3">{{df description.releaseDate}}</p>
+                                <p class="page-neutral-intro__meta margin-top--0 margin-bottom--3">{{df description.releaseDate}}</p>
                             {{/if}}
                         </div>
                     {{/block}}
@@ -40,7 +40,7 @@
     </div>
     <div class="wrapper margin-bottom--2">
         <div class="col-wrap">
-            <article class="col col--md-36 col--lg-36 page-neutral-content__main-content margin-top--4 margin-left-md--1">
+            <article class="col col--md-40 col--lg-40 page-neutral-content__main-content margin-top--4 margin-left-md--1">
                 {{#each sections}}
                     <div id="{{slugify title}}" class="section__content--markdown section__content--markdown--neutral-article">
                         <section>
@@ -58,26 +58,26 @@
 
         {{!-- Related items ---}}
         {{#if relatedData}}
-            <a class="btn btn--primary btn--full-width width-md--36 margin-bottom--2" href="{{this.uri}}/relateddata" >
+            <a class="btn btn--primary btn--full-width width-md--40 margin-bottom--2" href="{{this.uri}}/relateddata" >
                 View all data used in this article
             </a>
         {{/if}}
 
         {{#if relatedDocuments}}
-        <div class="tile-neutral width-md--36 margin-bottom--2">
-            <h3 class="tile-neutral__heading margin-top--1">Related</h3>
+        <div class="tile-neutral width-md--40 margin-bottom--2">
+            <h2 class="tile-neutral__heading">Related</h2>
                 <ul class="list--neutral margin-bottom--0">
                 {{#each relatedDocuments}}
                     {{#resolve this.uri}}
                         <li class="{{#if @last}}margin-bottom--0{{else}}margin-bottom--3{{/if}}">
-                            <a href="{{this.uri}}" class="tile-neutral-content__title">{{this.description.title}}</a>
+                            <a href="{{this.uri}}" class="tile-neutral-content__title underline-link">{{this.description.title}}</a>
                             <p class="tile-neutral-content__meta">
                                 {{> type-label type_code=this.type }}
                                 {{#if this.description.releaseDate}}
                                     <span class="text--aluminium">|</span> Released on {{df this.description.releaseDate}}
                                 {{/if}}
                             </p>
-                            <p class="margin-top--0 margin-bottom--0">{{this.description.summary}}</p>
+                            <p class="tile-neutral-content__description margin-top--0 margin-bottom--0 ">{{this.description.summary}}</p>
                         </li>
                     {{/resolve}}
                 {{/each}}
@@ -85,12 +85,25 @@
         </div>
         {{/if}}
 
+        {{#if links}}
+            <div class="tile-neutral width-md--40 margin-bottom--2">
+                <h2 class="tile-neutral__heading">You might also be interested in</h2>
+                <ul class="list--neutral margin-bottom--0">
+                    {{#each links}}
+                        <li class="{{#if @last}}margin-bottom--0{{else}}margin-bottom--3{{/if}}">
+                            <a href="{{this.uri}}" class="tile-neutral-content__title underline-link">{{this.title}}</a>
+                        </li>
+                    {{/each}}
+                </ul>
+            </div>
+        {{/if}}
+
         {{#if description.contact}}
-            <div class="tile-neutral width-md--36 margin-bottom--6">
-                <h3 class="tile-neutral__heading margin-top--1 margin-bottom--1">Contact</h3>
-                <address>
+            <div class="tile-neutral width-md--40 margin-bottom--6">
+                <h2 class="tile-neutral__heading">Contact</h2>
+                <address class="tile-neutral-content__description">
                     {{#if description.contact.name}}{{description.contact.name}}<br/>{{/if}}
-                    <a href="mailto:{{description.contact.email}}">{{description.contact.email}}</a><br/>
+                    <a class="underline-link" href="mailto:{{description.contact.email}}">{{description.contact.email}}</a><br/>
                     {{#if description.contact.telephone}}{{labels.telephone}}: {{description.contact.telephone}}{{/if}}
                 </address>
             </div>

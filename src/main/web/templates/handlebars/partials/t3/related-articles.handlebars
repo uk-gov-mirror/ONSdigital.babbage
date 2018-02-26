@@ -1,23 +1,29 @@
+<h3>Articles</h3>
 <div class="col-wrap">
-	<div class="col">
-		<h3>{{labels.articles}}</h3>
-	</div>
-</div>
-<div class="col-wrap">
-	<div class="col col--lg-40">
 
 	<ul class="tiles__list flush">
 		{{#loop relatedArticles limit=6}}
-		{{#resolve this.uri filter="description"}}
-			<li class="tiles__item--list-type-simple flush-col">
-				<h4 class="titles__title tiles__title-h4">
-					<a href="{{uri}}">
-						{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}
-					</a>
-				</h4>
-				<p class="tiles__content">
-                {{#if description._abstract}}{{description._abstract}}{{else}}{{description.summary}}{{/if}}
-				</p>
+		{{#resolve this.uri}}
+		    <li class="background--white padding-top--2 padding-bottom--2 padding-left--1 margin-left-md--1 js-hover-click col-wrap">
+		        {{#if imageUri}}
+                    <div class="col col--md-13 col--lg-13 margin-left--0">
+                        <img src="/resource?uri={{imageUri}}&width=208" />
+                    </div>
+                {{/if}}
+                <div class="col col--md-30 col--lg-38 margin-left--0">
+                    <div class="box__content {{#if imageUri}}padding-left-md--1{{/if}}">
+                        <h4>
+                            <a class="underline-link" href="{{absolute uri}}">
+                                {{description.title}}
+                            </a>
+                        </h4>
+                        <p class="flush">
+                            {{#if description.summary}}{{description.summary}}{{/if}}
+                            {{#if description._abstract}}{{description._abstract}}{{/if}}
+
+                        </p>
+                    </div>
+                </div>
 			</li>
 		{{/resolve}}
 		{{/loop}}
@@ -25,5 +31,4 @@
 
 		<a href="{{uri}}/publications?filter=article&filter=compendia" class="btn btn--primary btn--full-width">{{labels.view-all-related-articles}}</a>
 
-	</div>
 </div>
