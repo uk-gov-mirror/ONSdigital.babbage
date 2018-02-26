@@ -74,18 +74,20 @@ public class SearchUtils {
             //search time series by cdid, redirect to time series page if found
             String timeSeriesUri = searchTimeSeriesUri(searchTerm);
             if (timeSeriesUri != null) {
-                String redirectUri;
-                try {
-                    redirectUri = new URIBuilder(timeSeriesUri)
-                            .addParameter("referrer", "search")
-                            .addParameter("searchTerm", searchTerm)
-                            .build().toString();
-                    return new BabbageRedirectResponse(redirectUri, Configuration.GENERAL.getSearchResponseCacheTime());
-                } catch (URISyntaxException e) {
-                    System.out.println("Unable to encode referrer in timeSeriesUri");
-                    e.printStackTrace();
-                    return new BabbageRedirectResponse(timeSeriesUri, Configuration.GENERAL.getSearchResponseCacheTime());
+                if (searchTerm != null) {
+                    String redirectUri;
+                    try {
+                        redirectUri = new URIBuilder(timeSeriesUri)
+                                .addParameter("referrer", "search")
+                                .addParameter("searchTerm", searchTerm.toLowerCase())
+                                .build().toString();
+                        return new BabbageRedirectResponse(redirectUri, Configuration.GENERAL.getSearchResponseCacheTime());
+                    } catch (URISyntaxException e) {
+                        System.out.println("Unable to encode referrer in timeSeriesUri");
+                        e.printStackTrace();
+                    }
                 }
+                return new BabbageRedirectResponse(timeSeriesUri, Configuration.GENERAL.getSearchResponseCacheTime());
             }
         }
         LinkedHashMap<String, SearchResult> results = searchAll(queries);
