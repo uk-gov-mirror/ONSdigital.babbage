@@ -20,8 +20,6 @@ public enum SignedURLHelper implements BabbageHandlebarsHelper<String> {
     sign_url {
         @Override
         public CharSequence apply(String context, Options options) throws IOException {
-            // (sign_url uri parameters.query.0 parameters.q.0 result.paginator.currentPage @index_1 listType parameters.size.0)
-
             if (options.isFalsy(context)) {
                 return null;
             }
@@ -47,7 +45,6 @@ public enum SignedURLHelper implements BabbageHandlebarsHelper<String> {
             String token = "";
             try {
                 token = JWT.create()
-                        //.withIssuer("auth0")
                         .withClaim("uri", uri)
                         .withClaim("term", term)
                         .withClaim("page", (int)(long)page)
