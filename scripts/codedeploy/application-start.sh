@@ -39,6 +39,11 @@ docker run -d                                                          \
   --env=IS_PUBLISHING=$IS_PUBLISHING                                   \
   --env=PHANTOMJS_PATH=$PHANTOMJS_PATH                                 \
   --env=TABLE_RENDERER_HOST=$TABLE_RENDERER_HOST                       \
+  --env=AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID                           \
+  --env=AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY                   \
+  --env=AWS_REGION=$AWS_REGION                                         \
+  --env=ANALYTICS_SQS_URL=$ANALYTICS_SQS_URL                           \
+  --env=REDIRECT_SECRET=$REDIRECT_SECRET                               \
   --name=babbage                                                       \
   --net=$DOCKER_NETWORK                                                \
   --restart=always                                                     \
