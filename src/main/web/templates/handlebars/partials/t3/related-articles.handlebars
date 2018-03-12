@@ -18,7 +18,7 @@
                             </a>
                         </h4>
                         <p class="flush">
-                            {{#if description._abstract}}{{description._abstract}}{{description.metaDescription}}{{/if}}
+                            {{#if description._abstract}}{{description._abstract}}{{else}}{{description.metaDescription}}{{/if}}
                         </p>
                     </div>
                 </div>
