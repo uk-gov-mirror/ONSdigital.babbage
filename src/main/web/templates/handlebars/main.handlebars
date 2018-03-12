@@ -14,6 +14,8 @@
         <meta name="theme-color" content="#58595B">
         <meta name="apple-mobile-web-app-status-bar-style" content="#58595B">
 
+        {{#if_any description.metaDescription description.summary description._abstract}}<meta name="description" content="{{#if description.metaDescription}}{{description.metaDescription}}{{else}}{{#if description.summary}}{{description.summary}}{{else}}{{description._abstract}}{{/if}}{{/if}}">{{/if_any}}
+
 		<!--[if IE]><![endif]-->
 		<!--[if lte IE 8]>
 		<link rel="stylesheet" href="{{#if is_dev}}http://{{location.hostname}}:9000/dist{{else}}//cdn.ons.gov.uk/sixteens/7b354cb{{/if}}/css/old-ie.css"/>
