@@ -28,24 +28,36 @@ public class MapTagReplacer extends TagReplacementStrategy {
 
     private static final Pattern pattern = Pattern.compile("<ons-map\\spath=\"([-A-Za-z0-9+&@#/%?=~_|!:,.;()*$]+)\"?\\s?/>");
     private static final String RENDERER_HOST = Configuration.MAP_RENDERER.getHost();
-    private static final String RENDERER_PATH = Configuration.MAP_RENDERER.getHtmlPath();
+    private static final String RENDERER_SVG_PATH = Configuration.MAP_RENDERER.getSvgPath();
+    private static final String RENDERER_PNG_PATH = Configuration.MAP_RENDERER.getPngPath();
     static final PooledHttpClient HTTP_CLIENT = new PooledHttpClient(RENDERER_HOST, createHttpConfiguration());
+
+    /** the type of map to render - svg or png. */
+    public enum MapType {
+        PNG, SVG
+    }
 
     private final String template;
     private final ContentClient contentClient;
     private final TemplateService templateService;
     private final PooledHttpClient httpClient;
+    private final String rendererPath;
 
-    public MapTagReplacer(String path, String template) {
-        this(path, template, ContentClient.getInstance(), TemplateService.getInstance(), HTTP_CLIENT);
+    public MapTagReplacer(String path, String template, MapType mapType) {
+        this(path, template, ContentClient.getInstance(), TemplateService.getInstance(), HTTP_CLIENT, mapType);
     }
 
-    public MapTagReplacer(String path, String template, ContentClient contentClient, TemplateService templateService, PooledHttpClient httpClient) {
+    public MapTagReplacer(String path, String template, ContentClient contentClient, TemplateService templateService, PooledHttpClient httpClient, MapType mapType) {
         super(path);
         this.template = template;
         this.contentClient = contentClient;
         this.templateService = templateService;
         this.httpClient = httpClient;
+        if (mapType == MapType.PNG) {
+            this.rendererPath = RENDERER_PNG_PATH;
+        } else {
+            this.rendererPath = RENDERER_SVG_PATH;
+        }
     }
 
     /**
@@ -88,7 +100,7 @@ public class MapTagReplacer extends TagReplacementStrategy {
     }
 
     private String invokeMapRenderer(String postBody) throws MapRendererException {
-        try (CloseableHttpResponse response = httpClient.sendPost(RENDERER_PATH, null, postBody)){
+        try (CloseableHttpResponse response = httpClient.sendPost(rendererPath, null, postBody)){
             return IOUtils.toString(response.getEntity().getContent());
         } catch (IOException e) {
             throw new MapRendererException(e);

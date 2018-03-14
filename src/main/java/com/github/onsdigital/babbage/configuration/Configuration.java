@@ -247,21 +247,29 @@ public class Configuration {
     /** Server side map rendering configuration. */
     public static class MAP_RENDERER {
         private static final String HOST = defaultIfBlank(getValue("MAP_RENDERER_HOST"), "http://localhost:23500");
-        private static final String HTML_PATH = defaultIfBlank(getValue("MAP_RENDERER_HTML_PATH"), "/render/html");
+        private static final String SVG_PATH = defaultIfBlank(getValue("MAP_RENDERER_SVG_PATH"), "/render/svg");
+        private static final String PNG_PATH = defaultIfBlank(getValue("MAP_RENDERER_PNG_PATH"), "/render/png");
         private static final int MAX_RENDERER_CONNECTIONS = defaultNumberIfBlank(getNumberValue("MAP_RENDERER_MAX_CONNECTIONS"), 10);
 
          /**
-         * @return the hostname of the table renderer).
+         * @return the hostname of the table renderer.
          */
         public static String getHost() {
             return HOST;
         }
 
          /**
-         * @return the path to invoke when rendering an html table).
+         * @return the path to invoke when rendering an svg map.
          */
-        public static String getHtmlPath() {
-            return HTML_PATH;
+        public static String getSvgPath() {
+            return SVG_PATH;
+        }
+
+         /**
+         * @return the path to invoke when rendering a png map.
+         */
+        public static String getPngPath() {
+            return PNG_PATH;
         }
 
         public static int getMaxServerConnection() {

@@ -15,16 +15,13 @@ import org.mockito.Answers;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import javax.servlet.http.HttpServletRequest;
-
-import java.util.Collections;
 import java.util.regex.Matcher;
 
-import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.extractPublishDates;
+import static com.github.onsdigital.babbage.template.handlebars.helpers.markdown.util.MapTagReplacer.MapType.PNG;
+import static com.github.onsdigital.babbage.template.handlebars.helpers.markdown.util.MapTagReplacer.MapType.SVG;
 import static java.util.Collections.singletonMap;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
-import static org.junit.Assert.*;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
@@ -54,7 +51,7 @@ public class MapTagReplacerTest {
     @Before
     public void setup() throws Exception {
         MockitoAnnotations.initMocks(this);
-        testObj = new MapTagReplacer(path, template, contentClientMock, templateServiceMock, httpClientMock);
+        testObj = new MapTagReplacer(path, template, contentClientMock, templateServiceMock, httpClientMock, SVG);
 
         when(contentClientMock.getResource(path + "mapid.json")).thenReturn(contentResponseMock);
 
@@ -63,10 +60,24 @@ public class MapTagReplacerTest {
     }
 
     @Test
-    public void replaceShouldGetContentAndinvokeMapRenderer() throws Exception {
+    public void replaceShouldGetContentAndInvokeMapRendererForSvg() throws Exception {
         String json = "{\"foo\": \"bar\"}";
         when(contentResponseMock.getAsString()).thenReturn(json);
-        when(httpClientMock.sendPost(Configuration.MAP_RENDERER.getHtmlPath(), null, json)).thenReturn(responseMock);
+        when(httpClientMock.sendPost(Configuration.MAP_RENDERER.getSvgPath(), null, json)).thenReturn(responseMock);
+        when(responseMock.getEntity().getContent()).thenReturn(IOUtils.toInputStream(mapHtml));
+        when(templateServiceMock.renderTemplate(template, singletonMap("foo", "bar"), singletonMap("mapHtml", mapHtml))).thenReturn(renderedTemplate);
+
+        String result = testObj.replace(matcher);
+
+        assertThat(result, equalTo(renderedTemplate));
+    }
+
+    @Test
+    public void replaceShouldGetContentAndInvokeMapRendererForPng() throws Exception {
+        testObj = new MapTagReplacer(path, template, contentClientMock, templateServiceMock, httpClientMock, PNG);
+        String json = "{\"foo\": \"bar\"}";
+        when(contentResponseMock.getAsString()).thenReturn(json);
+        when(httpClientMock.sendPost(Configuration.MAP_RENDERER.getPngPath(), null, json)).thenReturn(responseMock);
         when(responseMock.getEntity().getContent()).thenReturn(IOUtils.toInputStream(mapHtml));
         when(templateServiceMock.renderTemplate(template, singletonMap("foo", "bar"), singletonMap("mapHtml", mapHtml))).thenReturn(renderedTemplate);
 
