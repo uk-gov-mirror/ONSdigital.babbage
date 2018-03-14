@@ -67,7 +67,7 @@ public class TableTagV2ReplacerTest {
     public void replaceShouldGetContentAndinvokeTableRenderer() throws Exception {
         String json = "{\"foo\": \"bar\"}";
         when(contentResponseMock.getAsString()).thenReturn(json);
-        when(httpClientMock.sendPost(Configuration.TABLE_RENDERER.getHtmlPath(), null, json)).thenReturn(responseMock);
+        when(httpClientMock.sendPost(Configuration.TABLE_RENDERER.getHtmlPath(), singletonMap("Content-Type", "application/json;charset=utf-8"), json, "UTF-8")).thenReturn(responseMock);
         when(responseMock.getEntity().getContent()).thenReturn(IOUtils.toInputStream(tableHtml));
         when(templateServiceMock.renderTemplate(template, singletonMap("foo", "bar"), singletonMap("tableHtml", tableHtml))).thenReturn(renderedTemplate);
 
