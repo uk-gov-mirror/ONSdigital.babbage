@@ -15,6 +15,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.http.client.methods.CloseableHttpResponse;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.Map;
@@ -30,7 +31,9 @@ public class MapTagReplacer extends TagReplacementStrategy {
     private static final String RENDERER_HOST = Configuration.MAP_RENDERER.getHost();
     private static final String RENDERER_SVG_PATH = Configuration.MAP_RENDERER.getSvgPath();
     private static final String RENDERER_PNG_PATH = Configuration.MAP_RENDERER.getPngPath();
-    static final PooledHttpClient HTTP_CLIENT = new PooledHttpClient(RENDERER_HOST, createHttpConfiguration());
+    private static final PooledHttpClient HTTP_CLIENT = new PooledHttpClient(RENDERER_HOST, createHttpConfiguration());
+    private static final Map<String, String> HEADERS = Collections.singletonMap("Content-Type", "application/json;charset=utf-8");
+    private static final String CHARSET = StandardCharsets.UTF_8.name();
 
     /** the type of map to render - svg or png. */
     public enum MapType {
@@ -100,7 +103,7 @@ public class MapTagReplacer extends TagReplacementStrategy {
     }
 
     private String invokeMapRenderer(String postBody) throws MapRendererException {
-        try (CloseableHttpResponse response = httpClient.sendPost(rendererPath, null, postBody)){
+        try (CloseableHttpResponse response = httpClient.sendPost(rendererPath, HEADERS, postBody, CHARSET)){
             return IOUtils.toString(response.getEntity().getContent());
         } catch (IOException e) {
             throw new MapRendererException(e);
