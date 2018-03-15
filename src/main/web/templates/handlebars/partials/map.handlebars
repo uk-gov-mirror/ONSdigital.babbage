@@ -1,0 +1,12 @@
+{{!--Not having line breaks before and after the div markups breaks tables displaying on the page--}}
+<div class="markdown-table-container print--avoid-break">
+    <div class="markdown-table-wrap">
+        {{{mapHtml}}}
+    </div>
+
+    {{!-- 'View table' button for mobile --}}
+    <button class="btn btn--secondary btn--mobile-table-show nojs--hide" data-gtm-title="{{{sub (sup title)}}}" data-gtm-type="view-map">View map</button>
+
+    <h5 class="print--hide font-size--h6">Download the data</h5>
+    <a href="/file?uri={{uri}}.csv" title="csv" class="btn btn--primary print--hide" data-gtm-title="{{{sub (sup title)}}}" data-gtm-type="download-map-csv">.csv</a>
+</div>
