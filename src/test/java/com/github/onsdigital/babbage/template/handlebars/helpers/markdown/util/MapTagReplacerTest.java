@@ -23,6 +23,8 @@ import static java.util.Collections.singletonMap;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class MapTagReplacerTest {
@@ -63,7 +65,7 @@ public class MapTagReplacerTest {
     public void replaceShouldGetContentAndInvokeMapRendererForSvg() throws Exception {
         String json = "{\"foo\": \"bar\"}";
         when(contentResponseMock.getAsString()).thenReturn(json);
-        when(httpClientMock.sendPost(Configuration.MAP_RENDERER.getSvgPath(), null, json)).thenReturn(responseMock);
+        when(httpClientMock.sendPost(Configuration.MAP_RENDERER.getSvgPath(), singletonMap("Content-Type", "application/json;charset=utf-8"), json, "UTF-8")).thenReturn(responseMock);
         when(responseMock.getEntity().getContent()).thenReturn(IOUtils.toInputStream(mapHtml));
         when(templateServiceMock.renderTemplate(template, singletonMap("foo", "bar"), singletonMap("mapHtml", mapHtml))).thenReturn(renderedTemplate);
 
@@ -77,7 +79,7 @@ public class MapTagReplacerTest {
         testObj = new MapTagReplacer(path, template, contentClientMock, templateServiceMock, httpClientMock, PNG);
         String json = "{\"foo\": \"bar\"}";
         when(contentResponseMock.getAsString()).thenReturn(json);
-        when(httpClientMock.sendPost(Configuration.MAP_RENDERER.getPngPath(), null, json)).thenReturn(responseMock);
+        when(httpClientMock.sendPost(Configuration.MAP_RENDERER.getPngPath(), singletonMap("Content-Type", "application/json;charset=utf-8"), json, "UTF-8")).thenReturn(responseMock);
         when(responseMock.getEntity().getContent()).thenReturn(IOUtils.toInputStream(mapHtml));
         when(templateServiceMock.renderTemplate(template, singletonMap("foo", "bar"), singletonMap("mapHtml", mapHtml))).thenReturn(renderedTemplate);
 
