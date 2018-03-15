@@ -15,25 +15,30 @@ import org.mockito.Answers;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.Map;
 import java.util.regex.Matcher;
 
 import static com.github.onsdigital.babbage.template.handlebars.helpers.markdown.util.MapTagReplacer.MapType.PNG;
 import static com.github.onsdigital.babbage.template.handlebars.helpers.markdown.util.MapTagReplacer.MapType.SVG;
+import static com.github.onsdigital.babbage.template.handlebars.helpers.markdown.util.TagReplacementStrategy.figureNotFoundTemplate;
 import static java.util.Collections.singletonMap;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 public class MapTagReplacerTest {
 
+    private final Map<String, String> headers = singletonMap("Content-Type", "application/json;charset=utf-8");
     private final String mapHtml = "<map></map>";
     private final String path = "/myPath/";
     private final String template = "myTemplate";
     private final String markdownContent = "<ons-map path=\"mapid\" />";
     private final String renderedTemplate = "renderedTemplate";
+
     @Mock
     private ContentClient contentClientMock;
     @Mock
@@ -65,13 +70,15 @@ public class MapTagReplacerTest {
     public void replaceShouldGetContentAndInvokeMapRendererForSvg() throws Exception {
         String json = "{\"foo\": \"bar\"}";
         when(contentResponseMock.getAsString()).thenReturn(json);
-        when(httpClientMock.sendPost(Configuration.MAP_RENDERER.getSvgPath(), singletonMap("Content-Type", "application/json;charset=utf-8"), json, "UTF-8")).thenReturn(responseMock);
+        when(httpClientMock.sendPost(Configuration.MAP_RENDERER.getSvgPath(), headers, json, "UTF-8")).thenReturn(responseMock);
         when(responseMock.getEntity().getContent()).thenReturn(IOUtils.toInputStream(mapHtml));
         when(templateServiceMock.renderTemplate(template, singletonMap("foo", "bar"), singletonMap("mapHtml", mapHtml))).thenReturn(renderedTemplate);
 
         String result = testObj.replace(matcher);
 
         assertThat(result, equalTo(renderedTemplate));
+        verify(httpClientMock, times(1)).sendPost(Configuration.MAP_RENDERER.getSvgPath(), headers, json, "UTF-8");
+        verify(templateServiceMock, times(1)).renderTemplate(template, singletonMap("foo", "bar"), singletonMap("mapHtml", mapHtml));
     }
 
     @Test
@@ -79,23 +86,27 @@ public class MapTagReplacerTest {
         testObj = new MapTagReplacer(path, template, contentClientMock, templateServiceMock, httpClientMock, PNG);
         String json = "{\"foo\": \"bar\"}";
         when(contentResponseMock.getAsString()).thenReturn(json);
-        when(httpClientMock.sendPost(Configuration.MAP_RENDERER.getPngPath(), singletonMap("Content-Type", "application/json;charset=utf-8"), json, "UTF-8")).thenReturn(responseMock);
+        when(httpClientMock.sendPost(Configuration.MAP_RENDERER.getPngPath(), headers, json, "UTF-8")).thenReturn(responseMock);
         when(responseMock.getEntity().getContent()).thenReturn(IOUtils.toInputStream(mapHtml));
         when(templateServiceMock.renderTemplate(template, singletonMap("foo", "bar"), singletonMap("mapHtml", mapHtml))).thenReturn(renderedTemplate);
 
         String result = testObj.replace(matcher);
 
         assertThat(result, equalTo(renderedTemplate));
+        verify(httpClientMock, times(1)).sendPost(Configuration.MAP_RENDERER.getPngPath(), headers, json, "UTF-8");
+        verify(templateServiceMock, times(1)).renderTemplate(template, singletonMap("foo", "bar"), singletonMap("mapHtml", mapHtml));
     }
 
     @Test
     public void replaceShouldRenderFigureNotFoundTemplateIfResourceNotFound() throws Exception {
         when(contentClientMock.getResource(anyString())).thenThrow(new ResourceNotFoundException());
-        when(templateServiceMock.renderTemplate(TagReplacementStrategy.figureNotFoundTemplate)).thenReturn(TagReplacementStrategy.figureNotFoundTemplate);
+        when(templateServiceMock.renderTemplate(figureNotFoundTemplate)).thenReturn(figureNotFoundTemplate);
 
         String result = testObj.replace(matcher);
 
-        assertThat(result, equalTo(TagReplacementStrategy.figureNotFoundTemplate));
+        assertThat(result, equalTo(figureNotFoundTemplate));
+        verifyZeroInteractions(httpClientMock);
+        verify(templateServiceMock, times(1)).renderTemplate(figureNotFoundTemplate);
     }
 
     @Test
@@ -105,5 +116,6 @@ public class MapTagReplacerTest {
         String result = testObj.replace(matcher);
 
         assertThat(result, equalTo(markdownContent));
+        verifyZeroInteractions(httpClientMock, templateServiceMock);
     }
 }
