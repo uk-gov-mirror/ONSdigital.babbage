@@ -13,6 +13,8 @@ job "babbage" {
   }
 
   update {
+    min_healthy_time = "30s"
+    healthy_deadline = "2m"
     max_parallel     = 1
     stagger          = "150s"
   }
@@ -58,6 +60,13 @@ job "babbage" {
         name = "babbage"
         port = "http"
         tags = ["web"]
+
+        check {
+            type     = "http"
+            path     = "/healthcheck"
+            interval = "10s"
+            timeout  = "2s"
+        }
       }
 
       resources {
@@ -121,6 +130,13 @@ job "babbage" {
         name = "babbage"
         port = "http"
         tags = ["publishing"]
+
+        check {
+            type     = "http"
+            path     = "/healthcheck"
+            interval = "10s"
+            timeout  = "2s"
+        }
       }
 
       resources {
