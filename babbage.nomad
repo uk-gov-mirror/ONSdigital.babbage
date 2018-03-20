@@ -13,8 +13,8 @@ job "babbage" {
   }
 
   update {
-    stagger      = "90s"
-    max_parallel = 1
+    max_parallel     = 1
+    stagger          = "150s"
   }
 
   group "web" {
