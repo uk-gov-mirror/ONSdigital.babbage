@@ -13,8 +13,11 @@ job "babbage" {
   }
 
   update {
-    stagger      = "90s"
-    max_parallel = 1
+    min_healthy_time = "30s"
+    healthy_deadline = "2m"
+    max_parallel     = 1
+    auto_revert      = true
+    stagger          = "150s"
   }
 
   group "web" {
@@ -37,6 +40,8 @@ job "babbage" {
 
         args = [
           "java",
+          "-server",
+          "-Xms{{WEB_RESOURCE_HEAP_MEM}}m",
           "-Xmx{{WEB_RESOURCE_HEAP_MEM}}m",
           "-cp target/dependency/*:target/classes/",
           "-Drestolino.files=target/web",
@@ -56,6 +61,13 @@ job "babbage" {
         name = "babbage"
         port = "http"
         tags = ["web"]
+
+        check {
+            type     = "http"
+            path     = "/healthcheck"
+            interval = "10s"
+            timeout  = "2s"
+        }
       }
 
       resources {
@@ -78,7 +90,7 @@ job "babbage" {
     }
   }
 
-  group "publising" {
+  group "publishing" {
     count = "{{PUBLISHING_TASK_COUNT}}"
 
     constraint {
@@ -98,6 +110,8 @@ job "babbage" {
 
         args = [
           "java",
+          "-server",
+          "-Xms{{PUBLISHING_RESOURCE_HEAP_MEM}}m",
           "-Xmx{{PUBLISHING_RESOURCE_HEAP_MEM}}m",
           "-cp target/dependency/*:target/classes/",
           "-Drestolino.files=target/web",
@@ -117,6 +131,13 @@ job "babbage" {
         name = "babbage"
         port = "http"
         tags = ["publishing"]
+
+        check {
+            type     = "http"
+            path     = "/healthcheck"
+            interval = "10s"
+            timeout  = "2s"
+        }
       }
 
       resources {
