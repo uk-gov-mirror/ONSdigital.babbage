@@ -25,7 +25,8 @@ job "babbage" {
 
     constraint {
       attribute = "${node.class}"
-      value     = "web"
+      operator  = "regexp"
+      value     = "web.*"
     }
 
     task "babbage-web" {
@@ -95,7 +96,8 @@ job "babbage" {
 
     constraint {
       attribute = "${node.class}"
-      value     = "publishing"
+      operator  = "regexp"
+      value     = "publishing.*"
     }
 
     task "babbage-publishing" {
