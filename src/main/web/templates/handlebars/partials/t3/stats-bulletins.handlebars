@@ -11,7 +11,7 @@
 					</a>
 				</h4>
 				<p class="tiles__content">
-					{{description.summary}}
+                    {{#if description.summary}}{{description.summary}}{{else}}{{description.metaDescription}}{{/if}}
 				</p>
 			</li>
 			{{/resolve}}

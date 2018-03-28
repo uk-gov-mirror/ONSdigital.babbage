@@ -23,32 +23,44 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Defines the format of the custom markdown tags for charts and defines how to replace them.
+ * Defines the format of the custom markdown tags for maps and defines how to replace them.
  */
-public class TableTagV2Replacer extends TagReplacementStrategy {
+public class MapTagReplacer extends TagReplacementStrategy {
 
-    private static final Pattern pattern = Pattern.compile("<ons-table-v2\\spath=\"([-A-Za-z0-9+&@#/%?=~_|!:,.;()*$]+)\"?\\s?/>");
-    private static final String RENDERER_HOST = Configuration.TABLE_RENDERER.getHost();
-    private static final String RENDERER_PATH = Configuration.TABLE_RENDERER.getHtmlPath();
+    private static final Pattern pattern = Pattern.compile("<ons-map\\spath=\"([-A-Za-z0-9+&@#/%?=~_|!:,.;()*$]+)\"?\\s?/>");
+    private static final String RENDERER_HOST = Configuration.MAP_RENDERER.getHost();
+    private static final String RENDERER_SVG_PATH = Configuration.MAP_RENDERER.getSvgPath();
+    private static final String RENDERER_PNG_PATH = Configuration.MAP_RENDERER.getPngPath();
     private static final PooledHttpClient HTTP_CLIENT = new PooledHttpClient(RENDERER_HOST, createHttpConfiguration());
     private static final Map<String, String> HEADERS = Collections.singletonMap("Content-Type", "application/json;charset=utf-8");
     private static final String CHARSET = StandardCharsets.UTF_8.name();
+
+    /** the type of map to render - svg or png. */
+    public enum MapType {
+        PNG, SVG
+    }
 
     private final String template;
     private final ContentClient contentClient;
     private final TemplateService templateService;
     private final PooledHttpClient httpClient;
+    private final String rendererPath;
 
-    public TableTagV2Replacer(String path, String template) {
-        this(path, template, ContentClient.getInstance(), TemplateService.getInstance(), HTTP_CLIENT);
+    public MapTagReplacer(String path, String template, MapType mapType) {
+        this(path, template, ContentClient.getInstance(), TemplateService.getInstance(), HTTP_CLIENT, mapType);
     }
 
-    public TableTagV2Replacer(String path, String template, ContentClient contentClient, TemplateService templateService, PooledHttpClient httpClient) {
+    public MapTagReplacer(String path, String template, ContentClient contentClient, TemplateService templateService, PooledHttpClient httpClient, MapType mapType) {
         super(path);
         this.template = template;
         this.contentClient = contentClient;
         this.templateService = templateService;
         this.httpClient = httpClient;
+        if (mapType == MapType.PNG) {
+            this.rendererPath = RENDERER_PNG_PATH;
+        } else {
+            this.rendererPath = RENDERER_SVG_PATH;
+        }
     }
 
     /**
@@ -76,38 +88,38 @@ public class TableTagV2Replacer extends TagReplacementStrategy {
 
         try {
             ContentResponse contentResponse = contentClient.getResource(figureUri);
-            String tableJson = contentResponse.getAsString();
-            String html = invokeTableRenderer(tableJson);
-            Map<String, Object> context = JsonUtil.toMap(tableJson);
-            String result = templateService.renderTemplate(template, context, Collections.singletonMap("tableHtml", html));
+            String mapJson = contentResponse.getAsString();
+            String html = invokeMapRenderer(mapJson);
+            Map<String, Object> context = JsonUtil.toMap(mapJson);
+            String result = templateService.renderTemplate(template, context, Collections.singletonMap("mapHtml", html));
             return result;
         } catch (ResourceNotFoundException e) {
-            Log.buildDebug("Failed to find figure data for table.").addParameter("URL", figureUri).log();
+            Log.buildDebug("Failed to find figure data for map.").addParameter("URL", figureUri).log();
             return templateService.renderTemplate(figureNotFoundTemplate);
-        } catch (ContentReadException | TableRendererException e) {
-            Log.build("Failed rendering table-v2, uri: " + figureUri + ", error: " + e, Level.ERROR).log();
+        } catch (ContentReadException | MapRendererException e) {
+            Log.build("Failed rendering map, uri: " + figureUri + ", error: " + e, Level.ERROR).log();
             return matcher.group();
         }
     }
 
-    private String invokeTableRenderer(String postBody) throws TableRendererException {
-        try (CloseableHttpResponse response = httpClient.sendPost(RENDERER_PATH, HEADERS, postBody, CHARSET)){
+    private String invokeMapRenderer(String postBody) throws MapRendererException {
+        try (CloseableHttpResponse response = httpClient.sendPost(rendererPath, HEADERS, postBody, CHARSET)){
             return IOUtils.toString(response.getEntity().getContent());
         } catch (IOException e) {
-            throw new TableRendererException(e);
+            throw new MapRendererException(e);
         }
     }
 
     private static ClientConfiguration createHttpConfiguration() {
         ClientConfiguration configuration = new ClientConfiguration();
-        configuration.setMaxTotalConnection(Configuration.TABLE_RENDERER.getMaxServerConnection());
+        configuration.setMaxTotalConnection(Configuration.MAP_RENDERER.getMaxServerConnection());
         configuration.setDisableRedirectHandling(true);
         return configuration;
     }
 
-    /** TableRendererException is thrown and caught internally in this class only. */
-    private static class TableRendererException extends Exception {
-        public TableRendererException(Throwable cause) {
+    /** MapRendererException is thrown and caught internally in this class only. */
+    private static class MapRendererException extends Exception {
+        public MapRendererException(Throwable cause) {
             super(cause);
         }
     }
