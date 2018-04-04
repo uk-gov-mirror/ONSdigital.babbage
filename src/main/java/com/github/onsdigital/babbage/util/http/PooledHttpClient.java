@@ -129,12 +129,12 @@ public class PooledHttpClient {
         return validate(httpClient.execute(request));
     }
 
-    public CloseableHttpResponse sendPost(String path, Map<String, String> headers, String content) throws IOException {
+    public CloseableHttpResponse sendPost(String path, Map<String, String> headers, String content, String charset) throws IOException {
         URI uri = buildPath(path);
         HttpPost request = new HttpPost(uri);
         addHeaders(headers, request);
 
-        request.setEntity(new StringEntity(content));
+        request.setEntity(new StringEntity(content, charset));
         return validate(httpClient.execute(request));
     }
 

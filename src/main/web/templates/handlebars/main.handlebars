@@ -14,6 +14,8 @@
         <meta name="theme-color" content="#58595B">
         <meta name="apple-mobile-web-app-status-bar-style" content="#58595B">
 
+        {{#if_any description.metaDescription description.summary description._abstract}}<meta name="description" content="{{#if description.metaDescription}}{{description.metaDescription}}{{else}}{{#if description.summary}}{{description.summary}}{{else}}{{description._abstract}}{{/if}}{{/if}}">{{/if_any}}
+
 		<!--[if IE]><![endif]-->
 		<!--[if lte IE 8]>
 		<link rel="stylesheet" href="{{#if is_dev}}http://{{location.hostname}}:9000/dist{{else}}//cdn.ons.gov.uk/sixteens/655b62a{{/if}}/css/old-ie.css"/>
@@ -25,7 +27,7 @@
         <link rel="stylesheet" type="text/css" href="{{#if is_dev}}http://{{location.hostname}}:9000/dist{{else}}//cdn.ons.gov.uk/sixteens/655b62a{{/if}}/css/main.css">
 		{{#if pdf_style}}<link rel="stylesheet" type="text/css" href="{{#if is_dev}}http://localhost:9000/dist{{else}}//cdn.ons.gov.uk/sixteens/655b62a{{/if}}/css/pdf.css">{{/if}}
         <![endif]-->
-        
+
         {{> partials/gtm-data-layer }}
 
         <!-- Google Tag Manager -->
@@ -70,7 +72,10 @@
 			{{else}} 						 				{{> content/t3}}
 			{{/if_eq}}
 		{{else if_eq type "bulletin"}} 						{{> content/t4-1}}
-		{{else if_eq type "article"}} 						{{> content/t4-2}}
+		{{else if_eq type "article"}}
+            {{#if isPrototypeArticle}}                      {{> content/t4-3}}
+            {{else}}                                        {{> content/t4-2}}
+            {{/if}}
         {{else if_eq type "article_download"}} 				{{> content/t4-2}}
 		{{else if_eq type "timeseries"}}
 			{{#if previous}} 								{{> content/t12-2}}
@@ -140,7 +145,6 @@
         {{/if}}
 
         <![endif]-->
-
 
 	</body>
 </html>

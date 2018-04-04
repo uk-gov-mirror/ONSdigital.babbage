@@ -51,8 +51,9 @@ public enum TypeFilter {
     }
 
     public static Set<TypeFilter> getMethodologyFilters() {
+        // QMI is no longer used (filters have been removed from allmethodologies list page)
+        // It's left here so any old pages are still returned
         return initialize(methodologyFilters, QMI, METHODOLOGY_ARTICLE);
-
     }
 
     public ContentType[] getTypes() {

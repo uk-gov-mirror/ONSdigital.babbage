@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 
 public class InteractiveTagReplacer extends TagReplacementStrategy {
 
-    private static final Pattern pattern = Pattern.compile("<ons-interactive\\surl=\"([-A-Za-z0-9+&@#/%?=~_|!:,.;()*$]+)\"\\s?(?:\\s?full-width=\"(.*[^\"])\")?/>");
+    private static final Pattern pattern = Pattern.compile("<ons-interactive\\surl=\"([-A-Za-z0-9+&@#/%?=~_|!:,.;()*$]+)\"\\s?(?:\\s?full-width=\"([a-zA-Z]*)\")?/>");
     private final String template;
 
     /**
