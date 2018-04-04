@@ -42,6 +42,8 @@ public class Configuration {
             return MAX_RESULTS_PER_PAGE;
         }
 
+        public static String getRedirectSecret() { return StringUtils.defaultIfBlank(getValue("REDIRECT_SECRET"), "secret"); }
+
         public static boolean isDevEnvironment() {
             String devEnvironment = StringUtils.defaultIfBlank(getValue("DEV_ENVIRONMENT"), "N");
             return "Y".equals(devEnvironment);
@@ -214,6 +216,64 @@ public class Configuration {
 
         public static String getExportSeverUrl() {
             return MATHJAX_SERVER_URL;
+        }
+    }
+
+    /** Server side table rendering configuration. */
+    public static class TABLE_RENDERER {
+        private static final String HOST = defaultIfBlank(getValue("TABLE_RENDERER_HOST"), "http://localhost:23300");
+        private static final String HTML_PATH = defaultIfBlank(getValue("TABLE_RENDERER_HTML_PATH"), "/render/html");
+        private static final int MAX_RENDERER_CONNECTIONS = defaultNumberIfBlank(getNumberValue("TABLE_RENDERER_MAX_CONNECTIONS"), 10);
+
+         /**
+         * @return the hostname of the table renderer).
+         */
+        public static String getHost() {
+            return HOST;
+        }
+
+         /**
+         * @return the path to invoke when rendering an html table).
+         */
+        public static String getHtmlPath() {
+            return HTML_PATH;
+        }
+
+        public static int getMaxServerConnection() {
+            return MAX_RENDERER_CONNECTIONS;
+        }
+    }
+
+    /** Server side map rendering configuration. */
+    public static class MAP_RENDERER {
+        private static final String HOST = defaultIfBlank(getValue("MAP_RENDERER_HOST"), "http://localhost:23500");
+        private static final String SVG_PATH = defaultIfBlank(getValue("MAP_RENDERER_SVG_PATH"), "/render/svg");
+        private static final String PNG_PATH = defaultIfBlank(getValue("MAP_RENDERER_PNG_PATH"), "/render/png");
+        private static final int MAX_RENDERER_CONNECTIONS = defaultNumberIfBlank(getNumberValue("MAP_RENDERER_MAX_CONNECTIONS"), 10);
+
+         /**
+         * @return the hostname of the table renderer.
+         */
+        public static String getHost() {
+            return HOST;
+        }
+
+         /**
+         * @return the path to invoke when rendering an svg map.
+         */
+        public static String getSvgPath() {
+            return SVG_PATH;
+        }
+
+         /**
+         * @return the path to invoke when rendering a png map.
+         */
+        public static String getPngPath() {
+            return PNG_PATH;
+        }
+
+        public static int getMaxServerConnection() {
+            return MAX_RENDERER_CONNECTIONS;
         }
     }
 

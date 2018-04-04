@@ -23,11 +23,7 @@ import java.util.UUID;
 import static com.github.onsdigital.babbage.highcharts.ChartConfigBuilder.TITLE_PARAM;
 import static com.github.onsdigital.babbage.highcharts.ChartConfigBuilder.URI_PARAM;
 import static com.github.onsdigital.babbage.highcharts.ChartConfigBuilder.WIDTH_PARAM;
-import static com.github.onsdigital.babbage.highcharts.ChartRenderer.CONTENT_DISPOSITION_HEADER;
-import static com.github.onsdigital.babbage.highcharts.ChartRenderer.CONTENT_DISPOSITION_HEADER_FMT;
-import static com.github.onsdigital.babbage.highcharts.ChartRenderer.DEFAULT_CONTENT_DISPOSITION_HEADER_FMT;
-import static com.github.onsdigital.babbage.highcharts.ChartRenderer.DEFAULT_TITLE_VALUE;
-import static com.github.onsdigital.babbage.highcharts.ChartRenderer.PNG_MIME_TYPE;
+import static com.github.onsdigital.babbage.highcharts.ChartRenderer.*;
 import static java.text.MessageFormat.format;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.eq;
@@ -141,6 +137,8 @@ public class ChartRendererTest {
 
         when(requestMock.getParameter(URI_PARAM))
                 .thenReturn(URI);
+        when(requestMock.getParameter(HIDE_SOURCE_PARAM))
+                .thenReturn("true");
         when(contentClientMock.getContent(URI))
                 .thenReturn(contentResponseMock);
         when(requestMock.getParameter(WIDTH_PARAM))

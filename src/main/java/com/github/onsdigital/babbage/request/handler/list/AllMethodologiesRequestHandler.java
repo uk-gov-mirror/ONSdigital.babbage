@@ -36,7 +36,7 @@ public class AllMethodologiesRequestHandler extends BaseRequestHandler implement
 
     private SearchQueries queries(HttpServletRequest request) {
         return () -> toList(
-                buildListQuery(request, methodologyFilters, filters(request)).aggregate(typeCountsAggregate()),
+                buildListQuery(request, methodologyFilters, filters(request), true).aggregate(typeCountsAggregate()),
                 topicListQuery()
         );
     }

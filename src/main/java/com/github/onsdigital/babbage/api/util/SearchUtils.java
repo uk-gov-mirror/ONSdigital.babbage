@@ -23,6 +23,7 @@ import com.github.onsdigital.babbage.util.RequestUtil;
 import com.github.onsdigital.babbage.util.ThreadContext;
 import com.github.onsdigital.babbage.util.json.JsonUtil;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.client.utils.URIBuilder;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.common.text.Text;
@@ -32,6 +33,7 @@ import org.elasticsearch.index.query.QueryBuilders;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.MediaType;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.text.MessageFormat;
 import java.util.*;
 
@@ -72,6 +74,19 @@ public class SearchUtils {
             //search time series by cdid, redirect to time series page if found
             String timeSeriesUri = searchTimeSeriesUri(searchTerm);
             if (timeSeriesUri != null) {
+                if (searchTerm != null) {
+                    String redirectUri;
+                    try {
+                        redirectUri = new URIBuilder(timeSeriesUri)
+                                .addParameter("referrer", "search")
+                                .addParameter("searchTerm", searchTerm.toLowerCase())
+                                .build().toString();
+                        return new BabbageRedirectResponse(redirectUri, Configuration.GENERAL.getSearchResponseCacheTime());
+                    } catch (URISyntaxException e) {
+                        System.out.println("Unable to encode referrer in timeSeriesUri");
+                        e.printStackTrace();
+                    }
+                }
                 return new BabbageRedirectResponse(timeSeriesUri, Configuration.GENERAL.getSearchResponseCacheTime());
             }
         }
@@ -118,7 +133,7 @@ public class SearchUtils {
         SortBy sortBy = extractSortBy(request, SortBy.relevance);
         QueryBuilder contentQuery;
         contentQuery = advanced ? advancedSearchQuery(searchTerm) : contentQuery(searchTerm);
-        ONSQuery query = buildONSQuery(request, contentQuery, sortBy, null, contentTypes(extractSelectedFilters(request, defaultFilters)));
+        ONSQuery query = buildONSQuery(request, contentQuery, sortBy, null, contentTypes(extractSelectedFilters(request, defaultFilters, false)));
         if (!advanced) {
             query.suggest(phraseSuggestion("search_suggest").field(Field.title_no_synonym_no_stem.fieldName()).text(searchTerm));
         }
@@ -136,32 +151,32 @@ public class SearchUtils {
      */
     public static ONSQuery buildAdvancedSearchQuery(HttpServletRequest request, String searchTerm, Set<TypeFilter> defaultFilters) {
         SortBy sortBy = extractSortBy(request, SortBy.relevance);
-        ONSQuery query = buildONSQuery(request, advancedSearchQuery(searchTerm), sortBy, null, contentTypes(extractSelectedFilters(request, defaultFilters)));
+        ONSQuery query = buildONSQuery(request, advancedSearchQuery(searchTerm), sortBy, null, contentTypes(extractSelectedFilters(request, defaultFilters, false)));
         return query;
     }
 
-    public static ONSQuery buildListQuery(HttpServletRequest request, Set<TypeFilter> defaultFilters, SearchFilter filter) {
-        return buildListQuery(request, defaultFilters, filter, null);
+    public static ONSQuery buildListQuery(HttpServletRequest request, Set<TypeFilter> defaultFilters, SearchFilter filter, Boolean ignoreFilters) {
+        return buildListQuery(request, defaultFilters, filter, null, ignoreFilters);
     }
 
     public static ONSQuery buildListQuery(HttpServletRequest request, SearchFilter filter) {
-        return buildListQuery(request, null, filter, null);
+        return buildListQuery(request, null, filter, null, false);
     }
 
     public static ONSQuery buildListQuery(HttpServletRequest request, SearchFilter filter, SortBy defaultSort) {
-        return buildListQuery(request, null, filter, defaultSort);
+        return buildListQuery(request, null, filter, defaultSort, false);
     }
 
     public static ONSQuery buildListQuery(HttpServletRequest request) {
-        return buildListQuery(request, null, null, null);
+        return buildListQuery(request, null, null, null, false);
     }
 
     public static ONSQuery buildListQuery(HttpServletRequest request, Set<TypeFilter> defaultFilters) {
-        return buildListQuery(request, defaultFilters, null, null);
+        return buildListQuery(request, defaultFilters, null, null, false);
     }
 
 
-    private static ONSQuery buildListQuery(HttpServletRequest request, Set<TypeFilter> defaultFilters, SearchFilter filter, SortBy defaultSort) {
+    private static ONSQuery buildListQuery(HttpServletRequest request, Set<TypeFilter> defaultFilters, SearchFilter filter, SortBy defaultSort, Boolean ignoreFilters) {
         String searchTerm = extractSearchTerm(request);
         boolean hasSearchTerm = isNotEmpty(searchTerm);
         SortBy sortBy;
@@ -172,7 +187,7 @@ public class SearchUtils {
         }
 
         QueryBuilder query = buildBaseListQuery(searchTerm);
-        ContentType[] contentTypes = defaultFilters == null ? null : contentTypes(extractSelectedFilters(request, defaultFilters));
+        ContentType[] contentTypes = defaultFilters == null ? null : contentTypes(extractSelectedFilters(request, defaultFilters, ignoreFilters));
         return buildONSQuery(request, query, sortBy, filter, contentTypes);
     }
 

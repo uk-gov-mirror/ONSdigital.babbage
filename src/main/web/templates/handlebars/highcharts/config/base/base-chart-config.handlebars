@@ -64,20 +64,20 @@ TODO: split out colours palette selection, axis alignment and positioning
 		$('#note-y-'+id).val(y).change();
 	}{{/if}}
 
-	var ht = ({{width}} * {{aspectRatio}});
+	var legendOffset = 40;
+    var ht = ({{width}} * {{aspectRatio}} - legendOffset);
 	var top = 150;
 	var bottom = 150;
 	{{!-- chart-config block is to be overriden by chart types inheriting this template --}}
 	var options = {
 		viewport:'lg',
 		chart: {
-			height: ht + top + bottom,
+			height: ht + bottom,
 			width: {{width}},
 			marginRight: 35,
-			marginTop: top,
+			{{!-- marginTop: 16, --}}
+            marginTop: top,
 			marginBottom: bottom,
-			spacingTop: 16,
-			offset: top,
 			style: {
 				fontFamily: '"Open Sans", Tahoma, Verdana, Arial'
 			},
@@ -116,26 +116,16 @@ TODO: split out colours palette selection, axis alignment and positioning
 
 					}{{/if}}
 				{{/each}}
-
-                    //source
-                    var source = this.renderer.text('Source: {{source}}', 50 , {{y}}+ht+top+110)
-                        	.attr({
-		                    	zIndex: 10
-		                    })
-                            .add();
-
                 }
             } 
 		},
 		colors: palette,
 		series: [],
 		title: {
-			text: "{{title}}",
-			y:30
+			text: "{{title}}"
 		},
 		subtitle: {
-			text: "{{subtitle}}",
-			y:80
+			text: "{{subtitle}}"
 		},
 		yAxis: {
             {{#if yAxisInterval}}tickInterval: {{yAxisInterval}},{{/if}}
@@ -182,7 +172,7 @@ TODO: split out colours palette selection, axis alignment and positioning
 		},
 		legend: {
 			verticalAlign: {{#if_eq xAxisPos "top"}}"bottom"{{else}}"top"{{/if_eq}},
-			y:(ht+top+40),
+			y:(ht + legendOffset),
 			x:30,
 			useHTML:true,
 			enabled:{{#if_eq series.size 1}}false{{else}}true{{/if_eq}},
@@ -192,7 +182,10 @@ TODO: split out colours palette selection, axis alignment and positioning
 				fontWeight: 'normal',
 				color:'rgb(112, 112,112)'{{#if_eq chartType 'small-multiples'}},
 				width: 110{{/if_eq}}
-	        }
+	        },
+            navigation: {
+                enabled: false
+            }
 		},
 		plotOptions: {
 			series: { {{#if isStacked }}
