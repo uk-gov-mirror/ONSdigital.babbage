@@ -95,7 +95,7 @@ public class URIUtil {
             return uriString;
         }
         // Remove multiple trailing slashes
-        while (uriString.endsWith("/")) {
+        while(StringUtils.isNotEmpty(uriString) && !uriString.equals("/") && uriString.endsWith("/")) {
             uriString = StringUtils.removeEnd(uriString, "/");
         }
         return StringUtils.lowerCase(uriString);
