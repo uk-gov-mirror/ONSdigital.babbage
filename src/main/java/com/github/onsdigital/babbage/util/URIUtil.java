@@ -94,7 +94,10 @@ public class URIUtil {
         if ("/".equals(uriString)) {
             return uriString;
         }
-        uriString = StringUtils.removeEnd(uriString, "/");
+        // Remove multiple trailing slashes
+        while (uriString.endsWith("/")) {
+            uriString = StringUtils.removeEnd(uriString, "/");
+        }
         return StringUtils.lowerCase(uriString);
     }
 

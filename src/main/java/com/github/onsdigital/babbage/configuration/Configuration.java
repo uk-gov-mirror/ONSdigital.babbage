@@ -1,5 +1,6 @@
 package com.github.onsdigital.babbage.configuration;
 
+import com.github.onsdigital.babbage.util.URIUtil;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.BufferedReader;
@@ -166,10 +167,10 @@ public class Configuration {
             if (null != fileUrl) {
                 File file = new File(fileUrl.getFile());
                 try (BufferedReader bw = new BufferedReader(new FileReader(file))) {
-                    String url;
+                    String blacklistedUrl;
 
-                    while ((url = bw.readLine()) != null) {
-                        urls.add(url);
+                    while ((blacklistedUrl = bw.readLine()) != null) {
+                        urls.add(URIUtil.cleanUri(blacklistedUrl));
                     }
                 } catch (IOException e) {
                     // Print additional info out to stderr

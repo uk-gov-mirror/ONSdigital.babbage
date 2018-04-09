@@ -5,6 +5,7 @@ import com.github.onsdigital.babbage.paginator.Paginator;
 import com.github.onsdigital.babbage.search.model.ContentType;
 import com.github.onsdigital.babbage.search.model.field.Field;
 import com.github.onsdigital.babbage.search.model.sort.SortField;
+import com.github.onsdigital.babbage.util.URIUtil;
 import org.elasticsearch.ElasticsearchException;
 import org.elasticsearch.action.search.*;
 import org.elasticsearch.search.SearchHit;
@@ -88,8 +89,7 @@ public class SearchHelper {
                         SearchHit searchHit = searchHits.getAt(0);
                         // ID is the url
                         String url = searchHit.getId();
-
-                        if (!Configuration.ELASTIC_SEARCH.getHighlightBlacklist().contains(url)) {
+                        if (url != null && !Configuration.ELASTIC_SEARCH.getHighlightBlacklist().contains(URIUtil.cleanUri(url))) {
                             // OK to add response
                             helpers.add(searchResponse);
                         }
