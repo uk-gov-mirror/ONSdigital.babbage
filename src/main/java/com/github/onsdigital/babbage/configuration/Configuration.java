@@ -1,6 +1,15 @@
 package com.github.onsdigital.babbage.configuration;
 
+import com.github.onsdigital.babbage.util.URIUtil;
 import org.apache.commons.lang3.StringUtils;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.apache.commons.lang3.StringUtils.defaultIfBlank;
 
@@ -125,6 +134,13 @@ public class Configuration {
         private static Integer elasticSearchPort = Integer.parseInt(defaultIfBlank(getValue("ELASTIC_SEARCH_PORT"), "9300"));
         private static String elasticSearchCluster = defaultIfBlank(getValue("ELASTIC_SEARCH_CLUSTER"), "");
 
+        private static String HIGHLIGHT_URL_BLACKLIST_FILE = defaultIfBlank(getValue("HIGHLIGHT_URL_BLACKLIST_FILE"),
+                "highlight-url-blacklist");
+        
+        private static final List<String> highlightBlacklist = loadHighlightBlacklist();
+
+        public static List<String> getHighlightBlacklist() { return highlightBlacklist; }
+
         public static String getElasticSearchServer() {
             return elasticSearchServer;
         }
@@ -139,6 +155,35 @@ public class Configuration {
 
         public static String getElasticSearchCluster() {
             return elasticSearchCluster;
+        }
+
+        /**
+         * Method to load the list of retired product pages to be hidden
+         * @return List of url strings containing the black listed urls
+         */
+        private static List<String> loadHighlightBlacklist() {
+            ClassLoader classLoader = Configuration.class.getClassLoader();
+            URL fileUrl = classLoader.getResource(HIGHLIGHT_URL_BLACKLIST_FILE);
+
+            List<String> urls = new ArrayList<>();
+            if (null != fileUrl) {
+                File file = new File(fileUrl.getFile());
+                try (BufferedReader bw = new BufferedReader(new FileReader(file))) {
+                    String blacklistedUrl;
+
+                    while ((blacklistedUrl = bw.readLine()) != null) {
+                        urls.add(URIUtil.cleanUri(blacklistedUrl));
+                    }
+                } catch (IOException e) {
+                    // Print additional info out to stderr
+                    String message = "Error while attempting to load highlight blacklist file.";
+                    System.out.println(message);
+                    e.printStackTrace();
+                    // Unable to load the file, so return an empty ArrayList (won't black list any urls)
+                    return new ArrayList<>();
+                }
+            }
+            return urls;
         }
     }
 
@@ -237,6 +282,39 @@ public class Configuration {
          */
         public static String getHtmlPath() {
             return HTML_PATH;
+        }
+
+        public static int getMaxServerConnection() {
+            return MAX_RENDERER_CONNECTIONS;
+        }
+    }
+
+    /** Server side map rendering configuration. */
+    public static class MAP_RENDERER {
+        private static final String HOST = defaultIfBlank(getValue("MAP_RENDERER_HOST"), "http://localhost:23500");
+        private static final String SVG_PATH = defaultIfBlank(getValue("MAP_RENDERER_SVG_PATH"), "/render/svg");
+        private static final String PNG_PATH = defaultIfBlank(getValue("MAP_RENDERER_PNG_PATH"), "/render/png");
+        private static final int MAX_RENDERER_CONNECTIONS = defaultNumberIfBlank(getNumberValue("MAP_RENDERER_MAX_CONNECTIONS"), 10);
+
+         /**
+         * @return the hostname of the table renderer.
+         */
+        public static String getHost() {
+            return HOST;
+        }
+
+         /**
+         * @return the path to invoke when rendering an svg map.
+         */
+        public static String getSvgPath() {
+            return SVG_PATH;
+        }
+
+         /**
+         * @return the path to invoke when rendering a png map.
+         */
+        public static String getPngPath() {
+            return PNG_PATH;
         }
 
         public static int getMaxServerConnection() {
