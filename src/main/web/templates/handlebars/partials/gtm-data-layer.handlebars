@@ -40,6 +40,7 @@
         {{#unless (endsWith (parentPath uri) "previous")}}
             {{#if description.latestRelease}}
                 dataLayer[0]["latestRelease"] = "yes";
+                dataLayer[0]["url"] = "{{uri}}";
             {{else}}
                 dataLayer[0]["latestRelease"] = "no";
             {{/if}}
