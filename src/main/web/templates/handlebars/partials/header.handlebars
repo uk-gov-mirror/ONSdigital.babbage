@@ -102,16 +102,16 @@
 							{{labels.taking-part-in-a-survey}}
 						</a>
 					</li>
+                    <li class="language hide--md primary-nav__link">
+                        {{#if_eq location.hostname (concat "cy." (replace location.hostname "cy." ""))}}
+                            <a href="{{> partials/language-toggle language="en"}}" class="language__link">English (EN)</a>
+                            <span> | Cymraeg (CY)</span>
+                        {{else}}
+                            <span>English (EN) | </span>
+                            <a href="{{> partials/language-toggle language="cym"}}" class="language__link">Cymraeg (CY)</a>
+                        {{/if_eq}}
+                    </li>
 				</ul>
-                <div class="language hide--md primary-nav__link">
-                    {{#if_eq location.hostname (concat "cy." (replace location.hostname "cy." ""))}}
-                        <a href="{{> partials/language-toggle language="en"}}" class="language__link__mb">English (EN)</a>
-                        <span> | Cymraeg (CY)</span>
-                    {{else}}
-                        <span>English (EN) | </span>
-                        <a href="{{> partials/language-toggle language="cym"}}" class="language__link__mb">Cymraeg (CY)</a>
-                    {{/if_eq}}
-                </div>
 			</div>
 		</nav>
 	</div>
