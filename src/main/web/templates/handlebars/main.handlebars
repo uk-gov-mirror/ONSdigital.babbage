@@ -16,6 +16,10 @@
 
         {{#if_any description.metaDescription description.summary description._abstract}}<meta name="description" content="{{#if description.metaDescription}}{{description.metaDescription}}{{else}}{{#if description.summary}}{{description.summary}}{{else}}{{description._abstract}}{{/if}}{{/if}}">{{/if_any}}
 
+        {{#if_any (eq type "bulletin") (eq type "article") (eq type "compendium_landing_page") (eq type "compendium_chapter")}}
+            <link rel="canonical" href="{{uri}}" />
+        {{/if_any}}
+
 		<!--[if IE]><![endif]-->
 		<!--[if lte IE 8]>
 		<link rel="stylesheet" href="{{#if is_dev}}http://{{location.hostname}}:9000/dist{{else}}//cdn.ons.gov.uk/sixteens/7b354cb{{/if}}/css/old-ie.css"/>
