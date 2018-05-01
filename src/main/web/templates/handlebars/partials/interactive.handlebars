@@ -7,7 +7,7 @@
         <div class="details__body">
             <label class="embed-code__label" for="embed-{{id}}">Embed this interactive</label>
             <input class="embed-code__code width-md--32"
-        value='<iframe width="100%" src="{{#if (containsAny url "http" "https")}}{{url}}{{else}}https://{{location.host}}{{url}}{{/if}}"></iframe>'
+        value='<iframe width="100%" src="{{#if (containsAny url "http" "https")}}{{url}}{{else}}{{#if is_dev}}http://{{location.host}}{{else}}https://{{location.hostname}}{{/if}}{{url}}{{/if}}"></iframe>'
                    id="embed-{{id}}"
                    name="embed-{{id}}"
                    readonly
