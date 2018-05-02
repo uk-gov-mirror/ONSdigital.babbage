@@ -1,15 +1,20 @@
 package com.github.onsdigital.babbage.search.helpers;
 
+import com.github.onsdigital.babbage.configuration.Configuration;
 import com.github.onsdigital.babbage.paginator.Paginator;
 import com.github.onsdigital.babbage.search.model.ContentType;
 import com.github.onsdigital.babbage.search.model.field.Field;
 import com.github.onsdigital.babbage.search.model.sort.SortField;
+import com.github.onsdigital.babbage.util.URIUtil;
 import org.elasticsearch.ElasticsearchException;
 import org.elasticsearch.action.search.*;
+import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.AbstractAggregationBuilder;
 import org.elasticsearch.search.suggest.SuggestBuilder;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static com.github.onsdigital.babbage.configuration.Configuration.ELASTIC_SEARCH.getElasticSearchIndexAlias;
@@ -61,14 +66,43 @@ public class SearchHelper {
 
         List<ONSSearchResponse> helpers = new ArrayList<>();
         MultiSearchResponse response = multiSearchRequestBuilder.get();
-        {
-            int i = 0;
-            for (MultiSearchResponse.Item item : response.getResponses()) {
-                if (item.isFailure()) {
-                    throw new ElasticsearchException(item.getFailureMessage());
+        MultiSearchResponse.Item[] items = response.getResponses();
+
+        for (int i = 0; i < items.length; i++) {
+            MultiSearchResponse.Item item = items[i];
+
+            if (item.isFailure()) {
+                throw new ElasticsearchException(item.getFailureMessage());
+            }
+
+            ONSQuery query = queries.get(i);
+            ONSSearchResponse searchResponse = resolveDetails(query, new ONSSearchResponse(item.getResponse()));
+
+            if (null != query.types()) {
+                List<ContentType> types = Arrays.asList(query.types());
+                // Check for retired product pages
+                if (query.size() == 1 &&
+                        types.contains(ContentType.product_page)) {
+                    // Get the hit - we only queried for 1 document so we should only get 1 back
+                    SearchHits searchHits = searchResponse.response.getHits();
+                    if (searchHits.getHits().length == 1) {
+                        SearchHit searchHit = searchHits.getAt(0);
+                        // ID is the url
+                        String url = searchHit.getId();
+                        if (url != null && !Configuration.ELASTIC_SEARCH.getHighlightBlacklist().contains(URIUtil.cleanUri(url))) {
+                            // OK to add response
+                            helpers.add(searchResponse);
+                        }
+                    }
+                } else {
+                    // Not a topic match query, so go ahead and add the response as usual
+                    helpers.add(searchResponse);
                 }
-                helpers.add(resolveDetails(queries.get(i), new ONSSearchResponse(item.getResponse())));
-                i++;
+            } else {
+                // This should never happen, but 'log' if it does
+                System.out.println("Got null query/types while checking for retired product pages in SearchHelper");
+                // Add the response so something is displayed on the site
+                helpers.add(searchResponse);
             }
         }
         return helpers;
