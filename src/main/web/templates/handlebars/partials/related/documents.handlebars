@@ -1,45 +1,30 @@
 {{#if relatedDocuments}}
-	<div class="tiles__item tiles__item--nav-type flush-col print--hide">
-		<h3 class="tiles__title-h3 tiles__title-h3--nav">{{labels.related-publications}}</h3>
-		<div class="tiles__content tiles__content--nav">
-			<ul class="list--neutral">
-				{{#each relatedDocuments}}
+    <div class="tiles__item tiles__item--nav-type flush-col print--hide">
+        <h3 class="tiles__title-h3 tiles__title-h3--nav">{{labels.related-publications}}</h3>
+        <div class="tiles__content tiles__content--nav">
+            <ul class="list--neutral">
+                {{#each relatedDocuments}}
+                    {{#resolve this.uri}}
+                        <li>
+                            <a href="{{uri}}"
+                               data-gtm-title="{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}"
+                               data-gtm-type="related-publication">
+                                {{description.title}}
+                                {{#if description.edition}}
+                                    {{#if_ne description.edition 'yes'}}
+                                        : {{description.edition}}
+                                    {{/if_ne}}
+                                {{/if}}
+                            </a>
+                        </li>
 
-						{{!-- If a compendium chapter display heading and description, not just link --}}
-						{{#if_eq type "compendium_chapter"}}
-							{{#resolve this.uri filter="description"}}
-								<li>
-									<h4>
-										<a href="{{uri}}"
-                                           data-gtm-title="{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}"
-                                           data-gtm-type="related-publication">{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}</a>
-									</h4>
-								</li>
-							{{/resolve}}
-
-						{{else}}
-
-							{{#resolve this.uri filter="title"}}
-								<li>
-									<a href="{{uri}}" data-gtm-title="{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}" data-gtm-type="related-publication">
-										{{title}}
-										{{#if edition}}
-											{{#if_ne edition 'yes'}}
-												: {{edition}}
-											{{/if_ne}}
-										{{/if}}
-									</a>
-								</li>
-
-							{{else}}
-								<li>
-									[Unpublished] <span class="break-word">{{uri}}</span>
-								</li>
-							{{/resolve}}
-						{{/if_eq}}
-
-				{{/each}}
-			</ul>
-		</div>
-	</div>
+                    {{else}}
+                        <li>
+                            [Unpublished] <span class="break-word">{{uri}}</span>
+                        </li>
+                    {{/resolve}}
+                {{/each}}
+            </ul>
+        </div>
+    </div>
 {{/if}}
