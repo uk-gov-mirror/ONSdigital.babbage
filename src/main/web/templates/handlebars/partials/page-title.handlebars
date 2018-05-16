@@ -17,6 +17,10 @@
         {{#if_eq listType "releasecalendar"}}Release calendar{{/if_eq}}
         {{#if_eq listType "timeseriestool"}}Time series explorer{{/if_eq}}
     {{else}}
+        {{#if_eq type "timeseries_dataset"}}
+            {{#resolve (parentPath uri)}}{{description.title}}{{/resolve}}
+            {{else}}
         {{#if description.title}}{{description.title}}{{else}}{{#if title}}{{{sub (sup title clear=true) clear=true}}}{{else}}Page not found{{/if}}{{/if}}
+        {{/if_eq}}
     {{/if_eq}}
 {{/minify}}
