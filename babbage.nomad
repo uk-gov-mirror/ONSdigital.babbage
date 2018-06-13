@@ -29,6 +29,13 @@ job "babbage" {
       value     = "web.*"
     }
 
+    restart {
+      attempts = 3
+      delay    = "15s"
+      interval = "1m"
+      mode     = "delay"
+    }
+
     task "babbage-web" {
       driver = "docker"
 
@@ -64,10 +71,10 @@ job "babbage" {
         tags = ["web"]
 
         check {
-            type     = "http"
-            path     = "/healthcheck"
-            interval = "10s"
-            timeout  = "2s"
+          type     = "http"
+          path     = "/healthcheck"
+          interval = "10s"
+          timeout  = "2s"
         }
       }
 
@@ -98,6 +105,13 @@ job "babbage" {
       attribute = "${node.class}"
       operator  = "regexp"
       value     = "publishing.*"
+    }
+
+    restart {
+      attempts = 3
+      delay    = "15s"
+      interval = "1m"
+      mode     = "delay"
     }
 
     task "babbage-publishing" {
@@ -135,10 +149,10 @@ job "babbage" {
         tags = ["publishing"]
 
         check {
-            type     = "http"
-            path     = "/healthcheck"
-            interval = "10s"
-            timeout  = "2s"
+          type     = "http"
+          path     = "/healthcheck"
+          interval = "10s"
+          timeout  = "2s"
         }
       }
 
