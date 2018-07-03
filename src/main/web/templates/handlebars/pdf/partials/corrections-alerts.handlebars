@@ -4,7 +4,7 @@
     <div class="correction">
         <h2>Correction</h2>
         {{#each versions}}
-            <h3>{{df updateDate}}</h3>
+            <h3>{{df updateDate outputFormat="d MMMM yyyy HH:mm"}}</h3>
             {{md correctionNotice}}
         {{/each}}
     </div>
