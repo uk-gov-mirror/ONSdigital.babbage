@@ -54,25 +54,25 @@
     {{#if alerts}}
         {{#each alerts}}
             {{#if_eq type "correction"}}
-                {{#assign "has-corrections"}}
+                {{#assign "hasCorrections"}}
                 true
                 {{/assign}}
             {{/if_eq}}
 
             {{#if_eq type "alert"}}
-                {{#assign "has-alerts"}}
+                {{#assign "hasAlerts"}}
                 true
                 {{/assign}}
             {{/if_eq}}
         {{/each}}
 
         {{#if_ne type "dataset"}}
-            {{#if has-corrections}}
+            {{#if hasCorrections}}
                 dataLayer[0]["corrections"] = "yes";
             {{else}}
                 dataLayer[0]["corrections"] = "no";
             {{/if}}
-            {{#if has-alerts}}
+            {{#if hasAlerts}}
                 dataLayer[0]["notices"] = "yes";
             {{else}}
                 dataLayer[0]["notices"] = "no";
@@ -84,14 +84,14 @@
     {{#if versions}}
         {{#each versions}}
             {{#if correctionNotice}}
-                {{#assign "has-corrections"}}
+                {{#assign "hasCorrections"}}
                 true
                 {{/assign}}
             {{/if}}
         {{/each}}
 
         {{#if_ne type "dataset"}}
-            {{#if has-corrections}}
+            {{#if hasCorrections}}
                 dataLayer[0]["corrections"] = "yes";
             {{else}}
                 dataLayer[0]["corrections"] = "no";
