@@ -72,7 +72,7 @@ public class SearchClient {
                     searchQuery = new FeaturedResultQuery(searchTerm, listTypeEnum);
                     break;
                 default:
-                    throw new RuntimeException(String.format("Unknown searchType: %s", searchType.getSearchType()));
+                    throw new Exception(String.format("Unknown searchType: %s", searchType.getSearchType()));
             }
             // Submit concurrent requests
             Future<SearchResult> future = executorService.submit(searchQuery);
