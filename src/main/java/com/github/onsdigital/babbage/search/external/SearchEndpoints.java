@@ -1,5 +1,7 @@
 package com.github.onsdigital.babbage.search.external;
 
+import com.github.onsdigital.babbage.search.external.requests.search.ListType;
+
 public enum SearchEndpoints {
 
     SEARCH("/search/%s/");
@@ -10,7 +12,7 @@ public enum SearchEndpoints {
         this.endpoint = endpoint;
     }
 
-    public String getEndpoint(String listType) {
-        return String.format(this.endpoint, listType);
+    public String getEndpoint(ListType listType) {
+        return String.format(this.endpoint, listType.getEndpoint());
     }
 }

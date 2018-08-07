@@ -23,7 +23,7 @@ public abstract class SearchQuery extends AbstractSearchRequest<SearchResult> {
     }
 
     protected URIBuilder buildUri() {
-        String path = SearchEndpoints.SEARCH.getEndpoint(this.listType.getEndpoint()) +
+        String path = SearchEndpoints.SEARCH.getEndpoint(this.listType) +
                 this.searchType.getSearchType();
 
         URIBuilder uriBuilder = new URIBuilder()

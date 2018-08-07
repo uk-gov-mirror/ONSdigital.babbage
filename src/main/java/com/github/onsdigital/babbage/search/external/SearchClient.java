@@ -85,7 +85,7 @@ public class SearchClient {
         // Wait until complete
         try {
             executorService.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
-            
+
             // Collect results
             LinkedHashMap<String, SearchResult> results = new LinkedHashMap<>();
             for (String key : futures.keySet()) {
