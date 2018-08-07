@@ -188,8 +188,10 @@ public class Configuration {
     }
 
     public static class SEARCH_SERVICE {
+        public static final String HOST = defaultIfBlank(getValue("EXTERNAL_SEARCH_HOST"), "localhost:5000");
         public static final boolean EXTERNAL_SEARCH_ENABLED =
                 defaultIfBlank(getValue("EXTERNAL_SEARCH_ENABLED"), "N").equalsIgnoreCase("Y");
+        public static final int SEARCH_NUM_EXECUTORS = defaultNumberIfBlank(getNumberValue("SEARCH_NUM_EXECUTORS"), 8);
     }
 
     /*Handlebars configuration*/

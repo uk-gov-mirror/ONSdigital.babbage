@@ -1,15 +1,18 @@
 package com.github.onsdigital.babbage.search.external.requests.base;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.onsdigital.babbage.configuration.Configuration;
 import com.github.onsdigital.babbage.search.external.SearchClient;
 import org.apache.http.entity.ContentType;
 import org.eclipse.jetty.client.api.ContentResponse;
 import org.eclipse.jetty.client.api.Request;
 import org.eclipse.jetty.http.HttpHeader;
 
-public abstract class AbstractSearchRequest<T> {
+import java.util.concurrent.Callable;
 
-    public static final String HOST = "localhost:5000";
+public abstract class AbstractSearchRequest<T> implements Callable<T> {
+
+    public static final String HOST = Configuration.SEARCH_SERVICE.HOST;
 
     protected static final ObjectMapper MAPPER = new ObjectMapper();
 
@@ -32,7 +35,8 @@ public abstract class AbstractSearchRequest<T> {
 
     protected abstract ContentResponse getContentResponse() throws Exception;
 
-    public T execute() throws Exception {
+    @Override
+    public T call() throws Exception {
         String response = this.getContentResponse().getContentAsString();
         return MAPPER.readValue(response, this.returnClass);
     }

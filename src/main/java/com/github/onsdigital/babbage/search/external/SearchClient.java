@@ -1,5 +1,6 @@
 package com.github.onsdigital.babbage.search.external;
 
+import com.github.onsdigital.babbage.configuration.Configuration;
 import com.github.onsdigital.babbage.search.external.requests.search.*;
 import com.github.onsdigital.babbage.search.input.SortBy;
 import com.github.onsdigital.babbage.search.input.TypeFilter;
@@ -9,12 +10,19 @@ import org.eclipse.jetty.client.api.Request;
 import org.eclipse.jetty.http.HttpMethod;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.*;
 
 public class SearchClient {
+
     private static HttpClient client = new HttpClient();
 
     static {
@@ -39,7 +47,7 @@ public class SearchClient {
     }
 
     public static LinkedHashMap<String, SearchResult> search(HttpServletRequest request, String listType) throws Exception {
-        LinkedHashMap<String, SearchResult> results = new LinkedHashMap<>();
+        Map<String, Future<SearchResult>> futures = new HashMap<>();
 
         final String searchTerm = extractSearchTerm(request);
         final int page = extractPage(request);
@@ -48,6 +56,8 @@ public class SearchClient {
         final Set<TypeFilter> typeFilters = extractSelectedFilters(request, ContentQuery.DEFAULT_TYPE_FILTERS, false);
 
         ListType listTypeEnum = ListType.forString(listType);
+
+        ExecutorService executorService = Executors.newFixedThreadPool(Configuration.SEARCH_SERVICE.SEARCH_NUM_EXECUTORS);
 
         for (SearchType searchType : SearchType.values()) {
             SearchQuery searchQuery;
@@ -64,11 +74,28 @@ public class SearchClient {
                 default:
                     throw new RuntimeException(String.format("Unknown searchType: %s", searchType.getSearchType()));
             }
-            SearchResult result = searchQuery.execute();
-            results.put(searchType.getResultKey(), result);
+            // Submit concurrent requests
+            Future<SearchResult> future = executorService.submit(searchQuery);
+            futures.put(searchType.getResultKey(), future);
         }
 
-        return results;
+        // Trigger executor shutdown
+        executorService.shutdown();
+
+        // Wait until complete
+        try {
+            executorService.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
+            
+            // Collect results
+            LinkedHashMap<String, SearchResult> results = new LinkedHashMap<>();
+            for (String key : futures.keySet()) {
+                results.put(key, futures.get(key).get());
+            }
+
+            return results;
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static void stop() throws Exception {
