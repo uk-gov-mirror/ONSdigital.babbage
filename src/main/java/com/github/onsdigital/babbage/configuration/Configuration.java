@@ -187,6 +187,11 @@ public class Configuration {
         }
     }
 
+    public static class SEARCH_SERVICE {
+        public static final boolean EXTERNAL_SEARCH_ENABLED =
+                defaultIfBlank(getValue("EXTERNAL_SEARCH_ENABLED"), "N").equalsIgnoreCase("Y");
+    }
+
     /*Handlebars configuration*/
     public static class HANDLEBARS {
         private static final String DEFAULT_HANDLEBARS_DATE_PATTERN = "d MMMM yyyy";

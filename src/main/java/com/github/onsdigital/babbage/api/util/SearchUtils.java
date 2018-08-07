@@ -8,6 +8,7 @@ import com.github.onsdigital.babbage.response.base.BabbageResponse;
 import com.github.onsdigital.babbage.search.ElasticSearchClient;
 import com.github.onsdigital.babbage.search.builders.ONSFilterBuilders;
 import com.github.onsdigital.babbage.search.builders.ONSQueryBuilders;
+import com.github.onsdigital.babbage.search.external.SearchClient;
 import com.github.onsdigital.babbage.search.helpers.ONSQuery;
 import com.github.onsdigital.babbage.search.helpers.ONSSearchResponse;
 import com.github.onsdigital.babbage.search.helpers.SearchHelper;
@@ -90,11 +91,29 @@ public class SearchUtils {
                 return new BabbageRedirectResponse(timeSeriesUri, Configuration.GENERAL.getSearchResponseCacheTime());
             }
         }
-        LinkedHashMap<String, SearchResult> results = searchAll(queries);
+        LinkedHashMap<String, SearchResult> results = populateSerp(request, listType, queries);
+
         if (searchDepartments) {
             searchDeparments(searchTerm, results);
         }
         return buildResponse(request, listType, results);
+    }
+
+    private static LinkedHashMap<String, SearchResult> populateSerp(HttpServletRequest request, String listType, SearchQueries searchQueries) {
+        /**
+         * Attempts to intercept content, type counts, and featured result queries to populate the SERP.
+         */
+        if (Configuration.SEARCH_SERVICE.EXTERNAL_SEARCH_ENABLED) {
+            try {
+                // Use external search client
+                return SearchClient.search(request, listType);
+            } catch (Exception e) {
+                // Print stack trace and fall back on internal search client
+                e.printStackTrace();
+            }
+        }
+
+        return searchAll(searchQueries);
     }
 
     public static BabbageResponse list(HttpServletRequest request, String listType, SearchQueries queries) throws IOException {

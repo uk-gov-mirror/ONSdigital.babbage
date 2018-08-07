@@ -124,6 +124,24 @@ public class SearchRequestHelper {
         if (isEmpty(page)) {
             return 1;
         }
+        return extractInt(page);
+    }
+
+    /**
+     * Extract the page suze from a request - for paged results.
+     *
+     * @return
+     */
+    public static int extractPageSize(HttpServletRequest request) {
+        String size = request.getParameter("size");
+
+        if (isEmpty(size)) {
+            return 10;
+        }
+        return extractInt(size);
+    }
+
+    private static int extractInt(String page) {
         try {
             int pageNumber = Integer.parseInt(page);
             if (pageNumber < 1) {
