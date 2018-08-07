@@ -94,7 +94,7 @@ public class SearchClient {
 
             return results;
         } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+            throw new Exception(e);
         }
     }
 
