@@ -44,5 +44,6 @@ docker run -d                                                          \
   --env=REDIRECT_SECRET=$REDIRECT_SECRET                               \
   --name=babbage                                                       \
   --net=$DOCKER_NETWORK                                                \
+  --publish=10000:8080                                                 \
   --restart=always                                                     \
   $ECR_REPOSITORY_URI/babbage:$GIT_COMMIT
