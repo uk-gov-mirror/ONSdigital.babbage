@@ -1,4 +1,4 @@
-package com.github.onsdigital.babbage.search.external.requests.search;
+package com.github.onsdigital.babbage.search.external.requests.search.requests;
 
 import com.github.onsdigital.babbage.search.external.SearchEndpoints;
 import com.github.onsdigital.babbage.search.external.SearchType;
@@ -6,7 +6,6 @@ import com.github.onsdigital.babbage.search.external.requests.base.AbstractSearc
 import com.github.onsdigital.babbage.search.model.SearchResult;
 import org.apache.http.client.utils.URIBuilder;
 import org.eclipse.jetty.client.api.ContentResponse;
-import org.eclipse.jetty.client.api.Request;
 import org.eclipse.jetty.http.HttpScheme;
 
 /**

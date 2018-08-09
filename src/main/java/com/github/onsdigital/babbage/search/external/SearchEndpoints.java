@@ -1,6 +1,6 @@
 package com.github.onsdigital.babbage.search.external;
 
-import com.github.onsdigital.babbage.search.external.requests.search.ListType;
+import com.github.onsdigital.babbage.search.external.requests.search.requests.ListType;
 
 public enum SearchEndpoints {
 

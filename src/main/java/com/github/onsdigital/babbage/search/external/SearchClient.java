@@ -1,7 +1,7 @@
 package com.github.onsdigital.babbage.search.external;
 
 import com.github.onsdigital.babbage.configuration.Configuration;
-import com.github.onsdigital.babbage.search.external.requests.search.*;
+import com.github.onsdigital.babbage.search.external.requests.search.requests.*;
 import com.github.onsdigital.babbage.search.helpers.ONSQuery;
 import com.github.onsdigital.babbage.search.input.SortBy;
 import com.github.onsdigital.babbage.search.input.TypeFilter;
@@ -82,7 +82,7 @@ public class SearchClient {
             searchTypes = new SearchType[]{SearchType.CONTENT, SearchType.COUNTS};
         } else {
             // Submit content
-            searchTypes = SearchType.values();
+            searchTypes = SearchType.getBaseSearchTypes();
         }
 
         for (SearchType searchType : searchTypes) {

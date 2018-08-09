@@ -1,4 +1,4 @@
-package com.github.onsdigital.babbage.search.external.requests.search;
+package com.github.onsdigital.babbage.search.external.requests.search.requests;
 
 import com.github.onsdigital.babbage.search.external.requests.search.exceptions.UnknownListTypeException;
 import com.github.onsdigital.babbage.search.input.TypeFilter;

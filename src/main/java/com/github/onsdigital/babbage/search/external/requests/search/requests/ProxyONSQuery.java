@@ -1,4 +1,4 @@
-package com.github.onsdigital.babbage.search.external.requests.search;
+package com.github.onsdigital.babbage.search.external.requests.search.requests;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.github.onsdigital.babbage.search.external.SearchEndpoints;

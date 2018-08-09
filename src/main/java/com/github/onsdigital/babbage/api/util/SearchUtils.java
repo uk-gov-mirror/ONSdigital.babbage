@@ -9,6 +9,9 @@ import com.github.onsdigital.babbage.search.ElasticSearchClient;
 import com.github.onsdigital.babbage.search.builders.ONSFilterBuilders;
 import com.github.onsdigital.babbage.search.builders.ONSQueryBuilders;
 import com.github.onsdigital.babbage.search.external.SearchClient;
+import com.github.onsdigital.babbage.search.external.SearchType;
+import com.github.onsdigital.babbage.search.external.requests.search.requests.DepartmentsQuery;
+import com.github.onsdigital.babbage.search.external.requests.search.requests.SearchQuery;
 import com.github.onsdigital.babbage.search.helpers.ONSQuery;
 import com.github.onsdigital.babbage.search.helpers.ONSSearchResponse;
 import com.github.onsdigital.babbage.search.helpers.SearchHelper;
@@ -304,7 +307,34 @@ public class SearchUtils {
         return (String) timeSeries.get(Field.uri.fieldName());
     }
 
+    /**
+     * Search the departments index. Attempts to use external dp-conceptual-search client, if enabled.
+     * @param searchTerm
+     * @param results
+     */
     private static void searchDeparments(String searchTerm, LinkedHashMap<String, SearchResult> results) {
+
+        if (Configuration.SEARCH_SERVICE.EXTERNAL_SEARCH_ENABLED) {
+            SearchQuery request = new DepartmentsQuery(searchTerm);
+            try {
+                SearchResult result = request.call();
+                results.put(SearchType.DEPARTMENTS.getResultKey(), result);
+            } catch (Exception e) {
+                e.printStackTrace();
+
+                // Fall back to internal search client
+                internalSearchDepartments(searchTerm, results);
+            }
+        }
+
+    }
+
+    /**
+     * Search departments index using internal TCP client.
+     * @param searchTerm
+     * @param results
+     */
+    private static void internalSearchDepartments(String searchTerm, LinkedHashMap<String, SearchResult> results) {
         QueryBuilder departmentsQuery = departmentQuery(searchTerm);
         SearchRequestBuilder departmentsSearch = ElasticSearchClient.getElasticsearchClient().prepareSearch(DEPARTMENTS_INDEX);
         departmentsSearch.setQuery(departmentsQuery);
@@ -322,7 +352,7 @@ public class SearchUtils {
         if (highlightedFragments != null && highlightedFragments.length > 0) {
             hit.put("match", highlightedFragments[0].toString());
         }
-        results.put("departments", onsSearchResponse.getResult());
+        results.put(SearchType.DEPARTMENTS.getResultKey(), onsSearchResponse.getResult());
     }
 
     //Send result back to client
