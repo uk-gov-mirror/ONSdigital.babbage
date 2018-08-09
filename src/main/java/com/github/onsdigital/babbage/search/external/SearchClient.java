@@ -70,7 +70,9 @@ public class SearchClient {
 
         ListType listTypeEnum = ListType.forString(listType);
 
-        ExecutorService executorService = Executors.newFixedThreadPool(Configuration.SEARCH_SERVICE.SEARCH_NUM_EXECUTORS);
+        ExecutorService executorService = Executors.newFixedThreadPool(
+                Math.min(Configuration.SEARCH_SERVICE.SEARCH_NUM_EXECUTORS, SearchType.values().length)
+        );
 
         for (SearchType searchType : SearchType.values()) {
             SearchQuery searchQuery;
