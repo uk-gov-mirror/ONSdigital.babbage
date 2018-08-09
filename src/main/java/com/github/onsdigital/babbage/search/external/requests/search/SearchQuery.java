@@ -9,6 +9,9 @@ import org.eclipse.jetty.client.api.ContentResponse;
 import org.eclipse.jetty.client.api.Request;
 import org.eclipse.jetty.http.HttpScheme;
 
+/**
+ * Class for querying the dp-conceptual-search APIs
+ */
 public abstract class SearchQuery extends AbstractSearchRequest<SearchResult> {
 
     private final String searchTerm;

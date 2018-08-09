@@ -15,6 +15,9 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * Replaces the internal content query by executing a HTTP request against the dp-conceptual-search content API
+ */
 public class ContentQuery extends SearchQuery {
 
     public static final SortBy DEFAULT_SORT_BY = SortBy.relevance;

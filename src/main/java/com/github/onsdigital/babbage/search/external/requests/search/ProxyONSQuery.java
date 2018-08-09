@@ -19,6 +19,9 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * Class for proxying Elasticsearch queries to dp-conceptual-search
+ */
 public class ProxyONSQuery extends AbstractSearchRequest<SearchResult> {
 
     private static final String QUERY_KEY = "query";
