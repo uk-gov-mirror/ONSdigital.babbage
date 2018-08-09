@@ -70,6 +70,8 @@ public class SearchClient {
 
         ListType listTypeEnum = ListType.forString(listType);
 
+        // Initialise ExecutorService with a MAXIMUM number of threads equal to the number of SearchTypes (less if
+        // config specifies).
         ExecutorService executorService = Executors.newFixedThreadPool(
                 Math.min(Configuration.SEARCH_SERVICE.SEARCH_NUM_EXECUTORS, SearchType.values().length)
         );
