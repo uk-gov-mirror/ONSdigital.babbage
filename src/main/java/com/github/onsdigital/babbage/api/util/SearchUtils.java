@@ -9,7 +9,6 @@ import com.github.onsdigital.babbage.search.ElasticSearchClient;
 import com.github.onsdigital.babbage.search.builders.ONSFilterBuilders;
 import com.github.onsdigital.babbage.search.builders.ONSQueryBuilders;
 import com.github.onsdigital.babbage.search.external.SearchClient;
-import com.github.onsdigital.babbage.search.external.requests.search.ProxyONSQuery;
 import com.github.onsdigital.babbage.search.helpers.ONSQuery;
 import com.github.onsdigital.babbage.search.helpers.ONSSearchResponse;
 import com.github.onsdigital.babbage.search.helpers.SearchHelper;
@@ -36,10 +35,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.MediaType;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.text.MessageFormat;
 import java.util.*;
 
-import static com.github.onsdigital.babbage.configuration.Configuration.GENERAL.*;
+import static com.github.onsdigital.babbage.configuration.Configuration.GENERAL.getSearchResponseCacheTime;
 import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.*;
 import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.*;
 import static com.github.onsdigital.babbage.search.input.TypeFilter.contentTypes;
@@ -261,14 +259,9 @@ public class SearchUtils {
     static LinkedHashMap<String, SearchResult> doSearch(List<ONSQuery> searchQueries, boolean externalSearch) {
 
         if (Configuration.SEARCH_SERVICE.EXTERNAL_SEARCH_ENABLED && externalSearch) {
-            LinkedHashMap<String, SearchResult> results = new LinkedHashMap<>();
-
+            LinkedHashMap<String, SearchResult> results = null;
             try {
-                for (ONSQuery query : searchQueries) {
-                    SearchResult result = new ProxyONSQuery(query).call();
-                    results.put(query.name(), result);
-                }
-
+                results = SearchClient.proxyQueries(searchQueries);
                 return results;
             } catch (Exception e) {
                 System.out.println("Error proxying search request to external service");

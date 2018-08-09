@@ -2,6 +2,7 @@ package com.github.onsdigital.babbage.search.external;
 
 import com.github.onsdigital.babbage.configuration.Configuration;
 import com.github.onsdigital.babbage.search.external.requests.search.*;
+import com.github.onsdigital.babbage.search.helpers.ONSQuery;
 import com.github.onsdigital.babbage.search.input.SortBy;
 import com.github.onsdigital.babbage.search.input.TypeFilter;
 import com.github.onsdigital.babbage.search.model.SearchResult;
@@ -10,10 +11,7 @@ import org.eclipse.jetty.client.api.Request;
 import org.eclipse.jetty.http.HttpMethod;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -44,6 +42,21 @@ public class SearchClient {
 
     public static Request post(String uri) {
         return request(uri).method(HttpMethod.POST);
+    }
+
+    public static LinkedHashMap<String, SearchResult> proxyQueries(List<ONSQuery> queryList) throws Exception {
+        Map<String, Future<SearchResult>> futures = new HashMap<>();
+
+        ExecutorService executorService = Executors.newFixedThreadPool(Configuration.SEARCH_SERVICE.SEARCH_NUM_EXECUTORS);
+
+        for (ONSQuery query : queryList) {
+            ProxyONSQuery request = new ProxyONSQuery(query);
+            Future<SearchResult> future = executorService.submit(request);
+            futures.put(query.name(), future);
+        }
+
+        // Wait until complete
+        return processFutures(futures, executorService);
     }
 
     public static LinkedHashMap<String, SearchResult> search(HttpServletRequest request, String listType) throws Exception {
@@ -79,10 +92,14 @@ public class SearchClient {
             futures.put(searchType.getResultKey(), future);
         }
 
+        // Wait until complete
+        return processFutures(futures, executorService);
+    }
+
+    private static LinkedHashMap<String, SearchResult> processFutures(Map<String, Future<SearchResult>> futures, ExecutorService executorService) throws Exception {
         // Trigger executor shutdown
         executorService.shutdown();
 
-        // Wait until complete
         try {
             executorService.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
 
