@@ -23,7 +23,7 @@ public abstract class SearchQuery extends AbstractSearchRequest<SearchResult> {
     }
 
     protected URIBuilder buildUri() {
-        String path = SearchEndpoints.SEARCH.getEndpoint(this.listType) +
+        String path = SearchEndpoints.SEARCH_ONS.getEndpointForListType(this.listType) +
                 this.searchType.getSearchType();
 
         URIBuilder uriBuilder = new URIBuilder()
@@ -42,8 +42,7 @@ public abstract class SearchQuery extends AbstractSearchRequest<SearchResult> {
 
     @Override
     protected ContentResponse getContentResponse() throws Exception {
-        Request request = super.post();
-        return request.send();
+        return super.post().send();
     }
 
     public enum SearchParam {

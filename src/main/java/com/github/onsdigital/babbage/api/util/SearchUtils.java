@@ -9,6 +9,7 @@ import com.github.onsdigital.babbage.search.ElasticSearchClient;
 import com.github.onsdigital.babbage.search.builders.ONSFilterBuilders;
 import com.github.onsdigital.babbage.search.builders.ONSQueryBuilders;
 import com.github.onsdigital.babbage.search.external.SearchClient;
+import com.github.onsdigital.babbage.search.external.requests.search.ProxyONSQuery;
 import com.github.onsdigital.babbage.search.helpers.ONSQuery;
 import com.github.onsdigital.babbage.search.helpers.ONSSearchResponse;
 import com.github.onsdigital.babbage.search.helpers.SearchHelper;
@@ -233,23 +234,38 @@ public class SearchUtils {
     }
 
     /**
-     * If a size parameter exists use that otherwise use default.
+     * Attempts to proxy search queries to the external search service (when enabled).
+     * @param searchQueries
+     * @return
      */
-    private static int extractSize(HttpServletRequest request) {
-        int result = getResultsPerPage();
-        if (StringUtils.isNotEmpty(request.getParameter("size"))) {
+    static LinkedHashMap<String, SearchResult> doSearch(List<ONSQuery> searchQueries) {
+
+        if (Configuration.SEARCH_SERVICE.EXTERNAL_SEARCH_ENABLED) {
+            LinkedHashMap<String, SearchResult> results = new LinkedHashMap<>();
+
             try {
-                result = Integer.parseInt(request.getParameter("size"));
-                return Math.max(getResultsPerPage(), Math.min(result, getMaxResultsPerPage()));
-            } catch (NumberFormatException ex) {
-                System.out.println(MessageFormat.format("Failed to parse size parameter to integer." +
-                        " Default value will be used.\n {0}", ex));
+                for (ONSQuery query : searchQueries) {
+                    SearchResult result = new ProxyONSQuery(query).call();
+                    results.put(query.name(), result);
+                }
+
+                return results;
+            } catch (Exception e) {
+                System.out.println("Error proxying search request to external service");
+                e.printStackTrace();
             }
         }
-        return result;
+
+        return doInternalSearch(searchQueries);
+
     }
 
-    static LinkedHashMap<String, SearchResult> doSearch(List<ONSQuery> searchQueries) {
+    /**
+     * Uses internal TCP client to execute search queries.
+     * @param searchQueries
+     * @return
+     */
+    static LinkedHashMap<String, SearchResult> doInternalSearch(List<ONSQuery> searchQueries) {
         List<ONSSearchResponse> responseList = SearchHelper.searchMultiple(searchQueries);
         LinkedHashMap<String, SearchResult> results = new LinkedHashMap<>();
         for (int i = 0; i < responseList.size(); i++) {

@@ -12,7 +12,7 @@ import java.util.concurrent.Callable;
 
 public abstract class AbstractSearchRequest<T> implements Callable<T> {
 
-    public static final String HOST = Configuration.SEARCH_SERVICE.getExternalSearchAddress();
+    protected static final String HOST = Configuration.SEARCH_SERVICE.getExternalSearchAddress();
 
     protected static final ObjectMapper MAPPER = new ObjectMapper();
 

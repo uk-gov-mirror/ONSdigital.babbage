@@ -9,11 +9,14 @@ import com.github.onsdigital.babbage.search.input.TypeFilter;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.BiFunction;
 
+import static com.github.onsdigital.babbage.configuration.Configuration.GENERAL.getMaxResultsPerPage;
+import static com.github.onsdigital.babbage.configuration.Configuration.GENERAL.getResultsPerPage;
 import static com.github.onsdigital.babbage.search.helpers.dates.PublishDates.publishedDates;
 import static com.github.onsdigital.babbage.search.helpers.dates.PublishDates.updatedWithinPeriod;
 import static com.github.onsdigital.babbage.util.RequestUtil.getParam;
@@ -124,24 +127,6 @@ public class SearchRequestHelper {
         if (isEmpty(page)) {
             return 1;
         }
-        return extractInt(page);
-    }
-
-    /**
-     * Extract the page suze from a request - for paged results.
-     *
-     * @return
-     */
-    public static int extractPageSize(HttpServletRequest request) {
-        String size = request.getParameter("size");
-
-        if (isEmpty(size)) {
-            return 10;
-        }
-        return extractInt(size);
-    }
-
-    private static int extractInt(String page) {
         try {
             int pageNumber = Integer.parseInt(page);
             if (pageNumber < 1) {
@@ -151,6 +136,23 @@ public class SearchRequestHelper {
         } catch (NumberFormatException e) {
             return 1;
         }
+    }
+
+    /**
+     * If a size parameter exists use that otherwise use default.
+     */
+    public static int extractSize(HttpServletRequest request) {
+        int result = getResultsPerPage();
+        if (StringUtils.isNotEmpty(request.getParameter("size"))) {
+            try {
+                result = Integer.parseInt(request.getParameter("size"));
+                return Math.max(getResultsPerPage(), Math.min(result, getMaxResultsPerPage()));
+            } catch (NumberFormatException ex) {
+                System.out.println(MessageFormat.format("Failed to parse size parameter to integer." +
+                        " Default value will be used.\n {0}", ex));
+            }
+        }
+        return result;
     }
 
     /**

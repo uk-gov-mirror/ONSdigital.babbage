@@ -51,7 +51,7 @@ public class SearchClient {
 
         final String searchTerm = extractSearchTerm(request);
         final int page = extractPage(request);
-        final int pageSize = extractPageSize(request);
+        final int pageSize = extractSize(request);
         final SortBy sortBy = extractSortBy(request, ContentQuery.DEFAULT_SORT_BY);
         final Set<TypeFilter> typeFilters = extractSelectedFilters(request, ContentQuery.DEFAULT_TYPE_FILTERS, false);
 
