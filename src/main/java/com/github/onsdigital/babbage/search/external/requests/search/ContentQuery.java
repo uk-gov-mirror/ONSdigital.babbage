@@ -48,6 +48,10 @@ public class ContentQuery extends SearchQuery {
         this.typeFilters = typeFilters;
     }
 
+    /**
+     * Builds type filters set as Strings from the specified TypeFilter enum
+     * @return
+     */
     private Set<String> contentTypeFilters() {
         Set<String> filters = new HashSet<>();
         for (TypeFilter typeFilter : this.typeFilters) {
@@ -59,10 +63,19 @@ public class ContentQuery extends SearchQuery {
         return filters;
     }
 
+    /**
+     * Returns list of content type filters as a JSON formatted string
+     * @return
+     * @throws JsonProcessingException
+     */
     private String contentTypeFiltersAsString() throws JsonProcessingException {
         return MAPPER.writeValueAsString(this.contentTypeFilters());
     }
 
+    /**
+     * Calls super.buildUri() and adds page number and size URL parameters
+     * @return
+     */
     @Override
     protected URIBuilder buildUri() {
         return super.buildUri()
@@ -70,6 +83,11 @@ public class ContentQuery extends SearchQuery {
                 .addParameter(SearchParam.SIZE.getParam(), String.valueOf(this.pageSize));
     }
 
+    /**
+     * Executes a HTTP POST request with type filters and sort options specified as a JSON payload
+     * @return
+     * @throws Exception
+     */
     @Override
     protected ContentResponse getContentResponse() throws Exception {
         final String filterString = this.contentTypeFiltersAsString();

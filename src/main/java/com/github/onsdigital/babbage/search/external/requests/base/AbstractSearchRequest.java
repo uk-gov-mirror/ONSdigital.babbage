@@ -22,17 +22,35 @@ public abstract class AbstractSearchRequest<T> implements Callable<T> {
         this.returnClass = returnClass;
     }
 
+    /**
+     * Abstract method for building/returning the target URI for HTTP requests
+     * @return
+     */
     public abstract String targetUri();
 
+    /**
+     * Builds a simple HTTP GET request with the target URI
+     * @return
+     * @throws Exception
+     */
     protected Request get() throws Exception {
         return SearchClient.get(this.targetUri());
     }
 
+    /**
+     * Builds a HTTP POST request with mime-type application/json
+     * @return
+     */
     protected Request post() {
         return SearchClient.post(this.targetUri())
                 .header(HttpHeader.CONTENT_TYPE, ContentType.APPLICATION_JSON.getMimeType());
     }
 
+    /**
+     * Abstract method for executing requests
+     * @return
+     * @throws Exception
+     */
     protected abstract ContentResponse getContentResponse() throws Exception;
 
     @Override

@@ -25,6 +25,10 @@ public abstract class SearchQuery extends AbstractSearchRequest<SearchResult> {
         this.searchType = searchType;
     }
 
+    /**
+     * Method to build the target URI with desired URL parameters
+     * @return
+     */
     protected URIBuilder buildUri() {
         String path = SearchEndpoints.SEARCH_ONS.getEndpointForListType(this.listType) +
                 this.searchType.getSearchType();
@@ -38,16 +42,28 @@ public abstract class SearchQuery extends AbstractSearchRequest<SearchResult> {
         return uriBuilder;
     }
 
+    /**
+     * Simply calls buildUri to get the target for HTTP requests and returns as a string
+     * @return
+     */
     @Override
     public String targetUri() {
         return this.buildUri().toString();
     }
 
+    /**
+     * Defaults to an empty GET request
+     * @return
+     * @throws Exception
+     */
     @Override
     protected ContentResponse getContentResponse() throws Exception {
-        return super.post().send();
+        return super.get().send();
     }
 
+    /**
+     * Enum of available URL parameters
+     */
     public enum SearchParam {
         QUERY("q"),
         PAGE("page"),
