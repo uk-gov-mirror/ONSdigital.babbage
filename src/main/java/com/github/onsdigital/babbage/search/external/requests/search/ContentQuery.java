@@ -21,23 +21,18 @@ import java.util.Set;
 public class ContentQuery extends SearchQuery {
 
     public static final SortBy DEFAULT_SORT_BY = SortBy.relevance;
-    public static final Set<TypeFilter> DEFAULT_TYPE_FILTERS = TypeFilter.getAllFilters();
 
     private final int page;
     private final int pageSize;
     private final SortBy sortBy;
-    private final Set<TypeFilter> typeFilters;
+    private Set<TypeFilter> typeFilters;
 
     public ContentQuery(String searchTerm, ListType listType, int page, int pageSize) {
-        this(searchTerm, listType, page, pageSize, DEFAULT_SORT_BY, DEFAULT_TYPE_FILTERS);
+        this(searchTerm, listType, page, pageSize, DEFAULT_SORT_BY);
     }
 
     public ContentQuery(String searchTerm, ListType listType, int page, int pageSize, SortBy sortBy) {
-        this(searchTerm, listType, page, pageSize, sortBy, DEFAULT_TYPE_FILTERS);
-    }
-
-    public ContentQuery(String searchTerm, ListType listType, int page, int pageSize, Set<TypeFilter> typeFilters) {
-        this(searchTerm, listType, page, pageSize, DEFAULT_SORT_BY, typeFilters);
+        this(searchTerm, listType, page, pageSize, sortBy, listType.getTypeFilters());
     }
 
     public ContentQuery(String searchTerm, ListType listType, int page, int pageSize, SortBy sortBy, Set<TypeFilter> typeFilters) {
@@ -54,6 +49,7 @@ public class ContentQuery extends SearchQuery {
      */
     private Set<String> contentTypeFilters() {
         Set<String> filters = new HashSet<>();
+
         for (TypeFilter typeFilter : this.typeFilters) {
             for (ContentType contentType : typeFilter.getTypes()) {
                 filters.add(contentType.name());

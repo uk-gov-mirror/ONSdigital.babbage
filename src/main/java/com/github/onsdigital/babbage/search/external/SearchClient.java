@@ -66,9 +66,10 @@ public class SearchClient {
         final int page = extractPage(request);
         final int pageSize = extractSize(request);
         final SortBy sortBy = extractSortBy(request, ContentQuery.DEFAULT_SORT_BY);
-        final Set<TypeFilter> typeFilters = extractSelectedFilters(request, ContentQuery.DEFAULT_TYPE_FILTERS, false);
 
         ListType listTypeEnum = ListType.forString(listType);
+
+        final Set<TypeFilter> typeFilters = extractSelectedFilters(request, listTypeEnum.getTypeFilters(), false);
 
         // Initialise ExecutorService with a MAXIMUM number of threads equal to the number of SearchTypes (less if
         // config specifies).
@@ -76,7 +77,15 @@ public class SearchClient {
                 Math.min(Configuration.SEARCH_SERVICE.SEARCH_NUM_EXECUTORS, SearchType.values().length)
         );
 
-        for (SearchType searchType : SearchType.values()) {
+        SearchType[] searchTypes;
+        if (!listTypeEnum.equals(ListType.ONS)) {
+            searchTypes = new SearchType[]{SearchType.CONTENT, SearchType.COUNTS};
+        } else {
+            // Submit content
+            searchTypes = SearchType.values();
+        }
+
+        for (SearchType searchType : searchTypes) {
             SearchQuery searchQuery;
             switch (searchType) {
                 case CONTENT:
