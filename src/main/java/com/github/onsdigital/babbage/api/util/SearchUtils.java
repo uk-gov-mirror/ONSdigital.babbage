@@ -114,7 +114,8 @@ public class SearchUtils {
             }
         }
 
-        return searchAll(searchQueries);
+        // Use internal search client to complete request
+        return searchAll(searchQueries, false);
     }
 
     public static BabbageResponse list(HttpServletRequest request, String listType, SearchQueries queries) throws IOException {
@@ -136,9 +137,24 @@ public class SearchUtils {
         return buildDataResponse(listType, searchAll(queries));
     }
 
+    /**
+     * Execute the given search queries and default to external service (uses internal on failure).
+     * @param searchQueries
+     * @return
+     */
     public static LinkedHashMap<String, SearchResult> searchAll(SearchQueries searchQueries) {
+        return searchAll(searchQueries, true);
+    }
+
+    /**
+     * Executes the given search queries using either the external or internal search client
+     * @param searchQueries
+     * @param externalSearch
+     * @return
+     */
+    public static LinkedHashMap<String, SearchResult> searchAll(SearchQueries searchQueries, boolean externalSearch) {
         List<ONSQuery> queries = searchQueries.buildQueries();
-        return doSearch(queries);
+        return doSearch(queries, externalSearch);
     }
 
     /**
@@ -233,14 +249,18 @@ public class SearchUtils {
                 .highlight(true);
     }
 
+    static LinkedHashMap<String, SearchResult> doSearch(List<ONSQuery> searchQueries) {
+        return doSearch(searchQueries, true);
+    }
+
     /**
      * Attempts to proxy search queries to the external search service (when enabled).
      * @param searchQueries
      * @return
      */
-    static LinkedHashMap<String, SearchResult> doSearch(List<ONSQuery> searchQueries) {
+    static LinkedHashMap<String, SearchResult> doSearch(List<ONSQuery> searchQueries, boolean externalSearch) {
 
-        if (Configuration.SEARCH_SERVICE.EXTERNAL_SEARCH_ENABLED) {
+        if (Configuration.SEARCH_SERVICE.EXTERNAL_SEARCH_ENABLED && externalSearch) {
             LinkedHashMap<String, SearchResult> results = new LinkedHashMap<>();
 
             try {
@@ -256,6 +276,7 @@ public class SearchUtils {
             }
         }
 
+        // Use internal TCP client
         return doInternalSearch(searchQueries);
 
     }
