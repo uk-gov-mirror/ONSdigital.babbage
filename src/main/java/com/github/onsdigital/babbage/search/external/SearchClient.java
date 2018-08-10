@@ -1,6 +1,5 @@
 package com.github.onsdigital.babbage.search.external;
 
-import com.github.onsdigital.babbage.configuration.Configuration;
 import com.github.onsdigital.babbage.search.external.requests.search.requests.*;
 import com.github.onsdigital.babbage.search.helpers.ONSQuery;
 import com.github.onsdigital.babbage.search.input.SortBy;
@@ -12,10 +11,8 @@ import org.eclipse.jetty.http.HttpMethod;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
 
 import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.*;
 
@@ -23,13 +20,11 @@ public class SearchClient {
 
     private static HttpClient client = new HttpClient();
 
-    static {
-        try {
-            client.start();
-            Runtime.getRuntime().addShutdownHook(new Shutdown(client));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public static void init() throws Exception {
+        System.out.println("Initialising external search client");
+        client.start();
+        Runtime.getRuntime().addShutdownHook(new Shutdown(client));
+        System.out.println("Initialised external search client successfully");
     }
 
     public static Request request(String uri) {
@@ -47,16 +42,13 @@ public class SearchClient {
     public static LinkedHashMap<String, SearchResult> proxyQueries(List<ONSQuery> queryList) throws Exception {
         Map<String, Future<SearchResult>> futures = new HashMap<>();
 
-        ExecutorService executorService = Executors.newFixedThreadPool(Configuration.SEARCH_SERVICE.SEARCH_NUM_EXECUTORS);
-
         for (ONSQuery query : queryList) {
             ProxyONSQuery request = new ProxyONSQuery(query);
-            Future<SearchResult> future = executorService.submit(request);
+            Future<SearchResult> future = SearchClientExecutorService.getInstance().submit(request);
             futures.put(query.name(), future);
         }
 
-        // Wait until complete
-        return processFutures(futures, executorService);
+        return processFutures(futures);
     }
 
     public static LinkedHashMap<String, SearchResult> search(HttpServletRequest request, String listType) throws Exception {
@@ -70,12 +62,6 @@ public class SearchClient {
         ListType listTypeEnum = ListType.forString(listType);
 
         final Set<TypeFilter> typeFilters = extractSelectedFilters(request, listTypeEnum.getTypeFilters(), false);
-
-        // Initialise ExecutorService with a MAXIMUM number of threads equal to the number of SearchTypes (less if
-        // config specifies).
-        ExecutorService executorService = Executors.newFixedThreadPool(
-                Math.min(Configuration.SEARCH_SERVICE.SEARCH_NUM_EXECUTORS, SearchType.values().length)
-        );
 
         SearchType[] searchTypes;
         if (!listTypeEnum.equals(ListType.ONS)) {
@@ -101,31 +87,24 @@ public class SearchClient {
                     throw new Exception(String.format("Unknown searchType: %s", searchType.getSearchType()));
             }
             // Submit concurrent requests
-            Future<SearchResult> future = executorService.submit(searchQuery);
+            Future<SearchResult> future = SearchClientExecutorService.getInstance().submit(searchQuery);
             futures.put(searchType.getResultKey(), future);
         }
 
         // Wait until complete
-        return processFutures(futures, executorService);
+        return processFutures(futures);
     }
 
-    private static LinkedHashMap<String, SearchResult> processFutures(Map<String, Future<SearchResult>> futures, ExecutorService executorService) throws Exception {
-        // Trigger executor shutdown
-        executorService.shutdown();
+    private static LinkedHashMap<String, SearchResult> processFutures(Map<String, Future<SearchResult>> futures) throws ExecutionException, InterruptedException {
+        // Collect results
+        LinkedHashMap<String, SearchResult> results = new LinkedHashMap<>();
 
-        try {
-            executorService.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
-
-            // Collect results
-            LinkedHashMap<String, SearchResult> results = new LinkedHashMap<>();
-            for (String key : futures.keySet()) {
-                results.put(key, futures.get(key).get());
-            }
-
-            return results;
-        } catch (InterruptedException e) {
-            throw new Exception(e);
+        for (String key : futures.keySet()) {
+            SearchResult result = futures.get(key).get();
+            results.put(key, result);
         }
+
+        return results;
     }
 
     public static void stop() throws Exception {
