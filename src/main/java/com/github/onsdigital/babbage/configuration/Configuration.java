@@ -187,6 +187,17 @@ public class Configuration {
         }
     }
 
+    public static class SEARCH_SERVICE {
+        private static final String HOST = defaultIfBlank(getValue("EXTERNAL_SEARCH_HOST"), "localhost");
+        private static final int PORT = defaultNumberIfBlank(getNumberValue("EXTERNAL_SEARCH_PORT"), 5000);
+        public static final boolean EXTERNAL_SEARCH_ENABLED = Boolean.parseBoolean(getValue("ENABLE_SEARCH_SERVICE"));
+        public static final int SEARCH_NUM_EXECUTORS = defaultNumberIfBlank(getNumberValue("SEARCH_NUM_EXECUTORS"), 8);
+
+        public static final String getExternalSearchAddress() {
+            return String.format("%s:%d", HOST, PORT);
+        }
+    }
+
     /*Handlebars configuration*/
     public static class HANDLEBARS {
         private static final String DEFAULT_HANDLEBARS_DATE_PATTERN = "d MMMM yyyy";
