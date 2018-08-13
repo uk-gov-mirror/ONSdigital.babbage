@@ -9,7 +9,7 @@ ADD ./target/web /usr/src/target/web
 # the zebedee reader url
 ARG READER_HOST
 
-ENV PORT="${PORT:-8882}"
+ENV PORT="${PORT:-8880}"
 ENV CONTENT_SERVICE_URL=$READER_HOST
 
 # Update the entry point script
