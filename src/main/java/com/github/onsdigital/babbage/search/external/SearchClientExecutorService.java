@@ -11,7 +11,7 @@ import java.util.concurrent.Future;
 
 public class SearchClientExecutorService implements SearchClosable {
 
-    private ExecutorService executorService;
+    private final ExecutorService executorService;
 
     private static SearchClientExecutorService INSTANCE;
 
@@ -20,6 +20,7 @@ public class SearchClientExecutorService implements SearchClosable {
             synchronized (SearchClientExecutorService.class) {
                 if (INSTANCE == null) {
                     INSTANCE = new SearchClientExecutorService();
+                    Runtime.getRuntime().addShutdownHook(new ShutdownThread(INSTANCE));
                 }
             }
         }
@@ -28,7 +29,6 @@ public class SearchClientExecutorService implements SearchClosable {
 
     private SearchClientExecutorService() {
         executorService = Executors.newFixedThreadPool(Configuration.SEARCH_SERVICE.SEARCH_NUM_EXECUTORS);
-        Runtime.getRuntime().addShutdownHook(new ShutdownThread(INSTANCE));
     }
 
     public <T> Future<T> submit(Callable<T> task) {

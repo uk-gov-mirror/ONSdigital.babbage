@@ -1,5 +1,8 @@
 package com.github.onsdigital.babbage.search.external.requests.base;
 
+/**
+ * Class for adding Shutdown hooks for search threads
+ */
 public class ShutdownThread extends Thread {
 
     private final SearchClosable searchClosable;

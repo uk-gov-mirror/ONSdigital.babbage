@@ -37,7 +37,7 @@ public class SearchClient implements SearchClosable {
         return INSTANCE;
     }
 
-    private HttpClient client;
+    private final HttpClient client;
 
     public SearchClient() {
         this.client = new HttpClient();

@@ -34,15 +34,15 @@ public abstract class AbstractSearchRequest<T> implements Callable<T> {
      * @throws Exception
      */
     protected Request get() throws Exception {
-        return SearchClient.get(this.targetUri());
+        return SearchClient.getInstance().get(this.targetUri());
     }
 
     /**
      * Builds a HTTP POST request with mime-type application/json
      * @return
      */
-    protected Request post() {
-        return SearchClient.post(this.targetUri())
+    protected Request post() throws Exception {
+        return SearchClient.getInstance().post(this.targetUri())
                 .header(HttpHeader.CONTENT_TYPE, ContentType.APPLICATION_JSON.getMimeType());
     }
 
