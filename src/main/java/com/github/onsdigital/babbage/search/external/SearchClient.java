@@ -1,5 +1,7 @@
 package com.github.onsdigital.babbage.search.external;
 
+import com.github.onsdigital.babbage.search.external.requests.base.SearchClosable;
+import com.github.onsdigital.babbage.search.external.requests.base.ShutdownThread;
 import com.github.onsdigital.babbage.search.external.requests.search.requests.*;
 import com.github.onsdigital.babbage.search.helpers.ONSQuery;
 import com.github.onsdigital.babbage.search.input.SortBy;
@@ -16,30 +18,53 @@ import java.util.concurrent.Future;
 
 import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.*;
 
-public class SearchClient {
+public class SearchClient implements SearchClosable {
 
-    private static HttpClient client = new HttpClient();
+    private static SearchClient INSTANCE;
 
-    public static void init() throws Exception {
-        System.out.println("Initialising external search client");
-        client.start();
-        Runtime.getRuntime().addShutdownHook(new Shutdown(client));
-        System.out.println("Initialised external search client successfully");
+    public static SearchClient getInstance() throws Exception {
+        if (INSTANCE == null) {
+            synchronized (SearchClient.class) {
+                if (INSTANCE == null) {
+                    INSTANCE = new SearchClient();
+                    System.out.println("Initialising external search client");
+                    INSTANCE.start();
+                    Runtime.getRuntime().addShutdownHook(new ShutdownThread(INSTANCE));
+                    System.out.println("Initialised external search client successfully");
+                }
+            }
+        }
+        return INSTANCE;
     }
 
-    public static Request request(String uri) {
+    private HttpClient client;
+
+    public SearchClient() {
+        this.client = new HttpClient();
+    }
+
+    public void start() throws Exception {
+        this.client.start();
+    }
+
+    @Override
+    public void close() throws Exception {
+        this.client.stop();
+    }
+
+    public Request request(String uri) {
         return client.newRequest(uri);
     }
 
-    public static Request get(String uri) {
-        return request(uri).method(HttpMethod.GET);
+    public Request get(String uri) {
+        return this.request(uri).method(HttpMethod.GET);
     }
 
-    public static Request post(String uri) {
-        return request(uri).method(HttpMethod.POST);
+    public Request post(String uri) {
+        return this.request(uri).method(HttpMethod.POST);
     }
 
-    public static LinkedHashMap<String, SearchResult> proxyQueries(List<ONSQuery> queryList) throws Exception {
+    public LinkedHashMap<String, SearchResult> proxyQueries(List<ONSQuery> queryList) throws Exception {
         Map<String, Future<SearchResult>> futures = new HashMap<>();
 
         for (ONSQuery query : queryList) {
@@ -51,7 +76,7 @@ public class SearchClient {
         return processFutures(futures);
     }
 
-    public static LinkedHashMap<String, SearchResult> search(HttpServletRequest request, String listType) throws Exception {
+    public LinkedHashMap<String, SearchResult> search(HttpServletRequest request, String listType) throws Exception {
         Map<String, Future<SearchResult>> futures = new HashMap<>();
 
         final String searchTerm = extractSearchTerm(request);
@@ -105,30 +130,5 @@ public class SearchClient {
         }
 
         return results;
-    }
-
-    public static void stop() throws Exception {
-        client.stop();
-    }
-
-    static class Shutdown extends Thread {
-        /**
-         * Class to ensure clean shutdown of HttpClient
-         */
-
-        private final HttpClient client;
-
-        public Shutdown(HttpClient client) {
-            this.client = client;
-        }
-
-        @Override
-        public void run() {
-            try {
-                this.client.stop();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
     }
 }

@@ -21,7 +21,7 @@ public class Init implements Startup {
 
             if (Configuration.SEARCH_SERVICE.EXTERNAL_SEARCH_ENABLED) {
                 // Initialise HTTP client for external search service
-                SearchClient.init();
+                SearchClient.getInstance();
             }
         } catch (Exception e) {
             System.err.println("!!!!Failed initializing publish dates index for caching");

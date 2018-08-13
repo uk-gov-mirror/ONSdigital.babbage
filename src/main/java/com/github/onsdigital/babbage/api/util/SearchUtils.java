@@ -108,7 +108,7 @@ public class SearchUtils {
         if (Configuration.SEARCH_SERVICE.EXTERNAL_SEARCH_ENABLED) {
             try {
                 // Use external search client
-                return SearchClient.search(request, listType);
+                return SearchClient.getInstance().search(request, listType);
             } catch (Exception e) {
                 // Print stack trace and fall back on internal search client
                 e.printStackTrace();
@@ -264,7 +264,7 @@ public class SearchUtils {
         if (Configuration.SEARCH_SERVICE.EXTERNAL_SEARCH_ENABLED && externalSearch) {
             LinkedHashMap<String, SearchResult> results = null;
             try {
-                results = SearchClient.proxyQueries(searchQueries);
+                results = SearchClient.getInstance().proxyQueries(searchQueries);
                 return results;
             } catch (Exception e) {
                 System.out.println("Error proxying search request to external service");
