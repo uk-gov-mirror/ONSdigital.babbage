@@ -42,6 +42,9 @@ docker run -d                                                          \
   --env=PHANTOMJS_PATH=$PHANTOMJS_PATH                                 \
   --env=TABLE_RENDERER_HOST=$TABLE_RENDERER_HOST                       \
   --env=REDIRECT_SECRET=$REDIRECT_SECRET                               \
+  --env=ENABLE_SEARCH_SERVICE=$ENABLE_SEARCH_SERVICE                   \
+  --env=EXTERNAL_SEARCH_HOST=$EXTERNAL_SEARCH_HOST                     \
+  --env=EXTERNAL_SEARCH_PORT=$EXTERNAL_SEARCH_PORT                     \
   --name=babbage                                                       \
   --net=$DOCKER_NETWORK                                                \
   --publish=10000:8080                                                 \
