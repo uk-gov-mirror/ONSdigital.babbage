@@ -24,7 +24,7 @@ import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 public class SearchHelper {
 
-    private static SearchRequestBuilder prepare(ONSQuery query) {
+    public static SearchRequestBuilder prepare(ONSQuery query) {
         return prepare(query, null);
     }
 

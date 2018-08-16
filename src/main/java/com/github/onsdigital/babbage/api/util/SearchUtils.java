@@ -8,6 +8,10 @@ import com.github.onsdigital.babbage.response.base.BabbageResponse;
 import com.github.onsdigital.babbage.search.ElasticSearchClient;
 import com.github.onsdigital.babbage.search.builders.ONSFilterBuilders;
 import com.github.onsdigital.babbage.search.builders.ONSQueryBuilders;
+import com.github.onsdigital.babbage.search.external.SearchClient;
+import com.github.onsdigital.babbage.search.external.SearchType;
+import com.github.onsdigital.babbage.search.external.requests.search.requests.DepartmentsQuery;
+import com.github.onsdigital.babbage.search.external.requests.search.requests.SearchQuery;
 import com.github.onsdigital.babbage.search.helpers.ONSQuery;
 import com.github.onsdigital.babbage.search.helpers.ONSSearchResponse;
 import com.github.onsdigital.babbage.search.helpers.SearchHelper;
@@ -34,10 +38,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.MediaType;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.text.MessageFormat;
 import java.util.*;
 
-import static com.github.onsdigital.babbage.configuration.Configuration.GENERAL.*;
+import static com.github.onsdigital.babbage.configuration.Configuration.GENERAL.getSearchResponseCacheTime;
 import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.*;
 import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.*;
 import static com.github.onsdigital.babbage.search.input.TypeFilter.contentTypes;
@@ -90,11 +93,30 @@ public class SearchUtils {
                 return new BabbageRedirectResponse(timeSeriesUri, Configuration.GENERAL.getSearchResponseCacheTime());
             }
         }
-        LinkedHashMap<String, SearchResult> results = searchAll(queries);
+        LinkedHashMap<String, SearchResult> results = populateSerp(request, listType, queries);
+
         if (searchDepartments) {
             searchDeparments(searchTerm, results);
         }
         return buildResponse(request, listType, results);
+    }
+
+    private static LinkedHashMap<String, SearchResult> populateSerp(HttpServletRequest request, String listType, SearchQueries searchQueries) {
+        /**
+         * Attempts to intercept content, type counts, and featured result queries to populate the SERP.
+         */
+        if (Configuration.SEARCH_SERVICE.EXTERNAL_SEARCH_ENABLED) {
+            try {
+                // Use external search client
+                return SearchClient.getInstance().search(request, listType);
+            } catch (Exception e) {
+                // Print stack trace and fall back on internal search client
+                e.printStackTrace();
+            }
+        }
+
+        // Use internal search client to complete request
+        return searchAll(searchQueries, false);
     }
 
     public static BabbageResponse list(HttpServletRequest request, String listType, SearchQueries queries) throws IOException {
@@ -116,9 +138,24 @@ public class SearchUtils {
         return buildDataResponse(listType, searchAll(queries));
     }
 
+    /**
+     * Execute the given search queries and default to external service (uses internal on failure).
+     * @param searchQueries
+     * @return
+     */
     public static LinkedHashMap<String, SearchResult> searchAll(SearchQueries searchQueries) {
+        return searchAll(searchQueries, true);
+    }
+
+    /**
+     * Executes the given search queries using either the external or internal search client
+     * @param searchQueries
+     * @param externalSearch
+     * @return
+     */
+    public static LinkedHashMap<String, SearchResult> searchAll(SearchQueries searchQueries, boolean externalSearch) {
         List<ONSQuery> queries = searchQueries.buildQueries();
-        return doSearch(queries);
+        return doSearch(queries, externalSearch);
     }
 
     /**
@@ -213,24 +250,39 @@ public class SearchUtils {
                 .highlight(true);
     }
 
-    /**
-     * If a size parameter exists use that otherwise use default.
-     */
-    private static int extractSize(HttpServletRequest request) {
-        int result = getResultsPerPage();
-        if (StringUtils.isNotEmpty(request.getParameter("size"))) {
-            try {
-                result = Integer.parseInt(request.getParameter("size"));
-                return Math.max(getResultsPerPage(), Math.min(result, getMaxResultsPerPage()));
-            } catch (NumberFormatException ex) {
-                System.out.println(MessageFormat.format("Failed to parse size parameter to integer." +
-                        " Default value will be used.\n {0}", ex));
-            }
-        }
-        return result;
+    static LinkedHashMap<String, SearchResult> doSearch(List<ONSQuery> searchQueries) {
+        return doSearch(searchQueries, true);
     }
 
-    static LinkedHashMap<String, SearchResult> doSearch(List<ONSQuery> searchQueries) {
+    /**
+     * Attempts to proxy search queries to the external search service (when enabled).
+     * @param searchQueries
+     * @return
+     */
+    static LinkedHashMap<String, SearchResult> doSearch(List<ONSQuery> searchQueries, boolean externalSearch) {
+
+        if (Configuration.SEARCH_SERVICE.EXTERNAL_SEARCH_ENABLED && externalSearch) {
+            LinkedHashMap<String, SearchResult> results = null;
+            try {
+                results = SearchClient.getInstance().proxyQueries(searchQueries);
+                return results;
+            } catch (Exception e) {
+                System.out.println("Error proxying search request to external service");
+                e.printStackTrace();
+            }
+        }
+
+        // Use internal TCP client
+        return doInternalSearch(searchQueries);
+
+    }
+
+    /**
+     * Uses internal TCP client to execute search queries.
+     * @param searchQueries
+     * @return
+     */
+    static LinkedHashMap<String, SearchResult> doInternalSearch(List<ONSQuery> searchQueries) {
         List<ONSSearchResponse> responseList = SearchHelper.searchMultiple(searchQueries);
         LinkedHashMap<String, SearchResult> results = new LinkedHashMap<>();
         for (int i = 0; i < responseList.size(); i++) {
@@ -255,7 +307,34 @@ public class SearchUtils {
         return (String) timeSeries.get(Field.uri.fieldName());
     }
 
+    /**
+     * Search the departments index. Attempts to use external dp-conceptual-search client, if enabled.
+     * @param searchTerm
+     * @param results
+     */
     private static void searchDeparments(String searchTerm, LinkedHashMap<String, SearchResult> results) {
+
+        if (Configuration.SEARCH_SERVICE.EXTERNAL_SEARCH_ENABLED) {
+            SearchQuery request = new DepartmentsQuery(searchTerm);
+            try {
+                SearchResult result = request.call();
+                results.put(SearchType.DEPARTMENTS.getResultKey(), result);
+            } catch (Exception e) {
+                e.printStackTrace();
+
+                // Fall back to internal search client
+                internalSearchDepartments(searchTerm, results);
+            }
+        }
+
+    }
+
+    /**
+     * Search departments index using internal TCP client.
+     * @param searchTerm
+     * @param results
+     */
+    private static void internalSearchDepartments(String searchTerm, LinkedHashMap<String, SearchResult> results) {
         QueryBuilder departmentsQuery = departmentQuery(searchTerm);
         SearchRequestBuilder departmentsSearch = ElasticSearchClient.getElasticsearchClient().prepareSearch(DEPARTMENTS_INDEX);
         departmentsSearch.setQuery(departmentsQuery);
@@ -273,7 +352,7 @@ public class SearchUtils {
         if (highlightedFragments != null && highlightedFragments.length > 0) {
             hit.put("match", highlightedFragments[0].toString());
         }
-        results.put("departments", onsSearchResponse.getResult());
+        results.put(SearchType.DEPARTMENTS.getResultKey(), onsSearchResponse.getResult());
     }
 
     //Send result back to client
