@@ -41,10 +41,6 @@ public class BabbageRedirectResponse extends BabbageResponse {
         }
     }
 
-    private static String serverName(HttpServletRequest request) {
-        return request.getServerName();
-    }
-
     /**
      *
      * @param scheme
