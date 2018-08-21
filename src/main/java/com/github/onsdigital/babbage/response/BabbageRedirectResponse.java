@@ -33,10 +33,8 @@ public class BabbageRedirectResponse extends BabbageResponse {
 
         if ((null != h1 && !h1.isEmpty()) && (null != h2 && !h2.isEmpty())) {
             String url = buildHttpsRedirectUrl(h2, h1, redirectUri);
-            System.out.println(String.format("Redirecting over https. URL=%s", url));
             response.sendRedirect(url);
         } else {
-            System.out.println("Redirecting over http");
             response.sendRedirect(redirectUri);
         }
     }
