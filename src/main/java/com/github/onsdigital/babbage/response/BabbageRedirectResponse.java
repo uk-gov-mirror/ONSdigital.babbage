@@ -25,6 +25,25 @@ public class BabbageRedirectResponse extends BabbageResponse {
     @Override
     public void apply(HttpServletRequest request, HttpServletResponse response) throws IOException {
         setCacheHeaders(request, response);
-        response.sendRedirect(redirectUri);
+//        response.sendRedirect(redirectUri);  // old http redirect
+
+        String url = buildHttpsRedirectUrl(request);
+        response.sendRedirect(url);
+    }
+
+    private static String serverName(HttpServletRequest request) {
+        return request.getServerName();
+    }
+
+    /**
+     * Build a HTTPS redirect
+     * @param request
+     * @return
+     */
+    private static String buildHttpsRedirectUrl(HttpServletRequest request) {
+        String url = "https://" + request.getServerName()
+                + request.getContextPath() + request.getServletPath();
+
+        return url;
     }
 }
