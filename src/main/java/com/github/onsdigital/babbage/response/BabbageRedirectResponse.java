@@ -28,11 +28,11 @@ public class BabbageRedirectResponse extends BabbageResponse {
     public void apply(HttpServletRequest request, HttpServletResponse response) throws IOException {
         setCacheHeaders(request, response);
 
-        String h1 = request.getHeader(HttpHeader.X_FORWARDED_HOST.asString());
-        String h2 = request.getHeader(HttpHeader.X_FORWARDED_PROTO.asString());
+        String forwardedHost = request.getHeader(HttpHeader.X_FORWARDED_HOST.asString());
+        String forwardedProto = request.getHeader(HttpHeader.X_FORWARDED_PROTO.asString());
 
-        if ((null != h1 && !h1.isEmpty()) && (null != h2 && !h2.isEmpty())) {
-            String url = buildHttpsRedirectUrl(h2, h1, redirectUri);
+        if ((null != forwardedHost && !forwardedHost.isEmpty()) && (null != forwardedProto && !forwardedProto.isEmpty())) {
+            String url = buildHttpsRedirectUrl(forwardedProto, forwardedHost, redirectUri);
             response.sendRedirect(url);
         } else {
             response.sendRedirect(redirectUri);
