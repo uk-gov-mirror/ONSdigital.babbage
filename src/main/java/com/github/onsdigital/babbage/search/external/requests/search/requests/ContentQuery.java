@@ -1,24 +1,29 @@
 package com.github.onsdigital.babbage.search.external.requests.search.requests;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.github.onsdigital.babbage.configuration.Configuration;
+import com.github.onsdigital.babbage.search.external.SearchClientExecutorService;
 import com.github.onsdigital.babbage.search.external.SearchType;
+import com.github.onsdigital.babbage.search.external.requests.suggest.SpellCheckRequest;
+import com.github.onsdigital.babbage.search.external.requests.suggest.models.SpellCheckResult;
 import com.github.onsdigital.babbage.search.input.SortBy;
 import com.github.onsdigital.babbage.search.input.TypeFilter;
 import com.github.onsdigital.babbage.search.model.ContentType;
+import com.github.onsdigital.babbage.search.model.SearchResult;
 import org.apache.http.client.utils.URIBuilder;
 import org.eclipse.jetty.client.api.ContentResponse;
 import org.eclipse.jetty.client.api.Request;
 import org.eclipse.jetty.client.util.StringContentProvider;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+import java.util.concurrent.Future;
 
 /**
  * Replaces the internal content query by executing a HTTP request against the dp-conceptual-search content API
  */
 public class ContentQuery extends SearchQuery {
+
+    private static final String WHITESPACE = " ";
 
     public static final SortBy DEFAULT_SORT_BY = SortBy.relevance;
 
@@ -95,5 +100,44 @@ public class ContentQuery extends SearchQuery {
         Request request = super.post()
                 .content(new StringContentProvider(MAPPER.writeValueAsString(content)));
         return request.send();
+    }
+
+    @Override
+    public SearchResult call() throws Exception {
+        SearchResult result = super.call();
+
+        if (Configuration.SEARCH_SERVICE.EXTERNAL_SPELLCHECK_ENABLED) {
+            // Execute a spell checker request and add to response
+
+            SpellCheckRequest spellCheckRequest = new SpellCheckRequest(super.searchTerm);
+            SpellCheckResult spellCheckResult = spellCheckRequest.call();
+
+            StringBuilder spellingStringBuilder = new StringBuilder();
+
+            Set<String> keySet = spellCheckResult.keySet();
+            Iterator<String> it = keySet.iterator();
+            while (it.hasNext()) {
+                String key = it.next();
+                SpellCheckResult.Correction correction = spellCheckResult.getCorrectionForKey(key);
+                if (null != correction) {
+                    spellingStringBuilder.append(correction.getCorrection());
+                    if (it.hasNext()) {
+                        spellingStringBuilder.append(WHITESPACE);
+                    }
+                }
+            }
+            List<String> suggestions = result.getSuggestions();
+
+            if (null != suggestions) {
+                suggestions.add(0, spellingStringBuilder.toString());
+            } else {
+                suggestions = Collections.singletonList(spellingStringBuilder.toString());
+            }
+
+            // Set the suggestions
+            result.setSuggestions(suggestions);
+        }
+
+        return result;
     }
 }

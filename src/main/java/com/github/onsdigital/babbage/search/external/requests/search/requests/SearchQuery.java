@@ -13,7 +13,7 @@ import org.eclipse.jetty.http.HttpScheme;
  */
 public abstract class SearchQuery extends AbstractSearchRequest<SearchResult> {
 
-    private final String searchTerm;
+    protected final String searchTerm;
     private final ListType listType;
     private final SearchType searchType;
 
