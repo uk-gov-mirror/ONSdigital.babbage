@@ -68,8 +68,11 @@ public class SearchClient implements SearchClosable {
         Map<String, Future<SearchResult>> futures = new HashMap<>();
 
         for (ONSQuery query : queryList) {
-            ProxyONSQuery request = new ProxyONSQuery(query);
-            Future<SearchResult> future = SearchClientExecutorService.getInstance().submit(request);
+            int page = query.page();
+            int pageSize = query.size();
+
+            ProxyONSQuery proxyONSQuery = new ProxyONSQuery(query, page, pageSize);
+            Future<SearchResult> future = SearchClientExecutorService.getInstance().submit(proxyONSQuery);
             futures.put(query.name(), future);
         }
 
