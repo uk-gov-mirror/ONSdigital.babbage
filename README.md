@@ -9,3 +9,7 @@ Repository for ONS Website Babbage
 
 To run Babbage locally:
 * Install ghostscript: `brew install ghostscript`
+
+23/08/2018
+To run Babbage locally and enable external search requests:
+```ENABLE_SEARCH_SERVICE=true ./run.sh```
