@@ -35,13 +35,13 @@ public class ProxyONSQuery extends AbstractSearchRequest<SearchResult> {
     }
 
     @Override
-    public String targetUri() {
+    public URIBuilder targetUri() {
         URIBuilder uriBuilder = new URIBuilder()
                 .setScheme(HttpScheme.HTTP.asString())
                 .setHost(HOST)
                 .setPath(SearchEndpoints.SEARCH.getEndpoint());
 
-        return uriBuilder.toString();
+        return uriBuilder;
     }
 
     private String queryToString() {

@@ -78,8 +78,8 @@ public class ContentQuery extends SearchQuery {
      * @return
      */
     @Override
-    protected URIBuilder buildUri() {
-        return super.buildUri()
+    public URIBuilder targetUri() {
+        return super.targetUri()
                 .addParameter(SearchParam.PAGE.getParam(), String.valueOf(this.page))
                 .addParameter(SearchParam.SIZE.getParam(), String.valueOf(this.pageSize));
     }

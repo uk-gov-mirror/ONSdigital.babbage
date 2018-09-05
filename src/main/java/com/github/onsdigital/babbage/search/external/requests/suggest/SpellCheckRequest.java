@@ -17,14 +17,14 @@ public class SpellCheckRequest extends AbstractSearchRequest<SpellCheckResult> {
     }
 
     @Override
-    public String targetUri() {
+    public URIBuilder targetUri() {
         URIBuilder uriBuilder = new URIBuilder()
                 .setScheme(HttpScheme.HTTP.asString())
                 .setHost(HOST)
                 .setPath(SearchEndpoints.SPELLING.getEndpoint())
                 .addParameter("q", this.searchTerm);
 
-        return uriBuilder.toString();
+        return uriBuilder;
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.github.onsdigital.babbage.search.external.requests.base;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.onsdigital.babbage.configuration.Configuration;
 import com.github.onsdigital.babbage.search.external.SearchClient;
+import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.ContentType;
 import org.eclipse.jetty.client.api.ContentResponse;
 import org.eclipse.jetty.client.api.Request;
@@ -26,7 +27,7 @@ public abstract class AbstractSearchRequest<T> implements Callable<T> {
      * Abstract method for building/returning the target URI for HTTP requests
      * @return
      */
-    public abstract String targetUri();
+    public abstract URIBuilder targetUri();
 
     /**
      * Builds a simple HTTP GET request with the target URI
@@ -34,7 +35,7 @@ public abstract class AbstractSearchRequest<T> implements Callable<T> {
      * @throws Exception
      */
     protected Request get() throws Exception {
-        return SearchClient.getInstance().get(this.targetUri());
+        return SearchClient.getInstance().get(this.targetUri().toString());
     }
 
     /**
@@ -42,7 +43,7 @@ public abstract class AbstractSearchRequest<T> implements Callable<T> {
      * @return
      */
     protected Request post() throws Exception {
-        return SearchClient.getInstance().post(this.targetUri())
+        return SearchClient.getInstance().post(this.targetUri().toString())
                 .header(HttpHeader.CONTENT_TYPE, ContentType.APPLICATION_JSON.getMimeType());
     }
 
