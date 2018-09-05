@@ -21,6 +21,18 @@ public class MockedContentResponse implements ContentResponse {
     public static final Long numberOfResults = 533L;
     public static final int took = 51;
 
+    public SpellCheckResult getTestResult() throws IOException {
+        String json = "{\n" +
+                "\"rpo\": {\n" +
+                "\"correction\": \"rpi\",\n" +
+                "\"probability\": 0.8609125179\n" +
+                "}\n" +
+                "}";
+
+        SpellCheckResult result = MAPPER.readValue(json, SpellCheckResult.class);
+        return result;
+    }
+
     public SearchResult testSearchResult() throws IOException {
         final Map<String, Object> testSearchResponse = new LinkedHashMap<String, Object>() {{
             put("numberOfResults", numberOfResults);
@@ -35,7 +47,7 @@ public class MockedContentResponse implements ContentResponse {
 
         SearchResult result = MAPPER.readValue(testJson, SearchResult.class);
 
-        SpellCheckResult spellCheckResult = TestSuggestResponseUtils.getTestResult();
+        SpellCheckResult spellCheckResult = this.getTestResult();
         String suggestedCorrection = spellCheckResult.getSuggestedCorrection();
 
         result.setSuggestions(Collections.singletonList(suggestedCorrection));
