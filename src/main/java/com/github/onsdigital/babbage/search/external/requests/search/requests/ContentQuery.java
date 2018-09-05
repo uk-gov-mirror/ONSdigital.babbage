@@ -23,8 +23,6 @@ import java.util.concurrent.Future;
  */
 public class ContentQuery extends SearchQuery {
 
-    private static final String WHITESPACE = " ";
-
     public static final SortBy DEFAULT_SORT_BY = SortBy.relevance;
 
     private final int page;
@@ -107,37 +105,27 @@ public class ContentQuery extends SearchQuery {
         SearchResult result = super.call();
 
         if (Configuration.SEARCH_SERVICE.EXTERNAL_SPELLCHECK_ENABLED) {
-            // Execute a spell checker request and add to response
+            SpellCheckResult spellCheckResult = this.getSpellCheckResult();
 
-            SpellCheckRequest spellCheckRequest = new SpellCheckRequest(super.searchTerm);
-            SpellCheckResult spellCheckResult = spellCheckRequest.call();
-
-            StringBuilder spellingStringBuilder = new StringBuilder();
-
-            Set<String> keySet = spellCheckResult.keySet();
-            Iterator<String> it = keySet.iterator();
-            while (it.hasNext()) {
-                String key = it.next();
-                SpellCheckResult.Correction correction = spellCheckResult.getCorrectionForKey(key);
-                if (null != correction) {
-                    spellingStringBuilder.append(correction.getCorrection());
-                    if (it.hasNext()) {
-                        spellingStringBuilder.append(WHITESPACE);
-                    }
-                }
-            }
-            List<String> suggestions = result.getSuggestions();
-
-            if (null != suggestions) {
-                suggestions.add(0, spellingStringBuilder.toString());
-            } else {
-                suggestions = Collections.singletonList(spellingStringBuilder.toString());
-            }
+            String suggestedCorrection = spellCheckResult.getSuggestedCorrection();
 
             // Set the suggestions
+            List<String> suggestions = result.getSuggestions();
+            if (null != suggestions) {
+                suggestions.add(0, suggestedCorrection);
+            } else {
+                suggestions = Collections.singletonList(suggestedCorrection);
+            }
             result.setSuggestions(suggestions);
         }
 
         return result;
+    }
+
+    public SpellCheckResult getSpellCheckResult() throws Exception {
+        SpellCheckRequest spellCheckRequest = new SpellCheckRequest(super.searchTerm);
+        SpellCheckResult spellCheckResult = spellCheckRequest.call();
+
+        return spellCheckResult;
     }
 }

@@ -17,6 +17,8 @@ public abstract class AbstractSearchRequest<T> implements Callable<T> {
 
     protected static final ObjectMapper MAPPER = new ObjectMapper();
 
+    protected SearchClient searchClient;
+
     private final Class<T> returnClass;
 
     public AbstractSearchRequest(Class<T> returnClass) {
@@ -35,7 +37,10 @@ public abstract class AbstractSearchRequest<T> implements Callable<T> {
      * @throws Exception
      */
     protected Request get() throws Exception {
-        return SearchClient.getInstance().get(this.targetUri().toString());
+        if (searchClient == null) {
+            searchClient = SearchClient.getInstance();
+        }
+        return searchClient.get(this.targetUri().toString());
     }
 
     /**
@@ -43,7 +48,10 @@ public abstract class AbstractSearchRequest<T> implements Callable<T> {
      * @return
      */
     protected Request post() throws Exception {
-        return SearchClient.getInstance().post(this.targetUri().toString())
+        if (searchClient == null) {
+            searchClient = SearchClient.getInstance();
+        }
+        return searchClient.post(this.targetUri().toString())
                 .header(HttpHeader.CONTENT_TYPE, ContentType.APPLICATION_JSON.getMimeType());
     }
 
@@ -54,9 +62,13 @@ public abstract class AbstractSearchRequest<T> implements Callable<T> {
      */
     protected abstract ContentResponse getContentResponse() throws Exception;
 
+    public String getContentResponseAsString() throws Exception {
+        return this.getContentResponse().getContentAsString();
+    }
+
     @Override
     public T call() throws Exception {
-        String response = this.getContentResponse().getContentAsString();
+        String response = this.getContentResponseAsString();
         return MAPPER.readValue(response, this.returnClass);
     }
 
