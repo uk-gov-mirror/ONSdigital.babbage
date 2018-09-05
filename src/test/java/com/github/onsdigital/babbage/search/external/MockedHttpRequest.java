@@ -7,12 +7,16 @@ import org.eclipse.jetty.client.api.ContentResponse;
 import java.net.URI;
 
 public class MockedHttpRequest extends HttpRequest {
-    public MockedHttpRequest(URI uri) {
+
+    private final ContentResponse contentResponse;
+
+    public MockedHttpRequest(URI uri, ContentResponse contentResponse) {
         super(new HttpClient(), null, uri);
+        this.contentResponse = contentResponse;
     }
 
     @Override
     public ContentResponse send() {
-        return new MockedContentResponse();
+        return this.contentResponse;
     }
 }

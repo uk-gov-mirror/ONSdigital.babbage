@@ -1,9 +1,9 @@
 package com.github.onsdigital.babbage.search.external.requests.search.requests;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.onsdigital.babbage.search.external.MockedContentResponse;
 import com.github.onsdigital.babbage.search.external.MockedHttpRequest;
 import com.github.onsdigital.babbage.search.external.SearchClient;
-import com.github.onsdigital.babbage.search.external.TestSearchResponseUtils;
 import com.github.onsdigital.babbage.search.model.SearchResult;
 import com.github.onsdigital.babbage.util.TestsUtil;
 import org.junit.Before;
@@ -37,13 +37,16 @@ public class ContentQueryTest {
         contentQuery = new ContentQuery(searchTerm, listType, page, pageSize);
         TestsUtil.setPrivateField(contentQuery, "searchClient", searchClient);
 
-        expectedResult = TestSearchResponseUtils.testSearchResult();
+        MockedContentResponse mockedContentResponse = new MockedContentResponse();
+        expectedResult = mockedContentResponse.testSearchResult();
+
+        MockedHttpRequest mockedHttpRequest = new MockedHttpRequest(contentQuery.targetUri().build(), mockedContentResponse);
 
         when(searchClient.get(contentQuery.targetUri().toString()))
-                .thenReturn(new MockedHttpRequest(contentQuery.targetUri().build()));
+                .thenReturn(mockedHttpRequest);
 
         when(searchClient.post(contentQuery.targetUri().toString()))
-                .thenReturn(new MockedHttpRequest(contentQuery.targetUri().build()));
+                .thenReturn(mockedHttpRequest);
     }
 
     @Test
