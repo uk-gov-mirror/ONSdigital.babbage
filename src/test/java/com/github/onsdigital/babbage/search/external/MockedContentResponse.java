@@ -1,27 +1,19 @@
 package com.github.onsdigital.babbage.search.external;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.onsdigital.babbage.paginator.Paginator;
 import com.github.onsdigital.babbage.search.external.requests.suggest.models.SpellCheckResult;
 import com.github.onsdigital.babbage.search.input.SortBy;
 import com.github.onsdigital.babbage.search.model.SearchResult;
-import org.eclipse.jetty.client.api.ContentResponse;
-import org.eclipse.jetty.client.api.Request;
-import org.eclipse.jetty.http.HttpFields;
-import org.eclipse.jetty.http.HttpVersion;
 
 import java.io.IOException;
 import java.util.*;
 
-public class MockedContentResponse implements ContentResponse {
+public class MockedContentResponse extends MockedSearchResponse {
 
-    private static final ObjectMapper MAPPER = new ObjectMapper();
+    private static final int took = 51;
 
-    public static final Long numberOfResults = 533L;
-    public static final int took = 51;
-
-    public SpellCheckResult getTestResult() throws IOException {
+    private SpellCheckResult getTestResult() throws IOException {
         String json = "{\n" +
                 "\"rpo\": {\n" +
                 "\"correction\": \"rpi\",\n" +
@@ -33,12 +25,18 @@ public class MockedContentResponse implements ContentResponse {
         return result;
     }
 
-    public SearchResult testSearchResult() throws IOException {
+    @Override
+    public LinkedHashMap<String, Integer> getDocCounts() {
+        return new LinkedHashMap<>();
+    }
+
+    @Override
+    public SearchResult getSearchResult() throws IOException {
         final Map<String, Object> testSearchResponse = new LinkedHashMap<String, Object>() {{
             put("numberOfResults", numberOfResults);
             put("took", took);
             put("results", testResults());
-            put("docCounts", new HashMap<>());
+            put("docCounts", getDocCounts());
             put("paginator", testPaginator());
             put("sortBy", SortBy.relevance.name());
         }};
@@ -351,66 +349,5 @@ public class MockedContentResponse implements ContentResponse {
         });
 
         return results;
-    }
-
-    @Override
-    public String getMediaType() {
-        return null;
-    }
-
-    @Override
-    public String getEncoding() {
-        return null;
-    }
-
-    @Override
-    public byte[] getContent() {
-        return new byte[0];
-    }
-
-    @Override
-    public String getContentAsString() {
-        try {
-            SearchResult testResult = this.testSearchResult();
-            return MAPPER.writeValueAsString(testResult);
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
-    public Request getRequest() {
-        return null;
-    }
-
-    @Override
-    public <T extends ResponseListener> List<T> getListeners(Class<T> aClass) {
-        return null;
-    }
-
-    @Override
-    public HttpVersion getVersion() {
-        return null;
-    }
-
-    @Override
-    public int getStatus() {
-        return 0;
-    }
-
-    @Override
-    public String getReason() {
-        return null;
-    }
-
-    @Override
-    public HttpFields getHeaders() {
-        return null;
-    }
-
-    @Override
-    public boolean abort(Throwable throwable) {
-        return false;
     }
 }

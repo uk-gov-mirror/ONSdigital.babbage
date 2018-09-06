@@ -8,9 +8,9 @@ import java.net.URI;
 
 public class MockedHttpRequest extends HttpRequest {
 
-    private final ContentResponse contentResponse;
+    private final MockedSearchResponse contentResponse;
 
-    public MockedHttpRequest(URI uri, ContentResponse contentResponse) {
+    public MockedHttpRequest(URI uri, MockedSearchResponse contentResponse) {
         super(new HttpClient(), null, uri);
         this.contentResponse = contentResponse;
     }

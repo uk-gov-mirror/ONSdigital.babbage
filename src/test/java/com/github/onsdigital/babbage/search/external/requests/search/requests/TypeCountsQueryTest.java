@@ -1,9 +1,8 @@
 package com.github.onsdigital.babbage.search.external.requests.search.requests;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.onsdigital.babbage.search.external.MockedContentResponse;
 import com.github.onsdigital.babbage.search.external.MockedHttpRequest;
-import com.github.onsdigital.babbage.search.external.MockedSearchResponse;
+import com.github.onsdigital.babbage.search.external.MockedTypeCountsResponse;
 import com.github.onsdigital.babbage.search.external.SearchClient;
 import com.github.onsdigital.babbage.search.model.SearchResult;
 import com.github.onsdigital.babbage.util.TestsUtil;
@@ -15,44 +14,42 @@ import org.mockito.MockitoAnnotations;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
-public abstract class ContentQueryTest {
+public class TypeCountsQueryTest {
 
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
     private final String searchTerm = "Who ya gonna call?";
     private final ListType listType = ListType.ONS;
-    private final int page = 1;
-    private final int pageSize = 10;
 
     private SearchResult expectedResult;
 
     @Mock
     private SearchClient searchClient;
 
-    private ContentQuery contentQuery;
+    private TypeCountsQuery typeCountsQuery;
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
 
-        contentQuery = new ContentQuery(searchTerm, listType, page, pageSize);
-        TestsUtil.setPrivateField(contentQuery, "searchClient", searchClient);
+        typeCountsQuery = new TypeCountsQuery(searchTerm, listType);
+        TestsUtil.setPrivateField(typeCountsQuery, "searchClient", searchClient);
 
-        MockedSearchResponse contentResponse = new MockedContentResponse();
-        expectedResult = contentResponse.getSearchResult();
+        MockedTypeCountsResponse typeCountsResponse = new MockedTypeCountsResponse();
+        expectedResult = typeCountsResponse.getSearchResult();
 
-        MockedHttpRequest mockedHttpRequest = new MockedHttpRequest(contentQuery.targetUri().build(), contentResponse);
+        MockedHttpRequest mockedHttpRequest = new MockedHttpRequest(typeCountsQuery.targetUri().build(), typeCountsResponse);
 
-        when(searchClient.get(contentQuery.targetUri().toString()))
+        when(searchClient.get(typeCountsQuery.targetUri().toString()))
                 .thenReturn(mockedHttpRequest);
 
-        when(searchClient.post(contentQuery.targetUri().toString()))
+        when(searchClient.post(typeCountsQuery.targetUri().toString()))
                 .thenReturn(mockedHttpRequest);
     }
 
     @Test
     public void testSearchResult() throws Exception {
-        SearchResult actual = contentQuery.call();
+        SearchResult actual = typeCountsQuery.call();
         String actualJson = MAPPER.writeValueAsString(actual);
         String expectedJson = MAPPER.writeValueAsString(expectedResult);
 
