@@ -31,15 +31,20 @@ public abstract class AbstractSearchRequest<T> implements Callable<T> {
      */
     public abstract URIBuilder targetUri();
 
+    private SearchClient getSearchClient() throws Exception {
+        if (searchClient == null) {
+            searchClient = SearchClient.getInstance();
+        }
+        return searchClient;
+    }
+
     /**
      * Builds a simple HTTP GET request with the target URI
      * @return
      * @throws Exception
      */
     protected Request get() throws Exception {
-        if (searchClient == null) {
-            searchClient = SearchClient.getInstance();
-        }
+        searchClient = this.getSearchClient();
         return searchClient.get(this.targetUri().toString());
     }
 
@@ -48,9 +53,7 @@ public abstract class AbstractSearchRequest<T> implements Callable<T> {
      * @return
      */
     protected Request post() throws Exception {
-        if (searchClient == null) {
-            searchClient = SearchClient.getInstance();
-        }
+        searchClient = this.getSearchClient();
         return searchClient.post(this.targetUri().toString())
                 .header(HttpHeader.CONTENT_TYPE, ContentType.APPLICATION_JSON.getMimeType());
     }
