@@ -1,7 +1,7 @@
 package com.github.onsdigital.babbage.search.external.requests.search.requests;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.onsdigital.babbage.search.external.MockedContentResponse;
+import com.github.onsdigital.babbage.search.external.MockedFeaturedResultResponse;
 import com.github.onsdigital.babbage.search.external.MockedHttpRequest;
 import com.github.onsdigital.babbage.search.external.SearchClient;
 import com.github.onsdigital.babbage.search.model.SearchResult;
@@ -14,44 +14,42 @@ import org.mockito.MockitoAnnotations;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
-public class ContentQueryTest {
+public class FeaturedResultQueryTest {
 
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
     private final String searchTerm = "Who ya gonna call?";
     private final ListType listType = ListType.ONS;
-    private final int page = 1;
-    private final int pageSize = 10;
 
     private SearchResult expectedResult;
 
     @Mock
     private SearchClient searchClient;
 
-    private ContentQuery contentQuery;
+    private FeaturedResultQuery featuredResultQuery;
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
 
-        contentQuery = new ContentQuery(searchTerm, listType, page, pageSize);
-        TestsUtil.setPrivateField(contentQuery, "searchClient", searchClient);
+        featuredResultQuery = new FeaturedResultQuery(searchTerm, listType);
+        TestsUtil.setPrivateField(featuredResultQuery, "searchClient", searchClient);
 
-        MockedContentResponse contentResponse = new MockedContentResponse();
+        MockedFeaturedResultResponse contentResponse = new MockedFeaturedResultResponse();
         expectedResult = contentResponse.getSearchResult();
 
-        MockedHttpRequest mockedHttpRequest = new MockedHttpRequest(contentQuery.targetUri().build(), contentResponse);
+        MockedHttpRequest mockedHttpRequest = new MockedHttpRequest(featuredResultQuery.targetUri().build(), contentResponse);
 
-        when(searchClient.get(contentQuery.targetUri().toString()))
+        when(searchClient.get(featuredResultQuery.targetUri().toString()))
                 .thenReturn(mockedHttpRequest);
 
-        when(searchClient.post(contentQuery.targetUri().toString()))
+        when(searchClient.post(featuredResultQuery.targetUri().toString()))
                 .thenReturn(mockedHttpRequest);
     }
 
     @Test
     public void testSearchResult() throws Exception {
-        SearchResult actual = contentQuery.call();
+        SearchResult actual = featuredResultQuery.call();
         String actualJson = MAPPER.writeValueAsString(actual);
         String expectedJson = MAPPER.writeValueAsString(expectedResult);
 
