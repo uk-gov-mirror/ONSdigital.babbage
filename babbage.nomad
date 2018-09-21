@@ -25,8 +25,7 @@ job "babbage" {
 
     constraint {
       attribute = "${node.class}"
-      operator  = "regexp"
-      value     = "web.*"
+      value     = "web-mount"
     }
 
     restart {
@@ -103,8 +102,7 @@ job "babbage" {
 
     constraint {
       attribute = "${node.class}"
-      operator  = "regexp"
-      value     = "publishing.*"
+      value     = "publishing-mount"
     }
 
     restart {
