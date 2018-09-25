@@ -1,6 +1,5 @@
 package com.github.onsdigital.babbage.pdf;
 
-import com.github.onsdigital.babbage.configuration.Configuration;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -13,6 +12,8 @@ import java.nio.file.Path;
 import java.util.Iterator;
 import java.util.Map;
 
+import static com.github.onsdigital.babbage.configuration.AppConfiguration.appConfig;
+
 public class PdfGeneratorLegacy {
 
     private static final String TEMP_DIRECTORY_PATH = FileUtils.getTempDirectoryPath();
@@ -20,7 +21,8 @@ public class PdfGeneratorLegacy {
 
     public static Path generatePdf(String uri, String fileName, Map<String, String> cookies, String pdfTable) {
         String[] command = {
-                Configuration.PHANTOMJS.getPhantomjsPath(), "target/web/js/generatepdf.js", URL + uri + "?pdf=1", "" + TEMP_DIRECTORY_PATH + "/" + fileName + ".pdf"
+                appConfig().babbage().getPhantomjsPath(), "target/web/js/generatepdf.js",
+                URL + uri + "?pdf=1", "" + TEMP_DIRECTORY_PATH + "/" + fileName + ".pdf"
         };
 
         Iterator<Map.Entry<String, String>> iterator = cookies.entrySet().iterator();
@@ -60,7 +62,7 @@ public class PdfGeneratorLegacy {
     private static void addDataTableToPdf(String fileName, String pdfTable, BufferedReader bufferedReader, Path pdfFile) throws IOException, InterruptedException {
         if (pdfTable != null) {
             String[] gsCommand = {
-                    Configuration.GHOSTSCRIPT.getGhostscriptPath(),
+                    appConfig().babbage().getGhostscriptPath(),
                     "-dBATCH", "-dNOPAUSE", "-q", "-sDEVICE=pdfwrite", "-dPDFSETTINGS=/prepress",
                     "-sOutputFile=" + TEMP_DIRECTORY_PATH + "/" + fileName + "-merged.pdf",
                     TEMP_DIRECTORY_PATH + "/" + fileName + ".pdf", pdfTable

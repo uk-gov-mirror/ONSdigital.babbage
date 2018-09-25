@@ -3,6 +3,8 @@ package com.github.onsdigital.babbage.configuration;
 import com.github.onsdigital.babbage.logging.LogBuilder;
 import org.apache.commons.lang3.StringUtils;
 
+import static com.github.onsdigital.babbage.configuration.Utils.defaultNumberIfBlank;
+import static com.github.onsdigital.babbage.configuration.Utils.getNumberValue;
 import static com.github.onsdigital.babbage.configuration.Utils.getValue;
 
 public class Babbage implements Loggable {
@@ -42,6 +44,11 @@ public class Babbage implements Loggable {
     private final boolean isDevEnv;
     private final boolean isPublishing;
     private final String redirectSecret;
+    private final String phantomjsPath;
+    private final int maxHighchartsServerConnections;
+    private final String exportSeverUrl;
+    private final String ghostscriptPath;
+    private final String mathjaxExportServer;
 
     private Babbage() {
         maxVisiblePaginatorLink = 5;
@@ -62,6 +69,16 @@ public class Babbage implements Loggable {
         isPublishing = "Y".equals(StringUtils.defaultIfBlank(getValue("IS_PUBLISHING"), "N"));
 
         redirectSecret = StringUtils.defaultIfBlank(getValue("REDIRECT_SECRET"), "secret");
+
+        phantomjsPath = StringUtils.defaultIfBlank(getValue("PHANTOMJS_PATH"), "/usr/local/bin/phantomjs");
+
+        maxHighchartsServerConnections = defaultNumberIfBlank(getNumberValue("HIGHCHARTS_EXPORT_MAX_CONNECTION"), 50);
+
+        exportSeverUrl = StringUtils.defaultIfBlank(getValue("HIGHCHARTS_EXPORT_SERVER"), "http://localhost:9999/");
+
+        ghostscriptPath = StringUtils.defaultIfBlank(getValue("GHOSTSCRIPT_PATH"), "/usr/local/bin/gs");
+
+        mathjaxExportServer = getValue("MATHJAX_EXPORT_SERVER");
     }
 
     public int getDefaultContentCacheTime() {
@@ -104,6 +121,34 @@ public class Babbage implements Loggable {
         return publishCacheTimeout;
     }
 
+    public String getPhantomjsPath() {
+        return phantomjsPath;
+    }
+
+    public int getDefaultCacheTime() {
+        return defaultCacheTime;
+    }
+
+    public boolean isDevEnv() {
+        return isDevEnv;
+    }
+
+    public int getMaxHighchartsServerConnections() {
+        return maxHighchartsServerConnections;
+    }
+
+    public String getExportSeverUrl() {
+        return exportSeverUrl;
+    }
+
+    public String getGhostscriptPath() {
+        return ghostscriptPath;
+    }
+
+    public String getMathjaxExportServer() {
+        return mathjaxExportServer;
+    }
+
     public void logConfiguration() {
         LogBuilder.Log()
                 .parameter("maxVisiblePaginatorLink", maxVisiblePaginatorLink)
@@ -115,7 +160,11 @@ public class Babbage implements Loggable {
                 .parameter("cacheEnabled", cacheEnabled)
                 .parameter("isDevEnv", isDevEnv)
                 .parameter("isPublishing", isPublishing)
-                .parameter("redirectSecret", "xxxx") // don't log secrets
+                .parameter("phantomjsPath", phantomjsPath)
+                .parameter("maxHighchartsServerConnections", maxHighchartsServerConnections)
+                .parameter("exportSeverUrl", exportSeverUrl)
+                .parameter("ghostscriptPath", ghostscriptPath)
+                .parameter("mathjaxExportServer", mathjaxExportServer)
                 .info("babbage general configuration");
     }
 }

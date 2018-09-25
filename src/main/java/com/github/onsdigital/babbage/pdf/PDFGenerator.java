@@ -28,6 +28,8 @@ import java.nio.file.Path;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import static com.github.onsdigital.babbage.configuration.AppConfiguration.appConfig;
+
 /**
  * Created by bren on 08/07/15.
  */
@@ -108,7 +110,7 @@ public class PDFGenerator {
     private static void addDataTableToPdf(String fileName, String pdfTable, BufferedReader bufferedReader, Path pdfFile) throws IOException, InterruptedException {
         if (pdfTable != null) {
             String[] gsCommand = {
-                    Configuration.GHOSTSCRIPT.getGhostscriptPath(),
+                    appConfig().babbage().getGhostscriptPath(),
                     "-dBATCH", "-dNOPAUSE", "-q", "-sDEVICE=pdfwrite", "-dPDFSETTINGS=/prepress",
                     "-sOutputFile=" + TEMP_DIRECTORY_PATH + "/" + fileName + "-merged.pdf",
                     TEMP_DIRECTORY_PATH + "/" + fileName + ".pdf", pdfTable

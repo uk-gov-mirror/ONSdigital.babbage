@@ -16,6 +16,8 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.github.onsdigital.babbage.configuration.AppConfiguration.appConfig;
+
 /**
  * Created by bren on 17/06/15.
  */
@@ -35,7 +37,7 @@ public class HighChartsExportClient {
                 if (instance == null) {
                     instance = new HighChartsExportClient();
                     Log.debug("Initializing Highcharts export server client connection pool");
-                    client = new PooledHttpClient(Configuration.HIGHCHARTS.getExportSeverUrl(), createConfiguration());
+                    client = new PooledHttpClient(appConfig().babbage().getExportSeverUrl(), createConfiguration());
                 }
             }
         }
@@ -44,7 +46,7 @@ public class HighChartsExportClient {
 
     private static ClientConfiguration createConfiguration() {
         ClientConfiguration configuration = new ClientConfiguration();
-        configuration.setMaxTotalConnection(Configuration.HIGHCHARTS.getMaxHighchartsServerConnection());
+        configuration.setMaxTotalConnection(appConfig().babbage().getMaxHighchartsServerConnections());
         return configuration;
     }
 
