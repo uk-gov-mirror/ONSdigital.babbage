@@ -168,7 +168,8 @@
         <dependency>
             <groupId>com.github.ONSdigital</groupId>
             <artifactId>dp-logging</artifactId>
-            <version>master-SNAPSHOT</version>
+            <!--<version>master-SNAPSHOT</version>-->
+            <version>feature~performance-test-SNAPSHOT</version>
         </dependency>
 
         <!-- JWTs for signed URLs -->

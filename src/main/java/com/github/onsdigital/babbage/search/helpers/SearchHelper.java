@@ -1,13 +1,16 @@
 package com.github.onsdigital.babbage.search.helpers;
 
-import com.github.onsdigital.babbage.configuration.Configuration;
 import com.github.onsdigital.babbage.paginator.Paginator;
 import com.github.onsdigital.babbage.search.model.ContentType;
 import com.github.onsdigital.babbage.search.model.field.Field;
 import com.github.onsdigital.babbage.search.model.sort.SortField;
 import com.github.onsdigital.babbage.util.URIUtil;
 import org.elasticsearch.ElasticsearchException;
-import org.elasticsearch.action.search.*;
+import org.elasticsearch.action.search.MultiSearchRequestBuilder;
+import org.elasticsearch.action.search.MultiSearchResponse;
+import org.elasticsearch.action.search.SearchRequestBuilder;
+import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.AbstractAggregationBuilder;
@@ -17,7 +20,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.github.onsdigital.babbage.configuration.Configuration.ELASTIC_SEARCH.getElasticSearchIndexAlias;
+import static com.github.onsdigital.babbage.configuration.AppConfiguration.appConfig;
 import static com.github.onsdigital.babbage.configuration.Configuration.GENERAL.getMaxVisiblePaginatorLink;
 import static com.github.onsdigital.babbage.search.ElasticSearchClient.getElasticsearchClient;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
@@ -30,7 +33,7 @@ public class SearchHelper {
 
     private static SearchRequestBuilder prepare(ONSQuery query, String index) {
         SearchRequestBuilder requestBuilder = getElasticsearchClient()
-                .prepareSearch(isNotEmpty(index) ? index : getElasticSearchIndexAlias())
+                .prepareSearch(isNotEmpty(index) ? index : appConfig().elasticSearch().indexAlias())
                 .setQuery(query.query())
                 .setFrom(query.from())
                 .setSize(query.size()).setSearchType(SearchType.DFS_QUERY_THEN_FETCH);
@@ -89,7 +92,8 @@ public class SearchHelper {
                         SearchHit searchHit = searchHits.getAt(0);
                         // ID is the url
                         String url = searchHit.getId();
-                        if (url != null && !Configuration.ELASTIC_SEARCH.getHighlightBlacklist().contains(URIUtil.cleanUri(url))) {
+                        if (url != null && !appConfig().elasticSearch().highlightBlacklist().contains(URIUtil.cleanUri(url)
+                        )) {
                             // OK to add response
                             helpers.add(searchResponse);
                         }

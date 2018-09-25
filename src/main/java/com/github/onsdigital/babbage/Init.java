@@ -1,10 +1,15 @@
 package com.github.onsdigital.babbage;
 
 import com.github.davidcarboni.restolino.framework.Startup;
+import com.github.onsdigital.babbage.configuration.AppConfiguration;
 import com.github.onsdigital.babbage.configuration.Configuration;
+import com.github.onsdigital.babbage.configuration.ContentAPI;
+import com.github.onsdigital.babbage.configuration.ElasticSearch;
 import com.github.onsdigital.babbage.publishing.PublishingManager;
 import com.github.onsdigital.babbage.search.ElasticSearchClient;
 import com.github.onsdigital.babbage.search.external.SearchClient;
+
+import static com.github.onsdigital.babbage.logging.LogBuilder.Log;
 
 /**
  * Created by bren on 13/12/15.
@@ -15,6 +20,10 @@ public class Init implements Startup {
 
     @Override
     public void init() {
+        Log().info("starting babbage");
+
+        AppConfiguration.loadConfiguration();
+
         try {
             ElasticSearchClient.init();
             PublishingManager.init();

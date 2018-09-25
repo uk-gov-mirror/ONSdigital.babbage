@@ -1,5 +1,6 @@
 package com.github.onsdigital.babbage.configuration;
 
+import com.github.onsdigital.babbage.logging.LogBuilder;
 import com.github.onsdigital.babbage.util.URIUtil;
 import org.apache.commons.lang3.StringUtils;
 
@@ -128,13 +129,20 @@ public class Configuration {
 
     }
 
-    public static class ELASTIC_SEARCH {
-        private static String elasticSearchServer = defaultIfBlank(getValue("ELASTIC_SEARCH_SERVER"), "localhost");
-        private static String elasticSearchIndexAlias = defaultIfBlank(getValue("ELASTIC_SEARCH_INDEX_ALIAS"), "ons");
-        private static Integer elasticSearchPort = Integer.parseInt(defaultIfBlank(getValue("ELASTIC_SEARCH_PORT"), "9300"));
-        private static String elasticSearchCluster = defaultIfBlank(getValue("ELASTIC_SEARCH_CLUSTER"), "");
+/*    public static class ELASTIC_SEARCH {
 
-        private static String HIGHLIGHT_URL_BLACKLIST_FILE = defaultIfBlank(getValue("HIGHLIGHT_URL_BLACKLIST_FILE"),
+        private static final String SERVER_KEY = "ELASTIC_SEARCH_SERVER";
+        private static final String PORT_KEY = "ELASTIC_SEARCH_PORT";
+        private static final String INDEX_ALIAS_KEY = "ELASTIC_SEARCH_INDEX_ALIAS";
+        private static final String CLUSTER_KEY = "ELASTIC_SEARCH_CLUSTER";
+        private static final String HIGHLIGHTS_FILE_KEY = "HIGHLIGHT_URL_BLACKLIST_FILE";
+
+        private static String elasticSearchServer = defaultIfBlank(getValue(SERVER_KEY), "localhost");
+        private static String elasticSearchIndexAlias = defaultIfBlank(getValue(INDEX_ALIAS_KEY), "ons");
+        private static Integer elasticSearchPort = Integer.parseInt(defaultIfBlank(getValue(PORT_KEY), "9500"));
+        private static String elasticSearchCluster = defaultIfBlank(getValue(CLUSTER_KEY), "");
+
+        private static String HIGHLIGHT_URL_BLACKLIST_FILE = defaultIfBlank(getValue(HIGHLIGHTS_FILE_KEY),
                 "highlight-url-blacklist");
         
         private static final List<String> highlightBlacklist = loadHighlightBlacklist();
@@ -160,7 +168,7 @@ public class Configuration {
         /**
          * Method to load the list of retired product pages to be hidden
          * @return List of url strings containing the black listed urls
-         */
+         *//*
         private static List<String> loadHighlightBlacklist() {
             ClassLoader classLoader = Configuration.class.getClassLoader();
             URL fileUrl = classLoader.getResource(HIGHLIGHT_URL_BLACKLIST_FILE);
@@ -185,7 +193,7 @@ public class Configuration {
             }
             return urls;
         }
-    }
+    }*/
 
     public static class SEARCH_SERVICE {
         private static final String HOST = defaultIfBlank(getValue("EXTERNAL_SEARCH_HOST"), "localhost");

@@ -1,7 +1,8 @@
 package com.github.onsdigital.babbage.api.endpoint.search;
 
 import com.github.davidcarboni.restolino.framework.Api;
-import com.github.onsdigital.babbage.configuration.Configuration;
+import com.github.onsdigital.babbage.configuration.AppConfiguration;
+import com.github.onsdigital.babbage.configuration.ElasticSearch;
 import com.github.onsdigital.babbage.search.ElasticSearchClient;
 import com.github.onsdigital.babbage.search.helpers.ONSSearchResponse;
 import com.github.onsdigital.babbage.template.TemplateService;
@@ -18,6 +19,8 @@ import javax.ws.rs.core.MediaType;
 import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
+
+import static com.github.onsdigital.babbage.configuration.AppConfiguration.appConfig;
 
 /**
  * Created by bren on 11/01/16.
@@ -37,7 +40,7 @@ public class SearchTest {
             String searchQuery = TemplateService.getInstance().renderTemplate("test/searchquery");
             searchQuery = searchQuery.replace("$q", q);
             Client client = ElasticSearchClient.getElasticsearchClient();
-            String elasticSearchIndexAlias = Configuration.ELASTIC_SEARCH.getElasticSearchIndexAlias();
+            String elasticSearchIndexAlias = appConfig().elasticSearch().indexAlias();
             SearchRequestBuilder contentSearchBuilder = client.prepareSearch(elasticSearchIndexAlias).setTypes(types)
                     .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
                     .setExtraSource(searchQuery);
