@@ -7,6 +7,7 @@ public class AppConfiguration {
     private final ElasticSearch elasticSearch;
     private final ContentAPI contentAPI;
     private final Babbage babbage;
+    private final Handlebars handlebars;
 
     public static void loadConfiguration() {
         if (INSTANCE == null) {
@@ -22,8 +23,9 @@ public class AppConfiguration {
         elasticSearch = ElasticSearch.getInstance();
         contentAPI = ContentAPI.getInstance();
         babbage = Babbage.getInstance();
+        handlebars = Handlebars.getInstance();
 
-        logApplicationConfigs(elasticSearch, contentAPI, babbage);
+        logApplicationConfigs(elasticSearch, contentAPI, babbage, handlebars);
     }
 
     private void logApplicationConfigs(Loggable... configs) {
