@@ -46,6 +46,10 @@ public class AppConfiguration {
         return babbage;
     }
 
+    public Handlebars handlebars() {
+        return handlebars;
+    }
+
     public static AppConfiguration appConfig() {
         return INSTANCE;
     }

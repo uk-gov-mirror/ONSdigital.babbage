@@ -1,6 +1,10 @@
 package com.github.onsdigital.babbage.template.handlebars;
 
-import com.github.jknack.handlebars.*;
+import com.github.jknack.handlebars.Context;
+import com.github.jknack.handlebars.Handlebars;
+import com.github.jknack.handlebars.HumanizeHelper;
+import com.github.jknack.handlebars.Jackson2Helper;
+import com.github.jknack.handlebars.Template;
 import com.github.jknack.handlebars.cache.HighConcurrencyTemplateCache;
 import com.github.jknack.handlebars.context.FieldValueResolver;
 import com.github.jknack.handlebars.context.MapValueResolver;
@@ -15,8 +19,6 @@ import java.io.IOException;
 import java.lang.reflect.Modifier;
 import java.util.Map;
 import java.util.Set;
-
-import static com.github.onsdigital.babbage.configuration.Configuration.HANDLEBARS.getMainContentTemplateName;
 
 /**
  * Created by bren on 28/05/15.

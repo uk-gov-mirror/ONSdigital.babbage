@@ -88,7 +88,7 @@ public enum DateHelpers implements BabbageHandlebarsHelper<String> {
     private static final TimeZone timeZone = TimeZone.getTimeZone("Europe/London");
 
     private static String resolvePattern(Options options) {
-        return options.hash("outputFormat", Configuration.HANDLEBARS.getHandlebarsDatePattern());
+        return options.hash("outputFormat", appConfig().handlebars().getHandlebarsDatePattern());
     }
 
     private static String resolveInputFormat(Options options) {

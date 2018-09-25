@@ -9,11 +9,7 @@ import java.io.InputStream;
 import java.util.Collections;
 import java.util.Map;
 
-import static com.github.onsdigital.babbage.configuration.Configuration.HANDLEBARS.getMainChartConfigTemplateName;
-import static com.github.onsdigital.babbage.configuration.Configuration.HANDLEBARS.getMainContentTemplateName;
-import static com.github.onsdigital.babbage.configuration.Configuration.HANDLEBARS.getTemplatesDirectory;
-import static com.github.onsdigital.babbage.configuration.Configuration.HANDLEBARS.getTemplatesSuffix;
-import static com.github.onsdigital.babbage.configuration.Configuration.HANDLEBARS.isReloadTemplateChanges;
+import static com.github.onsdigital.babbage.configuration.AppConfiguration.appConfig;
 import static com.github.onsdigital.babbage.util.json.JsonUtil.toMap;
 
 /**
@@ -25,7 +21,8 @@ public class TemplateService {
 
     private static TemplateService instance = new TemplateService();
 
-    private static HandlebarsRenderer renderer = new HandlebarsRenderer(getTemplatesDirectory(), getTemplatesSuffix(), isReloadTemplateChanges());
+    private static HandlebarsRenderer renderer = new HandlebarsRenderer(appConfig().handlebars().getTemplatesDirectory(),
+            appConfig().handlebars().getTemplatesSuffix(), appConfig().handlebars().isReloadTemplateChanges());
 
     private TemplateService() {
     }
@@ -43,7 +40,7 @@ public class TemplateService {
      * @throws IOException
      */
     public String renderContent(Object data, Map<String, Object>... additionalData) throws IOException {
-        return renderer.render(getMainContentTemplateName(), sanitize(data), addThreadContext(additionalData));
+        return renderer.render(appConfig().handlebars().getMainContentTemplateName(), sanitize(data), addThreadContext(additionalData));
     }
 
     /**
@@ -55,7 +52,7 @@ public class TemplateService {
      * @throws IOException
      */
     public String renderChartConfiguration(Object data, Map<String, Object>... additionalData) throws IOException {
-        return renderer.render(getMainChartConfigTemplateName(), sanitize(data), addThreadContext(additionalData));
+        return renderer.render(appConfig().handlebars().getMainChartConfigTemplateName(), sanitize(data), addThreadContext(additionalData));
     }
 
     /**
