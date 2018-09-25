@@ -7,7 +7,7 @@ import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.search.aggregations.AbstractAggregationBuilder;
 import org.elasticsearch.search.suggest.SuggestBuilder;
 
-import static com.github.onsdigital.babbage.configuration.Configuration.GENERAL.getResultsPerPage;
+import static com.github.onsdigital.babbage.configuration.AppConfiguration.appConfig;
 
 /**
  * Created by bren on 19/01/16.
@@ -23,7 +23,7 @@ public class ONSQuery {
     private AbstractAggregationBuilder[] aggregationBuilders;
     private SuggestBuilder.SuggestionBuilder[] suggestionBuilders;
     private int from;
-    private int size = getResultsPerPage();//default size is in configuration
+    private int size = appConfig().babbage().getResultsPerPage();
     private Integer page;
     private ContentType[] types;
     private SortBy sortBy;

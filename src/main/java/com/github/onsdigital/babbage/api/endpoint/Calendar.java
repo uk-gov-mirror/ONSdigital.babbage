@@ -24,6 +24,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import static com.github.onsdigital.babbage.configuration.AppConfiguration.appConfig;
 import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.onsQuery;
 import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
 import static org.elasticsearch.index.query.QueryBuilders.rangeQuery;
@@ -85,7 +86,10 @@ public class Calendar {
 
         try {
             String title = (String) description.get("title") + description.get("edition");
-            Date date = new SimpleDateFormat(Configuration.CONTENT_SERVICE.getDefaultContentDatePattern()).parse((String) description.get("releaseDate"));
+            Date date = appConfig().contentAPI()
+                    .defaultContentDateFormat()
+                    .parse((String) description.get("releaseDate"));
+
             net.fortuna.ical4j.model.Date eventDate = new net.fortuna.ical4j.model.DateTime(date.getTime());
             VEvent event = new VEvent(eventDate, eventDate, title);
             event.getProperties().add(new Uid(getUid(release)));

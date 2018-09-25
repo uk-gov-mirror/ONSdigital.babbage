@@ -12,6 +12,7 @@ import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
+import static com.github.onsdigital.babbage.configuration.AppConfiguration.appConfig;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 /**
@@ -40,8 +41,8 @@ public class RequestUtil {
         ThreadContext.addData(LABELS_KEY, LocaleConfig.getLabels(locale));
         ThreadContext.addData(LANG_KEY, locale.getLanguage());
         ThreadContext.addData(LOCATION_KEY, getLocation(request));
-        ThreadContext.addData(IS_DEV_KEY, Configuration.GENERAL.isDevEnvironment());
-        ThreadContext.addData(IS_PUBLISHING, Configuration.GENERAL.isPublishing());
+        ThreadContext.addData(IS_DEV_KEY, appConfig().babbage().isDevEnvironment());
+        ThreadContext.addData(IS_PUBLISHING, appConfig().babbage().isPublishing());
     }
 
     public static void clearContext() {

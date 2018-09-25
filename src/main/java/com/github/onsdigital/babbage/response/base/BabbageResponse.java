@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import static com.github.onsdigital.babbage.configuration.AppConfiguration.appConfig;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
 /**
@@ -116,7 +117,7 @@ public abstract class BabbageResponse {
     }
 
     public void setMaxAge(Long maxAge) {
-        if (Configuration.GENERAL.isCacheEnabled()) {
+        if (appConfig().babbage().isCacheEnabled()) {
             this.maxAge = maxAge;
         }
     }

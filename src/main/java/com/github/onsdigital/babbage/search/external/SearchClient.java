@@ -17,6 +17,7 @@ import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
+import static com.github.onsdigital.babbage.configuration.AppConfiguration.appConfig;
 import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.*;
 
 public class SearchClient implements SearchClosable {
@@ -76,7 +77,7 @@ public class SearchClient implements SearchClosable {
                 pageSize = query.size();
             } else {
                 page = 1;
-                pageSize = Configuration.GENERAL.getResultsPerPage();
+                pageSize = appConfig().babbage().getResultsPerPage();
             }
 
             ProxyONSQuery proxyONSQuery = new ProxyONSQuery(query, page, pageSize);

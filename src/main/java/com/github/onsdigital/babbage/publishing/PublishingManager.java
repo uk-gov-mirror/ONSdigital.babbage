@@ -35,6 +35,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import static com.github.onsdigital.babbage.configuration.AppConfiguration.appConfig;
 import static com.github.onsdigital.babbage.search.ElasticSearchClient.getElasticsearchClient;
 import static org.apache.commons.lang.StringUtils.removeEnd;
 
@@ -201,7 +202,7 @@ public class PublishingManager {
 
     public static void init() throws IOException {
         System.out.println("Initializing Search service");
-        if (Configuration.GENERAL.isCacheEnabled()) {
+        if (appConfig().babbage().isCacheEnabled()) {
             initPublishDatesIndex();
         }
         System.out.println("Initialized Search service successfully");

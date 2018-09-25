@@ -14,7 +14,7 @@ import java.util.List;
 import static com.github.onsdigital.babbage.configuration.Utils.getValue;
 import static org.apache.commons.lang3.StringUtils.defaultIfBlank;
 
-public class ElasticSearch {
+public class ElasticSearch implements Loggable {
 
     private static ElasticSearch INSTANCE = null;
 

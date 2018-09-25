@@ -11,6 +11,8 @@ import com.github.onsdigital.babbage.template.handlebars.helpers.base.BabbageHan
 import java.io.IOException;
 import java.util.Arrays;
 
+import static com.github.onsdigital.babbage.configuration.AppConfiguration.appConfig;
+
 /**
  * Created by iankent on 03/02/17.
  */
@@ -51,7 +53,7 @@ public enum SignedURLHelper implements BabbageHandlebarsHelper<String> {
                         .withClaim("index", index)
                         .withClaim("listType", listType)
                         .withClaim("pageSize", pageSize)
-                        .sign(Algorithm.HMAC256(Configuration.GENERAL.getRedirectSecret()));
+                        .sign(Algorithm.HMAC256(appConfig().babbage().getRedirectSecret()));
             } catch (JWTCreationException exception){
                 throw new RuntimeException("Failed to create JWT", exception);
             }

@@ -12,6 +12,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 
+import static com.github.onsdigital.babbage.configuration.AppConfiguration.appConfig;
+
 /**
  * Created by bren on 10/06/15.
  */
@@ -90,7 +92,7 @@ public enum DateHelpers implements BabbageHandlebarsHelper<String> {
     }
 
     private static String resolveInputFormat(Options options) {
-        return  options.hash("inputFormat",Configuration.CONTENT_SERVICE.getDefaultContentDatePattern());
+        return  options.hash("inputFormat", appConfig().contentAPI().defaultContentDatePattern());
     }
 
 }

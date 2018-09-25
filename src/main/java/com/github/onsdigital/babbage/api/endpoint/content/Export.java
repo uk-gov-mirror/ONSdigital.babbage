@@ -13,6 +13,8 @@ import javax.ws.rs.POST;
 import javax.ws.rs.core.Context;
 import java.io.IOException;
 
+import static com.github.onsdigital.babbage.configuration.AppConfiguration.appConfig;
+
 /**
  * Created by bren on 30/11/15.
  * <p/>
@@ -30,7 +32,7 @@ public class Export {
             contentDispositionHeader += contentResponse.getName() == null ? "" : "filename=\"" + contentResponse.getName() + "\"";
             response.setCharacterEncoding("UTF-8");
             response.setHeader("Content-Disposition", contentDispositionHeader);
-            new BabbageBinaryResponse(contentResponse.getDataStream(), contentResponse.getMimeType(), Configuration.GENERAL.getSearchResponseCacheTime())
+            new BabbageBinaryResponse(contentResponse.getDataStream(), contentResponse.getMimeType(), appConfig().babbage().getSearchResponseCacheTime())
                     .apply(request, response);
         } catch (Throwable t) {
             ErrorHandler.handle(request, response, t);

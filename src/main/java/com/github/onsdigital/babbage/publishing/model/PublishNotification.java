@@ -1,11 +1,10 @@
 package com.github.onsdigital.babbage.publishing.model;
 
-import com.github.onsdigital.babbage.configuration.Configuration;
-
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+
+import static com.github.onsdigital.babbage.configuration.AppConfiguration.appConfig;
 
 /**
  */
@@ -28,11 +27,14 @@ public class PublishNotification {
         return urisToUpdate;
     }
 
-    public Date getDate(){
+    public Date getDate() {
         if (publishDate == null) return null;
 
         try {
-            return new SimpleDateFormat(Configuration.CONTENT_SERVICE.getDefaultContentDatePattern()).parse(publishDate);
+            return appConfig()
+                    .contentAPI()
+                    .defaultContentDateFormat()
+                    .parse(publishDate);
         } catch (ParseException e) {
             System.err.println("Warning!!!!!!!! Publish date for publish notification is invalid, can not parse to date");
             e.printStackTrace();

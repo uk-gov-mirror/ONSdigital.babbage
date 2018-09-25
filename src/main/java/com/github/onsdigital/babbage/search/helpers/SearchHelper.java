@@ -21,7 +21,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import static com.github.onsdigital.babbage.configuration.AppConfiguration.appConfig;
-import static com.github.onsdigital.babbage.configuration.Configuration.GENERAL.getMaxVisiblePaginatorLink;
 import static com.github.onsdigital.babbage.search.ElasticSearchClient.getElasticsearchClient;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
@@ -182,7 +181,8 @@ public class SearchHelper {
             return response;
         }
         Paginator.assertPage(queryBuilder.page(), response);
-        Paginator paginator = new Paginator(response.getNumberOfResults(), getMaxVisiblePaginatorLink(), queryBuilder.page(), queryBuilder.size());
+        Paginator paginator = new Paginator(response.getNumberOfResults(), appConfig().babbage()
+                .getMaxVisiblePaginatorLink(), queryBuilder.page(), queryBuilder.size());
         if (paginator.getNumberOfPages() > 1) {
             response.getResult().setPaginator(paginator);
         }
