@@ -2,8 +2,8 @@ package com.github.onsdigital.babbage.configuration;
 
 import com.github.onsdigital.babbage.logging.LogBuilder;
 
-import static com.github.onsdigital.babbage.configuration.Utils.getValue;
-import static org.apache.commons.lang.StringUtils.defaultIfBlank;
+import static com.github.onsdigital.babbage.configuration.Utils.getStringAsBool;
+import static com.github.onsdigital.babbage.configuration.Utils.getValueOrDefault;
 
 public class Handlebars implements Loggable {
 
@@ -36,11 +36,9 @@ public class Handlebars implements Loggable {
         mainContentTemplateName = "main";
         mainChartConfigTemplateName = "chart-config";
 
-        templatesDir = defaultIfBlank(getValue(TEMPLATES_DIR_KEY), "target/web/templates/handlebars");
-        templatesSuffix = defaultIfBlank(getValue(TEMPLATES_SUFFIX_KEY), ".handlebars");
-
-        // sigh... TODO fix this... this... monstrosity
-        reloadTemplateChanges = "Y".equals(defaultIfBlank(getValue(RELOAD_TEMPLATES_KEY), "N"));
+        templatesDir = getValueOrDefault(TEMPLATES_DIR_KEY, "target/web/templates/handlebars");
+        templatesSuffix = getValueOrDefault(TEMPLATES_SUFFIX_KEY, ".handlebars");
+        reloadTemplateChanges = getStringAsBool(RELOAD_TEMPLATES_KEY, "N");
     }
 
     public String getHandlebarsDatePattern() {

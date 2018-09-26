@@ -1,13 +1,24 @@
 package com.github.onsdigital.babbage.configuration;
 
 import com.github.onsdigital.babbage.logging.LogBuilder;
-import org.apache.commons.lang3.StringUtils;
 
 import static com.github.onsdigital.babbage.configuration.Utils.defaultNumberIfBlank;
 import static com.github.onsdigital.babbage.configuration.Utils.getNumberValue;
+import static com.github.onsdigital.babbage.configuration.Utils.getStringAsBool;
 import static com.github.onsdigital.babbage.configuration.Utils.getValue;
+import static com.github.onsdigital.babbage.configuration.Utils.getValueOrDefault;
 
 public class Babbage implements Loggable {
+
+    // env var keys
+    private static final String ENABLE_CACHE_KEY = "ENABLE_CACHE";
+    private static final String DEV_ENVIRONMENT_KEY = "DEV_ENVIRONMENT";
+    private static final String IS_PUBLISHING_KEY = "IS_PUBLISHING";
+    private static final String REDIRECT_SECRET_KEY = "REDIRECT_SECRET";
+    private static final String PHANTOMJS_PATH_KEY = "PHANTOMJS_PATH";
+    private static final String HIGHCHARTS_EXPORT_SERVER_KEY = "HIGHCHARTS_EXPORT_SERVER";
+    private static final String GHOSTSCRIPT_PATH_KEY = "GHOSTSCRIPT_PATH";
+    private static final String MATHJAX_EXPORT_SERVER_KEY = "MATHJAX_EXPORT_SERVER";
 
     private static Babbage INSTANCE;
 
@@ -57,28 +68,23 @@ public class Babbage implements Loggable {
         defaultCacheTime = 15 * 60;
         publishCacheTimeout = 60 * 60;
         searchResponseCacheTime = 5;
+        cacheEnabled = getStringAsBool(ENABLE_CACHE_KEY, "N");
 
-        // TODO - DISCLAIMER I didn't write thisit was copied from an existing class.
-        // TODO Fix this to use true or false instead of this overly complicated & stupid approach.
-        cacheEnabled = "Y".equals(StringUtils.defaultIfBlank(getValue("ENABLE_CACHE"), "N"));
+        isDevEnv = getStringAsBool(DEV_ENVIRONMENT_KEY, "N");
 
-        // sigh...
-        isDevEnv = "Y".equals(StringUtils.defaultIfBlank(getValue("DEV_ENVIRONMENT"), "N"));
+        isPublishing = getStringAsBool(IS_PUBLISHING_KEY, "N");
 
-        // sigh...
-        isPublishing = "Y".equals(StringUtils.defaultIfBlank(getValue("IS_PUBLISHING"), "N"));
+        redirectSecret = getValueOrDefault(REDIRECT_SECRET_KEY, "secret");
 
-        redirectSecret = StringUtils.defaultIfBlank(getValue("REDIRECT_SECRET"), "secret");
-
-        phantomjsPath = StringUtils.defaultIfBlank(getValue("PHANTOMJS_PATH"), "/usr/local/bin/phantomjs");
+        phantomjsPath = getValueOrDefault(PHANTOMJS_PATH_KEY, "/usr/local/bin/phantomjs");
 
         maxHighchartsServerConnections = defaultNumberIfBlank(getNumberValue("HIGHCHARTS_EXPORT_MAX_CONNECTION"), 50);
 
-        exportSeverUrl = StringUtils.defaultIfBlank(getValue("HIGHCHARTS_EXPORT_SERVER"), "http://localhost:9999/");
+        exportSeverUrl = getValueOrDefault(HIGHCHARTS_EXPORT_SERVER_KEY, "http://localhost:9999/");
 
-        ghostscriptPath = StringUtils.defaultIfBlank(getValue("GHOSTSCRIPT_PATH"), "/usr/local/bin/gs");
+        ghostscriptPath = getValueOrDefault(GHOSTSCRIPT_PATH_KEY, "/usr/local/bin/gs");
 
-        mathjaxExportServer = getValue("MATHJAX_EXPORT_SERVER");
+        mathjaxExportServer = getValue(MATHJAX_EXPORT_SERVER_KEY);
     }
 
     public int getDefaultContentCacheTime() {

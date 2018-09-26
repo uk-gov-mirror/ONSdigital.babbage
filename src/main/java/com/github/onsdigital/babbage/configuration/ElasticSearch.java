@@ -11,8 +11,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.github.onsdigital.babbage.configuration.Utils.getValue;
-import static org.apache.commons.lang3.StringUtils.defaultIfBlank;
+import static com.github.onsdigital.babbage.configuration.Utils.getValueOrDefault;
 
 public class ElasticSearch implements Loggable {
 
@@ -32,11 +31,11 @@ public class ElasticSearch implements Loggable {
     private final List<String> highlightBlacklist;
 
     private ElasticSearch() {
-        elasticSearchServer = defaultIfBlank(getValue(SERVER_KEY), "localhost");
-        elasticSearchPort = Integer.parseInt(defaultIfBlank(getValue(PORT_KEY), "9500"));
-        elasticSearchIndexAlias = defaultIfBlank(getValue(INDEX_ALIAS_KEY), "ons");
-        elasticSearchCluster = defaultIfBlank(getValue(CLUSTER_KEY), "");
-        highlightURLBlacklistFile = defaultIfBlank(getValue(HIGHLIGHTS_FILE_KEY), "highlight-url-blacklist");
+        elasticSearchServer = getValueOrDefault(SERVER_KEY, "localhost");
+        elasticSearchPort = Integer.parseInt(getValueOrDefault(PORT_KEY, "9500"));
+        elasticSearchIndexAlias = getValueOrDefault(INDEX_ALIAS_KEY, "ons");
+        elasticSearchCluster = getValueOrDefault(CLUSTER_KEY, "");
+        highlightURLBlacklistFile = getValueOrDefault(HIGHLIGHTS_FILE_KEY, "highlight-url-blacklist");
         highlightBlacklist = loadHighlightBlacklist(highlightURLBlacklistFile);
     }
 

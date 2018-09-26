@@ -7,7 +7,7 @@ import java.text.SimpleDateFormat;
 
 import static com.github.onsdigital.babbage.configuration.Utils.defaultNumberIfBlank;
 import static com.github.onsdigital.babbage.configuration.Utils.getNumberValue;
-import static com.github.onsdigital.babbage.configuration.Utils.getValue;
+import static com.github.onsdigital.babbage.configuration.Utils.getValueOrDefault;
 
 public class ContentAPI implements Loggable {
 
@@ -36,7 +36,7 @@ public class ContentAPI implements Loggable {
     }
 
     private ContentAPI() {
-        contentAPIHost = StringUtils.removeEnd(StringUtils.defaultIfBlank(getValue(CONTENT_API_HOST_KEY), DEFAULT_CONTENT_API_HOST), "/");
+        contentAPIHost = StringUtils.removeEnd(getValueOrDefault(CONTENT_API_HOST_KEY, DEFAULT_CONTENT_API_HOST), "/");
         maxConnections = defaultNumberIfBlank(getNumberValue(MAX_CONNECTIONS_KEY), 50);
         defaultSimpleDataFormat = new SimpleDateFormat(DEFAULT_CONTENT_DATE_PATTERN);
     }

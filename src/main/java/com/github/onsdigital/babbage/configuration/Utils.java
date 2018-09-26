@@ -4,6 +4,8 @@ import org.apache.commons.lang3.StringUtils;
 
 public class Utils {
 
+    private static final String Y = "Y";
+
     private Utils() {
         // hide constructor.
     }
@@ -24,6 +26,10 @@ public class Utils {
         return StringUtils.defaultIfBlank(System.getProperty(key), System.getenv(key));
     }
 
+    public static String getValueOrDefault(String key, String defaultVal) {
+        return StringUtils.defaultIfBlank(System.getProperty(key), defaultVal);
+    }
+
     public static Integer getNumberValue(String key) {
         String value = getValue(key);
         if (StringUtils.isEmpty(value)) {
@@ -36,5 +42,16 @@ public class Utils {
 
     public static Integer defaultNumberIfBlank(Integer value, Integer defaultValue) {
         return value == null ? defaultValue : value;
+    }
+
+    /**
+     * One of the Babbage "specials". For reasons unknown to anyone flag env vars use "Y" or "N" instead of "true" and
+     * "false" (sigh...). Method attempts to get the value and convert to a boolean or use a default if it doesn't
+     * exist.
+     *
+     * There is a TODO to fix this and use a sane approach.
+     */
+    public static boolean getStringAsBool(String key, String defaultVal) {
+        return Y.equals(StringUtils.defaultIfBlank(getValue(key), defaultVal));
     }
 }
