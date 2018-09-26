@@ -192,6 +192,7 @@ public class Configuration {
         private static final int PORT = defaultNumberIfBlank(getNumberValue("EXTERNAL_SEARCH_PORT"), 5000);
         public static final boolean EXTERNAL_SEARCH_ENABLED = Boolean.parseBoolean(getValue("ENABLE_SEARCH_SERVICE"));
         public static final boolean EXTERNAL_SPELLCHECK_ENABLED = Boolean.parseBoolean(getValue("EXTERNAL_SPELLCHECK_ENABLED"));
+        public static final float SPELL_CHECK_CONFIDENCE_THRESHOLD = defaultNumberIfBlank(getFloatValue("SPELL_CHECK_CONFIDENCE_THRESHOLD"), 0.0f);
         public static final int SEARCH_NUM_EXECUTORS = defaultNumberIfBlank(getNumberValue("SEARCH_NUM_EXECUTORS"), 8);
 
         public static final String getExternalSearchAddress() {
@@ -361,6 +362,20 @@ public class Configuration {
 
 
     private static Integer defaultNumberIfBlank(Integer value, Integer defaultValue) {
+        return value == null ? defaultValue : value;
+    }
+
+    private static Float getFloatValue(String key) {
+        String value = getValue(key);
+        if (StringUtils.isEmpty(value)) {
+            return null;
+        }
+
+        return Float.valueOf(value.trim());
+    }
+
+
+    private static Float defaultNumberIfBlank(Float value, Float defaultValue) {
         return value == null ? defaultValue : value;
     }
 

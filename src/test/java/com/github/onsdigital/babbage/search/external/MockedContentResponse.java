@@ -2,7 +2,8 @@ package com.github.onsdigital.babbage.search.external;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.github.onsdigital.babbage.paginator.Paginator;
-import com.github.onsdigital.babbage.search.external.requests.suggest.models.SpellCheckResult;
+import com.github.onsdigital.babbage.search.external.requests.suggest.SpellCheckRequest;
+import com.github.onsdigital.babbage.search.external.requests.suggest.models.SpellingCorrection;
 import com.github.onsdigital.babbage.search.input.SortBy;
 import com.github.onsdigital.babbage.search.model.SearchResult;
 
@@ -13,16 +14,10 @@ public class MockedContentResponse extends MockedSearchResponse {
 
     private static final int took = 51;
 
-    private SpellCheckResult getTestResult() throws IOException {
-        String json = "{\n" +
-                "\"rpo\": {\n" +
-                "\"correction\": \"rpi\",\n" +
-                "\"probability\": 0.8609125179\n" +
-                "}\n" +
-                "}";
+    private List<SpellingCorrection> getTestResult() throws IOException {
+        SpellingCorrection correction = new SpellingCorrection("rpo", "rpi", 0.5f);
 
-        SpellCheckResult result = MAPPER.readValue(json, SpellCheckResult.class);
-        return result;
+        return Collections.singletonList(correction);
     }
 
     @Override
@@ -45,8 +40,8 @@ public class MockedContentResponse extends MockedSearchResponse {
 
         SearchResult result = MAPPER.readValue(testJson, SearchResult.class);
 
-        SpellCheckResult spellCheckResult = this.getTestResult();
-        String suggestedCorrection = spellCheckResult.getSuggestedCorrection();
+        List<SpellingCorrection> corrections = this.getTestResult();
+        String suggestedCorrection = SpellCheckRequest.buildSuggestedCorrection("rpo", corrections, 0.0f);
 
         result.setSuggestions(Collections.singletonList(suggestedCorrection));
         return result;

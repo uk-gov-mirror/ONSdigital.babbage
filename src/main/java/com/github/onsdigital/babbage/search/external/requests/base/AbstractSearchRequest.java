@@ -1,5 +1,6 @@
 package com.github.onsdigital.babbage.search.external.requests.base;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.onsdigital.babbage.configuration.Configuration;
 import com.github.onsdigital.babbage.search.external.SearchClient;
@@ -19,10 +20,15 @@ public abstract class AbstractSearchRequest<T> implements Callable<T> {
 
     protected SearchClient searchClient;
 
-    private final Class<T> returnClass;
+    private Class<T> returnClass;
+    private TypeReference<T> typeReference;
 
     public AbstractSearchRequest(Class<T> returnClass) {
         this.returnClass = returnClass;
+    }
+
+    public AbstractSearchRequest(TypeReference<T> typeReference) {
+        this.typeReference = typeReference;
     }
 
     /**
@@ -72,7 +78,13 @@ public abstract class AbstractSearchRequest<T> implements Callable<T> {
     @Override
     public T call() throws Exception {
         String response = this.getContentResponseAsString();
-        return MAPPER.readValue(response, this.returnClass);
+
+        // Either typeReference or returnClass are guaranteed to not be null
+        if (this.typeReference != null) {
+            return MAPPER.readValue(response, this.typeReference);
+        } else {
+            return MAPPER.readValue(response, this.returnClass);
+        }
     }
 
 }

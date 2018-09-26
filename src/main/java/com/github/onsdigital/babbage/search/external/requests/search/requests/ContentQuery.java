@@ -2,10 +2,9 @@ package com.github.onsdigital.babbage.search.external.requests.search.requests;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.github.onsdigital.babbage.configuration.Configuration;
-import com.github.onsdigital.babbage.search.external.SearchClientExecutorService;
 import com.github.onsdigital.babbage.search.external.SearchType;
 import com.github.onsdigital.babbage.search.external.requests.suggest.SpellCheckRequest;
-import com.github.onsdigital.babbage.search.external.requests.suggest.models.SpellCheckResult;
+import com.github.onsdigital.babbage.search.external.requests.suggest.models.SpellingCorrection;
 import com.github.onsdigital.babbage.search.input.SortBy;
 import com.github.onsdigital.babbage.search.input.TypeFilter;
 import com.github.onsdigital.babbage.search.model.ContentType;
@@ -16,7 +15,6 @@ import org.eclipse.jetty.client.api.Request;
 import org.eclipse.jetty.client.util.StringContentProvider;
 
 import java.util.*;
-import java.util.concurrent.Future;
 
 /**
  * Replaces the internal content query by executing a HTTP request against the dp-conceptual-search content API
@@ -105,9 +103,11 @@ public class ContentQuery extends SearchQuery {
         SearchResult result = super.call();
 
         if (Configuration.SEARCH_SERVICE.EXTERNAL_SPELLCHECK_ENABLED) {
-            SpellCheckResult spellCheckResult = this.getSpellCheckResult();
+            List<SpellingCorrection> corrections = this.getSpellingCorrections();
 
-            String suggestedCorrection = spellCheckResult.getSuggestedCorrection();
+            // Build the suggested correction string
+            String suggestedCorrection = SpellCheckRequest.buildSuggestedCorrection(this.searchTerm, corrections,
+                    Configuration.SEARCH_SERVICE.SPELL_CHECK_CONFIDENCE_THRESHOLD);
 
             // Set the suggestions
             List<String> suggestions = result.getSuggestions();
@@ -122,10 +122,10 @@ public class ContentQuery extends SearchQuery {
         return result;
     }
 
-    public SpellCheckResult getSpellCheckResult() throws Exception {
+    public List<SpellingCorrection> getSpellingCorrections() throws Exception {
         SpellCheckRequest spellCheckRequest = new SpellCheckRequest(super.searchTerm);
-        SpellCheckResult spellCheckResult = spellCheckRequest.call();
+        List<SpellingCorrection> corrections = spellCheckRequest.call();
 
-        return spellCheckResult;
+        return corrections;
     }
 }
