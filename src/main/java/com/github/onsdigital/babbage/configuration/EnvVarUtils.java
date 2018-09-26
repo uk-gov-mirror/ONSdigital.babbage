@@ -2,11 +2,11 @@ package com.github.onsdigital.babbage.configuration;
 
 import org.apache.commons.lang3.StringUtils;
 
-public class Utils {
+public class EnvVarUtils {
 
     private static final String Y = "Y";
 
-    private Utils() {
+    private EnvVarUtils() {
         // hide constructor.
     }
 

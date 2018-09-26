@@ -11,7 +11,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.github.onsdigital.babbage.configuration.Utils.getValueOrDefault;
+import static com.github.onsdigital.babbage.configuration.EnvVarUtils.getValueOrDefault;
 
 public class ElasticSearch implements Loggable {
 

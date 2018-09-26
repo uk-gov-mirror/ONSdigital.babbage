@@ -2,8 +2,8 @@ package com.github.onsdigital.babbage.configuration;
 
 import com.github.onsdigital.babbage.logging.LogBuilder;
 
-import static com.github.onsdigital.babbage.configuration.Utils.getStringAsBool;
-import static com.github.onsdigital.babbage.configuration.Utils.getValueOrDefault;
+import static com.github.onsdigital.babbage.configuration.EnvVarUtils.getStringAsBool;
+import static com.github.onsdigital.babbage.configuration.EnvVarUtils.getValueOrDefault;
 
 public class Handlebars implements Loggable {
 

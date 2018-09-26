@@ -8,6 +8,7 @@ public class AppConfiguration {
     private final ContentAPI contentAPI;
     private final Babbage babbage;
     private final Handlebars handlebars;
+    private final TableRenderer tableRenderer;
 
     public static void loadConfiguration() {
         if (INSTANCE == null) {
@@ -24,8 +25,9 @@ public class AppConfiguration {
         contentAPI = ContentAPI.getInstance();
         babbage = Babbage.getInstance();
         handlebars = Handlebars.getInstance();
+        tableRenderer = TableRenderer.getInstance();
 
-        logApplicationConfigs(elasticSearch, contentAPI, babbage, handlebars);
+        logApplicationConfigs(elasticSearch, contentAPI, babbage, handlebars, tableRenderer);
     }
 
     private void logApplicationConfigs(Loggable... configs) {
@@ -50,8 +52,11 @@ public class AppConfiguration {
         return handlebars;
     }
 
+    public TableRenderer tableRenderer() {
+        return tableRenderer;
+    }
+
     public static AppConfiguration appConfig() {
         return INSTANCE;
     }
-
 }

@@ -5,9 +5,9 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.text.SimpleDateFormat;
 
-import static com.github.onsdigital.babbage.configuration.Utils.defaultNumberIfBlank;
-import static com.github.onsdigital.babbage.configuration.Utils.getNumberValue;
-import static com.github.onsdigital.babbage.configuration.Utils.getValueOrDefault;
+import static com.github.onsdigital.babbage.configuration.EnvVarUtils.defaultNumberIfBlank;
+import static com.github.onsdigital.babbage.configuration.EnvVarUtils.getNumberValue;
+import static com.github.onsdigital.babbage.configuration.EnvVarUtils.getValueOrDefault;
 
 public class ContentAPI implements Loggable {
 

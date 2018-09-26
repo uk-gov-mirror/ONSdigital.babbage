@@ -22,14 +22,16 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static com.github.onsdigital.babbage.configuration.AppConfiguration.appConfig;
+
 /**
  * Defines the format of the custom markdown tags for charts and defines how to replace them.
  */
 public class TableTagV2Replacer extends TagReplacementStrategy {
 
     private static final Pattern pattern = Pattern.compile("<ons-table-v2\\spath=\"([-A-Za-z0-9+&@#/%?=~_|!:,.;()*$]+)\"?\\s?/>");
-    private static final String RENDERER_HOST = Configuration.TABLE_RENDERER.getHost();
-    private static final String RENDERER_PATH = Configuration.TABLE_RENDERER.getHtmlPath();
+    private static final String RENDERER_HOST = appConfig().tableRenderer().host();
+    private static final String RENDERER_PATH = appConfig().tableRenderer().htmlPath();
     private static final PooledHttpClient HTTP_CLIENT = new PooledHttpClient(RENDERER_HOST, createHttpConfiguration());
     private static final Map<String, String> HEADERS = Collections.singletonMap("Content-Type", "application/json;charset=utf-8");
     private static final String CHARSET = StandardCharsets.UTF_8.name();
@@ -100,7 +102,7 @@ public class TableTagV2Replacer extends TagReplacementStrategy {
 
     private static ClientConfiguration createHttpConfiguration() {
         ClientConfiguration configuration = new ClientConfiguration();
-        configuration.setMaxTotalConnection(Configuration.TABLE_RENDERER.getMaxServerConnection());
+        configuration.setMaxTotalConnection(appConfig().tableRenderer().maxConnections());
         configuration.setDisableRedirectHandling(true);
         return configuration;
     }

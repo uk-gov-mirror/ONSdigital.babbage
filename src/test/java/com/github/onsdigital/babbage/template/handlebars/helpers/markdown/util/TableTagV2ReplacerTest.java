@@ -1,6 +1,5 @@
 package com.github.onsdigital.babbage.template.handlebars.helpers.markdown.util;
 
-import com.github.onsdigital.babbage.configuration.Configuration;
 import com.github.onsdigital.babbage.content.client.ContentClient;
 import com.github.onsdigital.babbage.content.client.ContentReadException;
 import com.github.onsdigital.babbage.content.client.ContentResponse;
@@ -15,16 +14,12 @@ import org.mockito.Answers;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import javax.servlet.http.HttpServletRequest;
-
-import java.util.Collections;
 import java.util.regex.Matcher;
 
-import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.extractPublishDates;
+import static com.github.onsdigital.babbage.configuration.AppConfiguration.appConfig;
 import static java.util.Collections.singletonMap;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
-import static org.junit.Assert.*;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
@@ -33,12 +28,12 @@ public class TableTagV2ReplacerTest {
 
     private final String tableHtml = "<table></table>";
     private final String path = "/myPath/";
-	private final String template = "myTemplate";
-	private final String markdownContent = "<ons-table-v2 path=\"tableid\" />";
+    private final String template = "myTemplate";
+    private final String markdownContent = "<ons-table-v2 path=\"tableid\" />";
     private final String renderedTemplate = "renderedTemplate";
-	@Mock
+    @Mock
     private ContentClient contentClientMock;
-	@Mock
+    @Mock
     private TemplateService templateServiceMock;
     @Mock
     private PooledHttpClient httpClientMock;
@@ -67,7 +62,9 @@ public class TableTagV2ReplacerTest {
     public void replaceShouldGetContentAndinvokeTableRenderer() throws Exception {
         String json = "{\"foo\": \"bar\"}";
         when(contentResponseMock.getAsString()).thenReturn(json);
-        when(httpClientMock.sendPost(Configuration.TABLE_RENDERER.getHtmlPath(), singletonMap("Content-Type", "application/json;charset=utf-8"), json, "UTF-8")).thenReturn(responseMock);
+        when(httpClientMock.sendPost(appConfig().tableRenderer().htmlPath(),
+                singletonMap("Content-Type", "application/json;charset=utf-8"), json, "UTF-8"))
+                .thenReturn(responseMock);
         when(responseMock.getEntity().getContent()).thenReturn(IOUtils.toInputStream(tableHtml));
         when(templateServiceMock.renderTemplate(template, singletonMap("foo", "bar"), singletonMap("tableHtml", tableHtml))).thenReturn(renderedTemplate);
 
