@@ -357,7 +357,12 @@ public class Configuration {
             return null;
         }
 
-        return Integer.valueOf(value.trim());
+        try {
+            return Integer.valueOf(value.trim());
+        } catch (NumberFormatException e) {
+            System.out.println(String.format("Exception while trying to parse variable '%s' to Integer", key));
+            return null;
+        }
     }
 
 
@@ -371,7 +376,12 @@ public class Configuration {
             return null;
         }
 
-        return Float.valueOf(value.trim());
+        try {
+            return Float.valueOf(value.trim());
+        } catch (NumberFormatException e) {
+            System.out.println(String.format("Exception while trying to parse variable '%s' to Float", key));
+            return null;
+        }
     }
 
 
