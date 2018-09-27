@@ -18,7 +18,7 @@ public abstract class AbstractSearchRequest<T> implements Callable<T> {
 
     protected static final ObjectMapper MAPPER = new ObjectMapper();
 
-    protected SearchClient searchClient;
+    private SearchClient searchClient;
 
     private Class<T> returnClass;
     private TypeReference<T> typeReference;
