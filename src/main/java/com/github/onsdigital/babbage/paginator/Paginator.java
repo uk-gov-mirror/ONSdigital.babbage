@@ -6,7 +6,7 @@ import com.github.onsdigital.babbage.search.helpers.ONSSearchResponse;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.github.onsdigital.babbage.configuration.AppConfiguration.appConfig;
+import static com.github.onsdigital.babbage.configuration.ApplicationConfiguration.appConfig;
 
 
 /**

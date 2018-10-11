@@ -16,7 +16,7 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.regex.Matcher;
 
-import static com.github.onsdigital.babbage.configuration.AppConfiguration.appConfig;
+import static com.github.onsdigital.babbage.configuration.ApplicationConfiguration.appConfig;
 import static java.util.Collections.singletonMap;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;

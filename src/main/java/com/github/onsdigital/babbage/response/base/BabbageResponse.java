@@ -1,6 +1,5 @@
 package com.github.onsdigital.babbage.response.base;
 
-import com.github.onsdigital.babbage.configuration.Configuration;
 import com.github.onsdigital.babbage.response.util.CacheControlHelper;
 import org.apache.commons.lang3.CharEncoding;
 
@@ -13,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static com.github.onsdigital.babbage.configuration.AppConfiguration.appConfig;
+import static com.github.onsdigital.babbage.configuration.ApplicationConfiguration.appConfig;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
 /**

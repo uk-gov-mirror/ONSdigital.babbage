@@ -86,7 +86,7 @@ public class ElasticSearch implements Loggable {
      * @return List of url strings containing the black listed urls
      */
     private static List<String> loadHighlightBlacklist(String highlightURLBlacklistFile) {
-        ClassLoader classLoader = Configuration.class.getClassLoader();
+        ClassLoader classLoader = ElasticSearch.class.getClassLoader();
         URL fileUrl = classLoader.getResource(highlightURLBlacklistFile);
 
         List<String> urls = new ArrayList<>();

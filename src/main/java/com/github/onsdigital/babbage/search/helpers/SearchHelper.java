@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.github.onsdigital.babbage.configuration.AppConfiguration.appConfig;
+import static com.github.onsdigital.babbage.configuration.ApplicationConfiguration.appConfig;
 import static com.github.onsdigital.babbage.search.ElasticSearchClient.getElasticsearchClient;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 

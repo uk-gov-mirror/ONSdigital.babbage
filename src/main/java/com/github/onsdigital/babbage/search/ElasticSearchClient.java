@@ -12,7 +12,7 @@ import java.net.InetSocketAddress;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import static com.github.onsdigital.babbage.configuration.AppConfiguration.appConfig;
+import static com.github.onsdigital.babbage.configuration.ApplicationConfiguration.appConfig;
 import static org.elasticsearch.node.NodeBuilder.nodeBuilder;
 
 /**

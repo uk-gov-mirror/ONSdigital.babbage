@@ -1,6 +1,5 @@
 package com.github.onsdigital.babbage.api.util;
 
-import com.github.onsdigital.babbage.configuration.Configuration;
 import com.github.onsdigital.babbage.error.ValidationError;
 import com.github.onsdigital.babbage.response.BabbageRedirectResponse;
 import com.github.onsdigital.babbage.response.BabbageStringResponse;
@@ -45,7 +44,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-import static com.github.onsdigital.babbage.configuration.AppConfiguration.appConfig;
+import static com.github.onsdigital.babbage.configuration.ApplicationConfiguration.appConfig;
 import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.advancedSearchQuery;
 import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.contentQuery;
 import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.departmentQuery;
@@ -123,7 +122,7 @@ public class SearchUtils {
         /**
          * Attempts to intercept content, type counts, and featured result queries to populate the SERP.
          */
-        if (Configuration.SEARCH_SERVICE.EXTERNAL_SEARCH_ENABLED) {
+        if (appConfig().externalSearch().isEnabled()) {
             try {
                 // Use external search client
                 return SearchClient.getInstance().search(request, listType);
@@ -281,8 +280,7 @@ public class SearchUtils {
      * @return
      */
     static LinkedHashMap<String, SearchResult> doSearch(List<ONSQuery> searchQueries, boolean externalSearch) {
-
-        if (Configuration.SEARCH_SERVICE.EXTERNAL_SEARCH_ENABLED && externalSearch) {
+        if (appConfig().externalSearch().isEnabled() && externalSearch) {
             LinkedHashMap<String, SearchResult> results = null;
             try {
                 results = SearchClient.getInstance().proxyQueries(searchQueries);
@@ -337,7 +335,7 @@ public class SearchUtils {
      */
     private static void searchDeparments(String searchTerm, LinkedHashMap<String, SearchResult> results) {
 
-        if (Configuration.SEARCH_SERVICE.EXTERNAL_SEARCH_ENABLED) {
+        if (appConfig().externalSearch().isEnabled()) {
             SearchQuery request = new DepartmentsQuery(searchTerm);
             try {
                 SearchResult result = request.call();

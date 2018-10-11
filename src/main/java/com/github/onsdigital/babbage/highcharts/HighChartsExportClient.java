@@ -1,7 +1,6 @@
 package com.github.onsdigital.babbage.highcharts;
 
 import ch.qos.logback.classic.Level;
-import com.github.onsdigital.babbage.configuration.Configuration;
 import com.github.onsdigital.babbage.logging.Log;
 import com.github.onsdigital.babbage.util.http.ClientConfiguration;
 import com.github.onsdigital.babbage.util.http.PooledHttpClient;
@@ -16,7 +15,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.github.onsdigital.babbage.configuration.AppConfiguration.appConfig;
+import static com.github.onsdigital.babbage.configuration.ApplicationConfiguration.appConfig;
 
 /**
  * Created by bren on 17/06/15.

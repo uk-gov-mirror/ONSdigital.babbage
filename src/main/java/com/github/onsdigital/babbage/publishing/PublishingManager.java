@@ -1,6 +1,5 @@
 package com.github.onsdigital.babbage.publishing;
 
-import com.github.onsdigital.babbage.configuration.Configuration;
 import com.github.onsdigital.babbage.content.client.ContentClient;
 import com.github.onsdigital.babbage.content.client.ContentReadException;
 import com.github.onsdigital.babbage.publishing.model.ContentDetail;
@@ -35,7 +34,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import static com.github.onsdigital.babbage.configuration.AppConfiguration.appConfig;
+import static com.github.onsdigital.babbage.configuration.ApplicationConfiguration.appConfig;
 import static com.github.onsdigital.babbage.search.ElasticSearchClient.getElasticsearchClient;
 import static org.apache.commons.lang.StringUtils.removeEnd;
 

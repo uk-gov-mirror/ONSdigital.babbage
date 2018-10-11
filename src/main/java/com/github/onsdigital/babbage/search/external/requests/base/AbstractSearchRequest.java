@@ -1,7 +1,6 @@
 package com.github.onsdigital.babbage.search.external.requests.base;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.onsdigital.babbage.configuration.Configuration;
 import com.github.onsdigital.babbage.search.external.SearchClient;
 import org.apache.http.entity.ContentType;
 import org.eclipse.jetty.client.api.ContentResponse;
@@ -10,9 +9,11 @@ import org.eclipse.jetty.http.HttpHeader;
 
 import java.util.concurrent.Callable;
 
+import static com.github.onsdigital.babbage.configuration.ApplicationConfiguration.appConfig;
+
 public abstract class AbstractSearchRequest<T> implements Callable<T> {
 
-    protected static final String HOST = Configuration.SEARCH_SERVICE.getExternalSearchAddress();
+    protected static final String HOST = appConfig().externalSearch().address();
 
     protected static final ObjectMapper MAPPER = new ObjectMapper();
 
@@ -24,12 +25,14 @@ public abstract class AbstractSearchRequest<T> implements Callable<T> {
 
     /**
      * Abstract method for building/returning the target URI for HTTP requests
+     *
      * @return
      */
     public abstract String targetUri();
 
     /**
      * Builds a simple HTTP GET request with the target URI
+     *
      * @return
      * @throws Exception
      */
@@ -39,6 +42,7 @@ public abstract class AbstractSearchRequest<T> implements Callable<T> {
 
     /**
      * Builds a HTTP POST request with mime-type application/json
+     *
      * @return
      */
     protected Request post() throws Exception {
@@ -48,6 +52,7 @@ public abstract class AbstractSearchRequest<T> implements Callable<T> {
 
     /**
      * Abstract method for executing requests
+     *
      * @return
      * @throws Exception
      */

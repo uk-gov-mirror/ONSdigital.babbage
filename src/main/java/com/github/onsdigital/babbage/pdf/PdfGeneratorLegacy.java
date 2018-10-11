@@ -12,7 +12,7 @@ import java.nio.file.Path;
 import java.util.Iterator;
 import java.util.Map;
 
-import static com.github.onsdigital.babbage.configuration.AppConfiguration.appConfig;
+import static com.github.onsdigital.babbage.configuration.ApplicationConfiguration.appConfig;
 
 public class PdfGeneratorLegacy {
 

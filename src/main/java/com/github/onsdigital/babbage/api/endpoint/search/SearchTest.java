@@ -1,8 +1,6 @@
 package com.github.onsdigital.babbage.api.endpoint.search;
 
 import com.github.davidcarboni.restolino.framework.Api;
-import com.github.onsdigital.babbage.configuration.AppConfiguration;
-import com.github.onsdigital.babbage.configuration.ElasticSearch;
 import com.github.onsdigital.babbage.search.ElasticSearchClient;
 import com.github.onsdigital.babbage.search.helpers.ONSSearchResponse;
 import com.github.onsdigital.babbage.template.TemplateService;
@@ -20,7 +18,7 @@ import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import static com.github.onsdigital.babbage.configuration.AppConfiguration.appConfig;
+import static com.github.onsdigital.babbage.configuration.ApplicationConfiguration.appConfig;
 
 /**
  * Created by bren on 11/01/16.

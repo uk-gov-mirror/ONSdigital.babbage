@@ -2,7 +2,6 @@ package com.github.onsdigital.babbage.template.handlebars.helpers;
 
 import com.github.jknack.handlebars.Handlebars;
 import com.github.jknack.handlebars.Options;
-import com.github.onsdigital.babbage.configuration.Configuration;
 import com.github.onsdigital.babbage.template.handlebars.helpers.base.BabbageHandlebarsHelper;
 import org.apache.commons.lang3.time.FastDateFormat;
 
@@ -12,7 +11,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 
-import static com.github.onsdigital.babbage.configuration.AppConfiguration.appConfig;
+import static com.github.onsdigital.babbage.configuration.ApplicationConfiguration.appConfig;
 
 /**
  * Created by bren on 10/06/15.

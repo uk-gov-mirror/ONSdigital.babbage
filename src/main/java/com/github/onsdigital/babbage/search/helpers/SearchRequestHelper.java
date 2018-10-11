@@ -15,7 +15,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.function.BiFunction;
 
-import static com.github.onsdigital.babbage.configuration.AppConfiguration.appConfig;
+import static com.github.onsdigital.babbage.configuration.ApplicationConfiguration.appConfig;
 import static com.github.onsdigital.babbage.search.helpers.dates.PublishDates.publishedDates;
 import static com.github.onsdigital.babbage.search.helpers.dates.PublishDates.updatedWithinPeriod;
 import static com.github.onsdigital.babbage.util.RequestUtil.getParam;

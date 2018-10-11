@@ -1,9 +1,13 @@
 package com.github.onsdigital.babbage.search.external;
 
-import com.github.onsdigital.babbage.configuration.Configuration;
 import com.github.onsdigital.babbage.search.external.requests.base.SearchClosable;
 import com.github.onsdigital.babbage.search.external.requests.base.ShutdownThread;
-import com.github.onsdigital.babbage.search.external.requests.search.requests.*;
+import com.github.onsdigital.babbage.search.external.requests.search.requests.ContentQuery;
+import com.github.onsdigital.babbage.search.external.requests.search.requests.FeaturedResultQuery;
+import com.github.onsdigital.babbage.search.external.requests.search.requests.ListType;
+import com.github.onsdigital.babbage.search.external.requests.search.requests.ProxyONSQuery;
+import com.github.onsdigital.babbage.search.external.requests.search.requests.SearchQuery;
+import com.github.onsdigital.babbage.search.external.requests.search.requests.TypeCountsQuery;
 import com.github.onsdigital.babbage.search.helpers.ONSQuery;
 import com.github.onsdigital.babbage.search.input.SortBy;
 import com.github.onsdigital.babbage.search.input.TypeFilter;
@@ -13,12 +17,20 @@ import org.eclipse.jetty.client.api.Request;
 import org.eclipse.jetty.http.HttpMethod;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
-import static com.github.onsdigital.babbage.configuration.AppConfiguration.appConfig;
-import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.*;
+import static com.github.onsdigital.babbage.configuration.ApplicationConfiguration.appConfig;
+import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.extractPage;
+import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.extractSearchTerm;
+import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.extractSelectedFilters;
+import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.extractSize;
+import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.extractSortBy;
 
 public class SearchClient implements SearchClosable {
 

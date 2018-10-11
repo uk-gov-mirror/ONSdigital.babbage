@@ -9,7 +9,7 @@ import java.io.InputStream;
 import java.util.Collections;
 import java.util.Map;
 
-import static com.github.onsdigital.babbage.configuration.AppConfiguration.appConfig;
+import static com.github.onsdigital.babbage.configuration.ApplicationConfiguration.appConfig;
 import static com.github.onsdigital.babbage.util.json.JsonUtil.toMap;
 
 /**

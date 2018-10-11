@@ -5,13 +5,11 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.github.jknack.handlebars.Handlebars;
 import com.github.jknack.handlebars.Options;
-import com.github.onsdigital.babbage.configuration.Configuration;
 import com.github.onsdigital.babbage.template.handlebars.helpers.base.BabbageHandlebarsHelper;
 
 import java.io.IOException;
-import java.util.Arrays;
 
-import static com.github.onsdigital.babbage.configuration.AppConfiguration.appConfig;
+import static com.github.onsdigital.babbage.configuration.ApplicationConfiguration.appConfig;
 
 /**
  * Created by iankent on 03/02/17.

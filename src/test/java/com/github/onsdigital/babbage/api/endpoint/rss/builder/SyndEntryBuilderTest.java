@@ -1,6 +1,5 @@
 package com.github.onsdigital.babbage.api.endpoint.rss.builder;
 
-import com.github.onsdigital.babbage.configuration.Configuration;
 import com.github.onsdigital.babbage.search.model.field.Field;
 import com.github.onsdigital.babbage.util.RequestUtil;
 import com.github.onsdigital.babbage.util.ThreadContext;
@@ -12,7 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.github.onsdigital.babbage.configuration.AppConfiguration.appConfig;
+import static com.github.onsdigital.babbage.configuration.ApplicationConfiguration.appConfig;
 import static com.github.onsdigital.babbage.search.model.field.Field.metaDescription;
 import static com.github.onsdigital.babbage.search.model.field.Field.releaseDate;
 import static com.github.onsdigital.babbage.search.model.field.Field.title;
