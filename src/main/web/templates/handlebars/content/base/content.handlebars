@@ -1,6 +1,6 @@
 {{#partial "block-main"}}
 {{#if_eq type "bulletin"}}
-	<div class="page-neutral-intro background--gallery">
+	<div class="page-neutral-intro background--astral text--white">
 		<div class="wrapper">
 			<div class="col-wrap">
 				<div class="col">
@@ -8,11 +8,11 @@
 						<div class="breadcrumb-bulletins print--hide">
 							<ol class="breadcrumb-bulletins__list">
 								{{#each breadcrumb}}
-									<li class="breadcrumb-bulletins__item">
+									<li class="breadcrumb-bulletins__item padding-bottom--0 padding-top--0">
 										<a class="breadcrumb-bulletins__link" href="{{uri}}">{{description.title}}</a>
 									</li>
 								{{/each}}
-								<li class="breadcrumb__item">
+								<li class="breadcrumb__item padding-bottom--0 padding-top--0">
 									{{description.title}}
 								</li>
 							</ol>
@@ -20,14 +20,15 @@
 					</nav>
 					
 					<div class="col col--md-47 col--lg-48">
-						<h1 class="page-intro__title {{#if_any description._abstract description.summary}}{{else}}margin-bottom-sm--4 margin-bottom-md--4{{/if_any}}">{{#if typeLabel}}<span class="page-intro__type">{{typeLabel}}:</span>{{/if}}{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}</h1>
+						<h1 class="page-intro__title padding-bottom--0 padding-top--0 margin-top--2 font-weight-700 {{#if_any description._abstract description.summary}}margin-bottom--2 {{else}}margin-bottom--4{{/if_any}}">{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}</h1>
+						<p class="page-intro__content margin-top--2 margin-bottom--3 padding-bottom--0 padding-top--0">
 						{{#if description._abstract}}
-							<p class="page-intro__content">{{description._abstract}}</p>
+							{{description._abstract}}
 						{{else}}
 							{{#if description.summary}}
-								<p class="page-intro__content">{{description.summary}}</p>
+								{{description.summary}}
 							{{/if}}
-						{{/if}}
+						{{/if}}</p>
 					</div>
 				</div> {{!-- /col --}}
 			</div> {{!-- /col-wrap --}}
@@ -94,7 +95,7 @@
 							href="https://www.statisticsauthority.gov.uk/national-statistician/types-of-official-statistics/"><img
 							class="meta__image" src="/img/national-statistics.png"
 							alt="National Statistics logo"/></a>{{/if}}
-					<span>{{labels.contact}}: </span><br/><a href="mailto:{{description.contact.email}}">{{#if description.contact.name}}{{description.contact.name}}{{else}}{{description.contact.email}}{{/if}}</a>
+					<span>{{labels.contact}}: </span><br/><a href="mailto:{{description.contact.email}}" class="text--white">{{#if description.contact.name}}{{description.contact.name}}{{else}}{{description.contact.email}}{{/if}}</a>
 				</p>
 
 				<p class="col {{class}} col--md-one-third">
