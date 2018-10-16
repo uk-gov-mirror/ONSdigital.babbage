@@ -16,21 +16,22 @@ import java.util.stream.Collectors;
 public class SpellCheckRequest extends AbstractSearchRequest<List<SpellingCorrection>> {
 
     private final String searchTerm;
+    private final URIBuilder uriBuilder;
 
     public SpellCheckRequest(String searchTerm) {
         super(new TypeReference<List<SpellingCorrection>>() {});
         this.searchTerm = searchTerm;
-    }
 
-    @Override
-    public URIBuilder targetUri() {
-        URIBuilder uriBuilder = new URIBuilder()
+        this.uriBuilder = new URIBuilder()
                 .setScheme(HttpScheme.HTTP.asString())
                 .setHost(HOST)
                 .setPath(SearchEndpoints.SPELLING.getEndpoint())
                 .addParameter("q", this.searchTerm);
+    }
 
-        return uriBuilder;
+    @Override
+    public URIBuilder targetUri() {
+        return this.uriBuilder;
     }
 
     @Override
