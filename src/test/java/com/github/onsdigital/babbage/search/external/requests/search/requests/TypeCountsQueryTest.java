@@ -40,10 +40,10 @@ public class TypeCountsQueryTest {
 
         MockedHttpRequest mockedHttpRequest = new MockedHttpRequest(typeCountsQuery.targetUri().build(), typeCountsResponse);
 
-        when(searchClient.get(typeCountsQuery.targetUri().toString()))
+        when(searchClient.get(typeCountsQuery.targetUri()))
                 .thenReturn(mockedHttpRequest);
 
-        when(searchClient.post(typeCountsQuery.targetUri().toString()))
+        when(searchClient.post(typeCountsQuery.targetUri()))
                 .thenReturn(mockedHttpRequest);
     }
 

@@ -6,6 +6,7 @@ import com.github.onsdigital.babbage.search.external.MockedHttpRequest;
 import com.github.onsdigital.babbage.search.external.SearchClient;
 import com.github.onsdigital.babbage.search.model.SearchResult;
 import com.github.onsdigital.babbage.util.TestsUtil;
+import org.apache.http.client.utils.URIBuilder;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -42,10 +43,10 @@ public class ContentQueryTest {
 
         MockedHttpRequest mockedHttpRequest = new MockedHttpRequest(contentQuery.targetUri().build(), contentResponse);
 
-        when(searchClient.get(contentQuery.targetUri().toString()))
+        when(searchClient.get(contentQuery.targetUri()))
                 .thenReturn(mockedHttpRequest);
 
-        when(searchClient.post(contentQuery.targetUri().toString()))
+        when(searchClient.post(contentQuery.targetUri()))
                 .thenReturn(mockedHttpRequest);
     }
 

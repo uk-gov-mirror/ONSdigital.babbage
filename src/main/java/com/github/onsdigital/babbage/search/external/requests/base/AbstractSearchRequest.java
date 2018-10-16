@@ -10,6 +10,7 @@ import org.eclipse.jetty.client.api.ContentResponse;
 import org.eclipse.jetty.client.api.Request;
 import org.eclipse.jetty.http.HttpHeader;
 
+import java.net.URI;
 import java.util.concurrent.Callable;
 
 public abstract class AbstractSearchRequest<T> implements Callable<T> {
@@ -51,7 +52,7 @@ public abstract class AbstractSearchRequest<T> implements Callable<T> {
      */
     protected Request get() throws Exception {
         searchClient = this.getSearchClient();
-        return searchClient.get(this.targetUri().toString());
+        return searchClient.get(this.targetUri());
     }
 
     /**
@@ -60,8 +61,10 @@ public abstract class AbstractSearchRequest<T> implements Callable<T> {
      */
     protected Request post() throws Exception {
         searchClient = this.getSearchClient();
-        return searchClient.post(this.targetUri().toString())
-                .header(HttpHeader.CONTENT_TYPE, ContentType.APPLICATION_JSON.getMimeType());
+
+        Request request = searchClient.post(this.targetUri());
+        request.header(HttpHeader.CONTENT_TYPE, ContentType.APPLICATION_JSON.getMimeType());
+        return request;
     }
 
     /**
@@ -82,9 +85,9 @@ public abstract class AbstractSearchRequest<T> implements Callable<T> {
         // Either typeReference or returnClass are guaranteed to not be null
         if (this.typeReference != null) {
             return MAPPER.readValue(response, this.typeReference);
-        } else {
-            return MAPPER.readValue(response, this.returnClass);
         }
+
+        return MAPPER.readValue(response, this.returnClass);
     }
 
 }

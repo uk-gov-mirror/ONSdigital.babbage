@@ -40,10 +40,10 @@ public class FeaturedResultQueryTest {
 
         MockedHttpRequest mockedHttpRequest = new MockedHttpRequest(featuredResultQuery.targetUri().build(), contentResponse);
 
-        when(searchClient.get(featuredResultQuery.targetUri().toString()))
+        when(searchClient.get(featuredResultQuery.targetUri()))
                 .thenReturn(mockedHttpRequest);
 
-        when(searchClient.post(featuredResultQuery.targetUri().toString()))
+        when(searchClient.post(featuredResultQuery.targetUri()))
                 .thenReturn(mockedHttpRequest);
     }
 

@@ -7,6 +7,7 @@ import com.github.onsdigital.babbage.search.helpers.ONSQuery;
 import com.github.onsdigital.babbage.search.input.SortBy;
 import com.github.onsdigital.babbage.search.input.TypeFilter;
 import com.github.onsdigital.babbage.search.model.SearchResult;
+import org.apache.http.client.utils.URIBuilder;
 import org.eclipse.jetty.client.HttpClient;
 import org.eclipse.jetty.client.api.Request;
 import org.eclipse.jetty.http.HttpMethod;
@@ -56,12 +57,12 @@ public class SearchClient implements SearchClosable {
         return client.newRequest(uri);
     }
 
-    public Request get(String uri) {
-        return this.request(uri).method(HttpMethod.GET);
+    public Request get(URIBuilder uriBuilder) {
+        return this.request(uriBuilder.toString()).method(HttpMethod.GET);
     }
 
-    public Request post(String uri) {
-        return this.request(uri).method(HttpMethod.POST);
+    public Request post(URIBuilder uriBuilder) {
+        return this.request(uriBuilder.toString()).method(HttpMethod.POST);
     }
 
     public LinkedHashMap<String, SearchResult> proxyQueries(List<ONSQuery> queryList) throws Exception {

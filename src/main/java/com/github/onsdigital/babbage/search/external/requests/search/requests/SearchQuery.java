@@ -16,6 +16,7 @@ public abstract class SearchQuery extends AbstractSearchRequest<SearchResult> {
     protected final String searchTerm;
     private final ListType listType;
     private final SearchType searchType;
+    private URIBuilder uriBuilder;
 
     public SearchQuery(String searchTerm, ListType listType, SearchType searchType) {
         super(SearchResult.class);
@@ -30,14 +31,16 @@ public abstract class SearchQuery extends AbstractSearchRequest<SearchResult> {
      */
     @Override
     public URIBuilder targetUri() {
-        String path = SearchEndpoints.SEARCH_ONS.getEndpointForListType(this.listType) +
-                this.searchType.getSearchType();
+        if (null == this.uriBuilder) {
+            String path = SearchEndpoints.SEARCH_ONS.getEndpointForListType(this.listType) +
+                    this.searchType.getSearchType();
 
-        URIBuilder uriBuilder = new URIBuilder()
-                .setScheme(HttpScheme.HTTP.asString())
-                .setHost(HOST)
-                .setPath(path)
-                .addParameter(SearchParam.QUERY.getParam(), this.searchTerm);
+            uriBuilder = new URIBuilder()
+                    .setScheme(HttpScheme.HTTP.asString())
+                    .setHost(HOST)
+                    .setPath(path)
+                    .addParameter(SearchParam.QUERY.getParam(), this.searchTerm);
+        }
 
         return uriBuilder;
     }
