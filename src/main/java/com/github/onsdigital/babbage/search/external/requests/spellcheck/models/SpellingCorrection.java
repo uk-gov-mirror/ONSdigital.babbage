@@ -1,4 +1,4 @@
-package com.github.onsdigital.babbage.search.external.requests.suggest.models;
+package com.github.onsdigital.babbage.search.external.requests.spellcheck.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

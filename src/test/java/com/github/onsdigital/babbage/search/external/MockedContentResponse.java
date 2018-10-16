@@ -2,8 +2,8 @@ package com.github.onsdigital.babbage.search.external;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.github.onsdigital.babbage.paginator.Paginator;
-import com.github.onsdigital.babbage.search.external.requests.suggest.SpellCheckRequest;
-import com.github.onsdigital.babbage.search.external.requests.suggest.models.SpellingCorrection;
+import com.github.onsdigital.babbage.search.external.requests.spellcheck.SpellCheckRequest;
+import com.github.onsdigital.babbage.search.external.requests.spellcheck.models.SpellingCorrection;
 import com.github.onsdigital.babbage.search.input.SortBy;
 import com.github.onsdigital.babbage.search.model.SearchResult;
 

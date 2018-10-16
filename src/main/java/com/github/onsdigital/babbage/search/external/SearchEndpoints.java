@@ -6,7 +6,7 @@ public enum SearchEndpoints {
 
     SEARCH("/search/"),
     SEARCH_ONS("/search/%s/"),
-    SPELLING("/suggest/spelling");
+    SPELLING("/spellcheck");
 
     private String endpoint;
 

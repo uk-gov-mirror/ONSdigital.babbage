@@ -1,9 +1,9 @@
-package com.github.onsdigital.babbage.search.external.requests.suggest;
+package com.github.onsdigital.babbage.search.external.requests.spellcheck;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.github.onsdigital.babbage.search.external.SearchEndpoints;
 import com.github.onsdigital.babbage.search.external.requests.base.AbstractSearchRequest;
-import com.github.onsdigital.babbage.search.external.requests.suggest.models.SpellingCorrection;
+import com.github.onsdigital.babbage.search.external.requests.spellcheck.models.SpellingCorrection;
 import org.apache.http.client.utils.URIBuilder;
 import org.eclipse.jetty.client.api.ContentResponse;
 import org.eclipse.jetty.http.HttpScheme;
