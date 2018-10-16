@@ -82,9 +82,9 @@ public abstract class AbstractSearchRequest<T> implements Callable<T> {
         // Either typeReference or returnClass are guaranteed to not be null
         if (this.typeReference != null) {
             return MAPPER.readValue(response, this.typeReference);
-        } else {
-            return MAPPER.readValue(response, this.returnClass);
         }
+
+        return MAPPER.readValue(response, this.returnClass);
     }
 
 }
