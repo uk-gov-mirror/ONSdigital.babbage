@@ -10,7 +10,6 @@ import org.eclipse.jetty.client.api.ContentResponse;
 import org.eclipse.jetty.client.api.Request;
 import org.eclipse.jetty.http.HttpHeader;
 
-import java.net.URI;
 import java.util.concurrent.Callable;
 
 public abstract class AbstractSearchRequest<T> implements Callable<T> {
