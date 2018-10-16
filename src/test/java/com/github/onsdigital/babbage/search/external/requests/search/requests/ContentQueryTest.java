@@ -11,7 +11,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
 
 public class ContentQueryTest {
@@ -56,6 +56,19 @@ public class ContentQueryTest {
         String expectedJson = MAPPER.writeValueAsString(expectedResult);
 
         assertEquals(actualJson, expectedJson);
+    }
+
+
+    @Test
+    public void testSpellCheckResult() throws Exception {
+        SearchResult actual = contentQuery.call();
+
+        // First suggestion should be 'rpi cpi'
+        assertNotNull(actual.getSuggestions());
+        assertTrue(actual.getSuggestions().size() > 0);
+
+        String suggestion = actual.getSuggestions().get(0);
+        assertEquals("rpi cpi", suggestion);
     }
 
 }

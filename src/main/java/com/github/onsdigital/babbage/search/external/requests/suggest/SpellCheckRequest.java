@@ -4,13 +4,15 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.github.onsdigital.babbage.search.external.SearchEndpoints;
 import com.github.onsdigital.babbage.search.external.requests.base.AbstractSearchRequest;
 import com.github.onsdigital.babbage.search.external.requests.suggest.models.SpellingCorrection;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.client.utils.URIBuilder;
 import org.eclipse.jetty.client.api.ContentResponse;
 import org.eclipse.jetty.http.HttpScheme;
 
-import java.util.HashMap;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class SpellCheckRequest extends AbstractSearchRequest<List<SpellingCorrection>> {
 
@@ -44,28 +46,15 @@ public class SpellCheckRequest extends AbstractSearchRequest<List<SpellingCorrec
      * @return
      */
     public static String buildSuggestedCorrection(String inputString, List<SpellingCorrection> spellingCorrections, float threshold) {
-        StringBuilder sb = new StringBuilder();
-        String[] inputTokens = inputString.split(" ");
+        Map<String, String> correctionMap = spellingCorrections.stream()
+                .filter(correction -> correction.getProbability() > threshold)
+                .collect(Collectors.toMap(SpellingCorrection::getInputToken, SpellingCorrection::getCorrection));
 
-        // Build a map of input tokens to corrections
-        Map<String, String> correctionMap = new HashMap<>();
-        for (SpellingCorrection spellingCorrection : spellingCorrections) {
-            if (spellingCorrection.getProbability() > threshold) {
-                correctionMap.put(spellingCorrection.getInputToken(), spellingCorrection.getCorrection());
-            }
-        }
+        List<String> inputTokens = Arrays.asList(inputString.split(" "));
 
-        // Build up suggested string
-        for (String inputToken : inputTokens) {
-            if (correctionMap.containsKey(inputToken)) {
-                sb.append(correctionMap.get(inputToken));
-            } else {
-                // Just add the input token
-                sb.append(inputToken);
-            }
-            sb.append(" ");
-        }
-
-        return sb.toString().trim();
+        return inputTokens.stream()
+               .filter(token -> correctionMap.containsKey(token))
+               .map(token -> correctionMap.get(token))
+               .collect(Collectors.joining(" "));
     }
 }

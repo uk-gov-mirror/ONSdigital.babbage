@@ -16,8 +16,12 @@ public class MockedContentResponse extends MockedSearchResponse {
 
     private List<SpellingCorrection> getTestResult() throws IOException {
         SpellingCorrection correction = new SpellingCorrection("rpo", "rpi", 0.5f);
+        SpellingCorrection otherCorrection = new SpellingCorrection("cpl", "cpi", 0.5f);
 
-        return Collections.singletonList(correction);
+        return new LinkedList<SpellingCorrection>() {{
+            add(correction);
+            add(otherCorrection);
+        }};
     }
 
     @Override
@@ -41,7 +45,7 @@ public class MockedContentResponse extends MockedSearchResponse {
         SearchResult result = MAPPER.readValue(testJson, SearchResult.class);
 
         List<SpellingCorrection> corrections = this.getTestResult();
-        String suggestedCorrection = SpellCheckRequest.buildSuggestedCorrection("rpo", corrections, 0.0f);
+        String suggestedCorrection = SpellCheckRequest.buildSuggestedCorrection("rpo cpl", corrections, 0.0f);
 
         result.setSuggestions(Collections.singletonList(suggestedCorrection));
         return result;

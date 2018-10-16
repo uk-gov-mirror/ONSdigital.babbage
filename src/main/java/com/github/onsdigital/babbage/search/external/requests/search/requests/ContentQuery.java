@@ -124,8 +124,7 @@ public class ContentQuery extends SearchQuery {
 
     public List<SpellingCorrection> getSpellingCorrections() throws Exception {
         SpellCheckRequest spellCheckRequest = new SpellCheckRequest(super.searchTerm);
-        List<SpellingCorrection> corrections = spellCheckRequest.call();
 
-        return corrections;
+        return spellCheckRequest.call();
     }
 }
