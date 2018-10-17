@@ -1,9 +1,8 @@
 {{#partial "block-main"}}
 {{#if_eq type "bulletin"}}
 	{{#block "bulletin-page"}}
-		{{> content/partials/bulletin-pages}}
+		{{> content/partials/bulletin-header}}
 	{{/block}}
-	{{!-- /page-intro --}}
 {{else}}
     <div class="page-neutral-intro {{#if_eq type "home_page"}}background--astral{{else}}background--gallery{{/if_eq}}">
 	<div class="wrapper">
