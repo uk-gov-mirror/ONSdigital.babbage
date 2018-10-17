@@ -123,20 +123,19 @@ public class SearchUtils {
         return buildResponse(request, listType, searchAll(queries, extractExternalSearch(request)));
     }
 
-    public static BabbageResponse listPage(String listType, SearchQueries queries, boolean externalSearch) throws IOException {
-        return buildPageResponse(listType, searchAll(queries, externalSearch));
+    public static BabbageResponse listPage(String listType, SearchQueries queries) throws IOException {
+        return buildPageResponse(listType, searchAll(queries));
     }
 
     public static BabbageResponse listPageWithValidationErrors(
             String listType, SearchQueries queries,
-            List<ValidationError> errors,
-            boolean externalSearch
+            List<ValidationError> errors
     ) throws IOException {
-        return buildPageResponseWithValidationErrors(listType, searchAll(queries, externalSearch), Optional.ofNullable(errors));
+        return buildPageResponseWithValidationErrors(listType, searchAll(queries), Optional.ofNullable(errors));
     }
 
-    public static BabbageResponse listJson(String listType, SearchQueries queries, boolean externalSearch) throws IOException {
-        return buildDataResponse(listType, searchAll(queries, externalSearch));
+    public static BabbageResponse listJson(String listType, SearchQueries queries) throws IOException {
+        return buildDataResponse(listType, searchAll(queries));
     }
 
     /**
