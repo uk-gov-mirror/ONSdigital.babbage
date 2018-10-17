@@ -1,5 +1,6 @@
 package com.github.onsdigital.babbage.search.helpers;
 
+import com.github.onsdigital.babbage.configuration.Configuration;
 import com.github.onsdigital.babbage.error.BadRequestException;
 import com.github.onsdigital.babbage.error.ResourceNotFoundException;
 import com.github.onsdigital.babbage.search.helpers.dates.PublishDates;
@@ -170,6 +171,20 @@ public class SearchRequestHelper {
             throw new BadRequestException("Search query contains too many characters");
         }
         return query;
+    }
+
+    /**
+     * Extracts the desired search client (internal/external for internal TCP or external conceptual search)
+     *
+     * @param request
+     * @return
+     */
+    public static boolean extractExternalSearch(HttpServletRequest request) {
+        String client = getParam(request, "searchClient", Configuration.SEARCH_SERVICE.DEFAULT_SEARCH_CLIENT);
+        if (StringUtils.isEmpty(client)) {
+            return Configuration.SEARCH_SERVICE.EXTERNAL_SEARCH_ENABLED;
+        }
+        return client.equalsIgnoreCase("external");
     }
 
     private static boolean allowFutureAfterDate(HttpServletRequest request) {

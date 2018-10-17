@@ -188,6 +188,7 @@ public class Configuration {
     }
 
     public static class SEARCH_SERVICE {
+        public static final String DEFAULT_SEARCH_CLIENT = "external";
         private static final String HOST = defaultIfBlank(getValue("EXTERNAL_SEARCH_HOST"), "localhost");
         private static final int PORT = defaultNumberIfBlank(getNumberValue("EXTERNAL_SEARCH_PORT"), 5000);
         public static final boolean EXTERNAL_SEARCH_ENABLED = Boolean.parseBoolean(getValue("ENABLE_SEARCH_SERVICE"));
