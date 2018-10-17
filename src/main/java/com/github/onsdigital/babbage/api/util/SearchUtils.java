@@ -96,7 +96,7 @@ public class SearchUtils {
         LinkedHashMap<String, SearchResult> results = populateSerp(request, listType, queries);
 
         if (searchDepartments) {
-            searchDeparments(searchTerm, results);
+            searchDeparments(request, searchTerm, results);
         }
         return buildResponse(request, listType, results);
     }
@@ -105,7 +105,7 @@ public class SearchUtils {
         /**
          * Attempts to intercept content, type counts, and featured result queries to populate the SERP.
          */
-        if (Configuration.SEARCH_SERVICE.EXTERNAL_SEARCH_ENABLED) {
+        if (Configuration.SEARCH_SERVICE.EXTERNAL_SEARCH_ENABLED && extractExternalSearch(request)) {
             try {
                 // Use external search client
                 return SearchClient.getInstance().search(request, listType);
@@ -120,31 +120,32 @@ public class SearchUtils {
     }
 
     public static BabbageResponse list(HttpServletRequest request, String listType, SearchQueries queries) throws IOException {
-        return buildResponse(request, listType, searchAll(queries));
+        return buildResponse(request, listType, searchAll(queries, extractExternalSearch(request)));
     }
 
-    public static BabbageResponse listPage(String listType, SearchQueries queries) throws IOException {
-        return buildPageResponse(listType, searchAll(queries));
+    public static BabbageResponse listPage(String listType, SearchQueries queries, boolean externalSearch) throws IOException {
+        return buildPageResponse(listType, searchAll(queries, externalSearch));
     }
 
     public static BabbageResponse listPageWithValidationErrors(
             String listType, SearchQueries queries,
-            List<ValidationError> errors
+            List<ValidationError> errors,
+            boolean externalSearch
     ) throws IOException {
-        return buildPageResponseWithValidationErrors(listType, searchAll(queries), Optional.ofNullable(errors));
+        return buildPageResponseWithValidationErrors(listType, searchAll(queries, externalSearch), Optional.ofNullable(errors));
     }
 
-    public static BabbageResponse listJson(String listType, SearchQueries queries) throws IOException {
-        return buildDataResponse(listType, searchAll(queries));
+    public static BabbageResponse listJson(String listType, SearchQueries queries, boolean externalSearch) throws IOException {
+        return buildDataResponse(listType, searchAll(queries, externalSearch));
     }
 
     /**
-     * Execute the given search queries and default to external service (uses internal on failure).
+     * Executes the given search queries using either the external or internal search client
      * @param searchQueries
      * @return
      */
     public static LinkedHashMap<String, SearchResult> searchAll(SearchQueries searchQueries) {
-        return searchAll(searchQueries, true);
+        return searchAll(searchQueries, Configuration.SEARCH_SERVICE.EXTERNAL_SEARCH_ENABLED);
     }
 
     /**
@@ -312,12 +313,12 @@ public class SearchUtils {
      * @param searchTerm
      * @param results
      */
-    private static void searchDeparments(String searchTerm, LinkedHashMap<String, SearchResult> results) {
+    private static void searchDeparments(HttpServletRequest request, String searchTerm, LinkedHashMap<String, SearchResult> results) {
 
-        if (Configuration.SEARCH_SERVICE.EXTERNAL_SEARCH_ENABLED) {
-            SearchQuery request = new DepartmentsQuery(searchTerm);
+        if (Configuration.SEARCH_SERVICE.EXTERNAL_SEARCH_ENABLED && extractExternalSearch(request)) {
+            SearchQuery searchQuery = new DepartmentsQuery(searchTerm);
             try {
-                SearchResult result = request.call();
+                SearchResult result = searchQuery.call();
                 results.put(SearchType.DEPARTMENTS.getResultKey(), result);
             } catch (Exception e) {
                 e.printStackTrace();
