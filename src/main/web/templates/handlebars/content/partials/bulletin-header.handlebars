@@ -6,11 +6,13 @@
                     <div class="breadcrumb-bulletins print--hide">
                         <ol class="breadcrumb-bulletins__list">
                             {{#each breadcrumb}}
-                                <li class="breadcrumb-bulletins__item padding-bottom--0 padding-top--0">
+                                <li class="breadcrumb-bulletins__item">
                                     <a class="breadcrumb-bulletins__link" href="{{uri}}">{{description.title}}</a>
+                                    <span class="icon icon-arrow-forward--light-small"/>
                                 </li>
                             {{/each}}
-                            <li class="breadcrumb__item padding-bottom--0 padding-top--0">
+                            <li class="breadcrumb-bulletins__item">
+                                <span class="icon icon-arrow-back--light-small hide--md"></span>
                                 {{description.title}}
                             </li>
                         </ol>
@@ -37,22 +39,22 @@
             {{#unless (endsWith (parentPath uri) "previous")}} 
                 {{!-- If not a previous version workout the latest link --}}
                 {{#if description.latestRelease}}
-                    <div class="col bulletin-alerts bulletin-alerts__latest">
-                        <p class="bulletin-alerts__title">{{labels.this-is-the-latest-release}}
-                        <a class="bulletin-alerts__link" href="{{parentPath uri}}/previousReleases">{{labels.view-previous-releases}}</a></p>
+                    <div class="col alert-bulletins alert-bulletins__latest">
+                        <p class="alert-bulletins__title">{{labels.this-is-the-latest-release}}
+                        <a class="alert-bulletins__link" href="{{parentPath uri}}/previousReleases">{{labels.view-previous-releases}}</a></p>
                     </div>
                 {{else}}
                     {{#resolve (concat (parentPath uri) "/latest") filter="title"}}
-                        <div class="col bulletin-alerts bulletin-alerts__not-latest">
-                            <p class="bulletin-alerts__title">{{labels.this-is-not-the-latest-release}}
-                            <a class="bulletin-alerts__link" href="{{uri}}">{{labels.view-latest-release}}</a></p>
+                        <div class="col alert-bulletins alert-bulletins__not-latest">
+                            <p class="alert-bulletins__title">{{labels.this-is-not-the-latest-release}}
+                            <a class="alert-bulletins__link" href="{{uri}}">{{labels.view-latest-release}}</a></p>
                         </div>
                     {{/resolve}}
                 {{/if}}
             {{else}}
                 {{!-- If an older version of any release link to latest version of that release --}}
-                <div class="col bulletin-alerts bulletin-alerts__not-latest">
-                    <p class="bulletin-alerts__title">{{labels.this-has-been-superseded}} <a class="bulletin-alerts__link" href="{{parentPath (parentPath uri)}}">{{labels.view-corrected-version}}</a></p>
+                <div class="col alert-bulletins alert-bulletins__not-latest">
+                    <p class="alert-bulletins__title">{{labels.this-has-been-superseded}} <a class="alert-bulletins__link" href="{{parentPath (parentPath uri)}}">{{labels.view-corrected-version}}</a></p>
                 </div>
             {{/unless}}
 
@@ -62,10 +64,10 @@
                 <div class="show-hide show-hide--dark margin-top-sm--3 margin-top-md--3 js-show-hide">
                     <div class="js-show-hide__title">
                         <button class="js-show-hide__button margin-top--2" type="button" aria-expanded="false" aria-controls="collapsible-0">
-                            <div class="bulletin-alerts--border">
+                            <div class="alert-bulletins--border">
                                 <span class="icon icon-info icon-info--info-box"></span>
 
-                                <h2 class="show-hide__title bulletin-alerts--warning__title">
+                                <h2 class="show-hide__title alert-bulletins--warning__title">
                                     {{!-- Lots of 'if's to handle plurals and combinations of corrections or notices --}}
                                     {{#if_all versions alerts}}
                                         {{labels.corrections-and-notices}}
@@ -87,13 +89,6 @@
                     </div>
 
                 </div>
-                {{!-- {{#block "block-alert"}}
-                    {{#if no-versions}}
-                        {{> partials/alert no-versions=true}}
-                    {{else}}
-                        {{> partials/alert}}
-                    {{/if}}
-                {{/block}} --}}
             {{/if_any}}
             {{#partial "block-intro-secondary"}}
                 {{!-- Latest release flag, corrections and notices --}}
