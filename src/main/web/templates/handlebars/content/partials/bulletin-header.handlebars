@@ -1,4 +1,4 @@
-<div class="page-neutral-intro background--astral text--white">
+<div class="page-bulletins background--astral text--white">
     <div class="wrapper">
         <div class="col-wrap">
             <div class="col">
@@ -6,20 +6,22 @@
                     <div class="breadcrumb-bulletins print--hide">
                         <ol class="breadcrumb-bulletins__list">
                             {{#each breadcrumb}}
-                                <li class="breadcrumb-bulletins__item padding-bottom--0 padding-top--0">
+                                <li class="breadcrumb-bulletins__item">
+                                    <span class="icon icon-arrow-back--light-small hide--md"></span>
                                     <a class="breadcrumb-bulletins__link" href="{{uri}}">{{description.title}}</a>
+                                    <span class="icon icon-arrow-forward--light-small hide--sm"/>
                                 </li>
                             {{/each}}
-                            <li class="breadcrumb__item padding-bottom--0 padding-top--0">
+                            <li class="breadcrumb-bulletins__item">
                                 {{description.title}}
                             </li>
                         </ol>
                     </div>
                 </nav>
                 
-                <div class="col col--md-47 col--lg-48">
-                    <h1 class="page-intro__title padding-bottom--0 padding-top--0 margin-top--2 font-weight-700 {{#if_any description._abstract description.summary}}margin-bottom--2 {{else}}margin-bottom--4{{/if_any}}">{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}</h1>
-                    <p class="page-intro__content margin-top--2 margin-bottom--3 padding-bottom--0 padding-top--0">
+                <div class="col margin-left--0">
+                    <h1 class="padding-bottom--0 padding-top--0 margin-top--2 font-weight-700 {{#if_any description._abstract description.summary}}margin-bottom--2 {{else}}margin-bottom--4{{/if_any}}">{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}</h1>
+                    <p class="page-bulletins--Summary margin-right-md--2 margin-bottom--3 padding-bottom--0 padding-top--0">
                     {{#if description._abstract}}
                         {{description._abstract}}
                     {{else}}
@@ -31,37 +33,41 @@
             </div> {{!-- /col --}}
         </div> {{!-- /col-wrap --}}
     </div> {{!-- /wrapper --}}
-    <div class="alert">
-        <div class="wrapper">
-            <div class="col-wrap">
-                <div class="col">
-
-                    {{!-- Latest info --}}
-                    {{#unless (endsWith (parentPath uri) "previous")}} 
-                        {{!-- If not a previous version workout the latest link --}}
-                        {{#if description.latestRelease}}
-                            <p class="alert__title">{{labels.this-is-the-latest-release}}</p>
-                            <a class="alert__link" href="{{parentPath uri}}/previousReleases">{{labels.view-previous-releases}}</a>
-                        {{else}}
-                            {{#resolve (concat (parentPath uri) "/latest") filter="title"}}
-                                <p class="alert__title">{{labels.this-is-not-the-latest-release}}</p> <a class="btn btn--primary print--hide" href="{{uri}}">{{labels.view-latest-release}}</a>
-                            {{/resolve}}
-                        {{/if}}
-                    {{else}}
-                        {{!-- If an older version of any release link to latest version of that release --}}
-                        <div class="alert--warning">
-                            <div class="alert--warning__icon"></div>
-                            <h2 class="alert--warning__title">{{labels.this-has-been-superseded}}</h2> <a class="btn btn--primary print--hide alert--warning__content" href="{{parentPath (parentPath uri)}}">{{labels.view-corrected-version}}</a>
+    <div class="wrapper">
+        <div class="col-wrap">
+            {{!-- Latest info --}}
+            {{#unless (endsWith (parentPath uri) "previous")}} 
+                {{!-- If not a previous version workout the latest link --}}
+                {{#if description.latestRelease}}
+                    <div class="col alert-bulletins alert-bulletins__latest">
+                        <p class="alert-bulletins__title">{{labels.this-is-the-latest-release}}
+                        <a class="alert-bulletins__link" href="{{parentPath uri}}/previousReleases">{{labels.view-previous-releases}}</a></p>
+                    </div>
+                {{else}}
+                    {{#resolve (concat (parentPath uri) "/latest") filter="title"}}
+                        <div class="col alert-bulletins alert-bulletins__not-latest">
+                            <p class="alert-bulletins__title">{{labels.this-is-not-the-latest-release}}
+                            <a class="alert-bulletins__link" href="{{uri}}">{{labels.view-latest-release}}</a></p>
                         </div>
-                    {{/unless}}
+                    {{/resolve}}
+                {{/if}}
+            {{else}}
+                {{!-- If an older version of any release link to latest version of that release --}}
+                <div class="col alert-bulletins alert-bulletins__not-latest">
+                    <p class="alert-bulletins__title">{{labels.this-has-been-superseded}} <a class="alert-bulletins__link" href="{{parentPath (parentPath uri)}}">{{labels.view-corrected-version}}</a></p>
+                </div>
+            {{/unless}}
 
-                    {{!-- Corrections & alerts --}}
-                    {{#if_any versions alerts}}
-                        <div class="show-hide show-hide--dark info-box margin-top-sm--3 margin-top-md--3 js-show-hide">
-                            <div class="js-show-hide__title">
-                                <span class="icon icon-info icon-info--info-box"></span>
+            {{!-- Corrections & alerts --}}
+            {{#if_any versions alerts}}
+            {{!-- {{else}} --}}
+                <div class="show-hide show-hide--dark margin-top-sm--8 margin-top-md--8 js-show-hide">
+                    <div class="alert-bulletins--border margin-left-md--1">
+                        <div class="js-show-hide__title">
+                            <button class="js-show-hide__button margin-top--2 alert-bulletins--expand-arrow" type="button" aria-expanded="false" aria-controls="collapsible-0">
+                                <span class="icon icon-info icon-info--info-box alert-bulletins--info-box"></span>
 
-                                <h2 class="show-hide__title alert--warning__title">
+                                <h2 class="show-hide__title alert-bulletins--warning__title">
                                     {{!-- Lots of 'if's to handle plurals and combinations of corrections or notices --}}
                                     {{#if_all versions alerts}}
                                         {{labels.corrections-and-notices}}
@@ -73,36 +79,45 @@
                                         {{/if}}
                                     {{/if_all}}
                                 </h2>
-                            </div>
-
-                            <div class="js-show-hide__content">
-                                {{> partials/correction}}
-                                {{> partials/notice}}
-                            </div>
-
+                            </button>
                         </div>
-                    {{/if_any}}
+
+                        <div class="js-show-hide__content">
+                            {{> partials/correction}}
+                            {{> partials/notice}}
+                        </div>
+                    </div>
+
                 </div>
-            </div>
+            {{/if_any}}
+            {{#partial "block-intro-secondary"}}
+                {{!-- Latest release flag, corrections and notices --}}
+                {{#block "block-alert"}}
+                    {{#if no-versions}}
+                        {{> partials/alert no-versions=true}}
+                    {{else}}
+                        {{> partials/alert}}
+                    {{/if}}
+                {{/block}}
+            {{/partial}}
         </div>
     </div>
     <div class="wrapper">
-        <div class="col-wrap">
-            <p class="col {{class}} col--md-one-third">
-                {{#if description.nationalStatistic}} <a
-                        href="https://www.statisticsauthority.gov.uk/national-statistician/types-of-official-statistics/"><img
-                        class="meta__image" src="/img/national-statistics.png"
-                        alt="National Statistics logo"/></a>{{/if}}
-                <span>{{labels.contact}}: </span><br/><a href="mailto:{{description.contact.email}}" class="text--white">{{#if description.contact.name}}{{description.contact.name}}{{else}}{{description.contact.email}}{{/if}}</a>
+        <div class="col-wrap margin-top--3 margin-left--0">
+                {{#if description.nationalStatistic}} <div class="col col--md-4 col--lg-4"><a class="meta__image" href="https://www.statisticsauthority.gov.uk/national-statistician/types-of-official-statistics/"><img
+                class="meta__image margin-right--0" src="/img/national-statistics.png"
+                alt="This is an accredited national statistic."/></a></div>{{/if}}
+            <p class="col {{class}} col--md-12 col--lg-15 margin-bottom-sm--1 margin-bottom-md--3 margin-top-sm--1 padding-bottom--0 padding-top--0">
+                <span class="font-weight-700">{{labels.contact}}: </span><br/><a href="mailto:{{description.contact.email}}" class="text--white"><span class="visuallyhidden">Email </span>{{#if description.contact.name}}{{description.contact.name}}{{else}}{{description.contact.email}}{{/if}}</a>
             </p>
 
-            <p class="col {{class}} col--md-one-third">
-                <span>{{labels.release-date}}: </span><br/>{{df description.releaseDate}}<br/>
+            <p class="col {{class}} col--md-one-third col--lg-one-third margin-bottom-sm--1 margin-bottom-md--3 margin-top--0 padding-bottom--0 padding-top--0">
+                <span class="font-weight-700">{{labels.release-date}}: </span><br/>{{df description.releaseDate}}<br/>
                 {{#if_all (eq type "timeseries") versions}}{{#unless previous}}<a href="{{uri}}/previous">View previous versions</a>{{/unless}}{{/if_all}}
             </p>
 
-            <p class="col {{class}} col--md-one-third">
-                <span>{{labels.next-release}}: </span><br/>{{#if description.nextRelease}}{{description.nextRelease}}{{else}}To be announced{{/if}}
+            <p class="col {{class}} col--md-one-third col--lg-one-third margin-bottom-sm--3 margin-bottom-md--3 margin-top--0 padding-bottom--0 padding-top--0">
+                <span class="font-weight-700">{{labels.next-release}}: </span><br/>{{#if description.nextRelease}}{{description.nextRelease}}{{else}}To be announced{{/if}}
             </p>
         </div>
     </div>
