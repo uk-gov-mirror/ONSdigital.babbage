@@ -16,8 +16,13 @@
 
         {{#if_any description.metaDescription description.summary description._abstract}}<meta name="description" content="{{#if description.metaDescription}}{{description.metaDescription}}{{else}}{{#if description.summary}}{{description.summary}}{{else}}{{description._abstract}}{{/if}}{{/if}}">{{/if_any}}
 
+        {{#if_any (eq type "bulletin") (eq type "article") (eq type "compendium_landing_page") (eq type "compendium_chapter")}}
+            <link rel="canonical" href="{{uri}}" />
+        {{/if_any}}
+
 		<!--[if IE]><![endif]-->
 		<!--[if lte IE 8]>
+<<<<<<< HEAD
 		<link rel="stylesheet" href="{{#if is_dev}}http://{{location.hostname}}:9000/dist{{else}}//cdn.ons.gov.uk/sixteens/001bc22{{/if}}/css/old-ie.css"/>
 		<![endif]-->
         <!--[if IE 9]>
@@ -26,6 +31,16 @@
 		<!--[if gt IE 9]><!-->
         <link rel="stylesheet" type="text/css" href="{{#if is_dev}}http://{{location.hostname}}:9000/dist{{else}}//cdn.ons.gov.uk/sixteens/001bc22{{/if}}/css/main.css">
 		{{#if pdf_style}}<link rel="stylesheet" type="text/css" href="{{#if is_dev}}http://localhost:9000/dist{{else}}//cdn.ons.gov.uk/sixteens/001bc22{{/if}}/css/pdf.css">{{/if}}
+=======
+		<link rel="stylesheet" href="{{#if is_dev}}http://{{location.hostname}}:9000/dist{{else}}//cdn.ons.gov.uk/sixteens/df34676{{/if}}/css/old-ie.css"/>
+		<![endif]-->
+        <!--[if IE 9]>
+              <link rel="stylesheet" type="text/css" href="{{#if is_dev}}http://{{location.hostname}}:9000/dist{{else}}//cdn.ons.gov.uk/sixteens/df34676{{/if}}/css/ie-9.css">
+        <![endif]-->
+		<!--[if gt IE 9]><!-->
+        <link rel="stylesheet" type="text/css" href="{{#if is_dev}}http://{{location.hostname}}:9000/dist{{else}}//cdn.ons.gov.uk/sixteens/df34676{{/if}}/css/main.css">
+		{{#if pdf_style}}<link rel="stylesheet" type="text/css" href="{{#if is_dev}}http://localhost:9000/dist{{else}}//cdn.ons.gov.uk/sixteens/df34676{{/if}}/css/pdf.css">{{/if}}
+>>>>>>> develop
         <![endif]-->
 
         {{> partials/gtm-data-layer }}
@@ -133,7 +148,11 @@
 
 
         <!--[if gt IE 8]><!-->
+<<<<<<< HEAD
         <script type="text/javascript" src="{{#if is_dev}}//{{location.hostname}}:9000/dist{{else}}//cdn.ons.gov.uk/sixteens/001bc22{{/if}}/js/main.js"></script>
+=======
+        <script type="text/javascript" src="{{#if is_dev}}//{{location.hostname}}:9000/dist{{else}}//cdn.ons.gov.uk/sixteens/df34676{{/if}}/js/main.js"></script>
+>>>>>>> develop
         <script type="text/javascript" src="/js/app.js"></script>
 
         {{!-- Add extra highcharts source files if page contains any charts --}}

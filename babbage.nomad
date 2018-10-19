@@ -25,8 +25,14 @@ job "babbage" {
 
     constraint {
       attribute = "${node.class}"
-      operator  = "regexp"
-      value     = "web.*"
+      value     = "web-mount"
+    }
+
+    restart {
+      attempts = 3
+      delay    = "15s"
+      interval = "1m"
+      mode     = "delay"
     }
 
     task "babbage-web" {
@@ -64,10 +70,10 @@ job "babbage" {
         tags = ["web"]
 
         check {
-            type     = "http"
-            path     = "/healthcheck"
-            interval = "10s"
-            timeout  = "2s"
+          type     = "http"
+          path     = "/healthcheck"
+          interval = "10s"
+          timeout  = "2s"
         }
       }
 
@@ -96,8 +102,14 @@ job "babbage" {
 
     constraint {
       attribute = "${node.class}"
-      operator  = "regexp"
-      value     = "publishing.*"
+      value     = "publishing-mount"
+    }
+
+    restart {
+      attempts = 3
+      delay    = "15s"
+      interval = "1m"
+      mode     = "delay"
     }
 
     task "babbage-publishing" {
@@ -135,10 +147,10 @@ job "babbage" {
         tags = ["publishing"]
 
         check {
-            type     = "http"
-            path     = "/healthcheck"
-            interval = "10s"
-            timeout  = "2s"
+          type     = "http"
+          path     = "/healthcheck"
+          interval = "10s"
+          timeout  = "2s"
         }
       }
 

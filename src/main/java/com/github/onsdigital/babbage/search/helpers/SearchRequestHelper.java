@@ -1,5 +1,6 @@
 package com.github.onsdigital.babbage.search.helpers;
 
+import com.github.onsdigital.babbage.configuration.Configuration;
 import com.github.onsdigital.babbage.error.BadRequestException;
 import com.github.onsdigital.babbage.error.ResourceNotFoundException;
 import com.github.onsdigital.babbage.search.helpers.dates.PublishDates;
@@ -9,11 +10,14 @@ import com.github.onsdigital.babbage.search.input.TypeFilter;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.BiFunction;
 
+import static com.github.onsdigital.babbage.configuration.Configuration.GENERAL.getMaxResultsPerPage;
+import static com.github.onsdigital.babbage.configuration.Configuration.GENERAL.getResultsPerPage;
 import static com.github.onsdigital.babbage.search.helpers.dates.PublishDates.publishedDates;
 import static com.github.onsdigital.babbage.search.helpers.dates.PublishDates.updatedWithinPeriod;
 import static com.github.onsdigital.babbage.util.RequestUtil.getParam;
@@ -136,6 +140,23 @@ public class SearchRequestHelper {
     }
 
     /**
+     * If a size parameter exists use that otherwise use default.
+     */
+    public static int extractSize(HttpServletRequest request) {
+        int result = getResultsPerPage();
+        if (StringUtils.isNotEmpty(request.getParameter("size"))) {
+            try {
+                result = Integer.parseInt(request.getParameter("size"));
+                return Math.max(getResultsPerPage(), Math.min(result, getMaxResultsPerPage()));
+            } catch (NumberFormatException ex) {
+                System.out.println(MessageFormat.format("Failed to parse size parameter to integer." +
+                        " Default value will be used.\n {0}", ex));
+            }
+        }
+        return result;
+    }
+
+    /**
      * Extracts search term, checks for parameter "q" if it does not exist looks for parameter "query"
      *
      * @param request
@@ -150,6 +171,20 @@ public class SearchRequestHelper {
             throw new BadRequestException("Search query contains too many characters");
         }
         return query;
+    }
+
+    /**
+     * Extracts the desired search client (internal/external for internal TCP or external conceptual search)
+     *
+     * @param request
+     * @return
+     */
+    public static boolean extractExternalSearch(HttpServletRequest request) {
+        String client = getParam(request, "searchClient", Configuration.SEARCH_SERVICE.DEFAULT_SEARCH_CLIENT);
+        if (StringUtils.isEmpty(client)) {
+            return Configuration.SEARCH_SERVICE.EXTERNAL_SEARCH_ENABLED;
+        }
+        return client.equalsIgnoreCase("external");
     }
 
     private static boolean allowFutureAfterDate(HttpServletRequest request) {

@@ -13,7 +13,7 @@ $(window).load(function() {
 function highchartsAccessibilityAttrs(selector, labelText, removeAttrs) {
     if (!removeAttrs) {
         selector.attr('aria-label', labelText);
-        selector.find('svg').attr('aria-hidden', 'true');
+        selector.find('svg').attr('aria-hidden', 'true').attr('focusable', 'false');
     } else {
         selector.attr('aria-label', '');
         selector.find('svg').attr('aria-hidden', 'false');

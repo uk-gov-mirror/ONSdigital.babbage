@@ -77,7 +77,9 @@
                                     <span class="text--aluminium">|</span> Released on {{df this.description.releaseDate}}
                                 {{/if}}
                             </p>
-                            <p class="tile-neutral-content__description margin-top--0 margin-bottom--0 ">{{this.description.summary}}</p>
+                            {{#if_any this.description.summary this.description._abstract}}
+                                <p class="tile-neutral-content__description margin-top--0 margin-bottom--0 ">{{#if this.description.summary}}{{this.description.summary}}{{else}}{{this.description._abstract}}{{/if}}</p>
+                            {{/if_any}}
                         </li>
                     {{/resolve}}
                 {{/each}}

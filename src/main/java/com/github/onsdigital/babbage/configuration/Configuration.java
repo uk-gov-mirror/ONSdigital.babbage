@@ -1,6 +1,15 @@
 package com.github.onsdigital.babbage.configuration;
 
+import com.github.onsdigital.babbage.util.URIUtil;
 import org.apache.commons.lang3.StringUtils;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.apache.commons.lang3.StringUtils.defaultIfBlank;
 
@@ -125,6 +134,13 @@ public class Configuration {
         private static Integer elasticSearchPort = Integer.parseInt(defaultIfBlank(getValue("ELASTIC_SEARCH_PORT"), "9300"));
         private static String elasticSearchCluster = defaultIfBlank(getValue("ELASTIC_SEARCH_CLUSTER"), "");
 
+        private static String HIGHLIGHT_URL_BLACKLIST_FILE = defaultIfBlank(getValue("HIGHLIGHT_URL_BLACKLIST_FILE"),
+                "highlight-url-blacklist");
+        
+        private static final List<String> highlightBlacklist = loadHighlightBlacklist();
+
+        public static List<String> getHighlightBlacklist() { return highlightBlacklist; }
+
         public static String getElasticSearchServer() {
             return elasticSearchServer;
         }
@@ -139,6 +155,49 @@ public class Configuration {
 
         public static String getElasticSearchCluster() {
             return elasticSearchCluster;
+        }
+
+        /**
+         * Method to load the list of retired product pages to be hidden
+         * @return List of url strings containing the black listed urls
+         */
+        private static List<String> loadHighlightBlacklist() {
+            ClassLoader classLoader = Configuration.class.getClassLoader();
+            URL fileUrl = classLoader.getResource(HIGHLIGHT_URL_BLACKLIST_FILE);
+
+            List<String> urls = new ArrayList<>();
+            if (null != fileUrl) {
+                File file = new File(fileUrl.getFile());
+                try (BufferedReader bw = new BufferedReader(new FileReader(file))) {
+                    String blacklistedUrl;
+
+                    while ((blacklistedUrl = bw.readLine()) != null) {
+                        urls.add(URIUtil.cleanUri(blacklistedUrl));
+                    }
+                } catch (IOException e) {
+                    // Print additional info out to stderr
+                    String message = "Error while attempting to load highlight blacklist file.";
+                    System.out.println(message);
+                    e.printStackTrace();
+                    // Unable to load the file, so return an empty ArrayList (won't black list any urls)
+                    return new ArrayList<>();
+                }
+            }
+            return urls;
+        }
+    }
+
+    public static class SEARCH_SERVICE {
+        public static final String DEFAULT_SEARCH_CLIENT = "external";
+        private static final String HOST = defaultIfBlank(getValue("EXTERNAL_SEARCH_HOST"), "localhost");
+        private static final int PORT = defaultNumberIfBlank(getNumberValue("EXTERNAL_SEARCH_PORT"), 5000);
+        public static final boolean EXTERNAL_SEARCH_ENABLED = Boolean.parseBoolean(getValue("ENABLE_SEARCH_SERVICE"));
+        public static final boolean EXTERNAL_SPELLCHECK_ENABLED = Boolean.parseBoolean(getValue("EXTERNAL_SPELLCHECK_ENABLED"));
+        public static final float SPELL_CHECK_CONFIDENCE_THRESHOLD = defaultNumberIfBlank(getFloatValue("SPELL_CHECK_CONFIDENCE_THRESHOLD"), 0.0f);
+        public static final int SEARCH_NUM_EXECUTORS = defaultNumberIfBlank(getNumberValue("SEARCH_NUM_EXECUTORS"), 8);
+
+        public static final String getExternalSearchAddress() {
+            return String.format("%s:%d", HOST, PORT);
         }
     }
 
@@ -299,11 +358,35 @@ public class Configuration {
             return null;
         }
 
-        return Integer.valueOf(value.trim());
+        try {
+            return Integer.valueOf(value.trim());
+        } catch (NumberFormatException e) {
+            System.out.println(String.format("Exception while trying to parse variable '%s' to Integer", key));
+            return null;
+        }
     }
 
 
     private static Integer defaultNumberIfBlank(Integer value, Integer defaultValue) {
+        return value == null ? defaultValue : value;
+    }
+
+    private static Float getFloatValue(String key) {
+        String value = getValue(key);
+        if (StringUtils.isEmpty(value)) {
+            return null;
+        }
+
+        try {
+            return Float.valueOf(value.trim());
+        } catch (NumberFormatException e) {
+            System.out.println(String.format("Exception while trying to parse variable '%s' to Float", key));
+            return null;
+        }
+    }
+
+
+    private static Float defaultNumberIfBlank(Float value, Float defaultValue) {
         return value == null ? defaultValue : value;
     }
 
