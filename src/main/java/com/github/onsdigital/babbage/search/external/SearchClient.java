@@ -32,7 +32,8 @@ public class SearchClient implements SearchClosable {
                     System.out.println("Initialising external search client");
                     INSTANCE.start();
                     Runtime.getRuntime().addShutdownHook(new ShutdownThread(INSTANCE));
-                    System.out.println("Initialised external search client successfully");
+                    System.out.println(String.format("Initialised external search client successfully at addr: %s, ",
+                            Configuration.SEARCH_SERVICE.getExternalSearchAddress()));
                 }
             }
         }

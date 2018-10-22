@@ -105,7 +105,7 @@ public class SearchUtils {
         /**
          * Attempts to intercept content, type counts, and featured result queries to populate the SERP.
          */
-        if (Configuration.SEARCH_SERVICE.EXTERNAL_SEARCH_ENABLED && extractExternalSearch(request)) {
+        if (Configuration.SEARCH_SERVICE.EXTERNAL_SEARCH_ENABLED) {
             try {
                 // Use external search client
                 return SearchClient.getInstance().search(request, listType);
@@ -120,7 +120,7 @@ public class SearchUtils {
     }
 
     public static BabbageResponse list(HttpServletRequest request, String listType, SearchQueries queries) throws IOException {
-        return buildResponse(request, listType, searchAll(queries, extractExternalSearch(request)));
+        return buildResponse(request, listType, searchAll(queries));
     }
 
     public static BabbageResponse listPage(String listType, SearchQueries queries) throws IOException {
@@ -314,7 +314,7 @@ public class SearchUtils {
      */
     private static void searchDeparments(HttpServletRequest request, String searchTerm, LinkedHashMap<String, SearchResult> results) {
 
-        if (Configuration.SEARCH_SERVICE.EXTERNAL_SEARCH_ENABLED && extractExternalSearch(request)) {
+        if (Configuration.SEARCH_SERVICE.EXTERNAL_SEARCH_ENABLED) {
             SearchQuery searchQuery = new DepartmentsQuery(searchTerm);
             try {
                 SearchResult result = searchQuery.call();
