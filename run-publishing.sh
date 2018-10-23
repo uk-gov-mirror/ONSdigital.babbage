@@ -14,6 +14,8 @@ export JAVA_OPTS="-Xdebug -Xmx256m -Xrunjdwp:transport=dt_socket,address=8000,se
 export RESTOLINO_STATIC="src/main/web"
 export RESTOLINO_CLASSES="target/classes"
 export PACKAGE_PREFIX=com.github.onsdigital
+export DP_COLOURED_LOGGING=true
+export DP_LOGGING_FORMAT=pretty_json
 
 export PHANTOMJS_PATH=`which phantomjs`
 export DEV_ENVIRONMENT="Y"

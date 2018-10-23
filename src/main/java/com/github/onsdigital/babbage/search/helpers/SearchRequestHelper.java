@@ -16,6 +16,7 @@ import java.util.Set;
 import java.util.function.BiFunction;
 
 import static com.github.onsdigital.babbage.configuration.ApplicationConfiguration.appConfig;
+import static com.github.onsdigital.babbage.logging.LogBuilder.logEvent;
 import static com.github.onsdigital.babbage.search.helpers.dates.PublishDates.publishedDates;
 import static com.github.onsdigital.babbage.search.helpers.dates.PublishDates.updatedWithinPeriod;
 import static com.github.onsdigital.babbage.util.RequestUtil.getParam;
@@ -148,6 +149,8 @@ public class SearchRequestHelper {
                 return Math.max(appConfig().babbage().getResultsPerPage(), Math.min(result,
                         appConfig().babbage().getMaxResultsPerPage()));
             } catch (NumberFormatException ex) {
+                logEvent(ex).parameter("value", result)
+                        .error("Failed to parse size parameter to integer. Default value will be used");
                 System.out.println(MessageFormat.format("Failed to parse size parameter to integer." +
                         " Default value will be used.\n {0}", ex));
             }

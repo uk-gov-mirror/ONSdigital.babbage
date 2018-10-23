@@ -35,6 +35,7 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import static com.github.onsdigital.babbage.configuration.ApplicationConfiguration.appConfig;
+import static com.github.onsdigital.babbage.logging.LogBuilder.logEvent;
 import static com.github.onsdigital.babbage.search.ElasticSearchClient.getElasticsearchClient;
 import static org.apache.commons.lang.StringUtils.removeEnd;
 
@@ -200,11 +201,11 @@ public class PublishingManager {
     }
 
     public static void init() throws IOException {
-        System.out.println("Initializing Search service");
+        logEvent().debug("initialising search service");
         if (appConfig().babbage().isCacheEnabled()) {
             initPublishDatesIndex();
         }
-        System.out.println("Initialized Search service successfully");
+        logEvent().debug("initialising search service completed successfully");
     }
 
     private static void initPublishDatesIndex() throws IOException {
@@ -233,7 +234,8 @@ public class PublishingManager {
                     @Override
                     public void beforeBulk(long executionId,
                                            BulkRequest request) {
-                        System.out.println("Builk Indexing " + request.numberOfActions() + " publish dates");
+                        logEvent().parameter("batchSize", request.numberOfActions())
+                                .info("bulk indexing publish dates");
                     }
 
                     @Override
@@ -244,7 +246,9 @@ public class PublishingManager {
                             BulkItemResponse[] items = response.getItems();
                             for (BulkItemResponse item : items) {
                                 if (item.isFailed()) {
-                                    System.err.println("!!!!!!!!Failed processing: [id:" + item.getFailure().getId() + " error:" + item.getFailureMessage() + "]");
+                                    logEvent().parameter("failedItemID", item.getFailure().getId())
+                                            .parameter("failureDetails", item.getFailureMessage())
+                                            .error("bulk processor after bulk failure");
                                 }
                             }
                         }
@@ -254,8 +258,7 @@ public class PublishingManager {
                     public void afterBulk(long executionId,
                                           BulkRequest request,
                                           Throwable failure) {
-                        System.err.println("Failed executing bulk index :" + failure.getMessage());
-                        failure.printStackTrace();
+                        logEvent(failure).error("bulk processor after bulk failure");
                     }
                 })
                 .setBulkActions(10000)

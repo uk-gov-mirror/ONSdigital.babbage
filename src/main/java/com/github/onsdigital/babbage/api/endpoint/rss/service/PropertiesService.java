@@ -5,39 +5,41 @@ import java.io.InputStream;
 import java.util.Optional;
 import java.util.Properties;
 
+import static com.github.onsdigital.babbage.logging.LogBuilder.logEvent;
+
 /**
  * Service for obtaining RSS relates properties/configuration.
  */
 public class PropertiesService {
 
-	private static final String PROPERTIES_RESOURCE_PATH = "/rss_feed.properties";
-	private static Optional<Properties> propertiesOptional = Optional.empty();
-	private static final PropertiesService INSTANCE = new PropertiesService();
+    private static final String PROPERTIES_RESOURCE_PATH = "/rss_feed.properties";
+    private static Optional<Properties> propertiesOptional = Optional.empty();
+    private static final PropertiesService INSTANCE = new PropertiesService();
 
-	public static PropertiesService getInstance() {
-		return PropertiesService.INSTANCE;
-	}
+    public static PropertiesService getInstance() {
+        return PropertiesService.INSTANCE;
+    }
 
-	private PropertiesService() {
-		// hide constructor.
-	}
+    private PropertiesService() {
+        // hide constructor.
+    }
 
-	public String get(String key) {
-		if (!propertiesOptional.isPresent()) {
-			loadProperties();
-		}
-		return String.valueOf(propertiesOptional.get().get(key));
-	}
+    public String get(String key) {
+        if (!propertiesOptional.isPresent()) {
+            loadProperties();
+        }
+        return String.valueOf(propertiesOptional.get().get(key));
+    }
 
-	private static void loadProperties() {
-		if (propertiesOptional.isPresent()) {
-			return;
-		}
-		try (InputStream in = RssService.class.getResourceAsStream(PROPERTIES_RESOURCE_PATH)) {
-			propertiesOptional = propertiesOptional.of(new Properties());
-			propertiesOptional.get().load(in);
-		} catch (IOException io) {
-			System.out.println("Unexpected error while attempting to load RSS properties " + io.getMessage());
-		}
-	}
+    private static void loadProperties() {
+        if (propertiesOptional.isPresent()) {
+            return;
+        }
+        try (InputStream in = RssService.class.getResourceAsStream(PROPERTIES_RESOURCE_PATH)) {
+            propertiesOptional = propertiesOptional.of(new Properties());
+            propertiesOptional.get().load(in);
+        } catch (IOException io) {
+            logEvent(io).error("unexpected error while attempting to load RSS properties");
+        }
+    }
 }

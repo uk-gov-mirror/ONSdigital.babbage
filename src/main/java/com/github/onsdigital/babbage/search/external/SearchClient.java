@@ -26,6 +26,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 import static com.github.onsdigital.babbage.configuration.ApplicationConfiguration.appConfig;
+import static com.github.onsdigital.babbage.logging.LogBuilder.logEvent;
 import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.extractPage;
 import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.extractSearchTerm;
 import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.extractSelectedFilters;
@@ -41,10 +42,10 @@ public class SearchClient implements SearchClosable {
             synchronized (SearchClient.class) {
                 if (INSTANCE == null) {
                     INSTANCE = new SearchClient();
-                    System.out.println("Initialising external search client");
+                    logEvent().info("initialising external search client");
                     INSTANCE.start();
                     Runtime.getRuntime().addShutdownHook(new ShutdownThread(INSTANCE));
-                    System.out.println("Initialised external search client successfully");
+                    logEvent().info("initialisation of external search client completed successfully");
                 }
             }
         }

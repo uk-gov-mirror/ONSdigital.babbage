@@ -13,6 +13,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import static com.github.onsdigital.babbage.configuration.ApplicationConfiguration.appConfig;
+import static com.github.onsdigital.babbage.logging.LogBuilder.logEvent;
 
 public class PdfGeneratorLegacy {
 
@@ -34,7 +35,7 @@ public class PdfGeneratorLegacy {
         try {
             // Execute command, redirect error to output to print all in the console
             Process process = new ProcessBuilder(command).redirectErrorStream(true).start();
-            System.out.println(ArrayUtils.toString(command));
+            logEvent().debug(ArrayUtils.toString(command));
             int exitStatus = process.waitFor();
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
             String currentLine;
@@ -44,7 +45,7 @@ public class PdfGeneratorLegacy {
                 stringBuilder.append(currentLine);
                 currentLine = bufferedReader.readLine();
             }
-            System.out.println(stringBuilder.toString());
+            logEvent().debug(stringBuilder.toString());
             Path pdfFile = FileSystems.getDefault().getPath(TEMP_DIRECTORY_PATH).resolve(fileName + ".pdf");
             if (!Files.exists(pdfFile)) {
                 throw new RuntimeException("Failed generating pdf, file not created");
@@ -69,7 +70,7 @@ public class PdfGeneratorLegacy {
             };
 
             Process gsProcess = new ProcessBuilder(gsCommand).redirectErrorStream(true).start();
-            System.out.println(ArrayUtils.toString(gsCommand));
+            logEvent().debug(ArrayUtils.toString(gsCommand));
             int gsExitStatus = gsProcess.waitFor();
 
             BufferedReader gsBufferedReader = new BufferedReader(new InputStreamReader(gsProcess.getInputStream()));
@@ -80,7 +81,7 @@ public class PdfGeneratorLegacy {
                 gsStringBuilder.append(gsCurrentLine);
                 gsCurrentLine = gsBufferedReader.readLine();
             }
-            System.out.println(gsStringBuilder.toString());
+            logEvent().debug(gsStringBuilder.toString());
 
             Path gsPdfFile = FileSystems.getDefault().getPath(TEMP_DIRECTORY_PATH).resolve(fileName + "-merged.pdf");
             if (!Files.exists(gsPdfFile)) {

@@ -156,7 +156,7 @@ public class Babbage implements Loggable {
     }
 
     public void logConfiguration() {
-        LogBuilder.Log()
+        LogBuilder.logEvent()
                 .parameter("maxVisiblePaginatorLink", maxVisiblePaginatorLink)
                 .parameter("resultsPerPage", resultsPerPage)
                 .parameter("maxResultsPerPage", maxResultsPerPage)

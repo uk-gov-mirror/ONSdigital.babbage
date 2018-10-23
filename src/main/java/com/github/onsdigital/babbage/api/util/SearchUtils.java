@@ -45,6 +45,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import static com.github.onsdigital.babbage.configuration.ApplicationConfiguration.appConfig;
+import static com.github.onsdigital.babbage.logging.LogBuilder.logEvent;
 import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.advancedSearchQuery;
 import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.contentQuery;
 import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.departmentQuery;
@@ -103,8 +104,7 @@ public class SearchUtils {
                                 .build().toString();
                         return new BabbageRedirectResponse(redirectUri, appConfig().babbage().getSearchResponseCacheTime());
                     } catch (URISyntaxException e) {
-                        System.out.println("Unable to encode referrer in timeSeriesUri");
-                        e.printStackTrace();
+                        logEvent(e).error("unable to encode referrer in timeSeriesUri");
                     }
                 }
                 return new BabbageRedirectResponse(timeSeriesUri, appConfig().babbage().getSearchResponseCacheTime());
@@ -286,8 +286,7 @@ public class SearchUtils {
                 results = SearchClient.getInstance().proxyQueries(searchQueries);
                 return results;
             } catch (Exception e) {
-                System.out.println("Error proxying search request to external service");
-                e.printStackTrace();
+                logEvent(e).error("error proxying search request to external service");
             }
         }
 

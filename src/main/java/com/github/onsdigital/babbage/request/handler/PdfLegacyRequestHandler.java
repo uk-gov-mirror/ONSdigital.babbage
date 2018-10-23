@@ -22,6 +22,8 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 
+import static com.github.onsdigital.babbage.logging.LogBuilder.logEvent;
+
 
 /**
  * Created by bren on 07/07/15.
@@ -36,8 +38,7 @@ public class PdfLegacyRequestHandler extends BaseRequestHandler {
         try {
             return PDFRequestHandler.getPreGeneratedPDF(requestedUri);
         } catch (ContentReadException e) {
-            // TODO use actual logging framework for this, log requested URI.
-            System.out.println("Pre-rendered PDF not found, throwing Legacy PDF error.");
+            logEvent(e).uri(requestedUri).error("pre-rendered PDF not found, throwing Legacy PDF error");
             throw new LegacyPDFException();
         }
     }

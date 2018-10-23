@@ -66,7 +66,7 @@ public class Handlebars implements Loggable {
     }
 
     public void logConfiguration() {
-        LogBuilder.Log()
+        LogBuilder.logEvent()
                 .parameter("defaultHandlebarsDatePattern", defaultHandlebarsDatePattern)
                 .parameter("mainContentTemplateName", mainContentTemplateName)
                 .parameter("mainChartConfigTemplateName", mainChartConfigTemplateName)

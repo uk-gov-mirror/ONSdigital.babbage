@@ -49,7 +49,7 @@ public class TableRenderer implements Loggable {
 
     @Override
     public void logConfiguration() {
-        LogBuilder.Log()
+        LogBuilder.logEvent()
                 .parameter(TABLE_RENDERER_HOST_KEY, host)
                 .parameter(TABLE_RENDERER_HTML_PATH_KEY, htmlPath)
                 .parameter(MAX_RENDERER_CONNECTIONS_KEY, maxConnections)

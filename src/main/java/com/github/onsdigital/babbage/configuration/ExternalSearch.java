@@ -63,7 +63,7 @@ public class ExternalSearch implements Loggable {
 
     @Override
     public void logConfiguration() {
-        LogBuilder.Log()
+        LogBuilder.logEvent()
                 .parameter(EXTERNAL_SEARCH_HOST_KEY, host)
                 .parameter(EXTERNAL_SEARCH_PORT_KEY, port)
                 .parameter(EXTERNAL_SEARCH_ENABLED_KEY, enabled)

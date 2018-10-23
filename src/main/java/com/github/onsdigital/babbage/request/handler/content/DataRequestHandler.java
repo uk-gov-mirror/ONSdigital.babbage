@@ -2,8 +2,8 @@ package com.github.onsdigital.babbage.request.handler.content;
 
 import com.github.onsdigital.babbage.content.client.ContentClient;
 import com.github.onsdigital.babbage.content.client.ContentResponse;
-import com.github.onsdigital.babbage.request.handler.base.ListRequestHandler;
 import com.github.onsdigital.babbage.request.handler.base.BaseRequestHandler;
+import com.github.onsdigital.babbage.request.handler.base.ListRequestHandler;
 import com.github.onsdigital.babbage.response.BabbageContentBasedStringResponse;
 import com.github.onsdigital.babbage.response.base.BabbageResponse;
 import com.github.onsdigital.babbage.util.URIUtil;
@@ -11,12 +11,12 @@ import org.reflections.Reflections;
 import org.reflections.util.ConfigurationBuilder;
 
 import javax.servlet.http.HttpServletRequest;
-
 import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import static com.github.onsdigital.babbage.logging.LogBuilder.logEvent;
 import static com.github.onsdigital.babbage.util.RequestUtil.getQueryParameters;
 
 /**
@@ -55,9 +55,7 @@ public class DataRequestHandler extends BaseRequestHandler {
     }
 
     private synchronized static void registerListHandlers() {
-        System.out.println("Resolving request handlers");
         try {
-
             ConfigurationBuilder configurationBuilder = new ConfigurationBuilder().addUrls(BaseRequestHandler.class.getProtectionDomain().getCodeSource().getLocation());
             configurationBuilder.addClassLoader(BaseRequestHandler.class.getClassLoader());
             Set<Class<? extends ListRequestHandler>> requestHandlerClasses = new Reflections(configurationBuilder).getSubTypesOf(ListRequestHandler.class);
@@ -66,10 +64,13 @@ public class DataRequestHandler extends BaseRequestHandler {
                 if (!Modifier.isAbstract(handlerClass.getModifiers())) {
                     String className = handlerClass.getSimpleName();
                     ListRequestHandler handlerInstance = handlerClass.newInstance();
-                    System.out.println("Registering ListPageBaseRequestHandler: " + className);
                     listPageHandlers.put(handlerInstance.getRequestType(), handlerInstance);
                 }
             }
+
+            logEvent().parameter("handlers", listPageHandlers.entrySet().stream(),
+                    (e) -> e.getValue().getClass().getName()).info("registered list page request handlers");
+
         } catch (Exception e) {
             System.err.println("Failed initializing request handlers");
             e.printStackTrace();

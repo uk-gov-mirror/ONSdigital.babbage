@@ -6,6 +6,8 @@ import org.apache.commons.lang3.StringUtils;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import static com.github.onsdigital.babbage.logging.LogBuilder.logEvent;
+
 /**
  */
 public class CacheControlHelper {
@@ -42,7 +44,12 @@ public class CacheControlHelper {
             return;
         }
         String oldHash = getOldHash(request);
-        System.out.println("Resolving cache headers, old has: " + oldHash + " new hash:" + newHash);
+
+        logEvent()
+                .parameter("oldHash", oldHash)
+                .parameter("newHash", newHash)
+                .info("resolving cache headers");
+
         response.setHeader("Etag", newHash);
         if (StringUtils.equals(oldHash, newHash)) {
             response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);

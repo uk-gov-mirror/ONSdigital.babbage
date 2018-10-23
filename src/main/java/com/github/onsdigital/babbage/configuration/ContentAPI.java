@@ -58,7 +58,7 @@ public class ContentAPI implements Loggable {
     }
 
     public void logConfiguration() {
-        LogBuilder.Log()
+        LogBuilder.logEvent()
                 .parameter(CONTENT_API_HOST_KEY, contentAPIHost)
                 .parameter(MAX_CONNECTIONS_KEY, maxConnections)
                 .parameter("defaultContentDatePattern", DEFAULT_CONTENT_DATE_PATTERN)

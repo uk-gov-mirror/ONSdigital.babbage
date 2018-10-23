@@ -57,7 +57,7 @@ public class ApplicationConfiguration {
     }
 
     private void logApplicationConfigs(Loggable... configs) {
-        LogBuilder.Log().info("loading babbage startup configurations");
+        LogBuilder.logEvent().info("loading babbage startup configurations");
         for (Loggable l : configs) {
             l.logConfiguration();
         }

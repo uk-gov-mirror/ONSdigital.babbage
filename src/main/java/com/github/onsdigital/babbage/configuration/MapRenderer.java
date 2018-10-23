@@ -56,7 +56,7 @@ public class MapRenderer implements Loggable {
 
     @Override
     public void logConfiguration() {
-        LogBuilder.Log()
+        LogBuilder.logEvent()
                 .parameter(MAP_RENDERER_HOST_KEY, host)
                 .parameter(MAP_RENDERER_SVG_PATH_KEY, svgPath)
                 .parameter(MAP_RENDERER_PNG_PATH_KEY, pngPath)

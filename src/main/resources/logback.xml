@@ -11,6 +11,7 @@
     </logger>
 
     <logger name="com.github.davidcarboni.restolino" level="trace" additivity="false"></logger>
+    <logger name="com.github.jknack.handlebars" level="trace" additivity="false"></logger>
 
     <root level="debug">
         <appender-ref ref="DP_LOGGER"/>

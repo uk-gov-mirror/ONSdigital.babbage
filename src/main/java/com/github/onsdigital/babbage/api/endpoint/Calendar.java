@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.github.onsdigital.babbage.configuration.ApplicationConfiguration.appConfig;
+import static com.github.onsdigital.babbage.logging.LogBuilder.logEvent;
 import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.onsQuery;
 import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
 import static org.elasticsearch.index.query.QueryBuilders.rangeQuery;
@@ -83,7 +84,8 @@ public class Calendar {
     private VEvent toEvent(Map<String, Object> release) {
         Map<String, Object> description = ((Map<String, Object>) release.get("description"));
         if (description == null) {
-            System.out.println("!!!!Warning: Release with no description found, uri: " + release.get("uri"));
+            Object uri = release.get("uri");
+            logEvent().uri(uri != null ? uri.toString() : "").warn("release with no description found");
             return null;
         }
 

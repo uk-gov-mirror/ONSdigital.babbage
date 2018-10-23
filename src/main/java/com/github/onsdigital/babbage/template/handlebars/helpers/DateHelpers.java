@@ -12,6 +12,7 @@ import java.util.Date;
 import java.util.TimeZone;
 
 import static com.github.onsdigital.babbage.configuration.ApplicationConfiguration.appConfig;
+import static com.github.onsdigital.babbage.logging.LogBuilder.logEvent;
 
 /**
  * Created by bren on 10/06/15.
@@ -37,7 +38,7 @@ public enum DateHelpers implements BabbageHandlebarsHelper<String> {
                 String pattern = resolvePattern(options);
                 return FastDateFormat.getInstance(pattern, timeZone).format(parsedDate);
             } catch (Exception e) {
-                System.out.println("Failed formating date : " + date);
+                logEvent().parameter("value", date).warn("error formatting date value");
                 return "";
             }
         }
@@ -66,23 +67,18 @@ public enum DateHelpers implements BabbageHandlebarsHelper<String> {
                 calendar.add(Calendar.HOUR_OF_DAY, -24);
                 Date dayBefore = calendar.getTime();
                 if (parsedDate.after(dayBefore)) {
-                    return _true();
+                    return "true";
                 } else {
                     return null;
                 }
 
             } catch (Exception e) {
-                System.out.println("Failed formatting date : " + date);
+                logEvent().parameter("value", date).warn("error formatting date value");
                 return null;
             }
 
         }
-
-        private String _true() {
-            return String.valueOf(Boolean.TRUE);
-        }
-    }
-    ;
+    };
 
     private static final TimeZone timeZone = TimeZone.getTimeZone("Europe/London");
 
