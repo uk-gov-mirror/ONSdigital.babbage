@@ -109,14 +109,16 @@ public class ContentQuery extends SearchQuery {
             String suggestedCorrection = SpellCheckRequest.buildSuggestedCorrection(this.searchTerm, corrections,
                     Configuration.SEARCH_SERVICE.SPELL_CHECK_CONFIDENCE_THRESHOLD);
 
-            // Set the suggestions
-            List<String> suggestions = result.getSuggestions();
-            if (null != suggestions) {
-                suggestions.add(0, suggestedCorrection);
-            } else {
-                suggestions = Collections.singletonList(suggestedCorrection);
+            if (!suggestedCorrection.isEmpty()) {
+                // Set the suggestions
+                List<String> suggestions = result.getSuggestions();
+                if (null != suggestions) {
+                    suggestions.add(0, suggestedCorrection);
+                } else {
+                    suggestions = Collections.singletonList(suggestedCorrection);
+                }
+                result.setSuggestions(suggestions);
             }
-            result.setSuggestions(suggestions);
         }
 
         return result;
