@@ -41,7 +41,7 @@
                 {{#if description.latestRelease}}
                     <div class="col alert-bulletins alert-bulletins__latest">
                         <p class="alert-bulletins__title">{{labels.this-is-the-latest-release}}
-                        <a class="alert-bulletins__link" href="{{parentPath uri}}/previousReleases">{{labels.view-previous-releases}}</a></p>
+                        <a href="{{parentPath uri}}/previousReleases">{{labels.view-previous-releases}}</a></p>
                     </div>
                 {{else}}
                     {{#resolve (concat (parentPath uri) "/latest") filter="title"}}
@@ -82,9 +82,71 @@
                             </button>
                         </div>
 
-                        <div class="js-show-hide__content">
-                            {{> partials/correction}}
-                            {{> partials/notice}}
+                        <div class="js-show-hide__content ">
+                            {{#if versions}}
+                                <div class="show-hide__content alert-bulletins--warning__content section__content--markdown">
+                                    <section>
+                                        {{#if_all versions alerts}}
+                                            <h3 class="alert-bulletins--correction__title">{{labels.corrections}}</h3>
+                                        {{/if_all}}
+                                        {{#loop versions orderBy="updateDate" reverse=true}}
+                                            <p class="alert-bulletins__date">{{df updateDate outputFormat="d MMMM yyyy HH:mm"}}</p>
+                                            {{md correctionNotice}}
+                                            <a class="btn btn--tertiary margin-bottom-sm--3 margin-bottom-md--3 print--hide" href="{{uri}}">{{labels.view-superseded-version}}</a>
+                                        {{/loop}}
+                                    </section>
+                                </div>
+                            {{/if}}
+                            {{#if alerts}}
+                                {{!-- For dataset pages that have 'correction alerts' instead of versions and 'alert alerts' for normal alerts --}}
+                                {{#if_any has-corrections has-alerts}}
+                                    {{#if has-corrections}}
+                                        <div class="show-hide__content alert-bulletins--warning__content section__content--markdown">
+                                            <section>
+                                                {{#if_all has-corrections has-alerts}}
+                                                    <h3 class="alert-bulletins--notice__title">{{labels.corrections}}</h3>
+                                                {{/if_all}}
+                                                {{#loop alerts orderBy="date" reverse=true}}
+                                                    {{#if_eq type "correction"}}
+                                                        <p class="alert-bulletins__date">{{df date}}</p>
+                                                        {{md markdown}}
+                                                    {{/if_eq}}
+                                                {{/loop}}
+                                            </section>
+                                        </div>
+                                    {{/if}}
+                                    {{#if has-alerts}}
+                                        <div class="show-hide__content alert-bulletins--warning__content section__content--markdown">
+                                            <section>
+                                                {{#if_all has-corrections has-alerts}}
+                                                    <h3 class="alert-bulletins--notice__title">{{labels.notices}}</h3>
+                                                {{/if_all}}
+                                                {{#loop alerts orderBy="date" reverse=true}}
+                                                    {{#if_eq type "alert"}}
+                                                        <p class="alert-bulletins__date">{{df date}}</p>
+                                                        {{md markdown}}
+                                                    {{/if_eq}}
+                                                {{/loop}}
+                                            </section>
+                                        </div>
+                                    {{/if}}
+
+                                {{else}}
+
+                                    {{!-- Normal alerts --}}
+                                    <div class="show-hide__content alert-bulletins--warning__content section__content--markdown">
+                                        <section>
+                                            {{#if_all versions alerts}}
+                                                <h3 class="alert-bulletins--notice__title">{{labels.notices}}</h3>
+                                            {{/if_all}}
+                                            {{#loop alerts orderBy="date" reverse=true}}
+                                                <p class="alert-bulletins__date">{{df date}}</p>
+                                                {{md markdown}}
+                                            {{/loop}}
+                                        </section>
+                                    </div>
+                                {{/if_any}}
+                            {{/if}}
                         </div>
                     </div>
 
