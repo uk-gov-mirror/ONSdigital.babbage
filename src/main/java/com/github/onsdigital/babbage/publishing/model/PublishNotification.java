@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import static com.github.onsdigital.babbage.configuration.ApplicationConfiguration.appConfig;
+import static com.github.onsdigital.babbage.logging.LogBuilder.logEvent;
 
 /**
  */
@@ -36,8 +37,7 @@ public class PublishNotification {
                     .defaultContentDateFormat()
                     .parse(publishDate);
         } catch (ParseException e) {
-            System.err.println("Warning!!!!!!!! Publish date for publish notification is invalid, can not parse to date");
-            e.printStackTrace();
+            logEvent(e).error("publish date for publish notification is invalid, can not parse to date");
             return null;
         }
     }

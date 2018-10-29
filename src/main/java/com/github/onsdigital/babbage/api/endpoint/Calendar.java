@@ -60,8 +60,7 @@ public class Calendar {
         try {
             calendar.validate();
         } catch (ValidationException e) {
-            System.err.println("Validation failed");
-            e.printStackTrace();
+            logEvent(e).error("validation error");
         }
         new CalendarOutputter(false).output(calendar, httpServletResponse.getOutputStream());
     }
@@ -102,8 +101,8 @@ public class Calendar {
             event.getProperties().add(new Description((String) description.get("summary")));
             return event;
         } catch (Exception e) {
-            System.err.println("!!!!Warning: Failed creating calendar even for release, uri: " + release.get("uri"));
-            e.printStackTrace();
+            Object uri = release.get("uri");
+            logEvent(e).uri(uri != null ? uri.toString() : null).error("failed creating calendar even for release");
             return null;
         }
     }

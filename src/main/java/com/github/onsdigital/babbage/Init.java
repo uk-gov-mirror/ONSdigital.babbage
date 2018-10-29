@@ -32,8 +32,7 @@ public class Init implements Startup {
                 SearchClient.getInstance();
             }
         } catch (Exception e) {
-            System.err.println("!!!!Failed initializing publish dates index for caching");
-            e.printStackTrace();
+            logEvent(e).error("error initializing publish dates index for caching");
             System.exit(1);
         }
     }

@@ -130,8 +130,7 @@ public class PublishingManager {
                 }
             }
         } catch (Exception e) {
-            System.err.println("!!!Warning, re-indexing failed for collection id " + notification.getCollectionId());
-            e.printStackTrace();
+            logEvent(e).parameter("collectionID", notification.getCollectionId()).error("reindexing collection failed");
         }
     }
 
@@ -147,7 +146,7 @@ public class PublishingManager {
         try {
             ContentClient.getInstance().reIndex(key, uri);
         } catch (ContentReadException e) {
-            System.err.println("!!!Warning , re-indexing failed for uri " + uri);
+            logEvent(e).uri(uri).error("error reindexing uri");
         }
     }
 
@@ -155,7 +154,7 @@ public class PublishingManager {
         try {
             ContentClient.getInstance().deleteIndex(key, uri, contentType);
         } catch (ContentReadException e) {
-            System.err.println("!!!Warning , delete index failed for uri " + uri);
+            logEvent(e).uri(uri).error("error deleting index for uri");
         }
     }
 

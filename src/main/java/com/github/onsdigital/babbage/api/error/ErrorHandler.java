@@ -5,11 +5,10 @@ import com.github.davidcarboni.restolino.api.RequestHandler;
 import com.github.davidcarboni.restolino.framework.ServerError;
 import com.github.onsdigital.babbage.content.client.ContentReadException;
 import com.github.onsdigital.babbage.error.LegacyPDFException;
+import com.github.onsdigital.babbage.error.ResourceNotFoundException;
 import com.github.onsdigital.babbage.logging.Log;
 import com.github.onsdigital.babbage.template.TemplateService;
-import com.github.onsdigital.babbage.error.ResourceNotFoundException;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.exception.ExceptionUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,17 +18,14 @@ import java.io.StringReader;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import static com.github.onsdigital.babbage.logging.LogBuilder.logEvent;
+
 /**
  * Created by bren on 28/05/15.
  * <p/>
  * Handles exceptions and returns appropriate response to the client.
  */
 public class ErrorHandler implements ServerError {
-
-    private static void logError(Throwable e) {
-        System.err.println(e.getMessage() + ", cause: " + (e.getCause() != null ? e.getCause().getMessage() : ""));
-        ExceptionUtils.printRootCauseStackTrace(e);
-    }
 
     @Override
     public Object handle(HttpServletRequest req, HttpServletResponse response, RequestHandler requestHandler, Throwable t) throws IOException {
@@ -43,7 +39,7 @@ public class ErrorHandler implements ServerError {
         if (ContentReadException.class.isAssignableFrom(t.getClass())) {
             ContentReadException exception = (ContentReadException) t;
             renderErrorPage(exception.getStatusCode(), response);//renderTemplate template with status code name e.g. 404
-            logError(t);
+            logEvent(t).error("errorHandler");
             return;
         } else if (t instanceof ResourceNotFoundException) {
             Log.build(t.getMessage() + ", cause: " + (t.getCause() != null ? t.getCause().getMessage() : ""),
@@ -56,7 +52,7 @@ public class ErrorHandler implements ServerError {
             renderErrorPage(500, response);
         }
 
-        logError(t);
+        logEvent(t).error("errorHandler");
     }
 
 
@@ -64,7 +60,7 @@ public class ErrorHandler implements ServerError {
         try {
             response.setStatus(statusCode);
             //Prevent error pages being cached by cdn s
-            response.addHeader("cache-control", "public, max-age=0" );
+            response.addHeader("cache-control", "public, max-age=0");
             Map<String, Object> context = new LinkedHashMap<>();
             context.put("type", "error");
             context.put("code", statusCode);
@@ -72,12 +68,13 @@ public class ErrorHandler implements ServerError {
             IOUtils.copy(new StringReader(errorHtml), response.getOutputStream());
         } catch (Exception e) {
             if (statusCode != 500) {
-                System.err.println("Failed rendering template for error code : " + statusCode + " rendering 500 template...");
+                logEvent(e).responseStatus(statusCode)
+                        .error("error rendering template for status code, render 500 template");
                 renderErrorPage(500, response);
             } else {
-                System.err.println("!!!Warning!!! Rendering 500 template failed!!!!");
+                logEvent(e).responseStatus(statusCode)
+                        .error("error rendering 500 template");
             }
-            logError(e);
         }
     }
 }
