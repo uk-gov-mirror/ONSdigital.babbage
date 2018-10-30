@@ -38,7 +38,7 @@ public class ProxyONSQuery extends AbstractSearchRequest<SearchResult> {
     }
 
     @Override
-    public String targetUri() {
+    public URIBuilder targetUri() {
         URIBuilder uriBuilder = new URIBuilder()
                 .setScheme(HttpScheme.HTTP.asString())
                 .setHost(HOST)
@@ -46,7 +46,7 @@ public class ProxyONSQuery extends AbstractSearchRequest<SearchResult> {
                 .addParameter(SearchQuery.SearchParam.PAGE.getParam(), String.valueOf(this.page))
                 .addParameter(SearchQuery.SearchParam.SIZE.getParam(), String.valueOf(this.pageSize));
 
-        return uriBuilder.toString();
+        return uriBuilder;
     }
 
     private String queryToString() {

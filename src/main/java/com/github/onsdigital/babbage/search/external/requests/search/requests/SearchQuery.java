@@ -13,9 +13,10 @@ import org.eclipse.jetty.http.HttpScheme;
  */
 public abstract class SearchQuery extends AbstractSearchRequest<SearchResult> {
 
-    private final String searchTerm;
+    protected final String searchTerm;
     private final ListType listType;
     private final SearchType searchType;
+    private URIBuilder uriBuilder;
 
     public SearchQuery(String searchTerm, ListType listType, SearchType searchType) {
         super(SearchResult.class);
@@ -28,26 +29,20 @@ public abstract class SearchQuery extends AbstractSearchRequest<SearchResult> {
      * Method to build the target URI with desired URL parameters
      * @return
      */
-    protected URIBuilder buildUri() {
-        String path = SearchEndpoints.SEARCH_ONS.getEndpointForListType(this.listType) +
-                this.searchType.getSearchType();
+    @Override
+    public URIBuilder targetUri() {
+        if (null == this.uriBuilder) {
+            String path = SearchEndpoints.SEARCH_ONS.getEndpointForListType(this.listType) +
+                    this.searchType.getSearchType();
 
-        URIBuilder uriBuilder = new URIBuilder()
-                .setScheme(HttpScheme.HTTP.asString())
-                .setHost(HOST)
-                .setPath(path)
-                .addParameter(SearchParam.QUERY.getParam(), this.searchTerm);
+            uriBuilder = new URIBuilder()
+                    .setScheme(HttpScheme.HTTP.asString())
+                    .setHost(HOST)
+                    .setPath(path)
+                    .addParameter(SearchParam.QUERY.getParam(), this.searchTerm);
+        }
 
         return uriBuilder;
-    }
-
-    /**
-     * Simply calls buildUri to get the target for HTTP requests and returns as a string
-     * @return
-     */
-    @Override
-    public String targetUri() {
-        return this.buildUri().toString();
     }
 
     /**
