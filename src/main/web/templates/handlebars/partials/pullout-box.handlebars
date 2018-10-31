@@ -1,7 +1,7 @@
 <div class="markdown-box-container
 {{#if_eq alignment "left"}}float-left margin-right--1 {{/if_eq}}
 {{#if_eq alignment "right"}}float-right margin-left--1 {{/if_eq}}
-{{#if_any (eq alignment "left") (eq alignment "right")}}col--md-12 col--lg-15 {{else}}col--md-29 col--lg-32 {{/if_any}}
+{{#if_any (eq alignment "left") (eq alignment "right")}}col--md-12 col--lg-15 {{else}}{{#if_neq alignment "full"}}col--md-29 col--lg-32 {{/if_eq}}{{/if_any}}
 ">
     {{md content}}
 </div>
