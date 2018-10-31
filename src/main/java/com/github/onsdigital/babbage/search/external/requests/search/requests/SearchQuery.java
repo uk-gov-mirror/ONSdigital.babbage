@@ -4,8 +4,8 @@ import com.github.onsdigital.babbage.search.external.SearchEndpoints;
 import com.github.onsdigital.babbage.search.external.SearchType;
 import com.github.onsdigital.babbage.search.external.requests.base.AbstractSearchRequest;
 import com.github.onsdigital.babbage.search.model.SearchResult;
+import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.utils.URIBuilder;
-import org.eclipse.jetty.client.api.ContentResponse;
 import org.eclipse.jetty.http.HttpScheme;
 
 /**
@@ -45,14 +45,8 @@ public abstract class SearchQuery extends AbstractSearchRequest<SearchResult> {
         return uriBuilder;
     }
 
-    /**
-     * Defaults to an empty GET request
-     * @return
-     * @throws Exception
-     */
-    @Override
-    protected ContentResponse getContentResponse() throws Exception {
-        return super.get().send();
+    protected HttpRequestBase getRequestBase() throws Exception {
+        return this.get();
     }
 
     /**

@@ -1,15 +1,12 @@
 package com.github.onsdigital.babbage.search.external.requests.search.requests;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.github.onsdigital.babbage.search.external.requests.base.AbstractSearchRequest;
 import com.github.onsdigital.babbage.search.helpers.ONSQuery;
 import com.github.onsdigital.babbage.search.helpers.SearchHelper;
 import com.github.onsdigital.babbage.search.model.ContentType;
 import com.github.onsdigital.babbage.search.model.SearchResult;
+import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.utils.URIBuilder;
-import org.eclipse.jetty.client.api.ContentResponse;
-import org.eclipse.jetty.client.api.Request;
-import org.eclipse.jetty.client.util.StringContentProvider;
 import org.eclipse.jetty.http.HttpScheme;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 
@@ -76,16 +73,9 @@ public class ProxyONSQuery extends AbstractSearchRequest<SearchResult> {
         return queryMap;
     }
 
-    private StringContentProvider stringPayload() throws JsonProcessingException {
-        String queryString = MAPPER.writeValueAsString(this.buildQueryMap());
-        return new StringContentProvider(queryString);
-    }
-
     @Override
-    protected ContentResponse getContentResponse() throws Exception {
-        Request request = super.post()
-                .content(this.stringPayload());
-        return request.send();
+    protected HttpRequestBase getRequestBase() throws Exception {
+        return this.post(this.buildQueryMap());
     }
 
     enum Endpoint {

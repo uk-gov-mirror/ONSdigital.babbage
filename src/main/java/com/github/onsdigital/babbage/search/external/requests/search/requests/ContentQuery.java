@@ -9,10 +9,8 @@ import com.github.onsdigital.babbage.search.input.SortBy;
 import com.github.onsdigital.babbage.search.input.TypeFilter;
 import com.github.onsdigital.babbage.search.model.ContentType;
 import com.github.onsdigital.babbage.search.model.SearchResult;
+import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.utils.URIBuilder;
-import org.eclipse.jetty.client.api.ContentResponse;
-import org.eclipse.jetty.client.api.Request;
-import org.eclipse.jetty.client.util.StringContentProvider;
 
 import java.util.*;
 
@@ -86,16 +84,14 @@ public class ContentQuery extends SearchQuery {
      * @throws Exception
      */
     @Override
-    protected ContentResponse getContentResponse() throws Exception {
+    protected HttpRequestBase getRequestBase() throws Exception {
         final String filterString = this.contentTypeFiltersAsString();
-        final Map<String, String> content = new HashMap<String, String>() {{
+        final Map<String, Object> content = new HashMap<String, Object>() {{
             put(SearchParam.FILTER.getParam(), filterString);
             put(SearchParam.SORT.getParam(), sortBy.name());
         }};
 
-        Request request = super.post()
-                .content(new StringContentProvider(MAPPER.writeValueAsString(content)));
-        return request.send();
+        return this.post(content);
     }
 
     @Override

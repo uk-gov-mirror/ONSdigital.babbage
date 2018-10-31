@@ -30,21 +30,21 @@ public class FeaturedResultQueryTest {
 
     @Before
     public void setUp() throws Exception {
-        MockitoAnnotations.initMocks(this);
-
-        featuredResultQuery = new FeaturedResultQuery(searchTerm, listType);
-        TestsUtil.setPrivateField(featuredResultQuery, "searchClient", searchClient);
-
-        MockedFeaturedResultResponse contentResponse = new MockedFeaturedResultResponse();
-        expectedResult = contentResponse.getSearchResult();
-
-        MockedHttpRequest mockedHttpRequest = new MockedHttpRequest(featuredResultQuery.targetUri().build(), contentResponse);
-
-        when(searchClient.get(featuredResultQuery.targetUri()))
-                .thenReturn(mockedHttpRequest);
-
-        when(searchClient.post(featuredResultQuery.targetUri()))
-                .thenReturn(mockedHttpRequest);
+//        MockitoAnnotations.initMocks(this);
+//
+//        featuredResultQuery = new FeaturedResultQuery(searchTerm, listType);
+//        TestsUtil.setPrivateField(featuredResultQuery, "searchClient", searchClient);
+//
+//        MockedFeaturedResultResponse contentResponse = new MockedFeaturedResultResponse();
+//        expectedResult = contentResponse.getSearchResult();
+//
+//        MockedHttpRequest mockedHttpRequest = new MockedHttpRequest(featuredResultQuery.targetUri().build(), contentResponse);
+//
+//        when(searchClient.get(featuredResultQuery.targetUri()))
+//                .thenReturn(mockedHttpRequest);
+//
+//        when(searchClient.post(featuredResultQuery.targetUri()))
+//                .thenReturn(mockedHttpRequest);
     }
 
     @Test

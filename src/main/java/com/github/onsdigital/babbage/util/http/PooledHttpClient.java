@@ -1,7 +1,6 @@
 package com.github.onsdigital.babbage.util.http;
 
 import org.apache.commons.io.Charsets;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
 import org.apache.http.StatusLine;
@@ -10,12 +9,7 @@ import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.*;
 import org.apache.http.client.utils.URIBuilder;
-import org.apache.http.conn.HttpClientConnectionManager;
 import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
@@ -24,7 +18,6 @@ import java.net.URISyntaxException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by bren on 22/07/15.
@@ -33,54 +26,10 @@ import java.util.concurrent.TimeUnit;
  */
 //TODO: SSL support for https? not needed currently, configure java for ssl
 //Add post,put,etc. functionality if needed
-public class PooledHttpClient {
-
-    private final PoolingHttpClientConnectionManager connectionManager;
-    private final CloseableHttpClient httpClient;
-    private final IdleConnectionMonitorThread monitorThread;
-    private final URI HOST;
+public class PooledHttpClient extends BabbageHttpClient {
 
     public PooledHttpClient(String host, ClientConfiguration configuration) {
-        HOST = resolveHostUri(host);
-        this.connectionManager = new PoolingHttpClientConnectionManager();
-        HttpClientBuilder customClientBuilder = HttpClients.custom();
-        configure(customClientBuilder, configuration);
-        httpClient = customClientBuilder.setConnectionManager(connectionManager)
-                .build();
-        this.monitorThread = new IdleConnectionMonitorThread(connectionManager);
-        this.monitorThread.start();
-        Runtime.getRuntime().addShutdownHook(new ShutdownHook());
-    }
-
-    private void configure(HttpClientBuilder customClientBuilder, ClientConfiguration configuration) {
-        Integer connectionNumber = configuration.getMaxTotalConnection();
-        if (connectionNumber != null) {
-            connectionManager.setMaxTotal(connectionNumber);
-            connectionManager.setDefaultMaxPerRoute(connectionNumber);
-        }
-        if (configuration.isDisableRedirectHandling()) {
-            customClientBuilder.disableRedirectHandling();
-        }
-    }
-
-    private URI resolveHostUri(String host) {
-        URI givenHost = URI.create(host);
-        URIBuilder builder = new URIBuilder();
-        if (StringUtils.startsWithIgnoreCase(host, "http")) {
-            builder.setScheme(givenHost.getScheme());
-            builder.setHost(givenHost.getHost());
-            builder.setPort(givenHost.getPort());
-            builder.setPath(givenHost.getPath());
-            builder.setUserInfo(givenHost.getUserInfo());
-        } else {
-            builder.setScheme("http");
-            builder.setHost(host);
-        }
-        try {
-            return builder.build();
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
-        }
+        super(host, configuration);
     }
 
 
@@ -149,13 +98,6 @@ public class PooledHttpClient {
         }
     }
 
-    public void shutdown() throws IOException {
-        System.out.println("Shutting down connection pool to host:" + HOST);
-        httpClient.close();
-        System.out.println("Successfully shut down connection pool");
-        monitorThread.shutdown();
-    }
-
     private URI buildPath(String path) {
         URIBuilder uriBuilder = newUriBuilder(path);
         try {
@@ -212,63 +154,5 @@ public class PooledHttpClient {
             e.printStackTrace();
         }
         return null;
-    }
-
-    //Based on tuorial code on https://hc.apache.org/httpcomponents-client-ga/tutorial/html/connmgmt.html#d5e393
-
-    //Http client already tests connection to see if it is stale before making a request, but documents suggests using monitor thread since it is 100% reliable
-    private class IdleConnectionMonitorThread extends Thread {
-
-        private boolean shutdown;
-        private HttpClientConnectionManager connMgr;
-
-        public IdleConnectionMonitorThread(HttpClientConnectionManager connMgr) {
-            super();
-            this.connMgr = connMgr;
-        }
-
-        @Override
-        public void run() {
-            System.out.println("Running connection pool monitor");
-            try {
-                while (!shutdown) {
-                    synchronized (this) {
-                        wait(5000);
-                        // Close expired connections every 5 seconds
-                        connMgr.closeExpiredConnections();
-                        // Close connections
-                        // that have been idle longer than 30 sec
-                        connMgr.closeIdleConnections(60, TimeUnit.SECONDS);
-                    }
-                }
-            } catch (InterruptedException ex) {
-                System.err.println("Connection pool monitor failed");
-                ex.printStackTrace();
-            }
-        }
-
-        public void shutdown() {
-            System.out.println("Shutting down connection pool monitor");
-            shutdown = true;
-            synchronized (this) {
-                notifyAll();
-            }
-        }
-
-    }
-
-
-    private class ShutdownHook extends Thread {
-        @Override
-        public void run() {
-            try {
-                if (httpClient != null) {
-                    shutdown();
-                }
-            } catch (IOException e) {
-                System.err.println("Falied shutting down http client for, " + HOST);
-                e.printStackTrace();
-            }
-        }
     }
 }

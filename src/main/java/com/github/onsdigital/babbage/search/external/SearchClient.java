@@ -8,12 +8,11 @@ import com.github.onsdigital.babbage.search.helpers.ONSQuery;
 import com.github.onsdigital.babbage.search.input.SortBy;
 import com.github.onsdigital.babbage.search.input.TypeFilter;
 import com.github.onsdigital.babbage.search.model.SearchResult;
-import org.apache.http.client.utils.URIBuilder;
-import org.eclipse.jetty.client.HttpClient;
-import org.eclipse.jetty.client.api.Request;
-import org.eclipse.jetty.http.HttpMethod;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpRequestBase;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -24,13 +23,12 @@ public class SearchClient implements SearchClosable {
 
     private static SearchClient INSTANCE;
 
-    public static SearchClient getInstance() throws Exception {
+    public static SearchClient getInstance() {
         if (INSTANCE == null) {
             synchronized (SearchClient.class) {
                 if (INSTANCE == null) {
                     INSTANCE = new SearchClient();
                     System.out.println("Initialising external search client");
-                    INSTANCE.start();
                     Runtime.getRuntime().addShutdownHook(new ShutdownThread(INSTANCE));
                     System.out.println("Initialised external search client successfully");
                 }
@@ -39,50 +37,35 @@ public class SearchClient implements SearchClosable {
         return INSTANCE;
     }
 
-    private final HttpClient client;
+    private final SearchHttpClient client;
 
-    public SearchClient() {
-        this.client = new HttpClient();
+    private SearchClient() {
+        this.client = new SearchHttpClient();
     }
 
-    public void start() throws Exception {
-        this.client.start();
+    public CloseableHttpResponse execute(HttpRequestBase requestBase) throws IOException {
+        return this.client.execute(requestBase);
     }
 
     @Override
     public void close() throws Exception {
-        this.client.stop();
-    }
-
-    public Request request(String uri) {
-        return client.newRequest(uri);
-    }
-
-    public Request get(URIBuilder uriBuilder) {
-        return this.request(uriBuilder.toString()).method(HttpMethod.GET);
-    }
-
-    public Request post(URIBuilder uriBuilder) {
-        return this.request(uriBuilder.toString()).method(HttpMethod.POST);
+        this.client.close();
     }
 
     public LinkedHashMap<String, SearchResult> proxyQueries(List<ONSQuery> queryList) throws Exception {
         Map<String, Future<SearchResult>> futures = new HashMap<>();
 
         for (ONSQuery query : queryList) {
-            int page, pageSize;
+            if (null != query && null != query.name()) {
+                int page = query.page() != null ? query.page() : 1;
+                int pageSize = query.size() > 0 ? query.size() : Configuration.GENERAL.getResultsPerPage();
 
-            if (null != query) {
-                page = query.page() != null ? query.page() : 1;
-                pageSize = query.size();
+                ProxyONSQuery proxyONSQuery = new ProxyONSQuery(query, page, pageSize);
+                Future<SearchResult> future = SearchClientExecutorService.getInstance().submit(proxyONSQuery);
+                futures.put(query.name(), future);
             } else {
-                page = 1;
-                pageSize = Configuration.GENERAL.getResultsPerPage();
+                throw new Exception("Unable to complete search request due to null query/name");
             }
-
-            ProxyONSQuery proxyONSQuery = new ProxyONSQuery(query, page, pageSize);
-            Future<SearchResult> future = SearchClientExecutorService.getInstance().submit(proxyONSQuery);
-            futures.put(query.name(), future);
         }
 
         return processFutures(futures);

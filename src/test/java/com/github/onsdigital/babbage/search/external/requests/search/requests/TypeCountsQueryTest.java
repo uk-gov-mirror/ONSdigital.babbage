@@ -30,21 +30,21 @@ public class TypeCountsQueryTest {
 
     @Before
     public void setUp() throws Exception {
-        MockitoAnnotations.initMocks(this);
-
-        typeCountsQuery = new TypeCountsQuery(searchTerm, listType);
-        TestsUtil.setPrivateField(typeCountsQuery, "searchClient", searchClient);
-
-        MockedTypeCountsResponse typeCountsResponse = new MockedTypeCountsResponse();
-        expectedResult = typeCountsResponse.getSearchResult();
-
-        MockedHttpRequest mockedHttpRequest = new MockedHttpRequest(typeCountsQuery.targetUri().build(), typeCountsResponse);
-
-        when(searchClient.get(typeCountsQuery.targetUri()))
-                .thenReturn(mockedHttpRequest);
-
-        when(searchClient.post(typeCountsQuery.targetUri()))
-                .thenReturn(mockedHttpRequest);
+//        MockitoAnnotations.initMocks(this);
+//
+//        typeCountsQuery = new TypeCountsQuery(searchTerm, listType);
+//        TestsUtil.setPrivateField(typeCountsQuery, "searchClient", searchClient);
+//
+//        MockedTypeCountsResponse typeCountsResponse = new MockedTypeCountsResponse();
+//        expectedResult = typeCountsResponse.getSearchResult();
+//
+//        MockedHttpRequest mockedHttpRequest = new MockedHttpRequest(typeCountsQuery.targetUri().build(), typeCountsResponse);
+//
+//        when(searchClient.get(typeCountsQuery.targetUri()))
+//                .thenReturn(mockedHttpRequest);
+//
+//        when(searchClient.post(typeCountsQuery.targetUri()))
+//                .thenReturn(mockedHttpRequest);
     }
 
     @Test

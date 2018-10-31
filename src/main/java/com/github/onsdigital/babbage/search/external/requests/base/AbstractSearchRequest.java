@@ -1,15 +1,26 @@
 package com.github.onsdigital.babbage.search.external.requests.base;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.onsdigital.babbage.configuration.Configuration;
 import com.github.onsdigital.babbage.search.external.SearchClient;
+import com.github.onsdigital.babbage.search.external.requests.search.exceptions.InvalidSearchResponse;
+import com.github.onsdigital.babbage.search.external.requests.search.headers.JsonContentTypeHeader;
+import org.apache.commons.io.Charsets;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.utils.URIBuilder;
-import org.apache.http.entity.ContentType;
-import org.eclipse.jetty.client.api.ContentResponse;
-import org.eclipse.jetty.client.api.Request;
-import org.eclipse.jetty.http.HttpHeader;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.util.EntityUtils;
 
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.Map;
 import java.util.concurrent.Callable;
 
 public abstract class AbstractSearchRequest<T> implements Callable<T> {
@@ -37,33 +48,27 @@ public abstract class AbstractSearchRequest<T> implements Callable<T> {
      */
     public abstract URIBuilder targetUri();
 
-    private SearchClient getSearchClient() throws Exception {
+    private SearchClient getSearchClient() {
         if (searchClient == null) {
             searchClient = SearchClient.getInstance();
         }
         return searchClient;
     }
 
-    /**
-     * Builds a simple HTTP GET request with the target URI
-     * @return
-     * @throws Exception
-     */
-    protected Request get() throws Exception {
-        searchClient = this.getSearchClient();
-        return searchClient.get(this.targetUri());
+    public HttpGet get() throws URISyntaxException {
+        return new HttpGet(this.targetUri().build());
     }
 
-    /**
-     * Builds a HTTP POST request with mime-type application/json
-     * @return
-     */
-    protected Request post() throws Exception {
-        searchClient = this.getSearchClient();
+    public HttpPost post(Map<String, Object> params) throws URISyntaxException, JsonProcessingException {
+        HttpPost post = new HttpPost(this.targetUri().build());
+        post.addHeader(new JsonContentTypeHeader());
 
-        Request request = searchClient.post(this.targetUri());
-        request.header(HttpHeader.CONTENT_TYPE, ContentType.APPLICATION_JSON.getMimeType());
-        return request;
+        if (null != params) {
+            String postParams = buildPostParams(params);
+            StringEntity stringEntity = new StringEntity(postParams, Charsets.UTF_8);
+            post.setEntity(stringEntity);
+        }
+        return post;
     }
 
     /**
@@ -71,22 +76,29 @@ public abstract class AbstractSearchRequest<T> implements Callable<T> {
      * @return
      * @throws Exception
      */
-    protected abstract ContentResponse getContentResponse() throws Exception;
-
-    public String getContentResponseAsString() throws Exception {
-        return this.getContentResponse().getContentAsString();
-    }
+    protected abstract HttpRequestBase getRequestBase() throws Exception;
 
     @Override
     public T call() throws Exception {
-        String response = this.getContentResponseAsString();
+        try (CloseableHttpResponse response = this.getSearchClient().execute(this.getRequestBase())) {
+            String jsonResponse = EntityUtils.toString(response.getEntity());
+            int code = response.getStatusLine().getStatusCode();
 
-        // Either typeReference or returnClass are guaranteed to not be null
-        if (this.typeReference != null) {
-            return MAPPER.readValue(response, this.typeReference);
+            if (code != HttpStatus.SC_OK) {
+                throw new InvalidSearchResponse(jsonResponse, code);
+            }
+
+            // Either typeReference or returnClass are guaranteed to not be null
+            if (this.typeReference != null) {
+                return MAPPER.readValue(jsonResponse, this.typeReference);
+            }
+
+            return MAPPER.readValue(jsonResponse, this.returnClass);
         }
+    }
 
-        return MAPPER.readValue(response, this.returnClass);
+    private static String buildPostParams(Map<String, Object> params) throws JsonProcessingException {
+        return MAPPER.writeValueAsString(params);
     }
 
 }
