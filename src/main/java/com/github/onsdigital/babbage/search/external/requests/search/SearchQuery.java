@@ -1,4 +1,4 @@
-package com.github.onsdigital.babbage.search.external.requests.search.requests;
+package com.github.onsdigital.babbage.search.external.requests.search;
 
 import com.github.onsdigital.babbage.search.external.SearchEndpoints;
 import com.github.onsdigital.babbage.search.external.SearchType;
@@ -45,7 +45,13 @@ public abstract class SearchQuery extends AbstractSearchRequest<SearchResult> {
         return uriBuilder;
     }
 
-    protected HttpRequestBase getRequestBase() throws Exception {
+    /**
+     * Executes a HTTP GET request with type filters and sort options specified as a JSON payload
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public HttpRequestBase getRequestBase() throws Exception {
         return this.get();
     }
 

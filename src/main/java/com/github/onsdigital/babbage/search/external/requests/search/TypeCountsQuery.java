@@ -1,4 +1,4 @@
-package com.github.onsdigital.babbage.search.external.requests.search.requests;
+package com.github.onsdigital.babbage.search.external.requests.search;
 
 import com.github.onsdigital.babbage.search.external.SearchType;
 

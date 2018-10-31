@@ -35,7 +35,7 @@ public class SpellCheckRequest extends AbstractSearchRequest<List<SpellingCorrec
     }
 
     @Override
-    protected HttpRequestBase getRequestBase() throws Exception {
+    public HttpRequestBase getRequestBase() throws Exception {
         return this.get();
     }
 

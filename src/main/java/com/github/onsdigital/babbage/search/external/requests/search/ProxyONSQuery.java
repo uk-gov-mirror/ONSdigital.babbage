@@ -1,4 +1,4 @@
-package com.github.onsdigital.babbage.search.external.requests.search.requests;
+package com.github.onsdigital.babbage.search.external.requests.search;
 
 import com.github.onsdigital.babbage.search.external.requests.base.AbstractSearchRequest;
 import com.github.onsdigital.babbage.search.helpers.ONSQuery;
@@ -74,7 +74,7 @@ public class ProxyONSQuery extends AbstractSearchRequest<SearchResult> {
     }
 
     @Override
-    protected HttpRequestBase getRequestBase() throws Exception {
+    public HttpRequestBase getRequestBase() throws Exception {
         return this.post(this.buildQueryMap());
     }
 

@@ -1,18 +1,17 @@
 package com.github.onsdigital.babbage.search.external;
 
 import com.github.onsdigital.babbage.configuration.Configuration;
+import com.github.onsdigital.babbage.search.external.requests.base.AbstractSearchRequest;
 import com.github.onsdigital.babbage.search.external.requests.base.SearchClosable;
 import com.github.onsdigital.babbage.search.external.requests.base.ShutdownThread;
-import com.github.onsdigital.babbage.search.external.requests.search.requests.*;
+import com.github.onsdigital.babbage.search.external.requests.search.*;
 import com.github.onsdigital.babbage.search.helpers.ONSQuery;
 import com.github.onsdigital.babbage.search.input.SortBy;
 import com.github.onsdigital.babbage.search.input.TypeFilter;
 import com.github.onsdigital.babbage.search.model.SearchResult;
 import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpRequestBase;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -43,8 +42,8 @@ public class SearchClient implements SearchClosable {
         this.client = new SearchHttpClient();
     }
 
-    public CloseableHttpResponse execute(HttpRequestBase requestBase) throws IOException {
-        return this.client.execute(requestBase);
+    public CloseableHttpResponse execute(AbstractSearchRequest searchRequest) throws Exception {
+        return this.client.execute(searchRequest.getRequestBase());
     }
 
     @Override

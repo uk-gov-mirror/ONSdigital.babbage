@@ -48,7 +48,7 @@ public abstract class AbstractSearchRequest<T> implements Callable<T> {
      */
     public abstract URIBuilder targetUri();
 
-    private SearchClient getSearchClient() {
+    private SearchClient getSearchClient() throws Exception {
         if (searchClient == null) {
             searchClient = SearchClient.getInstance();
         }
@@ -76,11 +76,11 @@ public abstract class AbstractSearchRequest<T> implements Callable<T> {
      * @return
      * @throws Exception
      */
-    protected abstract HttpRequestBase getRequestBase() throws Exception;
+    public abstract HttpRequestBase getRequestBase() throws Exception;
 
     @Override
     public T call() throws Exception {
-        try (CloseableHttpResponse response = this.getSearchClient().execute(this.getRequestBase())) {
+        try (CloseableHttpResponse response = this.getSearchClient().execute(this)) {
             String jsonResponse = EntityUtils.toString(response.getEntity());
             int code = response.getStatusLine().getStatusCode();
 

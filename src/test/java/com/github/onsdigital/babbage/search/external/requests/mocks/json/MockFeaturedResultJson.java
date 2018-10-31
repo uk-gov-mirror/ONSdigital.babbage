@@ -1,4 +1,4 @@
-package com.github.onsdigital.babbage.search.external;
+package com.github.onsdigital.babbage.search.external.requests.mocks.json;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 
@@ -7,9 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class MockedFeaturedResultResponse extends MockedContentResponse {
+public class MockFeaturedResultJson extends MockSearchJson {
 
-    private List<Map<String, Object>> testResults() throws IOException {
+    @Override
+    protected List<Map<String, Object>> getResults() throws IOException {
         String json = "[\n" +
                 "  {\n" +
                 "    \"uri\": \"/economy/inflationandpriceindices\",\n" +
@@ -34,8 +35,6 @@ public class MockedFeaturedResultResponse extends MockedContentResponse {
 
         List<Map<String, Object>> results = MAPPER.readValue(json, new TypeReference<ArrayList<Map<String, Object>>>() {
         });
-
         return results;
     }
-
 }
