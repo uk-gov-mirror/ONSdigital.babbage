@@ -10,6 +10,7 @@ import com.github.onsdigital.babbage.search.input.SortBy;
 import com.github.onsdigital.babbage.search.input.TypeFilter;
 import com.github.onsdigital.babbage.search.model.SearchResult;
 import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpRequestBase;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
@@ -43,7 +44,12 @@ public class SearchClient implements SearchClosable {
     }
 
     public CloseableHttpResponse execute(AbstractSearchRequest searchRequest) throws Exception {
-        return this.client.execute(searchRequest.getRequestBase());
+        HttpRequestBase request = searchRequest.getRequestBase();
+
+        // Log the request ID
+        String requestId = searchRequest.getRequestId();
+        System.out.println(String.format("Executing external search request [context=%s]", requestId));
+        return this.client.execute(request);
     }
 
     @Override

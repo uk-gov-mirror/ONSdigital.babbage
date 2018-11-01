@@ -5,8 +5,9 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.onsdigital.babbage.configuration.Configuration;
 import com.github.onsdigital.babbage.search.external.SearchClient;
-import com.github.onsdigital.babbage.search.external.requests.search.exceptions.InvalidSearchResponse;
+import com.github.onsdigital.babbage.search.external.requests.search.exceptions.SearchErrorResponse;
 import com.github.onsdigital.babbage.search.external.requests.search.headers.JsonContentTypeHeader;
+import com.github.onsdigital.babbage.search.external.requests.search.headers.RequestIdHeader;
 import org.apache.commons.io.Charsets;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -17,10 +18,9 @@ import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.util.EntityUtils;
 
-import java.io.IOException;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.Callable;
 
 public abstract class AbstractSearchRequest<T> implements Callable<T> {
@@ -33,6 +33,7 @@ public abstract class AbstractSearchRequest<T> implements Callable<T> {
 
     private Class<T> returnClass;
     private TypeReference<T> typeReference;
+    private final RequestIdHeader requestIdHeader = new RequestIdHeader(UUID.randomUUID().toString());
 
     public AbstractSearchRequest(Class<T> returnClass) {
         this.returnClass = returnClass;
@@ -56,7 +57,9 @@ public abstract class AbstractSearchRequest<T> implements Callable<T> {
     }
 
     public HttpGet get() throws URISyntaxException {
-        return new HttpGet(this.targetUri().build());
+        HttpGet get = new HttpGet(this.targetUri().build());
+        get.addHeader(this.requestIdHeader);
+        return get;
     }
 
     public HttpPost post(Map<String, Object> params) throws URISyntaxException, JsonProcessingException {
@@ -68,7 +71,13 @@ public abstract class AbstractSearchRequest<T> implements Callable<T> {
             StringEntity stringEntity = new StringEntity(postParams, Charsets.UTF_8);
             post.setEntity(stringEntity);
         }
+
+        post.addHeader(this.requestIdHeader);
         return post;
+    }
+
+    public final String getRequestId() {
+        return requestIdHeader.getRequestId();
     }
 
     /**
@@ -85,7 +94,7 @@ public abstract class AbstractSearchRequest<T> implements Callable<T> {
             int code = response.getStatusLine().getStatusCode();
 
             if (code != HttpStatus.SC_OK) {
-                throw new InvalidSearchResponse(jsonResponse, code);
+                throw new SearchErrorResponse(jsonResponse, code, this.getRequestId());
             }
 
             // Either typeReference or returnClass are guaranteed to not be null
@@ -94,6 +103,10 @@ public abstract class AbstractSearchRequest<T> implements Callable<T> {
             }
 
             return MAPPER.readValue(jsonResponse, this.returnClass);
+        } catch (Exception e) {
+            // Log failure with request context then re-throw
+            System.out.println(String.format("Error executing external search request [context=%s]", this.getRequestId()));
+            throw e;
         }
     }
 
