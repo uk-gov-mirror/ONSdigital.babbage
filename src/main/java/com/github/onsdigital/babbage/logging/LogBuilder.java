@@ -1,6 +1,10 @@
 package com.github.onsdigital.babbage.logging;
 
 import ch.qos.logback.classic.Level;
+import com.github.onsdigital.babbage.error.BabbageException;
+import com.github.onsdigital.babbage.error.BadRequestException;
+import com.github.onsdigital.babbage.error.InternalServerErrorException;
+import com.github.onsdigital.babbage.error.ResourceNotFoundException;
 import com.github.onsdigital.logging.builder.LogMessageBuilder;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.Header;
@@ -25,12 +29,22 @@ public class LogBuilder extends LogMessageBuilder {
         return new LogBuilder(e);
     }
 
+    public static LogBuilder logEvent(Throwable e, String message) {
+        return new LogBuilder(e, message);
+    }
+
     protected LogBuilder(String eventDescription) {
         super(eventDescription);
+        setNamespace("babbage"); // TODO should this be configurable?
     }
 
     protected LogBuilder(Throwable e) {
-        super(e, "");
+        this(e, "");
+    }
+
+    protected LogBuilder(Throwable e, String message) {
+        super(e, message);
+        setNamespace("babbage"); // TODO should this be configurable?
     }
 
     @Override
@@ -120,6 +134,19 @@ public class LogBuilder extends LogMessageBuilder {
             }
         }
         return this;
+    }
+
+    public BabbageException logAndCreateException(int statusCode, Throwable cause) {
+        parameter("details", cause.getMessage());
+        log();
+        switch (statusCode) {
+            case 400:
+                return new BadRequestException(cause.getMessage());
+            case 404:
+                return new ResourceNotFoundException(cause.getMessage());
+            default:
+                return new InternalServerErrorException(cause.getMessage(), cause);
+        }
     }
 
     private LogBuilder addParamSafe(String key, Object value) {

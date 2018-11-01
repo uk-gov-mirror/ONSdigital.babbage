@@ -1,12 +1,10 @@
 package com.github.onsdigital.babbage.api.error;
 
-import ch.qos.logback.classic.Level;
 import com.github.davidcarboni.restolino.api.RequestHandler;
 import com.github.davidcarboni.restolino.framework.ServerError;
 import com.github.onsdigital.babbage.content.client.ContentReadException;
 import com.github.onsdigital.babbage.error.LegacyPDFException;
 import com.github.onsdigital.babbage.error.ResourceNotFoundException;
-import com.github.onsdigital.babbage.logging.Log;
 import com.github.onsdigital.babbage.template.TemplateService;
 import org.apache.commons.io.IOUtils;
 
@@ -34,7 +32,6 @@ public class ErrorHandler implements ServerError {
     }
 
     public static void handle(HttpServletRequest req, HttpServletResponse response, Throwable t) throws IOException {
-
         response.setContentType(MediaType.TEXT_HTML);
         if (ContentReadException.class.isAssignableFrom(t.getClass())) {
             ContentReadException exception = (ContentReadException) t;
@@ -42,17 +39,16 @@ public class ErrorHandler implements ServerError {
             logEvent(t).error("errorHandler");
             return;
         } else if (t instanceof ResourceNotFoundException) {
-            Log.build(t.getMessage() + ", cause: " + (t.getCause() != null ? t.getCause().getMessage() : ""),
-                    Level.INFO).log();
+            logEvent(t).error("ResourceNotFoundException error");
             renderErrorPage(404, response);
             return;
         } else if (t instanceof LegacyPDFException) {
+            logEvent(t).error("LegacyPDFException error");
             renderErrorPage(501, response);
         } else {
+            logEvent(t).error("Unknown error");
             renderErrorPage(500, response);
         }
-
-        logEvent(t).error("errorHandler");
     }
 
 

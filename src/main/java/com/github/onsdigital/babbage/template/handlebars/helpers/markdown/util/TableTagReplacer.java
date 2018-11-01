@@ -4,13 +4,14 @@ import com.github.onsdigital.babbage.content.client.ContentClient;
 import com.github.onsdigital.babbage.content.client.ContentReadException;
 import com.github.onsdigital.babbage.content.client.ContentResponse;
 import com.github.onsdigital.babbage.error.ResourceNotFoundException;
-import com.github.onsdigital.babbage.logging.Log;
 import com.github.onsdigital.babbage.template.TemplateService;
 
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static com.github.onsdigital.babbage.logging.LogBuilder.logEvent;
 
 /**
  * Defines the format of the custom markdown tags for charts and defines how to replace them.
@@ -53,10 +54,10 @@ public class TableTagReplacer extends TagReplacementStrategy {
             String result = TemplateService.getInstance().renderTemplate(template, contentResponse.getDataStream());
             return result;
         } catch (ResourceNotFoundException e) {
-            Log.buildDebug("Failed to find figure data for table.").addParameter("URL", figureUri).log();
+            logEvent(e).uri(figureUri).error("failed to find figure data for table");
             return TemplateService.getInstance().renderTemplate(figureNotFoundTemplate);
         } catch (ContentReadException e) {
-            System.err.println("Failed rendering table, uri:" + figureUri);
+            logEvent(e).uri(figureUri).error("failed to render table");
             return matcher.group();
         }
     }

@@ -3,7 +3,6 @@ package com.github.onsdigital.babbage.pdf;
 import com.github.onsdigital.babbage.content.client.ContentClient;
 import com.github.onsdigital.babbage.content.client.ContentReadException;
 import com.github.onsdigital.babbage.content.client.ContentResponse;
-import com.github.onsdigital.babbage.logging.Log;
 import com.lowagie.text.BadElementException;
 import com.lowagie.text.Image;
 import org.apache.commons.io.IOUtils;
@@ -20,6 +19,8 @@ import org.xhtmlrenderer.simple.extend.FormSubmissionListener;
 
 import java.io.IOException;
 import java.io.InputStream;
+
+import static com.github.onsdigital.babbage.logging.LogBuilder.logEvent;
 
 public class EquationImageInserter implements ReplacedElementFactory {
 
@@ -51,15 +52,12 @@ public class EquationImageInserter implements ReplacedElementFactory {
             InputStream input = null;
             try {
 
-                Log.buildDebug("Inserting equation image into PDF")
-                        .addParameter("uri", uri)
-                        .addParameter("filename", filename)
-                        .log();
+                logEvent().uri(uri).parameter("filename", filename).debug("inserting equation image into PDF");
 
                 // read the chart JSON from the content service (zebedee reader)
                 ContentResponse contentResponse = ContentClient.getInstance().getResource(uri + "/" + filename + ".png");
 
-                try ( InputStream inputStream = contentResponse.getDataStream() ){
+                try (InputStream inputStream = contentResponse.getDataStream()) {
                     byte[] bytes = IOUtils.toByteArray(inputStream);
                     Image image = Image.getInstance(bytes);
                     ITextFSImage fsImage = new ITextFSImage(image);
@@ -74,8 +72,9 @@ public class EquationImageInserter implements ReplacedElementFactory {
 
             } catch (IOException | BadElementException e) {
                 ExceptionUtils.getStackTrace(e);
+                logEvent(e).error("error inserting equation image into PDF");
             } catch (ContentReadException e) {
-                e.printStackTrace();
+                logEvent(e).error("error inserting equation image into PDF");
             } finally {
                 IOUtils.closeQuietly(input);
             }

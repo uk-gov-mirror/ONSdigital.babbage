@@ -1,11 +1,9 @@
 package com.github.onsdigital.babbage.template.handlebars.helpers.markdown.util;
 
-import ch.qos.logback.classic.Level;
 import com.github.onsdigital.babbage.content.client.ContentClient;
 import com.github.onsdigital.babbage.content.client.ContentReadException;
 import com.github.onsdigital.babbage.content.client.ContentResponse;
 import com.github.onsdigital.babbage.error.ResourceNotFoundException;
-import com.github.onsdigital.babbage.logging.Log;
 import com.github.onsdigital.babbage.template.TemplateService;
 import com.github.onsdigital.babbage.util.http.ClientConfiguration;
 import com.github.onsdigital.babbage.util.http.PooledHttpClient;
@@ -22,6 +20,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static com.github.onsdigital.babbage.configuration.ApplicationConfiguration.appConfig;
+import static com.github.onsdigital.babbage.logging.LogBuilder.logEvent;
 
 /**
  * Defines the format of the custom markdown tags for maps and defines how to replace them.
@@ -95,10 +94,10 @@ public class MapTagReplacer extends TagReplacementStrategy {
             String result = templateService.renderTemplate(template, context, Collections.singletonMap("mapHtml", html));
             return result;
         } catch (ResourceNotFoundException e) {
-            Log.buildDebug("Failed to find figure data for map.").addParameter("URL", figureUri).log();
+            logEvent(e).uri(figureUri).error("failed to find figure data for map");
             return templateService.renderTemplate(figureNotFoundTemplate);
         } catch (ContentReadException | MapRendererException e) {
-            Log.build("Failed rendering map, uri: " + figureUri + ", error: " + e, Level.ERROR).log();
+            logEvent(e).uri(figureUri).error("failed rendering map");
             return matcher.group();
         }
     }
