@@ -1,12 +1,9 @@
 package com.github.onsdigital.babbage.pdf;
 
 import com.github.onsdigital.babbage.content.client.ContentClient;
-import com.github.onsdigital.babbage.content.client.ContentReadException;
 import com.github.onsdigital.babbage.content.client.ContentResponse;
-import com.lowagie.text.BadElementException;
 import com.lowagie.text.Image;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.exception.ExceptionUtils;
 import org.w3c.dom.Element;
 import org.xhtmlrenderer.extend.ReplacedElement;
 import org.xhtmlrenderer.extend.ReplacedElementFactory;
@@ -17,7 +14,6 @@ import org.xhtmlrenderer.pdf.ITextImageElement;
 import org.xhtmlrenderer.render.BlockBox;
 import org.xhtmlrenderer.simple.extend.FormSubmissionListener;
 
-import java.io.IOException;
 import java.io.InputStream;
 
 import static com.github.onsdigital.babbage.logging.LogBuilder.logEvent;
@@ -70,10 +66,7 @@ public class EquationImageInserter implements ReplacedElementFactory {
                     }
                 }
 
-            } catch (IOException | BadElementException e) {
-                ExceptionUtils.getStackTrace(e);
-                logEvent(e).error("error inserting equation image into PDF");
-            } catch (ContentReadException e) {
+            } catch (Exception e) {
                 logEvent(e).error("error inserting equation image into PDF");
             } finally {
                 IOUtils.closeQuietly(input);
