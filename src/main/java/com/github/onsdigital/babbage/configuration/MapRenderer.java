@@ -2,7 +2,7 @@ package com.github.onsdigital.babbage.configuration;
 
 import com.github.onsdigital.babbage.logging.LogBuilder;
 
-import static com.github.onsdigital.babbage.configuration.EnvVarUtils.defaultNumberIfBlank;
+import static com.github.onsdigital.babbage.configuration.EnvVarUtils.defaultIfBlank;
 import static com.github.onsdigital.babbage.configuration.EnvVarUtils.getNumberValue;
 import static com.github.onsdigital.babbage.configuration.EnvVarUtils.getValueOrDefault;
 
@@ -35,7 +35,7 @@ public class MapRenderer implements Loggable {
         host = getValueOrDefault(MAP_RENDERER_HOST_KEY, "http://localhost:23500");
         svgPath = getValueOrDefault(MAP_RENDERER_SVG_PATH_KEY, "/render/svg");
         pngPath = getValueOrDefault(MAP_RENDERER_PNG_PATH_KEY, "/render/png");
-        maxConnections = defaultNumberIfBlank(getNumberValue(MAP_RENDERER_MAX_CONNECTIONS_KEY), 10);
+        maxConnections = defaultIfBlank(getNumberValue(MAP_RENDERER_MAX_CONNECTIONS_KEY), 10);
     }
 
     public String host() {

@@ -40,7 +40,11 @@ public class EnvVarUtils {
     }
 
 
-    public static Integer defaultNumberIfBlank(Integer value, Integer defaultValue) {
+    public static Integer defaultIfBlank(Integer value, Integer defaultValue) {
+        return value == null ? defaultValue : value;
+    }
+
+    public static Float defaultIfBlank(Float value, Float defaultValue) {
         return value == null ? defaultValue : value;
     }
 
@@ -53,5 +57,19 @@ public class EnvVarUtils {
      */
     public static boolean getStringAsBool(String key, String defaultVal) {
         return Y.equals(StringUtils.defaultIfBlank(getValue(key), defaultVal));
+    }
+
+    public static Float getFloatValue(String key) {
+        String value = getValue(key);
+        if (StringUtils.isEmpty(value)) {
+            return null;
+        }
+
+        try {
+            return Float.valueOf(value.trim());
+        } catch (NumberFormatException e) {
+            System.out.println(String.format("Exception while trying to parse variable '%s' to Float", key));
+            return null;
+        }
     }
 }

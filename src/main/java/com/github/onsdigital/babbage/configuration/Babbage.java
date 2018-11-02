@@ -2,7 +2,7 @@ package com.github.onsdigital.babbage.configuration;
 
 import com.github.onsdigital.babbage.logging.LogBuilder;
 
-import static com.github.onsdigital.babbage.configuration.EnvVarUtils.defaultNumberIfBlank;
+import static com.github.onsdigital.babbage.configuration.EnvVarUtils.defaultIfBlank;
 import static com.github.onsdigital.babbage.configuration.EnvVarUtils.getNumberValue;
 import static com.github.onsdigital.babbage.configuration.EnvVarUtils.getStringAsBool;
 import static com.github.onsdigital.babbage.configuration.EnvVarUtils.getValue;
@@ -78,7 +78,7 @@ public class Babbage implements Loggable {
 
         phantomjsPath = getValueOrDefault(PHANTOMJS_PATH_KEY, "/usr/local/bin/phantomjs");
 
-        maxHighchartsServerConnections = defaultNumberIfBlank(getNumberValue("HIGHCHARTS_EXPORT_MAX_CONNECTION"), 50);
+        maxHighchartsServerConnections = defaultIfBlank(getNumberValue("HIGHCHARTS_EXPORT_MAX_CONNECTION"), 50);
 
         exportSeverUrl = getValueOrDefault(HIGHCHARTS_EXPORT_SERVER_KEY, "http://localhost:9999/");
 

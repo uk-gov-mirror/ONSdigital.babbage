@@ -2,7 +2,7 @@ package com.github.onsdigital.babbage.configuration;
 
 import com.github.onsdigital.babbage.logging.LogBuilder;
 
-import static com.github.onsdigital.babbage.configuration.EnvVarUtils.defaultNumberIfBlank;
+import static com.github.onsdigital.babbage.configuration.EnvVarUtils.defaultIfBlank;
 import static com.github.onsdigital.babbage.configuration.EnvVarUtils.getNumberValue;
 import static com.github.onsdigital.babbage.configuration.EnvVarUtils.getValueOrDefault;
 
@@ -32,7 +32,7 @@ public class TableRenderer implements Loggable {
     private TableRenderer() {
         host = getValueOrDefault(TABLE_RENDERER_HOST_KEY, "http://localhost:23300");
         htmlPath = getValueOrDefault(TABLE_RENDERER_HTML_PATH_KEY, "/render/html");
-        maxConnections = defaultNumberIfBlank(getNumberValue(MAX_RENDERER_CONNECTIONS_KEY), 10);
+        maxConnections = defaultIfBlank(getNumberValue(MAX_RENDERER_CONNECTIONS_KEY), 10);
     }
 
     public String host() {

@@ -1,4 +1,9 @@
 {{#partial "block-main"}}
+{{#if_eq type "bulletin"}}
+	{{#block "bulletin-page"}}
+		{{> content/partials/bulletin-header}}
+	{{/block}}
+{{else}}
     <div class="page-neutral-intro {{#if_eq type "home_page"}}background--astral{{else}}background--gallery{{/if_eq}}">
 	<div class="wrapper">
 		<div class="col-wrap">
@@ -24,9 +29,10 @@
 			</div> {{!-- /col --}}
 		</div> {{!-- /col-wrap --}}
 	</div> {{!-- /wrapper --}}
-	
+
 	{{#block "block-intro-secondary"}}{{/block}}
 </div> {{!-- /page-intro --}}
+{{/if_eq}}
 <div class="page-content">
 	{{#block "block-content"}}{{/block}}
 </div>

@@ -175,6 +175,20 @@ public class SearchRequestHelper {
         return query;
     }
 
+    /**
+     * Extracts the desired search client (internal/external for internal TCP or external conceptual search)
+     *
+     * @param request
+     * @return
+     */
+    public static boolean extractExternalSearch(HttpServletRequest request) {
+        String client = getParam(request, "searchClient", appConfig().externalSearch().defaultSearchClient());
+        if (StringUtils.isEmpty(client)) {
+            return appConfig().externalSearch().isEnabled();
+        }
+        return client.equalsIgnoreCase("external");
+    }
+
     private static boolean allowFutureAfterDate(HttpServletRequest request) {
         return UPCOMING_PARAM.equalsIgnoreCase(request.getParameter(VIEW_PARAM));
     }

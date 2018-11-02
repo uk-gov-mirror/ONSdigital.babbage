@@ -52,6 +52,7 @@ import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.dep
 import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.listQuery;
 import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.onsQuery;
 import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.typeBoostedQuery;
+import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.extractExternalSearch;
 import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.extractPage;
 import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.extractSearchTerm;
 import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.extractSelectedFilters;
@@ -113,7 +114,7 @@ public class SearchUtils {
         LinkedHashMap<String, SearchResult> results = populateSerp(request, listType, queries);
 
         if (searchDepartments) {
-            searchDeparments(searchTerm, results);
+            searchDeparments(request, searchTerm, results);
         }
         return buildResponse(request, listType, results);
     }
@@ -137,7 +138,7 @@ public class SearchUtils {
     }
 
     public static BabbageResponse list(HttpServletRequest request, String listType, SearchQueries queries) throws IOException {
-        return buildResponse(request, listType, searchAll(queries));
+        return buildResponse(request, listType, searchAll(queries, extractExternalSearch(request)));
     }
 
     public static BabbageResponse listPage(String listType, SearchQueries queries) throws IOException {
@@ -162,7 +163,7 @@ public class SearchUtils {
      * @return
      */
     public static LinkedHashMap<String, SearchResult> searchAll(SearchQueries searchQueries) {
-        return searchAll(searchQueries, true);
+        return searchAll(searchQueries, appConfig().externalSearch().isEnabled());
     }
 
     /**
@@ -332,12 +333,11 @@ public class SearchUtils {
      * @param searchTerm
      * @param results
      */
-    private static void searchDeparments(String searchTerm, LinkedHashMap<String, SearchResult> results) {
-
+    private static void searchDeparments(HttpServletRequest request, String searchTerm, LinkedHashMap<String, SearchResult> results) {
         if (appConfig().externalSearch().isEnabled()) {
-            SearchQuery request = new DepartmentsQuery(searchTerm);
+            SearchQuery searchReq = new DepartmentsQuery(searchTerm);
             try {
-                SearchResult result = request.call();
+                SearchResult result = searchReq.call();
                 results.put(SearchType.DEPARTMENTS.getResultKey(), result);
             } catch (Exception e) {
                 e.printStackTrace();
