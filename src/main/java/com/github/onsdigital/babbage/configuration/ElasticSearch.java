@@ -33,7 +33,7 @@ public class ElasticSearch implements Loggable {
 
     private ElasticSearch() {
         elasticSearchServer = getValueOrDefault(SERVER_KEY, "localhost");
-        elasticSearchPort = Integer.parseInt(getValueOrDefault(PORT_KEY, "9500"));
+        elasticSearchPort = Integer.parseInt(getValueOrDefault(PORT_KEY, "9300"));
         elasticSearchIndexAlias = getValueOrDefault(INDEX_ALIAS_KEY, "ons");
         elasticSearchCluster = getValueOrDefault(CLUSTER_KEY, "");
         highlightURLBlacklistFile = getValueOrDefault(HIGHLIGHTS_FILE_KEY, "highlight-url-blacklist");
