@@ -27,7 +27,7 @@ public class EnvVarUtils {
     }
 
     public static String getValueOrDefault(String key, String defaultVal) {
-        return StringUtils.defaultIfBlank(System.getProperty(key), defaultVal);
+        return StringUtils.defaultIfBlank(getValue(key), defaultVal);
     }
 
     public static Integer getNumberValue(String key) {
