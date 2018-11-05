@@ -1,6 +1,5 @@
 package com.github.onsdigital.babbage.api.endpoint.rss.builder;
 
-import com.github.onsdigital.babbage.configuration.Configuration;
 import com.github.onsdigital.babbage.search.model.field.Field;
 import com.github.onsdigital.babbage.util.ThreadContext;
 import com.sun.syndication.feed.synd.SyndContent;
@@ -10,9 +9,9 @@ import com.sun.syndication.feed.synd.SyndEntryImpl;
 
 import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Map;
 
+import static com.github.onsdigital.babbage.configuration.ApplicationConfiguration.appConfig;
 import static com.github.onsdigital.babbage.search.model.field.Field.metaDescription;
 import static com.github.onsdigital.babbage.search.model.field.Field.releaseDate;
 import static com.github.onsdigital.babbage.search.model.field.Field.title;
@@ -27,7 +26,7 @@ import static java.util.Objects.requireNonNull;
  */
 public class SyndEntryBuilder {
 
-	private static final DateFormat DATE_FORMAT = new SimpleDateFormat(Configuration.CONTENT_SERVICE.getDefaultContentDatePattern());
+	private static final DateFormat DATE_FORMAT = appConfig().contentAPI().defaultContentDateFormat();
 	private static final String DESCRIPTION_TYPE = "text/plain";
 
 	private Map<String, Object> map;

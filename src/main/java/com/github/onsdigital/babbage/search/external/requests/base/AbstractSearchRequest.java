@@ -3,7 +3,6 @@ package com.github.onsdigital.babbage.search.external.requests.base;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.onsdigital.babbage.configuration.Configuration;
 import com.github.onsdigital.babbage.search.external.SearchClient;
 import com.github.onsdigital.babbage.search.external.requests.search.exceptions.SearchErrorResponse;
 import com.github.onsdigital.babbage.search.external.requests.search.headers.JsonContentTypeHeader;
@@ -23,9 +22,11 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.Callable;
 
+import static com.github.onsdigital.babbage.configuration.ApplicationConfiguration.appConfig;
+
 public abstract class AbstractSearchRequest<T> implements Callable<T> {
 
-    protected static final String HOST = Configuration.SEARCH_SERVICE.getExternalSearchAddress();
+    protected static final String HOST = appConfig().externalSearch().address();
 
     protected static final ObjectMapper MAPPER = new ObjectMapper();
 

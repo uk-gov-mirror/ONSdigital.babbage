@@ -1,12 +1,9 @@
 package com.github.onsdigital.babbage.template.handlebars.helpers.markdown.util;
 
-import ch.qos.logback.classic.Level;
-import com.github.onsdigital.babbage.configuration.Configuration;
 import com.github.onsdigital.babbage.content.client.ContentClient;
 import com.github.onsdigital.babbage.content.client.ContentReadException;
 import com.github.onsdigital.babbage.content.client.ContentResponse;
 import com.github.onsdigital.babbage.error.ResourceNotFoundException;
-import com.github.onsdigital.babbage.logging.Log;
 import com.github.onsdigital.babbage.template.TemplateService;
 import com.github.onsdigital.babbage.util.http.ClientConfiguration;
 import com.github.onsdigital.babbage.util.http.PooledHttpClient;
@@ -22,15 +19,18 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static com.github.onsdigital.babbage.configuration.ApplicationConfiguration.appConfig;
+import static com.github.onsdigital.babbage.logging.LogEvent.logEvent;
+
 /**
  * Defines the format of the custom markdown tags for maps and defines how to replace them.
  */
 public class MapTagReplacer extends TagReplacementStrategy {
 
     private static final Pattern pattern = Pattern.compile("<ons-map\\spath=\"([-A-Za-z0-9+&@#/%?=~_|!:,.;()*$]+)\"?\\s?/>");
-    private static final String RENDERER_HOST = Configuration.MAP_RENDERER.getHost();
-    private static final String RENDERER_SVG_PATH = Configuration.MAP_RENDERER.getSvgPath();
-    private static final String RENDERER_PNG_PATH = Configuration.MAP_RENDERER.getPngPath();
+    private static final String RENDERER_HOST = appConfig().mapRenderer().host();
+    private static final String RENDERER_SVG_PATH = appConfig().mapRenderer().svgPath();
+    private static final String RENDERER_PNG_PATH = appConfig().mapRenderer().pngPath();
     private static final PooledHttpClient HTTP_CLIENT = new PooledHttpClient(RENDERER_HOST, createHttpConfiguration());
     private static final Map<String, String> HEADERS = Collections.singletonMap("Content-Type", "application/json;charset=utf-8");
     private static final String CHARSET = StandardCharsets.UTF_8.name();
@@ -94,10 +94,10 @@ public class MapTagReplacer extends TagReplacementStrategy {
             String result = templateService.renderTemplate(template, context, Collections.singletonMap("mapHtml", html));
             return result;
         } catch (ResourceNotFoundException e) {
-            Log.buildDebug("Failed to find figure data for map.").addParameter("URL", figureUri).log();
+            logEvent(e).uri(figureUri).error("failed to find figure data for map");
             return templateService.renderTemplate(figureNotFoundTemplate);
         } catch (ContentReadException | MapRendererException e) {
-            Log.build("Failed rendering map, uri: " + figureUri + ", error: " + e, Level.ERROR).log();
+            logEvent(e).uri(figureUri).error("failed rendering map");
             return matcher.group();
         }
     }
@@ -112,7 +112,7 @@ public class MapTagReplacer extends TagReplacementStrategy {
 
     private static ClientConfiguration createHttpConfiguration() {
         ClientConfiguration configuration = new ClientConfiguration();
-        configuration.setMaxTotalConnection(Configuration.MAP_RENDERER.getMaxServerConnection());
+        configuration.setMaxTotalConnection(appConfig().mapRenderer().maxConnections());
         configuration.setDisableRedirectHandling(true);
         return configuration;
     }

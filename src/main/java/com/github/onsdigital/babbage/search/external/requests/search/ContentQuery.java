@@ -1,6 +1,5 @@
 package com.github.onsdigital.babbage.search.external.requests.search;
 
-import com.github.onsdigital.babbage.configuration.Configuration;
 import com.github.onsdigital.babbage.search.external.SearchType;
 import com.github.onsdigital.babbage.search.external.requests.spellcheck.SpellCheckRequest;
 import com.github.onsdigital.babbage.search.external.requests.spellcheck.models.SpellingCorrection;
@@ -11,7 +10,14 @@ import com.github.onsdigital.babbage.search.model.SearchResult;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.utils.URIBuilder;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import static com.github.onsdigital.babbage.configuration.ApplicationConfiguration.appConfig;
 
 /**
  * Replaces the internal content query by executing a HTTP request against the dp-conceptual-search content API
@@ -92,12 +98,12 @@ public class ContentQuery extends SearchQuery {
     public SearchResult call() throws Exception {
         SearchResult result = super.call();
 
-        if (Configuration.SEARCH_SERVICE.EXTERNAL_SPELLCHECK_ENABLED) {
+            if (appConfig().externalSearch().isSpellCheckEnabled()) {
             List<SpellingCorrection> corrections = this.getSpellingCorrections();
 
             // Build the suggested correction string
             String suggestedCorrection = SpellCheckRequest.buildSuggestedCorrection(this.searchTerm, corrections,
-                    Configuration.SEARCH_SERVICE.SPELL_CHECK_CONFIDENCE_THRESHOLD);
+                    appConfig().externalSearch().spellCheckConfidenceThreshold());
 
             if (!suggestedCorrection.isEmpty()) {
                 // Set the suggestions

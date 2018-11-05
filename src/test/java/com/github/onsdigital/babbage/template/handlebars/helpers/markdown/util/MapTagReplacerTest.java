@@ -1,6 +1,5 @@
 package com.github.onsdigital.babbage.template.handlebars.helpers.markdown.util;
 
-import com.github.onsdigital.babbage.configuration.Configuration;
 import com.github.onsdigital.babbage.content.client.ContentClient;
 import com.github.onsdigital.babbage.content.client.ContentReadException;
 import com.github.onsdigital.babbage.content.client.ContentResponse;
@@ -18,6 +17,7 @@ import org.mockito.MockitoAnnotations;
 import java.util.Map;
 import java.util.regex.Matcher;
 
+import static com.github.onsdigital.babbage.configuration.ApplicationConfiguration.appConfig;
 import static com.github.onsdigital.babbage.template.handlebars.helpers.markdown.util.MapTagReplacer.MapType.PNG;
 import static com.github.onsdigital.babbage.template.handlebars.helpers.markdown.util.MapTagReplacer.MapType.SVG;
 import static com.github.onsdigital.babbage.template.handlebars.helpers.markdown.util.TagReplacementStrategy.figureNotFoundTemplate;
@@ -70,14 +70,15 @@ public class MapTagReplacerTest {
     public void replaceShouldGetContentAndInvokeMapRendererForSvg() throws Exception {
         String json = "{\"foo\": \"bar\"}";
         when(contentResponseMock.getAsString()).thenReturn(json);
-        when(httpClientMock.sendPost(Configuration.MAP_RENDERER.getSvgPath(), headers, json, "UTF-8")).thenReturn(responseMock);
+        when(httpClientMock.sendPost(appConfig().mapRenderer().svgPath(), headers, json, "UTF-8"))
+                .thenReturn(responseMock);
         when(responseMock.getEntity().getContent()).thenReturn(IOUtils.toInputStream(mapHtml));
         when(templateServiceMock.renderTemplate(template, singletonMap("foo", "bar"), singletonMap("mapHtml", mapHtml))).thenReturn(renderedTemplate);
 
         String result = testObj.replace(matcher);
 
         assertThat(result, equalTo(renderedTemplate));
-        verify(httpClientMock, times(1)).sendPost(Configuration.MAP_RENDERER.getSvgPath(), headers, json, "UTF-8");
+        verify(httpClientMock, times(1)).sendPost(appConfig().mapRenderer().svgPath(), headers, json, "UTF-8");
         verify(templateServiceMock, times(1)).renderTemplate(template, singletonMap("foo", "bar"), singletonMap("mapHtml", mapHtml));
     }
 
@@ -86,14 +87,15 @@ public class MapTagReplacerTest {
         testObj = new MapTagReplacer(path, template, contentClientMock, templateServiceMock, httpClientMock, PNG);
         String json = "{\"foo\": \"bar\"}";
         when(contentResponseMock.getAsString()).thenReturn(json);
-        when(httpClientMock.sendPost(Configuration.MAP_RENDERER.getPngPath(), headers, json, "UTF-8")).thenReturn(responseMock);
+        when(httpClientMock.sendPost(appConfig().mapRenderer().pngPath(), headers, json, "UTF-8"))
+                .thenReturn(responseMock);
         when(responseMock.getEntity().getContent()).thenReturn(IOUtils.toInputStream(mapHtml));
         when(templateServiceMock.renderTemplate(template, singletonMap("foo", "bar"), singletonMap("mapHtml", mapHtml))).thenReturn(renderedTemplate);
 
         String result = testObj.replace(matcher);
 
         assertThat(result, equalTo(renderedTemplate));
-        verify(httpClientMock, times(1)).sendPost(Configuration.MAP_RENDERER.getPngPath(), headers, json, "UTF-8");
+        verify(httpClientMock, times(1)).sendPost(appConfig().mapRenderer().pngPath(), headers, json, "UTF-8");
         verify(templateServiceMock, times(1)).renderTemplate(template, singletonMap("foo", "bar"), singletonMap("mapHtml", mapHtml));
     }
 

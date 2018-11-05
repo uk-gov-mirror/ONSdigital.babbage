@@ -1,6 +1,5 @@
 package com.github.onsdigital.babbage.search.helpers;
 
-import com.github.onsdigital.babbage.configuration.Configuration;
 import com.github.onsdigital.babbage.error.BadRequestException;
 import com.github.onsdigital.babbage.error.ResourceNotFoundException;
 import com.github.onsdigital.babbage.search.helpers.dates.PublishDates;
@@ -16,8 +15,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.function.BiFunction;
 
-import static com.github.onsdigital.babbage.configuration.Configuration.GENERAL.getMaxResultsPerPage;
-import static com.github.onsdigital.babbage.configuration.Configuration.GENERAL.getResultsPerPage;
+import static com.github.onsdigital.babbage.configuration.ApplicationConfiguration.appConfig;
+import static com.github.onsdigital.babbage.logging.LogEvent.logEvent;
 import static com.github.onsdigital.babbage.search.helpers.dates.PublishDates.publishedDates;
 import static com.github.onsdigital.babbage.search.helpers.dates.PublishDates.updatedWithinPeriod;
 import static com.github.onsdigital.babbage.util.RequestUtil.getParam;
@@ -143,12 +142,15 @@ public class SearchRequestHelper {
      * If a size parameter exists use that otherwise use default.
      */
     public static int extractSize(HttpServletRequest request) {
-        int result = getResultsPerPage();
+        int result = appConfig().babbage().getResultsPerPage();
         if (StringUtils.isNotEmpty(request.getParameter("size"))) {
             try {
                 result = Integer.parseInt(request.getParameter("size"));
-                return Math.max(getResultsPerPage(), Math.min(result, getMaxResultsPerPage()));
+                return Math.max(appConfig().babbage().getResultsPerPage(), Math.min(result,
+                        appConfig().babbage().getMaxResultsPerPage()));
             } catch (NumberFormatException ex) {
+                logEvent(ex).parameter("value", result)
+                        .error("Failed to parse size parameter to integer. Default value will be used");
                 System.out.println(MessageFormat.format("Failed to parse size parameter to integer." +
                         " Default value will be used.\n {0}", ex));
             }
@@ -180,9 +182,9 @@ public class SearchRequestHelper {
      * @return
      */
     public static boolean extractExternalSearch(HttpServletRequest request) {
-        String client = getParam(request, "searchClient", Configuration.SEARCH_SERVICE.DEFAULT_SEARCH_CLIENT);
+        String client = getParam(request, "searchClient", appConfig().externalSearch().defaultSearchClient());
         if (StringUtils.isEmpty(client)) {
-            return Configuration.SEARCH_SERVICE.EXTERNAL_SEARCH_ENABLED;
+            return appConfig().externalSearch().isEnabled();
         }
         return client.equalsIgnoreCase("external");
     }

@@ -1,6 +1,5 @@
 package com.github.onsdigital.babbage.pdf;
 
-import com.github.onsdigital.babbage.configuration.Configuration;
 import com.github.onsdigital.babbage.content.client.ContentClient;
 import com.github.onsdigital.babbage.content.client.ContentResponse;
 import com.github.onsdigital.babbage.template.TemplateService;
@@ -27,6 +26,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.LinkedHashMap;
 import java.util.Map;
+
+import static com.github.onsdigital.babbage.configuration.ApplicationConfiguration.appConfig;
+import static com.github.onsdigital.babbage.logging.LogEvent.logEvent;
 
 /**
  * Created by bren on 08/07/15.
@@ -108,14 +110,14 @@ public class PDFGenerator {
     private static void addDataTableToPdf(String fileName, String pdfTable, BufferedReader bufferedReader, Path pdfFile) throws IOException, InterruptedException {
         if (pdfTable != null) {
             String[] gsCommand = {
-                    Configuration.GHOSTSCRIPT.getGhostscriptPath(),
+                    appConfig().babbage().getGhostscriptPath(),
                     "-dBATCH", "-dNOPAUSE", "-q", "-sDEVICE=pdfwrite", "-dPDFSETTINGS=/prepress",
                     "-sOutputFile=" + TEMP_DIRECTORY_PATH + "/" + fileName + "-merged.pdf",
                     TEMP_DIRECTORY_PATH + "/" + fileName + ".pdf", pdfTable
             };
 
             Process gsProcess = new ProcessBuilder(gsCommand).redirectErrorStream(true).start();
-            System.out.println(ArrayUtils.toString(gsCommand));
+            logEvent().debug(ArrayUtils.toString(gsCommand));
             int gsExitStatus = gsProcess.waitFor();
 
             BufferedReader gsBufferedReader = new BufferedReader(new InputStreamReader(gsProcess.getInputStream()));
@@ -126,7 +128,7 @@ public class PDFGenerator {
                 gsStringBuilder.append(gsCurrentLine);
                 gsCurrentLine = gsBufferedReader.readLine();
             }
-            System.out.println(gsStringBuilder.toString());
+            logEvent().debug(gsStringBuilder.toString());
 
             Path gsPdfFile = FileSystems.getDefault().getPath(TEMP_DIRECTORY_PATH).resolve(fileName + "-merged.pdf");
             if (!Files.exists(gsPdfFile)) {

@@ -1,6 +1,5 @@
 package com.github.onsdigital.babbage.pdf;
 
-import com.github.onsdigital.babbage.configuration.Configuration;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -13,6 +12,9 @@ import java.nio.file.Path;
 import java.util.Iterator;
 import java.util.Map;
 
+import static com.github.onsdigital.babbage.configuration.ApplicationConfiguration.appConfig;
+import static com.github.onsdigital.babbage.logging.LogEvent.logEvent;
+
 public class PdfGeneratorLegacy {
 
     private static final String TEMP_DIRECTORY_PATH = FileUtils.getTempDirectoryPath();
@@ -20,7 +22,8 @@ public class PdfGeneratorLegacy {
 
     public static Path generatePdf(String uri, String fileName, Map<String, String> cookies, String pdfTable) {
         String[] command = {
-                Configuration.PHANTOMJS.getPhantomjsPath(), "target/web/js/generatepdf.js", URL + uri + "?pdf=1", "" + TEMP_DIRECTORY_PATH + "/" + fileName + ".pdf"
+                appConfig().babbage().getPhantomjsPath(), "target/web/js/generatepdf.js",
+                URL + uri + "?pdf=1", "" + TEMP_DIRECTORY_PATH + "/" + fileName + ".pdf"
         };
 
         Iterator<Map.Entry<String, String>> iterator = cookies.entrySet().iterator();
@@ -32,7 +35,7 @@ public class PdfGeneratorLegacy {
         try {
             // Execute command, redirect error to output to print all in the console
             Process process = new ProcessBuilder(command).redirectErrorStream(true).start();
-            System.out.println(ArrayUtils.toString(command));
+            logEvent().debug(ArrayUtils.toString(command));
             int exitStatus = process.waitFor();
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
             String currentLine;
@@ -42,7 +45,7 @@ public class PdfGeneratorLegacy {
                 stringBuilder.append(currentLine);
                 currentLine = bufferedReader.readLine();
             }
-            System.out.println(stringBuilder.toString());
+            logEvent().debug(stringBuilder.toString());
             Path pdfFile = FileSystems.getDefault().getPath(TEMP_DIRECTORY_PATH).resolve(fileName + ".pdf");
             if (!Files.exists(pdfFile)) {
                 throw new RuntimeException("Failed generating pdf, file not created");
@@ -60,14 +63,14 @@ public class PdfGeneratorLegacy {
     private static void addDataTableToPdf(String fileName, String pdfTable, BufferedReader bufferedReader, Path pdfFile) throws IOException, InterruptedException {
         if (pdfTable != null) {
             String[] gsCommand = {
-                    Configuration.GHOSTSCRIPT.getGhostscriptPath(),
+                    appConfig().babbage().getGhostscriptPath(),
                     "-dBATCH", "-dNOPAUSE", "-q", "-sDEVICE=pdfwrite", "-dPDFSETTINGS=/prepress",
                     "-sOutputFile=" + TEMP_DIRECTORY_PATH + "/" + fileName + "-merged.pdf",
                     TEMP_DIRECTORY_PATH + "/" + fileName + ".pdf", pdfTable
             };
 
             Process gsProcess = new ProcessBuilder(gsCommand).redirectErrorStream(true).start();
-            System.out.println(ArrayUtils.toString(gsCommand));
+            logEvent().debug(ArrayUtils.toString(gsCommand));
             int gsExitStatus = gsProcess.waitFor();
 
             BufferedReader gsBufferedReader = new BufferedReader(new InputStreamReader(gsProcess.getInputStream()));
@@ -78,7 +81,7 @@ public class PdfGeneratorLegacy {
                 gsStringBuilder.append(gsCurrentLine);
                 gsCurrentLine = gsBufferedReader.readLine();
             }
-            System.out.println(gsStringBuilder.toString());
+            logEvent().debug(gsStringBuilder.toString());
 
             Path gsPdfFile = FileSystems.getDefault().getPath(TEMP_DIRECTORY_PATH).resolve(fileName + "-merged.pdf");
             if (!Files.exists(gsPdfFile)) {

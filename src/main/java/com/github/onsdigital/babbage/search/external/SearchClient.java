@@ -1,6 +1,5 @@
 package com.github.onsdigital.babbage.search.external;
 
-import com.github.onsdigital.babbage.configuration.Configuration;
 import com.github.onsdigital.babbage.search.external.requests.base.AbstractSearchRequest;
 import com.github.onsdigital.babbage.search.external.requests.base.SearchClosable;
 import com.github.onsdigital.babbage.search.external.requests.base.ShutdownThread;
@@ -13,11 +12,21 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpRequestBase;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
-import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.*;
+import static com.github.onsdigital.babbage.configuration.ApplicationConfiguration.appConfig;
+import static com.github.onsdigital.babbage.logging.LogEvent.logEvent;
+import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.extractPage;
+import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.extractSearchTerm;
+import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.extractSelectedFilters;
+import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.extractSize;
+import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.extractSortBy;
 
 public class SearchClient implements SearchClosable {
 
@@ -28,9 +37,9 @@ public class SearchClient implements SearchClosable {
             synchronized (SearchClient.class) {
                 if (INSTANCE == null) {
                     INSTANCE = new SearchClient();
-                    System.out.println("Initialising external search client");
+                    logEvent().info("initialising external search client");
                     Runtime.getRuntime().addShutdownHook(new ShutdownThread(INSTANCE));
-                    System.out.println("Initialised external search client successfully");
+                    logEvent().info("initialisation of external search client completed successfully");
                 }
             }
         }
@@ -63,7 +72,7 @@ public class SearchClient implements SearchClosable {
         for (ONSQuery query : queryList) {
             if (null != query && null != query.name()) {
                 int page = query.page() != null ? query.page() : 1;
-                int pageSize = query.size() > 0 ? query.size() : Configuration.GENERAL.getResultsPerPage();
+                int pageSize = query.size() > 0 ? query.size() : appConfig().babbage().getResultsPerPage();
 
                 ProxyONSQuery proxyONSQuery = new ProxyONSQuery(query, page, pageSize);
                 Future<SearchResult> future = SearchClientExecutorService.getInstance().submit(proxyONSQuery);
