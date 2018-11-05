@@ -14,7 +14,7 @@ public class ExternalSearch implements Loggable {
     private static final String DEFAULT_SEARCH_CLIENT = "external";
     private static final String EXTERNAL_SEARCH_HOST_KEY = "EXTERNAL_SEARCH_HOST";
     private static final String EXTERNAL_SEARCH_PORT_KEY = "EXTERNAL_SEARCH_PORT";
-    private static final String EXTERNAL_SEARCH_ENABLED_KEY = "EXTERNAL_SEARCH_ENABLED";
+    private static final String EXTERNAL_SEARCH_ENABLED_KEY = "ENABLE_SEARCH_SERVICE";
     private static final String SEARCH_NUM_EXECUTORS_KEY = "SEARCH_NUM_EXECUTORS";
     private static final String EXTERNAL_SPELLCHECK_ENABLED_KEY = "EXTERNAL_SPELLCHECK_ENABLED";
     private static final String SPELL_CHECK_CONFIDENCE_THRESHOLD_KEY = "SPELL_CHECK_CONFIDENCE_THRESHOLD";
