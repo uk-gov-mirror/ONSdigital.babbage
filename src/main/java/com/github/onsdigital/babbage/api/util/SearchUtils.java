@@ -321,12 +321,11 @@ public class SearchUtils {
                 results.put(SearchType.DEPARTMENTS.getResultKey(), result);
             } catch (Exception e) {
                 e.printStackTrace();
-
-                // Fall back to internal search client
-                internalSearchDepartments(searchTerm, results);
             }
         }
 
+        // Fall back to internal search client
+        internalSearchDepartments(searchTerm, results);
     }
 
     /**
