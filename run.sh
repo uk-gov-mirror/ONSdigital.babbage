@@ -15,6 +15,9 @@ export RESTOLINO_STATIC="src/main/web"
 export RESTOLINO_CLASSES="target/classes"
 export PACKAGE_PREFIX=com.github.onsdigital
 
+export DP_COLOURED_LOGGING=true
+export DP_LOGGING_FORMAT=pretty_json
+
 export DEV_ENVIRONMENT="Y"
 export RELOAD_TEMPLATES="Y"
 export TEMPLATES_DIR=src/main/web/templates/handlebars

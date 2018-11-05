@@ -14,6 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Modifier;
 import java.util.Set;
 
+import static com.github.onsdigital.babbage.logging.LogEvent.logEvent;
+
 /**
  * Created by bren on 28/05/15.
  * <p>
@@ -69,7 +71,6 @@ public class RequestDelegator {
     }
 
     private static void registerRequestHandlers() {
-        System.out.println("Resolving request handlers");
         try {
 
             ConfigurationBuilder configurationBuilder = new ConfigurationBuilder().addUrls(BaseRequestHandler.class.getProtectionDomain().getCodeSource().getLocation());
@@ -77,20 +78,22 @@ public class RequestDelegator {
             Set<Class<? extends RequestHandler>> requestHandlerClasses = new Reflections(configurationBuilder).getSubTypesOf(RequestHandler.class);
 
             // force the timeseries landing request to be first in the request processing pipeline by inserting it first.
-            System.out.println("Registering request handler: " + TimeseriesLandingRequestHandler.class.getSimpleName());
             handlerList.add(new TimeseriesLandingRequestHandler());
 
             for (Class<? extends RequestHandler> handlerClass : requestHandlerClasses) {
                 if (!Modifier.isAbstract(handlerClass.getModifiers())) {
                     String className = handlerClass.getSimpleName();
                     RequestHandler handlerInstance = handlerClass.newInstance();
-                    System.out.println("Registering request handler: " + className);
+
                     handlerList.add(handlerInstance);
                 }
             }
+
+            logEvent().parameter("handlers", handlerList.stream(), (h) -> h.getClass().getSimpleName())
+                    .info("registered request handlers");
+
         } catch (Exception e) {
-            System.err.println("Failed initializing request handlers");
-            e.printStackTrace();
+            logEvent(e).error("failed initializing request handlers");
             throw new RuntimeException(e);
         }
 

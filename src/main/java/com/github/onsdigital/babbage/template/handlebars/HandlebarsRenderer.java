@@ -1,6 +1,10 @@
 package com.github.onsdigital.babbage.template.handlebars;
 
-import com.github.jknack.handlebars.*;
+import com.github.jknack.handlebars.Context;
+import com.github.jknack.handlebars.Handlebars;
+import com.github.jknack.handlebars.HumanizeHelper;
+import com.github.jknack.handlebars.Jackson2Helper;
+import com.github.jknack.handlebars.Template;
 import com.github.jknack.handlebars.cache.HighConcurrencyTemplateCache;
 import com.github.jknack.handlebars.context.FieldValueResolver;
 import com.github.jknack.handlebars.context.MapValueResolver;
@@ -13,10 +17,12 @@ import org.reflections.util.ConfigurationBuilder;
 
 import java.io.IOException;
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static com.github.onsdigital.babbage.configuration.Configuration.HANDLEBARS.getMainContentTemplateName;
+import static com.github.onsdigital.babbage.logging.LogEvent.logEvent;
 
 /**
  * Created by bren on 28/05/15.
@@ -83,9 +89,9 @@ public class HandlebarsRenderer {
     }
 
     private void registerHelpers() {
-        System.out.println("Resolving Handlebars helpers");
         try {
 
+            List<String> helpersList = new ArrayList<>();
             ConfigurationBuilder configurationBuilder = new ConfigurationBuilder().addUrls(HandlebarsRenderer.class.getProtectionDomain().getCodeSource().getLocation());
             configurationBuilder.addClassLoader(HandlebarsRenderer.class.getClassLoader());
             Set<Class<? extends BabbageHandlebarsHelper>> classes = new Reflections(configurationBuilder).getSubTypesOf(BabbageHandlebarsHelper.class);
@@ -94,14 +100,14 @@ public class HandlebarsRenderer {
                 String className = helperClass.getSimpleName();
                 boolean _abstract = Modifier.isAbstract(helperClass.getModifiers());
                 if (_abstract && !helperClass.isEnum()) {
-                    System.out.println("Skipping registering abstract handlebars helper " + className);
                     continue;
                 }
 
                 if (helperClass.isEnum()) {
                     BabbageHandlebarsHelper[] helpers = helperClass.getEnumConstants();
                     for (BabbageHandlebarsHelper helper : helpers) {
-                        System.out.println("Registering Handlebars helper " + helper.getClass().getSimpleName() + ":" + helper);
+
+                        helpersList.add(helperClass.getSimpleName() + "." + helper.toString());
                         helper.register(handlebars);
                     }
                 } else {
@@ -110,10 +116,13 @@ public class HandlebarsRenderer {
                         continue;
                     }
                     BabbageHandlebarsHelper helperInstance = helperClass.newInstance();
-                    System.out.println("Registering Handlebars helper  " + helperInstance.getClass() + ":" + className);
+                    helpersList.add(helperInstance.getClass().getSimpleName());
                     helperInstance.register(handlebars);
                 }
             }
+
+            logEvent().parameter("helpers", helpersList.stream(), (h) -> h)
+                    .info("registered handlebars helpers");
 
         } catch (Exception e) {
             System.err.println("Failed initializing handlebars helpers");

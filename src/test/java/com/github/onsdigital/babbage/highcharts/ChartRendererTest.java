@@ -1,6 +1,7 @@
 package com.github.onsdigital.babbage.highcharts;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.onsdigital.babbage.configuration.ApplicationConfiguration;
 import com.github.onsdigital.babbage.content.client.ContentClient;
 import com.github.onsdigital.babbage.content.client.ContentResponse;
 import com.github.onsdigital.babbage.template.TemplateService;
