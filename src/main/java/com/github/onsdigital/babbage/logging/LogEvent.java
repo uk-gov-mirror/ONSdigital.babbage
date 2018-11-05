@@ -17,32 +17,32 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class LogBuilder extends LogMessageBuilder {
+public class LogEvent extends LogMessageBuilder {
 
     private static final String REQ_ID = "X-Request-Id";
 
-    public static LogBuilder logEvent() {
-        return new LogBuilder("");
+    public static LogEvent logEvent() {
+        return new LogEvent("");
     }
 
-    public static LogBuilder logEvent(Throwable e) {
-        return new LogBuilder(e);
+    public static LogEvent logEvent(Throwable e) {
+        return new LogEvent(e);
     }
 
-    public static LogBuilder logEvent(Throwable e, String message) {
-        return new LogBuilder(e, message);
+    public static LogEvent logEvent(Throwable e, String message) {
+        return new LogEvent(e, message);
     }
 
-    protected LogBuilder(String eventDescription) {
+    protected LogEvent(String eventDescription) {
         super(eventDescription);
         setNamespace("babbage"); // TODO should this be configurable?
     }
 
-    protected LogBuilder(Throwable e) {
+    protected LogEvent(Throwable e) {
         this(e, "");
     }
 
-    protected LogBuilder(Throwable e, String message) {
+    protected LogEvent(Throwable e, String message) {
         super(e, message);
         setNamespace("babbage"); // TODO should this be configurable?
     }
@@ -82,23 +82,23 @@ public class LogBuilder extends LogMessageBuilder {
         log();
     }
 
-    public LogBuilder httpGET() {
+    public LogEvent httpGET() {
         return addParamSafe("httpMethod", "GET");
     }
 
-    public LogBuilder httpPOST() {
+    public LogEvent httpPOST() {
         return addParamSafe("httpMethod", "POST");
     }
 
-    public LogBuilder httpDELETE() {
+    public LogEvent httpDELETE() {
         return addParamSafe("httpMethod", "DELETE");
     }
 
-    public LogBuilder parameter(String key, Object value) {
+    public LogEvent parameter(String key, Object value) {
         return addParamSafe(key, value);
     }
 
-    public <T, R> LogBuilder parameter(String key, Stream<T> s, Function<T, R> valueMapper) {
+    public <T, R> LogEvent parameter(String key, Stream<T> s, Function<T, R> valueMapper) {
         String value = s.map(i -> valueMapper.apply(i))
                 .collect(Collectors.toList())
                 .toString();
@@ -107,23 +107,30 @@ public class LogBuilder extends LogMessageBuilder {
         return this;
     }
 
-    public LogBuilder uri(String uri) {
+    public LogEvent uri(Object uri) {
+        if (uri != null) {
+            return addParamSafe("uri", uri.toString());
+        }
+        return this;
+    }
+
+    public LogEvent uri(String uri) {
         return addParamSafe("uri", uri);
     }
 
-    public LogBuilder host(String host) {
+    public LogEvent host(String host) {
         return addParamSafe("host", host);
     }
 
-    public LogBuilder requestParam(List<NameValuePair> params) {
+    public LogEvent requestParam(List<NameValuePair> params) {
         return addParamSafe("requestParameters", params);
     }
 
-    public LogBuilder responseStatus(int status) {
+    public LogEvent responseStatus(int status) {
         return addParamSafe("responseStatus", status);
     }
 
-    public LogBuilder requestID(HttpRequestBase req) {
+    public LogEvent requestID(HttpRequestBase req) {
         if (req != null) {
             HeaderIterator it = req.headerIterator(REQ_ID);
             while (it.hasNext()) {
@@ -149,7 +156,7 @@ public class LogBuilder extends LogMessageBuilder {
         }
     }
 
-    private LogBuilder addParamSafe(String key, Object value) {
+    private LogEvent addParamSafe(String key, Object value) {
         if (StringUtils.isNotEmpty(key) && null != value) {
             super.addParameter(key, value);
         }

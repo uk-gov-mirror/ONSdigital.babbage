@@ -5,7 +5,6 @@ import com.github.onsdigital.babbage.api.error.ErrorHandler;
 import com.github.onsdigital.babbage.content.client.ContentClient;
 import com.github.onsdigital.babbage.content.client.ContentReadException;
 import com.github.onsdigital.babbage.content.client.ContentResponse;
-import com.github.onsdigital.babbage.logging.LogBuilder;
 import com.github.onsdigital.babbage.response.BabbageContentBasedBinaryResponse;
 
 import javax.imageio.ImageIO;
@@ -19,6 +18,8 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+
+import static com.github.onsdigital.babbage.logging.LogEvent.logEvent;
 
 /**
  * Created by bren on 01/07/15.
@@ -40,10 +41,7 @@ public class Resource {
             try {
                 contentResponse = ContentClient.getInstance().getResource(uri);
             } catch (ContentReadException e) {
-                LogBuilder.logEvent()
-                        .uri(uri)
-                        .httpGET()
-                        .responseStatus(e.getStatusCode())
+                logEvent().uri(uri).httpGET().responseStatus(e.getStatusCode())
                         .error("content client get resource request failed returning status 404");
                 ErrorHandler.renderErrorPage(404, response);
                 return;
@@ -77,8 +75,7 @@ public class Resource {
 
                     } catch (IOException e) {
                         // intentionally swallowing exception so we can return original image if resize fails
-                        LogBuilder.logEvent()
-                                .uri(uri)
+                        logEvent().uri(uri)
                                 .httpGET()
                                 .error("failed to generate image");
                     }
@@ -99,10 +96,7 @@ public class Resource {
                 new BabbageContentBasedBinaryResponse(contentResponse, contentResponseBody, contentResponse.getMimeType()).apply(request, response);
             }
         } catch (Throwable t) {
-            LogBuilder.logEvent()
-                    .uri(uri)
-                    .httpGET()
-                    .error("get resource request threw unexpected error");
+            logEvent().uri(uri).httpGET().error("get resource request threw unexpected error");
             ErrorHandler.handle(request, response, t);
         }
     }

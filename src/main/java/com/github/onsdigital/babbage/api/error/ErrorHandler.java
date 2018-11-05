@@ -16,7 +16,7 @@ import java.io.StringReader;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import static com.github.onsdigital.babbage.logging.LogBuilder.logEvent;
+import static com.github.onsdigital.babbage.logging.LogEvent.logEvent;
 
 /**
  * Created by bren on 28/05/15.

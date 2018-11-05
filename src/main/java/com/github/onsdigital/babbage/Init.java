@@ -2,7 +2,6 @@ package com.github.onsdigital.babbage;
 
 import com.github.davidcarboni.restolino.framework.Startup;
 import com.github.onsdigital.babbage.configuration.ApplicationConfiguration;
-import com.github.onsdigital.babbage.logging.LogBuilder;
 import com.github.onsdigital.babbage.publishing.PublishingManager;
 import com.github.onsdigital.babbage.search.ElasticSearchClient;
 import com.github.onsdigital.babbage.search.external.SearchClient;
@@ -10,7 +9,7 @@ import com.github.onsdigital.babbage.search.external.SearchClient;
 import java.io.IOException;
 
 import static com.github.onsdigital.babbage.configuration.ApplicationConfiguration.appConfig;
-import static com.github.onsdigital.babbage.logging.LogBuilder.logEvent;
+import static com.github.onsdigital.babbage.logging.LogEvent.logEvent;
 
 /**
  * Created by bren on 13/12/15.
@@ -21,7 +20,7 @@ public class Init implements Startup {
 
     @Override
     public void init() {
-        LogBuilder.logEvent().info("starting application babbage initialisation");
+        logEvent().info("starting application babbage initialisation");
 
         ApplicationConfiguration.init();
 

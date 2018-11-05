@@ -1,6 +1,6 @@
 package com.github.onsdigital.babbage.search.external.requests.base;
 
-import static com.github.onsdigital.babbage.logging.LogBuilder.logEvent;
+import static com.github.onsdigital.babbage.logging.LogEvent.logEvent;
 
 /**
  * Class for adding Shutdown hooks for search threads

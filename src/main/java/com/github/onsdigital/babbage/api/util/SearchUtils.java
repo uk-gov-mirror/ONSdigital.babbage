@@ -45,7 +45,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import static com.github.onsdigital.babbage.configuration.ApplicationConfiguration.appConfig;
-import static com.github.onsdigital.babbage.logging.LogBuilder.logEvent;
+import static com.github.onsdigital.babbage.logging.LogEvent.logEvent;
 import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.advancedSearchQuery;
 import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.contentQuery;
 import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.departmentQuery;

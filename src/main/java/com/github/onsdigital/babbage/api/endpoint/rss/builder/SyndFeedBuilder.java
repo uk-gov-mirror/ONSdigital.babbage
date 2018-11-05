@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static com.github.onsdigital.babbage.logging.LogBuilder.logEvent;
+import static com.github.onsdigital.babbage.logging.LogEvent.logEvent;
 
 /**
  * Builder wrapper for the {@link SyndFeed} object providing convenient way to construct {@link SyndFeed} objects.

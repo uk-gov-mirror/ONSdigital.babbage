@@ -32,7 +32,7 @@ import java.util.Map;
 import static com.github.onsdigital.babbage.highcharts.ChartConfigBuilder.TITLE_PARAM;
 import static com.github.onsdigital.babbage.highcharts.ChartConfigBuilder.URI_PARAM;
 import static com.github.onsdigital.babbage.highcharts.ChartConfigBuilder.WIDTH_PARAM;
-import static com.github.onsdigital.babbage.logging.LogBuilder.logEvent;
+import static com.github.onsdigital.babbage.logging.LogEvent.logEvent;
 import static java.text.MessageFormat.format;
 
 /**

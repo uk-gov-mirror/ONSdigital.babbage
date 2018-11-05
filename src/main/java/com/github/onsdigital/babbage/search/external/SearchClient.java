@@ -27,7 +27,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 import static com.github.onsdigital.babbage.configuration.ApplicationConfiguration.appConfig;
-import static com.github.onsdigital.babbage.logging.LogBuilder.logEvent;
+import static com.github.onsdigital.babbage.logging.LogEvent.logEvent;
 import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.extractPage;
 import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.extractSearchTerm;
 import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.extractSelectedFilters;

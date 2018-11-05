@@ -1,6 +1,5 @@
 package com.github.onsdigital.babbage.configuration;
 
-import com.github.onsdigital.babbage.logging.LogBuilder;
 import com.github.onsdigital.babbage.util.URIUtil;
 
 import java.io.BufferedReader;
@@ -12,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.github.onsdigital.babbage.configuration.EnvVarUtils.getValueOrDefault;
-import static com.github.onsdigital.babbage.logging.LogBuilder.logEvent;
+import static com.github.onsdigital.babbage.logging.LogEvent.logEvent;
 
 public class ElasticSearch implements Loggable {
 

@@ -12,7 +12,7 @@ import java.util.Date;
 import java.util.TimeZone;
 
 import static com.github.onsdigital.babbage.configuration.ApplicationConfiguration.appConfig;
-import static com.github.onsdigital.babbage.logging.LogBuilder.logEvent;
+import static com.github.onsdigital.babbage.logging.LogEvent.logEvent;
 
 /**
  * Created by bren on 10/06/15.

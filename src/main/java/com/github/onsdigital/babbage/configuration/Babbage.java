@@ -1,12 +1,11 @@
 package com.github.onsdigital.babbage.configuration;
 
-import com.github.onsdigital.babbage.logging.LogBuilder;
-
 import static com.github.onsdigital.babbage.configuration.EnvVarUtils.defaultIfBlank;
 import static com.github.onsdigital.babbage.configuration.EnvVarUtils.getNumberValue;
 import static com.github.onsdigital.babbage.configuration.EnvVarUtils.getStringAsBool;
 import static com.github.onsdigital.babbage.configuration.EnvVarUtils.getValue;
 import static com.github.onsdigital.babbage.configuration.EnvVarUtils.getValueOrDefault;
+import static com.github.onsdigital.babbage.logging.LogEvent.logEvent;
 
 public class Babbage implements Loggable {
 
@@ -156,7 +155,7 @@ public class Babbage implements Loggable {
     }
 
     public void logConfiguration() {
-        LogBuilder.logEvent()
+        logEvent()
                 .parameter("maxVisiblePaginatorLink", maxVisiblePaginatorLink)
                 .parameter("resultsPerPage", resultsPerPage)
                 .parameter("maxResultsPerPage", maxResultsPerPage)

@@ -5,7 +5,7 @@ import java.io.InputStream;
 import java.util.Optional;
 import java.util.Properties;
 
-import static com.github.onsdigital.babbage.logging.LogBuilder.logEvent;
+import static com.github.onsdigital.babbage.logging.LogEvent.logEvent;
 
 /**
  * Service for obtaining RSS relates properties/configuration.

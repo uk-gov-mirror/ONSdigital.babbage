@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.github.onsdigital.babbage.configuration.ApplicationConfiguration.appConfig;
-import static com.github.onsdigital.babbage.logging.LogBuilder.logEvent;
+import static com.github.onsdigital.babbage.logging.LogEvent.logEvent;
 import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.onsQuery;
 import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
 import static org.elasticsearch.index.query.QueryBuilders.rangeQuery;

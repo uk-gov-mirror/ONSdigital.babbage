@@ -1,6 +1,6 @@
 package com.github.onsdigital.babbage.configuration;
 
-import com.github.onsdigital.babbage.logging.LogBuilder;
+import static com.github.onsdigital.babbage.logging.LogEvent.logEvent;
 
 /**
  * ApplicationConfiguration is responsible for loading the babbage configuration classes and providing a single
@@ -57,7 +57,7 @@ public class ApplicationConfiguration {
     }
 
     private void logApplicationConfigs(Loggable... configs) {
-        LogBuilder.logEvent().info("loading babbage startup configurations");
+        logEvent().info("loading babbage startup configurations");
         for (Loggable l : configs) {
             l.logConfiguration();
         }

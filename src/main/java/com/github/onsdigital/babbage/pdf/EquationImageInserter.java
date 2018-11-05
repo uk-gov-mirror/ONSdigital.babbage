@@ -16,7 +16,7 @@ import org.xhtmlrenderer.simple.extend.FormSubmissionListener;
 
 import java.io.InputStream;
 
-import static com.github.onsdigital.babbage.logging.LogBuilder.logEvent;
+import static com.github.onsdigital.babbage.logging.LogEvent.logEvent;
 
 public class EquationImageInserter implements ReplacedElementFactory {
 

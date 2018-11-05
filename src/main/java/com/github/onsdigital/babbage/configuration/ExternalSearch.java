@@ -1,12 +1,11 @@
 package com.github.onsdigital.babbage.configuration;
 
-import com.github.onsdigital.babbage.logging.LogBuilder;
-
 import static com.github.onsdigital.babbage.configuration.EnvVarUtils.defaultIfBlank;
 import static com.github.onsdigital.babbage.configuration.EnvVarUtils.getFloatValue;
 import static com.github.onsdigital.babbage.configuration.EnvVarUtils.getNumberValue;
 import static com.github.onsdigital.babbage.configuration.EnvVarUtils.getValue;
 import static com.github.onsdigital.babbage.configuration.EnvVarUtils.getValueOrDefault;
+import static com.github.onsdigital.babbage.logging.LogEvent.logEvent;
 
 public class ExternalSearch implements Loggable {
 
@@ -86,7 +85,7 @@ public class ExternalSearch implements Loggable {
 
     @Override
     public void logConfiguration() {
-        LogBuilder.logEvent()
+        logEvent()
                 .parameter(EXTERNAL_SEARCH_HOST_KEY, host)
                 .parameter(EXTERNAL_SEARCH_PORT_KEY, port)
                 .parameter(EXTERNAL_SEARCH_ENABLED_KEY, enabled)

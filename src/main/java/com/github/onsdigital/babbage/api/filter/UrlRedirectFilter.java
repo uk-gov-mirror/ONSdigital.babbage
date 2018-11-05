@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.Optional;
 
-import static com.github.onsdigital.babbage.logging.LogBuilder.logEvent;
+import static com.github.onsdigital.babbage.logging.LogEvent.logEvent;
 import static com.github.onsdigital.babbage.url.redirect.RedirectCategory.DATA_EXPLORER_REDIRECT;
 import static com.github.onsdigital.babbage.url.redirect.RedirectCategory.GENERAL_REDIRECT;
 import static com.github.onsdigital.babbage.url.redirect.RedirectCategory.TAXONOMY_REDIRECT;

@@ -1,9 +1,8 @@
 package com.github.onsdigital.babbage.configuration;
 
-import com.github.onsdigital.babbage.logging.LogBuilder;
-
 import static com.github.onsdigital.babbage.configuration.EnvVarUtils.getStringAsBool;
 import static com.github.onsdigital.babbage.configuration.EnvVarUtils.getValueOrDefault;
+import static com.github.onsdigital.babbage.logging.LogEvent.logEvent;
 
 public class Handlebars implements Loggable {
 
@@ -66,7 +65,7 @@ public class Handlebars implements Loggable {
     }
 
     public void logConfiguration() {
-        LogBuilder.logEvent()
+        logEvent()
                 .parameter("defaultHandlebarsDatePattern", defaultHandlebarsDatePattern)
                 .parameter("mainContentTemplateName", mainContentTemplateName)
                 .parameter("mainChartConfigTemplateName", mainChartConfigTemplateName)

@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.InputStream;
 
 import static com.github.onsdigital.babbage.content.client.ContentClient.filter;
-import static com.github.onsdigital.babbage.logging.LogBuilder.logEvent;
+import static com.github.onsdigital.babbage.logging.LogEvent.logEvent;
 
 /**
  * Created by bren on 17/06/15.

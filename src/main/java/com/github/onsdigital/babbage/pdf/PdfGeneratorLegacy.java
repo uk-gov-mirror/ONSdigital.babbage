@@ -13,7 +13,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import static com.github.onsdigital.babbage.configuration.ApplicationConfiguration.appConfig;
-import static com.github.onsdigital.babbage.logging.LogBuilder.logEvent;
+import static com.github.onsdigital.babbage.logging.LogEvent.logEvent;
 
 public class PdfGeneratorLegacy {
 

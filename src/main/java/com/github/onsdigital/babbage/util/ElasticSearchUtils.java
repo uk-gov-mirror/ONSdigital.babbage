@@ -17,7 +17,7 @@ import org.elasticsearch.common.settings.Settings;
 
 import java.io.IOException;
 
-import static com.github.onsdigital.babbage.logging.LogBuilder.logEvent;
+import static com.github.onsdigital.babbage.logging.LogEvent.logEvent;
 
 /**
  * Created by bren on 02/09/15.

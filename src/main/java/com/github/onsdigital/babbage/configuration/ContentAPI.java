@@ -1,6 +1,5 @@
 package com.github.onsdigital.babbage.configuration;
 
-import com.github.onsdigital.babbage.logging.LogBuilder;
 import org.apache.commons.lang3.StringUtils;
 
 import java.text.SimpleDateFormat;
@@ -8,6 +7,7 @@ import java.text.SimpleDateFormat;
 import static com.github.onsdigital.babbage.configuration.EnvVarUtils.defaultIfBlank;
 import static com.github.onsdigital.babbage.configuration.EnvVarUtils.getNumberValue;
 import static com.github.onsdigital.babbage.configuration.EnvVarUtils.getValueOrDefault;
+import static com.github.onsdigital.babbage.logging.LogEvent.logEvent;
 
 public class ContentAPI implements Loggable {
 
@@ -58,7 +58,7 @@ public class ContentAPI implements Loggable {
     }
 
     public void logConfiguration() {
-        LogBuilder.logEvent()
+        logEvent()
                 .parameter(CONTENT_API_HOST_KEY, contentAPIHost)
                 .parameter(MAX_CONNECTIONS_KEY, maxConnections)
                 .parameter("defaultContentDatePattern", DEFAULT_CONTENT_DATE_PATTERN)
