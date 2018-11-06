@@ -1,18 +1,14 @@
 package com.github.onsdigital.babbage.highcharts;
 
-import ch.qos.logback.classic.Level;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.onsdigital.babbage.content.client.ContentClient;
 import com.github.onsdigital.babbage.content.client.ContentReadException;
 import com.github.onsdigital.babbage.content.client.ContentResponse;
-import com.github.onsdigital.babbage.logging.Log;
 import com.github.onsdigital.babbage.response.BabbageContentBasedBinaryResponse;
 import com.github.onsdigital.babbage.response.BabbageContentBasedStringResponse;
 import com.github.onsdigital.babbage.response.BabbageStringResponse;
 import com.github.onsdigital.babbage.response.base.BabbageResponse;
 import com.github.onsdigital.babbage.template.TemplateService;
-import com.lowagie.text.Image;
-
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -21,7 +17,8 @@ import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.core.MediaType;
-
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -35,17 +32,8 @@ import java.util.Map;
 import static com.github.onsdigital.babbage.highcharts.ChartConfigBuilder.TITLE_PARAM;
 import static com.github.onsdigital.babbage.highcharts.ChartConfigBuilder.URI_PARAM;
 import static com.github.onsdigital.babbage.highcharts.ChartConfigBuilder.WIDTH_PARAM;
+import static com.github.onsdigital.babbage.logging.LogEvent.logEvent;
 import static java.text.MessageFormat.format;
-
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.FontFormatException;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.GraphicsEnvironment;
-import java.awt.RenderingHints;
-import java.awt.image.BufferedImage;
 
 /**
  * Created by bren on 09/10/15.
@@ -82,7 +70,7 @@ public class ChartRenderer {
             File fontFile = new File(fontURL.toURI());
             GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(Font.createFont(Font.TRUETYPE_FONT, fontFile));
         } catch (Exception e) {
-            Log.build("Unable to load font file: " + e.getMessage(), Level.ERROR).log();
+            logEvent(e).error("unable to load font file");
         }
     }
 
@@ -140,7 +128,7 @@ public class ChartRenderer {
         if (assertUri(uri, request, response)) {
             ContentResponse contentResponse = contentClient.getContent(uri);
             String jsonRequest = contentResponse.getAsString();
-            Map<String, Object> json = (Map<String, Object>)templateService.sanitize(jsonRequest);
+            Map<String, Object> json = (Map<String, Object>) templateService.sanitize(jsonRequest);
             Integer width = getWidth(request);
             Map<String, Object> additionalData = new ChartConfigBuilder().width(width).getMap();
             InputStream imageInputStream = null;
@@ -176,7 +164,7 @@ public class ChartRenderer {
         Integer height = chartHeight + chartSource.getHeight() + bottomMargin;
         BufferedImage result = new BufferedImage(chartWidth, height, BufferedImage.TYPE_INT_RGB);
         Graphics graphics = result.getGraphics();
-        
+
         graphics.setColor(Color.white);
         graphics.fillRect(0, 0, chartWidth, height);
         graphics.drawImage(chartImage, 0, 0, null);
@@ -202,8 +190,8 @@ public class ChartRenderer {
         Graphics2D g = i.createGraphics();
 
         RenderingHints rh = new RenderingHints(
-            RenderingHints.KEY_TEXT_ANTIALIASING,
-            RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+                RenderingHints.KEY_TEXT_ANTIALIASING,
+                RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
         g.setRenderingHints(rh);
 
         try {
@@ -213,7 +201,7 @@ public class ChartRenderer {
             Font defaultFont = new Font("default", Font.BOLD, fontSize);
             g.setFont(defaultFont);
         }
-        
+
         g.setPaint(fontColour);
         FontMetrics fm = g.getFontMetrics();
 
@@ -221,10 +209,10 @@ public class ChartRenderer {
         String[] words = text.split(" ");
 
         String buffer = "";
-        for(String word : words) {
+        for (String word : words) {
             String tempBuffer = buffer;
 
-            if(tempBuffer.length() > 0) {
+            if (tempBuffer.length() > 0) {
                 tempBuffer += " ";
             }
             tempBuffer += word;
@@ -238,18 +226,18 @@ public class ChartRenderer {
             buffer = tempBuffer;
         }
 
-        if(buffer.length() > 0) {
+        if (buffer.length() > 0) {
             lines.add(buffer);
         }
 
         Integer lineHeight = g.getFontMetrics().getAscent();
         Integer y = lineHeight + padding;
-        for(String line : lines) {
+        for (String line : lines) {
             g.drawString(line, padding, y);
             y += lineHeight + lineSpacing;
         }
 
-        Integer titleHeight = (lineHeight * lines.size()) + (padding * lines.size()+1) + fm.getDescent();
+        Integer titleHeight = (lineHeight * lines.size()) + (padding * lines.size() + 1) + fm.getDescent();
 
         BufferedImage croppedTitleImage = new BufferedImage(width, titleHeight, BufferedImage.TYPE_INT_ARGB);
         Graphics graphics = croppedTitleImage.getGraphics();
@@ -257,7 +245,7 @@ public class ChartRenderer {
         graphics.drawImage(i, 0, 0, null);
 
         return croppedTitleImage;
-}
+    }
 
     private String getImageContentDispositionHeader(String uri, InputStream chartConfig) throws IOException {
         Map<String, Object> map = mapper.readValue(chartConfig, Map.class);
@@ -318,7 +306,8 @@ public class ChartRenderer {
                 return calculateWidth(Integer.parseInt(width));
             }
         } catch (NumberFormatException e) {
-            Log.build("Chart width not a valid number, default width will be used.", Level.DEBUG).log();
+            logEvent(e).parameter("default", DEFAULT_CHART_WIDTH)
+                    .error("chart width not a valid number, default width will be used");
         }
         return DEFAULT_CHART_WIDTH;
     }

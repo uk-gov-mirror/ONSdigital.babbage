@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.github.onsdigital.babbage.content.client.ContentClient.filter;
+import static com.github.onsdigital.babbage.logging.LogEvent.logEvent;
 
 
 /**
@@ -37,10 +38,10 @@ public class PDFRequestHandler extends BaseRequestHandler {
     public BabbageResponse get(String requestedUri, HttpServletRequest requests) throws Exception {
 
         String uriPath = StringUtils.removeStart(requestedUri, "/");
-        System.out.println("Generating pdf for uri:" + uriPath);
+        logEvent().uri(uriPath).info("generating PDF for uri");
         String pdfTable = getPDFTables(uriPath);
         if(pdfTable != null) {
-            System.out.println("Using pdfTable: " + pdfTable);
+            logEvent().uri(uriPath).info("generating PDF table");
         }
         Path pdfFile = PDFGenerator.generatePdf(requestedUri, getTitle(requestedUri), RequestUtil.getAllCookies(requests), pdfTable);
         InputStream fin = Files.newInputStream(pdfFile);

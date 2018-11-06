@@ -1,12 +1,9 @@
 package com.github.onsdigital.babbage.template.handlebars.helpers.markdown.util;
 
-import ch.qos.logback.classic.Level;
-import com.github.onsdigital.babbage.configuration.Configuration;
 import com.github.onsdigital.babbage.content.client.ContentClient;
 import com.github.onsdigital.babbage.content.client.ContentReadException;
 import com.github.onsdigital.babbage.content.client.ContentResponse;
 import com.github.onsdigital.babbage.error.ResourceNotFoundException;
-import com.github.onsdigital.babbage.logging.Log;
 import com.github.onsdigital.babbage.template.TemplateService;
 import com.github.onsdigital.babbage.util.http.ClientConfiguration;
 import com.github.onsdigital.babbage.util.http.PooledHttpClient;
@@ -22,14 +19,17 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static com.github.onsdigital.babbage.configuration.ApplicationConfiguration.appConfig;
+import static com.github.onsdigital.babbage.logging.LogEvent.logEvent;
+
 /**
  * Defines the format of the custom markdown tags for charts and defines how to replace them.
  */
 public class TableTagV2Replacer extends TagReplacementStrategy {
 
     private static final Pattern pattern = Pattern.compile("<ons-table-v2\\spath=\"([-A-Za-z0-9+&@#/%?=~_|!:,.;()*$]+)\"?\\s?/>");
-    private static final String RENDERER_HOST = Configuration.TABLE_RENDERER.getHost();
-    private static final String RENDERER_PATH = Configuration.TABLE_RENDERER.getHtmlPath();
+    private static final String RENDERER_HOST = appConfig().tableRenderer().host();
+    private static final String RENDERER_PATH = appConfig().tableRenderer().htmlPath();
     private static final PooledHttpClient HTTP_CLIENT = new PooledHttpClient(RENDERER_HOST, createHttpConfiguration());
     private static final Map<String, String> HEADERS = Collections.singletonMap("Content-Type", "application/json;charset=utf-8");
     private static final String CHARSET = StandardCharsets.UTF_8.name();
@@ -82,10 +82,10 @@ public class TableTagV2Replacer extends TagReplacementStrategy {
             String result = templateService.renderTemplate(template, context, Collections.singletonMap("tableHtml", html));
             return result;
         } catch (ResourceNotFoundException e) {
-            Log.buildDebug("Failed to find figure data for table.").addParameter("URL", figureUri).log();
+            logEvent(e).uri(figureUri).error("failed to find figure data for table");
             return templateService.renderTemplate(figureNotFoundTemplate);
         } catch (ContentReadException | TableRendererException e) {
-            Log.build("Failed rendering table-v2, uri: " + figureUri + ", error: " + e, Level.ERROR).log();
+            logEvent(e).uri(figureUri).error("failed rendering table-v2");
             return matcher.group();
         }
     }
@@ -100,7 +100,7 @@ public class TableTagV2Replacer extends TagReplacementStrategy {
 
     private static ClientConfiguration createHttpConfiguration() {
         ClientConfiguration configuration = new ClientConfiguration();
-        configuration.setMaxTotalConnection(Configuration.TABLE_RENDERER.getMaxServerConnection());
+        configuration.setMaxTotalConnection(appConfig().tableRenderer().maxConnections());
         configuration.setDisableRedirectHandling(true);
         return configuration;
     }

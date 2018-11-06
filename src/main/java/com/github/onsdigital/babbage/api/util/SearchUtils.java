@@ -1,6 +1,5 @@
 package com.github.onsdigital.babbage.api.util;
 
-import com.github.onsdigital.babbage.configuration.Configuration;
 import com.github.onsdigital.babbage.error.ValidationError;
 import com.github.onsdigital.babbage.response.BabbageRedirectResponse;
 import com.github.onsdigital.babbage.response.BabbageStringResponse;
@@ -38,18 +37,38 @@ import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.MediaType;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 
-import static com.github.onsdigital.babbage.configuration.Configuration.GENERAL.getSearchResponseCacheTime;
-import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.*;
-import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.*;
+import static com.github.onsdigital.babbage.configuration.ApplicationConfiguration.appConfig;
+import static com.github.onsdigital.babbage.logging.LogEvent.logEvent;
+import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.advancedSearchQuery;
+import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.contentQuery;
+import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.departmentQuery;
+import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.listQuery;
+import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.onsQuery;
+import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.typeBoostedQuery;
+import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.extractExternalSearch;
+import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.extractPage;
+import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.extractSearchTerm;
+import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.extractSelectedFilters;
+import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.extractSize;
+import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.extractSortBy;
 import static com.github.onsdigital.babbage.search.input.TypeFilter.contentTypes;
 import static com.github.onsdigital.babbage.search.model.field.Field.cdid;
 import static com.github.onsdigital.babbage.util.URIUtil.isDataRequest;
 import static org.apache.commons.lang.ArrayUtils.isEmpty;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
-import static org.elasticsearch.index.query.QueryBuilders.*;
+import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
+import static org.elasticsearch.index.query.QueryBuilders.matchAllQuery;
+import static org.elasticsearch.index.query.QueryBuilders.termQuery;
 import static org.elasticsearch.search.suggest.SuggestBuilders.phraseSuggestion;
+
+//import static com.github.onsdigital.babbage.configuration.Configuration.GENERAL.getSearchResponseCacheTime;
 
 /**
  * Created by bren on 20/01/16.
@@ -84,13 +103,12 @@ public class SearchUtils {
                                 .addParameter("referrer", "search")
                                 .addParameter("searchTerm", searchTerm.toLowerCase())
                                 .build().toString();
-                        return new BabbageRedirectResponse(redirectUri, Configuration.GENERAL.getSearchResponseCacheTime());
+                        return new BabbageRedirectResponse(redirectUri, appConfig().babbage().getSearchResponseCacheTime());
                     } catch (URISyntaxException e) {
-                        System.out.println("Unable to encode referrer in timeSeriesUri");
-                        e.printStackTrace();
+                        logEvent(e).error("unable to encode referrer in timeSeriesUri");
                     }
                 }
-                return new BabbageRedirectResponse(timeSeriesUri, Configuration.GENERAL.getSearchResponseCacheTime());
+                return new BabbageRedirectResponse(timeSeriesUri, appConfig().babbage().getSearchResponseCacheTime());
             }
         }
         LinkedHashMap<String, SearchResult> results = populateSerp(request, listType, queries);
@@ -105,7 +123,7 @@ public class SearchUtils {
         /**
          * Attempts to intercept content, type counts, and featured result queries to populate the SERP.
          */
-        if (Configuration.SEARCH_SERVICE.EXTERNAL_SEARCH_ENABLED && extractExternalSearch(request)) {
+        if (appConfig().externalSearch().isEnabled()) {
             try {
                 // Use external search client
                 return SearchClient.getInstance().search(request, listType);
@@ -139,16 +157,18 @@ public class SearchUtils {
     }
 
     /**
-     * Executes the given search queries using either the external or internal search client
+     * Execute the given search queries and default to external service (uses internal on failure).
+     *
      * @param searchQueries
      * @return
      */
     public static LinkedHashMap<String, SearchResult> searchAll(SearchQueries searchQueries) {
-        return searchAll(searchQueries, Configuration.SEARCH_SERVICE.EXTERNAL_SEARCH_ENABLED);
+        return searchAll(searchQueries, appConfig().externalSearch().isEnabled());
     }
 
     /**
      * Executes the given search queries using either the external or internal search client
+     *
      * @param searchQueries
      * @param externalSearch
      * @return
@@ -256,19 +276,18 @@ public class SearchUtils {
 
     /**
      * Attempts to proxy search queries to the external search service (when enabled).
+     *
      * @param searchQueries
      * @return
      */
     static LinkedHashMap<String, SearchResult> doSearch(List<ONSQuery> searchQueries, boolean externalSearch) {
-
-        if (Configuration.SEARCH_SERVICE.EXTERNAL_SEARCH_ENABLED && externalSearch) {
+        if (appConfig().externalSearch().isEnabled() && externalSearch) {
             LinkedHashMap<String, SearchResult> results = null;
             try {
                 results = SearchClient.getInstance().proxyQueries(searchQueries);
                 return results;
             } catch (Exception e) {
-                System.out.println("Error proxying search request to external service");
-                e.printStackTrace();
+                logEvent(e).error("error proxying search request to external service");
             }
         }
 
@@ -279,6 +298,7 @@ public class SearchUtils {
 
     /**
      * Uses internal TCP client to execute search queries.
+     *
      * @param searchQueries
      * @return
      */
@@ -309,28 +329,28 @@ public class SearchUtils {
 
     /**
      * Search the departments index. Attempts to use external dp-conceptual-search client, if enabled.
+     *
      * @param searchTerm
      * @param results
      */
     private static void searchDeparments(HttpServletRequest request, String searchTerm, LinkedHashMap<String, SearchResult> results) {
-
-        if (Configuration.SEARCH_SERVICE.EXTERNAL_SEARCH_ENABLED && extractExternalSearch(request)) {
-            SearchQuery searchQuery = new DepartmentsQuery(searchTerm);
+        if (appConfig().externalSearch().isEnabled()) {
+            SearchQuery searchReq = new DepartmentsQuery(searchTerm);
             try {
-                SearchResult result = searchQuery.call();
+                SearchResult result = searchReq.call();
                 results.put(SearchType.DEPARTMENTS.getResultKey(), result);
             } catch (Exception e) {
                 e.printStackTrace();
-
-                // Fall back to internal search client
-                internalSearchDepartments(searchTerm, results);
             }
         }
 
+        // Fall back to internal search client
+        internalSearchDepartments(searchTerm, results);
     }
 
     /**
      * Search departments index using internal TCP client.
+     *
      * @param searchTerm
      * @param results
      */
@@ -366,12 +386,14 @@ public class SearchUtils {
 
     public static BabbageResponse buildDataResponse(String listType, Map<String, SearchResult> results) {
         LinkedHashMap<String, Object> data = buildResults(listType, results);
-        return new BabbageStringResponse(JsonUtil.toJson(data), MediaType.APPLICATION_JSON, getSearchResponseCacheTime());
+        return new BabbageStringResponse(JsonUtil.toJson(data), MediaType.APPLICATION_JSON, appConfig().babbage()
+                .getSearchResponseCacheTime());
     }
 
     public static BabbageResponse buildPageResponse(String listType, Map<String, SearchResult> results) throws IOException {
         LinkedHashMap<String, Object> data = buildResults(listType, results);
-        return new BabbageStringResponse(TemplateService.getInstance().renderContent(data), MediaType.TEXT_HTML, getSearchResponseCacheTime());
+        return new BabbageStringResponse(TemplateService.getInstance().renderContent(data), MediaType.TEXT_HTML,
+                appConfig().babbage().getSearchResponseCacheTime());
     }
 
 
@@ -385,7 +407,7 @@ public class SearchUtils {
             data.put(ERRORS_KEY, errors.get());
         }
         return new BabbageStringResponse(TemplateService.getInstance().renderContent(data), MediaType.TEXT_HTML,
-                getSearchResponseCacheTime());
+                appConfig().babbage().getSearchResponseCacheTime());
     }
 
     public static LinkedHashMap<String, Object> buildResults(
