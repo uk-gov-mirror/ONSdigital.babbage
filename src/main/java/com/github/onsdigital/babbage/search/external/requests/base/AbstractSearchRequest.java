@@ -23,6 +23,7 @@ import java.util.UUID;
 import java.util.concurrent.Callable;
 
 import static com.github.onsdigital.babbage.configuration.ApplicationConfiguration.appConfig;
+import static com.github.onsdigital.babbage.logging.LogEvent.logEvent;
 
 public abstract class AbstractSearchRequest<T> implements Callable<T> {
 
@@ -65,6 +66,7 @@ public abstract class AbstractSearchRequest<T> implements Callable<T> {
 
     public HttpPost post(Map<String, Object> params) throws URISyntaxException, JsonProcessingException {
         HttpPost post = new HttpPost(this.targetUri().build());
+        post.addHeader(this.requestIdHeader);
         post.addHeader(new JsonContentTypeHeader());
 
         if (null != params) {
@@ -73,7 +75,6 @@ public abstract class AbstractSearchRequest<T> implements Callable<T> {
             post.setEntity(stringEntity);
         }
 
-        post.addHeader(this.requestIdHeader);
         return post;
     }
 
@@ -106,7 +107,7 @@ public abstract class AbstractSearchRequest<T> implements Callable<T> {
             return MAPPER.readValue(jsonResponse, this.returnClass);
         } catch (Exception e) {
             // Log failure with request context then re-throw
-            System.out.println(String.format("Error executing external search request [context=%s]", this.getRequestId()));
+            logEvent().info(String.format("Error executing external search request [context=%s]", this.getRequestId()));
             throw e;
         }
     }

@@ -99,6 +99,7 @@ public class ExternalSearch implements Loggable {
                 .parameter(EXTERNAL_SPELLCHECK_ENABLED_KEY, spellCheckEnabled)
                 .parameter(SPELL_CHECK_CONFIDENCE_THRESHOLD_KEY, spellCheckConfidenceThreshold)
                 .parameter(SEARCH_NUM_EXECUTORS_KEY, executorCount)
+                .parameter(SEARCH_MAX_CONNECTIONS, maxConnections)
                 .info("external search configuration");
     }
 }

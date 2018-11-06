@@ -19,6 +19,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import static com.github.onsdigital.babbage.logging.LogEvent.logEvent;
+
 /**
  * Created by bren on 22/07/15.
  * <p/>
@@ -150,8 +152,9 @@ public class PooledHttpClient extends BabbageHttpClient {
             String s = EntityUtils.toString(entity);
             return s;
         } catch (Exception e) {
-            System.err.println("Failed reading content service:");
-            e.printStackTrace();
+            logEvent(e)
+                    .host(HOST.getHost())
+                    .error("Failed reading content service:");
         }
         return null;
     }

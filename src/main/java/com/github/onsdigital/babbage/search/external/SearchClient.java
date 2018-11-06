@@ -52,17 +52,30 @@ public class SearchClient implements SearchClosable {
         this.client = new SearchHttpClient();
     }
 
+    /**
+     * Returns a CloseableHttpResponse, WHICH MUST BE CLOSED AFTER USE (e.g try with resources)!!!
+     * @param searchRequest
+     * @return
+     * @throws Exception
+     */
     public CloseableHttpResponse execute(AbstractSearchRequest searchRequest) throws Exception {
         HttpRequestBase request = searchRequest.getRequestBase();
 
-        // Log the request ID
-        String requestId = searchRequest.getRequestId();
-        System.out.println(String.format("Executing external search request [context=%s]", requestId));
+        HttpRequestBase requestBase = searchRequest.getRequestBase();
+        logEvent()
+                .requestID(requestBase)
+                .parameter("httpMethod", requestBase.getMethod())
+                .uri(requestBase.getURI())
+                .info("Executing external search request");
+
         return this.client.execute(request);
     }
 
     @Override
     public void close() throws Exception {
+        logEvent()
+                .info("Closing external search HTTP client");
+
         this.client.close();
     }
 

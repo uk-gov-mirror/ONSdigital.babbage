@@ -12,6 +12,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.concurrent.TimeUnit;
 
+import static com.github.onsdigital.babbage.logging.LogEvent.logEvent;
+
 /**
  * Class for building Closable Http clients to be used by Babbage
  */
@@ -67,9 +69,13 @@ public class BabbageHttpClient implements AutoCloseable {
 
     @Override
     public void close() throws Exception {
-        System.out.println("Shutting down connection pool to host:" + HOST);
+        logEvent()
+                .host(HOST.getHost())
+                .info("Shutting down connection pool");
         httpClient.close();
-        System.out.println("Successfully shut down connection pool");
+        logEvent()
+                .host(HOST.getHost())
+                .info("Successfully shut down connection pool");
         monitorThread.shutdown();
     }
 
@@ -85,7 +91,9 @@ public class BabbageHttpClient implements AutoCloseable {
 
         @Override
         public void run() {
-            System.out.println("Running connection pool monitor");
+            logEvent()
+                    .host(HOST.getHost())
+                    .info("Running connection pool monitor");
             try {
                 while (!shutdown) {
                     synchronized (this) {
@@ -98,13 +106,16 @@ public class BabbageHttpClient implements AutoCloseable {
                     }
                 }
             } catch (InterruptedException ex) {
-                System.err.println("Connection pool monitor failed");
-                ex.printStackTrace();
+                logEvent(ex)
+                        .host(HOST.getHost())
+                        .error("Connection pool monitor failed");
             }
         }
 
         public void shutdown() {
-            System.out.println("Shutting down connection pool monitor");
+            logEvent()
+                    .host(HOST.getHost())
+                    .error("Shutting down connection pool monitor");
             shutdown = true;
             synchronized (this) {
                 notifyAll();
@@ -117,12 +128,16 @@ public class BabbageHttpClient implements AutoCloseable {
         @Override
         public void run() {
             try {
+                logEvent()
+                        .host(HOST.getHost())
+                        .info("Closing http client");
                 if (httpClient != null) {
                     close();
                 }
             } catch (Exception e) {
-                System.err.println("Falied shutting down http client for, " + HOST);
-                e.printStackTrace();
+                logEvent(e)
+                        .host(HOST.getHost())
+                        .error("Falied shutting down http client");
             }
         }
     }
