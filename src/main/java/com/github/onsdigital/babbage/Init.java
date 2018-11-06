@@ -1,10 +1,15 @@
 package com.github.onsdigital.babbage;
 
 import com.github.davidcarboni.restolino.framework.Startup;
-import com.github.onsdigital.babbage.configuration.Configuration;
+import com.github.onsdigital.babbage.configuration.ApplicationConfiguration;
 import com.github.onsdigital.babbage.publishing.PublishingManager;
 import com.github.onsdigital.babbage.search.ElasticSearchClient;
 import com.github.onsdigital.babbage.search.external.SearchClient;
+
+import java.io.IOException;
+
+import static com.github.onsdigital.babbage.configuration.ApplicationConfiguration.appConfig;
+import static com.github.onsdigital.babbage.logging.LogEvent.logEvent;
 
 /**
  * Created by bren on 13/12/15.
@@ -15,18 +20,35 @@ public class Init implements Startup {
 
     @Override
     public void init() {
+        logEvent().info("starting application babbage initialisation");
+
+        ApplicationConfiguration.init();
+
         try {
             ElasticSearchClient.init();
-            PublishingManager.init();
-
-            if (Configuration.SEARCH_SERVICE.EXTERNAL_SEARCH_ENABLED) {
-                // Initialise HTTP client for external search service
-                SearchClient.getInstance();
-            }
-        } catch (Exception e) {
-            System.err.println("!!!!Failed initializing publish dates index for caching");
-            e.printStackTrace();
-            System.exit(1);
+        } catch (IOException e) {
+            logErrorAndExit(e, "error initializing publish dates index for caching exiting application");
         }
+
+        try {
+            PublishingManager.init();
+        } catch (IOException e) {
+            logErrorAndExit(e, "error initializing publishing manager exiting application");
+        }
+
+        if (appConfig().externalSearch().isEnabled()) {
+            try {
+                SearchClient.getInstance();
+            } catch (Exception e) {
+                logErrorAndExit(e, "error initializing external search client existing application");
+            }
+        }
+
+        logEvent().info("application babbage initalisation compeleted successfully");
+    }
+
+    private void logErrorAndExit(Throwable t, String message) {
+        logEvent(t).error(message);
+        System.exit(1);
     }
 }

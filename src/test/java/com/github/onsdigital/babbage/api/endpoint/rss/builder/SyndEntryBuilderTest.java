@@ -1,6 +1,5 @@
 package com.github.onsdigital.babbage.api.endpoint.rss.builder;
 
-import com.github.onsdigital.babbage.configuration.Configuration;
 import com.github.onsdigital.babbage.search.model.field.Field;
 import com.github.onsdigital.babbage.util.RequestUtil;
 import com.github.onsdigital.babbage.util.ThreadContext;
@@ -12,6 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.github.onsdigital.babbage.configuration.ApplicationConfiguration.appConfig;
 import static com.github.onsdigital.babbage.search.model.field.Field.metaDescription;
 import static com.github.onsdigital.babbage.search.model.field.Field.releaseDate;
 import static com.github.onsdigital.babbage.search.model.field.Field.title;
@@ -113,7 +113,7 @@ public class SyndEntryBuilderTest {
 		assertThat("SyndEntry.description.value not as expected.", entry.getDescription().getValue(), equalTo(META_DESC));
 		assertThat("SyndEntry.description.type not as expected.", entry.getDescription().getType(), equalTo("text/plain"));
 		assertThat("SyndEntry.publishedDate not as expected.", entry.getPublishedDate(),
-				equalTo(new SimpleDateFormat(Configuration.CONTENT_SERVICE.getDefaultContentDatePattern()).parse(RELEASE_DATE)));
+				equalTo(new SimpleDateFormat(appConfig().contentAPI().defaultContentDatePattern()).parse(RELEASE_DATE)));
 	}
 
 	public void testMissingFields(Map<String, Object> map, Field field) throws Exception {

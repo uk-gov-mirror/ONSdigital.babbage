@@ -15,8 +15,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.function.BiFunction;
 
-import static com.github.onsdigital.babbage.configuration.Configuration.GENERAL.getMaxResultsPerPage;
-import static com.github.onsdigital.babbage.configuration.Configuration.GENERAL.getResultsPerPage;
+import static com.github.onsdigital.babbage.configuration.ApplicationConfiguration.appConfig;
+import static com.github.onsdigital.babbage.logging.LogEvent.logEvent;
 import static com.github.onsdigital.babbage.search.helpers.dates.PublishDates.publishedDates;
 import static com.github.onsdigital.babbage.search.helpers.dates.PublishDates.updatedWithinPeriod;
 import static com.github.onsdigital.babbage.util.RequestUtil.getParam;
@@ -142,12 +142,15 @@ public class SearchRequestHelper {
      * If a size parameter exists use that otherwise use default.
      */
     public static int extractSize(HttpServletRequest request) {
-        int result = getResultsPerPage();
+        int result = appConfig().babbage().getResultsPerPage();
         if (StringUtils.isNotEmpty(request.getParameter("size"))) {
             try {
                 result = Integer.parseInt(request.getParameter("size"));
-                return Math.max(getResultsPerPage(), Math.min(result, getMaxResultsPerPage()));
+                return Math.max(appConfig().babbage().getResultsPerPage(), Math.min(result,
+                        appConfig().babbage().getMaxResultsPerPage()));
             } catch (NumberFormatException ex) {
+                logEvent(ex).parameter("value", result)
+                        .error("Failed to parse size parameter to integer. Default value will be used");
                 System.out.println(MessageFormat.format("Failed to parse size parameter to integer." +
                         " Default value will be used.\n {0}", ex));
             }
@@ -170,6 +173,20 @@ public class SearchRequestHelper {
             throw new BadRequestException("Search query contains too many characters");
         }
         return query;
+    }
+
+    /**
+     * Extracts the desired search client (internal/external for internal TCP or external conceptual search)
+     *
+     * @param request
+     * @return
+     */
+    public static boolean extractExternalSearch(HttpServletRequest request) {
+        String client = getParam(request, "searchClient", appConfig().externalSearch().defaultSearchClient());
+        if (StringUtils.isEmpty(client)) {
+            return appConfig().externalSearch().isEnabled();
+        }
+        return client.equalsIgnoreCase("external");
     }
 
     private static boolean allowFutureAfterDate(HttpServletRequest request) {
