@@ -5,7 +5,6 @@ import com.github.onsdigital.babbage.api.error.ErrorHandler;
 import com.github.onsdigital.babbage.content.client.ContentClient;
 import com.github.onsdigital.babbage.content.client.ContentReadException;
 import com.github.onsdigital.babbage.content.client.ContentResponse;
-import com.github.onsdigital.babbage.logging.Log;
 import com.github.onsdigital.babbage.response.BabbageContentBasedBinaryResponse;
 
 import javax.imageio.ImageIO;
@@ -13,13 +12,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.GET;
 import javax.ws.rs.core.Context;
-
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+
+import static com.github.onsdigital.babbage.logging.LogEvent.logEvent;
 
 /**
  * Created by bren on 01/07/15.
@@ -31,8 +31,9 @@ public class Resource {
 
     @GET
     public void get(@Context HttpServletRequest request, @Context HttpServletResponse response) throws IOException {
+        String uri = null;
         try {
-            String uri = request.getParameter("uri");
+            uri = request.getParameter("uri");
             String width = request.getParameter("width");
 
             ContentResponse contentResponse;
@@ -40,7 +41,8 @@ public class Resource {
             try {
                 contentResponse = ContentClient.getInstance().getResource(uri);
             } catch (ContentReadException e) {
-                System.out.println("Get resource returned error response, status: " + e.getStatusCode());
+                logEvent().uri(uri).httpGET().responseStatus(e.getStatusCode())
+                        .error("content client get resource request failed returning status 404");
                 ErrorHandler.renderErrorPage(404, response);
                 return;
             }
@@ -49,7 +51,7 @@ public class Resource {
             contentDispositionHeader += contentResponse.getName() == null ? "" : "filename=\"" + contentResponse.getName() + "\"";
             response.setHeader("Content-Disposition", contentDispositionHeader);
 
-            try ( InputStream contentResponseBody = contentResponse.getDataStream() ) {
+            try (InputStream contentResponseBody = contentResponse.getDataStream()) {
 
                 BufferedImage image = null;
 
@@ -62,7 +64,7 @@ public class Resource {
                             image = ImageIO.read(contentResponseBody);
                             int clampedWidth = Math.max(1, Math.min(image.getWidth(), w));
 
-                            double ratio = (double)clampedWidth / (double)image.getWidth();
+                            double ratio = (double) clampedWidth / (double) image.getWidth();
                             double h = image.getHeight() * ratio;
                             int height = (int) h;
 
@@ -73,8 +75,9 @@ public class Resource {
 
                     } catch (IOException e) {
                         // intentionally swallowing exception so we can return original image if resize fails
-                        Log.debug("failed to generate image: " + e.getMessage());
-                        e.printStackTrace();
+                        logEvent().uri(uri)
+                                .httpGET()
+                                .error("failed to generate image");
                     }
                 }
 
@@ -82,7 +85,7 @@ public class Resource {
 
                     try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
                         ImageIO.write(image, "png", os);
-                        try ( InputStream input = new ByteArrayInputStream(os.toByteArray())) {
+                        try (InputStream input = new ByteArrayInputStream(os.toByteArray())) {
                             new BabbageContentBasedBinaryResponse(contentResponse, input, contentResponse.getMimeType()).apply(request, response);
                             return;
                         }
@@ -93,6 +96,7 @@ public class Resource {
                 new BabbageContentBasedBinaryResponse(contentResponse, contentResponseBody, contentResponse.getMimeType()).apply(request, response);
             }
         } catch (Throwable t) {
+            logEvent().uri(uri).httpGET().error("get resource request threw unexpected error");
             ErrorHandler.handle(request, response, t);
         }
     }

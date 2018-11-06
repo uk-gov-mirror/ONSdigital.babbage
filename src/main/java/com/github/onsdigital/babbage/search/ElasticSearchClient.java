@@ -1,6 +1,5 @@
 package com.github.onsdigital.babbage.search;
 
-import com.github.onsdigital.babbage.configuration.Configuration;
 import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.transport.TransportClient;
@@ -13,8 +12,7 @@ import java.net.InetSocketAddress;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import static com.github.onsdigital.babbage.configuration.Configuration.ELASTIC_SEARCH.getElasticSearchCluster;
-import static com.github.onsdigital.babbage.configuration.Configuration.ELASTIC_SEARCH.getElasticSearchServer;
+import static com.github.onsdigital.babbage.configuration.ApplicationConfiguration.appConfig;
 import static org.elasticsearch.node.NodeBuilder.nodeBuilder;
 
 /**
@@ -43,18 +41,23 @@ public class ElasticSearchClient {
     protected static void initTransportClient() throws IOException {
         Settings.Builder builder = Settings.builder();
 
-        if (!StringUtils.isBlank(getElasticSearchCluster()))
-            builder.put("cluster.name", getElasticSearchCluster());
+
+        String clusterName = appConfig().elasticSearch().cluster();
+        if (!StringUtils.isBlank(clusterName))
+            builder.put("cluster.name", clusterName);
 
         Settings settings = builder.build();
         client = TransportClient.builder().settings(settings).build()
-                .addTransportAddress(new InetSocketTransportAddress(new InetSocketAddress(getElasticSearchServer(), Configuration.ELASTIC_SEARCH.getElasticSearchPort())));
+                .addTransportAddress(new InetSocketTransportAddress(
+                        new InetSocketAddress(
+                                appConfig().elasticSearch().host(),
+                                appConfig().elasticSearch().port())));
     }
 
     protected static void initNodeClient() throws IOException {
         searchHome = Files.createTempDirectory("babbage_search_client");
         Settings settings = Settings.builder().put("http.enabled", false)
-                .put("cluster.name", getElasticSearchCluster())
+                .put("cluster.name", appConfig().elasticSearch().cluster())
                 .put("discovery.zen.ping.multicast.enabled", true)
                 .put("network.host", "_non_loopback_")
                 .put("path.home", searchHome).build();
