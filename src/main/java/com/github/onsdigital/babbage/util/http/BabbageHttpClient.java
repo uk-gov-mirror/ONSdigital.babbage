@@ -122,7 +122,7 @@ public class BabbageHttpClient implements AutoCloseable {
         public void shutdown() {
             logEvent()
                     .host(host.getHost())
-                    .error("Shutting down connection pool monitor");
+                    .info("Shutting down connection pool monitor");
             shutdown = true;
             synchronized (this) {
                 notifyAll();
