@@ -20,17 +20,20 @@ import static com.github.onsdigital.babbage.logging.LogEvent.logEvent;
 public class BabbageHttpClient implements AutoCloseable {
 
     protected final CloseableHttpClient httpClient;
-    protected final URI HOST;
+    protected final URI host;
     private final PoolingHttpClientConnectionManager connectionManager;
     private final IdleConnectionMonitorThread monitorThread;
 
     public BabbageHttpClient(String host, ClientConfiguration configuration) {
-        HOST = resolveHostUri(host);
+        this.host = resolveHostUri(host);
         this.connectionManager = new PoolingHttpClientConnectionManager();
         HttpClientBuilder customClientBuilder = HttpClients.custom();
         configure(customClientBuilder, configuration);
         httpClient = customClientBuilder.setConnectionManager(connectionManager)
                 .build();
+
+        logEvent()
+                .info("Starting monitor thread");
         this.monitorThread = new IdleConnectionMonitorThread(connectionManager);
         this.monitorThread.start();
         Runtime.getRuntime().addShutdownHook(new BabbageHttpClient.ShutdownHook());
@@ -63,6 +66,8 @@ public class BabbageHttpClient implements AutoCloseable {
         try {
             return builder.build();
         } catch (URISyntaxException e) {
+            logEvent(e)
+                    .error("Error building uri");
             throw new RuntimeException(e);
         }
     }
@@ -70,11 +75,11 @@ public class BabbageHttpClient implements AutoCloseable {
     @Override
     public void close() throws Exception {
         logEvent()
-                .host(HOST.getHost())
+                .host(host.getHost())
                 .info("Shutting down connection pool");
         httpClient.close();
         logEvent()
-                .host(HOST.getHost())
+                .host(host.getHost())
                 .info("Successfully shut down connection pool");
         monitorThread.shutdown();
     }
@@ -92,13 +97,15 @@ public class BabbageHttpClient implements AutoCloseable {
         @Override
         public void run() {
             logEvent()
-                    .host(HOST.getHost())
+                    .host(host.getHost())
                     .info("Running connection pool monitor");
             try {
                 while (!shutdown) {
                     synchronized (this) {
                         wait(5000);
                         // Close expired connections every 5 seconds
+                        logEvent()
+                                .info("Closing expired connections");
                         connMgr.closeExpiredConnections();
                         // Close connections
                         // that have been idle longer than 30 sec
@@ -107,14 +114,14 @@ public class BabbageHttpClient implements AutoCloseable {
                 }
             } catch (InterruptedException ex) {
                 logEvent(ex)
-                        .host(HOST.getHost())
+                        .host(host.getHost())
                         .error("Connection pool monitor failed");
             }
         }
 
         public void shutdown() {
             logEvent()
-                    .host(HOST.getHost())
+                    .host(host.getHost())
                     .error("Shutting down connection pool monitor");
             shutdown = true;
             synchronized (this) {
@@ -129,14 +136,14 @@ public class BabbageHttpClient implements AutoCloseable {
         public void run() {
             try {
                 logEvent()
-                        .host(HOST.getHost())
+                        .host(host.getHost())
                         .info("Closing http client");
                 if (httpClient != null) {
                     close();
                 }
             } catch (Exception e) {
                 logEvent(e)
-                        .host(HOST.getHost())
+                        .host(host.getHost())
                         .error("Falied shutting down http client");
             }
         }

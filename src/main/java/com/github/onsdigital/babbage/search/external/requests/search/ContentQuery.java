@@ -76,12 +76,11 @@ public class ContentQuery extends SearchQuery {
 
     private Map<String, Object> getPostParams() {
         Set<String> contentTypeFilters = this.contentTypeFilters();
-        final Map<String, Object> content = new HashMap<String, Object>() {{
+        
+        return new HashMap<String, Object>() {{
             put(SearchParam.FILTER.getParam(), contentTypeFilters);
             put(SearchParam.SORT.getParam(), sortBy.name());
         }};
-
-        return content;
     }
 
     /**

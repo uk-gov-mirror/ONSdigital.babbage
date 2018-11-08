@@ -105,12 +105,12 @@ public class PooledHttpClient extends BabbageHttpClient {
         try {
             return uriBuilder.build();
         } catch (URISyntaxException e) {
-            throw new RuntimeException("Invalid uri! " + HOST + path);
+            throw new RuntimeException("Invalid uri! " + host + path);
         }
     }
 
     private URIBuilder newUriBuilder(String path) {
-        URIBuilder uriBuilder = new URIBuilder(HOST);
+        URIBuilder uriBuilder = new URIBuilder(host);
         uriBuilder.setPath((uriBuilder.getPath() + "/" + path).replaceAll("//+", "/"));
         return uriBuilder;
     }
@@ -124,7 +124,7 @@ public class PooledHttpClient extends BabbageHttpClient {
             }
             return uriBuilder.build();
         } catch (URISyntaxException e) {
-            throw new RuntimeException("Invalid uri! " + HOST + path);
+            throw new RuntimeException("Invalid uri! " + host + path);
         }
     }
 
@@ -153,7 +153,7 @@ public class PooledHttpClient extends BabbageHttpClient {
             return s;
         } catch (Exception e) {
             logEvent(e)
-                    .host(HOST.getHost())
+                    .host(host.getHost())
                     .error("Failed reading content service:");
         }
         return null;

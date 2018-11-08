@@ -111,7 +111,9 @@ public abstract class AbstractSearchRequest<T> implements Callable<T> {
             return MAPPER.readValue(jsonResponse, this.returnClass);
         } catch (Exception e) {
             // Log failure with request context then re-throw
-            logEvent().info(String.format("Error executing external search request [context=%s]", this.getRequestId()));
+            logEvent(e)
+                    .requestID(this.getRequestBase())
+                    .info("Error executing external search request");
             throw e;
         }
     }
