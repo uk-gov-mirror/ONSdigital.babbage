@@ -171,11 +171,9 @@ public class LoopHelper extends EachHelper implements BabbageHandlebarsHelper<Ob
             int i = field.indexOf(".");
             if (i < 0) {
                 Comparable comparable = (Comparable) m.get(field);
-                System.out.println(field + ":" + comparable);
                 return comparable;
             } else {
                 String firstField = field.substring(0, i);
-                System.out.println(firstField + ":");
                 return getField((Map) m.get(firstField), field.substring(i + 1));
             }
 

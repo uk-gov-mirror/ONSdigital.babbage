@@ -16,6 +16,8 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.github.onsdigital.babbage.logging.LogEvent.logEvent;
+
 /**
  * Created by bren on 18/06/15.
  */
@@ -26,7 +28,8 @@ public class LineChartImageRequestHandler extends BaseRequestHandler {
 
     @Override
     public BabbageResponse get(String requestedUri, HttpServletRequest request) throws Exception {
-        System.out.println("Generating linechart image for " + requestedUri);
+        logEvent().uri(requestedUri)
+                .info("generating linechart image for uri");
         Map<String, String[]> queryParameters = ContentClient.filter(ContentFilter.SERIES);
         queryParameters.putAll(RequestUtil.getQueryParameters(request));
         ContentResponse series = ContentClient.getInstance().getContent(requestedUri, queryParameters);

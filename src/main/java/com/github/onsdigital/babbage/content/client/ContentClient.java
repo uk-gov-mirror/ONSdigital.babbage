@@ -1,6 +1,5 @@
 package com.github.onsdigital.babbage.content.client;
 
-import com.github.onsdigital.babbage.configuration.Configuration;
 import com.github.onsdigital.babbage.error.ResourceNotFoundException;
 import com.github.onsdigital.babbage.publishing.PublishingManager;
 import com.github.onsdigital.babbage.publishing.model.PublishInfo;
@@ -17,9 +16,16 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.message.BasicNameValuePair;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
-import static com.github.onsdigital.babbage.configuration.Configuration.CONTENT_SERVICE.*;
+import static com.github.onsdigital.babbage.configuration.ApplicationConfiguration.appConfig;
+import static com.github.onsdigital.babbage.logging.LogEvent.logEvent;
 
 /**
  * Created by bren on 23/07/15.
@@ -37,17 +43,29 @@ public class ContentClient {
     private static PooledHttpClient client;
     private static ContentClient instance;
 
+    private static final String DATA_ENDPOINT = "/data";
+    private static final String TAXONOMY_ENDPOINT = "/taxonomy";
+    private static final String PARENTS_ENDPOINT = "/parents";
+    private static final String RESOURCE_ENDPOINT = "/resource";
+    private static final String FILE_SIZE_ENDPOINT = "/filesize";
+    private static final String REINDEX_ENDPOINT = "/reindex";
+    private static final String GENERATOR_ENDPOINT = "/generator";
+    private static final String EXPORT_ENDPOINT = "/export";
+
     //singleton
     private ContentClient() {
+
     }
 
     public static ContentClient getInstance() {
         if (instance == null) {
             synchronized (ContentClient.class) {
                 if (instance == null) {
+                    logEvent().info("initialising ContentClient instance");
                     instance = new ContentClient();
-                    System.out.println("Initializing content service http client");
-                    client = new PooledHttpClient(getServerUrl(), createConfiguration());
+
+                    logEvent().info("initialising PooledHttpClient for ContentClient instance");
+                    client = new PooledHttpClient(appConfig().contentAPI().serverURL(), createConfiguration());
                 }
             }
         }
@@ -56,7 +74,7 @@ public class ContentClient {
 
     private static ClientConfiguration createConfiguration() {
         ClientConfiguration configuration = new ClientConfiguration();
-        configuration.setMaxTotalConnection(getMaxContentServiceConnection());
+        configuration.setMaxTotalConnection(appConfig().contentAPI().maxConnections());
         configuration.setDisableRedirectHandling(true);
         return configuration;
     }
@@ -94,45 +112,43 @@ public class ContentClient {
      *                              all other IO Exceptions are rethrown with HTTP status 500
      */
     public ContentResponse getContent(String uri, Map<String, String[]> queryParameters) throws ContentReadException {
-        System.out.println("getContent(): Reading content from content server, uri:" + uri);
-        return resolveMaxAge(uri, sendGet(getPath(getDataEndpoint()), addUri(uri, getParameters(queryParameters))));
+        return resolveMaxAge(uri, sendGet(getPath(DATA_ENDPOINT), addUri(uri, getParameters(queryParameters))));
     }
 
     public ContentResponse getResource(String uri) throws ContentReadException {
-        System.out.println("getResource(): Reading resource from content server, uri:" + uri);
-        return resolveMaxAge(uri, sendGet(getPath(getResourceEndpoint()), addUri(uri, new ArrayList<>())));
+        return resolveMaxAge(uri, sendGet(getPath(RESOURCE_ENDPOINT), addUri(uri, new ArrayList<>())));
     }
 
     public ContentResponse getFileSize(String uri) throws ContentReadException {
-        return resolveMaxAge(uri, sendGet(getPath(getFileSizeEndpoint()), addUri(uri, new ArrayList<>())));
+        return resolveMaxAge(uri, sendGet(getPath(FILE_SIZE_ENDPOINT), addUri(uri, new ArrayList<>())));
     }
 
     public ContentResponse getTaxonomy(Map<String, String[]> queryParameters) throws ContentReadException {
-        return sendGet(getPath(getTaxonomyEndpoint()), getParameters(queryParameters));
+        return sendGet(getPath(TAXONOMY_ENDPOINT), getParameters(queryParameters));
     }
 
     public ContentResponse getTaxonomy() throws ContentReadException {
-        return sendGet(getPath(getTaxonomyEndpoint()), null);
+        return sendGet(getPath(TAXONOMY_ENDPOINT), null);
     }
 
     public ContentResponse getParents(String uri) throws ContentReadException {
-        return sendGet(getPath(getParentsEndpoint()), addUri(uri, new ArrayList<>()));
+        return sendGet(getPath(PARENTS_ENDPOINT), addUri(uri, new ArrayList<>()));
     }
 
     public ContentResponse getGenerator(String uri, Map<String, String[]> queryParameters) throws ContentReadException {
-        return resolveMaxAge(uri, sendGet(getPath(getGeneratorEndpoint()), addUri(uri, getParameters(queryParameters))));
+        return resolveMaxAge(uri, sendGet(getPath(GENERATOR_ENDPOINT), addUri(uri, getParameters(queryParameters))));
     }
 
 
     private ContentResponse resolveMaxAge(String uri, ContentResponse response) {
-        if (!Configuration.GENERAL.isCacheEnabled()) {
+        if (!appConfig().babbage().isCacheEnabled()) {
             return response;
         }
 
         try {
             PublishInfo nextPublish = PublishingManager.getInstance().getNextPublishInfo(uri);
             Date nextPublishDate = nextPublish == null ? null : nextPublish.getPublishDate();
-            int maxAge = Configuration.GENERAL.getDefaultContentCacheTime();
+            int maxAge = appConfig().babbage().getDefaultContentCacheTime();
             Integer timeToExpire = null;
             if (nextPublishDate != null) {
                 Long time = (nextPublishDate.getTime() - new Date().getTime()) / 1000;
@@ -143,15 +159,14 @@ public class ContentClient {
                 response.setMaxAge(maxAge);
             } else if (timeToExpire > 0) {
                 response.setMaxAge(timeToExpire < maxAge ? timeToExpire : maxAge);
-            } else if (timeToExpire < 0 && Math.abs(timeToExpire) > Configuration.GENERAL.getPublishCacheTimeout()) {
+            } else if (timeToExpire < 0 && Math.abs(timeToExpire) > appConfig().babbage().getPublishCacheTimeout()) {
                 //if publish is due but there is still a publish date record after an hour drop it
-                System.out.println("Dropping publish date record due to publish wait timeout for " + uri);
+                logEvent().uri(uri).info("dropping publish date record due to publish wait timeout for uri");
                 PublishingManager.getInstance().dropPublishDate(nextPublish);
                 return resolveMaxAge(uri, response);//resolve for next publish date if any
             }
         } catch (Exception e) {
-            System.err.println("!!!!!!!!!!!!Warning: Managing publish date failed  for uri " + uri + ". Skipping setting cache times");
-            e.printStackTrace();
+            logEvent(e).uri(uri).warn("managing publish date failed for uri, skipping setting cache times");
         }
         return response;
     }
@@ -172,14 +187,14 @@ public class ContentClient {
                 parameters.add(new BasicNameValuePair("uri", uriList[i]));
             }
         }
-        return sendPost(getPath(getExportEndpoint()), parameters);
+        return sendPost(getPath(EXPORT_ENDPOINT), parameters);
     }
 
     public ContentResponse reIndex(String key, String uri) throws ContentReadException {
         List<NameValuePair> parameters = new ArrayList<>();
         parameters.add(new BasicNameValuePair("key", key));
         parameters.add(new BasicNameValuePair("uri", uri));
-        return sendPost(getReindexEndpoint(), parameters);
+        return sendPost(REINDEX_ENDPOINT, parameters);
     }
 
     public ContentResponse deleteIndex(String key, String uri, String contentType) throws ContentReadException {
@@ -187,14 +202,14 @@ public class ContentClient {
         parameters.add(new BasicNameValuePair("key", key));
         parameters.add(new BasicNameValuePair("uri", uri));
         parameters.add(new BasicNameValuePair("pageType", contentType));
-        return sendDelete(getReindexEndpoint(), parameters);
+        return sendDelete(REINDEX_ENDPOINT, parameters);
     }
 
     public ContentResponse reIndexAll(String key) throws ContentReadException {
         List<NameValuePair> parameters = new ArrayList<>();
         parameters.add(new BasicNameValuePair("key", key));
         parameters.add(new BasicNameValuePair("all", "1"));
-        return sendPost(getReindexEndpoint(), parameters);
+        return sendPost(REINDEX_ENDPOINT, parameters);
     }
 
     private ContentResponse sendGet(String path, List<NameValuePair> getParameters) throws ContentReadException {
@@ -204,40 +219,50 @@ public class ContentClient {
         } catch (HttpResponseException e) {
             IOUtils.closeQuietly(response);
 
-            if (e.getStatusCode() == HttpStatus.SC_NOT_FOUND)
+            if (e.getStatusCode() == HttpStatus.SC_NOT_FOUND) {
+                logEvent().uri(path).trace("ContentClient requested uri not found");
                 throw new ResourceNotFoundException(e.getMessage());
+            }
 
-            throw wrapException(e);
+            throw wrapException(path, e);
 
         } catch (IOException e) {
             IOUtils.closeQuietly(response);
-            throw wrapException(e);
+            throw wrapException(path, e);
         }
     }
 
     private ContentResponse sendPost(String path, List<NameValuePair> postParameters) throws ContentReadException {
+        logEvent().httpPOST()
+                .uri(path)
+                .requestParam(postParameters)
+                .debug("ContentClient request");
         CloseableHttpResponse response = null;
         try {
             return new ContentResponse(client.sendPost(path, getHeaders(), postParameters));
         } catch (HttpResponseException e) {
             IOUtils.closeQuietly(response);
-            throw wrapException(e);
+            throw wrapException(path, e);
         } catch (IOException e) {
             IOUtils.closeQuietly(response);
-            throw wrapException(e);
+            throw wrapException(path, e);
         }
     }
 
     private ContentResponse sendDelete(String path, List<NameValuePair> postParameters) throws ContentReadException {
+        logEvent().httpDELETE()
+                .uri(path)
+                .requestParam(postParameters)
+                .debug("ContentClient request");
         CloseableHttpResponse response = null;
         try {
             return new ContentResponse(client.sendDelete(path, getHeaders(), postParameters));
         } catch (HttpResponseException e) {
             IOUtils.closeQuietly(response);
-            throw wrapException(e);
+            throw wrapException(path, e);
         } catch (IOException e) {
             IOUtils.closeQuietly(response);
-            throw wrapException(e);
+            throw wrapException(path, e);
         }
     }
 
@@ -279,11 +304,17 @@ public class ContentClient {
     }
 
 
-    private ContentReadException wrapException(HttpResponseException e) {
+    private ContentReadException wrapException(String uri, HttpResponseException e) {
+        logEvent(e).uri(uri)
+                .responseStatus(e.getStatusCode())
+                .error("ContentClient request returned error");
         return new ContentReadException(e.getStatusCode(), "Failed reading from content service", e);
     }
 
-    private ContentReadException wrapException(IOException e) {
+    private ContentReadException wrapException(String uri, IOException e) {
+        logEvent(e).uri(uri)
+                .responseStatus(HttpStatus.SC_INTERNAL_SERVER_ERROR)
+                .error("ContentClient request returned error");
         return new ContentReadException(HttpStatus.SC_INTERNAL_SERVER_ERROR, "Failed reading from content service", e);
     }
 
