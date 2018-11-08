@@ -96,6 +96,10 @@ public abstract class AbstractSearchRequest<T> implements Callable<T> {
             int code = response.getStatusLine().getStatusCode();
 
             if (code != HttpStatus.SC_OK) {
+                logEvent()
+                        .requestID(this.getRequestBase())
+                        .responseStatus(code)
+                        .error("External search service returned non 200 response");
                 throw new SearchErrorResponse(jsonResponse, code, this.getRequestId());
             }
 
