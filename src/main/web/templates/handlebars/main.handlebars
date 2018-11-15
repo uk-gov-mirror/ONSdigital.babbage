@@ -14,17 +14,6 @@
         <meta name="theme-color" content="#58595B">
         <meta name="apple-mobile-web-app-status-bar-style" content="#58595B">
 
-		{{!-- TWITTER CARD --}}
-		<meta name="twitter:card" content="summary_large_image" />
-		<meta name="twitter:site" content="@ONS">
-		<meta property="og:url" content="{{uri}}" />
-		<meta property="og:title" content="{{#if description.title}}{{description.title}}{{else}}hello testing{{/if}}" />
-		<meta property="og:description" content="{{#if description.metaDescription}}{{description.metaDescription}}{{else}}{{#if description.summary}}{{description.summary}}{{else}}{{description._abstract}}{{/if}}{{/if}}" />
-		{{!-- <meta property="og:image" content="https://www.ons.gov.uk/chartimage?uri=peoplepopulationandcommunity/populationandmigration/populationestimates/bulletins/annualmidyearpopulationestimates/mid2017/d4b6f964" /> --}}
-		{{#if charts.0}}
-		<meta property="og:image" content="https://www.ons.gov.uk/chartimage?uri={{charts.0.uri}}" />
-		{{/if}}
-
         {{#if_any description.metaDescription description.summary description._abstract}}<meta name="description" content="{{#if description.metaDescription}}{{description.metaDescription}}{{else}}{{#if description.summary}}{{description.summary}}{{else}}{{description._abstract}}{{/if}}{{/if}}">{{/if_any}}
 
         {{#if_any (eq type "bulletin") (eq type "article") (eq type "compendium_landing_page") (eq type "compendium_chapter")}}
