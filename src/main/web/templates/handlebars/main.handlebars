@@ -20,7 +20,7 @@
 		<meta property="og:title" content="{{description.title}}" />
 		<meta property="og:description" content="{{#if description.metaDescription}}{{description.metaDescription}}{{else}}{{#if description.summary}}{{description.summary}}{{else}}{{description._abstract}}{{/if}}{{/if}}" />
 		{{#if charts.0}}
-		<meta property="og:image" content="https://{{location.hostname}}/chartimage?uri={{charts.0.uri}}" />
+		<meta property="og:image" content="https://www.ons.gov.uk/chartimage?uri={{charts.0.uri}}" />
 		{{/if}}
 
         {{#if_any description.metaDescription description.summary description._abstract}}<meta name="description" content="{{#if description.metaDescription}}{{description.metaDescription}}{{else}}{{#if description.summary}}{{description.summary}}{{else}}{{description._abstract}}{{/if}}{{/if}}">{{/if_any}}
