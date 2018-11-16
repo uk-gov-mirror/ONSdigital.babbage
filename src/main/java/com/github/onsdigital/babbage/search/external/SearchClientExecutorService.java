@@ -1,6 +1,5 @@
 package com.github.onsdigital.babbage.search.external;
 
-import com.github.onsdigital.babbage.configuration.Configuration;
 import com.github.onsdigital.babbage.search.external.requests.base.SearchClosable;
 import com.github.onsdigital.babbage.search.external.requests.base.ShutdownThread;
 
@@ -8,6 +7,8 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+
+import static com.github.onsdigital.babbage.configuration.ApplicationConfiguration.appConfig;
 
 public class SearchClientExecutorService implements SearchClosable {
 
@@ -28,7 +29,7 @@ public class SearchClientExecutorService implements SearchClosable {
     }
 
     private SearchClientExecutorService() {
-        executorService = Executors.newFixedThreadPool(Configuration.SEARCH_SERVICE.SEARCH_NUM_EXECUTORS);
+        executorService = Executors.newFixedThreadPool(appConfig().externalSearch().executorCount());
     }
 
     public <T> Future<T> submit(Callable<T> task) {

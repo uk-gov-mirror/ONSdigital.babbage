@@ -6,8 +6,8 @@ import com.github.onsdigital.babbage.search.helpers.ONSSearchResponse;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.github.onsdigital.babbage.configuration.Configuration.GENERAL.getMaxVisiblePaginatorLink;
-import static com.github.onsdigital.babbage.configuration.Configuration.GENERAL.getResultsPerPage;
+import static com.github.onsdigital.babbage.configuration.ApplicationConfiguration.appConfig;
+
 
 /**
  * Created by bren on 08/09/15.
@@ -69,7 +69,8 @@ public class Paginator {
     }
 
     public static Paginator getPaginator(long page, ONSSearchResponse responseHelper) {
-        Paginator paginator = new Paginator(responseHelper.getNumberOfResults(), getMaxVisiblePaginatorLink(), page, getResultsPerPage());
+        Paginator paginator = new Paginator(responseHelper.getNumberOfResults(),
+                appConfig().babbage().getMaxVisiblePaginatorLink(), page, appConfig().babbage().getResultsPerPage());
         if (paginator.getNumberOfPages() > 1) {
             return paginator;
         }

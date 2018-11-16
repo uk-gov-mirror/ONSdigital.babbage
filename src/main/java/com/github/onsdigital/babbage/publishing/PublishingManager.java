@@ -1,6 +1,5 @@
 package com.github.onsdigital.babbage.publishing;
 
-import com.github.onsdigital.babbage.configuration.Configuration;
 import com.github.onsdigital.babbage.content.client.ContentClient;
 import com.github.onsdigital.babbage.content.client.ContentReadException;
 import com.github.onsdigital.babbage.publishing.model.ContentDetail;
@@ -35,6 +34,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import static com.github.onsdigital.babbage.configuration.ApplicationConfiguration.appConfig;
+import static com.github.onsdigital.babbage.logging.LogEvent.logEvent;
 import static com.github.onsdigital.babbage.search.ElasticSearchClient.getElasticsearchClient;
 import static org.apache.commons.lang.StringUtils.removeEnd;
 
@@ -129,8 +130,7 @@ public class PublishingManager {
                 }
             }
         } catch (Exception e) {
-            System.err.println("!!!Warning, re-indexing failed for collection id " + notification.getCollectionId());
-            e.printStackTrace();
+            logEvent(e).parameter("collectionID", notification.getCollectionId()).error("reindexing collection failed");
         }
     }
 
@@ -146,7 +146,7 @@ public class PublishingManager {
         try {
             ContentClient.getInstance().reIndex(key, uri);
         } catch (ContentReadException e) {
-            System.err.println("!!!Warning , re-indexing failed for uri " + uri);
+            logEvent(e).uri(uri).error("error reindexing uri");
         }
     }
 
@@ -154,7 +154,7 @@ public class PublishingManager {
         try {
             ContentClient.getInstance().deleteIndex(key, uri, contentType);
         } catch (ContentReadException e) {
-            System.err.println("!!!Warning , delete index failed for uri " + uri);
+            logEvent(e).uri(uri).error("error deleting index for uri");
         }
     }
 
@@ -200,11 +200,11 @@ public class PublishingManager {
     }
 
     public static void init() throws IOException {
-        System.out.println("Initializing Search service");
-        if (Configuration.GENERAL.isCacheEnabled()) {
+        logEvent().debug("initialising search service");
+        if (appConfig().babbage().isCacheEnabled()) {
             initPublishDatesIndex();
         }
-        System.out.println("Initialized Search service successfully");
+        logEvent().debug("initialising search service completed successfully");
     }
 
     private static void initPublishDatesIndex() throws IOException {
@@ -233,7 +233,8 @@ public class PublishingManager {
                     @Override
                     public void beforeBulk(long executionId,
                                            BulkRequest request) {
-                        System.out.println("Builk Indexing " + request.numberOfActions() + " publish dates");
+                        logEvent().parameter("batchSize", request.numberOfActions())
+                                .info("bulk indexing publish dates");
                     }
 
                     @Override
@@ -244,7 +245,9 @@ public class PublishingManager {
                             BulkItemResponse[] items = response.getItems();
                             for (BulkItemResponse item : items) {
                                 if (item.isFailed()) {
-                                    System.err.println("!!!!!!!!Failed processing: [id:" + item.getFailure().getId() + " error:" + item.getFailureMessage() + "]");
+                                    logEvent().parameter("failedItemID", item.getFailure().getId())
+                                            .parameter("failureDetails", item.getFailureMessage())
+                                            .error("bulk processor after bulk failure");
                                 }
                             }
                         }
@@ -254,8 +257,7 @@ public class PublishingManager {
                     public void afterBulk(long executionId,
                                           BulkRequest request,
                                           Throwable failure) {
-                        System.err.println("Failed executing bulk index :" + failure.getMessage());
-                        failure.printStackTrace();
+                        logEvent(failure).error("bulk processor after bulk failure");
                     }
                 })
                 .setBulkActions(10000)

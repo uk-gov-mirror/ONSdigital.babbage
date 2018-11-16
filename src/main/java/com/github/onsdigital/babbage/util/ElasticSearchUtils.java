@@ -17,6 +17,8 @@ import org.elasticsearch.common.settings.Settings;
 
 import java.io.IOException;
 
+import static com.github.onsdigital.babbage.logging.LogEvent.logEvent;
+
 /**
  * Created by bren on 02/09/15.
  */
@@ -28,14 +30,14 @@ public class ElasticSearchUtils {
     }
 
     public CreateIndexResponse createIndex(String index, Settings settings) throws IOException {
-        System.out.println("Creating index " + index);
+        logEvent().parameter("index", index).info("creating index");
         CreateIndexRequestBuilder createIndexRequest = getIndicesClient().prepareCreate(index);
         createIndexRequest.setSettings(settings);
         return createIndexRequest.get();
     }
 
     public DeleteIndexResponse deleteIndex(String index) {
-        System.out.println("Deleting index " + index);
+        logEvent().parameter("index", index).info("deleting index");
         DeleteIndexRequestBuilder deleteIndexRequest = getIndicesClient().prepareDelete(index);
         return deleteIndexRequest.get();
     }

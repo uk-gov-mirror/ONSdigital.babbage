@@ -1,7 +1,6 @@
 package com.github.onsdigital.babbage.api.endpoint;
 
 import com.github.davidcarboni.restolino.framework.Api;
-import com.github.onsdigital.babbage.configuration.Configuration;
 import com.github.onsdigital.babbage.search.helpers.ONSSearchResponse;
 import com.github.onsdigital.babbage.search.helpers.SearchHelper;
 import com.github.onsdigital.babbage.search.model.ContentType;
@@ -11,7 +10,12 @@ import net.fortuna.ical4j.data.CalendarOutputter;
 import net.fortuna.ical4j.model.PropertyList;
 import net.fortuna.ical4j.model.ValidationException;
 import net.fortuna.ical4j.model.component.VEvent;
-import net.fortuna.ical4j.model.property.*;
+import net.fortuna.ical4j.model.property.CalScale;
+import net.fortuna.ical4j.model.property.Description;
+import net.fortuna.ical4j.model.property.ProdId;
+import net.fortuna.ical4j.model.property.Status;
+import net.fortuna.ical4j.model.property.Uid;
+import net.fortuna.ical4j.model.property.Version;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,11 +23,12 @@ import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.GET;
 import javax.ws.rs.core.Context;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import static com.github.onsdigital.babbage.configuration.ApplicationConfiguration.appConfig;
+import static com.github.onsdigital.babbage.logging.LogEvent.logEvent;
 import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.onsQuery;
 import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
 import static org.elasticsearch.index.query.QueryBuilders.rangeQuery;
@@ -55,8 +60,7 @@ public class Calendar {
         try {
             calendar.validate();
         } catch (ValidationException e) {
-            System.err.println("Validation failed");
-            e.printStackTrace();
+            logEvent(e).error("validation error");
         }
         new CalendarOutputter(false).output(calendar, httpServletResponse.getOutputStream());
     }
@@ -79,13 +83,17 @@ public class Calendar {
     private VEvent toEvent(Map<String, Object> release) {
         Map<String, Object> description = ((Map<String, Object>) release.get("description"));
         if (description == null) {
-            System.out.println("!!!!Warning: Release with no description found, uri: " + release.get("uri"));
+            Object uri = release.get("uri");
+            logEvent().uri(uri != null ? uri.toString() : "").warn("release with no description found");
             return null;
         }
 
         try {
             String title = (String) description.get("title") + description.get("edition");
-            Date date = new SimpleDateFormat(Configuration.CONTENT_SERVICE.getDefaultContentDatePattern()).parse((String) description.get("releaseDate"));
+            Date date = appConfig().contentAPI()
+                    .defaultContentDateFormat()
+                    .parse((String) description.get("releaseDate"));
+
             net.fortuna.ical4j.model.Date eventDate = new net.fortuna.ical4j.model.DateTime(date.getTime());
             VEvent event = new VEvent(eventDate, eventDate, title);
             event.getProperties().add(new Uid(getUid(release)));
@@ -93,8 +101,8 @@ public class Calendar {
             event.getProperties().add(new Description((String) description.get("summary")));
             return event;
         } catch (Exception e) {
-            System.err.println("!!!!Warning: Failed creating calendar even for release, uri: " + release.get("uri"));
-            e.printStackTrace();
+            Object uri = release.get("uri");
+            logEvent(e).uri(uri != null ? uri.toString() : null).error("failed creating calendar even for release");
             return null;
         }
     }

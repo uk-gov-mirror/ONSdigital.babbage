@@ -8,7 +8,11 @@ import org.apache.http.StatusLine;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.*;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpDelete;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.conn.HttpClientConnectionManager;
 import org.apache.http.entity.StringEntity;
@@ -24,7 +28,10 @@ import java.net.URISyntaxException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
+
+import static com.github.onsdigital.babbage.logging.LogEvent.logEvent;
 
 /**
  * Created by bren on 22/07/15.
@@ -34,6 +41,8 @@ import java.util.concurrent.TimeUnit;
 //TODO: SSL support for https? not needed currently, configure java for ssl
 //Add post,put,etc. functionality if needed
 public class PooledHttpClient {
+
+    private static final String REQUEST_ID_HEADER = "X-Request-Id";
 
     private final PoolingHttpClientConnectionManager connectionManager;
     private final CloseableHttpClient httpClient;
@@ -79,6 +88,7 @@ public class PooledHttpClient {
         try {
             return builder.build();
         } catch (URISyntaxException e) {
+            logEvent(e).error("error building URI object");
             throw new RuntimeException(e);
         }
     }
@@ -98,6 +108,13 @@ public class PooledHttpClient {
         URI uri = buildGetUri(path, queryParameters);
         HttpGet request = new HttpGet(uri);
         addHeaders(headers, request);
+
+        logEvent().httpGET()
+                .uri(path)
+                .requestID(request)
+                .requestParam(queryParameters)
+                .debug("making HTTP request");
+
         return validate(httpClient.execute(request));
     }
 
@@ -106,6 +123,13 @@ public class PooledHttpClient {
         URI uri = buildGetUri(path, queryParameters);
         HttpDelete request = new HttpDelete(uri);
         addHeaders(headers, request);
+
+        logEvent().httpDELETE()
+                .uri(path)
+                .requestID(request)
+                .requestParam(queryParameters)
+                .debug("making HTTP request");
+
         return validate(httpClient.execute(request));
     }
 
@@ -126,6 +150,13 @@ public class PooledHttpClient {
         if (postParameters != null) {
             request.setEntity(new UrlEncodedFormEntity(postParameters, Charsets.UTF_8));
         }
+
+        logEvent().httpGET()
+                .uri(path)
+                .requestID(request)
+                .requestParam(postParameters)
+                .debug("making HTTP request");
+
         return validate(httpClient.execute(request));
     }
 
@@ -135,10 +166,18 @@ public class PooledHttpClient {
         addHeaders(headers, request);
 
         request.setEntity(new StringEntity(content, charset));
+
+        logEvent().httpGET()
+                .uri(path)
+                .requestID(request)
+                .debug("making HTTP request");
+
         return validate(httpClient.execute(request));
     }
 
     private void addHeaders(Map<String, String> headers, HttpRequestBase request) {
+        request.addHeader(REQUEST_ID_HEADER, UUID.randomUUID().toString());
+
         if (headers != null) {
             Iterator<Map.Entry<String, String>> headerIterator = headers.entrySet().iterator();
             while (headerIterator.hasNext()) {
@@ -150,9 +189,16 @@ public class PooledHttpClient {
     }
 
     public void shutdown() throws IOException {
-        System.out.println("Shutting down connection pool to host:" + HOST);
+        logEvent()
+                .host(HOST != null ? HOST.toString() : "")
+                .info("closing connection pool");
+
         httpClient.close();
-        System.out.println("Successfully shut down connection pool");
+
+        logEvent()
+                .host(HOST != null ? HOST.toString() : "")
+                .info("successfully closed connection pool");
+
         monitorThread.shutdown();
     }
 
@@ -161,6 +207,7 @@ public class PooledHttpClient {
         try {
             return uriBuilder.build();
         } catch (URISyntaxException e) {
+            logEvent(e).host(HOST != null ? HOST.toString() : "").uri(path).error("error building uri");
             throw new RuntimeException("Invalid uri! " + HOST + path);
         }
     }
@@ -180,6 +227,7 @@ public class PooledHttpClient {
             }
             return uriBuilder.build();
         } catch (URISyntaxException e) {
+            logEvent(e).host(HOST != null ? HOST.toString() : "").uri(path).error("error building uri");
             throw new RuntimeException("Invalid uri! " + HOST + path);
         }
     }
@@ -197,6 +245,7 @@ public class PooledHttpClient {
                     errorMessage == null ? statusLine.getReasonPhrase() : errorMessage);
         }
         if (entity == null) {
+            logEvent().error("expected http response entity but response contains no content");
             throw new ClientProtocolException("Response contains no content");
         }
 
@@ -208,8 +257,7 @@ public class PooledHttpClient {
             String s = EntityUtils.toString(entity);
             return s;
         } catch (Exception e) {
-            System.err.println("Failed reading content service:");
-            e.printStackTrace();
+            logEvent(e).error("error attempting to read HTTPEntity as string");
         }
         return null;
     }
@@ -229,7 +277,7 @@ public class PooledHttpClient {
 
         @Override
         public void run() {
-            System.out.println("Running connection pool monitor");
+            logEvent().info("running connection pool monitor");
             try {
                 while (!shutdown) {
                     synchronized (this) {
@@ -242,13 +290,12 @@ public class PooledHttpClient {
                     }
                 }
             } catch (InterruptedException ex) {
-                System.err.println("Connection pool monitor failed");
-                ex.printStackTrace();
+                logEvent(ex).error("connection pool monitor failed");
             }
         }
 
         public void shutdown() {
-            System.out.println("Shutting down connection pool monitor");
+            logEvent().info("shutting down connection pool monitor");
             shutdown = true;
             synchronized (this) {
                 notifyAll();
@@ -266,8 +313,8 @@ public class PooledHttpClient {
                     shutdown();
                 }
             } catch (IOException e) {
-                System.err.println("Falied shutting down http client for, " + HOST);
-                e.printStackTrace();
+                logEvent(e).host(HOST != null ? HOST.toString() : "")
+                        .error("exception while attempting to shutdown HTTP client");
             }
         }
     }

@@ -618,13 +618,13 @@ var renderLineChart = function (timeseries) {
                     case '10yr':
                         filterDate = moment().subtract(10, 'years');
                         fromMonth = filterDate.month() + 1;
-                        fromQuarter = filterDate.quarter() + 1;
+                        fromQuarter = filterDate.quarter();
                         fromYear = filterDate.year();
                         break;
                     case '5yr':
                         filterDate = moment().subtract(5, 'years');
                         fromMonth = filterDate.month() + 1;
-                        fromQuarter = filterDate.quarter() + 1;
+                        fromQuarter = filterDate.quarter();
                         fromYear = filterDate.year();
                         break;
                     case 'all':
