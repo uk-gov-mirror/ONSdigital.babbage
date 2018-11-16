@@ -79,25 +79,6 @@ public class SearchClient implements SearchClosable {
         this.client.close();
     }
 
-    public LinkedHashMap<String, SearchResult> proxyQueries(List<ONSQuery> queryList) throws Exception {
-        Map<String, Future<SearchResult>> futures = new HashMap<>();
-
-        for (ONSQuery query : queryList) {
-            if (null != query && null != query.name()) {
-                int page = query.page() != null ? query.page() : 1;
-                int pageSize = query.size() > 0 ? query.size() : appConfig().babbage().getResultsPerPage();
-
-                ProxyONSQuery proxyONSQuery = new ProxyONSQuery(query, page, pageSize);
-                Future<SearchResult> future = SearchClientExecutorService.getInstance().submit(proxyONSQuery);
-                futures.put(query.name(), future);
-            } else {
-                throw new Exception("Unable to complete search request due to null query/name");
-            }
-        }
-
-        return processFutures(futures);
-    }
-
     public LinkedHashMap<String, SearchResult> search(HttpServletRequest request, String listType) throws Exception {
         Map<String, Future<SearchResult>> futures = new HashMap<>();
 

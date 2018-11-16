@@ -281,16 +281,6 @@ public class SearchUtils {
      * @return
      */
     static LinkedHashMap<String, SearchResult> doSearch(List<ONSQuery> searchQueries, boolean externalSearch) {
-        if (appConfig().externalSearch().isEnabled() && externalSearch) {
-            LinkedHashMap<String, SearchResult> results = null;
-            try {
-                results = SearchClient.getInstance().proxyQueries(searchQueries);
-                return results;
-            } catch (Exception e) {
-                logEvent(e).error("error proxying search request to external service");
-            }
-        }
-
         // Use internal TCP client
         return doInternalSearch(searchQueries);
 
