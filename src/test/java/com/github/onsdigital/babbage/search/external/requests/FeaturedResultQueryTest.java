@@ -22,7 +22,6 @@ public class FeaturedResultQueryTest {
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
     private final String searchTerm = "Who ya gonna call?";
-    private final ListType listType = ListType.ONS;
 
     private String expectedResult;
 
@@ -35,7 +34,7 @@ public class FeaturedResultQueryTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
 
-        featuredResultQuery = new FeaturedResultQuery(searchTerm, listType);
+        featuredResultQuery = new FeaturedResultQuery(searchTerm);
         TestsUtil.setPrivateField(featuredResultQuery, "searchClient", searchClient);
 
         CloseableHttpResponse response = new MockFeaturedResultResponse();

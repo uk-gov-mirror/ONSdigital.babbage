@@ -5,7 +5,7 @@ import com.github.onsdigital.babbage.search.external.requests.search.ListType;
 public enum SearchEndpoints {
 
     SEARCH("/search/"),
-    SEARCH_ONS("/search/%s/"),
+    SEARCH_ONS("/search/"),
     SPELLING("/spellcheck");
 
     private String endpoint;
@@ -16,9 +16,5 @@ public enum SearchEndpoints {
 
     public String getEndpoint() {
         return endpoint;
-    }
-
-    public String getEndpointForListType(ListType listType) {
-        return String.format(this.endpoint, listType.getEndpoint());
     }
 }

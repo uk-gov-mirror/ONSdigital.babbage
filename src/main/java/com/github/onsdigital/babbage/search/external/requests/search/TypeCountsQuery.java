@@ -7,7 +7,7 @@ import com.github.onsdigital.babbage.search.external.SearchType;
  */
 public class TypeCountsQuery extends SearchQuery {
 
-    public TypeCountsQuery(String searchTerm, ListType listType) {
-        super(searchTerm, listType, SearchType.COUNTS);
+    public TypeCountsQuery(String searchTerm) {
+        super(searchTerm, SearchType.COUNTS);
     }
 }

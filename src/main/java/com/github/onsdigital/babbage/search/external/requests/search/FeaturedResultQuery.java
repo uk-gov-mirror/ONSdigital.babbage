@@ -7,7 +7,7 @@ import com.github.onsdigital.babbage.search.external.SearchType;
  */
 public class FeaturedResultQuery extends SearchQuery {
 
-    public FeaturedResultQuery(String searchTerm, ListType listType) {
-        super(searchTerm, listType, SearchType.FEATURED);
+    public FeaturedResultQuery(String searchTerm) {
+        super(searchTerm, SearchType.FEATURED);
     }
 }

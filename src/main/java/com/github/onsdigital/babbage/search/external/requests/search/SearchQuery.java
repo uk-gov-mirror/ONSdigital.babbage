@@ -14,14 +14,12 @@ import org.eclipse.jetty.http.HttpScheme;
 public abstract class SearchQuery extends AbstractSearchRequest<SearchResult> {
 
     protected final String searchTerm;
-    private final ListType listType;
     private final SearchType searchType;
     private URIBuilder uriBuilder;
 
-    public SearchQuery(String searchTerm, ListType listType, SearchType searchType) {
+    public SearchQuery(String searchTerm, SearchType searchType) {
         super(SearchResult.class);
         this.searchTerm = searchTerm;
-        this.listType = listType;
         this.searchType = searchType;
     }
 
@@ -32,7 +30,7 @@ public abstract class SearchQuery extends AbstractSearchRequest<SearchResult> {
     @Override
     public URIBuilder targetUri() {
         if (null == this.uriBuilder) {
-            String path = SearchEndpoints.SEARCH_ONS.getEndpointForListType(this.listType) +
+            String path = SearchEndpoints.SEARCH_ONS.getEndpoint() +
                     this.searchType.getSearchType();
 
             uriBuilder = new URIBuilder()

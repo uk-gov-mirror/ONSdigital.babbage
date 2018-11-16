@@ -31,16 +31,12 @@ public class ContentQuery extends SearchQuery {
     private final SortBy sortBy;
     private Set<TypeFilter> typeFilters;
 
-    public ContentQuery(String searchTerm, ListType listType, int page, int pageSize) {
-        this(searchTerm, listType, page, pageSize, DEFAULT_SORT_BY);
+    public ContentQuery(String searchTerm, int page, int pageSize, Set<TypeFilter> typeFilters) {
+        this(searchTerm, page, pageSize, DEFAULT_SORT_BY, typeFilters);
     }
 
-    public ContentQuery(String searchTerm, ListType listType, int page, int pageSize, SortBy sortBy) {
-        this(searchTerm, listType, page, pageSize, sortBy, listType.getTypeFilters());
-    }
-
-    public ContentQuery(String searchTerm, ListType listType, int page, int pageSize, SortBy sortBy, Set<TypeFilter> typeFilters) {
-        super(searchTerm, listType, SearchType.CONTENT);
+    public ContentQuery(String searchTerm, int page, int pageSize, SortBy sortBy, Set<TypeFilter> typeFilters) {
+        super(searchTerm, SearchType.CONTENT);
         this.page = page;
         this.pageSize = pageSize;
         this.sortBy = sortBy;

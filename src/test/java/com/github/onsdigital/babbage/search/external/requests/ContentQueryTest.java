@@ -2,9 +2,10 @@ package com.github.onsdigital.babbage.search.external.requests;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.onsdigital.babbage.search.external.SearchClient;
+import com.github.onsdigital.babbage.search.external.requests.mocks.response.MockContentResponse;
 import com.github.onsdigital.babbage.search.external.requests.search.ContentQuery;
 import com.github.onsdigital.babbage.search.external.requests.search.ListType;
-import com.github.onsdigital.babbage.search.external.requests.mocks.response.MockContentResponse;
+import com.github.onsdigital.babbage.search.input.TypeFilter;
 import com.github.onsdigital.babbage.search.model.SearchResult;
 import com.github.onsdigital.babbage.util.TestsUtil;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -14,6 +15,8 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.Set;
+
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
 
@@ -22,9 +25,9 @@ public class ContentQueryTest {
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
     private final String searchTerm = "Who ya gonna call?";
-    private final ListType listType = ListType.ONS;
     private final int page = 1;
     private final int pageSize = 10;
+    private Set<TypeFilter> typeFilters = ListType.ONS.getTypeFilters();
 
     private String expectedResult;
 
@@ -37,7 +40,7 @@ public class ContentQueryTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
 
-        contentQuery = new ContentQuery(searchTerm, listType, page, pageSize);
+        contentQuery = new ContentQuery(searchTerm, page, pageSize, typeFilters);
         TestsUtil.setPrivateField(contentQuery, "searchClient", searchClient);
 
         CloseableHttpResponse response = new MockContentResponse();

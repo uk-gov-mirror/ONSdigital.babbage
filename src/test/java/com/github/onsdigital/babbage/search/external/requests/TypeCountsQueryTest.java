@@ -3,7 +3,6 @@ package com.github.onsdigital.babbage.search.external.requests;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.onsdigital.babbage.search.external.SearchClient;
 import com.github.onsdigital.babbage.search.external.requests.mocks.response.MockTypeCountsResponse;
-import com.github.onsdigital.babbage.search.external.requests.search.ListType;
 import com.github.onsdigital.babbage.search.external.requests.search.TypeCountsQuery;
 import com.github.onsdigital.babbage.search.model.SearchResult;
 import com.github.onsdigital.babbage.util.TestsUtil;
@@ -22,7 +21,6 @@ public class TypeCountsQueryTest {
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
     private final String searchTerm = "Who ya gonna call?";
-    private final ListType listType = ListType.ONS;
 
     private String expectedResult;
 
@@ -35,7 +33,7 @@ public class TypeCountsQueryTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
 
-        typeCountsQuery = new TypeCountsQuery(searchTerm, listType);
+        typeCountsQuery = new TypeCountsQuery(searchTerm);
         TestsUtil.setPrivateField(typeCountsQuery, "searchClient", searchClient);
 
         CloseableHttpResponse response = new MockTypeCountsResponse();

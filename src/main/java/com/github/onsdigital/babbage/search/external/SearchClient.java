@@ -103,13 +103,13 @@ public class SearchClient implements SearchClosable {
             SearchQuery searchQuery;
             switch (searchType) {
                 case CONTENT:
-                    searchQuery = new ContentQuery(searchTerm, listTypeEnum, page, pageSize, sortBy, typeFilters);
+                    searchQuery = new ContentQuery(searchTerm, page, pageSize, sortBy, typeFilters);
                     break;
                 case COUNTS:
-                    searchQuery = new TypeCountsQuery(searchTerm, listTypeEnum);
+                    searchQuery = new TypeCountsQuery(searchTerm);
                     break;
                 case FEATURED:
-                    searchQuery = new FeaturedResultQuery(searchTerm, listTypeEnum);
+                    searchQuery = new FeaturedResultQuery(searchTerm);
                     break;
                 default:
                     throw new Exception(String.format("Unknown searchType: %s", searchType.getSearchType()));
