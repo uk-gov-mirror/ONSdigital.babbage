@@ -29,7 +29,7 @@ public class BabbageHttpClient implements AutoCloseable {
         this.connectionManager = new PoolingHttpClientConnectionManager();
         HttpClientBuilder customClientBuilder = HttpClients.custom();
         configure(customClientBuilder, configuration);
-        httpClient = customClientBuilder.setConnectionManager(connectionManager)
+        this.httpClient = customClientBuilder.setConnectionManager(connectionManager)
                 .build();
 
         logEvent()

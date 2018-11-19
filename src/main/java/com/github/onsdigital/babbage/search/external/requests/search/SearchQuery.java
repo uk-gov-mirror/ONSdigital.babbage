@@ -30,7 +30,7 @@ public abstract class SearchQuery extends AbstractSearchRequest<SearchResult> {
     @Override
     public URIBuilder targetUri() {
         if (null == this.uriBuilder) {
-            String path = SearchEndpoints.SEARCH_ONS.getEndpoint() +
+            String path = SearchEndpoints.SEARCH.getEndpoint() +
                     this.searchType.getSearchType();
 
             uriBuilder = new URIBuilder()
