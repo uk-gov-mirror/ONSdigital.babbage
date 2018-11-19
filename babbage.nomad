@@ -7,11 +7,6 @@ job "babbage" {
     distinct_hosts = true
   }
 
-  constraint {
-    attribute = "${meta.has_disk}"
-    value     = true
-  }
-
   update {
     min_healthy_time = "30s"
     healthy_deadline = "2m"
@@ -102,7 +97,7 @@ job "babbage" {
 
     constraint {
       attribute = "${node.class}"
-      value     = "publishing-mount"
+      value     = "publishing"
     }
 
     restart {
