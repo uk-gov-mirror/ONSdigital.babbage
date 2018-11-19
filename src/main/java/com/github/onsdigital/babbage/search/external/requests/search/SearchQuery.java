@@ -1,11 +1,11 @@
-package com.github.onsdigital.babbage.search.external.requests.search.requests;
+package com.github.onsdigital.babbage.search.external.requests.search;
 
 import com.github.onsdigital.babbage.search.external.SearchEndpoints;
 import com.github.onsdigital.babbage.search.external.SearchType;
 import com.github.onsdigital.babbage.search.external.requests.base.AbstractSearchRequest;
 import com.github.onsdigital.babbage.search.model.SearchResult;
+import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.utils.URIBuilder;
-import org.eclipse.jetty.client.api.ContentResponse;
 import org.eclipse.jetty.http.HttpScheme;
 
 /**
@@ -14,14 +14,12 @@ import org.eclipse.jetty.http.HttpScheme;
 public abstract class SearchQuery extends AbstractSearchRequest<SearchResult> {
 
     protected final String searchTerm;
-    private final ListType listType;
     private final SearchType searchType;
     private URIBuilder uriBuilder;
 
-    public SearchQuery(String searchTerm, ListType listType, SearchType searchType) {
+    public SearchQuery(String searchTerm, SearchType searchType) {
         super(SearchResult.class);
         this.searchTerm = searchTerm;
-        this.listType = listType;
         this.searchType = searchType;
     }
 
@@ -32,7 +30,7 @@ public abstract class SearchQuery extends AbstractSearchRequest<SearchResult> {
     @Override
     public URIBuilder targetUri() {
         if (null == this.uriBuilder) {
-            String path = SearchEndpoints.SEARCH_ONS.getEndpointForListType(this.listType) +
+            String path = SearchEndpoints.SEARCH.getEndpoint() +
                     this.searchType.getSearchType();
 
             uriBuilder = new URIBuilder()
@@ -46,13 +44,13 @@ public abstract class SearchQuery extends AbstractSearchRequest<SearchResult> {
     }
 
     /**
-     * Defaults to an empty GET request
+     * Executes a HTTP GET request with type filters and sort options specified as a JSON payload
      * @return
      * @throws Exception
      */
     @Override
-    protected ContentResponse getContentResponse() throws Exception {
-        return super.get().send();
+    public HttpRequestBase getRequestBase() throws Exception {
+        return this.get();
     }
 
     /**

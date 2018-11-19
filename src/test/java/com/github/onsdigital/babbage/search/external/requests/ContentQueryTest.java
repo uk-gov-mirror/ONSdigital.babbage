@@ -1,16 +1,21 @@
-package com.github.onsdigital.babbage.search.external.requests.search.requests;
+package com.github.onsdigital.babbage.search.external.requests;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.onsdigital.babbage.search.external.MockedContentResponse;
-import com.github.onsdigital.babbage.search.external.MockedHttpRequest;
 import com.github.onsdigital.babbage.search.external.SearchClient;
+import com.github.onsdigital.babbage.search.external.requests.mocks.response.MockContentResponse;
+import com.github.onsdigital.babbage.search.external.requests.search.ContentQuery;
+import com.github.onsdigital.babbage.search.external.requests.search.ListType;
+import com.github.onsdigital.babbage.search.input.TypeFilter;
 import com.github.onsdigital.babbage.search.model.SearchResult;
 import com.github.onsdigital.babbage.util.TestsUtil;
-import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.util.EntityUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+
+import java.util.Set;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
@@ -20,11 +25,11 @@ public class ContentQueryTest {
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
     private final String searchTerm = "Who ya gonna call?";
-    private final ListType listType = ListType.ONS;
     private final int page = 1;
     private final int pageSize = 10;
+    private Set<TypeFilter> typeFilters = ListType.ONS.getTypeFilters();
 
-    private SearchResult expectedResult;
+    private String expectedResult;
 
     @Mock
     private SearchClient searchClient;
@@ -35,28 +40,22 @@ public class ContentQueryTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
 
-        contentQuery = new ContentQuery(searchTerm, listType, page, pageSize);
+        contentQuery = new ContentQuery(searchTerm, page, pageSize, typeFilters);
         TestsUtil.setPrivateField(contentQuery, "searchClient", searchClient);
 
-        MockedContentResponse contentResponse = new MockedContentResponse();
-        expectedResult = contentResponse.getSearchResult();
+        CloseableHttpResponse response = new MockContentResponse();
+        expectedResult = EntityUtils.toString(response.getEntity());
 
-        MockedHttpRequest mockedHttpRequest = new MockedHttpRequest(contentQuery.targetUri().build(), contentResponse);
-
-        when(searchClient.get(contentQuery.targetUri()))
-                .thenReturn(mockedHttpRequest);
-
-        when(searchClient.post(contentQuery.targetUri()))
-                .thenReturn(mockedHttpRequest);
+        when(searchClient.execute(contentQuery))
+                .thenReturn(response);
     }
 
     @Test
     public void testSearchResult() throws Exception {
         SearchResult actual = contentQuery.call();
         String actualJson = MAPPER.writeValueAsString(actual);
-        String expectedJson = MAPPER.writeValueAsString(expectedResult);
 
-        assertEquals(actualJson, expectedJson);
+        assertEquals(actualJson, expectedResult);
     }
 
 

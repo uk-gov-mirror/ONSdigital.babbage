@@ -1,21 +1,15 @@
 package com.github.onsdigital.babbage.search.external;
 
+import com.github.onsdigital.babbage.search.external.requests.base.AbstractSearchRequest;
 import com.github.onsdigital.babbage.search.external.requests.base.SearchClosable;
 import com.github.onsdigital.babbage.search.external.requests.base.ShutdownThread;
-import com.github.onsdigital.babbage.search.external.requests.search.requests.ContentQuery;
-import com.github.onsdigital.babbage.search.external.requests.search.requests.FeaturedResultQuery;
-import com.github.onsdigital.babbage.search.external.requests.search.requests.ListType;
-import com.github.onsdigital.babbage.search.external.requests.search.requests.ProxyONSQuery;
-import com.github.onsdigital.babbage.search.external.requests.search.requests.SearchQuery;
-import com.github.onsdigital.babbage.search.external.requests.search.requests.TypeCountsQuery;
+import com.github.onsdigital.babbage.search.external.requests.search.*;
 import com.github.onsdigital.babbage.search.helpers.ONSQuery;
 import com.github.onsdigital.babbage.search.input.SortBy;
 import com.github.onsdigital.babbage.search.input.TypeFilter;
 import com.github.onsdigital.babbage.search.model.SearchResult;
-import org.apache.http.client.utils.URIBuilder;
-import org.eclipse.jetty.client.HttpClient;
-import org.eclipse.jetty.client.api.Request;
-import org.eclipse.jetty.http.HttpMethod;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpRequestBase;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
@@ -38,13 +32,12 @@ public class SearchClient implements SearchClosable {
 
     private static SearchClient INSTANCE;
 
-    public static SearchClient getInstance() throws Exception {
+    public static SearchClient getInstance() {
         if (INSTANCE == null) {
             synchronized (SearchClient.class) {
                 if (INSTANCE == null) {
                     INSTANCE = new SearchClient();
                     logEvent().info("initialising external search client");
-                    INSTANCE.start();
                     Runtime.getRuntime().addShutdownHook(new ShutdownThread(INSTANCE));
                     logEvent().info("initialisation of external search client completed successfully");
                 }
@@ -53,53 +46,37 @@ public class SearchClient implements SearchClosable {
         return INSTANCE;
     }
 
-    private final HttpClient client;
+    private final SearchHttpClient client;
 
-    public SearchClient() {
-        this.client = new HttpClient();
+    private SearchClient() {
+        this.client = new SearchHttpClient();
     }
 
-    public void start() throws Exception {
-        this.client.start();
+    /**
+     * Returns a CloseableHttpResponse, WHICH MUST BE CLOSED AFTER USE (e.g try with resources)!!!
+     * @param searchRequest
+     * @return
+     * @throws Exception
+     */
+    public CloseableHttpResponse execute(AbstractSearchRequest searchRequest) throws Exception {
+        HttpRequestBase request = searchRequest.getRequestBase();
+
+        HttpRequestBase requestBase = searchRequest.getRequestBase();
+        logEvent()
+                .requestID(requestBase)
+                .parameter("httpMethod", requestBase.getMethod())
+                .uri(requestBase.getURI())
+                .info("Executing external search request");
+
+        return this.client.execute(request);
     }
 
     @Override
     public void close() throws Exception {
-        this.client.stop();
-    }
+        logEvent()
+                .info("Closing external search HTTP client");
 
-    public Request request(String uri) {
-        return client.newRequest(uri);
-    }
-
-    public Request get(URIBuilder uriBuilder) {
-        return this.request(uriBuilder.toString()).method(HttpMethod.GET);
-    }
-
-    public Request post(URIBuilder uriBuilder) {
-        return this.request(uriBuilder.toString()).method(HttpMethod.POST);
-    }
-
-    public LinkedHashMap<String, SearchResult> proxyQueries(List<ONSQuery> queryList) throws Exception {
-        Map<String, Future<SearchResult>> futures = new HashMap<>();
-
-        for (ONSQuery query : queryList) {
-            int page, pageSize;
-
-            if (null != query) {
-                page = query.page() != null ? query.page() : 1;
-                pageSize = query.size();
-            } else {
-                page = 1;
-                pageSize = appConfig().babbage().getResultsPerPage();
-            }
-
-            ProxyONSQuery proxyONSQuery = new ProxyONSQuery(query, page, pageSize);
-            Future<SearchResult> future = SearchClientExecutorService.getInstance().submit(proxyONSQuery);
-            futures.put(query.name(), future);
-        }
-
-        return processFutures(futures);
+        this.client.close();
     }
 
     public LinkedHashMap<String, SearchResult> search(HttpServletRequest request, String listType) throws Exception {
@@ -126,13 +103,13 @@ public class SearchClient implements SearchClosable {
             SearchQuery searchQuery;
             switch (searchType) {
                 case CONTENT:
-                    searchQuery = new ContentQuery(searchTerm, listTypeEnum, page, pageSize, sortBy, typeFilters);
+                    searchQuery = new ContentQuery(searchTerm, page, pageSize, sortBy, typeFilters);
                     break;
                 case COUNTS:
-                    searchQuery = new TypeCountsQuery(searchTerm, listTypeEnum);
+                    searchQuery = new TypeCountsQuery(searchTerm);
                     break;
                 case FEATURED:
-                    searchQuery = new FeaturedResultQuery(searchTerm, listTypeEnum);
+                    searchQuery = new FeaturedResultQuery(searchTerm);
                     break;
                 default:
                     throw new Exception(String.format("Unknown searchType: %s", searchType.getSearchType()));

@@ -16,6 +16,7 @@ public class ExternalSearch implements Loggable {
     private static final String EXTERNAL_SEARCH_PORT_KEY = "EXTERNAL_SEARCH_PORT";
     private static final String EXTERNAL_SEARCH_ENABLED_KEY = "ENABLE_SEARCH_SERVICE";
     private static final String SEARCH_NUM_EXECUTORS_KEY = "SEARCH_NUM_EXECUTORS";
+    private static final String SEARCH_MAX_CONNECTIONS = "SEARCH_MAX_CONNECTIONS";
     private static final String EXTERNAL_SPELLCHECK_ENABLED_KEY = "EXTERNAL_SPELLCHECK_ENABLED";
     private static final String SPELL_CHECK_CONFIDENCE_THRESHOLD_KEY = "SPELL_CHECK_CONFIDENCE_THRESHOLD";
 
@@ -35,6 +36,7 @@ public class ExternalSearch implements Loggable {
     private final int port;
     private final boolean enabled;
     private final int executorCount;
+    private final int maxConnections;
     private final String address;
     private final boolean spellCheckEnabled;
     private final float spellCheckConfidenceThreshold;
@@ -45,6 +47,7 @@ public class ExternalSearch implements Loggable {
         port = EnvVarUtils.defaultIfBlank(getNumberValue(EXTERNAL_SEARCH_PORT_KEY), 5000);
         enabled = Boolean.parseBoolean(getValue(EXTERNAL_SEARCH_ENABLED_KEY));
         executorCount = EnvVarUtils.defaultIfBlank(getNumberValue(SEARCH_NUM_EXECUTORS_KEY), 8);
+        maxConnections = EnvVarUtils.defaultIfBlank(getNumberValue(SEARCH_MAX_CONNECTIONS), 50);
         address = String.format("%s:%d", host, port);
         spellCheckEnabled = Boolean.parseBoolean(getValue(EXTERNAL_SPELLCHECK_ENABLED_KEY));
         spellCheckConfidenceThreshold = defaultIfBlank(getFloatValue(SPELL_CHECK_CONFIDENCE_THRESHOLD_KEY), 0.0f);
@@ -64,6 +67,10 @@ public class ExternalSearch implements Loggable {
 
     public int executorCount() {
         return executorCount;
+    }
+
+    public int getMaxConnections() {
+        return maxConnections;
     }
 
     public String address() {
@@ -92,6 +99,7 @@ public class ExternalSearch implements Loggable {
                 .parameter(EXTERNAL_SPELLCHECK_ENABLED_KEY, spellCheckEnabled)
                 .parameter(SPELL_CHECK_CONFIDENCE_THRESHOLD_KEY, spellCheckConfidenceThreshold)
                 .parameter(SEARCH_NUM_EXECUTORS_KEY, executorCount)
+                .parameter(SEARCH_MAX_CONNECTIONS, maxConnections)
                 .info("external search configuration");
     }
 }
