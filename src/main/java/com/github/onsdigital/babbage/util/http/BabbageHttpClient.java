@@ -51,9 +51,9 @@ public class BabbageHttpClient implements AutoCloseable {
     }
 
     private URI resolveHostUri(String host) {
-        URI givenHost = URI.create(host);
         URIBuilder builder = new URIBuilder();
         if (StringUtils.startsWithIgnoreCase(host, "http")) {
+            URI givenHost = URI.create(host);
             builder.setScheme(givenHost.getScheme());
             builder.setHost(givenHost.getHost());
             builder.setPort(givenHost.getPort());
