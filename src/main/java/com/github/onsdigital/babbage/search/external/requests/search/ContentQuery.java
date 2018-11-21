@@ -1,6 +1,5 @@
-package com.github.onsdigital.babbage.search.external.requests.search.requests;
+package com.github.onsdigital.babbage.search.external.requests.search;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.github.onsdigital.babbage.search.external.SearchType;
 import com.github.onsdigital.babbage.search.external.requests.spellcheck.SpellCheckRequest;
 import com.github.onsdigital.babbage.search.external.requests.spellcheck.models.SpellingCorrection;
@@ -8,10 +7,8 @@ import com.github.onsdigital.babbage.search.input.SortBy;
 import com.github.onsdigital.babbage.search.input.TypeFilter;
 import com.github.onsdigital.babbage.search.model.ContentType;
 import com.github.onsdigital.babbage.search.model.SearchResult;
+import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.utils.URIBuilder;
-import org.eclipse.jetty.client.api.ContentResponse;
-import org.eclipse.jetty.client.api.Request;
-import org.eclipse.jetty.client.util.StringContentProvider;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -34,16 +31,12 @@ public class ContentQuery extends SearchQuery {
     private final SortBy sortBy;
     private Set<TypeFilter> typeFilters;
 
-    public ContentQuery(String searchTerm, ListType listType, int page, int pageSize) {
-        this(searchTerm, listType, page, pageSize, DEFAULT_SORT_BY);
+    public ContentQuery(String searchTerm, int page, int pageSize, Set<TypeFilter> typeFilters) {
+        this(searchTerm, page, pageSize, DEFAULT_SORT_BY, typeFilters);
     }
 
-    public ContentQuery(String searchTerm, ListType listType, int page, int pageSize, SortBy sortBy) {
-        this(searchTerm, listType, page, pageSize, sortBy, listType.getTypeFilters());
-    }
-
-    public ContentQuery(String searchTerm, ListType listType, int page, int pageSize, SortBy sortBy, Set<TypeFilter> typeFilters) {
-        super(searchTerm, listType, SearchType.CONTENT);
+    public ContentQuery(String searchTerm, int page, int pageSize, SortBy sortBy, Set<TypeFilter> typeFilters) {
+        super(searchTerm, SearchType.CONTENT);
         this.page = page;
         this.pageSize = pageSize;
         this.sortBy = sortBy;
@@ -67,15 +60,6 @@ public class ContentQuery extends SearchQuery {
     }
 
     /**
-     * Returns list of content type filters as a JSON formatted string
-     * @return
-     * @throws JsonProcessingException
-     */
-    private String contentTypeFiltersAsString() throws JsonProcessingException {
-        return MAPPER.writeValueAsString(this.contentTypeFilters());
-    }
-
-    /**
      * Calls super.buildUri() and adds page number and size URL parameters
      * @return
      */
@@ -86,22 +70,23 @@ public class ContentQuery extends SearchQuery {
                 .addParameter(SearchParam.SIZE.getParam(), String.valueOf(this.pageSize));
     }
 
+    private Map<String, Object> getPostParams() {
+        Set<String> contentTypeFilters = this.contentTypeFilters();
+        
+        return new HashMap<String, Object>() {{
+            put(SearchParam.FILTER.getParam(), contentTypeFilters);
+            put(SearchParam.SORT.getParam(), sortBy.name());
+        }};
+    }
+
     /**
      * Executes a HTTP POST request with type filters and sort options specified as a JSON payload
      * @return
      * @throws Exception
      */
     @Override
-    protected ContentResponse getContentResponse() throws Exception {
-        final String filterString = this.contentTypeFiltersAsString();
-        final Map<String, String> content = new HashMap<String, String>() {{
-            put(SearchParam.FILTER.getParam(), filterString);
-            put(SearchParam.SORT.getParam(), sortBy.name());
-        }};
-
-        Request request = super.post()
-                .content(new StringContentProvider(MAPPER.writeValueAsString(content)));
-        return request.send();
+    public HttpRequestBase getRequestBase() throws Exception {
+        return this.post(this.getPostParams());
     }
 
     @Override

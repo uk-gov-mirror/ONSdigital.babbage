@@ -4,8 +4,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.github.onsdigital.babbage.search.external.SearchEndpoints;
 import com.github.onsdigital.babbage.search.external.requests.base.AbstractSearchRequest;
 import com.github.onsdigital.babbage.search.external.requests.spellcheck.models.SpellingCorrection;
+import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.utils.URIBuilder;
-import org.eclipse.jetty.client.api.ContentResponse;
 import org.eclipse.jetty.http.HttpScheme;
 
 import java.util.Arrays;
@@ -35,8 +35,8 @@ public class SpellCheckRequest extends AbstractSearchRequest<List<SpellingCorrec
     }
 
     @Override
-    protected ContentResponse getContentResponse() throws Exception {
-        return super.get().send();
+    public HttpRequestBase getRequestBase() throws Exception {
+        return this.get();
     }
 
     /**

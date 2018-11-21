@@ -9,8 +9,8 @@ import com.github.onsdigital.babbage.search.builders.ONSFilterBuilders;
 import com.github.onsdigital.babbage.search.builders.ONSQueryBuilders;
 import com.github.onsdigital.babbage.search.external.SearchClient;
 import com.github.onsdigital.babbage.search.external.SearchType;
-import com.github.onsdigital.babbage.search.external.requests.search.requests.DepartmentsQuery;
-import com.github.onsdigital.babbage.search.external.requests.search.requests.SearchQuery;
+import com.github.onsdigital.babbage.search.external.requests.search.DepartmentsQuery;
+import com.github.onsdigital.babbage.search.external.requests.search.SearchQuery;
 import com.github.onsdigital.babbage.search.helpers.ONSQuery;
 import com.github.onsdigital.babbage.search.helpers.ONSSearchResponse;
 import com.github.onsdigital.babbage.search.helpers.SearchHelper;
@@ -281,16 +281,6 @@ public class SearchUtils {
      * @return
      */
     static LinkedHashMap<String, SearchResult> doSearch(List<ONSQuery> searchQueries, boolean externalSearch) {
-        if (appConfig().externalSearch().isEnabled() && externalSearch) {
-            LinkedHashMap<String, SearchResult> results = null;
-            try {
-                results = SearchClient.getInstance().proxyQueries(searchQueries);
-                return results;
-            } catch (Exception e) {
-                logEvent(e).error("error proxying search request to external service");
-            }
-        }
-
         // Use internal TCP client
         return doInternalSearch(searchQueries);
 
