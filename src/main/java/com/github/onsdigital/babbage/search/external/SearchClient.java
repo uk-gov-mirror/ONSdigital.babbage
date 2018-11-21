@@ -4,7 +4,6 @@ import com.github.onsdigital.babbage.search.external.requests.base.AbstractSearc
 import com.github.onsdigital.babbage.search.external.requests.base.SearchClosable;
 import com.github.onsdigital.babbage.search.external.requests.base.ShutdownThread;
 import com.github.onsdigital.babbage.search.external.requests.search.*;
-import com.github.onsdigital.babbage.search.helpers.ONSQuery;
 import com.github.onsdigital.babbage.search.input.SortBy;
 import com.github.onsdigital.babbage.search.input.TypeFilter;
 import com.github.onsdigital.babbage.search.model.SearchResult;
@@ -14,7 +13,6 @@ import org.apache.http.client.methods.HttpRequestBase;
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
@@ -22,11 +20,7 @@ import java.util.concurrent.Future;
 
 import static com.github.onsdigital.babbage.configuration.ApplicationConfiguration.appConfig;
 import static com.github.onsdigital.babbage.logging.LogEvent.logEvent;
-import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.extractPage;
-import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.extractSearchTerm;
-import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.extractSelectedFilters;
-import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.extractSize;
-import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.extractSortBy;
+import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.*;
 
 public class SearchClient implements SearchClosable {
 
@@ -37,9 +31,13 @@ public class SearchClient implements SearchClosable {
             synchronized (SearchClient.class) {
                 if (INSTANCE == null) {
                     INSTANCE = new SearchClient();
-                    logEvent().info("initialising external search client");
+                    logEvent()
+                            .parameter("address", appConfig().externalSearch().address())
+                            .info("initialising external search client");
                     Runtime.getRuntime().addShutdownHook(new ShutdownThread(INSTANCE));
-                    logEvent().info("initialisation of external search client completed successfully");
+                    logEvent()
+                            .parameter("address", appConfig().externalSearch().address())
+                            .info("initialisation of external search client completed successfully");
                 }
             }
         }
