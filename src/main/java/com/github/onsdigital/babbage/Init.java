@@ -24,11 +24,7 @@ public class Init implements Startup {
 
         ApplicationConfiguration.init();
 
-        try {
-            ElasticSearchClient.init();
-        } catch (IOException e) {
-            logErrorAndExit(e, "error initializing publish dates index for caching exiting application");
-        }
+        ElasticSearchClient.init();
 
         try {
             PublishingManager.init();
