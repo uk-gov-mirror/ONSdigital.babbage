@@ -208,7 +208,13 @@ public class PublishingManager {
     }
 
     private static void initPublishDatesIndex() throws IOException {
+        logEvent()
+                .parameter("index", PUBLISH_DATES_INDEX)
+                .debug("Checking status of publish dates index");
         if (!searchUtils.isIndexAvailable(PUBLISH_DATES_INDEX)) {
+            logEvent()
+                    .parameter("index", PUBLISH_DATES_INDEX)
+                    .debug("Publish dates index not available, creating");
             searchUtils.createIndex(PUBLISH_DATES_INDEX, buildPublishDatesIndexSettings());
         }
     }
