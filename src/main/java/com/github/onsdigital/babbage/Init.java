@@ -24,11 +24,7 @@ public class Init implements Startup {
 
         ApplicationConfiguration.init();
 
-        try {
-            ElasticSearchClient.init();
-        } catch (IOException e) {
-            logErrorAndExit(e, "error initializing publish dates index for caching exiting application");
-        }
+        ElasticSearchClient.init();
 
         try {
             PublishingManager.init();
@@ -40,11 +36,11 @@ public class Init implements Startup {
             try {
                 SearchClient.getInstance();
             } catch (Exception e) {
-                logErrorAndExit(e, "error initializing external search client existing application");
+                logErrorAndExit(e, "error initializing external search client exiting application");
             }
         }
 
-        logEvent().info("application babbage initalisation compeleted successfully");
+        logEvent().info("application babbage initialisation completed successfully");
     }
 
     private void logErrorAndExit(Throwable t, String message) {

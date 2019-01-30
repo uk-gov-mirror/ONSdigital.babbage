@@ -1,7 +1,10 @@
 {{#if files}}
     <div class="markdown-chart-container panel--bottom-mar print--avoid-break">
         <h4 class="flush--third--vertical">{{{sub (sup title)}}}</h4>
-        <h5 class="flush--third--bottom">{{{sub (sup subtitle)}}}</h5>
+
+        {{#if subtitle}}
+            <h5 class="flush--third--bottom">{{{sub (sup subtitle)}}}</h5>
+        {{/if}}
 
         {{#each files}}
             {{#if (eq type "uploaded-image")}}
@@ -18,12 +21,6 @@
         <h6 class="print--hide">Download this image</h6>
         {{#each files}}
             {{#if (eq type "uploaded-image")}}
-            {{!-- <form method="get" action="/file" class="inline print--hide">
-               <button type="submit" title="Download image" class="btn btn--primary btn--thick download-analytics">
-                 .{{fileType}}
-               </button>
-               <input type="hidden" name="uri" value="{{absolute uri}}.{{fileType}}"/>
-             </form> --}}
                 <a class="btn btn--primary print--hide" title="Download as {{fileType}}"
                    data-gtm-title="{{{sub (sup title)}}}" data-gtm-type="download-{{fileType}}"
                    href="/file?uri={{uri}}.{{fileType}}">.{{fileType}}</a>
@@ -34,13 +31,8 @@
             {{#if (eq type "uploaded-data")}}
                 <a class="btn btn--primary print--hide" title="Download as {{fileType}}"
                    data-gtm-title="{{{sub (sup title)}}}" data-gtm-type="download-{{fileType}}"
-                   href="/file?uri={{uri}}.{{fileType}}">.{{fileType}}</a>
-                {{!-- <form method="get" action="/file" class="inline print--hide">
-                     <button type="submit" title="Download data" class="btn btn--primary btn--thick download-analytics">
-                         .{{fileType}}
-                     </button>
-                     <input type="hidden" name="uri" value="{{absolute uri}}.{{fileType}}"/>
-                 </form> --}}
+                   href="/file?uri={{uri}}.{{fileType}}">.{{fileType}}
+                </a>
             {{/if}}
         {{/each}}
     </div>

@@ -1,20 +1,34 @@
-package com.github.onsdigital.babbage.search.external;
+package com.github.onsdigital.babbage.search.external.requests.mocks.json;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.github.onsdigital.babbage.paginator.Paginator;
 import com.github.onsdigital.babbage.search.external.requests.spellcheck.SpellCheckRequest;
 import com.github.onsdigital.babbage.search.external.requests.spellcheck.models.SpellingCorrection;
-import com.github.onsdigital.babbage.search.input.SortBy;
 import com.github.onsdigital.babbage.search.model.SearchResult;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
-public class MockedContentResponse extends MockedSearchResponse {
+public class MockContentJson extends MockSearchJson {
 
-    private static final int took = 51;
+    @Override
+    public SearchResult getSearchResult() throws IOException {
+        SearchResult result = super.getSearchResult();
 
-    private List<SpellingCorrection> getTestResult() throws IOException {
+        String suggestedCorrection = suggestedCorrection();
+        result.setSuggestions(Collections.singletonList(suggestedCorrection));
+
+        return result;
+    }
+
+    private static String suggestedCorrection() {
+        return SpellCheckRequest.buildSuggestedCorrection("rpo cpl",
+                getSpellingCorrections(), 0.0f);
+    }
+
+    private static List<SpellingCorrection> getSpellingCorrections() {
         SpellingCorrection correction = new SpellingCorrection("rpo", "rpi", 0.5f);
         SpellingCorrection otherCorrection = new SpellingCorrection("cpl", "cpi", 0.5f);
 
@@ -25,38 +39,7 @@ public class MockedContentResponse extends MockedSearchResponse {
     }
 
     @Override
-    public LinkedHashMap<String, Integer> getDocCounts() {
-        return new LinkedHashMap<>();
-    }
-
-    @Override
-    public SearchResult getSearchResult() throws IOException {
-        final Map<String, Object> testSearchResponse = new LinkedHashMap<String, Object>() {{
-            put("numberOfResults", numberOfResults);
-            put("took", took);
-            put("results", testResults());
-            put("docCounts", getDocCounts());
-            put("paginator", testPaginator());
-            put("sortBy", SortBy.relevance.name());
-        }};
-
-        String testJson = MAPPER.writeValueAsString(testSearchResponse);
-
-        SearchResult result = MAPPER.readValue(testJson, SearchResult.class);
-
-        List<SpellingCorrection> corrections = this.getTestResult();
-        String suggestedCorrection = SpellCheckRequest.buildSuggestedCorrection("rpo cpl", corrections, 0.0f);
-
-        result.setSuggestions(Collections.singletonList(suggestedCorrection));
-        return result;
-    }
-
-    private Paginator testPaginator() {
-        Paginator paginator = new Paginator(54, 10, 1, 10);
-        return paginator;
-    }
-
-    private List<Map<String, Object>> testResults() throws IOException {
+    protected List<Map<String, Object>> getResults() throws IOException {
         String json = "[\n" +
                 "  {\n" +
                 "    \"description\": {\n" +
@@ -344,9 +327,6 @@ public class MockedContentResponse extends MockedSearchResponse {
                 "  }\n" +
                 "]";
 
-        List<Map<String, Object>> results = MAPPER.readValue(json, new TypeReference<ArrayList<Map<String, Object>>>() {
-        });
-
-        return results;
+        return MAPPER.readValue(json, new TypeReference<List<Map<String, Object>>>(){{}});
     }
 }

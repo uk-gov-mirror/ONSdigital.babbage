@@ -1,16 +1,20 @@
-package com.github.onsdigital.babbage.search.external;
+package com.github.onsdigital.babbage.search.external.requests.mocks.json;
 
 import com.github.onsdigital.babbage.search.model.ContentType;
-import com.github.onsdigital.babbage.search.model.SearchResult;
 
-import java.io.IOException;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
-public class MockedTypeCountsResponse extends MockedSearchResponse {
+public class MockTypeCountsJson extends MockSearchJson {
 
     @Override
-    public LinkedHashMap<String, Integer> getDocCounts() {
+    protected List<Map<String, Object>> getResults() {
+        return null;
+    }
+
+    @Override
+    protected LinkedHashMap<String, Integer> getDocCounts() {
         final LinkedHashMap<String, Integer> docCounts = new LinkedHashMap<String, Integer>() {{
             put(ContentType.timeseries.name(), 360);
             put(ContentType.bulletin.name(), 62);
@@ -27,16 +31,4 @@ public class MockedTypeCountsResponse extends MockedSearchResponse {
         return docCounts;
     }
 
-    @Override
-    public SearchResult getSearchResult() throws IOException {
-        final Map<String, Object> testSearchResponse = new LinkedHashMap<String, Object>() {{
-            put("numberOfResults", numberOfResults);
-            put("docCounts", getDocCounts());
-        }};
-
-        String testJson = MAPPER.writeValueAsString(testSearchResponse);
-
-        SearchResult result = MAPPER.readValue(testJson, SearchResult.class);
-        return result;
-    }
 }
