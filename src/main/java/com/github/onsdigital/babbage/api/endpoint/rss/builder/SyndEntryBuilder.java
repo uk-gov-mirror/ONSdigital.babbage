@@ -60,7 +60,7 @@ public class SyndEntryBuilder {
 	}
 
 	private String getUri() {
-		return "http://" + ((Location) ThreadContext.getData(LOCATION_KEY)).getHost() + get(uri);
+		return "http://" + ((Location) ThreadContext.getData(LOCATION_KEY)).getHostname() + get(uri);
 	}
 
 	private String get(Field field) {
