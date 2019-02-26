@@ -42,7 +42,7 @@ public class SyndEntryBuilderTest {
 		masterMap = new HashMap<>();
 		description = new HashMap<>();
 		loc = new RequestUtil.Location();
-		loc.setHost("host");
+		loc.setHostname("host");
 		ThreadContext.addData(LOCATION_KEY, loc);
 	}
 
@@ -109,7 +109,7 @@ public class SyndEntryBuilderTest {
 		SyndEntry entry = builder.build(map(title, uri, metaDescription, releaseDate));
 
 		assertThat("SyndEntry.title not as expected.", entry.getTitle(), equalTo(TITLE));
-		assertThat("SyndEntry.link not as expected.", entry.getLink(), equalTo("http://" + loc.getHost() + URI));
+		assertThat("SyndEntry.link not as expected.", entry.getLink(), equalTo("http://" + loc.getHostname() + URI));
 		assertThat("SyndEntry.description.value not as expected.", entry.getDescription().getValue(), equalTo(META_DESC));
 		assertThat("SyndEntry.description.type not as expected.", entry.getDescription().getType(), equalTo("text/plain"));
 		assertThat("SyndEntry.publishedDate not as expected.", entry.getPublishedDate(),
