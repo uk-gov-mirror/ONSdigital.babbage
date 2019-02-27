@@ -11,6 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.github.onsdigital.babbage.api.endpoint.rss.builder.SyndEntryBuilder.HTTPS_SCHEME;
 import static com.github.onsdigital.babbage.configuration.ApplicationConfiguration.appConfig;
 import static com.github.onsdigital.babbage.search.model.field.Field.metaDescription;
 import static com.github.onsdigital.babbage.search.model.field.Field.releaseDate;
@@ -109,7 +110,7 @@ public class SyndEntryBuilderTest {
         SyndEntry entry = builder.build(map(title, uri, metaDescription, releaseDate));
 
         assertThat("SyndEntry.title not as expected.", entry.getTitle(), equalTo(TITLE));
-        assertThat("SyndEntry.link not as expected.", entry.getLink(), equalTo("http://" + loc.getHostname() + URI));
+        assertThat("SyndEntry.link not as expected.", entry.getLink(), equalTo(HTTPS_SCHEME + loc.getHostname() + URI));
         assertThat("SyndEntry.description.value not as expected.", entry.getDescription().getValue(), equalTo(META_DESC));
         assertThat("SyndEntry.description.type not as expected.", entry.getDescription().getType(), equalTo("text/plain"));
         assertThat("SyndEntry.publishedDate not as expected.", entry.getPublishedDate(),

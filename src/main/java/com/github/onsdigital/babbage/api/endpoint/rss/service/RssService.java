@@ -126,7 +126,7 @@ public class RssService {
 
         return new SyndFeedBuilder()
                 .type(rssType)
-                .link(((Location) ThreadContext.getData(LOCATION_KEY)).getHostname())
+                .link(request.getRequestURL().toString())
                 .category(title.toString())
                 .entries(searchResultsToSyndEntries(results))
                 .title(title.toString())
@@ -186,7 +186,7 @@ public class RssService {
     private SyndFeed generateSyndFeed(Optional<SearchResult> results, RssSearchFilter filter) {
         return new SyndFeedBuilder()
                 .type(rssType)
-                .link(((Location) ThreadContext.getData(LOCATION_KEY)).getHostname())
+                .link(filter.getRequest().getRequestURL().toString())
                 .category(filter.getUri())
                 .entries(searchResultsToSyndEntries(results))
                 .title(filter)

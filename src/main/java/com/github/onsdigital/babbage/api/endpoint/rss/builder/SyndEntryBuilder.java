@@ -28,6 +28,7 @@ public class SyndEntryBuilder {
 
     private static final DateFormat DATE_FORMAT = appConfig().contentAPI().defaultContentDateFormat();
     private static final String DESCRIPTION_TYPE = "text/plain";
+    static final String HTTPS_SCHEME = "https://";
 
     private Map<String, Object> map;
 
@@ -60,7 +61,7 @@ public class SyndEntryBuilder {
     }
 
     private String getUri() {
-        return "http://" + ((Location) ThreadContext.getData(LOCATION_KEY)).getHostname() + get(uri);
+        return HTTPS_SCHEME + ((Location) ThreadContext.getData(LOCATION_KEY)).getHostname() + get(uri);
     }
 
     private String get(Field field) {
