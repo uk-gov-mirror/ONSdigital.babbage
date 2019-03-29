@@ -51,6 +51,8 @@ public class ContentClient {
     private static final String REINDEX_ENDPOINT = "/reindex";
     private static final String GENERATOR_ENDPOINT = "/generator";
     private static final String EXPORT_ENDPOINT = "/export";
+    private static final String RESOLVE_DATASETS_ENDPOINT = "/resolveDatasets";
+    private static final String URI_PARAM = "uri";
 
     //singleton
     private ContentClient() {
@@ -114,6 +116,14 @@ public class ContentClient {
     public ContentResponse getContent(String uri, Map<String, String[]> queryParameters) throws ContentReadException {
         return resolveMaxAge(uri, sendGet(getPath(DATA_ENDPOINT), addUri(uri, getParameters(queryParameters))));
     }
+
+
+    public ContentResponse getDatasetSummaries(String uri) throws ContentReadException {
+        List<NameValuePair> nameValuePairs = new ArrayList<>();
+        nameValuePairs.add(new BasicNameValuePair(URI_PARAM, uri));
+        return sendGet(getPath(RESOLVE_DATASETS_ENDPOINT), addUri(uri, nameValuePairs));
+    }
+
 
     public ContentResponse getResource(String uri) throws ContentReadException {
         return resolveMaxAge(uri, sendGet(getPath(RESOURCE_ENDPOINT), addUri(uri, new ArrayList<>())));
