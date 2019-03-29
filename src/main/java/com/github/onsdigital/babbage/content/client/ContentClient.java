@@ -115,6 +115,14 @@ public class ContentClient {
         return resolveMaxAge(uri, sendGet(getPath(DATA_ENDPOINT), addUri(uri, getParameters(queryParameters))));
     }
 
+
+    public ContentResponse getDatasetSummaries(String uri) throws ContentReadException {
+        List<NameValuePair> nameValuePairs = new ArrayList<>();
+        nameValuePairs.add(new BasicNameValuePair("uri", uri));
+        return resolveMaxAge(uri, sendGet(getPath("/ResolveDatasets"), addUri(uri, nameValuePairs)));
+    }
+
+
     public ContentResponse getResource(String uri) throws ContentReadException {
         return resolveMaxAge(uri, sendGet(getPath(RESOURCE_ENDPOINT), addUri(uri, new ArrayList<>())));
     }

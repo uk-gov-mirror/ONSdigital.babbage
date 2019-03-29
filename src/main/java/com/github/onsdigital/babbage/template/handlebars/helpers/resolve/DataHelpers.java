@@ -69,6 +69,33 @@ public enum DataHelpers implements BabbageHandlebarsHelper<Object> {
         }
     },
 
+
+    resolveDatasets {
+        @Override
+        public CharSequence apply(Object uri, Options options) throws IOException {
+            ContentResponse contentResponse;
+            try {
+                validateUri(uri);
+                String uriString = (String) uri;
+                contentResponse = ContentClient.getInstance().getDatasetSummaries(uriString);
+                try (InputStream data = contentResponse.getDataStream()) {
+                    List<Map<String, Object>> context = toList(data);
+                    assign(options, context);
+                    return options.fn(context);
+                }
+            } catch (Exception e) {
+                logResolveError(uri, e);
+                return options.inverse();
+            }
+        }
+
+        @Override
+        public void register(Handlebars handlebars) {
+            handlebars.registerHelper(this.name(), this);
+        }
+    },
+
+
     /**
      * usage: {{#resolve "uri" [filter=] [assign=variableName]}}
      * <p>
