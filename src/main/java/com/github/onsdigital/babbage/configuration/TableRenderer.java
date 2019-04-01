@@ -3,7 +3,7 @@ package com.github.onsdigital.babbage.configuration;
 import static com.github.onsdigital.babbage.configuration.EnvVarUtils.defaultIfBlank;
 import static com.github.onsdigital.babbage.configuration.EnvVarUtils.getNumberValue;
 import static com.github.onsdigital.babbage.configuration.EnvVarUtils.getValueOrDefault;
-import static com.github.onsdigital.babbage.logging.LogEvent.logEvent;
+import static com.github.onsdigital.logging.v2.event.SimpleEvent.info;
 
 public class TableRenderer implements Loggable {
 
@@ -48,10 +48,9 @@ public class TableRenderer implements Loggable {
 
     @Override
     public void logConfiguration() {
-        logEvent()
-                .parameter(TABLE_RENDERER_HOST_KEY, host)
-                .parameter(TABLE_RENDERER_HTML_PATH_KEY, htmlPath)
-                .parameter(MAX_RENDERER_CONNECTIONS_KEY, maxConnections)
-                .info("table renderer configuration");
+        info().data(TABLE_RENDERER_HOST_KEY, host)
+                .data(TABLE_RENDERER_HTML_PATH_KEY, htmlPath)
+                .data(MAX_RENDERER_CONNECTIONS_KEY, maxConnections)
+                .log("table renderer configuration");
     }
 }

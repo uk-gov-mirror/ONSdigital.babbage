@@ -3,7 +3,7 @@ package com.github.onsdigital.babbage.configuration;
 import static com.github.onsdigital.babbage.configuration.EnvVarUtils.defaultIfBlank;
 import static com.github.onsdigital.babbage.configuration.EnvVarUtils.getNumberValue;
 import static com.github.onsdigital.babbage.configuration.EnvVarUtils.getValueOrDefault;
-import static com.github.onsdigital.babbage.logging.LogEvent.logEvent;
+import static com.github.onsdigital.logging.v2.event.SimpleEvent.info;
 
 public class MapRenderer implements Loggable {
 
@@ -55,11 +55,10 @@ public class MapRenderer implements Loggable {
 
     @Override
     public void logConfiguration() {
-        logEvent()
-                .parameter(MAP_RENDERER_HOST_KEY, host)
-                .parameter(MAP_RENDERER_SVG_PATH_KEY, svgPath)
-                .parameter(MAP_RENDERER_PNG_PATH_KEY, pngPath)
-                .parameter(MAP_RENDERER_MAX_CONNECTIONS_KEY, maxConnections)
-                .info("map renderer configuration");
+        info().data(MAP_RENDERER_HOST_KEY, host)
+                .data(MAP_RENDERER_SVG_PATH_KEY, svgPath)
+                .data(MAP_RENDERER_PNG_PATH_KEY, pngPath)
+                .data(MAP_RENDERER_MAX_CONNECTIONS_KEY, maxConnections)
+                .log("map renderer configuration");
     }
 }

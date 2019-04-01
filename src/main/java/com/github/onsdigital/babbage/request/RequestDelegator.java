@@ -12,9 +12,11 @@ import org.reflections.util.ConfigurationBuilder;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Modifier;
+import java.util.Arrays;
 import java.util.Set;
 
-import static com.github.onsdigital.babbage.logging.LogEvent.logEvent;
+import static com.github.onsdigital.logging.v2.event.SimpleEvent.error;
+import static com.github.onsdigital.logging.v2.event.SimpleEvent.info;
 
 /**
  * Created by bren on 28/05/15.
@@ -89,14 +91,15 @@ public class RequestDelegator {
                 }
             }
 
-            logEvent().parameter("handlers", handlerList.stream(), (h) -> h.getClass().getSimpleName())
-                    .info("registered request handlers");
+            info().data("handlers", Arrays.toString(
+                    handlerList.stream()
+                            .map(h -> h.getClass().getSimpleName())
+                            .toArray()))
+                    .log("registered request handlers");
 
         } catch (Exception e) {
-            logEvent(e).error("failed initializing request handlers");
-            throw new RuntimeException(e);
+            throw error().logException(new RuntimeException(e), "failed initializing request handlers");
         }
-
     }
 
 }

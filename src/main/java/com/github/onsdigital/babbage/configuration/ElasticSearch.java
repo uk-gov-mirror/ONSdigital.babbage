@@ -11,7 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.github.onsdigital.babbage.configuration.EnvVarUtils.getValueOrDefault;
-import static com.github.onsdigital.babbage.logging.LogEvent.logEvent;
+import static com.github.onsdigital.logging.v2.event.SimpleEvent.error;
+import static com.github.onsdigital.logging.v2.event.SimpleEvent.info;
 
 public class ElasticSearch implements Loggable {
 
@@ -60,13 +61,12 @@ public class ElasticSearch implements Loggable {
     }
 
     public void logConfiguration() {
-        logEvent()
-                .parameter(SERVER_KEY, elasticSearchServer)
-                .parameter(PORT_KEY, elasticSearchPort)
-                .parameter(INDEX_ALIAS_KEY, elasticSearchIndexAlias)
-                .parameter(CLUSTER_KEY, elasticSearchCluster)
-                .parameter(HIGHLIGHTS_FILE_KEY, highlightURLBlacklistFile)
-                .info("elastic search configuration");
+        info().data(SERVER_KEY, elasticSearchServer)
+                .data(PORT_KEY, elasticSearchPort)
+                .data(INDEX_ALIAS_KEY, elasticSearchIndexAlias)
+                .data(CLUSTER_KEY, elasticSearchCluster)
+                .data(HIGHLIGHTS_FILE_KEY, highlightURLBlacklistFile)
+                .log("elastic search configuration");
     }
 
     static ElasticSearch getInstance() {
@@ -100,7 +100,7 @@ public class ElasticSearch implements Loggable {
                 }
             } catch (IOException e) {
                 // Print additional info out to stderr
-                logEvent(e).error("error while attempting to load highlight blacklist file");
+                error().exception(e).log("error while attempting to load highlight blacklist file");
                 // Unable to load the file, so return an empty ArrayList (won't black list any urls)
                 return new ArrayList<>();
             }

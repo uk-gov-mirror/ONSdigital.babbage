@@ -2,7 +2,7 @@ package com.github.onsdigital.babbage.configuration;
 
 import static com.github.onsdigital.babbage.configuration.EnvVarUtils.getStringAsBool;
 import static com.github.onsdigital.babbage.configuration.EnvVarUtils.getValueOrDefault;
-import static com.github.onsdigital.babbage.logging.LogEvent.logEvent;
+import static com.github.onsdigital.logging.v2.event.SimpleEvent.info;
 
 public class Handlebars implements Loggable {
 
@@ -65,13 +65,12 @@ public class Handlebars implements Loggable {
     }
 
     public void logConfiguration() {
-        logEvent()
-                .parameter("defaultHandlebarsDatePattern", defaultHandlebarsDatePattern)
-                .parameter("mainContentTemplateName", mainContentTemplateName)
-                .parameter("mainChartConfigTemplateName", mainChartConfigTemplateName)
-                .parameter("templatesDir", templatesDir)
-                .parameter("templatesSuffix", templatesSuffix)
-                .parameter("reloadTemplateChanges", reloadTemplateChanges)
-                .info("handlerbars configuration");
+        info().data("defaultHandlebarsDatePattern", defaultHandlebarsDatePattern)
+                .data("mainContentTemplateName", mainContentTemplateName)
+                .data("mainChartConfigTemplateName", mainChartConfigTemplateName)
+                .data("templatesDir", templatesDir)
+                .data("templatesSuffix", templatesSuffix)
+                .data("reloadTemplateChanges", reloadTemplateChanges)
+                .log("handlerbars configuration");
     }
 }

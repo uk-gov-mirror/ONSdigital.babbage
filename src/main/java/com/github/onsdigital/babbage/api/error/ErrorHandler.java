@@ -16,7 +16,7 @@ import java.io.StringReader;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import static com.github.onsdigital.babbage.logging.LogEvent.logEvent;
+import static com.github.onsdigital.logging.v2.event.SimpleEvent.error;
 
 /**
  * Created by bren on 28/05/15.
@@ -36,17 +36,17 @@ public class ErrorHandler implements ServerError {
         if (ContentReadException.class.isAssignableFrom(t.getClass())) {
             ContentReadException exception = (ContentReadException) t;
             renderErrorPage(exception.getStatusCode(), response);//renderTemplate template with status code name e.g. 404
-            logEvent(t).error("errorHandler");
+            error().exception(t).log("error handler");
             return;
         } else if (t instanceof ResourceNotFoundException) {
-            logEvent(t).error("ResourceNotFoundException error");
+            error().exception(t).log("ResourceNotFoundException error");
             renderErrorPage(404, response);
             return;
         } else if (t instanceof LegacyPDFException) {
-            logEvent(t).error("LegacyPDFException error");
+            error().exception(t).log("LegacyPDFException error");
             renderErrorPage(501, response);
         } else {
-            logEvent(t).error("Unknown error");
+            error().exception(t).log("unknown error");
             renderErrorPage(500, response);
         }
     }
@@ -64,12 +64,10 @@ public class ErrorHandler implements ServerError {
             IOUtils.copy(new StringReader(errorHtml), response.getOutputStream());
         } catch (Exception e) {
             if (statusCode != 500) {
-                logEvent(e).responseStatus(statusCode)
-                        .error("error rendering template for status code, render 500 template");
+                error().exception(e).log("error rendering template for status code, render 500 template");
                 renderErrorPage(500, response);
             } else {
-                logEvent(e).responseStatus(statusCode)
-                        .error("error rendering 500 template");
+                error().exception(e).log("error rendering 500 template");
             }
         }
     }

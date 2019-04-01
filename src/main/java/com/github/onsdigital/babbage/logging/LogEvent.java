@@ -21,28 +21,28 @@ public class LogEvent extends LogMessageBuilder {
 
     private static final String REQ_ID = "X-Request-Id";
 
-    public static LogEvent logEvent() {
+    private static LogEvent logEvent() {
         return new LogEvent("");
     }
 
-    public static LogEvent logEvent(Throwable e) {
+    private static LogEvent logEvent(Throwable e) {
         return new LogEvent(e);
     }
 
-    public static LogEvent logEvent(Throwable e, String message) {
+    private static LogEvent logEvent(Throwable e, String message) {
         return new LogEvent(e, message);
     }
 
-    protected LogEvent(String eventDescription) {
+    private LogEvent(String eventDescription) {
         super(eventDescription);
         setNamespace("babbage"); // TODO should this be configurable?
     }
 
-    protected LogEvent(Throwable e) {
+    private LogEvent(Throwable e) {
         this(e, "");
     }
 
-    protected LogEvent(Throwable e, String message) {
+    private LogEvent(Throwable e, String message) {
         super(e, message);
         setNamespace("babbage"); // TODO should this be configurable?
     }

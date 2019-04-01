@@ -5,7 +5,7 @@ import static com.github.onsdigital.babbage.configuration.EnvVarUtils.getNumberV
 import static com.github.onsdigital.babbage.configuration.EnvVarUtils.getStringAsBool;
 import static com.github.onsdigital.babbage.configuration.EnvVarUtils.getValue;
 import static com.github.onsdigital.babbage.configuration.EnvVarUtils.getValueOrDefault;
-import static com.github.onsdigital.babbage.logging.LogEvent.logEvent;
+import static com.github.onsdigital.logging.v2.event.SimpleEvent.info;
 
 public class Babbage implements Loggable {
 
@@ -155,21 +155,20 @@ public class Babbage implements Loggable {
     }
 
     public void logConfiguration() {
-        logEvent()
-                .parameter("maxVisiblePaginatorLink", maxVisiblePaginatorLink)
-                .parameter("resultsPerPage", resultsPerPage)
-                .parameter("maxResultsPerPage", maxResultsPerPage)
-                .parameter("defaultCacheTime", defaultCacheTime)
-                .parameter("publishCacheTimeout", publishCacheTimeout)
-                .parameter("searchResponseCacheTime", searchResponseCacheTime)
-                .parameter("cacheEnabled", cacheEnabled)
-                .parameter("isDevEnv", isDevEnv)
-                .parameter("isPublishing", isPublishing)
-                .parameter("phantomjsPath", phantomjsPath)
-                .parameter("maxHighchartsServerConnections", maxHighchartsServerConnections)
-                .parameter("exportSeverUrl", exportSeverUrl)
-                .parameter("ghostscriptPath", ghostscriptPath)
-                .parameter("mathjaxExportServer", mathjaxExportServer)
-                .info("babbage general configuration");
+        info().data("maxVisiblePaginatorLink", maxVisiblePaginatorLink)
+                .data("resultsPerPage", resultsPerPage)
+                .data("maxResultsPerPage", maxResultsPerPage)
+                .data("defaultCacheTime", defaultCacheTime)
+                .data("publishCacheTimeout", publishCacheTimeout)
+                .data("searchResponseCacheTime", searchResponseCacheTime)
+                .data("cacheEnabled", cacheEnabled)
+                .data("isDevEnv", isDevEnv)
+                .data("isPublishing", isPublishing)
+                .data("phantomjsPath", phantomjsPath)
+                .data("maxHighchartsServerConnections", maxHighchartsServerConnections)
+                .data("exportSeverUrl", exportSeverUrl)
+                .data("ghostscriptPath", ghostscriptPath)
+                .data("mathjaxExportServer", mathjaxExportServer)
+                .log("babbage general configuration");
     }
 }

@@ -23,7 +23,8 @@ import java.util.UUID;
 import java.util.concurrent.Callable;
 
 import static com.github.onsdigital.babbage.configuration.ApplicationConfiguration.appConfig;
-import static com.github.onsdigital.babbage.logging.LogEvent.logEvent;
+import static com.github.onsdigital.logging.v2.event.SimpleEvent.error;
+import static com.github.onsdigital.logging.v2.event.SimpleEvent.info;
 
 public abstract class AbstractSearchRequest<T> implements Callable<T> {
 
@@ -47,6 +48,7 @@ public abstract class AbstractSearchRequest<T> implements Callable<T> {
 
     /**
      * Abstract method for building/returning the target URI for HTTP requests
+     *
      * @return
      */
     public abstract URIBuilder targetUri();
@@ -84,6 +86,7 @@ public abstract class AbstractSearchRequest<T> implements Callable<T> {
 
     /**
      * Abstract method for executing requests
+     *
      * @return
      * @throws Exception
      */
@@ -95,11 +98,9 @@ public abstract class AbstractSearchRequest<T> implements Callable<T> {
             String jsonResponse = EntityUtils.toString(response.getEntity());
             int code = response.getStatusLine().getStatusCode();
 
+            info().endHTTP(response.getStatusLine().getStatusCode()).log("request complete");
+
             if (code != HttpStatus.SC_OK) {
-                logEvent()
-                        .requestID(this.getRequestBase())
-                        .responseStatus(code)
-                        .error("External search service returned non 200 response");
                 throw new SearchErrorResponse(jsonResponse, code, this.getRequestId());
             }
 
@@ -111,10 +112,7 @@ public abstract class AbstractSearchRequest<T> implements Callable<T> {
             return MAPPER.readValue(jsonResponse, this.returnClass);
         } catch (Exception e) {
             // Log failure with request context then re-throw
-            logEvent(e)
-                    .requestID(this.getRequestBase())
-                    .info("Error executing external search request");
-            throw e;
+            throw error().logException(e, "error executing external search request");
         }
     }
 

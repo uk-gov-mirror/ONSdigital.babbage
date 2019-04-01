@@ -21,8 +21,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import static com.github.onsdigital.babbage.configuration.ApplicationConfiguration.appConfig;
-import static com.github.onsdigital.babbage.logging.LogEvent.logEvent;
 import static com.github.onsdigital.babbage.search.ElasticSearchClient.getElasticsearchClient;
+import static com.github.onsdigital.logging.v2.event.SimpleEvent.error;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 public class SearchHelper {
@@ -104,7 +104,7 @@ public class SearchHelper {
                 }
             } else {
                 // This should never happen, but 'log' if it does
-                logEvent().warn("got null query/types while checking for retired product pages in SearchHelper");
+                error().log("got null query/types while checking for retired product pages in SearchHelper");
                 // Add the response so something is displayed on the site
                 helpers.add(searchResponse);
             }
