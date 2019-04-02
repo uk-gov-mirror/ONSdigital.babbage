@@ -3,7 +3,11 @@ package com.github.onsdigital.babbage.search.external;
 import com.github.onsdigital.babbage.search.external.requests.base.AbstractSearchRequest;
 import com.github.onsdigital.babbage.search.external.requests.base.SearchClosable;
 import com.github.onsdigital.babbage.search.external.requests.base.ShutdownThread;
-import com.github.onsdigital.babbage.search.external.requests.search.*;
+import com.github.onsdigital.babbage.search.external.requests.search.ContentQuery;
+import com.github.onsdigital.babbage.search.external.requests.search.FeaturedResultQuery;
+import com.github.onsdigital.babbage.search.external.requests.search.ListType;
+import com.github.onsdigital.babbage.search.external.requests.search.SearchQuery;
+import com.github.onsdigital.babbage.search.external.requests.search.TypeCountsQuery;
 import com.github.onsdigital.babbage.search.input.SortBy;
 import com.github.onsdigital.babbage.search.input.TypeFilter;
 import com.github.onsdigital.babbage.search.model.SearchResult;
@@ -19,8 +23,12 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 import static com.github.onsdigital.babbage.configuration.ApplicationConfiguration.appConfig;
-import static com.github.onsdigital.babbage.logging.LogEvent.logEvent;
-import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.*;
+import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.extractPage;
+import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.extractSearchTerm;
+import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.extractSelectedFilters;
+import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.extractSize;
+import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.extractSortBy;
+import static com.github.onsdigital.logging.v2.event.SimpleEvent.info;
 
 public class SearchClient implements SearchClosable {
 
@@ -31,13 +39,13 @@ public class SearchClient implements SearchClosable {
             synchronized (SearchClient.class) {
                 if (INSTANCE == null) {
                     INSTANCE = new SearchClient();
-                    logEvent()
-                            .parameter("address", appConfig().externalSearch().address())
-                            .info("initialising external search client");
+                    info().data("address", appConfig().externalSearch().address())
+                            .log("initialising external search client");
+
                     Runtime.getRuntime().addShutdownHook(new ShutdownThread(INSTANCE));
-                    logEvent()
-                            .parameter("address", appConfig().externalSearch().address())
-                            .info("initialisation of external search client completed successfully");
+
+                    info().data("address", appConfig().externalSearch().address())
+                            .log("initialisation of external search client completed successfully");
                 }
             }
         }
@@ -52,6 +60,7 @@ public class SearchClient implements SearchClosable {
 
     /**
      * Returns a CloseableHttpResponse, WHICH MUST BE CLOSED AFTER USE (e.g try with resources)!!!
+     *
      * @param searchRequest
      * @return
      * @throws Exception
@@ -60,20 +69,12 @@ public class SearchClient implements SearchClosable {
         HttpRequestBase request = searchRequest.getRequestBase();
 
         HttpRequestBase requestBase = searchRequest.getRequestBase();
-        logEvent()
-                .requestID(requestBase)
-                .parameter("httpMethod", requestBase.getMethod())
-                .uri(requestBase.getURI())
-                .info("Executing external search request");
-
         return this.client.execute(request);
     }
 
     @Override
     public void close() throws Exception {
-        logEvent()
-                .info("Closing external search HTTP client");
-
+        info().log("closing external search HTTP client");
         this.client.close();
     }
 

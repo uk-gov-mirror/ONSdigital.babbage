@@ -12,12 +12,13 @@ import org.reflections.util.ConfigurationBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Modifier;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import static com.github.onsdigital.babbage.logging.LogEvent.logEvent;
 import static com.github.onsdigital.babbage.util.RequestUtil.getQueryParameters;
+import static com.github.onsdigital.logging.v2.event.SimpleEvent.info;
 
 /**
  * Handle data requests. Proxies data requests to content service
@@ -68,8 +69,10 @@ public class DataRequestHandler extends BaseRequestHandler {
                 }
             }
 
-            logEvent().parameter("handlers", listPageHandlers.entrySet().stream(),
-                    (e) -> e.getValue().getClass().getName()).info("registered list page request handlers");
+            info().data("handlers", Arrays.toString(listPageHandlers.entrySet()
+                    .stream()
+                    .map((e) -> e.getValue().getClass().getName()).toArray()))
+                    .log("registered list page request handlers");
 
         } catch (Exception e) {
             System.err.println("Failed initializing request handlers");

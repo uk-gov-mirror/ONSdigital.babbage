@@ -1,6 +1,6 @@
 package com.github.onsdigital.babbage.configuration;
 
-import static com.github.onsdigital.babbage.logging.LogEvent.logEvent;
+import static com.github.onsdigital.logging.v2.event.SimpleEvent.info;
 
 /**
  * ApplicationConfiguration is responsible for loading the babbage configuration classes and providing a single
@@ -52,15 +52,14 @@ public class ApplicationConfiguration {
         externalSearch = ExternalSearch.getInstance();
         mapRenderer = MapRenderer.getInstance();
 
-        logApplicationConfigs(elasticSearch, contentAPI, babbage,
-                handlebars, tableRenderer, externalSearch, mapRenderer);
-    }
-
-    private void logApplicationConfigs(Loggable... configs) {
-        logEvent().info("loading babbage startup configurations");
-        for (Loggable l : configs) {
-            l.logConfiguration();
-        }
+        info().data("elastic_search_config", elasticSearch.getConfig())
+                .data("content_api_config", contentAPI.getConfig())
+                .data("babbge_config", babbage.getConfig())
+                .data("handlebars_config", handlebars.getConfig())
+                .data("table_renderer_config", tableRenderer.getConfig())
+                .data("external_search_config", externalSearch.getConfig())
+                .data("map_renderer_config", mapRenderer.getConfig())
+                .log("successfully loaded application configuration");
     }
 
     public ElasticSearch elasticSearch() {

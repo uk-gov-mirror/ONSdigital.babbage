@@ -1,6 +1,6 @@
 package com.github.onsdigital.babbage.search.external.requests.base;
 
-import static com.github.onsdigital.babbage.logging.LogEvent.logEvent;
+import static com.github.onsdigital.logging.v2.event.SimpleEvent.error;
 
 /**
  * Class for adding Shutdown hooks for search threads
@@ -18,8 +18,7 @@ public class ShutdownThread extends Thread {
         try {
             this.searchClosable.close();
         } catch (Exception e) {
-            logEvent(e).parameter("class", this.searchClosable.getClass().getSimpleName())
-                    .error("error while attempting to run shutdown task for object");
+            error().exception(e).log("error while attempting to run shutdown task for object");
         }
     }
 

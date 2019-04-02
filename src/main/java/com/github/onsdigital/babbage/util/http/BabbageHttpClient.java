@@ -12,7 +12,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.concurrent.TimeUnit;
 
-import static com.github.onsdigital.babbage.logging.LogEvent.logEvent;
+import static com.github.onsdigital.logging.v2.event.SimpleEvent.info;
 
 /**
  * Class for building Closable Http clients to be used by Babbage
@@ -32,8 +32,7 @@ public class BabbageHttpClient implements AutoCloseable {
         this.httpClient = customClientBuilder.setConnectionManager(connectionManager)
                 .build();
 
-        logEvent()
-                .info("Starting monitor thread");
+        info().log("Starting monitor thread");
         this.monitorThread = new IdleConnectionMonitorThread(connectionManager);
         this.monitorThread.start();
         Runtime.getRuntime().addShutdownHook(new BabbageHttpClient.ShutdownHook());
@@ -66,21 +65,16 @@ public class BabbageHttpClient implements AutoCloseable {
         try {
             return builder.build();
         } catch (URISyntaxException e) {
-            logEvent(e)
-                    .error("Error building uri");
+            info().exception(e).log("error building uri");
             throw new RuntimeException(e);
         }
     }
 
     @Override
     public void close() throws Exception {
-        logEvent()
-                .host(host.getHost())
-                .info("Shutting down connection pool");
+        info().data("host", host.getHost()).log("Shutting down connection pool");
         httpClient.close();
-        logEvent()
-                .host(host.getHost())
-                .info("Successfully shut down connection pool");
+        info().data("host", host.getHost()).log("Successfully shut down connection pool");
         monitorThread.shutdown();
     }
 
@@ -96,16 +90,12 @@ public class BabbageHttpClient implements AutoCloseable {
 
         @Override
         public void run() {
-            logEvent()
-                    .host(host.getHost())
-                    .info("Running connection pool monitor");
+            info().data("host", host.getHost()).log("Running connection pool monitor");
             try {
                 while (!shutdown) {
                     synchronized (this) {
                         wait(5000);
                         // Close expired connections every 5 seconds
-                        logEvent()
-                                .info("Closing expired connections");
                         connMgr.closeExpiredConnections();
                         // Close connections
                         // that have been idle longer than 30 sec
@@ -113,16 +103,12 @@ public class BabbageHttpClient implements AutoCloseable {
                     }
                 }
             } catch (InterruptedException ex) {
-                logEvent(ex)
-                        .host(host.getHost())
-                        .error("Connection pool monitor failed");
+                info().exception(ex).data("host", host.getHost()).log("Connection pool monitor failed");
             }
         }
 
         public void shutdown() {
-            logEvent()
-                    .host(host.getHost())
-                    .info("Shutting down connection pool monitor");
+            info().data("host", host.getHost()).log("Shutting down connection pool monitor");
             shutdown = true;
             synchronized (this) {
                 notifyAll();
@@ -135,16 +121,12 @@ public class BabbageHttpClient implements AutoCloseable {
         @Override
         public void run() {
             try {
-                logEvent()
-                        .host(host.getHost())
-                        .info("Closing http client");
+                info().data("host", host.getHost()).log("Closing http client");
                 if (httpClient != null) {
                     close();
                 }
             } catch (Exception e) {
-                logEvent(e)
-                        .host(host.getHost())
-                        .error("Falied shutting down http client");
+                info().exception(e).data("host", host.getHost()).log("Falied shutting down http client");
             }
         }
     }

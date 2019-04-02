@@ -4,7 +4,6 @@ import com.google.common.collect.ImmutableList;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,10 +12,11 @@ import java.util.List;
  * Be sure to implement the com.github.onsdigital.babbage.api.filter.Filter interface and add it into the list
  * contained in this class to specify when it is run.
  */
-public class BabbageFilter implements com.github.davidcarboni.restolino.framework.Filter {
+public class BabbageFilter implements com.github.davidcarboni.restolino.framework.PreFilter {
 
     private static final List<Filter> filters = new ImmutableList.Builder<Filter>()
             .add(
+                    new RequestLogFilter(),
                     new RequestContextFilter(),
                     new CorsFilter(),
                     new UrlRedirectFilter(),

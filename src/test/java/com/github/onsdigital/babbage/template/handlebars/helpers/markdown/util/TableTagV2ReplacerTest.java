@@ -85,7 +85,8 @@ public class TableTagV2ReplacerTest {
 
     @Test
     public void replaceShouldRenderOriginalContentWhenContentNotFound() throws Exception {
-        when(contentClientMock.getResource(anyString())).thenThrow(readException);
+        ContentReadException ex = new ContentReadException(404, "");
+        when(contentClientMock.getResource(anyString())).thenThrow(ex);
 
         String result = testObj.replace(matcher);
 

@@ -5,7 +5,7 @@ import java.io.InputStream;
 import java.util.Optional;
 import java.util.Properties;
 
-import static com.github.onsdigital.babbage.logging.LogEvent.logEvent;
+import static com.github.onsdigital.logging.v2.event.SimpleEvent.error;
 
 /**
  * Service for obtaining RSS relates properties/configuration.
@@ -39,7 +39,7 @@ public class PropertiesService {
             propertiesOptional = propertiesOptional.of(new Properties());
             propertiesOptional.get().load(in);
         } catch (IOException io) {
-            logEvent(io).error("unexpected error while attempting to load RSS properties");
+            error().exception(io).log("unexpected error while attempting to load RSS properties");
         }
     }
 }

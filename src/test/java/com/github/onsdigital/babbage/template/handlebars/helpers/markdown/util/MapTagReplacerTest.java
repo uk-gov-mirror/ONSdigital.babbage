@@ -113,7 +113,7 @@ public class MapTagReplacerTest {
 
     @Test
     public void replaceShouldRenderOriginalContentWhenContentNotFound() throws Exception {
-        when(contentClientMock.getResource(anyString())).thenThrow(readException);
+        when(contentClientMock.getResource(anyString())).thenThrow(new ContentReadException(0, ""));
 
         String result = testObj.replace(matcher);
 

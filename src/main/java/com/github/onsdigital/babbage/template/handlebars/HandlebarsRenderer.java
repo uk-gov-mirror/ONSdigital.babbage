@@ -18,11 +18,13 @@ import org.reflections.util.ConfigurationBuilder;
 import java.io.IOException;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static com.github.onsdigital.babbage.logging.LogEvent.logEvent;
+import static com.github.onsdigital.logging.v2.event.SimpleEvent.error;
+import static com.github.onsdigital.logging.v2.event.SimpleEvent.info;
 
 /**
  * Created by bren on 28/05/15.
@@ -121,12 +123,14 @@ public class HandlebarsRenderer {
                 }
             }
 
-            logEvent().parameter("helpers", helpersList.stream(), (h) -> h)
-                    .info("registered handlebars helpers");
+            info().data("helpers", Arrays.toString(helpersList.stream()
+                    .map(h -> h.getClass().getSimpleName())
+                    .toArray()))
+                    .log("registered handlebars helpers");
 
         } catch (Exception e) {
-            System.err.println("Failed initializing handlebars helpers");
-            throw new RuntimeException("Failed initializing request handlers", e);
+            throw error().logException(new RuntimeException(
+                    "Failed initializing request handlers"), "failed initializing handlebars helpers");
         }
 
     }

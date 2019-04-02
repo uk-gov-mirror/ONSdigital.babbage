@@ -13,16 +13,19 @@
         <handlebars-java-version>4.0.3</handlebars-java-version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <powermock.version>1.5.6</powermock.version>
+        <dp-logging.version>release~1.1.0</dp-logging.version>
     </properties>
 
     <dependencies>
 
         <!-- Prototyping framework -->
+
         <dependency>
-            <groupId>com.github.davidcarboni</groupId>
+            <groupId>com.github.ONSdigital</groupId>
             <artifactId>restolino</artifactId>
-            <version>0.1.8</version>
+            <version>master-SNAPSHOT</version>
         </dependency>
+
         <dependency>
             <groupId>com.github.davidcarboni</groupId>
             <artifactId>resource-utils</artifactId>
@@ -164,11 +167,11 @@
             <version>0.9.9</version>
         </dependency>
 
-        <!--Logging-->
+        <!-- Logging -->
         <dependency>
             <groupId>com.github.ONSdigital</groupId>
             <artifactId>dp-logging</artifactId>
-            <version>master-SNAPSHOT</version>
+            <version>${dp-logging.version}</version>
         </dependency>
 
         <!-- JWTs for signed URLs -->

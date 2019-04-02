@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static com.github.onsdigital.babbage.logging.LogEvent.logEvent;
+import static com.github.onsdigital.logging.v2.event.SimpleEvent.error;
 
 /**
  * Builder wrapper for the {@link SyndFeed} object providing convenient way to construct {@link SyndFeed} objects.
@@ -107,7 +107,7 @@ public class SyndFeedBuilder {
         try {
             new SyndFeedOutput().output(feed, response.getWriter());
         } catch (IOException | FeedException ex) {
-            logEvent(ex).error("unexpected error while attempting to write RSS feed to HttpServletResponse");
+            error().exception(ex).log("unexpected error while attempting to write RSS feed to HttpServletResponse");
         }
     }
 }

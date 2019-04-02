@@ -1,5 +1,6 @@
 package com.github.onsdigital.babbage.util.http;
 
+import com.github.onsdigital.logging.v2.event.HTTP;
 import org.apache.commons.io.Charsets;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
@@ -7,7 +8,11 @@ import org.apache.http.StatusLine;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.*;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpDelete;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.util.EntityUtils;
@@ -19,7 +24,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import static com.github.onsdigital.babbage.logging.LogEvent.logEvent;
+import static com.github.onsdigital.logging.v2.event.SimpleEvent.error;
+import static com.github.onsdigital.logging.v2.event.SimpleEvent.info;
 
 /**
  * Created by bren on 22/07/15.
@@ -49,7 +55,10 @@ public class PooledHttpClient extends BabbageHttpClient {
         URI uri = buildGetUri(path, queryParameters);
         HttpGet request = new HttpGet(uri);
         addHeaders(headers, request);
-        return validate(httpClient.execute(request));
+
+        HTTP http = getHTTP(request);
+        info().data("request", getHTTP(request)).log("sending http request");
+        return validate(httpClient.execute(request), http);
     }
 
 
@@ -57,7 +66,10 @@ public class PooledHttpClient extends BabbageHttpClient {
         URI uri = buildGetUri(path, queryParameters);
         HttpDelete request = new HttpDelete(uri);
         addHeaders(headers, request);
-        return validate(httpClient.execute(request));
+
+        HTTP http = getHTTP(request);
+        info().data("request", getHTTP(request)).log("sending http request");
+        return validate(httpClient.execute(request), http);
     }
 
     /**
@@ -77,7 +89,10 @@ public class PooledHttpClient extends BabbageHttpClient {
         if (postParameters != null) {
             request.setEntity(new UrlEncodedFormEntity(postParameters, Charsets.UTF_8));
         }
-        return validate(httpClient.execute(request));
+
+        HTTP http = getHTTP(request);
+        info().data("request", getHTTP(request)).log("sending http request");
+        return validate(httpClient.execute(request), http);
     }
 
     public CloseableHttpResponse sendPost(String path, Map<String, String> headers, String content, String charset) throws IOException {
@@ -86,7 +101,10 @@ public class PooledHttpClient extends BabbageHttpClient {
         addHeaders(headers, request);
 
         request.setEntity(new StringEntity(content, charset));
-        return validate(httpClient.execute(request));
+
+        HTTP http = getHTTP(request);
+        info().data("request", getHTTP(request)).log("sending http request");
+        return validate(httpClient.execute(request), http);
     }
 
     private void addHeaders(Map<String, String> headers, HttpRequestBase request) {
@@ -131,8 +149,13 @@ public class PooledHttpClient extends BabbageHttpClient {
     /**
      * Throws appropriate errors if response is not successful
      */
-    private CloseableHttpResponse validate(CloseableHttpResponse response) throws ClientProtocolException {
+    private CloseableHttpResponse validate(CloseableHttpResponse response, HTTP requestDetails) throws ClientProtocolException {
         StatusLine statusLine = response.getStatusLine();
+
+        info().data("request", requestDetails)
+                .data("status_code", statusLine.getStatusCode())
+                .log("request complete");
+
         HttpEntity entity = response.getEntity();
         if (statusLine.getStatusCode() > 302) {
             String errorMessage = getErrorMessage(entity);
@@ -152,10 +175,17 @@ public class PooledHttpClient extends BabbageHttpClient {
             String s = EntityUtils.toString(entity);
             return s;
         } catch (Exception e) {
-            logEvent(e)
-                    .host(host.getHost())
-                    .error("Failed reading content service:");
+            error().exception(e).log("Failed reading content service:");
         }
         return null;
+    }
+
+    private HTTP getHTTP(HttpRequestBase request) {
+        return new HTTP()
+                .setMethod(request.getMethod())
+                .setPath(request.getURI().getPath())
+                .setScheme(request.getURI().getScheme())
+                .setHost(request.getURI().getHost())
+                .setPort(request.getURI().getPort());
     }
 }

@@ -21,9 +21,9 @@ import java.util.Map;
 
 import static com.github.onsdigital.babbage.content.client.ContentClient.depth;
 import static com.github.onsdigital.babbage.content.client.ContentClient.filter;
-import static com.github.onsdigital.babbage.logging.LogEvent.logEvent;
 import static com.github.onsdigital.babbage.util.json.JsonUtil.toList;
 import static com.github.onsdigital.babbage.util.json.JsonUtil.toMap;
+import static com.github.onsdigital.logging.v2.event.SimpleEvent.error;
 
 /**
  * Created by bren on 11/08/15.
@@ -311,7 +311,7 @@ public enum DataHelpers implements BabbageHandlebarsHelper<Object> {
     }
 
     private static void logResolveError(Object uri, Exception e) {
-        logEvent(e).httpGET().uri(uri).error("DataHelpers resolve data for uri");
+        error().exception(e).data("uri", uri).log("DataHelpers resolve data for uri");
     }
 
 }

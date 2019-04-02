@@ -25,7 +25,8 @@ import java.util.List;
 import java.util.Map;
 
 import static com.github.onsdigital.babbage.configuration.ApplicationConfiguration.appConfig;
-import static com.github.onsdigital.babbage.logging.LogEvent.logEvent;
+import static com.github.onsdigital.logging.v2.event.SimpleEvent.error;
+import static com.github.onsdigital.logging.v2.event.SimpleEvent.info;
 
 /**
  * Created by bren on 23/07/15.
@@ -63,10 +64,10 @@ public class ContentClient {
         if (instance == null) {
             synchronized (ContentClient.class) {
                 if (instance == null) {
-                    logEvent().info("initialising ContentClient instance");
+                    info().log("initialising ContentClient instance");
                     instance = new ContentClient();
 
-                    logEvent().info("initialising PooledHttpClient for ContentClient instance");
+                    info().log("initialising PooledHttpClient for ContentClient instance");
                     client = new PooledHttpClient(appConfig().contentAPI().serverURL(), createConfiguration());
                 }
             }
@@ -171,12 +172,14 @@ public class ContentClient {
                 response.setMaxAge(timeToExpire < maxAge ? timeToExpire : maxAge);
             } else if (timeToExpire < 0 && Math.abs(timeToExpire) > appConfig().babbage().getPublishCacheTimeout()) {
                 //if publish is due but there is still a publish date record after an hour drop it
-                logEvent().uri(uri).info("dropping publish date record due to publish wait timeout for uri");
+                info().data("uri", uri).log("dropping publish date record due to publish wait timeout for uri");
                 PublishingManager.getInstance().dropPublishDate(nextPublish);
                 return resolveMaxAge(uri, response);//resolve for next publish date if any
             }
         } catch (Exception e) {
-            logEvent(e).uri(uri).warn("managing publish date failed for uri, skipping setting cache times");
+            error().exception(e)
+                    .data("uri", uri)
+                    .log("managing publish date failed for uri, skipping setting cache times");
         }
         return response;
     }
@@ -230,7 +233,7 @@ public class ContentClient {
             IOUtils.closeQuietly(response);
 
             if (e.getStatusCode() == HttpStatus.SC_NOT_FOUND) {
-                logEvent().uri(path).trace("ContentClient requested uri not found");
+                info().data("uri", path).log("ContentClient requested uri not found");
                 throw new ResourceNotFoundException(e.getMessage());
             }
 
@@ -243,10 +246,7 @@ public class ContentClient {
     }
 
     private ContentResponse sendPost(String path, List<NameValuePair> postParameters) throws ContentReadException {
-        logEvent().httpPOST()
-                .uri(path)
-                .requestParam(postParameters)
-                .debug("ContentClient request");
+        ;
         CloseableHttpResponse response = null;
         try {
             return new ContentResponse(client.sendPost(path, getHeaders(), postParameters));
@@ -260,10 +260,6 @@ public class ContentClient {
     }
 
     private ContentResponse sendDelete(String path, List<NameValuePair> postParameters) throws ContentReadException {
-        logEvent().httpDELETE()
-                .uri(path)
-                .requestParam(postParameters)
-                .debug("ContentClient request");
         CloseableHttpResponse response = null;
         try {
             return new ContentResponse(client.sendDelete(path, getHeaders(), postParameters));
@@ -315,16 +311,12 @@ public class ContentClient {
 
 
     private ContentReadException wrapException(String uri, HttpResponseException e) {
-        logEvent(e).uri(uri)
-                .responseStatus(e.getStatusCode())
-                .error("ContentClient request returned error");
+        error().exception(e).log("ContentClient request returned error");
         return new ContentReadException(e.getStatusCode(), "Failed reading from content service", e);
     }
 
     private ContentReadException wrapException(String uri, IOException e) {
-        logEvent(e).uri(uri)
-                .responseStatus(HttpStatus.SC_INTERNAL_SERVER_ERROR)
-                .error("ContentClient request returned error");
+        error().exception(e).log("ContentClient request returned error");
         return new ContentReadException(HttpStatus.SC_INTERNAL_SERVER_ERROR, "Failed reading from content service", e);
     }
 

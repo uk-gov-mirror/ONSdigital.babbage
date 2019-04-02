@@ -28,8 +28,9 @@ import java.util.List;
 import java.util.Map;
 
 import static com.github.onsdigital.babbage.configuration.ApplicationConfiguration.appConfig;
-import static com.github.onsdigital.babbage.logging.LogEvent.logEvent;
 import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.onsQuery;
+import static com.github.onsdigital.logging.v2.event.SimpleEvent.error;
+import static com.github.onsdigital.logging.v2.event.SimpleEvent.info;
 import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
 import static org.elasticsearch.index.query.QueryBuilders.rangeQuery;
 
@@ -60,7 +61,7 @@ public class Calendar {
         try {
             calendar.validate();
         } catch (ValidationException e) {
-            logEvent(e).error("validation error");
+            error().exception(e).log("get calendar validation error");
         }
         new CalendarOutputter(false).output(calendar, httpServletResponse.getOutputStream());
     }
@@ -69,10 +70,10 @@ public class Calendar {
     public void addReleaseEvents(net.fortuna.ical4j.model.Calendar calendar) throws IOException {
         BoolQueryBuilder releaseQuery = boolQuery()
                 .filter(rangeQuery(Field.releaseDate.fieldName())
-                .from(getThreeMonthsAgo()));
+                        .from(getThreeMonthsAgo()));
         ONSSearchResponse searchResponse = SearchHelper
                 .search(onsQuery(releaseQuery)
-                        .fetchFields(Field.title,Field.edition,Field.releaseDate, Field.summary)
+                        .fetchFields(Field.title, Field.edition, Field.releaseDate, Field.summary)
                         .types(ContentType.release).size(10000));
         List<Map<String, Object>> releases = searchResponse.getResult().getResults();
         for (Map<String, Object> release : releases) {
@@ -84,7 +85,9 @@ public class Calendar {
         Map<String, Object> description = ((Map<String, Object>) release.get("description"));
         if (description == null) {
             Object uri = release.get("uri");
-            logEvent().uri(uri != null ? uri.toString() : "").warn("release with no description found");
+            String uriStr = uri != null ? uri.toString() : "";
+            info().data("uri", uriStr).log("release with no description found");
+
             return null;
         }
 
@@ -102,7 +105,7 @@ public class Calendar {
             return event;
         } catch (Exception e) {
             Object uri = release.get("uri");
-            logEvent(e).uri(uri != null ? uri.toString() : null).error("failed creating calendar even for release");
+            error().data("uri", uri != null ? uri.toString() : null).log("failed creating calendar even for release");
             return null;
         }
     }

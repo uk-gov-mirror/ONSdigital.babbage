@@ -45,7 +45,6 @@ import java.util.Optional;
 import java.util.Set;
 
 import static com.github.onsdigital.babbage.configuration.ApplicationConfiguration.appConfig;
-import static com.github.onsdigital.babbage.logging.LogEvent.logEvent;
 import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.advancedSearchQuery;
 import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.contentQuery;
 import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.departmentQuery;
@@ -61,6 +60,7 @@ import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.e
 import static com.github.onsdigital.babbage.search.input.TypeFilter.contentTypes;
 import static com.github.onsdigital.babbage.search.model.field.Field.cdid;
 import static com.github.onsdigital.babbage.util.URIUtil.isDataRequest;
+import static com.github.onsdigital.logging.v2.event.SimpleEvent.error;
 import static org.apache.commons.lang.ArrayUtils.isEmpty;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
@@ -105,7 +105,7 @@ public class SearchUtils {
                                 .build().toString();
                         return new BabbageRedirectResponse(redirectUri, appConfig().babbage().getSearchResponseCacheTime());
                     } catch (URISyntaxException e) {
-                        logEvent(e).error("unable to encode referrer in timeSeriesUri");
+                        error().exception(e).log("unable to encode referrer in timeSeriesUri");
                     }
                 }
                 return new BabbageRedirectResponse(timeSeriesUri, appConfig().babbage().getSearchResponseCacheTime());

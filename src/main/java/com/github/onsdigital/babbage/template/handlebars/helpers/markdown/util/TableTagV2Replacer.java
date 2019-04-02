@@ -20,7 +20,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static com.github.onsdigital.babbage.configuration.ApplicationConfiguration.appConfig;
-import static com.github.onsdigital.babbage.logging.LogEvent.logEvent;
+import static com.github.onsdigital.logging.v2.event.SimpleEvent.error;
 
 /**
  * Defines the format of the custom markdown tags for charts and defines how to replace them.
@@ -82,16 +82,16 @@ public class TableTagV2Replacer extends TagReplacementStrategy {
             String result = templateService.renderTemplate(template, context, Collections.singletonMap("tableHtml", html));
             return result;
         } catch (ResourceNotFoundException e) {
-            logEvent(e).uri(figureUri).error("failed to find figure data for table");
+            error().exception(e).data("uri", figureUri).log("failed to find figure data for table");
             return templateService.renderTemplate(figureNotFoundTemplate);
         } catch (ContentReadException | TableRendererException e) {
-            logEvent(e).uri(figureUri).error("failed rendering table-v2");
+            error().exception(e).data("uri", figureUri).log("failed rendering table-v2");
             return matcher.group();
         }
     }
 
     private String invokeTableRenderer(String postBody) throws TableRendererException {
-        try (CloseableHttpResponse response = httpClient.sendPost(RENDERER_PATH, HEADERS, postBody, CHARSET)){
+        try (CloseableHttpResponse response = httpClient.sendPost(RENDERER_PATH, HEADERS, postBody, CHARSET)) {
             return IOUtils.toString(response.getEntity().getContent());
         } catch (IOException e) {
             throw new TableRendererException(e);
@@ -105,7 +105,9 @@ public class TableTagV2Replacer extends TagReplacementStrategy {
         return configuration;
     }
 
-    /** TableRendererException is thrown and caught internally in this class only. */
+    /**
+     * TableRendererException is thrown and caught internally in this class only.
+     */
     private static class TableRendererException extends Exception {
         public TableRendererException(Throwable cause) {
             super(cause);

@@ -15,38 +15,38 @@ import java.util.Optional;
  */
 public class ShortUrlFilter implements Filter {
 
-	private static final String ERROR_MSG = "Unexpected error while attempting to find a shortcut url redirect for '%s'.";
+    private static final String ERROR_MSG = "Unexpected error while attempting to find a shortcut url redirect for '%s'.";
 
-	private static Optional<List<ShortcutUrl>> shortcuts = Optional.empty();
+    private static Optional<List<ShortcutUrl>> shortcuts = Optional.empty();
 
-	private ShortcutUrlService shortcutUrlService = ShortcutUrlService.getInstance();
+    private ShortcutUrlService shortcutUrlService = ShortcutUrlService.getInstance();
 
-	@Override
-	public boolean filter(HttpServletRequest req, HttpServletResponse res) {
-		try {
-			String uri = req.getRequestURI().toLowerCase();
-			Optional<ShortcutUrl> temp = get(uri);
+    @Override
+    public boolean filter(HttpServletRequest req, HttpServletResponse res) {
+        try {
+            String uri = req.getRequestURI().toLowerCase();
+            Optional<ShortcutUrl> temp = get(uri);
 
-			if (temp.isPresent()) {
-				res.sendRedirect(temp.get().getRedirect());
-				res.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
-				return false;
-			}
-		} catch (IOException | RedirectException ex) {
-			String msg = String.format(ERROR_MSG, req.getRequestURI());
-			throw new RuntimeException(msg, ex);
-		}
-		return true;
-	}
+            if (temp.isPresent()) {
+                res.sendRedirect(temp.get().getRedirect());
+                res.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
+                return false;
+            }
+        } catch (IOException | RedirectException ex) {
+            String msg = String.format(ERROR_MSG, req.getRequestURI());
+            throw new RuntimeException(msg, ex);
+        }
+        return true;
+    }
 
 
-	private Optional<ShortcutUrl> get(String uri) throws IOException {
-		if (!shortcuts.isPresent()) {
-			shortcuts = Optional.of(shortcutUrlService.shortcuts());
-		}
-		return shortcuts.get()
-				.stream()
-				.filter(shortcutUrl -> shortcutUrl.getShortcut().equalsIgnoreCase(uri))
-				.findFirst();
-	}
+    private Optional<ShortcutUrl> get(String uri) throws IOException {
+        if (!shortcuts.isPresent()) {
+            shortcuts = Optional.of(shortcutUrlService.shortcuts());
+        }
+        return shortcuts.get()
+                .stream()
+                .filter(shortcutUrl -> shortcutUrl.getShortcut().equalsIgnoreCase(uri))
+                .findFirst();
+    }
 }

@@ -9,17 +9,16 @@ import com.github.onsdigital.babbage.search.input.TypeFilter;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
-import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.BiFunction;
 
 import static com.github.onsdigital.babbage.configuration.ApplicationConfiguration.appConfig;
-import static com.github.onsdigital.babbage.logging.LogEvent.logEvent;
 import static com.github.onsdigital.babbage.search.helpers.dates.PublishDates.publishedDates;
 import static com.github.onsdigital.babbage.search.helpers.dates.PublishDates.updatedWithinPeriod;
 import static com.github.onsdigital.babbage.util.RequestUtil.getParam;
+import static com.github.onsdigital.logging.v2.event.SimpleEvent.error;
 import static org.apache.commons.lang3.EnumUtils.getEnum;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 import static org.apache.commons.lang3.StringUtils.upperCase;
@@ -149,10 +148,8 @@ public class SearchRequestHelper {
                 return Math.max(appConfig().babbage().getResultsPerPage(), Math.min(result,
                         appConfig().babbage().getMaxResultsPerPage()));
             } catch (NumberFormatException ex) {
-                logEvent(ex).parameter("value", result)
-                        .error("Failed to parse size parameter to integer. Default value will be used");
-                System.out.println(MessageFormat.format("Failed to parse size parameter to integer." +
-                        " Default value will be used.\n {0}", ex));
+                error().exception(ex).data("value", result)
+                        .log("failed to parse size parameter to integer default value will be used");
             }
         }
         return result;
