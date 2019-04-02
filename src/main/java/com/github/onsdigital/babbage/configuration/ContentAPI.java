@@ -3,13 +3,15 @@ package com.github.onsdigital.babbage.configuration;
 import org.apache.commons.lang3.StringUtils;
 
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.github.onsdigital.babbage.configuration.EnvVarUtils.defaultIfBlank;
 import static com.github.onsdigital.babbage.configuration.EnvVarUtils.getNumberValue;
 import static com.github.onsdigital.babbage.configuration.EnvVarUtils.getValueOrDefault;
 import static com.github.onsdigital.logging.v2.event.SimpleEvent.info;
 
-public class ContentAPI implements Loggable {
+public class ContentAPI implements AppConfig {
 
     // Configuration environment var keys
     private static final String CONTENT_API_HOST_KEY = "CONTENT_SERVICE_URL";
@@ -57,10 +59,12 @@ public class ContentAPI implements Loggable {
         return defaultSimpleDataFormat;
     }
 
-    public void logConfiguration() {
-        info().data(CONTENT_API_HOST_KEY, contentAPIHost)
-                .data(MAX_CONNECTIONS_KEY, maxConnections)
-                .data("defaultContentDatePattern", DEFAULT_CONTENT_DATE_PATTERN)
-                .log("content API configuration");
+    @Override
+    public Map<String, Object> getConfig() {
+        Map<String, Object> config = new HashMap<>();
+        config.put(CONTENT_API_HOST_KEY, contentAPIHost);
+        config.put(MAX_CONNECTIONS_KEY, maxConnections);
+        config.put("defaultContentDatePattern", DEFAULT_CONTENT_DATE_PATTERN);
+        return config;
     }
 }

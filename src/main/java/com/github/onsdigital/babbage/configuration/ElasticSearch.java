@@ -8,13 +8,15 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.github.onsdigital.babbage.configuration.EnvVarUtils.getValueOrDefault;
 import static com.github.onsdigital.logging.v2.event.SimpleEvent.error;
 import static com.github.onsdigital.logging.v2.event.SimpleEvent.info;
 
-public class ElasticSearch implements Loggable {
+public class ElasticSearch implements AppConfig {
 
     private static ElasticSearch INSTANCE = null;
 
@@ -60,13 +62,15 @@ public class ElasticSearch implements Loggable {
         return elasticSearchCluster;
     }
 
-    public void logConfiguration() {
-        info().data(SERVER_KEY, elasticSearchServer)
-                .data(PORT_KEY, elasticSearchPort)
-                .data(INDEX_ALIAS_KEY, elasticSearchIndexAlias)
-                .data(CLUSTER_KEY, elasticSearchCluster)
-                .data(HIGHLIGHTS_FILE_KEY, highlightURLBlacklistFile)
-                .log("elastic search configuration");
+    @Override
+    public Map<String, Object> getConfig() {
+        Map<String, Object> config = new HashMap<>();
+        config.put(SERVER_KEY, elasticSearchServer);
+        config.put(PORT_KEY, elasticSearchPort);
+        config.put(INDEX_ALIAS_KEY, elasticSearchIndexAlias);
+        config.put(CLUSTER_KEY, elasticSearchCluster);
+        config.put(HIGHLIGHTS_FILE_KEY, highlightURLBlacklistFile);
+        return config;
     }
 
     static ElasticSearch getInstance() {

@@ -19,11 +19,13 @@
     <dependencies>
 
         <!-- Prototyping framework -->
+
         <dependency>
-            <groupId>com.github.davidcarboni</groupId>
+            <groupId>com.github.ONSdigital</groupId>
             <artifactId>restolino</artifactId>
-            <version>0.1.8</version>
+            <version>master-SNAPSHOT</version>
         </dependency>
+
         <dependency>
             <groupId>com.github.davidcarboni</groupId>
             <artifactId>resource-utils</artifactId>

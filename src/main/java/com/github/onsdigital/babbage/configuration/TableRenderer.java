@@ -1,11 +1,13 @@
 package com.github.onsdigital.babbage.configuration;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static com.github.onsdigital.babbage.configuration.EnvVarUtils.defaultIfBlank;
 import static com.github.onsdigital.babbage.configuration.EnvVarUtils.getNumberValue;
 import static com.github.onsdigital.babbage.configuration.EnvVarUtils.getValueOrDefault;
-import static com.github.onsdigital.logging.v2.event.SimpleEvent.info;
 
-public class TableRenderer implements Loggable {
+public class TableRenderer implements AppConfig {
 
     private static final String TABLE_RENDERER_HOST_KEY = "TABLE_RENDERER_HOST";
     private static final String TABLE_RENDERER_HTML_PATH_KEY = "TABLE_RENDERER_HTML_PATH";
@@ -47,10 +49,11 @@ public class TableRenderer implements Loggable {
     }
 
     @Override
-    public void logConfiguration() {
-        info().data(TABLE_RENDERER_HOST_KEY, host)
-                .data(TABLE_RENDERER_HTML_PATH_KEY, htmlPath)
-                .data(MAX_RENDERER_CONNECTIONS_KEY, maxConnections)
-                .log("table renderer configuration");
+    public Map<String, Object> getConfig() {
+        Map<String, Object> config = new HashMap<>();
+        config.put(TABLE_RENDERER_HOST_KEY, host);
+        config.put(TABLE_RENDERER_HTML_PATH_KEY, htmlPath);
+        config.put(MAX_RENDERER_CONNECTIONS_KEY, maxConnections);
+        return config;
     }
 }

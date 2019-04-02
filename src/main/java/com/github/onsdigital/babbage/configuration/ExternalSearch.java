@@ -1,5 +1,8 @@
 package com.github.onsdigital.babbage.configuration;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static com.github.onsdigital.babbage.configuration.EnvVarUtils.defaultIfBlank;
 import static com.github.onsdigital.babbage.configuration.EnvVarUtils.getFloatValue;
 import static com.github.onsdigital.babbage.configuration.EnvVarUtils.getNumberValue;
@@ -7,7 +10,7 @@ import static com.github.onsdigital.babbage.configuration.EnvVarUtils.getValue;
 import static com.github.onsdigital.babbage.configuration.EnvVarUtils.getValueOrDefault;
 import static com.github.onsdigital.logging.v2.event.SimpleEvent.info;
 
-public class ExternalSearch implements Loggable {
+public class ExternalSearch implements AppConfig {
 
     private static ExternalSearch INSTANCE;
 
@@ -91,14 +94,15 @@ public class ExternalSearch implements Loggable {
     }
 
     @Override
-    public void logConfiguration() {
-        info().data(EXTERNAL_SEARCH_HOST_KEY, host)
-                .data(EXTERNAL_SEARCH_PORT_KEY, port)
-                .data(EXTERNAL_SEARCH_ENABLED_KEY, enabled)
-                .data(EXTERNAL_SPELLCHECK_ENABLED_KEY, spellCheckEnabled)
-                .data(SPELL_CHECK_CONFIDENCE_THRESHOLD_KEY, spellCheckConfidenceThreshold)
-                .data(SEARCH_NUM_EXECUTORS_KEY, executorCount)
-                .data(SEARCH_MAX_CONNECTIONS, maxConnections)
-                .log("external search configuration");
+    public Map<String, Object> getConfig() {
+        Map<String, Object> config = new HashMap<>();
+        config.put(EXTERNAL_SEARCH_HOST_KEY, host);
+        config.put(EXTERNAL_SEARCH_PORT_KEY, port);
+        config.put(EXTERNAL_SEARCH_ENABLED_KEY, enabled);
+        config.put(EXTERNAL_SPELLCHECK_ENABLED_KEY, spellCheckEnabled);
+        config.put(SPELL_CHECK_CONFIDENCE_THRESHOLD_KEY, spellCheckConfidenceThreshold);
+        config.put(SEARCH_NUM_EXECUTORS_KEY, executorCount);
+        config.put(SEARCH_MAX_CONNECTIONS, maxConnections);
+        return config;
     }
 }

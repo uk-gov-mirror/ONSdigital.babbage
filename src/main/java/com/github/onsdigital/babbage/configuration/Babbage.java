@@ -1,5 +1,8 @@
 package com.github.onsdigital.babbage.configuration;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static com.github.onsdigital.babbage.configuration.EnvVarUtils.defaultIfBlank;
 import static com.github.onsdigital.babbage.configuration.EnvVarUtils.getNumberValue;
 import static com.github.onsdigital.babbage.configuration.EnvVarUtils.getStringAsBool;
@@ -7,7 +10,7 @@ import static com.github.onsdigital.babbage.configuration.EnvVarUtils.getValue;
 import static com.github.onsdigital.babbage.configuration.EnvVarUtils.getValueOrDefault;
 import static com.github.onsdigital.logging.v2.event.SimpleEvent.info;
 
-public class Babbage implements Loggable {
+public class Babbage implements AppConfig {
 
     // env var keys
     private static final String ENABLE_CACHE_KEY = "ENABLE_CACHE";
@@ -154,21 +157,23 @@ public class Babbage implements Loggable {
         return mathjaxExportServer;
     }
 
-    public void logConfiguration() {
-        info().data("maxVisiblePaginatorLink", maxVisiblePaginatorLink)
-                .data("resultsPerPage", resultsPerPage)
-                .data("maxResultsPerPage", maxResultsPerPage)
-                .data("defaultCacheTime", defaultCacheTime)
-                .data("publishCacheTimeout", publishCacheTimeout)
-                .data("searchResponseCacheTime", searchResponseCacheTime)
-                .data("cacheEnabled", cacheEnabled)
-                .data("isDevEnv", isDevEnv)
-                .data("isPublishing", isPublishing)
-                .data("phantomjsPath", phantomjsPath)
-                .data("maxHighchartsServerConnections", maxHighchartsServerConnections)
-                .data("exportSeverUrl", exportSeverUrl)
-                .data("ghostscriptPath", ghostscriptPath)
-                .data("mathjaxExportServer", mathjaxExportServer)
-                .log("babbage general configuration");
+    @Override
+    public Map<String, Object> getConfig() {
+        Map<String, Object> config = new HashMap<>();
+        config.put("maxVisiblePaginatorLink", maxVisiblePaginatorLink);
+        config.put("resultsPerPage", resultsPerPage);
+        config.put("maxResultsPerPage", maxResultsPerPage);
+        config.put("defaultCacheTime", defaultCacheTime);
+        config.put("publishCacheTimeout", publishCacheTimeout);
+        config.put("searchResponseCacheTime", searchResponseCacheTime);
+        config.put("cacheEnabled", cacheEnabled);
+        config.put("isDevEnv", isDevEnv);
+        config.put("isPublishing", isPublishing);
+        config.put("phantomjsPath", phantomjsPath);
+        config.put("maxHighchartsServerConnections", maxHighchartsServerConnections);
+        config.put("exportSeverUrl", exportSeverUrl);
+        config.put("ghostscriptPath", ghostscriptPath);
+        config.put("mathjaxExportServer", mathjaxExportServer);
+        return config;
     }
 }
