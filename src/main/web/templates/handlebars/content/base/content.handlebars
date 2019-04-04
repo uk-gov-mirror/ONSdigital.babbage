@@ -3,8 +3,8 @@
 	{{#block "bulletin-page"}}
 		{{> content/partials/bulletin-header}}
 	{{/block}}
-{{else #if_eq type "compendium_landing_page"}}
-	{{> content/partials/latest-release-header}}
+{{else if_eq type "compendium_landing_page"}}
+	{{> content/partials/compendium-landing-header}}
 {{else}}
     {{> content/partials/standard-header}}
 {{/if_eq}}
