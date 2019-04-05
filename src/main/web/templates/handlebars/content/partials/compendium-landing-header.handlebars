@@ -1,8 +1,8 @@
 <div class="page-neutral-intro {{#if_eq type "home_page"}}background--astral{{else}}background--gallery{{/if_eq}}">
-	<div class="wrapper">
-		<div class="col-wrap">
-			<div class="col">
-				{{#block "block-breadcrumb"}}
+    <div class="wrapper">
+        <div class="col-wrap">
+            <div class="col">
+                {{#block "block-breadcrumb"}}
                     {{#if_eq type "product_page"}}
                         {{> partials/breadcrumb-neutral}}
                     {{else}}
@@ -17,15 +17,15 @@
                             {{> content/partials/intro}}
                         {{/if_eq}}
                     </div>
-				{{/block}}
-			</div> {{!-- /col --}}
+                {{/block}}
+            </div> {{!-- /col --}}
         </div> {{!-- /col-wrap --}}
-	</div> {{!-- /wrapper --}}
+    </div> {{!-- /wrapper --}}
     <div class="wrapper">
-		<div class="col-wrap alert-release-banner-col">
+        <div class="col-wrap padding-bottom--3">
             {{> content/partials/latest-release-header}}
-		</div> {{!-- /col-wrap --}}
-	</div> {{!-- /wrapper --}}
+        </div> {{!-- /col-wrap --}}
+    </div> {{!-- /wrapper --}}
 
-	{{#block "block-intro-secondary"}}{{/block}}
+    {{#block "block-intro-secondary"}}{{/block}}
 </div> {{!-- /page-intro --}}
