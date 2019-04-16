@@ -108,7 +108,11 @@
             {{#if description.summary}}
                  <div class="col-wrap">
                      <div class="col">
-                         <p>{{description.summary}}</p>
+                         <div class="section__content--static-markdown">
+                            <section>
+                                {{md description.summary}}
+                            </section>
+                        </div>  
                      </div>
                  </div>
              {{/if}}
