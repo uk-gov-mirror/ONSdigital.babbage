@@ -28,7 +28,11 @@
                                 <p class="page-neutral-intro__content">{{description._abstract}}</p>
                             {{/if}}
                             {{#if description.releaseDate}}
-                                <p class="page-neutral-intro__meta margin-top--0 margin-bottom--3">{{df description.releaseDate}}</p>
+                                {{#if isReleaseDateEnabled}}    {{!-- presence check ---}}
+                                    {{#if_ne isReleaseDateEnabled false}} {{!-- value check ---}}
+                                        <p class="page-neutral-intro__meta margin-top--0 margin-bottom--3">{{df description.releaseDate}}</p>
+                                    {{/if_ne}}
+                                {{/if}}
                             {{/if}}
                         </div>
                     {{/block}}
