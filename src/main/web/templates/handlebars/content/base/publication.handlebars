@@ -14,7 +14,7 @@
 		<div class="hide--md margin-top-sm--1">{{> partials/related/new-data relatedUri=(concat uri "/relateddata") relatedTitle="self" }}</div>
 
         {{!-- Content --}}
-        <article class="col col--md-36 col--lg-39 page-content__main-content js-sticky-toc__trigger">
+        <article class="col col--md-36 col--lg-39 page-content__main-content padding-bottom: js-sticky-toc__trigger">
             {{#each sections}}
                 <div id="{{slugify title}}" class="section__content--markdown js-sticky-toc__section">
                     <section>
@@ -87,6 +87,10 @@
                             </section>
                         </div>
                     {{/if}}
+                </div>
+            {{else}}
+             <!-- Margin at bottom of article if no Accordion present -->
+                <div class="margin-bottom--4">
                 </div>
             {{/if_any}}
         </article>
