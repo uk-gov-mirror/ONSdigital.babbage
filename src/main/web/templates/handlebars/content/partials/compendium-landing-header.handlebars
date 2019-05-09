@@ -1,0 +1,31 @@
+<div class="page-neutral-intro {{#if_eq type "home_page"}}background--astral{{else}}background--gallery{{/if_eq}}">
+    <div class="wrapper">
+        <div class="col-wrap">
+            <div class="col">
+                {{#block "block-breadcrumb"}}
+                    {{#if_eq type "product_page"}}
+                        {{> partials/breadcrumb-neutral}}
+                    {{else}}
+                        {{> partials/breadcrumb}}
+                    {{/if_eq}}
+				{{/block}}
+				{{#block "block-intro"}}
+                    <div class="col col--md-47 col--lg-48">
+                        {{#if_eq type "product_page"}}
+                            {{> content/partials/intro-neutral}}
+                        {{else}}
+                            {{> content/partials/intro}}
+                        {{/if_eq}}
+                    </div>
+                {{/block}}
+            </div> {{!-- /col --}}
+        </div> {{!-- /col-wrap --}}
+    </div> {{!-- /wrapper --}}
+    <div class="wrapper">
+        <div class="col-wrap padding-bottom--3">
+            {{> content/partials/latest-release-header}}
+        </div> {{!-- /col-wrap --}}
+    </div> {{!-- /wrapper --}}
+
+    {{#block "block-intro-secondary"}}{{/block}}
+</div> {{!-- /page-intro --}}

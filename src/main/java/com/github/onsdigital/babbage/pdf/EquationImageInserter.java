@@ -16,7 +16,8 @@ import org.xhtmlrenderer.simple.extend.FormSubmissionListener;
 
 import java.io.InputStream;
 
-import static com.github.onsdigital.babbage.logging.LogEvent.logEvent;
+import static com.github.onsdigital.logging.v2.event.SimpleEvent.error;
+import static com.github.onsdigital.logging.v2.event.SimpleEvent.info;
 
 public class EquationImageInserter implements ReplacedElementFactory {
 
@@ -47,8 +48,7 @@ public class EquationImageInserter implements ReplacedElementFactory {
 
             InputStream input = null;
             try {
-
-                logEvent().uri(uri).parameter("filename", filename).debug("inserting equation image into PDF");
+                info().data("uri", uri).data("filename", filename).log("inserting equation image into PDF");
 
                 // read the chart JSON from the content service (zebedee reader)
                 ContentResponse contentResponse = ContentClient.getInstance().getResource(uri + "/" + filename + ".png");
@@ -67,7 +67,7 @@ public class EquationImageInserter implements ReplacedElementFactory {
                 }
 
             } catch (Exception e) {
-                logEvent(e).error("error inserting equation image into PDF");
+                error().exception(e).log("error inserting equation image into PDF");
             } finally {
                 IOUtils.closeQuietly(input);
             }

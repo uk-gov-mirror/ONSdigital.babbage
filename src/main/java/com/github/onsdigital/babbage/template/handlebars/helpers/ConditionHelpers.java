@@ -72,6 +72,20 @@ public enum ConditionHelpers implements BabbageHandlebarsHelper<Object> {
 
     },
 
+        //evaluates existance
+        if_null {
+            @Override
+            public CharSequence apply(Object context, Options o) throws IOException {
+                return context == null ? o.fn() : o.inverse();
+            }
+    
+            @Override
+            public void register(Handlebars handlebars) {
+                handlebars.registerHelper(this.name(), this);
+            }
+    
+        },
+
     //Render block if all given params are ok(ok as in resolves as true in javascript)
     if_all {
         @Override

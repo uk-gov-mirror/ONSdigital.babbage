@@ -35,29 +35,7 @@
     </div> {{!-- /wrapper --}}
     <div class="wrapper">
         <div class="col-wrap">
-            {{!-- Latest info --}}
-            {{#unless (endsWith (parentPath uri) "previous")}} 
-                {{!-- If not a previous version workout the latest link --}}
-                {{#if description.latestRelease}}
-                    <div class="col alert-bulletins alert-bulletins__latest">
-                        <p class="alert-bulletins__title">{{labels.this-is-the-latest-release}}
-                        <a href="{{parentPath uri}}/previousReleases">{{labels.view-previous-releases}}</a></p>
-                    </div>
-                {{else}}
-                    {{#resolve (concat (parentPath uri) "/latest") filter="title"}}
-                        <div class="col alert-bulletins alert-bulletins__not-latest">
-                            <p class="alert-bulletins__title">{{labels.this-is-not-the-latest-release}}
-                            <a class="alert-bulletins__link" href="{{uri}}">{{labels.view-latest-release}}</a></p>
-                        </div>
-                    {{/resolve}}
-                {{/if}}
-            {{else}}
-                {{!-- If an older version of any release link to latest version of that release --}}
-                <div class="col alert-bulletins alert-bulletins__not-latest">
-                    <p class="alert-bulletins__title">{{labels.this-has-been-superseded}} <a class="alert-bulletins__link" href="{{parentPath (parentPath uri)}}">{{labels.view-corrected-version}}</a></p>
-                </div>
-            {{/unless}}
-
+            {{> content/partials/latest-release-header}}
             {{!-- Corrections & alerts --}}
             {{#if_any versions alerts}}
             {{!-- {{else}} --}}

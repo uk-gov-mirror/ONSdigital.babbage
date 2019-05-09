@@ -1,5 +1,6 @@
 package com.github.onsdigital.babbage.highcharts;
 
+import com.github.onsdigital.babbage.error.ResourceNotFoundException;
 import com.github.onsdigital.babbage.util.http.ClientConfiguration;
 import com.github.onsdigital.babbage.util.http.PooledHttpClient;
 import org.apache.commons.io.IOUtils;
@@ -14,7 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.github.onsdigital.babbage.configuration.ApplicationConfiguration.appConfig;
-import static com.github.onsdigital.babbage.logging.LogEvent.logEvent;
+import static com.github.onsdigital.logging.v2.event.SimpleEvent.error;
+import static com.github.onsdigital.logging.v2.event.SimpleEvent.info;
 
 /**
  * Created by bren on 17/06/15.
@@ -34,7 +36,7 @@ public class HighChartsExportClient {
             synchronized (HighChartsExportClient.class) {
                 if (instance == null) {
                     instance = new HighChartsExportClient();
-                    logEvent().info("initializing Highcharts export server client connection pool");
+                    info().log("initializing Highcharts export server client connection pool");
                     client = new PooledHttpClient(appConfig().babbage().getExportSeverUrl(), createConfiguration());
                 }
             }
@@ -56,7 +58,7 @@ public class HighChartsExportClient {
      * Retrived the image from Highcharts. <b>Caller is responsible for closing the returned {@link InputStream}</b>
      */
     public InputStream getImage(String chartConfig, Integer width, Double scale) throws IOException {
-        logEvent().debug("making request to Highcharts export server");
+        info().log("making request to Highcharts export server");
         List<NameValuePair> postParameters = new ArrayList<>();
         postParameters.add(new BasicNameValuePair("options", chartConfig));
         postParameters.add(new BasicNameValuePair("type", "png"));
@@ -68,14 +70,14 @@ public class HighChartsExportClient {
         }
 
         try (CloseableHttpResponse response = client.sendPost("/", null, postParameters)) {
-            logEvent().responseStatus(response.getStatusLine().getStatusCode()).debug("Highcharts export response");
 
             // try with resources block will close the response InputStream when the method returns.
             // take a copy of the bytes and return a new Inputstream which is the callers responsibility to close.
             byte[] content = IOUtils.toByteArray(response.getEntity().getContent());
             return new ByteArrayInputStream(content);
         } catch (IOException ex) {
-            throw logEvent(ex, "Unexpected error while requesting highcharts image").logAndCreateException(404, ex);
+            throw error().logException(new ResourceNotFoundException(ex.getMessage()),
+                    "Unexpected error while requesting highcharts image");
         }
     }
 

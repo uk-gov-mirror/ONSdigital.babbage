@@ -12,7 +12,7 @@ import java.util.Date;
 import java.util.TimeZone;
 
 import static com.github.onsdigital.babbage.configuration.ApplicationConfiguration.appConfig;
-import static com.github.onsdigital.babbage.logging.LogEvent.logEvent;
+import static com.github.onsdigital.logging.v2.event.SimpleEvent.error;
 
 /**
  * Created by bren on 10/06/15.
@@ -20,11 +20,10 @@ import static com.github.onsdigital.babbage.logging.LogEvent.logEvent;
 public enum DateHelpers implements BabbageHandlebarsHelper<String> {
 
     /**
-     *
      * Formats given input date string to output date string.
-     *
+     * <p>
      * Patterns must be java date patterns
-     *
+     * <p>
      * {{df dateString [inputFormat=pattern] [outputFormat]}}
      */
     df {
@@ -38,7 +37,7 @@ public enum DateHelpers implements BabbageHandlebarsHelper<String> {
                 String pattern = resolvePattern(options);
                 return FastDateFormat.getInstance(pattern, timeZone).format(parsedDate);
             } catch (Exception e) {
-                logEvent().parameter("value", date).warn("error formatting date value");
+                error().exception(e).data("value", date).log("error formatting date value");
                 return "";
             }
         }
@@ -73,7 +72,7 @@ public enum DateHelpers implements BabbageHandlebarsHelper<String> {
                 }
 
             } catch (Exception e) {
-                logEvent().parameter("value", date).warn("error formatting date value");
+                error().exception(e).data("value", date).log("error formatting date value");
                 return null;
             }
 
@@ -87,7 +86,7 @@ public enum DateHelpers implements BabbageHandlebarsHelper<String> {
     }
 
     private static String resolveInputFormat(Options options) {
-        return  options.hash("inputFormat", appConfig().contentAPI().defaultContentDatePattern());
+        return options.hash("inputFormat", appConfig().contentAPI().defaultContentDatePattern());
     }
 
 }

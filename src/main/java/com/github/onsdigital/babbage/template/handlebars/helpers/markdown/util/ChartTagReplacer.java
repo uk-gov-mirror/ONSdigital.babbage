@@ -11,7 +11,7 @@ import java.nio.file.Paths;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static com.github.onsdigital.babbage.logging.LogEvent.logEvent;
+import static com.github.onsdigital.logging.v2.event.SimpleEvent.error;
 
 /**
  * Defines the format of the custom markdown tags for charts and defines how to replace them.
@@ -46,7 +46,7 @@ public class ChartTagReplacer extends TagReplacementStrategy {
             ContentResponse contentResponse = ContentClient.getInstance().getContent(figureUri);
             return TemplateService.getInstance().renderTemplate(template, contentResponse.getDataStream());
         } catch (ResourceNotFoundException e) {
-            logEvent(e).uri(figureUri).error("failed to find figure data for chart");
+            error().exception(e).data("uri", figureUri).log("failed to find figure data for chart");
             return TemplateService.getInstance().renderTemplate(figureNotFoundTemplate);
         } catch (ContentReadException e) {
             return matcher.group();

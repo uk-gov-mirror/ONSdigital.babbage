@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.github.onsdigital.babbage.content.client.ContentClient.filter;
-import static com.github.onsdigital.babbage.logging.LogEvent.logEvent;
+import static com.github.onsdigital.logging.v2.event.SimpleEvent.info;
 
 
 /**
@@ -38,10 +38,10 @@ public class PDFRequestHandler extends BaseRequestHandler {
     public BabbageResponse get(String requestedUri, HttpServletRequest requests) throws Exception {
 
         String uriPath = StringUtils.removeStart(requestedUri, "/");
-        logEvent().uri(uriPath).info("generating PDF for uri");
+        info().data("uri", uriPath).log("generating PDF for uri");
         String pdfTable = getPDFTables(uriPath);
-        if(pdfTable != null) {
-            logEvent().uri(uriPath).info("generating PDF table");
+        if (pdfTable != null) {
+            info().data("uri", uriPath).log("generating PDF table for uri");
         }
         Path pdfFile = PDFGenerator.generatePdf(requestedUri, getTitle(requestedUri), RequestUtil.getAllCookies(requests), pdfTable);
         InputStream fin = Files.newInputStream(pdfFile);
@@ -89,8 +89,8 @@ public class PDFRequestHandler extends BaseRequestHandler {
 
         List<Map<String, Object>> o = (List<Map<String, Object>>) stringObjectMap.get("pdfTable");
 
-        if(o != null && o.size() > 0) {
-            String filename = (String)o.get(0).get("file");
+        if (o != null && o.size() > 0) {
+            String filename = (String) o.get(0).get("file");
             String file = uri + "/" + filename;
             ContentResponse pdfTableContentResponse = ContentClient.getInstance().getResource(file);
             File targetFile = new File(FileUtils.getTempDirectoryPath() + "/" + filename);

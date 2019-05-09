@@ -20,7 +20,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static com.github.onsdigital.babbage.configuration.ApplicationConfiguration.appConfig;
-import static com.github.onsdigital.babbage.logging.LogEvent.logEvent;
+import static com.github.onsdigital.logging.v2.event.SimpleEvent.error;
 
 /**
  * Defines the format of the custom markdown tags for maps and defines how to replace them.
@@ -35,7 +35,9 @@ public class MapTagReplacer extends TagReplacementStrategy {
     private static final Map<String, String> HEADERS = Collections.singletonMap("Content-Type", "application/json;charset=utf-8");
     private static final String CHARSET = StandardCharsets.UTF_8.name();
 
-    /** the type of map to render - svg or png. */
+    /**
+     * the type of map to render - svg or png.
+     */
     public enum MapType {
         PNG, SVG
     }
@@ -94,16 +96,16 @@ public class MapTagReplacer extends TagReplacementStrategy {
             String result = templateService.renderTemplate(template, context, Collections.singletonMap("mapHtml", html));
             return result;
         } catch (ResourceNotFoundException e) {
-            logEvent(e).uri(figureUri).error("failed to find figure data for map");
+            error().exception(e).data("uri", figureUri).log("failed to find figure data for map");
             return templateService.renderTemplate(figureNotFoundTemplate);
         } catch (ContentReadException | MapRendererException e) {
-            logEvent(e).uri(figureUri).error("failed rendering map");
+            error().exception(e).data("uri", figureUri).log("failed rendering map");
             return matcher.group();
         }
     }
 
     private String invokeMapRenderer(String postBody) throws MapRendererException {
-        try (CloseableHttpResponse response = httpClient.sendPost(rendererPath, HEADERS, postBody, CHARSET)){
+        try (CloseableHttpResponse response = httpClient.sendPost(rendererPath, HEADERS, postBody, CHARSET)) {
             return IOUtils.toString(response.getEntity().getContent());
         } catch (IOException e) {
             throw new MapRendererException(e);
@@ -117,7 +119,9 @@ public class MapTagReplacer extends TagReplacementStrategy {
         return configuration;
     }
 
-    /** MapRendererException is thrown and caught internally in this class only. */
+    /**
+     * MapRendererException is thrown and caught internally in this class only.
+     */
     private static class MapRendererException extends Exception {
         public MapRendererException(Throwable cause) {
             super(cause);

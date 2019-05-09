@@ -28,7 +28,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import static com.github.onsdigital.babbage.configuration.ApplicationConfiguration.appConfig;
-import static com.github.onsdigital.babbage.logging.LogEvent.logEvent;
+import static com.github.onsdigital.logging.v2.event.SimpleEvent.info;
 
 /**
  * Created by bren on 08/07/15.
@@ -117,7 +117,7 @@ public class PDFGenerator {
             };
 
             Process gsProcess = new ProcessBuilder(gsCommand).redirectErrorStream(true).start();
-            logEvent().debug(ArrayUtils.toString(gsCommand));
+            info().data("commands", ArrayUtils.toString(gsCommand)).log("adding data table to PDF");
             int gsExitStatus = gsProcess.waitFor();
 
             BufferedReader gsBufferedReader = new BufferedReader(new InputStreamReader(gsProcess.getInputStream()));
@@ -128,7 +128,6 @@ public class PDFGenerator {
                 gsStringBuilder.append(gsCurrentLine);
                 gsCurrentLine = gsBufferedReader.readLine();
             }
-            logEvent().debug(gsStringBuilder.toString());
 
             Path gsPdfFile = FileSystems.getDefault().getPath(TEMP_DIRECTORY_PATH).resolve(fileName + "-merged.pdf");
             if (!Files.exists(gsPdfFile)) {

@@ -15,11 +15,11 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.Optional;
 
-import static com.github.onsdigital.babbage.logging.LogEvent.logEvent;
 import static com.github.onsdigital.babbage.url.redirect.RedirectCategory.DATA_EXPLORER_REDIRECT;
 import static com.github.onsdigital.babbage.url.redirect.RedirectCategory.GENERAL_REDIRECT;
 import static com.github.onsdigital.babbage.url.redirect.RedirectCategory.TAXONOMY_REDIRECT;
 import static com.github.onsdigital.babbage.url.redirect.RedirectException.ErrorType.REDIRECT_URL_EXCEPTION;
+import static com.github.onsdigital.logging.v2.event.SimpleEvent.error;
 
 
 public class UrlRedirectFilter implements Filter {
@@ -69,7 +69,7 @@ public class UrlRedirectFilter implements Filter {
         try {
             ErrorHandler.handle(request, response, ex);
         } catch (IOException e) {
-            logEvent(e).error("UrlRedirectFilter encountered an unexpected error");
+            error().exception(e).log("UrlRedirectFilter encountered an unexpected error");
         }
     }
 

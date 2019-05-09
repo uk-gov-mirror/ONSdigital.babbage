@@ -35,8 +35,9 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import static com.github.onsdigital.babbage.configuration.ApplicationConfiguration.appConfig;
-import static com.github.onsdigital.babbage.logging.LogEvent.logEvent;
 import static com.github.onsdigital.babbage.search.ElasticSearchClient.getElasticsearchClient;
+import static com.github.onsdigital.logging.v2.event.SimpleEvent.error;
+import static com.github.onsdigital.logging.v2.event.SimpleEvent.info;
 import static org.apache.commons.lang.StringUtils.removeEnd;
 
 /**
@@ -130,7 +131,7 @@ public class PublishingManager {
                 }
             }
         } catch (Exception e) {
-            logEvent(e).parameter("collectionID", notification.getCollectionId()).error("reindexing collection failed");
+            error().exception(e).data("collectionID", notification.getCollectionId()).log("reindexing collection failed");
         }
     }
 
@@ -146,7 +147,7 @@ public class PublishingManager {
         try {
             ContentClient.getInstance().reIndex(key, uri);
         } catch (ContentReadException e) {
-            logEvent(e).uri(uri).error("error reindexing uri");
+            error().exception(e).data("uri", uri).log("error reindexing uri");
         }
     }
 
@@ -154,7 +155,7 @@ public class PublishingManager {
         try {
             ContentClient.getInstance().deleteIndex(key, uri, contentType);
         } catch (ContentReadException e) {
-            logEvent(e).uri(uri).error("error deleting index for uri");
+            error().exception(e).data("uri", uri).log("error deleting index for uri");
         }
     }
 
@@ -200,21 +201,17 @@ public class PublishingManager {
     }
 
     public static void init() throws IOException {
-        logEvent().debug("initialising search service");
+        info().log("initialising search service");
         if (appConfig().babbage().isCacheEnabled()) {
             initPublishDatesIndex();
         }
-        logEvent().debug("initialising search service completed successfully");
+        info().log("initialising search service completed successfully");
     }
 
     private static void initPublishDatesIndex() throws IOException {
-        logEvent()
-                .parameter("index", PUBLISH_DATES_INDEX)
-                .debug("Checking status of publish dates index");
+        info().data("index", PUBLISH_DATES_INDEX).log("checking status of publish dates index");
         if (!searchUtils.isIndexAvailable(PUBLISH_DATES_INDEX)) {
-            logEvent()
-                    .parameter("index", PUBLISH_DATES_INDEX)
-                    .debug("Publish dates index not available, creating");
+            info().data("index", PUBLISH_DATES_INDEX).log("Publish dates index not available, creating");
             searchUtils.createIndex(PUBLISH_DATES_INDEX, buildPublishDatesIndexSettings());
         }
     }
@@ -239,8 +236,7 @@ public class PublishingManager {
                     @Override
                     public void beforeBulk(long executionId,
                                            BulkRequest request) {
-                        logEvent().parameter("batchSize", request.numberOfActions())
-                                .info("bulk indexing publish dates");
+                        info().data("batch_size", request.numberOfActions()).log("bulk indexing publish dates");
                     }
 
                     @Override
@@ -251,9 +247,9 @@ public class PublishingManager {
                             BulkItemResponse[] items = response.getItems();
                             for (BulkItemResponse item : items) {
                                 if (item.isFailed()) {
-                                    logEvent().parameter("failedItemID", item.getFailure().getId())
-                                            .parameter("failureDetails", item.getFailureMessage())
-                                            .error("bulk processor after bulk failure");
+                                    info().data("failed_item_id", item.getFailure().getId())
+                                            .data("failure_details", item.getFailureMessage())
+                                            .log("bulk processor after bulk failure");
                                 }
                             }
                         }
@@ -263,7 +259,7 @@ public class PublishingManager {
                     public void afterBulk(long executionId,
                                           BulkRequest request,
                                           Throwable failure) {
-                        logEvent(failure).error("bulk processor after bulk failure");
+                        error().exception(failure).log("bulk processor after bulk failure");
                     }
                 })
                 .setBulkActions(10000)

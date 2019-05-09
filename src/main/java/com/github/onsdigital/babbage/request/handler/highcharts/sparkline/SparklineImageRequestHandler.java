@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.InputStream;
 
 import static com.github.onsdigital.babbage.content.client.ContentClient.filter;
-import static com.github.onsdigital.babbage.logging.LogEvent.logEvent;
+import static com.github.onsdigital.logging.v2.event.SimpleEvent.info;
 
 /**
  * Created by bren on 17/06/15.
@@ -26,7 +26,7 @@ public class SparklineImageRequestHandler extends BaseRequestHandler {
 
     @Override
     public BabbageResponse get(String requestedUri, HttpServletRequest request) throws Exception {
-        logEvent().uri(requestedUri).info("generating sparkline image for uri");
+        info().data("uri", requestedUri).log("generating sparkline image for uri");
 
         ContentResponse contentResponse = ContentClient.getInstance().getContent(requestedUri, filter(ContentFilter.SERIES));
         String config = TemplateService.getInstance().renderTemplate("highcharts/config/sparklineconfig", contentResponse.getDataStream());

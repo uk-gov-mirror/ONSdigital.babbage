@@ -1,10 +1,13 @@
 package com.github.onsdigital.babbage.configuration;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static com.github.onsdigital.babbage.configuration.EnvVarUtils.getStringAsBool;
 import static com.github.onsdigital.babbage.configuration.EnvVarUtils.getValueOrDefault;
-import static com.github.onsdigital.babbage.logging.LogEvent.logEvent;
+import static com.github.onsdigital.logging.v2.event.SimpleEvent.info;
 
-public class Handlebars implements Loggable {
+public class Handlebars implements AppConfig {
 
     private static Handlebars INSTANCE;
 
@@ -64,14 +67,15 @@ public class Handlebars implements Loggable {
         return reloadTemplateChanges;
     }
 
-    public void logConfiguration() {
-        logEvent()
-                .parameter("defaultHandlebarsDatePattern", defaultHandlebarsDatePattern)
-                .parameter("mainContentTemplateName", mainContentTemplateName)
-                .parameter("mainChartConfigTemplateName", mainChartConfigTemplateName)
-                .parameter("templatesDir", templatesDir)
-                .parameter("templatesSuffix", templatesSuffix)
-                .parameter("reloadTemplateChanges", reloadTemplateChanges)
-                .info("handlerbars configuration");
+    @Override
+    public Map<String, Object> getConfig() {
+        Map<String, Object> config = new HashMap<>();
+        config.put("defaultHandlebarsDatePattern", defaultHandlebarsDatePattern);
+        config.put("mainContentTemplateName", mainContentTemplateName);
+        config.put("mainChartConfigTemplateName", mainChartConfigTemplateName);
+        config.put("templatesDir", templatesDir);
+        config.put("templatesSuffix", templatesSuffix);
+        config.put("reloadTemplateChanges", reloadTemplateChanges);
+        return config;
     }
 }

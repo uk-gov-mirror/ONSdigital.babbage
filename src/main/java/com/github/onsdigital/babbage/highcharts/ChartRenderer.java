@@ -32,7 +32,7 @@ import java.util.Map;
 import static com.github.onsdigital.babbage.highcharts.ChartConfigBuilder.TITLE_PARAM;
 import static com.github.onsdigital.babbage.highcharts.ChartConfigBuilder.URI_PARAM;
 import static com.github.onsdigital.babbage.highcharts.ChartConfigBuilder.WIDTH_PARAM;
-import static com.github.onsdigital.babbage.logging.LogEvent.logEvent;
+import static com.github.onsdigital.logging.v2.event.SimpleEvent.error;
 import static java.text.MessageFormat.format;
 
 /**
@@ -70,7 +70,7 @@ public class ChartRenderer {
             File fontFile = new File(fontURL.toURI());
             GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(Font.createFont(Font.TRUETYPE_FONT, fontFile));
         } catch (Exception e) {
-            logEvent(e).error("unable to load font file");
+            error().exception(e).log("unable to load font file");
         }
     }
 
@@ -306,8 +306,8 @@ public class ChartRenderer {
                 return calculateWidth(Integer.parseInt(width));
             }
         } catch (NumberFormatException e) {
-            logEvent(e).parameter("default", DEFAULT_CHART_WIDTH)
-                    .error("chart width not a valid number, default width will be used");
+            error().exception(e)
+                    .data("default", DEFAULT_CHART_WIDTH).log("chart width not a valid number, default width will be used");
         }
         return DEFAULT_CHART_WIDTH;
     }

@@ -8,12 +8,15 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.github.onsdigital.babbage.configuration.EnvVarUtils.getValueOrDefault;
-import static com.github.onsdigital.babbage.logging.LogEvent.logEvent;
+import static com.github.onsdigital.logging.v2.event.SimpleEvent.error;
+import static com.github.onsdigital.logging.v2.event.SimpleEvent.info;
 
-public class ElasticSearch implements Loggable {
+public class ElasticSearch implements AppConfig {
 
     private static ElasticSearch INSTANCE = null;
 
@@ -59,14 +62,15 @@ public class ElasticSearch implements Loggable {
         return elasticSearchCluster;
     }
 
-    public void logConfiguration() {
-        logEvent()
-                .parameter(SERVER_KEY, elasticSearchServer)
-                .parameter(PORT_KEY, elasticSearchPort)
-                .parameter(INDEX_ALIAS_KEY, elasticSearchIndexAlias)
-                .parameter(CLUSTER_KEY, elasticSearchCluster)
-                .parameter(HIGHLIGHTS_FILE_KEY, highlightURLBlacklistFile)
-                .info("elastic search configuration");
+    @Override
+    public Map<String, Object> getConfig() {
+        Map<String, Object> config = new HashMap<>();
+        config.put(SERVER_KEY, elasticSearchServer);
+        config.put(PORT_KEY, elasticSearchPort);
+        config.put(INDEX_ALIAS_KEY, elasticSearchIndexAlias);
+        config.put(CLUSTER_KEY, elasticSearchCluster);
+        config.put(HIGHLIGHTS_FILE_KEY, highlightURLBlacklistFile);
+        return config;
     }
 
     static ElasticSearch getInstance() {
@@ -100,7 +104,7 @@ public class ElasticSearch implements Loggable {
                 }
             } catch (IOException e) {
                 // Print additional info out to stderr
-                logEvent(e).error("error while attempting to load highlight blacklist file");
+                error().exception(e).log("error while attempting to load highlight blacklist file");
                 // Unable to load the file, so return an empty ArrayList (won't black list any urls)
                 return new ArrayList<>();
             }

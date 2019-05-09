@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-import static com.github.onsdigital.babbage.logging.LogEvent.logEvent;
+import static com.github.onsdigital.logging.v2.event.SimpleEvent.error;
 
 
 /**
@@ -31,7 +31,7 @@ public class PdfLegacyRequestHandler extends BaseRequestHandler {
         try {
             return PDFRequestHandler.getPreGeneratedPDF(requestedUri);
         } catch (ContentReadException e) {
-            logEvent(e).uri(requestedUri).error("pre-rendered PDF not found, throwing Legacy PDF error");
+            error().exception(e).data("uri", requestedUri).log("pre-rendered PDF not found, throwing Legacy PDF error");
             throw new LegacyPDFException();
         }
     }

@@ -9,7 +9,7 @@ import org.elasticsearch.common.transport.InetSocketTransportAddress;
 import java.net.InetSocketAddress;
 
 import static com.github.onsdigital.babbage.configuration.ApplicationConfiguration.appConfig;
-import static com.github.onsdigital.babbage.logging.LogEvent.logEvent;
+import static com.github.onsdigital.logging.v2.event.SimpleEvent.info;
 
 /**
  * Created by bren on 16/12/15.
@@ -27,14 +27,14 @@ public class ElasticSearchClient {
     }
 
     public static void init() {
-        logEvent().debug("Initialising Elasticsearch client");
+        info().log("initialising elasticsearch client");
         if (client == null) {
             initTransportClient();
         }
     }
 
     private static void initTransportClient() {
-        logEvent().debug("Using Elasticsearch transport client");
+        info().log("using elasticsearch transport client");
 
         Settings.Builder builder = Settings.builder();
 
@@ -42,10 +42,9 @@ public class ElasticSearchClient {
         if (!StringUtils.isBlank(clusterName))
             builder.put("cluster.name", clusterName);
 
-        logEvent()
-                .parameter("host", appConfig().elasticSearch().host())
-                .parameter("port", appConfig().elasticSearch().port())
-                .debug("Attempting to connect to Elasticsearch cluster");
+        info().data("host", appConfig().elasticSearch().host())
+                .data("port", appConfig().elasticSearch().port())
+                .log("attempting to connect to Elasticsearch cluster");
 
         Settings settings = builder.build();
         client = TransportClient.builder().settings(settings).build()

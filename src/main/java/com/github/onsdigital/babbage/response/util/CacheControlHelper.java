@@ -6,7 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import static com.github.onsdigital.babbage.logging.LogEvent.logEvent;
+import static com.github.onsdigital.logging.v2.event.SimpleEvent.info;
 
 /**
  */
@@ -45,10 +45,9 @@ public class CacheControlHelper {
         }
         String oldHash = getOldHash(request);
 
-        logEvent()
-                .parameter("oldHash", oldHash)
-                .parameter("newHash", newHash)
-                .info("resolving cache headers");
+        info().data("old_hash", oldHash)
+                .data("new_hash", newHash)
+                .log("resolving cache headers");
 
         response.setHeader("Etag", newHash);
         if (StringUtils.equals(oldHash, newHash)) {
