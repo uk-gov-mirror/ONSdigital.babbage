@@ -15,6 +15,9 @@
 log/
 target/
 
+# VSCode
+.vscode/
+
 .anvil
 .target
 target
