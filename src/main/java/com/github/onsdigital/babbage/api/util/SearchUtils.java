@@ -128,8 +128,7 @@ public class SearchUtils {
                 // Use external search client
                 return SearchClient.getInstance().search(request, listType);
             } catch (Exception e) {
-                // Print stack trace and fall back on internal search client
-                e.printStackTrace();
+                error().exception(e).log("SearchUtils.populateSerp encountered an unexpected error");
             }
         }
 
@@ -330,7 +329,7 @@ public class SearchUtils {
                 SearchResult result = searchReq.call();
                 results.put(SearchType.DEPARTMENTS.getResultKey(), result);
             } catch (Exception e) {
-                e.printStackTrace();
+                error().exception(e).log("SearchUtils.searchDeparments encountered an unexpected error");
             }
         }
 

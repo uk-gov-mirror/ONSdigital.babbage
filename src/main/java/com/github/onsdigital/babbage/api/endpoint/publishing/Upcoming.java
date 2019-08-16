@@ -16,6 +16,8 @@ import javax.ws.rs.POST;
 import java.io.IOException;
 import java.util.List;
 
+import static com.github.onsdigital.logging.v2.event.SimpleEvent.error;
+
 /**
  * Created by bren on 16/12/15.
  */
@@ -45,7 +47,7 @@ public class Upcoming {
             response.setStatus(e.getStatusCode());
             return new ResponseMessage(e.getMessage());
         } catch (Exception e) {
-            e.printStackTrace();
+            error().exception(e).log("api Upcoming: error handling POST request");
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             return new ResponseMessage("Failed processing uri list publish dates");
         }

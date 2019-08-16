@@ -1,10 +1,11 @@
 package com.github.onsdigital.babbage.template.handlebars.helpers.util;
 
-import com.github.jknack.handlebars.Handlebars;
 import com.github.jknack.handlebars.Handlebars.Utils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigDecimal;
+
+import static com.github.onsdigital.logging.v2.event.SimpleEvent.error;
 
 /**
  * Created by bren on 06/07/15.
@@ -65,8 +66,8 @@ public class HelperUtils {
             if (StringUtils.isNotEmpty(numberString)) {
                 try {
                     return Double.valueOf(numberString);
-                } catch (NumberFormatException e) {
-                    System.err.println(object + " is not a number!!");
+                } catch (NumberFormatException ex) {
+                    error().exception(ex).data("value", object).log("error converting value to number");
                     return null;
                 }
             }

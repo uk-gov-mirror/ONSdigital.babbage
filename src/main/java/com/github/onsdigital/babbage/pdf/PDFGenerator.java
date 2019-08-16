@@ -28,6 +28,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import static com.github.onsdigital.babbage.configuration.ApplicationConfiguration.appConfig;
+import static com.github.onsdigital.logging.v2.event.SimpleEvent.error;
 import static com.github.onsdigital.logging.v2.event.SimpleEvent.info;
 
 /**
@@ -67,7 +68,10 @@ public class PDFGenerator {
 
             return pdfFile;
         } catch (Exception ex) {
-            ex.printStackTrace();
+            error().exception(ex)
+                    .data("uri", uri)
+                    .data("filename", fileName)
+                    .log("error generating PDF for uri");
             throw new RuntimeException("Failed generating pdf", ex);
         }
     }
@@ -96,6 +100,13 @@ public class PDFGenerator {
 
             os.close();
             os = null;
+
+        } catch (Exception ex) {
+            error().exception(ex)
+                    .data("url", url)
+                    .data("outputFile", outputFile)
+                    .log("error creating PDF");
+            throw ex;
         } finally {
             if (os != null) {
                 try {

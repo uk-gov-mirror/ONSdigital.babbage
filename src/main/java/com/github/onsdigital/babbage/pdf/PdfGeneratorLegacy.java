@@ -13,6 +13,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import static com.github.onsdigital.babbage.configuration.ApplicationConfiguration.appConfig;
+import static com.github.onsdigital.logging.v2.event.SimpleEvent.error;
 import static com.github.onsdigital.logging.v2.event.SimpleEvent.info;
 
 public class PdfGeneratorLegacy {
@@ -54,7 +55,10 @@ public class PdfGeneratorLegacy {
 
             return pdfFile;
         } catch (Exception ex) {
-            ex.printStackTrace();
+            error().exception(ex)
+                    .data("uri", uri)
+                    .data("fileName", fileName)
+                    .log("error generating legacy PDF");
             throw new RuntimeException("Failed generating pdf", ex);
         }
     }

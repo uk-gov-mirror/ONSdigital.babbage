@@ -18,6 +18,7 @@ import java.util.Map;
 import java.util.Set;
 
 import static com.github.onsdigital.babbage.util.RequestUtil.getQueryParameters;
+import static com.github.onsdigital.logging.v2.event.SimpleEvent.error;
 import static com.github.onsdigital.logging.v2.event.SimpleEvent.info;
 
 /**
@@ -74,10 +75,9 @@ public class DataRequestHandler extends BaseRequestHandler {
                     .map((e) -> e.getValue().getClass().getName()).toArray()))
                     .log("registered list page request handlers");
 
-        } catch (Exception e) {
-            System.err.println("Failed initializing request handlers");
-            e.printStackTrace();
-            throw new RuntimeException(e);
+        } catch (Exception ex) {
+            error().exception(ex).log("error failed to initialize request handler");
+            throw new RuntimeException(ex);
         }
     }
 }

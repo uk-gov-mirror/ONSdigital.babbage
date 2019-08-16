@@ -266,9 +266,8 @@ public enum DataHelpers implements BabbageHandlebarsHelper<Object> {
                 ContentResponse stream = ContentClient.getInstance().getFileSize(uriString);
                 Map<String, Object> size = toMap(stream.getDataStream());
                 return humanReadableByteCount(((Number) size.get("fileSize")).longValue(), true);
-            } catch (Exception e) {
-                System.err.printf("Failed reading file size from content service, uri: %s cause: %s", uri, e.getMessage());
-                e.printStackTrace();
+            } catch (Exception ex) {
+                error().exception(ex).data("uri", uri).log("failed reading file size from content service");
                 return null;
             }
         }
