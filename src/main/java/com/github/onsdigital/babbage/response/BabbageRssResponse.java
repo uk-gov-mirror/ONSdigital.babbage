@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import static com.github.onsdigital.logging.v2.event.SimpleEvent.error;
 import static java.util.Objects.requireNonNull;
 
 public class BabbageRssResponse extends BabbageResponse {
@@ -36,8 +37,7 @@ public class BabbageRssResponse extends BabbageResponse {
         try {
             new SyndFeedOutput().output(this.rssFeed, response.getWriter());
         } catch (FeedException ex) {
-            // TODO fix this.
-            ex.printStackTrace();
+            error().exception(ex).log("error creating RSS SyndFeedOutput for request");
         }
     }
 }

@@ -1,14 +1,11 @@
 package com.github.onsdigital.babbage.pdf;
 
 import com.github.onsdigital.babbage.content.client.ContentClient;
-import com.github.onsdigital.babbage.content.client.ContentReadException;
 import com.github.onsdigital.babbage.content.client.ContentResponse;
 import com.github.onsdigital.babbage.highcharts.HighChartsExportClient;
 import com.github.onsdigital.babbage.template.TemplateService;
-import com.lowagie.text.BadElementException;
 import com.lowagie.text.Image;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.exception.ExceptionUtils;
 import org.w3c.dom.Element;
 import org.xhtmlrenderer.extend.ReplacedElement;
 import org.xhtmlrenderer.extend.ReplacedElementFactory;
@@ -19,9 +16,10 @@ import org.xhtmlrenderer.pdf.ITextImageElement;
 import org.xhtmlrenderer.render.BlockBox;
 import org.xhtmlrenderer.simple.extend.FormSubmissionListener;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.LinkedHashMap;
+
+import static com.github.onsdigital.logging.v2.event.SimpleEvent.error;
 
 public class ChartImageReplacedElementFactory implements ReplacedElementFactory {
 
@@ -56,7 +54,7 @@ public class ChartImageReplacedElementFactory implements ReplacedElementFactory 
 
                 // The highcharts configuration is generated from a handlebars template with the chart JSON as input.
                 LinkedHashMap<String, Object> additionalData = new LinkedHashMap<>();
-                additionalData.put("width",600);
+                additionalData.put("width", 600);
                 String chartConfig = TemplateService.getInstance().renderChartConfiguration(contentResponse.getDataStream(),
                         additionalData);
 
@@ -74,10 +72,9 @@ public class ChartImageReplacedElementFactory implements ReplacedElementFactory 
                     }
                     return new ITextImageElement(fsImage);
                 }
-            } catch (IOException | BadElementException e) {
-                ExceptionUtils.getStackTrace(e);
-            } catch (ContentReadException e) {
-                e.printStackTrace();
+            } catch (Exception ex) {
+                error().exception(ex)
+                        .log("ChartImageReplacedElementFactory.createReplacedElement encountered an unexpected error");
             } finally {
                 IOUtils.closeQuietly(input);
             }

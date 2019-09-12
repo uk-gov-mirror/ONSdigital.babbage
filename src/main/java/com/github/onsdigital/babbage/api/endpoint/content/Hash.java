@@ -5,7 +5,6 @@ import com.github.onsdigital.babbage.content.client.ContentClient;
 import com.github.onsdigital.babbage.content.client.ContentReadException;
 import com.github.onsdigital.babbage.content.client.ContentResponse;
 import com.github.onsdigital.babbage.error.BabbageException;
-import com.github.onsdigital.babbage.publishing.PublishingManager;
 import com.github.onsdigital.babbage.response.util.CacheControlHelper;
 import org.apache.commons.io.IOUtils;
 
@@ -15,6 +14,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.core.Context;
 import java.io.IOException;
 
+import static com.github.onsdigital.logging.v2.event.SimpleEvent.error;
 import static javax.ws.rs.core.MediaType.TEXT_PLAIN;
 
 /**
@@ -45,6 +45,6 @@ public class Hash {
     void handleError(@Context HttpServletResponse response, int statusCode, Throwable e) throws IOException {
         response.setStatus(statusCode);
         IOUtils.write("Failed reading content!", response.getOutputStream());
-        e.printStackTrace();
+        error().exception(e).log("api Hash: error getting resource from content API");
     }
 }
