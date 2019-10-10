@@ -1,4 +1,4 @@
-$(window).load(function() {
+$(window).on('load', function() {
     if ($('.timeseries__chart').length == 0) {
         // Enhance markdown charts
         $('.highcharts-container').each(function () {
