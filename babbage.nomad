@@ -9,7 +9,7 @@ job "babbage" {
 
   update {
     min_healthy_time = "30s"
-    healthy_deadline = "2m"
+    healthy_deadline = "5m"
     max_parallel     = 1
     auto_revert      = true
     stagger          = "150s"
