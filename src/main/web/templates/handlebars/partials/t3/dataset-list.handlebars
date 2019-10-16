@@ -3,20 +3,14 @@
 
     {{#resolveDatasets (absolute this.uri)}}
         {{#loop this limit=6}}
-        <li class="col-wrap background--gallery flush-col padding-top--2 padding-bottom--4 padding-left--1 js-hover-click">
-            <div class="col col--lg-38">
-                <div class="box__content">
-                    <h4>
-                        <a class="underline-link" href="{{uri}}">
-                            {{title}}
-                        </a>
-                    </h4>
-                    <p class="flush">{{summary}}</p>
-                </div>
-            </div>
-            <div class="col col--lg-20">
-                {{!-- <h4 class="tiles__title-h4">Meta</h4> --}}
-                {{!-- <p class="tiles__content">Meta stuffs, maybe?</p> --}}
+        <li class="background--gallery flush-col padding-top--2 padding-bottom--4 padding-left--1 js-hover-click">
+            <div class="box__content">
+                <h4>
+                    <a class="underline-link" href="{{uri}}">
+                        {{title}}
+                    </a>
+                </h4>
+                <p class="flush">{{summary}}</p>
             </div>
         {{/loop}}
 
