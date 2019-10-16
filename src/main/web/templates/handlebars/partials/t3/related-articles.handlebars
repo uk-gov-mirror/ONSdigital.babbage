@@ -1,11 +1,10 @@
 <h3>Articles</h3>
-<div class="col-wrap">
-
-	<ul class="tiles__list flush">
-		{{#loop relatedArticles limit=6}}
-		{{#resolve this.uri}}
-		    <li class="background--white padding-top--2 padding-bottom--2 padding-left--1 margin-left-md--1 js-hover-click col-wrap">
-		        {{#if imageUri}}
+<ul class="list--neutral">
+    {{#loop relatedArticles limit=6}}
+    {{#resolve this.uri}}
+        <li class="background--white padding-top--2 padding-bottom--2 padding-left-sm--0  js-hover-click">
+            <div class="col-wrap margin-left--1 padding-right-sm--2">
+                {{#if imageUri}}
                     <div class="col col--md-13 col--lg-13 margin-left--0">
                         <img src="/resource?uri={{imageUri}}&width=208" />
                     </div>
@@ -22,11 +21,10 @@
                         </p>
                     </div>
                 </div>
-			</li>
-		{{/resolve}}
-		{{/loop}}
-	</ul>
+            </div>
+        </li>
+    {{/resolve}}
+    {{/loop}}
+</ul>
 
-		<a href="{{uri}}/publications?filter=article&filter=compendia" class="btn btn--primary btn--full-width">{{labels.view-all-related-articles}}</a>
-
-</div>
+<a href="{{uri}}/publications?filter=article&filter=compendia" class="btn btn--primary btn--full-width">{{labels.view-all-related-articles}}</a>
