@@ -1,24 +1,20 @@
 <h3>Statistical bulletins</h3>
-<div class="col-wrap">
+<ul class="list--neutral">
+	{{#loop statsBulletins limit=6}}
+	{{#resolve this.uri filter="description"}}
+		<li class="background--white padding-left-sm--0 padding-top--2 js-hover-click">
+		<h4 class="tiles__title tiles__title-h4">
+			<a class="underline-link" href="{{uri}}">
+				{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}
+			</a>
+		</h4>
+		<p class="tiles__content">
+			{{#if description.summary}}{{description.summary}}{{else}}{{description.metaDescription}}{{/if}}
+		</p>
+	</li>
+	{{/resolve}}
+	{{/loop}}
+</ul>
 
-		<ul class="tiles__list flush">
-			{{#loop statsBulletins limit=6}}
-			{{#resolve this.uri filter="description"}}
-                <li class="background--white padding-left-sm--0  padding-top--2 js-hover-click">
-				<h4 class="tiles__title tiles__title-h4">
-					<a class="underline-link" href="{{uri}}">
-						{{description.title}}{{#if description.edition}}: {{description.edition}}{{/if}}
-					</a>
-				</h4>
-				<p class="tiles__content">
-                    {{#if description.summary}}{{description.summary}}{{else}}{{description.metaDescription}}{{/if}}
-				</p>
-			</li>
-			{{/resolve}}
-			{{/loop}}
-		</ul>
+<a href="{{uri}}/publications?filter=bulletin" class="btn btn--primary btn--full-width">{{labels.view-all-related-statistical-bulletins}}</a>
 
-		<a href="{{uri}}/publications?filter=bulletin" class="btn btn--primary btn--full-width">{{labels.view-all-related-statistical-bulletins}}</a>
-
-
-</div>
