@@ -18,7 +18,6 @@ public class ApplicationConfiguration {
     private final Babbage babbage;
     private final Handlebars handlebars;
     private final TableRenderer tableRenderer;
-    private final ExternalSearch externalSearch;
     private final MapRenderer mapRenderer;
 
     /**
@@ -49,7 +48,6 @@ public class ApplicationConfiguration {
         babbage = Babbage.getInstance();
         handlebars = Handlebars.getInstance();
         tableRenderer = TableRenderer.getInstance();
-        externalSearch = ExternalSearch.getInstance();
         mapRenderer = MapRenderer.getInstance();
 
         info().data("elastic_search_config", elasticSearch.getConfig())
@@ -57,7 +55,6 @@ public class ApplicationConfiguration {
                 .data("babbge_config", babbage.getConfig())
                 .data("handlebars_config", handlebars.getConfig())
                 .data("table_renderer_config", tableRenderer.getConfig())
-                .data("external_search_config", externalSearch.getConfig())
                 .data("map_renderer_config", mapRenderer.getConfig())
                 .log("successfully loaded application configuration");
     }
@@ -80,10 +77,6 @@ public class ApplicationConfiguration {
 
     public TableRenderer tableRenderer() {
         return tableRenderer;
-    }
-
-    public ExternalSearch externalSearch() {
-        return externalSearch;
     }
 
     public MapRenderer mapRenderer() {

@@ -4,7 +4,6 @@ import com.github.davidcarboni.restolino.framework.Startup;
 import com.github.onsdigital.babbage.configuration.ApplicationConfiguration;
 import com.github.onsdigital.babbage.publishing.PublishingManager;
 import com.github.onsdigital.babbage.search.ElasticSearchClient;
-import com.github.onsdigital.babbage.search.external.SearchClient;
 import com.github.onsdigital.logging.v2.DPLogger;
 import com.github.onsdigital.logging.v2.Logger;
 import com.github.onsdigital.logging.v2.LoggerImpl;
@@ -17,7 +16,6 @@ import com.github.onsdigital.logging.v2.storage.MDCLogStore;
 
 import java.io.IOException;
 
-import static com.github.onsdigital.babbage.configuration.ApplicationConfiguration.appConfig;
 import static com.github.onsdigital.logging.v2.event.SimpleEvent.error;
 import static com.github.onsdigital.logging.v2.event.SimpleEvent.info;
 
@@ -55,14 +53,6 @@ public class Init implements Startup {
             PublishingManager.init();
         } catch (IOException e) {
             logErrorAndExit(e, "error initializing publishing manager exiting application");
-        }
-
-        if (appConfig().externalSearch().isEnabled()) {
-            try {
-                SearchClient.getInstance();
-            } catch (Exception e) {
-                logErrorAndExit(e, "error initializing external search client exiting application");
-            }
         }
 
         info().log("application babbage initialisation completed successfully");
