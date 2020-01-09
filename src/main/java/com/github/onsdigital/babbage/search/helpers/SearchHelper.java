@@ -63,7 +63,6 @@ public class SearchHelper {
         MultiSearchRequestBuilder multiSearchRequestBuilder = getElasticsearchClient().prepareMultiSearch();
         for (ONSQuery query : queries) {
             SearchRequestBuilder searchRequestBuilder = prepare(query);
-            //System.out.println("Searching with query:\n" + searchRequestBuilder.internalBuilder());
             multiSearchRequestBuilder.add(searchRequestBuilder);
         }
 
