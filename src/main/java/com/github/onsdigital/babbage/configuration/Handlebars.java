@@ -36,7 +36,6 @@ public class Handlebars implements AppConfig {
     }
 
     private Handlebars() {
-
         defaultHandlebarsDatePattern = "d MMMM yyyy";
         mainContentTemplateName = "main";
         mainChartConfigTemplateName = "chart-config";
@@ -47,7 +46,6 @@ public class Handlebars implements AppConfig {
         enableLoop11 = getStringAsBool(ENABLE_LOOP11, "N");
         System.out.println("ENABLE_LOOP11");
         System.out.println(enableLoop11);
-
     }
 
     public String getHandlebarsDatePattern() {
