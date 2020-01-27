@@ -71,7 +71,7 @@ public class Handlebars implements AppConfig {
         return reloadTemplateChanges;
     }
 
-    public boolean getEnableLoop11() {
+    public boolean isEnableLoop11() {
         return enableLoop11;
     }
 

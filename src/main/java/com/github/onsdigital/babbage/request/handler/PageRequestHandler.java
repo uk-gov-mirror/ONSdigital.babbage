@@ -39,7 +39,7 @@ public class PageRequestHandler extends BaseRequestHandler {
             if(RequestUtil.getQueryParameters(request).containsKey("pdf")) {
                 additionalData.put("pdf_style", true);
             }
-            additionalData.put("EnableLoop11", appConfig().handlebars().getEnableLoop11());
+            additionalData.put("EnableLoop11", appConfig().handlebars().isEnableLoop11());
             String html = TemplateService.getInstance().renderContent(dataStream, additionalData);
             return new BabbageContentBasedStringResponse(contentResponse,html, TEXT_HTML);
         }
