@@ -16,6 +16,8 @@ import java.util.LinkedHashMap;
 
 import static javax.ws.rs.core.MediaType.TEXT_HTML;
 
+import static com.github.onsdigital.babbage.configuration.ApplicationConfiguration.appConfig;
+
 /**
  * Created by bren on 28/05/15.
  * <p>
@@ -37,6 +39,7 @@ public class PageRequestHandler extends BaseRequestHandler {
             if(RequestUtil.getQueryParameters(request).containsKey("pdf")) {
                 additionalData.put("pdf_style", true);
             }
+            additionalData.put("EnableLoop11", appConfig().handlebars().getEnableLoop11());
             String html = TemplateService.getInstance().renderContent(dataStream, additionalData);
             return new BabbageContentBasedStringResponse(contentResponse,html, TEXT_HTML);
         }

@@ -21,6 +21,8 @@ export DP_LOGGING_FORMAT=pretty_json
 export DEV_ENVIRONMENT="Y"
 export RELOAD_TEMPLATES="Y"
 export TEMPLATES_DIR=src/main/web/templates/handlebars
+export ENABLE_LOOP11="N"
+
 
 # Development: reloadable
 java $JAVA_OPTS \
