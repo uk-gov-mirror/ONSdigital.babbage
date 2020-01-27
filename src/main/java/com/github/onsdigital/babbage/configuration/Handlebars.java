@@ -5,6 +5,7 @@ import java.util.Map;
 
 import static com.github.onsdigital.babbage.configuration.EnvVarUtils.getStringAsBool;
 import static com.github.onsdigital.babbage.configuration.EnvVarUtils.getValueOrDefault;
+import static com.github.onsdigital.babbage.configuration.EnvVarUtils.getValue;
 import static com.github.onsdigital.logging.v2.event.SimpleEvent.info;
 
 public class Handlebars implements AppConfig {
@@ -14,6 +15,7 @@ public class Handlebars implements AppConfig {
     private static final String TEMPLATES_DIR_KEY = "TEMPLATES_DIR";
     private static final String TEMPLATES_SUFFIX_KEY = "TEMPLATES_SUFFIX";
     private static final String RELOAD_TEMPLATES_KEY = "RELOAD_TEMPLATES";
+    private static final String ENABLE_LOOP11 = "ENABLE_LOOP11";
 
     private final String defaultHandlebarsDatePattern;
     private final String mainContentTemplateName;
@@ -21,6 +23,7 @@ public class Handlebars implements AppConfig {
     private final String templatesDir;
     private final String templatesSuffix;
     private final boolean reloadTemplateChanges;
+    private final boolean enableLoop11;
 
     static Handlebars getInstance() {
         if (INSTANCE == null) {
@@ -41,6 +44,7 @@ public class Handlebars implements AppConfig {
         templatesDir = getValueOrDefault(TEMPLATES_DIR_KEY, "target/web/templates/handlebars");
         templatesSuffix = getValueOrDefault(TEMPLATES_SUFFIX_KEY, ".handlebars");
         reloadTemplateChanges = getStringAsBool(RELOAD_TEMPLATES_KEY, "N");
+        enableLoop11 = Boolean.parseBoolean(getValue(ENABLE_LOOP11));
     }
 
     public String getHandlebarsDatePattern() {
@@ -67,6 +71,10 @@ public class Handlebars implements AppConfig {
         return reloadTemplateChanges;
     }
 
+    public boolean isEnableLoop11() {
+        return enableLoop11;
+    }
+
     @Override
     public Map<String, Object> getConfig() {
         Map<String, Object> config = new HashMap<>();
@@ -76,6 +84,7 @@ public class Handlebars implements AppConfig {
         config.put("templatesDir", templatesDir);
         config.put("templatesSuffix", templatesSuffix);
         config.put("reloadTemplateChanges", reloadTemplateChanges);
+        config.put("enableLoop11", enableLoop11);
         return config;
     }
 }
