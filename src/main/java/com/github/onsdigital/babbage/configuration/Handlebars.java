@@ -5,6 +5,7 @@ import java.util.Map;
 
 import static com.github.onsdigital.babbage.configuration.EnvVarUtils.getStringAsBool;
 import static com.github.onsdigital.babbage.configuration.EnvVarUtils.getValueOrDefault;
+import static com.github.onsdigital.babbage.configuration.EnvVarUtils.getValue;
 import static com.github.onsdigital.logging.v2.event.SimpleEvent.info;
 
 public class Handlebars implements AppConfig {
@@ -43,7 +44,7 @@ public class Handlebars implements AppConfig {
         templatesDir = getValueOrDefault(TEMPLATES_DIR_KEY, "target/web/templates/handlebars");
         templatesSuffix = getValueOrDefault(TEMPLATES_SUFFIX_KEY, ".handlebars");
         reloadTemplateChanges = getStringAsBool(RELOAD_TEMPLATES_KEY, "N");
-        enableLoop11 = getStringAsBool(ENABLE_LOOP11, "N");
+        enableLoop11 = Boolean.parseBoolean(getValue(ENABLE_LOOP11));
     }
 
     public String getHandlebarsDatePattern() {
