@@ -44,8 +44,6 @@ public class Handlebars implements AppConfig {
         templatesSuffix = getValueOrDefault(TEMPLATES_SUFFIX_KEY, ".handlebars");
         reloadTemplateChanges = getStringAsBool(RELOAD_TEMPLATES_KEY, "N");
         enableLoop11 = getStringAsBool(ENABLE_LOOP11, "N");
-        System.out.println("ENABLE_LOOP11");
-        System.out.println(enableLoop11);
     }
 
     public String getHandlebarsDatePattern() {
