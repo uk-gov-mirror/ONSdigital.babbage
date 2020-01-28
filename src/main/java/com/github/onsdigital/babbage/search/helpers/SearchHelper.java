@@ -61,9 +61,8 @@ public class SearchHelper {
 
     public static List<ONSSearchResponse> searchMultiple(List<ONSQuery> queries) {
         MultiSearchRequestBuilder multiSearchRequestBuilder = getElasticsearchClient().prepareMultiSearch();
-        for (ONSQuery builder : queries) {
-            SearchRequestBuilder searchRequestBuilder = prepare(builder);
-            //System.out.println("Searching with query:\n" + searchRequestBuilder.internalBuilder());
+        for (ONSQuery query : queries) {
+            SearchRequestBuilder searchRequestBuilder = prepare(query);
             multiSearchRequestBuilder.add(searchRequestBuilder);
         }
 
