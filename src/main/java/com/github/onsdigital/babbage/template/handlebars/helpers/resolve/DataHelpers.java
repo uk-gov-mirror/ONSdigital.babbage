@@ -2,6 +2,7 @@ package com.github.onsdigital.babbage.template.handlebars.helpers.resolve;
 
 import com.github.jknack.handlebars.Handlebars;
 import com.github.jknack.handlebars.Options;
+import com.github.onsdigital.babbage.api.util.SearchRendering;
 import com.github.onsdigital.babbage.api.util.SearchUtils;
 import com.github.onsdigital.babbage.content.client.ContentClient;
 import com.github.onsdigital.babbage.content.client.ContentFilter;
@@ -110,7 +111,7 @@ public enum DataHelpers implements BabbageHandlebarsHelper<Object> {
                 String uriString = (String) uri;
 
                 HashMap<String, SearchResult> results = SearchUtils.searchTimeseriesForUri(uriString);
-                LinkedHashMap<String, Object> data = SearchUtils.buildResults("list", results);
+                LinkedHashMap<String, Object> data = SearchRendering.buildResults("list", results);
 
                 assign(options, data);
                 return options.fn(data);

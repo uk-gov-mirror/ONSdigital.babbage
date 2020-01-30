@@ -2,7 +2,6 @@ package com.github.onsdigital.babbage.api.util;
 
 import com.github.onsdigital.babbage.error.ValidationError;
 import com.github.onsdigital.babbage.response.BabbageRedirectResponse;
-import com.github.onsdigital.babbage.response.BabbageStringResponse;
 import com.github.onsdigital.babbage.response.base.BabbageResponse;
 import com.github.onsdigital.babbage.search.ElasticSearchClient;
 import com.github.onsdigital.babbage.search.builders.ONSFilterBuilders;
@@ -17,10 +16,6 @@ import com.github.onsdigital.babbage.search.input.TypeFilter;
 import com.github.onsdigital.babbage.search.model.ContentType;
 import com.github.onsdigital.babbage.search.model.SearchResult;
 import com.github.onsdigital.babbage.search.model.field.Field;
-import com.github.onsdigital.babbage.template.TemplateService;
-import com.github.onsdigital.babbage.util.RequestUtil;
-import com.github.onsdigital.babbage.util.ThreadContext;
-import com.github.onsdigital.babbage.util.json.JsonUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.client.utils.URIBuilder;
 import org.elasticsearch.action.search.SearchRequestBuilder;
@@ -30,7 +25,6 @@ import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.core.MediaType;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.HashMap;
@@ -54,7 +48,6 @@ import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.e
 import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.extractSortBy;
 import static com.github.onsdigital.babbage.search.input.TypeFilter.contentTypes;
 import static com.github.onsdigital.babbage.search.model.field.Field.cdid;
-import static com.github.onsdigital.babbage.util.URIUtil.isDataRequest;
 import static com.github.onsdigital.logging.v2.event.SimpleEvent.error;
 import static org.apache.commons.lang.ArrayUtils.isEmpty;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
@@ -73,7 +66,6 @@ import static org.elasticsearch.search.suggest.SuggestBuilders.phraseSuggestion;
 public class SearchUtils {
 
     private static final String DEPARTMENTS_INDEX = "departments";
-    private static final String ERRORS_KEY = "errors";
 
     /**
      * Performs search for requested search term against filtered content types and counts contents types.
@@ -86,7 +78,7 @@ public class SearchUtils {
      */
     public static BabbageResponse search(HttpServletRequest request, String listType, String searchTerm, SearchQueries queries, boolean searchDepartments) throws IOException {
         if (searchTerm == null) {
-            return buildResponse(request, listType, null);
+            return SearchRendering.buildResponse(request, listType, null);
         } else if (!isFiltered(request)) { //only search for time series when new search made through search input
             //search time series by cdid, redirect to time series page if found
             String timeSeriesUri = searchTimeSeriesUri(searchTerm);
@@ -111,26 +103,26 @@ public class SearchUtils {
         if (searchDepartments) {
             searchDeparments(searchTerm, results);
         }
-        return buildResponse(request, listType, results);
+        return SearchRendering.buildResponse(request, listType, results);
     }
 
     public static BabbageResponse list(HttpServletRequest request, String listType, SearchQueries queries) throws IOException {
-        return buildResponse(request, listType, searchAll(queries));
+        return SearchRendering.buildResponse(request, listType, searchAll(queries));
     }
 
     public static BabbageResponse listPage(String listType, SearchQueries queries) throws IOException {
-        return buildPageResponse(listType, searchAll(queries));
+        return SearchRendering.buildPageResponse(listType, searchAll(queries));
     }
 
     public static BabbageResponse listPageWithValidationErrors(
             String listType, SearchQueries queries,
             List<ValidationError> errors
     ) throws IOException {
-        return buildPageResponseWithValidationErrors(listType, searchAll(queries), Optional.ofNullable(errors));
+        return SearchRendering.buildPageResponseWithValidationErrors(listType, searchAll(queries), Optional.ofNullable(errors));
     }
 
     public static BabbageResponse listJson(String listType, SearchQueries queries) throws IOException {
-        return buildDataResponse(listType, searchAll(queries));
+        return SearchRendering.buildDataResponse(listType, searchAll(queries));
     }
 
     /**
@@ -288,53 +280,6 @@ public class SearchUtils {
         results.put("departments", onsSearchResponse.getResult());
     }
 
-    //Send result back to client
-    public static BabbageResponse buildResponse(HttpServletRequest request, String listType, Map<String, SearchResult> results) throws IOException {
-        if (isDataRequest(request.getRequestURI())) {
-            return buildDataResponse(listType, results);
-        } else {
-            return buildPageResponse(listType, results);
-        }
-    }
-
-    public static BabbageResponse buildDataResponse(String listType, Map<String, SearchResult> results) {
-        LinkedHashMap<String, Object> data = buildResults(listType, results);
-        return new BabbageStringResponse(JsonUtil.toJson(data), MediaType.APPLICATION_JSON, appConfig().babbage()
-                .getSearchResponseCacheTime());
-    }
-
-    public static BabbageResponse buildPageResponse(String listType, Map<String, SearchResult> results) throws IOException {
-        LinkedHashMap<String, Object> data = buildResults(listType, results);
-        return new BabbageStringResponse(TemplateService.getInstance().renderContent(data), MediaType.TEXT_HTML,
-                appConfig().babbage().getSearchResponseCacheTime());
-    }
-
-
-    public static BabbageResponse buildPageResponseWithValidationErrors(
-            String
-                    listType, Map<String, SearchResult>
-                    results, Optional<List<ValidationError>> errors
-    ) throws IOException {
-        LinkedHashMap<String, Object> data = buildResults(listType, results);
-        if (errors.isPresent() && !errors.get().isEmpty()) {
-            data.put(ERRORS_KEY, errors.get());
-        }
-        return new BabbageStringResponse(TemplateService.getInstance().renderContent(data), MediaType.TEXT_HTML,
-                appConfig().babbage().getSearchResponseCacheTime());
-    }
-
-    public static LinkedHashMap<String, Object> buildResults(
-            String
-                    listType, Map<String, SearchResult> results
-    ) {
-        LinkedHashMap<String, Object> data = getBaseListTemplate(listType);
-        if (results != null) {
-            for (Map.Entry<String, SearchResult> result : results.entrySet()) {
-                data.put(result.getKey(), result.getValue());
-            }
-        }
-        return data;
-    }
 
     /**
      * search time series for a given uri without dealing with request / response objects.
@@ -368,14 +313,6 @@ public class SearchUtils {
             return false;
         }
         return true;
-    }
-
-    private static LinkedHashMap<String, Object> getBaseListTemplate(String listType) {
-        LinkedHashMap<String, Object> baseData = new LinkedHashMap<>();
-        baseData.put("type", "list");
-        baseData.put("listType", listType.toLowerCase());
-        baseData.put("uri", ((RequestUtil.Location) ThreadContext.getData("location")).getPathname());
-        return baseData;
     }
 
 
