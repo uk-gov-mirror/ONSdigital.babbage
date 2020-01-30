@@ -1,6 +1,7 @@
 package com.github.onsdigital.babbage.request.handler.list;
 
 import com.github.onsdigital.babbage.api.endpoint.rss.service.RssService;
+import com.github.onsdigital.babbage.api.util.SearchRendering;
 import com.github.onsdigital.babbage.api.util.SearchUtils;
 import com.github.onsdigital.babbage.error.BadRequestException;
 import com.github.onsdigital.babbage.request.handler.base.BaseRequestHandler;
@@ -17,6 +18,7 @@ import com.github.onsdigital.babbage.search.model.field.Field;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.Optional;
 import java.util.Set;
 
 import static com.github.onsdigital.babbage.api.util.SearchUtils.*;
@@ -44,23 +46,26 @@ public class DataListRequestHandler extends BaseRequestHandler implements ListRe
             return rssService.getDataListFeedResponse(request);
         } else {
             try {
-                return listPage(REQUEST_TYPE, queries(request, extractPublishDates(request), uri));
+                return SearchRendering.buildPageResponse(REQUEST_TYPE, searchAll(queries(request, extractPublishDates(request), uri)));
             } catch (PublishDatesException pEx) {
-                return listPageWithValidationErrors(REQUEST_TYPE, queries(request, publishedAnyTime(), uri),
-                        pEx.getErrors());
+                return SearchRendering.buildPageResponseWithValidationErrors(
+                        REQUEST_TYPE,
+                        searchAll(queries(request, publishedAnyTime(), uri)),
+                        Optional.ofNullable(pEx.getErrors())
+                );
             }
         }
     }
 
     @Override
-    public BabbageResponse getData(String uri, HttpServletRequest request) throws IOException, BadRequestException {
+    public BabbageResponse getData(String uri, HttpServletRequest request) throws BadRequestException {
         PublishDates publishDates;
         try {
             publishDates = extractPublishDates(request);
         } catch (PublishDatesException ex) {
             publishDates = publishedAnyTime();
         }
-        return listJson(REQUEST_TYPE, queries(request, publishDates, uri));
+        return SearchRendering.buildDataResponse(REQUEST_TYPE, searchAll(queries(request, publishDates, uri)));
     }
 
     private SearchQueries queries(HttpServletRequest request, PublishDates publishDates, String uri) {

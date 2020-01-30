@@ -1,5 +1,6 @@
 package com.github.onsdigital.babbage.request.handler.list;
 
+import com.github.onsdigital.babbage.api.util.SearchRendering;
 import com.github.onsdigital.babbage.request.handler.base.BaseRequestHandler;
 import com.github.onsdigital.babbage.request.handler.base.ListRequestHandler;
 import com.github.onsdigital.babbage.response.base.BabbageResponse;
@@ -26,12 +27,12 @@ public class AllMethodologiesRequestHandler extends BaseRequestHandler implement
 
     @Override
     public BabbageResponse get(String uri, HttpServletRequest request) throws Exception {
-        return listPage(REQUEST_TYPE, queries(request));
+        return SearchRendering.buildPageResponse(REQUEST_TYPE, searchAll(queries(request)));
     }
 
     @Override
-    public BabbageResponse getData(String uri, HttpServletRequest request) throws IOException {
-        return listJson(REQUEST_TYPE, queries(request));
+    public BabbageResponse getData(String uri, HttpServletRequest request) {
+        return SearchRendering.buildDataResponse(REQUEST_TYPE, searchAll(queries(request)));
     }
 
     private SearchQueries queries(HttpServletRequest request) {

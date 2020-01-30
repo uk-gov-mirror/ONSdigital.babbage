@@ -31,7 +31,6 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 
 import static com.github.onsdigital.babbage.configuration.ApplicationConfiguration.appConfig;
@@ -104,25 +103,6 @@ public class SearchUtils {
             searchDeparments(searchTerm, results);
         }
         return SearchRendering.buildResponse(request, listType, results);
-    }
-
-    public static BabbageResponse list(HttpServletRequest request, String listType, SearchQueries queries) throws IOException {
-        return SearchRendering.buildResponse(request, listType, searchAll(queries));
-    }
-
-    public static BabbageResponse listPage(String listType, SearchQueries queries) throws IOException {
-        return SearchRendering.buildPageResponse(listType, searchAll(queries));
-    }
-
-    public static BabbageResponse listPageWithValidationErrors(
-            String listType, SearchQueries queries,
-            List<ValidationError> errors
-    ) throws IOException {
-        return SearchRendering.buildPageResponseWithValidationErrors(listType, searchAll(queries), Optional.ofNullable(errors));
-    }
-
-    public static BabbageResponse listJson(String listType, SearchQueries queries) throws IOException {
-        return SearchRendering.buildDataResponse(listType, searchAll(queries));
     }
 
     /**
