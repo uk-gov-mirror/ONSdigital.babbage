@@ -20,6 +20,10 @@ import java.util.Optional;
 import static com.github.onsdigital.babbage.configuration.ApplicationConfiguration.appConfig;
 import static com.github.onsdigital.babbage.util.URIUtil.isDataRequest;
 
+/**
+ * SearchRendering contains common methods used to render a list of search results into a BabbageResponse.
+ * These were originally part of the SearchUtils package but have now been decoupled.
+ */
 public class SearchRendering {
     private static final String ERRORS_KEY = "errors";
 

@@ -1,8 +1,6 @@
 package com.github.onsdigital.babbage.api.util;
 
-import com.github.onsdigital.babbage.error.ValidationError;
-import com.github.onsdigital.babbage.response.BabbageRedirectResponse;
-import com.github.onsdigital.babbage.response.base.BabbageResponse;
+
 import com.github.onsdigital.babbage.search.ElasticSearchClient;
 import com.github.onsdigital.babbage.search.builders.ONSFilterBuilders;
 import com.github.onsdigital.babbage.search.builders.ONSQueryBuilders;
@@ -33,7 +31,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static com.github.onsdigital.babbage.configuration.ApplicationConfiguration.appConfig;
 import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.advancedSearchQuery;
 import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.contentQuery;
 import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.departmentQuery;
@@ -72,37 +69,53 @@ public class SearchUtils {
      * <p>
      * Accepts extra searches to perform along with content search and document counts.
      *
-     * @param request
+     * @param searchTerm
+     * @param queries
+     * @param searchDepartments
      * @return
      */
-    public static BabbageResponse search(HttpServletRequest request, String listType, String searchTerm, SearchQueries queries, boolean searchDepartments) throws IOException {
+    public static LinkedHashMap<String, SearchResult> search(String searchTerm, SearchQueries queries, boolean searchDepartments) throws IOException {
         if (searchTerm == null) {
-            return SearchRendering.buildResponse(request, listType, null);
-        } else if (!isFiltered(request)) { //only search for time series when new search made through search input
-            //search time series by cdid, redirect to time series page if found
-            String timeSeriesUri = searchTimeSeriesUri(searchTerm);
-            if (timeSeriesUri != null) {
-                if (searchTerm != null) {
-                    String redirectUri;
-                    try {
-                        redirectUri = new URIBuilder(timeSeriesUri)
-                                .addParameter("referrer", "search")
-                                .addParameter("searchTerm", searchTerm.toLowerCase())
-                                .build().toString();
-                        return new BabbageRedirectResponse(redirectUri, appConfig().babbage().getSearchResponseCacheTime());
-                    } catch (URISyntaxException e) {
-                        error().exception(e).log("unable to encode referrer in timeSeriesUri");
-                    }
-                }
-                return new BabbageRedirectResponse(timeSeriesUri, appConfig().babbage().getSearchResponseCacheTime());
-            }
+            return null;
         }
         LinkedHashMap<String, SearchResult> results = searchAll(queries);
 
         if (searchDepartments) {
             searchDeparments(searchTerm, results);
         }
-        return SearchRendering.buildResponse(request, listType, results);
+        return results;
+    }
+
+    /**
+     * Search time series for given search term and if found return the URI to redirect to.
+     *
+     * @param request
+     * @param searchTerm
+     * @return
+     */
+    public static String getRedirectWhenTimeSeries(HttpServletRequest request, String searchTerm) {
+        String redirectUri = null;
+        if (searchTerm == null) {
+            return null;
+        } else if (!isFiltered(request)) { //only search for time series when new search made through search input
+            //search time series by cdid, redirect to time series page if found
+            String timeSeriesUri = searchTimeSeriesUri(searchTerm);
+            if (timeSeriesUri != null) {
+                redirectUri = timeSeriesUri;
+
+                if (searchTerm != null) {
+                    try {
+                        redirectUri = new URIBuilder(timeSeriesUri)
+                                .addParameter("referrer", "search")
+                                .addParameter("searchTerm", searchTerm.toLowerCase())
+                                .build().toString();
+                    } catch (URISyntaxException e) {
+                        error().exception(e).log("unable to encode referrer in timeSeriesUri");
+                    }
+                }
+            }
+        }
+        return redirectUri;
     }
 
     /**
