@@ -27,6 +27,7 @@ import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.toL
 import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.typeCountsQuery;
 import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.extractPublishDates;
 import static com.github.onsdigital.babbage.search.helpers.dates.PublishDates.publishedAnyTime;
+import static com.github.onsdigital.logging.v2.event.SimpleEvent.error;
 import static org.elasticsearch.index.query.QueryBuilders.rangeQuery;
 
 /**
@@ -48,6 +49,7 @@ public class DataListRequestHandler extends BaseRequestHandler implements ListRe
             try {
                 return SearchRendering.buildPageResponse(REQUEST_TYPE, searchAll(queries(request, extractPublishDates(request), uri)));
             } catch (PublishDatesException pEx) {
+                error().exception(pEx).log("error extracting publish dates from request");
                 return SearchRendering.buildPageResponseWithValidationErrors(
                         REQUEST_TYPE,
                         searchAll(queries(request, publishedAnyTime(), uri)),
@@ -63,6 +65,7 @@ public class DataListRequestHandler extends BaseRequestHandler implements ListRe
         try {
             publishDates = extractPublishDates(request);
         } catch (PublishDatesException ex) {
+            error().exception(ex).log("error extracting publish dates from request");
             publishDates = publishedAnyTime();
         }
         return SearchRendering.buildDataResponse(REQUEST_TYPE, searchAll(queries(request, publishDates, uri)));

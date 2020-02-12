@@ -52,90 +52,53 @@ import static org.elasticsearch.index.query.QueryBuilders.matchAllQuery;
 import static org.elasticsearch.index.query.QueryBuilders.termQuery;
 import static org.elasticsearch.search.suggest.SuggestBuilders.phraseSuggestion;
 
-//import static com.github.onsdigital.babbage.configuration.Configuration.GENERAL.getSearchResponseCacheTime;
+//Commons search functionality for search, search publications and search data pages.
 
-/**
- * Created by bren on 20/01/16.
- * <p>
- * Commons search functionality for search, search publications and search data pages.
- */
 public class SearchUtils {
 
     private static final String DEPARTMENTS_INDEX = "departments";
 
-    /**
+    /*
      * Performs search for requested search term against filtered content types and counts contents types.
      * Content results are serialised into json with key "result" and document counts are serialised as "counts".
-     * <p>
-     * Accepts extra searches to perform along with content search and document counts.
-     *
-     * @param searchTerm
-     * @param queries
-     * @param searchDepartments
-     * @return
      */
     public static LinkedHashMap<String, SearchResult> search(String searchTerm, SearchQueries queries, boolean searchDepartments) throws IOException {
-        if (searchTerm == null) {
-            return null;
-        }
-        LinkedHashMap<String, SearchResult> results = searchAll(queries);
-
-        if (searchDepartments) {
-            searchDeparments(searchTerm, results);
+        LinkedHashMap<String, SearchResult> results = null;
+        if (searchTerm != null) {
+            results = searchAll(queries);
+            if (searchDepartments) {
+                searchDeparments(searchTerm, results);
+            }
         }
         return results;
     }
 
-    /**
-     * Search time series for given search term and if found return the URI to redirect to.
-     *
-     * @param request
-     * @param searchTerm
-     * @return
-     */
+    // Search time series for given search term and if found return the URI to redirect to.
     public static String getRedirectWhenTimeSeries(HttpServletRequest request, String searchTerm) {
-        String redirectUri = null;
-        if (searchTerm == null) {
-            return null;
-        } else if (!isFiltered(request)) { //only search for time series when new search made through search input
-            //search time series by cdid, redirect to time series page if found
-            String timeSeriesUri = searchTimeSeriesUri(searchTerm);
+        String timeSeriesUri = null;
+        if (searchTerm != null && !isFiltered(request)) { //only search for time series when new search made through search input
+            //search time series by cdid, return url of the time series page if found
+            timeSeriesUri = searchTimeSeriesUri(searchTerm);
             if (timeSeriesUri != null) {
-                redirectUri = timeSeriesUri;
-
-                if (searchTerm != null) {
-                    try {
-                        redirectUri = new URIBuilder(timeSeriesUri)
-                                .addParameter("referrer", "search")
-                                .addParameter("searchTerm", searchTerm.toLowerCase())
-                                .build().toString();
-                    } catch (URISyntaxException e) {
-                        error().exception(e).log("unable to encode referrer in timeSeriesUri");
-                    }
+                try {
+                    timeSeriesUri = new URIBuilder(timeSeriesUri)
+                            .addParameter("referrer", "search")
+                            .addParameter("searchTerm", searchTerm.toLowerCase())
+                            .build().toString();
+                } catch (URISyntaxException e) {
+                    error().exception(e).log("unable to encode referrer in timeSeriesUri");
                 }
             }
         }
-        return redirectUri;
+        return timeSeriesUri;
     }
 
-    /**
-     * Execute the given search queries and search with internal service.
-     *
-     * @param searchQueries
-     * @return
-     */
+    // Execute the given search queries with internal service.
     public static LinkedHashMap<String, SearchResult> searchAll(SearchQueries searchQueries) {
         List<ONSQuery> queries = searchQueries.buildQueries();
         return doSearch(queries);
     }
 
-    /**
-     * Builds search query by resolving search term, page and sort parameters
-     *.
-     * @param request
-     * @param searchTerm
-     * @return ONSQuery, null if no search term given
-     */
     public static ONSQuery buildSearchQuery(HttpServletRequest request, String searchTerm, Set<TypeFilter> defaultFilters) {
         boolean advanced = isAdvancedSearchQuery(searchTerm);
         SortBy sortBy = extractSortBy(request, SortBy.relevance);
@@ -152,11 +115,6 @@ public class SearchUtils {
         return StringUtils.containsAny(searchTerm, "+", "|", "-", "\"", "*", "~");
     }
 
-    /**
-     * Advanced search query corresponds to elastic search simple query string query, allowing user to control search results using special characters (+ for AND, | for OR etc)
-     *
-     * @return
-     */
     public static ONSQuery buildAdvancedSearchQuery(HttpServletRequest request, String searchTerm, Set<TypeFilter> defaultFilters) {
         SortBy sortBy = extractSortBy(request, SortBy.relevance);
         ONSQuery query = buildONSQuery(request, advancedSearchQuery(searchTerm), sortBy, null, contentTypes(extractSelectedFilters(request, defaultFilters, false)));
@@ -246,12 +204,6 @@ public class SearchUtils {
         return (String) timeSeries.get(Field.uri.fieldName());
     }
 
-    /**
-     * Search departments index using internal TCP client.
-     *
-     * @param searchTerm
-     * @param results
-     */
     private static void searchDeparments(String searchTerm, LinkedHashMap<String, SearchResult> results) {
         QueryBuilder departmentsQuery = departmentQuery(searchTerm);
         SearchRequestBuilder departmentsSearch = ElasticSearchClient.getElasticsearchClient().prepareSearch(DEPARTMENTS_INDEX);
@@ -274,12 +226,6 @@ public class SearchUtils {
     }
 
 
-    /**
-     * search time series for a given uri without dealing with request / response objects.
-     *
-     * @param uriString
-     * @return
-     */
     public static HashMap<String, SearchResult> searchTimeseriesForUri(String uriString) {
         QueryBuilder builder = QueryBuilders.matchAllQuery();
         SortBy sortByReleaseDate = SortBy.release_date;
