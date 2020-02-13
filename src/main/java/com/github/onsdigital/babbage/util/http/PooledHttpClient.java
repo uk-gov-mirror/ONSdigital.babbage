@@ -1,6 +1,5 @@
 package com.github.onsdigital.babbage.util.http;
 
-import com.github.onsdigital.logging.v2.event.HTTP;
 import org.apache.commons.io.Charsets;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
@@ -56,9 +55,8 @@ public class PooledHttpClient extends BabbageHttpClient {
         HttpGet request = new HttpGet(uri);
         addHeaders(headers, request);
 
-        HTTP http = getHTTP(request);
-        info().data("request", getHTTP(request)).log("sending http request");
-        return validate(httpClient.execute(request), http);
+        CloseableHttpResponse response = executeRequest(request);
+        return validateResponse(request, response);
     }
 
 
@@ -67,9 +65,8 @@ public class PooledHttpClient extends BabbageHttpClient {
         HttpDelete request = new HttpDelete(uri);
         addHeaders(headers, request);
 
-        HTTP http = getHTTP(request);
-        info().data("request", getHTTP(request)).log("sending http request");
-        return validate(httpClient.execute(request), http);
+        CloseableHttpResponse response = executeRequest(request);
+        return validateResponse(request, response);
     }
 
     /**
@@ -90,9 +87,8 @@ public class PooledHttpClient extends BabbageHttpClient {
             request.setEntity(new UrlEncodedFormEntity(postParameters, Charsets.UTF_8));
         }
 
-        HTTP http = getHTTP(request);
-        info().data("request", getHTTP(request)).log("sending http request");
-        return validate(httpClient.execute(request), http);
+        CloseableHttpResponse response = executeRequest(request);
+        return validateResponse(request, response);
     }
 
     public CloseableHttpResponse sendPost(String path, Map<String, String> headers, String content, String charset) throws IOException {
@@ -102,9 +98,13 @@ public class PooledHttpClient extends BabbageHttpClient {
 
         request.setEntity(new StringEntity(content, charset));
 
-        HTTP http = getHTTP(request);
-        info().data("request", getHTTP(request)).log("sending http request");
-        return validate(httpClient.execute(request), http);
+        CloseableHttpResponse response = executeRequest(request);
+        return validateResponse(request, response);
+    }
+
+    private CloseableHttpResponse executeRequest(HttpRequestBase request) throws IOException {
+        info().beginHTTP(request).log("PooledHttpClient executing request");
+        return validateResponse(request, httpClient.execute(request));
     }
 
     private void addHeaders(Map<String, String> headers, HttpRequestBase request) {
@@ -149,20 +149,19 @@ public class PooledHttpClient extends BabbageHttpClient {
     /**
      * Throws appropriate errors if response is not successful
      */
-    private CloseableHttpResponse validate(CloseableHttpResponse response, HTTP requestDetails) throws ClientProtocolException {
+    private CloseableHttpResponse validateResponse(HttpRequestBase request, CloseableHttpResponse response)
+            throws ClientProtocolException {
+        info().endHTTP(request, response).log("PooledHttpClient request completed");
         StatusLine statusLine = response.getStatusLine();
-
-        info().data("request", requestDetails)
-                .data("status_code", statusLine.getStatusCode())
-                .log("request complete");
-
         HttpEntity entity = response.getEntity();
+
         if (statusLine.getStatusCode() > 302) {
             String errorMessage = getErrorMessage(entity);
             throw new HttpResponseException(
                     statusLine.getStatusCode(),
                     errorMessage == null ? statusLine.getReasonPhrase() : errorMessage);
         }
+
         if (entity == null) {
             throw new ClientProtocolException("Response contains no content");
         }
@@ -178,14 +177,5 @@ public class PooledHttpClient extends BabbageHttpClient {
             error().exception(e).log("Failed reading content service:");
         }
         return null;
-    }
-
-    private HTTP getHTTP(HttpRequestBase request) {
-        return new HTTP()
-                .setMethod(request.getMethod())
-                .setPath(request.getURI().getPath())
-                .setScheme(request.getURI().getScheme())
-                .setHost(request.getURI().getHost())
-                .setPort(request.getURI().getPort());
     }
 }

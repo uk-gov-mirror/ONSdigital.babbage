@@ -18,10 +18,10 @@ import org.reflections.util.ConfigurationBuilder;
 import java.io.IOException;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static com.github.onsdigital.logging.v2.event.SimpleEvent.error;
 import static com.github.onsdigital.logging.v2.event.SimpleEvent.info;
@@ -123,10 +123,7 @@ public class HandlebarsRenderer {
                 }
             }
 
-            info().data("helpers", Arrays.toString(helpersList.stream()
-                    .map(h -> h.getClass().getSimpleName())
-                    .toArray()))
-                    .log("registered handlebars helpers");
+            info().data("helpers", helpersList).log("registered handlebars helpers");
 
         } catch (Exception e) {
             throw error().logException(new RuntimeException(

@@ -13,7 +13,7 @@
         <handlebars-java-version>4.0.3</handlebars-java-version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <powermock.version>1.5.6</powermock.version>
-        <dp-logging.version>v1.5.0</dp-logging.version>
+        <dp-logging.version>v1.6.0</dp-logging.version>
     </properties>
 
     <dependencies>
