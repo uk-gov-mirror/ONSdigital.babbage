@@ -56,7 +56,7 @@ public class PooledHttpClient extends BabbageHttpClient {
         addHeaders(headers, request);
 
         CloseableHttpResponse response = executeRequest(request);
-        return validateResponse(request, response);
+        return validateResponse(response);
     }
 
 
@@ -66,7 +66,7 @@ public class PooledHttpClient extends BabbageHttpClient {
         addHeaders(headers, request);
 
         CloseableHttpResponse response = executeRequest(request);
-        return validateResponse(request, response);
+        return validateResponse(response);
     }
 
     /**
@@ -88,7 +88,7 @@ public class PooledHttpClient extends BabbageHttpClient {
         }
 
         CloseableHttpResponse response = executeRequest(request);
-        return validateResponse(request, response);
+        return validateResponse(response);
     }
 
     public CloseableHttpResponse sendPost(String path, Map<String, String> headers, String content, String charset) throws IOException {
@@ -99,12 +99,16 @@ public class PooledHttpClient extends BabbageHttpClient {
         request.setEntity(new StringEntity(content, charset));
 
         CloseableHttpResponse response = executeRequest(request);
-        return validateResponse(request, response);
+        return validateResponse(response);
     }
 
     private CloseableHttpResponse executeRequest(HttpRequestBase request) throws IOException {
         info().beginHTTP(request).log("PooledHttpClient executing request");
-        return validateResponse(request, httpClient.execute(request));
+
+        CloseableHttpResponse response = httpClient.execute(request);
+
+        info().endHTTP(request, response).log("PooledHttpClient execute request completed");
+        return response;
     }
 
     private void addHeaders(Map<String, String> headers, HttpRequestBase request) {
@@ -149,9 +153,8 @@ public class PooledHttpClient extends BabbageHttpClient {
     /**
      * Throws appropriate errors if response is not successful
      */
-    private CloseableHttpResponse validateResponse(HttpRequestBase request, CloseableHttpResponse response)
+    private CloseableHttpResponse validateResponse(CloseableHttpResponse response)
             throws ClientProtocolException {
-        info().endHTTP(request, response).log("PooledHttpClient request completed");
         StatusLine statusLine = response.getStatusLine();
         HttpEntity entity = response.getEntity();
 
