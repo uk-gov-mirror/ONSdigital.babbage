@@ -40,6 +40,14 @@ public class PageRequestHandlerTest {
     }
 
     @Test
+    public void isCookiesPreference_CookiesIsEmptyArray_ReturnsFalse() {
+        Cookie[] cookies = new Cookie[]{};
+        when(request.getCookies()).thenReturn(cookies);
+        boolean result = isCookiesPreferenceSet(request);
+        assertFalse(result);
+    }
+
+    @Test
     public void isCookiesPreference_CookieNotExist_ReturnsFalse() {
         Cookie[] cookies = new Cookie[]{cookie};
         when(cookie.getName()).thenReturn("test_cookie");
