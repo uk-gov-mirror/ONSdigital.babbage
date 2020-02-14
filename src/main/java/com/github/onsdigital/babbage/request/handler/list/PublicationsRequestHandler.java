@@ -1,6 +1,7 @@
 package com.github.onsdigital.babbage.request.handler.list;
 
 import com.github.onsdigital.babbage.api.endpoint.rss.service.RssService;
+import com.github.onsdigital.babbage.api.util.SearchRendering;
 import com.github.onsdigital.babbage.request.handler.base.BaseRequestHandler;
 import com.github.onsdigital.babbage.request.handler.base.ListRequestHandler;
 import com.github.onsdigital.babbage.response.base.BabbageResponse;
@@ -37,12 +38,12 @@ public class PublicationsRequestHandler extends BaseRequestHandler implements Li
         if (rssService.isRssRequest(request)) {
             return rssService.getPublicationListFeedResponse(request);
         }
-        return listPage(REQUEST_TYPE, queries(request, uri));
+        return SearchRendering.buildPageResponse(REQUEST_TYPE, searchAll(queries(request, uri)));
     }
 
     @Override
-    public BabbageResponse getData(String uri, HttpServletRequest request) throws IOException {
-        return listJson(REQUEST_TYPE, queries(request, uri));
+    public BabbageResponse getData(String uri, HttpServletRequest request) {
+        return SearchRendering.buildDataResponse(REQUEST_TYPE, searchAll(queries(request, uri)));
     }
 
     private SearchQueries queries(HttpServletRequest request, String uri) {

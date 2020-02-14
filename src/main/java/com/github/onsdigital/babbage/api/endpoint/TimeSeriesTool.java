@@ -1,6 +1,7 @@
 package com.github.onsdigital.babbage.api.endpoint;
 
 import com.github.davidcarboni.restolino.framework.Api;
+import com.github.onsdigital.babbage.api.util.SearchRendering;
 import com.github.onsdigital.babbage.search.builders.ONSQueryBuilders;
 import com.github.onsdigital.babbage.search.helpers.base.SearchFilter;
 import com.github.onsdigital.babbage.search.helpers.base.SearchQueries;
@@ -11,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.GET;
 
 import static com.github.onsdigital.babbage.api.util.SearchUtils.buildListQuery;
-import static com.github.onsdigital.babbage.api.util.SearchUtils.list;
+import static com.github.onsdigital.babbage.api.util.SearchUtils.searchAll;
 import static com.github.onsdigital.babbage.search.builders.ONSFilterBuilders.filterDates;
 import static com.github.onsdigital.babbage.search.builders.ONSFilterBuilders.filterTopic;
 
@@ -23,7 +24,8 @@ public class TimeSeriesTool {
 
     @GET
     public void get(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        list(request, getClass().getSimpleName(), queries(request)).apply(request, response);
+        SearchRendering.buildResponse(request, getClass().getSimpleName(), searchAll(queries(request)))
+                .apply(request, response);
     }
 
     private SearchQueries queries(HttpServletRequest request) {

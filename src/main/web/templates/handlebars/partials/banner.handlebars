@@ -1,16 +1,18 @@
 {{#resolve "/"}}
-		{{#if serviceMessage}}
-			<div class="banner">
-				<div class="wrapper banner--bottom-border">
-					<div class="col-wrap">
-						<div class="col">
-							<span class="banner__icon icon icon-info"></span>
-							<div class="banner__body">
-								{{md serviceMessage}}
-							</div>
+	{{#if serviceMessage}}
+		<div class="banner">
+			<div class="wrapper banner--bottom-border">
+				<div class="banner__container col-wrap">
+					<div class="col col--md-2 col--lg-2">
+						<span class="banner__icon icon icon-info"></span>
+					</div>
+					<div class="col col--md-45 col--lg-55">
+						<div class="banner__body">
+							{{md serviceMessage}}
 						</div>
 					</div>
 				</div>
 			</div>
-		{{/if}}
-	{{/resolve}}
+		</div>
+	{{/if}}
+{{/resolve}}

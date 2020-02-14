@@ -1,5 +1,6 @@
 package com.github.onsdigital.babbage.request.handler.list;
 
+import com.github.onsdigital.babbage.api.util.SearchRendering;
 import com.github.onsdigital.babbage.api.util.SearchUtils;
 import com.github.onsdigital.babbage.content.client.ContentClient;
 import com.github.onsdigital.babbage.content.client.ContentReadException;
@@ -56,14 +57,14 @@ public class RelatedDataRequestHandler extends BaseRequestHandler implements Lis
     @Override
     public BabbageResponse get(String uri, HttpServletRequest request) throws Exception {
         List<Map> uriList = getRelatedDataUris(uri);
-        return isEmpty(uriList) ? buildPageResponse(getRequestType(), null) : listPage(getRequestType(), queries(uriList, request));
+        return isEmpty(uriList) ? SearchRendering.buildPageResponse(getRequestType(), null) : SearchRendering.buildPageResponse(getRequestType(), searchAll(queries(uriList, request)));
     }
 
 
     @Override
     public BabbageResponse getData(String uri, HttpServletRequest request) throws IOException, ContentReadException {
         List<Map> uriList = getRelatedDataUris(uri);
-        return isEmpty(uriList) ? buildDataResponse(getRequestType(), null) : listJson(getRequestType(), queries(uriList, request));
+        return isEmpty(uriList) ? SearchRendering.buildDataResponse(getRequestType(), null) : SearchRendering.buildDataResponse(getRequestType(), searchAll(queries(uriList, request)));
     }
 
     private SearchQueries queries(List<Map> uriList, HttpServletRequest request) throws IOException, ContentReadException {
