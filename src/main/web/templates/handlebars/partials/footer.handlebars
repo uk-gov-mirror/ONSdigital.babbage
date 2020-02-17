@@ -10,9 +10,18 @@
                             <li class="footer-nav__item">
                                 <a href="/help/accessibility">{{labels.accessibility}}</a>
                             </li>
+                            {{#if EnableCookiesControl}}
                             <li class="footer-nav__item">
-                                <a href="/help/cookiesandprivacy">{{labels.cookies-and-privacy}}</a>
+                                <a href="/cookies/edit">{{labels.cookies-footer}}</a>
                             </li>
+                            <li class="footer-nav__item">
+                                <a href="/help/privacy">{{labels.privacy-footer}}</a>
+                            </li>
+                            {{else}}
+                                <li class="footer-nav__item">fd
+                                    <a href="/help/cookiesandprivacy">{{labels.cookies-and-privacy}}</a>
+                                </li>
+                            {{/if}}
                             <li class="footer-nav__item">
                                 <a href="/help/termsandconditions">{{labels.terms-and-conditions}}</a>
                             </li>
