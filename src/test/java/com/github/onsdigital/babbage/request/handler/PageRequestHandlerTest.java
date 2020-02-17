@@ -1,16 +1,18 @@
 package com.github.onsdigital.babbage.request.handler;
 
+import com.google.gson.Gson;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.internal.matchers.Null;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 import static com.github.onsdigital.babbage.request.handler.PageRequestHandler.isCookiesPreferenceSet;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static com.github.onsdigital.babbage.request.handler.PageRequestHandler.parseCookiesPolicy;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
 
 public class PageRequestHandlerTest {
@@ -61,11 +63,31 @@ public class PageRequestHandlerTest {
     @Test
     public void isCookiesPreference_CookieExists_ReturnsTrue() {
         Cookie[] cookies = new Cookie[]{cookie};
-        when(cookie.getName()).thenReturn("cookies_preferences_set");
+        when(cookie.getName()).thenReturn("cookies_policy");
         when(request.getCookies()).thenReturn(cookies);
 
         boolean result = isCookiesPreferenceSet(request);
 
         assertTrue(result);
+    }
+
+    @Test
+    public void parseCookiesPolicy_UsageCookiesAccepted_ReturnsTrue() {
+        Cookie cookiePolicy = new Cookie("cookies_policy", "{\"essential\":true,\"usage\":true}");
+
+        CookiesPolicy expected = new CookiesPolicy(true, true);
+        CookiesPolicy result = parseCookiesPolicy(cookiePolicy.getValue());
+
+        assertEquals(expected.isEssential(), result.isEssential());
+    }
+
+    @Test
+    public void parseCookiesPolicy_UsageCookieNotAccepted_ReturnsFalse() {
+        Cookie cookiePolicy = new Cookie("cookies_policy", "{\"essential\":true,\"usage\":false}");
+
+        CookiesPolicy expected = new CookiesPolicy(true, false);
+        CookiesPolicy result = parseCookiesPolicy(cookiePolicy.getValue());
+
+        assertEquals(expected.isUsage(), result.isUsage());
     }
 }

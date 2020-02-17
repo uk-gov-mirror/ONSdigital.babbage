@@ -8,6 +8,7 @@ import com.github.onsdigital.babbage.response.BabbageContentBasedStringResponse;
 import com.github.onsdigital.babbage.response.base.BabbageResponse;
 import com.github.onsdigital.babbage.template.TemplateService;
 import com.github.onsdigital.babbage.util.RequestUtil;
+import com.google.gson.Gson;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -30,9 +31,10 @@ public class PageRequestHandler extends BaseRequestHandler {
     private static final String PDF_STYLE = "pdf_style";
     private static final String ENABLE_LOOP11 = "EnableLoop11";
     private static final String ENABLE_COOKIES_CONTROL = "EnableCookiesControl";
-    private static final String COOKIES_PREFERENCES_SET_NAME = "cookies_preferences_set";
     private static final String COOKIES_PREFERENCES_SET = "CookiesPreferencesSet";
-  
+    private static final String COOKIES_POLICY = "CookiesPolicy";
+    private static final String COOKIES_POLICY_NAME = "cookies_policy";
+
 
     @Override
     public BabbageResponse get(String uri, HttpServletRequest request) throws IOException, ContentReadException {
@@ -49,6 +51,11 @@ public class PageRequestHandler extends BaseRequestHandler {
             additionalData.put(ENABLE_LOOP11, appConfig().handlebars().isEnableLoop11());
             additionalData.put(ENABLE_COOKIES_CONTROL, appConfig().handlebars().isEnableCookiesControl());
             additionalData.put(COOKIES_PREFERENCES_SET, isCookiesPreferenceSet(request));
+
+            Cookie cookiesPolicyCookie = getCookiesPolicy(request);
+            if (cookiesPolicyCookie != null) {
+                additionalData.put(COOKIES_POLICY, parseCookiesPolicy(cookiesPolicyCookie.getValue()));
+            }
             String html = TemplateService.getInstance().renderContent(dataStream, additionalData);
             return new BabbageContentBasedStringResponse(contentResponse, html, TEXT_HTML);
         }
@@ -63,15 +70,35 @@ public class PageRequestHandler extends BaseRequestHandler {
         if (request == null) {
             return false;
         }
+        return getCookiesPolicy(request) != null;
+    }
+
+    static Cookie getCookiesPolicy(HttpServletRequest request) {
+        if (request == null) {
+            throw new IllegalArgumentException("Request cannot be null");
+        }
         Cookie[] cookies = request.getCookies();
         if (cookies == null) {
-            return false;
+            return null;
         }
+
+        Cookie cookie = null;
+
         for (int i = 0; i < cookies.length; i++) {
-            if (COOKIES_PREFERENCES_SET_NAME.equals(cookies[i].getName())) {
-                return true;
+            if (COOKIES_POLICY_NAME.equals(cookies[i].getName())) {
+                cookie = cookies[i];
+                break;
             }
         }
-        return false;
+
+        return cookie;
+    }
+
+    static CookiesPolicy parseCookiesPolicy(String cookiePolicyValues) {
+        if (cookiePolicyValues == null) {
+            throw new NullPointerException("Cookies Policy values cannot be null");
+        }
+        Gson gson = new Gson();
+        return gson.fromJson(cookiePolicyValues, CookiesPolicy.class);
     }
 }
