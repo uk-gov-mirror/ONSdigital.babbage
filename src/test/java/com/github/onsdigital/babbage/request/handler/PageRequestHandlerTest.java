@@ -10,8 +10,7 @@ import org.mockito.internal.matchers.Null;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
-import static com.github.onsdigital.babbage.request.handler.PageRequestHandler.isCookiesPreferenceSet;
-import static com.github.onsdigital.babbage.request.handler.PageRequestHandler.parseCookiesPolicy;
+import static com.github.onsdigital.babbage.request.handler.PageRequestHandler.*;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
 
@@ -71,6 +70,11 @@ public class PageRequestHandlerTest {
         assertTrue(result);
     }
 
+    @Test(expected = NullPointerException.class)
+    public void getCookiesPolicy_NullArgument_ThrowNullPointerException() {
+        getCookiesPolicy(null);
+    }
+
     @Test
     public void parseCookiesPolicy_UsageCookiesAccepted_ReturnsTrue() {
         Cookie cookiePolicy = new Cookie("cookies_policy", "{\"essential\":true,\"usage\":true}");
@@ -89,5 +93,10 @@ public class PageRequestHandlerTest {
         CookiesPolicy result = parseCookiesPolicy(cookiePolicy.getValue());
 
         assertEquals(expected.isUsage(), result.isUsage());
+    }
+
+    @Test(expected=NullPointerException.class)
+    public void parseCookiesPolicy_NullArgument_ThrowsNullPointerException() {
+        parseCookiesPolicy(null);
     }
 }

@@ -75,7 +75,7 @@ public class PageRequestHandler extends BaseRequestHandler {
 
     static Cookie getCookiesPolicy(HttpServletRequest request) {
         if (request == null) {
-            throw new IllegalArgumentException("Request cannot be null");
+            throw new NullPointerException("Request cannot be null");
         }
         Cookie[] cookies = request.getCookies();
         if (cookies == null) {
