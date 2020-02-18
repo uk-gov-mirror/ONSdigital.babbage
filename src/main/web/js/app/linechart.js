@@ -605,6 +605,18 @@ var renderLineChart = function (timeseries) {
                 // toggleTimePeriodButton(elem);
                 toggleSelectedButton();
                 var filterValue = elem.data('chart-controls-range');
+                // Hack fix for accessibility text-to-voice as requested; whole file will eventually need replacing
+                $('[data-chart-controls-range]').each(function () {
+                    $(this).attr('checked', false);
+                });
+                $('[data-chart-control-custom-trigger-for]').each(function () {
+                    $(this).attr('aria-checked', false);
+                    $(this).attr('checked', false);
+                });
+
+                $(this).attr('aria-checked', true);
+                $(this).attr('checked', true);
+
                 if (filterValue === currentFilter) {
                     return;
                 }
@@ -632,6 +644,7 @@ var renderLineChart = function (timeseries) {
                         fromQuarter = 1;
                         fromYear = $('[data-chart-controls-from-year] option:first-child', element).val();
                         break;
+
                 }
 
                 /*
@@ -662,15 +675,18 @@ var renderLineChart = function (timeseries) {
         function setCollapsible() {
 
 
-
-            // var customControl = $('[data-chart-control-custom-range]', element);
-            // var elem;
-            // var target;
             $('[data-chart-control-custom-trigger-for]', element).on('click', function (e) {
                 e.preventDefault();
                 toggleSelectedButton();
                 toggleCollapsible();
 
+                $('[data-chart-controls-range]').each(function () {
+                    $(this).attr('aria-checked', false);
+                    $(this).attr('checked', false);
+
+                });
+                $(this).attr('aria-checked', true);
+                $(this).attr('checked', true);
 
             });
 

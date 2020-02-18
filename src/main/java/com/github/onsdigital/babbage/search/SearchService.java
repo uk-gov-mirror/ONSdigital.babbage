@@ -1,5 +1,6 @@
 package com.github.onsdigital.babbage.search;
 
+import com.github.onsdigital.babbage.api.util.SearchRendering;
 import com.github.onsdigital.babbage.api.util.SearchUtils;
 import com.github.onsdigital.babbage.error.ValidationError;
 import com.github.onsdigital.babbage.response.base.BabbageResponse;
@@ -11,6 +12,7 @@ import com.github.onsdigital.babbage.search.helpers.dates.PublishDatesException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Encapsulates some of the static search methods making it easier to test.
@@ -32,14 +34,14 @@ public class SearchService {
         if (errors == null || errors.isEmpty()) {
             return listPage(listType, queries);
         }
-        return SearchUtils.listPageWithValidationErrors(listType, queries, errors);
+        return SearchRendering.buildPageResponseWithValidationErrors(listType, SearchUtils.searchAll(queries), Optional.ofNullable(errors));
     }
 
     public BabbageResponse listPage(String listType, SearchQueries queries) throws IOException {
-        return SearchUtils.listPage(listType, queries);
+        return SearchRendering.buildPageResponse(listType, SearchUtils.searchAll(queries));
     }
 
     public BabbageResponse listJson(String listType, SearchQueries queries) throws IOException {
-        return SearchUtils.listJson(listType, queries);
+        return SearchRendering.buildDataResponse(listType, SearchUtils.searchAll(queries));
     }
 }

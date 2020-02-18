@@ -1,5 +1,6 @@
 package com.github.onsdigital.babbage.request.handler.list;
 
+import com.github.onsdigital.babbage.api.util.SearchRendering;
 import com.github.onsdigital.babbage.api.util.SearchUtils;
 import com.github.onsdigital.babbage.request.handler.base.BaseRequestHandler;
 import com.github.onsdigital.babbage.request.handler.base.ListRequestHandler;
@@ -12,8 +13,7 @@ import com.github.onsdigital.babbage.search.model.ContentType;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
-import static com.github.onsdigital.babbage.api.util.SearchUtils.listJson;
-import static com.github.onsdigital.babbage.api.util.SearchUtils.listPage;
+import static com.github.onsdigital.babbage.api.util.SearchUtils.searchAll;
 import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.toList;
 
 public class StaticsRequestHandler extends BaseRequestHandler implements ListRequestHandler {
@@ -22,12 +22,12 @@ public class StaticsRequestHandler extends BaseRequestHandler implements ListReq
 
     @Override
     public BabbageResponse get(String uri, HttpServletRequest request) throws Exception {
-        return listPage(REQUEST_TYPE, queries(uri,request));
+        return SearchRendering.buildPageResponse(REQUEST_TYPE, searchAll(queries(uri,request)));
     }
 
     @Override
-    public BabbageResponse getData(String uri, HttpServletRequest request) throws IOException {
-        return listJson(REQUEST_TYPE, queries(uri,request));
+    public BabbageResponse getData(String uri, HttpServletRequest request) {
+        return SearchRendering.buildDataResponse(REQUEST_TYPE, searchAll(queries(uri,request)));
     }
 
     private SearchQueries queries(String uri, HttpServletRequest request) {

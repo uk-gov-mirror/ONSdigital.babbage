@@ -1,11 +1,11 @@
 package com.github.onsdigital.babbage.api.endpoint.search;
 
 import com.github.davidcarboni.restolino.framework.Api;
+import com.github.onsdigital.babbage.api.util.SearchRendering;
 import com.github.onsdigital.babbage.api.util.SearchUtils;
 import com.github.onsdigital.babbage.search.helpers.ONSQuery;
 import com.github.onsdigital.babbage.search.helpers.ONSSearchResponse;
 import com.github.onsdigital.babbage.search.helpers.SearchHelper;
-import com.github.onsdigital.babbage.search.helpers.SearchRequestHelper;
 import com.github.onsdigital.babbage.search.helpers.base.SearchFilter;
 import com.github.onsdigital.babbage.search.helpers.base.SearchQueries;
 import com.github.onsdigital.babbage.search.input.SortBy;
@@ -30,7 +30,6 @@ import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.toL
 import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.extractSearchTerm;
 import static com.github.onsdigital.babbage.util.RequestUtil.getParam;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
-import static org.elasticsearch.index.query.QueryBuilders.matchAllQuery;
 import static org.elasticsearch.index.query.QueryBuilders.termQuery;
 
 /**
@@ -55,7 +54,7 @@ public class AtoZ {
         }
         results.put("counts", countResults.getResult());
 
-        SearchUtils.buildResponse(request, getClass().getSimpleName(), results).apply(request, response);
+        SearchRendering.buildResponse(request, getClass().getSimpleName(), results).apply(request, response);
 
     }
 
