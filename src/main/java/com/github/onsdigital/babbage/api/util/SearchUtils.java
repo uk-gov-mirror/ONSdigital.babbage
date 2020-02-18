@@ -1,9 +1,6 @@
 package com.github.onsdigital.babbage.api.util;
 
-import com.github.onsdigital.babbage.error.ValidationError;
-import com.github.onsdigital.babbage.response.BabbageRedirectResponse;
-import com.github.onsdigital.babbage.response.BabbageStringResponse;
-import com.github.onsdigital.babbage.response.base.BabbageResponse;
+
 import com.github.onsdigital.babbage.search.ElasticSearchClient;
 import com.github.onsdigital.babbage.search.builders.ONSFilterBuilders;
 import com.github.onsdigital.babbage.search.builders.ONSQueryBuilders;
@@ -17,10 +14,6 @@ import com.github.onsdigital.babbage.search.input.TypeFilter;
 import com.github.onsdigital.babbage.search.model.ContentType;
 import com.github.onsdigital.babbage.search.model.SearchResult;
 import com.github.onsdigital.babbage.search.model.field.Field;
-import com.github.onsdigital.babbage.template.TemplateService;
-import com.github.onsdigital.babbage.util.RequestUtil;
-import com.github.onsdigital.babbage.util.ThreadContext;
-import com.github.onsdigital.babbage.util.json.JsonUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.client.utils.URIBuilder;
 import org.elasticsearch.action.search.SearchRequestBuilder;
@@ -30,17 +23,14 @@ import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.core.MediaType;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 
-import static com.github.onsdigital.babbage.configuration.ApplicationConfiguration.appConfig;
 import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.advancedSearchQuery;
 import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.contentQuery;
 import static com.github.onsdigital.babbage.search.builders.ONSQueryBuilders.departmentQuery;
@@ -54,7 +44,6 @@ import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.e
 import static com.github.onsdigital.babbage.search.helpers.SearchRequestHelper.extractSortBy;
 import static com.github.onsdigital.babbage.search.input.TypeFilter.contentTypes;
 import static com.github.onsdigital.babbage.search.model.field.Field.cdid;
-import static com.github.onsdigital.babbage.util.URIUtil.isDataRequest;
 import static com.github.onsdigital.logging.v2.event.SimpleEvent.error;
 import static org.apache.commons.lang.ArrayUtils.isEmpty;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
@@ -63,94 +52,53 @@ import static org.elasticsearch.index.query.QueryBuilders.matchAllQuery;
 import static org.elasticsearch.index.query.QueryBuilders.termQuery;
 import static org.elasticsearch.search.suggest.SuggestBuilders.phraseSuggestion;
 
-//import static com.github.onsdigital.babbage.configuration.Configuration.GENERAL.getSearchResponseCacheTime;
+//Commons search functionality for search, search publications and search data pages.
 
-/**
- * Created by bren on 20/01/16.
- * <p>
- * Commons search functionality for search, search publications and search data pages.
- */
 public class SearchUtils {
 
     private static final String DEPARTMENTS_INDEX = "departments";
-    private static final String ERRORS_KEY = "errors";
 
-    /**
+    /*
      * Performs search for requested search term against filtered content types and counts contents types.
      * Content results are serialised into json with key "result" and document counts are serialised as "counts".
-     * <p>
-     * Accepts extra searches to perform along with content search and document counts.
-     *
-     * @param request
-     * @return
      */
-    public static BabbageResponse search(HttpServletRequest request, String listType, String searchTerm, SearchQueries queries, boolean searchDepartments) throws IOException {
-        if (searchTerm == null) {
-            return buildResponse(request, listType, null);
-        } else if (!isFiltered(request)) { //only search for time series when new search made through search input
-            //search time series by cdid, redirect to time series page if found
-            String timeSeriesUri = searchTimeSeriesUri(searchTerm);
-            if (timeSeriesUri != null) {
-                if (searchTerm != null) {
-                    String redirectUri;
-                    try {
-                        redirectUri = new URIBuilder(timeSeriesUri)
-                                .addParameter("referrer", "search")
-                                .addParameter("searchTerm", searchTerm.toLowerCase())
-                                .build().toString();
-                        return new BabbageRedirectResponse(redirectUri, appConfig().babbage().getSearchResponseCacheTime());
-                    } catch (URISyntaxException e) {
-                        error().exception(e).log("unable to encode referrer in timeSeriesUri");
-                    }
-                }
-                return new BabbageRedirectResponse(timeSeriesUri, appConfig().babbage().getSearchResponseCacheTime());
+    public static LinkedHashMap<String, SearchResult> search(String searchTerm, SearchQueries queries, boolean searchDepartments) throws IOException {
+        LinkedHashMap<String, SearchResult> results = null;
+        if (searchTerm != null) {
+            results = searchAll(queries);
+            if (searchDepartments) {
+                searchDeparments(searchTerm, results);
             }
         }
-        LinkedHashMap<String, SearchResult> results = searchAll(queries);
+        return results;
+    }
 
-        if (searchDepartments) {
-            searchDeparments(searchTerm, results);
+    // Search time series for given search term and if found return the URI to redirect to.
+    public static String getRedirectWhenTimeSeries(HttpServletRequest request, String searchTerm) {
+        String timeSeriesUri = null;
+        if (searchTerm != null && !isFiltered(request)) { //only search for time series when new search made through search input
+            //search time series by cdid, return url of the time series page if found
+            timeSeriesUri = searchTimeSeriesUri(searchTerm);
+            if (timeSeriesUri != null) {
+                try {
+                    timeSeriesUri = new URIBuilder(timeSeriesUri)
+                            .addParameter("referrer", "search")
+                            .addParameter("searchTerm", searchTerm.toLowerCase())
+                            .build().toString();
+                } catch (URISyntaxException e) {
+                    error().exception(e).log("unable to encode referrer in timeSeriesUri");
+                }
+            }
         }
-        return buildResponse(request, listType, results);
+        return timeSeriesUri;
     }
 
-    public static BabbageResponse list(HttpServletRequest request, String listType, SearchQueries queries) throws IOException {
-        return buildResponse(request, listType, searchAll(queries));
-    }
-
-    public static BabbageResponse listPage(String listType, SearchQueries queries) throws IOException {
-        return buildPageResponse(listType, searchAll(queries));
-    }
-
-    public static BabbageResponse listPageWithValidationErrors(
-            String listType, SearchQueries queries,
-            List<ValidationError> errors
-    ) throws IOException {
-        return buildPageResponseWithValidationErrors(listType, searchAll(queries), Optional.ofNullable(errors));
-    }
-
-    public static BabbageResponse listJson(String listType, SearchQueries queries) throws IOException {
-        return buildDataResponse(listType, searchAll(queries));
-    }
-
-    /**
-     * Execute the given search queries and search with internal service.
-     *
-     * @param searchQueries
-     * @return
-     */
+    // Execute the given search queries with internal service.
     public static LinkedHashMap<String, SearchResult> searchAll(SearchQueries searchQueries) {
         List<ONSQuery> queries = searchQueries.buildQueries();
         return doSearch(queries);
     }
 
-    /**
-     * Builds search query by resolving search term, page and sort parameters
-     *.
-     * @param request
-     * @param searchTerm
-     * @return ONSQuery, null if no search term given
-     */
     public static ONSQuery buildSearchQuery(HttpServletRequest request, String searchTerm, Set<TypeFilter> defaultFilters) {
         boolean advanced = isAdvancedSearchQuery(searchTerm);
         SortBy sortBy = extractSortBy(request, SortBy.relevance);
@@ -167,11 +115,6 @@ public class SearchUtils {
         return StringUtils.containsAny(searchTerm, "+", "|", "-", "\"", "*", "~");
     }
 
-    /**
-     * Advanced search query corresponds to elastic search simple query string query, allowing user to control search results using special characters (+ for AND, | for OR etc)
-     *
-     * @return
-     */
     public static ONSQuery buildAdvancedSearchQuery(HttpServletRequest request, String searchTerm, Set<TypeFilter> defaultFilters) {
         SortBy sortBy = extractSortBy(request, SortBy.relevance);
         ONSQuery query = buildONSQuery(request, advancedSearchQuery(searchTerm), sortBy, null, contentTypes(extractSelectedFilters(request, defaultFilters, false)));
@@ -261,12 +204,6 @@ public class SearchUtils {
         return (String) timeSeries.get(Field.uri.fieldName());
     }
 
-    /**
-     * Search departments index using internal TCP client.
-     *
-     * @param searchTerm
-     * @param results
-     */
     private static void searchDeparments(String searchTerm, LinkedHashMap<String, SearchResult> results) {
         QueryBuilder departmentsQuery = departmentQuery(searchTerm);
         SearchRequestBuilder departmentsSearch = ElasticSearchClient.getElasticsearchClient().prepareSearch(DEPARTMENTS_INDEX);
@@ -288,60 +225,7 @@ public class SearchUtils {
         results.put("departments", onsSearchResponse.getResult());
     }
 
-    //Send result back to client
-    public static BabbageResponse buildResponse(HttpServletRequest request, String listType, Map<String, SearchResult> results) throws IOException {
-        if (isDataRequest(request.getRequestURI())) {
-            return buildDataResponse(listType, results);
-        } else {
-            return buildPageResponse(listType, results);
-        }
-    }
 
-    public static BabbageResponse buildDataResponse(String listType, Map<String, SearchResult> results) {
-        LinkedHashMap<String, Object> data = buildResults(listType, results);
-        return new BabbageStringResponse(JsonUtil.toJson(data), MediaType.APPLICATION_JSON, appConfig().babbage()
-                .getSearchResponseCacheTime());
-    }
-
-    public static BabbageResponse buildPageResponse(String listType, Map<String, SearchResult> results) throws IOException {
-        LinkedHashMap<String, Object> data = buildResults(listType, results);
-        return new BabbageStringResponse(TemplateService.getInstance().renderContent(data), MediaType.TEXT_HTML,
-                appConfig().babbage().getSearchResponseCacheTime());
-    }
-
-
-    public static BabbageResponse buildPageResponseWithValidationErrors(
-            String
-                    listType, Map<String, SearchResult>
-                    results, Optional<List<ValidationError>> errors
-    ) throws IOException {
-        LinkedHashMap<String, Object> data = buildResults(listType, results);
-        if (errors.isPresent() && !errors.get().isEmpty()) {
-            data.put(ERRORS_KEY, errors.get());
-        }
-        return new BabbageStringResponse(TemplateService.getInstance().renderContent(data), MediaType.TEXT_HTML,
-                appConfig().babbage().getSearchResponseCacheTime());
-    }
-
-    public static LinkedHashMap<String, Object> buildResults(
-            String
-                    listType, Map<String, SearchResult> results
-    ) {
-        LinkedHashMap<String, Object> data = getBaseListTemplate(listType);
-        if (results != null) {
-            for (Map.Entry<String, SearchResult> result : results.entrySet()) {
-                data.put(result.getKey(), result.getValue());
-            }
-        }
-        return data;
-    }
-
-    /**
-     * search time series for a given uri without dealing with request / response objects.
-     *
-     * @param uriString
-     * @return
-     */
     public static HashMap<String, SearchResult> searchTimeseriesForUri(String uriString) {
         QueryBuilder builder = QueryBuilders.matchAllQuery();
         SortBy sortByReleaseDate = SortBy.release_date;
@@ -368,14 +252,6 @@ public class SearchUtils {
             return false;
         }
         return true;
-    }
-
-    private static LinkedHashMap<String, Object> getBaseListTemplate(String listType) {
-        LinkedHashMap<String, Object> baseData = new LinkedHashMap<>();
-        baseData.put("type", "list");
-        baseData.put("listType", listType.toLowerCase());
-        baseData.put("uri", ((RequestUtil.Location) ThreadContext.getData("location")).getPathname());
-        return baseData;
     }
 
 

@@ -1,5 +1,6 @@
 package com.github.onsdigital.babbage.request.handler.list;
 
+import com.github.onsdigital.babbage.api.util.SearchRendering;
 import com.github.onsdigital.babbage.content.client.ContentClient;
 import com.github.onsdigital.babbage.content.client.ContentReadException;
 import com.github.onsdigital.babbage.content.client.ContentResponse;
@@ -35,13 +36,13 @@ public class PreviousReleasesRequestHandler extends BaseRequestHandler implement
     @Override
     public BabbageResponse get(String uri, HttpServletRequest request) throws Exception {
         assertPageContentType(uri);
-        return listPage(REQUEST_TYPE, queries(request, uri));
+        return SearchRendering.buildPageResponse(REQUEST_TYPE, searchAll(queries(request, uri)));
     }
 
     @Override
     public BabbageResponse getData(String uri, HttpServletRequest request) throws IOException, ContentReadException {
         assertPageContentType(uri);
-        return listJson(REQUEST_TYPE, queries(request, uri));
+        return SearchRendering.buildDataResponse(REQUEST_TYPE, searchAll(queries(request, uri)));
     }
 
     private SearchQueries queries(HttpServletRequest request, String uri) {

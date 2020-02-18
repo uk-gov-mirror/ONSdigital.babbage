@@ -23,7 +23,7 @@ export IS_PUBLISHING="Y"
 export RELOAD_TEMPLATES="Y"
 export TEMPLATES_DIR=src/main/web/templates/handlebars
 export ENABLE_LOOP11=false
-export ENABLE_COOKIES_CONTROL=true
+export ENABLE_COOKIES_CONTROL=false
 
 # Development: reloadable
 java $JAVA_OPTS \

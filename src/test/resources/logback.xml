@@ -2,7 +2,7 @@
 <configuration>
 
     <property scope="context" name="default.logger.name" value="babbage"/>
-    <property scope="context" name="default.logger.formatted" value="false"/>
+    <property scope="context" name="default.logger.formatted" value="true"/>
 
     <appender name="THIRD_PARTY_APPENDER" class="ch.qos.logback.core.ConsoleAppender">
         <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
