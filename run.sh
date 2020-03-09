@@ -21,7 +21,6 @@ export DP_LOGGING_FORMAT=pretty_json
 export DEV_ENVIRONMENT="Y"
 export RELOAD_TEMPLATES="Y"
 export TEMPLATES_DIR=src/main/web/templates/handlebars
-export ENABLE_LOOP11=false
 export ENABLE_COOKIES_CONTROL=false
 
 # Development: reloadable
