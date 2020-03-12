@@ -30,9 +30,7 @@ public class PageRequestHandler extends BaseRequestHandler {
     private static final String PDF_STYLE = "pdf_style";
     private static final String ENABLE_LOOP11 = "EnableLoop11";
     private static final String ENABLE_COOKIES_CONTROL = "EnableCookiesControl";
-    private static final String COOKIES_PREFERENCES_SET_NAME = "cookies_preferences_set";
-    private static final String COOKIES_PREFERENCES_SET = "CookiesPreferencesSet";
-  
+
 
     @Override
     public BabbageResponse get(String uri, HttpServletRequest request) throws IOException, ContentReadException {
@@ -48,7 +46,6 @@ public class PageRequestHandler extends BaseRequestHandler {
             }
             additionalData.put(ENABLE_LOOP11, appConfig().handlebars().isEnableLoop11());
             additionalData.put(ENABLE_COOKIES_CONTROL, appConfig().handlebars().isEnableCookiesControl());
-            additionalData.put(COOKIES_PREFERENCES_SET, isCookiesPreferenceSet(request));
             String html = TemplateService.getInstance().renderContent(dataStream, additionalData);
             return new BabbageContentBasedStringResponse(contentResponse, html, TEXT_HTML);
         }
@@ -57,21 +54,5 @@ public class PageRequestHandler extends BaseRequestHandler {
     @Override
     public String getRequestType() {
         return REQUEST_TYPE;
-    }
-
-    static boolean isCookiesPreferenceSet(HttpServletRequest request) {
-        if (request == null) {
-            return false;
-        }
-        Cookie[] cookies = request.getCookies();
-        if (cookies == null) {
-            return false;
-        }
-        for (int i = 0; i < cookies.length; i++) {
-            if (COOKIES_PREFERENCES_SET_NAME.equals(cookies[i].getName())) {
-                return true;
-            }
-        }
-        return false;
     }
 }
