@@ -28,7 +28,6 @@ public class PageRequestHandler extends BaseRequestHandler {
     private static final String REQUEST_TYPE = "/";
     private static final String PDF = "pdf";
     private static final String PDF_STYLE = "pdf_style";
-    private static final String ENABLE_LOOP11 = "EnableLoop11";
     private static final String ENABLE_COOKIES_CONTROL = "EnableCookiesControl";
 
 
@@ -44,7 +43,6 @@ public class PageRequestHandler extends BaseRequestHandler {
             if (RequestUtil.getQueryParameters(request).containsKey(PDF)) {
                 additionalData.put(PDF_STYLE, true);
             }
-            additionalData.put(ENABLE_LOOP11, appConfig().handlebars().isEnableLoop11());
             additionalData.put(ENABLE_COOKIES_CONTROL, appConfig().handlebars().isEnableCookiesControl());
             String html = TemplateService.getInstance().renderContent(dataStream, additionalData);
             return new BabbageContentBasedStringResponse(contentResponse, html, TEXT_HTML);

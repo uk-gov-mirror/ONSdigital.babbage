@@ -15,7 +15,6 @@ public class Handlebars implements AppConfig {
     private static final String TEMPLATES_DIR_KEY = "TEMPLATES_DIR";
     private static final String TEMPLATES_SUFFIX_KEY = "TEMPLATES_SUFFIX";
     private static final String RELOAD_TEMPLATES_KEY = "RELOAD_TEMPLATES";
-    private static final String ENABLE_LOOP11 = "ENABLE_LOOP11";
     private static final String ENABLE_COOKIES_CONTROL = "ENABLE_COOKIES_CONTROL";
 
     private final String defaultHandlebarsDatePattern;
@@ -24,7 +23,6 @@ public class Handlebars implements AppConfig {
     private final String templatesDir;
     private final String templatesSuffix;
     private final boolean reloadTemplateChanges;
-    private final boolean enableLoop11;
     private final boolean enableCookiesControl;
 
     static Handlebars getInstance() {
@@ -46,7 +44,6 @@ public class Handlebars implements AppConfig {
         templatesDir = getValueOrDefault(TEMPLATES_DIR_KEY, "target/web/templates/handlebars");
         templatesSuffix = getValueOrDefault(TEMPLATES_SUFFIX_KEY, ".handlebars");
         reloadTemplateChanges = getStringAsBool(RELOAD_TEMPLATES_KEY, "N");
-        enableLoop11 = Boolean.parseBoolean(getValue(ENABLE_LOOP11));
         enableCookiesControl = Boolean.parseBoolean(getValue(ENABLE_COOKIES_CONTROL));
     }
 
@@ -74,10 +71,6 @@ public class Handlebars implements AppConfig {
         return reloadTemplateChanges;
     }
 
-    public boolean isEnableLoop11() {
-        return enableLoop11;
-    }
-
     public boolean isEnableCookiesControl() {
         return enableCookiesControl;
     }
@@ -91,7 +84,6 @@ public class Handlebars implements AppConfig {
         config.put("templatesDir", templatesDir);
         config.put("templatesSuffix", templatesSuffix);
         config.put("reloadTemplateChanges", reloadTemplateChanges);
-        config.put("enableLoop11", enableLoop11);
         config.put("enableCookiesControl", enableCookiesControl);
         return config;
     }
