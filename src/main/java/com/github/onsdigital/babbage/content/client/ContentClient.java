@@ -115,7 +115,7 @@ public class ContentClient {
      *                              all other IO Exceptions are rethrown with HTTP status 500
      */
     public ContentResponse getContent(String uri, Map<String, String[]> queryParameters) throws ContentReadException {
-        return sendGet(getPath(DATA_ENDPOINT), addUri(uri, getParameters(queryParameters)));
+        return resolveMaxAge(uri, sendGet(getPath(DATA_ENDPOINT), addUri(uri, getParameters(queryParameters))));
     }
 
 
