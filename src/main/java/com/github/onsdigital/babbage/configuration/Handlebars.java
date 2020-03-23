@@ -16,6 +16,7 @@ public class Handlebars implements AppConfig {
     private static final String TEMPLATES_SUFFIX_KEY = "TEMPLATES_SUFFIX";
     private static final String RELOAD_TEMPLATES_KEY = "RELOAD_TEMPLATES";
     private static final String ENABLE_LOOP11 = "ENABLE_LOOP11";
+    private static final String ENABLE_COVID19_FEATURE = "ENABLE_COVID19_FEATURE";
 
     private final String defaultHandlebarsDatePattern;
     private final String mainContentTemplateName;
@@ -24,6 +25,7 @@ public class Handlebars implements AppConfig {
     private final String templatesSuffix;
     private final boolean reloadTemplateChanges;
     private final boolean enableLoop11;
+    private final boolean enableCovid19Feature;
 
     static Handlebars getInstance() {
         if (INSTANCE == null) {
@@ -45,6 +47,8 @@ public class Handlebars implements AppConfig {
         templatesSuffix = getValueOrDefault(TEMPLATES_SUFFIX_KEY, ".handlebars");
         reloadTemplateChanges = getStringAsBool(RELOAD_TEMPLATES_KEY, "N");
         enableLoop11 = Boolean.parseBoolean(getValue(ENABLE_LOOP11));
+        enableCovid19Feature = Boolean.parseBoolean(getValue(ENABLE_COVID19_FEATURE));
+        
     }
 
     public String getHandlebarsDatePattern() {
@@ -75,6 +79,10 @@ public class Handlebars implements AppConfig {
         return enableLoop11;
     }
 
+    public boolean isEnableCovid19Feature() {
+        return enableCovid19Feature;
+    }
+
     @Override
     public Map<String, Object> getConfig() {
         Map<String, Object> config = new HashMap<>();
@@ -85,6 +93,7 @@ public class Handlebars implements AppConfig {
         config.put("templatesSuffix", templatesSuffix);
         config.put("reloadTemplateChanges", reloadTemplateChanges);
         config.put("enableLoop11", enableLoop11);
+        config.put("enableCovid19Feature", enableCovid19Feature);
         return config;
     }
 }

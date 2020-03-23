@@ -40,6 +40,7 @@ public class PageRequestHandler extends BaseRequestHandler {
                 additionalData.put("pdf_style", true);
             }
             additionalData.put("EnableLoop11", appConfig().handlebars().isEnableLoop11());
+            additionalData.put("EnableCovid19Feature", appConfig().handlebars().isEnableCovid19Feature());
             String html = TemplateService.getInstance().renderContent(dataStream, additionalData);
             return new BabbageContentBasedStringResponse(contentResponse,html, TEXT_HTML);
         }
