@@ -42,14 +42,16 @@
     </div>
 {{/partial}}
 {{#partial "block-content"}}
-    <div style="background-color:#fbc900">
-        <div class="wrapper">
-            <h2 class="margin-top--3 font-weight-700">Coronavirus (COVID19)</h2>
-            <p class="margin-top--0 margin--bottom--2">
-                <a class="underline-link" href="/peoplepopulationandcommunity/healthandsocialcare/conditionsanddiseases">Get the latest data and analysis on coronavirus (COVID19) in the UK.</a>
-            </p>
+    {{#if EnableCovid19Feature}}
+        <div style="background-color:#fbc900">
+            <div class="wrapper">
+                <h2 class="margin-top--3 font-weight-700">Coronavirus (COVID19)</h2>
+                <p class="margin-top--0 margin--bottom--2">
+                    <a class="underline-link" href="/peoplepopulationandcommunity/healthandsocialcare/conditionsanddiseases">Get the latest data and analysis on coronavirus (COVID19) in the UK.</a>
+                </p>
+            </div>
         </div>
-    </div>
+    {{/if}}
     <div class="background--gallery">
         <div class="wrapper">
             <div class="tiles">
