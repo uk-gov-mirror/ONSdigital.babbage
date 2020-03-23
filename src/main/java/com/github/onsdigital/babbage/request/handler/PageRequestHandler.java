@@ -9,14 +9,14 @@ import com.github.onsdigital.babbage.response.base.BabbageResponse;
 import com.github.onsdigital.babbage.template.TemplateService;
 import com.github.onsdigital.babbage.util.RequestUtil;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.LinkedHashMap;
 
-import static javax.ws.rs.core.MediaType.TEXT_HTML;
-
 import static com.github.onsdigital.babbage.configuration.ApplicationConfiguration.appConfig;
+import static javax.ws.rs.core.MediaType.TEXT_HTML;
 
 /**
  * Created by bren on 28/05/15.
@@ -26,6 +26,10 @@ import static com.github.onsdigital.babbage.configuration.ApplicationConfigurati
 public class PageRequestHandler extends BaseRequestHandler {
 
     private static final String REQUEST_TYPE = "/";
+    private static final String PDF = "pdf";
+    private static final String PDF_STYLE = "pdf_style";
+    private static final String ENABLE_COOKIES_CONTROL = "EnableCookiesControl";
+
 
     @Override
     public BabbageResponse get(String uri, HttpServletRequest request) throws IOException, ContentReadException {
@@ -34,15 +38,15 @@ public class PageRequestHandler extends BaseRequestHandler {
 
     public static BabbageResponse getPage(String uri, HttpServletRequest request) throws ContentReadException, IOException {
         ContentResponse contentResponse = ContentClient.getInstance().getContent(uri);
-        try (InputStream dataStream = contentResponse.getDataStream()){
+        try (InputStream dataStream = contentResponse.getDataStream()) {
             LinkedHashMap<String, Object> additionalData = new LinkedHashMap<>();
-            if(RequestUtil.getQueryParameters(request).containsKey("pdf")) {
-                additionalData.put("pdf_style", true);
+            if (RequestUtil.getQueryParameters(request).containsKey(PDF)) {
+                additionalData.put(PDF_STYLE, true);
             }
-            additionalData.put("EnableLoop11", appConfig().handlebars().isEnableLoop11());
             additionalData.put("EnableCovid19Feature", appConfig().handlebars().isEnableCovid19Feature());
+            additionalData.put(ENABLE_COOKIES_CONTROL, appConfig().handlebars().isEnableCookiesControl());
             String html = TemplateService.getInstance().renderContent(dataStream, additionalData);
-            return new BabbageContentBasedStringResponse(contentResponse,html, TEXT_HTML);
+            return new BabbageContentBasedStringResponse(contentResponse, html, TEXT_HTML);
         }
     }
 
