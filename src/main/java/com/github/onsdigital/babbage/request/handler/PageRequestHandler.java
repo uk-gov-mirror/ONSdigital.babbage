@@ -43,6 +43,7 @@ public class PageRequestHandler extends BaseRequestHandler {
             if (RequestUtil.getQueryParameters(request).containsKey(PDF)) {
                 additionalData.put(PDF_STYLE, true);
             }
+            additionalData.put("EnableCovid19Feature", appConfig().handlebars().isEnableCovid19Feature());
             additionalData.put(ENABLE_COOKIES_CONTROL, appConfig().handlebars().isEnableCookiesControl());
             String html = TemplateService.getInstance().renderContent(dataStream, additionalData);
             return new BabbageContentBasedStringResponse(contentResponse, html, TEXT_HTML);
