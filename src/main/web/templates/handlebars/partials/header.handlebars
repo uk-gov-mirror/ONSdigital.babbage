@@ -3,6 +3,9 @@
     <a class="skiplink" href="#main" tabindex="0">
         Skip to main content
     </a>
+	{{#if EnableCookiesControl}}
+		{{> partials/cookies-banner}}
+	{{/if}}
 	{{!-- produced for download analytics function --}}
 	<div id="pagePath" class="hide">{{uri}}</div>
 	{{!-- LANGUAGE TOGGLE AND SECONDARY NAV - DESKTOP --}}
