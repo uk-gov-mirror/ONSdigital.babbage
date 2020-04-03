@@ -23,7 +23,7 @@
         <dependency>
             <groupId>com.github.ONSdigital</groupId>
             <artifactId>restolino</artifactId>
-            <version>master-SNAPSHOT</version>
+            <version>6cf0bd10f3b30a2bde866beaf0a75c7f2f74f6a1</version>
         </dependency>
 
         <dependency>
