@@ -32,9 +32,9 @@
                     <ul class="nav-secondary__list">
                         {{#if_any items datasets}}<li class="nav-secondary__item"><a href="{{uri}}/datalist">{{labels.all-data}}</a></li>{{/if_any}}
                         <li class="nav-secondary__item"><a href="{{uri}}/publications">{{labels.all-publications}}</a></li>
-                        {{#if_any items description.keywords}}
+                        {{#if description.keywords}}
                             <li class="nav-secondary__item"><a href="{{location.origin}}/news/statementsandletters/staticlist?query={{description.keywords.[0]}}">{{labels.statements-and-letters}}</a></li>
-                        {{/if_any}}
+                        {{/if}}
                     </ul>
                 </div>
             </nav>
