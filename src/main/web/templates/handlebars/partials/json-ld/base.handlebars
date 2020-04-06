@@ -1,14 +1,14 @@
-{{#if_any (eq type "home_page") (eq type "timeseries") (eq type "bulletin") (eq type "static_adhoc")}}
+{{#if_any (eq type "home_page") (eq type "timeseries") (eq type "bulletin") (eq type "article") (eq type "static_adhoc")}}
     <script type="application/ld+json">
         {
             "@context": "http://schema.org",
             "name": "{{description.title}}",
-            "description": "{{description.summary}}",
+            "description": {{#if description._abstract}}"{{description._abstract}}"{{else}}"{{description.summary}}"{{/if}},
             {{#if_eq type "home_page"}} {{> partials/json-ld/homepage }} {{/if_eq}}
             {{#if_eq type "timeseries"}} {{> partials/json-ld/timeseries }} {{/if_eq}}
             {{#if_eq type "bulletin"}} {{> partials/json-ld/bulletin }} {{/if_eq}}
             {{#if_eq type "static_adhoc"}} {{> partials/json-ld/adhoc }} {{/if_eq}}
-            "url": {{location.protocol}}{{location.hostname}}{{uri}},
+            "url": "{{location.protocol}}{{location.hostname}}{{uri}}",
             "license": "http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/",
         }
     </script>
