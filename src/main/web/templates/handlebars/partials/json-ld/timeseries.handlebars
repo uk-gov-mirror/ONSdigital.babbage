@@ -3,19 +3,19 @@
 "headline": "{{description.title}}",
 "datePublished": "{{description.releaseDate}}",
 "dateModified": "{{description.releaseDate}}",
-"discussionURL": "{{location.protocol}}{{location.hostname}}{{relatedDocuments.0.uri}}",
+"discussionURL": "{{location.hostname}}{{relatedDocuments.0.uri}}",
 "keywords": ["{{description.cdid}}", "{{description.datasetId}}"],
 {{> partials/json-ld/publisher }}
-"image": "{{location.protocol}}{{location.hostname}}{{uri}}/linechartimage",  
+"image": "{{location.hostname}}{{uri}}/linechartimage",  
 "distribution":[
     {
         "@type":"DataDownload",
         "encodingFormat":"XLS",
-        "contentUrl": "{{location.protocol}}{{location.hostname}}/generator?format=xls&uri={{uri}}"
+        "contentUrl": "{{location.hostname}}/generator?format=xls&uri={{uri}}"
     },
     {
         "@type":"DataDownload",
         "encodingFormat":"CSV",
-        "contentUrl": "{{location.protocol}}{{location.hostname}}/generator?format=csv&uri={{uri}}"
+        "contentUrl": "{{location.hostname}}/generator?format=csv&uri={{uri}}"
     }
 ]
