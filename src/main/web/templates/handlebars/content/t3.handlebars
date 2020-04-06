@@ -31,8 +31,10 @@
                     <h2 class="nav-secondary__title">{{labels.view-all-content-related-to-this-topic}}:</h2>
                     <ul class="nav-secondary__list">
                         {{#if_any items datasets}}<li class="nav-secondary__item"><a href="{{uri}}/datalist">{{labels.all-data}}</a></li>{{/if_any}}
-                        <li class="nav-secondary__item"><a href="{{uri}}/publications">{{labels.all-publications}}</a>
-                        </li>
+                        <li class="nav-secondary__item"><a href="{{uri}}/publications">{{labels.all-publications}}</a></li>
+                        {{#if description.keywords}}
+                            <li class="nav-secondary__item"><a href="{{location.origin}}/news/statementsandletters/staticlist?query={{description.keywords.[0]}}">{{labels.statements-and-letters}}</a></li>
+                        {{/if}}
                     </ul>
                 </div>
             </nav>
