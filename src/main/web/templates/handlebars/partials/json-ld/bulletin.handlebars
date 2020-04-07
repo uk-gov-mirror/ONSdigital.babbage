@@ -1,0 +1,10 @@
+"@type": "Article",
+"headLine": "{{description.title}}",
+"datePublished": "{{description.releaseDate}}",
+"dateModified": "{{description.releaseDate}}",
+{{> partials/json-ld/author }}
+{{#if charts.0}}
+"image": "{{location.hostname}}/chartimage?uri={{charts.0.uri}}",
+{{/if}}
+"mainEntityOfPage": "{{uri}}",
+{{> partials/json-ld/publisher }}

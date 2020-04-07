@@ -1,0 +1,21 @@
+"@type": "Dataset",
+{{> partials/json-ld/author }}
+"headline": "{{description.title}}",
+"datePublished": "{{description.releaseDate}}",
+"dateModified": "{{description.releaseDate}}",
+"discussionURL": "{{location.hostname}}{{relatedDocuments.0.uri}}",
+"keywords": ["{{description.cdid}}", "{{description.datasetId}}"],
+{{> partials/json-ld/publisher }}
+"image": "{{location.hostname}}{{uri}}/linechartimage",  
+"distribution":[
+    {
+        "@type":"DataDownload",
+        "encodingFormat":"XLS",
+        "contentUrl": "{{location.hostname}}/generator?format=xls&uri={{uri}}"
+    },
+    {
+        "@type":"DataDownload",
+        "encodingFormat":"CSV",
+        "contentUrl": "{{location.hostname}}/generator?format=csv&uri={{uri}}"
+    }
+]
