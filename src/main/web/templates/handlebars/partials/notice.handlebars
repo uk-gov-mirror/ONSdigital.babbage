@@ -2,7 +2,7 @@
 
 	{{!-- For dataset pages that have 'correction alerts' instead of versions and 'alert alerts' for normal alerts --}}
 	{{#if_any has-corrections has-alerts}}
-		{{#if has-corrections}}
+        {{#if_all has-corrections show-corrections}}
 			<div class="show-hide__content alert--warning__content section__content--markdown">
 				<section>
 					{{#if_all has-corrections has-alerts}}
@@ -16,11 +16,11 @@
 					{{/loop}}
 				</section>
 			</div>
-		{{/if}}
+		{{/if_all}}
 		{{#if has-alerts}}
 			<div class="show-hide__content alert--warning__content section__content--markdown">
 				<section>
-					{{#if_all has-corrections has-alerts}}
+					{{#if_all show-corrections has-corrections has-alerts}}
 						<h3 class="alert--notice__title">{{labels.notices}}</h3>
 					{{/if_all}}
 					{{#loop alerts orderBy="date" reverse=true}}

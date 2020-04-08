@@ -1,8 +1,9 @@
+{{!-- TODO refactor the whole alert system (notices & corrections) it is a major mess. --}}
 {{!-- Unique alerts/corrections system for dataset landing page - only shown when no-versions=true --}}
 {{#if no-versions}}
 
 	{{!-- Store whether dataset has correction and/or alerts --}}
-	{{#each alerts}}
+    {{#each alerts}}
 		{{#if_eq type "correction"}}
 			{{#assign "has-corrections"}}
 				true
@@ -15,7 +16,11 @@
 			{{/assign}}
 		{{/if_eq}}
 	{{/each}}
-
+    {{#if has-correction}}
+        {{#assign "show-corrections"}}
+            true
+        {{/assign}}
+    {{/if}}
 	{{!-- Show those alerts/corrections --}}
 	{{#if alerts}}
 		<div class="alert">
@@ -98,6 +103,13 @@
 
 		{{else}}
 
+            {{#each alerts}}
+                {{#if_eq type "alert"}}
+                    {{#assign "has-alerts"}}
+                        true
+                    {{/assign}}
+                {{/if_eq}}
+            {{/each}}
 			{{!-- Set whether there are any corrections --}}
 			{{#each versions}}
 				{{#if correctionNotice}}
@@ -120,7 +132,6 @@
                                         <a class="alert__link js-scroll" href="#othertimeseries">View other variations of this time series</a>
                                     {{/if_ne}}
                                 {{/resolveTimeSeriesList}}
-
                                 {{#if alerts}}
                                     <div class="show-hide show-hide--dark info-box margin-top-sm--3 margin-top-md--3 js-show-hide">
                                         <div class="js-show-hide__title">
