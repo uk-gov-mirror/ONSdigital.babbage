@@ -1,0 +1,14 @@
+---
+
+platform: linux
+
+image_resource:
+  type: docker-image
+  source:
+    repository: onsdigital/dp-concourse-tools-node-java
+
+inputs:
+  name: babbage
+
+run:
+  path: babbage/ci/scripts/audit.sh
