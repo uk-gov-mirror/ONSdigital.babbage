@@ -1,0 +1,12 @@
+"@type": "Dataset",
+"datePublished": "{{description.releaseDate}}",
+{{> partials/json-ld/publisher }}
+{{#if downloads.0}}
+"distribution":[
+    {
+        "@type":"DataDownload",
+        "encodingFormat":"{{fe downloads.0.uri}}",
+        "contentUrl": "https://{{location.hostname}}/file?uri={{downloads.0.uri}}"
+    }
+],
+{{/if}}
