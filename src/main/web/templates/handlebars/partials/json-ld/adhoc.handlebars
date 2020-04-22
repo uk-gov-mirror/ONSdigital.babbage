@@ -5,7 +5,8 @@
 "distribution":[
     {
         "@type":"DataDownload",
-        "encodingFormat":"{{fe downloads.0.uri}}",
-        "contentUrl": "https://{{location.hostname}}/file?uri={{downloads.0.uri}}"
+        "encodingFormat":"{{fe downloads.0.file}}",
+        "contentUrl": "https://{{location.hostname}}/file?uri={{downloads.0.file}}"
     }
 ],
+{{/if}}
