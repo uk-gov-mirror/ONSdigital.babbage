@@ -1,5 +1,5 @@
 #!/bin/bash -eux
 
 pushd babbage
-  mvn test
+  make test
 popd
