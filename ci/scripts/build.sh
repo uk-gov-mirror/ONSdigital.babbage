@@ -1,7 +1,6 @@
 #!/bin/bash -eux
 
 pushd babbage
-  npm install --prefix src/main/web --unsafe-perm
-  mvn -Dmaven.test.skip clean package dependency:copy-dependencies
+  make build
   cp -r Dockerfile.concourse target/* ../build/
 popd

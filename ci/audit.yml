@@ -8,7 +8,7 @@ image_resource:
     repository: onsdigital/dp-concourse-tools-node-java
 
 inputs:
-  - name: babbage
+  name: babbage
 
 run:
-  path: babbage/ci/scripts/unit.sh
+  path: babbage/ci/scripts/audit.sh

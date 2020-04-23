@@ -1,5 +1,5 @@
 #!/bin/bash -eux
 
 pushd babbage
-  make test
+  make audit
 popd
