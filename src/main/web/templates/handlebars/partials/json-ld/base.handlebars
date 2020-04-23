@@ -6,7 +6,7 @@
             "description": {{#if description._abstract}}"{{description._abstract}}"{{else}}"{{description.summary}}"{{/if}},
             {{#if_eq type "home_page"}} {{> partials/json-ld/homepage }} {{/if_eq}}
             {{#if_eq type "timeseries"}} {{> partials/json-ld/timeseries }} {{/if_eq}}
-            {{#if_any (eq type "bulletin") (eq type "article") }} {{> partials/json-ld/bulletin }} {{/if_any}}
+            {{#if_any (eq type "bulletin") (eq type "article") }} {{> partials/json-ld/article }} {{/if_any}}
             {{#if_eq type "static_adhoc"}} {{> partials/json-ld/adhoc }} {{/if_eq}}
             "url": "https://{{location.hostname}}{{uri}}",
             "license": "http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/"
