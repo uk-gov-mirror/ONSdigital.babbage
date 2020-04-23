@@ -2,7 +2,7 @@
     <script type="application/ld+json">
         {
             "@context": "http://schema.org",
-            "name": "{{description.title}}",
+            {{#if_all (ne type "bulletin") (ne type "article") }}"name": "{{description.title}}",{{/if_all}}
             "description": {{#if description._abstract}}"{{description._abstract}}"{{else}}"{{description.summary}}"{{/if}},
             {{#if_eq type "home_page"}} {{> partials/json-ld/homepage }} {{/if_eq}}
             {{#if_eq type "timeseries"}} {{> partials/json-ld/timeseries }} {{/if_eq}}
