@@ -1,6 +1,6 @@
 #!/bin/bash
 
-mvn clean compile dependency:copy-dependencies
+mvn -Dossindex.skip=true clean compile dependency:copy-dependencies
 
  if [ $? -eq 0 ]
     then
@@ -11,4 +11,4 @@ mvn clean compile dependency:copy-dependencies
  fi
 
 # Now build the JAR:
-mvn process-resources
+mvn -Dossindex.skip=true process-resources

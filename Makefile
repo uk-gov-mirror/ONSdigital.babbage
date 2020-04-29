@@ -2,13 +2,20 @@
 all: audit test build
 
 .PHONY: audit
-audit:
-	pushd src/main/web && npm audit --audit-level=high && popd
+audit : audit-java audit-js
+
+.PHONY: audit-java
+audit-java:
+	mvn ossindex:audit
+
+.PHONY: audit-js
+audit-js:
+	npm audit --prefix src/main/web --audit-level=high
 
 .PHONY: build
 build:
 	npm install --prefix src/main/web --unsafe-perm
-	mvn -Dmaven.test.skip clean package dependency:copy-dependencies
+	mvn -Dmaven.test.skip -Dossindex.skip=true clean package dependency:copy-dependencies
 
 .PHONY: debug-web
 debug-web:
@@ -20,4 +27,4 @@ debug-publishing:
 
 .PHONY: test
 test:
-	mvn test
+	mvn -Dossindex.skip=true test
