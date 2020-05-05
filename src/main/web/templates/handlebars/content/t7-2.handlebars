@@ -56,7 +56,13 @@
                         <ul class="list--neutral">
                             {{#each downloads}}
                                 <li class="flush--third--bottom">
-                                    <a data-gtm-type="related-download" data-gtm-title="{{title}}" href="/file?uri={{concat uri "/" (fn file)}}">{{title}}</a> ({{fs (concat uri "/"  (fn file))}} {{fe (concat uri "/" (fn file))}})
+                                    <a href="/file?uri={{concat uri "/" (fn file)}}"
+                                        data-gtm-type="related-download" 
+                                        data-gtm-title="{{title}}"
+                                        data-gtm-download-file="{{file}}"
+                                        data-gtm-download-type="{{fe file}}" 
+                                    >
+                                        {{title}}</a> ({{fs (concat uri "/"  (fn file))}} {{fe (concat uri "/" (fn file))}})
                                 </li>
                             {{/each}}
                         </ul>
