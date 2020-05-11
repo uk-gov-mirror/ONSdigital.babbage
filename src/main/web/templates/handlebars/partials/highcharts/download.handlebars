@@ -1,2 +1,9 @@
 <a class="btn btn--primary print--hide" title="Download as {{format}}"
-    href="/generator?uri={{uri}}&format={{format}}" data-gtm-title="{{{sub (sup title)}}}" data-gtm-type="download-chart-{{format}}">.{{format}}</a>
+    href="/generator?uri={{uri}}&format={{format}}" 
+    data-gtm-title="{{{sub (sup title)}}}" 
+    data-gtm-type="download-chart-{{format}}"
+    data-gtm-download-file="timeseries-generated-file"
+    data-gtm-download-type="{{format}}"
+>
+    .{{format}}
+</a>

@@ -116,7 +116,10 @@
                                title="Download as {{fe (lowercase (concat uri "/" file))}}"
                                class="btn btn--primary btn--thin btn--narrow btn--small"
                                data-gtm-type="download-version-{{#if_eq (fe file) 'csdb'}}structured-text{{else}}{{fe (lowercase (concat uri "/" file))}}{{/if_eq}}"
-                               data-gtm-date="Latest">
+                               data-gtm-date="Latest"
+                               data-gtm-download-file="{{file}}"
+                               data-gtm-download-type="{{fe file}}" 
+                            >
                                 {{#if_eq (fe file) 'csdb'}}structured
                                     text{{else}}{{fe (lowercase (concat uri "/" file))}}{{/if_eq}}
                                 ({{fs (lowercase (concat uri "/" file))}})
@@ -151,7 +154,10 @@
                                                    title="Download as {{fe (lowercase (concat uri "/" this.file))}}"
                                                    class="btn btn--primary btn--thin btn--narrow btn--small clear-left {{#unless @first}}margin-top--1{{/unless}}"
                                                    data-gtm-type="download-version-{{#if_eq (fe file) 'csdb'}}structured-text{{else}}{{fe (lowercase (concat uri "/" file))}}{{/if_eq}}"
-                                                   data-gtm-date="{{df updateDate outputFormat="d MMMM yyyy"}}">
+                                                   data-gtm-date="{{df updateDate outputFormat="d MMMM yyyy"}}"
+                                                   data-gtm-download-file="{{file}}"
+                                                   data-gtm-download-type="{{fe file}}" 
+                                                >
                                                     {{#if_eq (fe file) 'csdb'}}structured text{{else}}{{fe (lowercase (concat uri "/" file))}}{{/if_eq}} ({{fs (lowercase (concat uri "/" this.file))}})
                                                 </a>
                                             {{/if}}
