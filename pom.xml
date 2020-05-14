@@ -13,7 +13,8 @@
         <handlebars-java-version>4.0.3</handlebars-java-version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <powermock.version>1.5.6</powermock.version>
-        <dp-logging.version>v1.6.0</dp-logging.version>
+        <dp-logging.version>v1.7.0</dp-logging.version>
+        <fasterxml.jackson.version>2.11.0</fasterxml.jackson.version>
     </properties>
 
     <dependencies>
@@ -194,6 +195,38 @@
             <version>9.4.0.v20161208</version>
         </dependency>
 
+        <!-- Fasterxml Jackson dependencies - overrides vulnerable transitive dependencies
+        and declared explicitly to resolve conflicts in handlebars, elasticsearch and dp-logging -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>${fasterxml.jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>${fasterxml.jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${fasterxml.jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.dataformat</groupId>
+            <artifactId>jackson-dataformat-smile</artifactId>
+            <version>${fasterxml.jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.dataformat</groupId>
+            <artifactId>jackson-dataformat-yaml</artifactId>
+            <version>${fasterxml.jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.dataformat</groupId>
+            <artifactId>jackson-dataformat-cbor</artifactId>
+            <version>${fasterxml.jackson.version}</version>
+        </dependency>
 
     </dependencies>
 
