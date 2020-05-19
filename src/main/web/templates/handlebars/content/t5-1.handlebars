@@ -63,8 +63,8 @@
                                     <div class="chart-area__controls__custom__container">
                                         <p class="flush">{{labels.download-full-time-series-as}}:</p>
                                         <a href="{{uri}}/linechartimage" title="Download as an image" class="btn btn--primary" download="{{description.title}}">{{labels.image}}</a>
-                                        <a class="btn btn--primary" title="Download as csv" href="/generator?format=csv&uri={{uri}}">.csv</a>
-                                        <a class="btn btn--primary" title="Download as xls" href="/generator?format=xls&uri={{uri}}">.xls</a>
+                                        <a class="btn btn--primary" title="Download as csv" data-gtm-download-file="{{uri}}" data-gtm-download-type="csv" href="/generator?format=csv&uri={{uri}}">.csv</a>
+                                        <a class="btn btn--primary" title="Download as xls" data-gtm-download-file="{{uri}}" data-gtm-download-type="xls" href="/generator?format=xls&uri={{uri}}">.xls</a>
                                     </div>
                                 </div>
                                 {{!-- Filtered - parameters added dynamically--}}
@@ -72,8 +72,8 @@
                                     <div class="chart-area__controls__custom__container">
                                         <p class="flush"> {{labels.download-filtered-time-series-as}}:</p>
                                         <a href="{{uri}}/linechartimage" title="Download as an image" class="btn btn--primary dlCustomData"  download="{{description.title}}">{{labels.image}}</a>
-                                        <a class="btn btn--primary dlCustomData" title="Download as csv" href="/generator?format=csv&uri={{uri}}">.csv</a>
-                                        <a class="btn btn--primary dlCustomData" title="Download as xls" href="/generator?format=xls&uri={{uri}}">.xls</a>
+                                        <a class="btn btn--primary dlCustomData" title="Download as csv" data-gtm-download-file="{{uri}}" data-gtm-download-type="csv" href="/generator?format=csv&uri={{uri}}">.csv</a>
+                                        <a class="btn btn--primary dlCustomData" title="Download as xls" data-gtm-download-file="{{uri}}" data-gtm-download-type="xls" href="/generator?format=xls&uri={{uri}}">.xls</a>
                                     </div>
                                 </div>
                             </div>
