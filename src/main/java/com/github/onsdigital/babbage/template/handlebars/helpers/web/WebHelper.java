@@ -5,10 +5,7 @@ import com.github.jknack.handlebars.Options;
 import com.github.onsdigital.babbage.template.handlebars.helpers.base.BabbageHandlebarsHelper;
 
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.Map;
-
-import static org.apache.commons.lang3.StringUtils.isNoneEmpty;
 
 /**
  * Created by bren on 18/09/15.
