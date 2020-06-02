@@ -112,7 +112,7 @@ public class SearchUtils {
     }
 
     private static boolean isAdvancedSearchQuery(String searchTerm) {
-        return StringUtils.containsAny(searchTerm, "+", "|", "-", "\"", "*", "~");
+        return StringUtils.containsAny(searchTerm, '+', '|', '-', '"', '*', '~');
     }
 
     public static ONSQuery buildAdvancedSearchQuery(HttpServletRequest request, String searchTerm, Set<TypeFilter> defaultFilters) {

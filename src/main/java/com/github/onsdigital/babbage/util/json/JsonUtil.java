@@ -9,7 +9,6 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -81,14 +80,14 @@ public class JsonUtil {
         if(StringUtils.isEmpty(json)) {
             return null;
         }
-        return objectMapper().readValue(json, type);
+        return (T) objectMapper().readValue(json, type);
     }
 
     private static <T> T fromJson(InputStream jsonStream, TypeReference type) throws IOException {
         if (jsonStream == null) {
             return null;
         }
-        return objectMapper().readValue(jsonStream, type);
+        return (T) objectMapper().readValue(jsonStream, type);
     }
 
     private static TypeReference<LinkedHashMap<String, Object>> mapType() {
