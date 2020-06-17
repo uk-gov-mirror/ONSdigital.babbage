@@ -1,5 +1,17 @@
 <script>
 
+    // getUsuageCookieValue reads the cookies_policy cookie and returns the value a user has set for usage, 
+    // or defaults to true to opt_out of usage cookie if no cookie is set, or theres an error getting the value
+    function getUsageCookieValue() {
+        var cookiesPolicyCookie = document.cookie.match('(^|;) ?cookies_policy=([^;]*)(;|$)');
+        if (cookiesPolicyCookie) {
+            var decodedCookie = decodeURIComponent(cookiesPolicyCookie[2])
+            var cookieValue = JSON.parse(decodedCookie)
+            return !cookieValue.usage
+        }
+        return true
+    }
+
     // unescape html entities
     function htmlUnescape(str){
         return str
@@ -8,7 +20,8 @@
 
     {{!-- Add title to dataLayer. Dont include the edition on dataset versions pages --}}
     var dataLayer = [{
-        contentTitle: htmlUnescape("{{> partials/page-title}}{{#if description.edition}}{{#if_ne description.edition "Current"}}: {{description.edition}}{{/if_ne}}{{/if}}")
+        contentTitle: htmlUnescape("{{> partials/page-title}}{{#if description.edition}}{{#if_ne description.edition "Current"}}: {{description.edition}}{{/if_ne}}{{/if}}"),
+        analyticsOptOut: getUsageCookieValue()
     }];
 
     {{#if description.releaseDate}}
