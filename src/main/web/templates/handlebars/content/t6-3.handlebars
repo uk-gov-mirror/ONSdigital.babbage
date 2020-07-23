@@ -17,28 +17,28 @@
         </div>
         {{!-- LIST OF DOWNLOADS --}}
         <div class="col col--md-36 col--lg-39">
-            <ul class="list--neutral margin-top--0">
-                {{#if downloads}}
-                    <h2 class="margin-top--2">{{labels.downloads}}</h2>
-                    {{#each downloads}}
-                        <li>
-                            <h3><a href='/file?uri={{concat uri "/" (fn file)}}'>{{title}}</a> ({{fs (concat uri "/" (fn file))}}, {{fe (concat uri "/" (fn file))}})</h3>
-                            <p class="flush">{{fileDescription}}</p>
-                        </li>
+            {{#if downloads}}
+                <h2 class="margin-top--2">{{labels.downloads}}</h2>
+                <ul class="list--neutral">
+                {{#each downloads}}
+                    <li>
+                        <h3><a href='/file?uri={{concat uri "/" (fn file)}}'>{{title}}</a> ({{fs (concat uri "/" (fn file))}}, {{fe (concat uri "/" (fn file))}})</h3>
+                        <p class="flush">{{fileDescription}}</p>
+                    </li>
+                {{/each}}
+                </ul>
+            {{/if}}
+            {{#if relatedDatasets}}
+                <h2>{{labels.related-data}}</h2>
+                <ul class="list--neutral">
+                    {{#each relatedDatasets}}
+                        {{#resolve this.uri filter="description"}}
+                            <li><h3><a data-gtm-type="related-datasets" data-gtm-title="{{description.title}}" href="{{absolute uri}}">{{description.title}}</a></h3></li>
+                            <p class="flush">{{description.summary}}</p>
+                        {{/resolve}}
                     {{/each}}
-                {{/if}}
-                {{#if relatedDatasets}}
-                    <h2>{{labels.related-data}}</h2>
-                    <ul class="list--neutral">
-                        {{#each relatedDatasets}}
-                            {{#resolve this.uri filter="description"}}
-                                <li><h3><a data-gtm-type="related-datasets" data-gtm-title="{{description.title}}" href="{{absolute uri}}">{{description.title}}</a></h3></li>
-                                <p class="flush">{{description.summary}}</p>
-                            {{/resolve}}
-                        {{/each}}
-                    </ul>
-                {{/if}}
-            </ul>
+                </ul>
+            {{/if}}
         </div>
         {{!-- CONTACT --}}
         <div class="col col--md-11 col--lg-20">
