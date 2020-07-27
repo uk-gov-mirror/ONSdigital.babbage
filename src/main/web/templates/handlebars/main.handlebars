@@ -93,18 +93,18 @@
 		{{else if_eq type "compendium_landing_page"}} 		{{> content/t6-1}}
 		{{else if_eq type "compendium_chapter"}} 			{{> content/t6-2}}
 		{{else if_eq type "compendium_data"}} 				{{> content/t6-3}}
-		{{else if_eq type "reference_tables"}} 				{{> content/t8-1}}
-		{{else if_eq type "dataset_landing_page"}} 			{{> content/t8-3}}
-		{{else if_eq type "dataset"}} 						{{> content/t12}}
-		{{else if_eq type "timeseries_dataset"}} 			{{> content/t12}}
+		{{else if_eq type "static_qmi"}} 					{{> content/t7-1}}
+		{{else if_eq type "static_adhoc"}} 					{{> content/t7-2}}
+		{{else if_eq type "static_foi"}} 					{{> content/t7-3}}
 		{{else if_eq type "static_landing_page"}} 			{{> content/t7-4-1}}
 		{{else if_eq type "static_page"}} 					{{> content/t7-5}}
 		{{else if_eq type "static_article"}} 				{{> content/t7-6}}
 		{{else if_eq type "static_methodology"}} 			{{> content/t7-6}}
-        {{else if_eq type "static_methodology_download"}} 	{{> content/t7-6}}
-		{{else if_eq type "static_qmi"}} 					{{> content/t7-1}}
-		{{else if_eq type "static_adhoc"}} 					{{> content/t7-2}}
-		{{else if_eq type "static_foi"}} 					{{> content/t7-3}}
+    {{else if_eq type "static_methodology_download"}} 	{{> content/t7-6}}
+		{{else if_eq type "reference_tables"}} 				{{> content/t8-1}}
+		{{else if_eq type "dataset_landing_page"}} 			{{> content/t8-3}}
+		{{else if_eq type "dataset"}} 						{{> content/t12}}
+		{{else if_eq type "timeseries_dataset"}} 			{{> content/t12}}
 		{{else if_eq type "release"}} 						{{> content/t16}}
 		{{!-- Charts and tables and images--}}
 		{{else if_eq type "chart"}} 						{{> highcharts/chart}}
@@ -114,18 +114,18 @@
 		{{!-- List Pages --}}
 		{{else if_eq type "list"}}
 			{{#if_eq listType "alladhocs"}} 						{{> list/t9-12}}
-				{{else if_eq listType "allmethodologies"}} 			{{> list/t9-11}}
-				{{else if_eq listType "atoz"}} 						{{> list/t9-14}}
-				{{else if_eq listType "staticlist"}} 				{{> list/t9-13}}
 				{{else if_eq listType "publishedrequests"}} 		{{> list/t9-2}}
 				{{else if_eq listType "previousreleases"}} 			{{> list/t9-6}}
 				{{else if_eq listType "topicspecificmethodology"}} 	{{> list/t9-7}}
 				{{else if_eq listType "publications"}} 				{{> list/t9-8}}
 				{{else if_eq listType "datalist"}} 					{{> list/t9-9}}
+				{{else if_eq listType "allmethodologies"}} 			{{> list/t9-11}}
+				{{else if_eq listType "staticlist"}} 				{{> list/t9-13}}
+				{{else if_eq listType "atoz"}} 						{{> list/t9-14}}
+				{{else if_eq listType "relateddata"}} 				{{> list/t9-16}}
 				{{else if_eq listType "search"}} 					{{> list/t10}}
 				{{else if_eq listType "searchdata"}} 				{{> list/t10-2}}
 				{{else if_eq listType "searchpublication"}} 		{{> list/t10-3}}
-				{{else if_eq listType "relateddata"}} 				{{> list/t9-16}}
 				{{else if_eq listType "releasecalendar"}} 			{{> list/t11}}
 				{{else if_eq listType "timeseriestool"}} 			{{> list/t13}}
 			{{/if_eq}}
