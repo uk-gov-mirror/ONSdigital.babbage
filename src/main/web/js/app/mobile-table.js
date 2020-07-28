@@ -6,10 +6,12 @@ $(function() {
 
         $('.btn--mobile-table-show').click(function () {
             $(this).closest('.markdown-table-container').find('.markdown-table-wrap').show();
+            $(this).closest('.markdown-table-container').find('.markdown-table-wrap').find('table').attr("tabindex", "0").focus();
         });
 
         $('.btn--mobile-table-hide').click(function () {
-            $(this).closest('.markdown-table-wrap').css('display', '');
+            $(this).closest(markdownTable).css('display', '');
+            $(this).closest('.markdown-table-container').find('.btn--mobile-table-show').focus();
         });
     }
 });
