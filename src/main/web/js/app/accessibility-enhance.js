@@ -21,5 +21,5 @@ function highchartsAccessibilityAttrs(selector, labelText, removeAttrs) {
 }
 
 function timeseriesAccessibilityAttrs(removeAttrs) {
-    highchartsAccessibilityAttrs($('.timeseries__chart'), 'Chart representing data available in table alternative. Select "table" in filters to display table', removeAttrs);
+    highchartsAccessibilityAttrs($('.timeseries__chart'), 'Chart representing data available. Select "table" in show data as to display data as a table', removeAttrs);
 }
