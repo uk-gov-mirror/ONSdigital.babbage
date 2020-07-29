@@ -238,6 +238,7 @@ var renderLineChart = function (timeseries) {
             chart.yAxis.min = min;
         }
         show(chartContainer);
+        chartContainer.attr('tabIndex', '0');
         chartContainer.highcharts(chart);
     }
 

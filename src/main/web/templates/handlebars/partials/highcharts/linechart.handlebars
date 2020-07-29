@@ -1,65 +1,60 @@
 <form class="timeseries__filters nojs--hide">
     <h2 class="tiles__title-h2">{{labels.filters}}</h2>
+    <span class="visuallyhidden">Use these filters to interact with the following chart of data.</span>
     <div class="tiles__content">
         <div data-chart-controls="" data-chart-controls-for="">
             <div class="col col--md-8 col--lg-12 margin-right-md--4 margin-right-lg--2">
                 <fieldset class="btn-group">
                     <legend id="data-type">{{labels.show-data-as}}</legend>
-                    <div role="radiogroup" aria-labelledby="data-type">
-                        <label for="type-chart" class="btn btn--secondary btn--chart-control">
-                            {{labels.chart}}
-                            <input id="type-chart" type="radio" name="type" data-chart-controls-type="chart" aria-controls="data" checked>
-                        </label>
-                        <label for="type-table" class="btn btn--secondary btn--chart-control">
-                            {{labels.table}}
-                            <input id="type-table" type="radio" name="type" data-chart-controls-type="table" aria-controls="data">
-                        </label>
-                    </div>
+                    <label for="type-chart" class="btn btn--secondary btn--chart-control">
+                        {{labels.chart}}
+                        <input id="type-chart" type="radio" name="type" data-chart-controls-type="chart" aria-controls="data" checked>
+                    </label>
+                    <label for="type-table" class="btn btn--secondary btn--chart-control">
+                        {{labels.table}}
+                        <input id="type-table" type="radio" name="type" data-chart-controls-type="table" aria-controls="data">
+                    </label>
                 </fieldset>
             </div>
             <div class="col col--md-12 col--lg-18 margin-right-md--4 margin-right-lg--2">
                 <fieldset class="btn-group" role="radiogroup">
                     <legend id="frequency">{{labels.frequency}}</legend>
-                    <div role="radiogroup" aria-labelledby="frequency">
-                        <label class="btn btn--secondary btn--chart-control frequency-select">
-                            {{labels.month}}
-                            <input type="radio" class="frequency" name="scale" data-chart-controls-scale="months"
-                                   value="months" aria-controls="data">
-                        </label>
-                        <label class="btn btn--secondary btn--chart-control frequency-select">
-                            {{labels.quarter}}
-                            <input type="radio" class="frequency" name="scale" data-chart-controls-scale="quarters"
-                                   value="quarters" aria-controls="data">
-                        </label>
-                        <label class="btn btn--secondary btn--chart-control frequency-select">
-                            {{labels.year}}
-                            <input type="radio" class="frequency" name="scale" data-chart-controls-scale="years"
-                                   value="years" aria-controls="data">
-                        </label>
-                    </div>
+                    <label class="btn btn--secondary btn--chart-control frequency-select">
+                        {{labels.month}}
+                        <input type="radio" class="frequency" name="scale" data-chart-controls-scale="months"
+                                value="months" aria-controls="data">
+                    </label>
+                    <label class="btn btn--secondary btn--chart-control frequency-select">
+                        {{labels.quarter}}
+                        <input type="radio" class="frequency" name="scale" data-chart-controls-scale="quarters"
+                                value="quarters" aria-controls="data">
+                    </label>
+                    <label class="btn btn--secondary btn--chart-control frequency-select">
+                        {{labels.year}}
+                        <input type="radio" class="frequency" name="scale" data-chart-controls-scale="years"
+                                value="years" aria-controls="data">
+                    </label>
                 </fieldset>
             </div>
             <div class="col col--md-17 col--lg-23">
                 <fieldset class="btn-group">
                     <legend id="period">{{labels.time-period}}</legend>
-                    <div role="radiogroup" aria-labelledby="period">
-                        <label class="btn btn--secondary btn--chart-control btn--chart-control--all btn--secondary-active">
-                            {{labels.all}}
-                            <input type="radio" name="range" data-chart-controls-range="all" aria-controls="data" checked>
-                        </label>
-                        <label class="btn btn--secondary btn--chart-control">
-                            {{labels.last-10-years}}
-                            <input type="radio" name="range" data-chart-controls-range="10yr" aria-controls="data">
-                        </label>
-                        <label class="btn btn--secondary btn--chart-control">
-                            {{labels.last-5-years}}
-                            <input type="radio" name="range" data-chart-controls-range="5yr" aria-controls="data">
-                        </label>
-                        <label class="btn btn--secondary btn--chart-control">
-                            {{labels.custom}}
-                            <input type="radio" name="range" data-chart-control-custom-trigger-for="chart-area__controls__custom" aria-controls="customControls">
-                        </label>
-                    </div>
+                    <label class="btn btn--secondary btn--chart-control btn--chart-control--all btn--secondary-active">
+                        {{labels.all}}
+                        <input type="radio" name="range" data-chart-controls-range="all" aria-controls="data" checked>
+                    </label>
+                    <label class="btn btn--secondary btn--chart-control">
+                        {{labels.last-10-years}}
+                        <input type="radio" name="range" data-chart-controls-range="10yr" aria-controls="data">
+                    </label>
+                    <label class="btn btn--secondary btn--chart-control">
+                        {{labels.last-5-years}}
+                        <input type="radio" name="range" data-chart-controls-range="5yr" aria-controls="data">
+                    </label>
+                    <label class="btn btn--secondary btn--chart-control">
+                        {{labels.custom}}
+                        <input type="radio" name="range" data-chart-control-custom-trigger-for="chart-area__controls__custom" aria-controls="customControls">
+                    </label>
                 </fieldset>
 
                 <div class="chart-area__controls__custom js-hidden" id="customControls">
