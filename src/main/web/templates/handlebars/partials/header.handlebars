@@ -69,12 +69,12 @@
 			{{!-- MENU AND SEARCH TOGGLES ON MOBILE --}}
 			<ul class="nav--controls">
 				<li class="nav--controls__item">
-					<a href="#nav-primary" id="menu-toggle" aria-controls="nav-primary" class="nav--controls__menu">
+					<a href="#nav-primary" id="menu-toggle" aria-controls="nav-primary" aria-expanded="false" class="nav--controls__menu">
 						<span class="nav--controls__text">{{labels.menu}}</span>
 					</a>
 				</li>
 				<li class="nav--controls__item {{#if_any (eq listType "search") (eq listType "searchpublication") (eq listType "searchdata")}}search-is-expanded{{/if_any}}">
-					<a href="#nav-search" id="search-toggle" aria-controls="nav-search" class="nav--controls__search">
+					<a href="#nav-search" id="search-toggle" aria-controls="nav-search" aria-expanded="false" class="nav--controls__search">
 						<span class="nav--controls__text">{{labels.search}}</span>
 					</a>
 				</li>
