@@ -78,8 +78,9 @@
 						{{#last dateChanges}}
 							<br>
 							<span class="flush">
-								<a href="{{uri}}#datechanges">This date has been changed
-								from {{df previousDate}}</a>
+								<a href="{{uri}}#datechanges">
+                                    This date has been changed from {{df previousDate}} <span class="visuallyhidden">for {{{description.title}}}{{#if description.edition}}: {{{description.edition}}}{{/if}}</span>
+                                </a>
 							</span>
 						{{/last}}
 					{{!-- {{/if}} --}}
