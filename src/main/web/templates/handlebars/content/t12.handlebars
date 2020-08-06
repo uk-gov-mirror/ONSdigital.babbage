@@ -12,15 +12,12 @@
 
     {{!-- Resolve title from parent --}}
 
-    {{#each breadcrumb}}
-        {{#if @last}}
-            {{#resolve uri}}
-
-                <h1 class="page-intro__title {{#if_any description._abstract description.summary}}{{else}}margin-bottom-sm--4 margin-bottom-md--4{{/if_any}}">{{#if typeLabel}}<span class="page-intro__type">{{typeLabel}}:</span>{{/if}}{{description.title}}
-
-            {{/resolve}}
-        {{/if}}
-    {{/each}}
+    {{#resolve (parentPath uri)}}
+        <h1 class="page-intro__title {{#if_any description._abstract description.summary}}{{else}}margin-bottom-sm--4 margin-bottom-md--4{{/if_any}}">
+            {{#if typeLabel}}<span class="page-intro__type">{{typeLabel}}:</span>{{/if}}
+            {{description.title}}
+        </h1>
+    {{/resolve}}
 
     {{!-- Output edition --}}
 
@@ -64,7 +61,7 @@
                             {{#if description.datasetId}}
                                 <p class="col col--md-12 col--lg-15 meta__item">
                                     <span>{{labels.dataset-id}}: </span>{{description.datasetId}}&nbsp;
-                                    <span><a href="#" class="tooltip print--hide" title="This series ID is a unique random identifier for this individual time series. The digits themselves do not have any specific meaning">{{labels.dataset-what-is}} </a></span>
+                                    <span><a href="#" class="tooltip print--hide" title="This series ID is a unique random identifier for this individual time series. The digits themselves do not have any specific meaning">{{labels.dataset-what-is}}</a></span>
                                 </p>
                             {{/if}}
                         {{/resolve}}
