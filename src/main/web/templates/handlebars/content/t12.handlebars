@@ -12,15 +12,12 @@
 
     {{!-- Resolve title from parent --}}
 
-    {{#each breadcrumb}}
-        {{#if @last}}
-            {{#resolve uri}}
-
-                <h1 class="page-intro__title {{#if_any description._abstract description.summary}}{{else}}margin-bottom-sm--4 margin-bottom-md--4{{/if_any}}">{{#if typeLabel}}<span class="page-intro__type">{{typeLabel}}:</span>{{/if}}{{description.title}}
-
-            {{/resolve}}
-        {{/if}}
-    {{/each}}
+    {{#resolve (parentPath uri)}}
+        <h1 class="page-intro__title {{#if_any description._abstract description.summary}}{{else}}margin-bottom-sm--4 margin-bottom-md--4{{/if_any}}">
+            {{#if typeLabel}}<span class="page-intro__type">{{typeLabel}}:</span>{{/if}}
+            {{description.title}}
+        </h1>
+    {{/resolve}}
 
     {{!-- Output edition --}}
 
