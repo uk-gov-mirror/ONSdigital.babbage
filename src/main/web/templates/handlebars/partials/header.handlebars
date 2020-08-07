@@ -25,11 +25,11 @@
                     {{!-- Show bothe language's and toggle--}}
                     <div class="language">
                         {{#if_eq location.hostname (concat "cy." (replace location.hostname "cy." ""))}}
-                            <a href="{{> partials/language-toggle language="en"}}" class="language__link">English (EN)</a>
+                            <a href="{{> partials/language-toggle language="en"}}" class="language__link" lang="en-GB">English (EN)</a>
                             <span> | Cymraeg (CY)</span>
                         {{else}}
                             <span>English (EN) | </span>
-                            <a href="{{> partials/language-toggle language="cym"}}" class="language__link">Cymraeg (CY)</a>
+                            <a href="{{> partials/language-toggle language="cym"}}" class="language__link" lang="cy">Cymraeg (CY)</a>
                         {{/if_eq}}
                     </div>
                 </div>
