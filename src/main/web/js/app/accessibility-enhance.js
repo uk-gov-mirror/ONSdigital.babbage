@@ -23,3 +23,13 @@ function highchartsAccessibilityAttrs(selector, labelText, removeAttrs) {
 function timeseriesAccessibilityAttrs(removeAttrs) {
     highchartsAccessibilityAttrs($('.timeseries__chart'), 'Interactive chart representing data, includes a table view option.', removeAttrs);
 }
+
+$(function() {
+    var embedCodeBtns = $('.details__summary');
+
+    if (embedCodeBtns.length) {
+        embedCodeBtns.click(function () {
+            $(this).attr('aria-expanded', $(this).attr('aria-expanded') === 'false');
+        });
+    }
+});
