@@ -12,8 +12,8 @@
                 {{#if_eq this paginator.currentPage}}
                 <span class="page-link btn btn--plain btn--plain-active btn--block">{{this}}</span>
                 {{else}}
-                <a href="{{location.pathname}}{{query_string exclude="page"}}page={{this}}" class="page-link btn btn--plain">
-                    <span class="visuallyhidden">Page</span> {{this}} <span class="visuallyhidden">of {{paginator.numberOfPages}}</span>
+                <a href="{{location.pathname}}{{query_string exclude="page"}}page={{this}}" class="page-link btn btn--plain" aria-label="Page {{this}} of {{paginator.numberOfPages}}">
+                    {{this}}
                 </a>
                 {{/if_eq}}
             </li>
