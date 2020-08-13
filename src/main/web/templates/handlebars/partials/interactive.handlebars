@@ -3,7 +3,7 @@
     <div class="pym-interactive{{#if_eq full-width "true"}} pym-interactive--full-width margin-left--0{{/if_eq}}" id="{{id}}" data-url="{{url}}" data-title="{{#if_null title}}{{labels.interactive-chart}}{{else}}{{title}}{{/if_null}}"></div>
 
     <details class="details">
-        <summary class="details__summary">Embed code</summary>
+        <summary class="details__summary" aria-label="{{#if_null title}}{{labels.interactive-chart}}{{else}}{{title}}{{/if_null}} embed code">Embed code</summary>
         <div class="details__body">
             <label class="embed-code__label" for="embed-{{id}}">Embed this interactive</label>
             <input class="embed-code__code width-md--32"
