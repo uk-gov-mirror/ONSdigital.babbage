@@ -18,7 +18,7 @@
             {{md notes}}
         {{/if}}
 
-        <h6 class="print--hide">Download this image</h6>
+        <h6 class="print--hide"><span role="text">Download this image <span class="visuallyhidden">{{title}}</span></span></h6>
         {{#each files}}
             {{#if (eq type "uploaded-image")}}
                 <a class="btn btn--primary print--hide" title="Download as {{fileType}}"

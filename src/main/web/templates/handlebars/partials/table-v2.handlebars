@@ -7,7 +7,7 @@
     {{!-- 'View table' button for mobile --}}
     <button class="btn btn--secondary btn--mobile-table-show nojs--hide" aria-expanded="false" aria-live="assertive" data-gtm-title="{{{sub (sup title)}}}" data-gtm-type="view-table">View table</button>
 
-    <h5 class="print--hide font-size--h6">Download this table</h5>
+    <h5 class="print--hide font-size--h6"><span role="text">Download this table <span class="visuallyhidden">{{title}}</span></span></h5>
     <a href="/download/table?format=xlsx&uri={{uri}}.json" title="Download as xls" class="btn btn--primary print--hide" data-gtm-title="{{{sub (sup title)}}}" data-gtm-type="download-table-xlsx" aria-label="Download {{title}} as xls">.xls</a>
     <a href="/download/table?format=csv&uri={{uri}}.json" title="Download as csv" class="btn btn--primary print--hide" data-gtm-title="{{{sub (sup title)}}}" data-gtm-type="download-table-csv" aria-label="Download {{title}} as csv">.csv</a>
 </div>
