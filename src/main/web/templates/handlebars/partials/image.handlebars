@@ -23,7 +23,7 @@
             {{#if (eq type "uploaded-image")}}
                 <a class="btn btn--primary print--hide" title="Download as {{fileType}}"
                    data-gtm-title="{{{sub (sup title)}}}" data-gtm-type="download-{{fileType}}"
-                   href="/file?uri={{uri}}.{{fileType}}">.{{fileType}}</a>
+                   href="/file?uri={{uri}}.{{fileType}}" aria-label="Download {{title}} as {{fileType}}">.{{fileType}}</a>
             {{/if}}
         {{/each}}
 
@@ -31,7 +31,7 @@
             {{#if (eq type "uploaded-data")}}
                 <a class="btn btn--primary print--hide" title="Download as {{fileType}}"
                    data-gtm-title="{{{sub (sup title)}}}" data-gtm-type="download-{{fileType}}"
-                   href="/file?uri={{uri}}.{{fileType}}">.{{fileType}}
+                   href="/file?uri={{uri}}.{{fileType}}" aria-label="Download {{title}} as {{fileType}}">.{{fileType}}
                 </a>
             {{/if}}
         {{/each}}

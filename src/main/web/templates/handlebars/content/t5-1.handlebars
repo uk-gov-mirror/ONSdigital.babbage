@@ -1,265 +1,245 @@
 {{#partial "block-metadata"}}
-    <div class="meta-wrap">
-        <div class="wrapper">
-            <div class="col-wrap">
-                {{> content/partials/metadata/contact class="col--md-12 col--lg-15"}}
+        <div class="meta-wrap">
+                <div class="wrapper">
+                        <div class="col-wrap">
+                                {{> content/partials/metadata/contact class="col--md-12 col--lg-15"}}
 
-                {{#block "block-release-date"}}
-                    {{> content/partials/metadata/release-date class="col--md-12 col--lg-15"}}
-                {{/block}}
+                                {{#block "block-release-date"}}
+                                        {{> content/partials/metadata/release-date class="col--md-12 col--lg-15"}}
+                                {{/block}}
 
-                {{#block "block-next-release"}}
-                    {{> content/partials/metadata/next-release class="col--md-11 col--lg-15"}}
-                {{/block}}
+                                {{#block "block-next-release"}}
+                                        {{> content/partials/metadata/next-release class="col--md-11 col--lg-15"}}
+                                {{/block}}
 
-                {{#block "block-additonal-metadata"}}{{/block}}
-            </div>
+                                {{#block "block-additonal-metadata"}}{{/block}}
+                        </div>
+                </div>
         </div>
-    </div>
 {{/partial}}
 
 {{#partial "block-additonal-metadata"}}
-	<p class="col col--md-13 col--lg-15 print-hidden meta__item">
-		{{#if description.cdid}}{{labels.series-id}}: {{description.cdid}}
-        <a href="#" class="tooltip" title="This series ID is a unique random identifier for this individual time series. The digits themselves do not have any specific meaning">{{labels.what-is-this}}</a><br/>{{/if}}
-        {{#if description.unit}}{{labels.units}}: {{description.preUnit}} {{description.unit}}<br/>{{/if}}
-        {{seasonalAdjustment}}
-	</p>
+    <p class="col col--md-13 col--lg-15 print-hidden meta__item">
+        {{#if description.cdid}}{{labels.series-id}}: {{description.cdid}}
+                <a href="#" class="tooltip" title="This series ID is a unique random identifier for this individual time series. The digits themselves do not have any specific meaning">{{labels.what-is-this}}</a><br/>{{/if}}
+                {{#if description.unit}}{{labels.units}}: {{description.preUnit}} {{description.unit}}<br/>{{/if}}
+                {{seasonalAdjustment}}
+    </p>
 {{/partial}}
 
 
 {{#partial "block-content"}}
 {{!-- Hide chart section if no data to draw the chart with --}}
 {{!-- TODO: Add isdatavailable to timeseries to do this check --}}
-	{{#if_any years quarters months}}
-		<div class="wrapper">
-			<div class="col-wrap">
-				<div class="col col--lg-one tiles__item margin-top-sm--4 margin-top-md--5 flush-bottom">
+    {{#if_any years quarters months}}
+        <div class="wrapper">
+            <div class="col-wrap">
+                <div class="col col--lg-one tiles__item margin-top-sm--4 margin-top-md--5 flush-bottom">
 
-					{{> partials/highcharts/linechart}}
+                    {{> partials/highcharts/linechart}}
 
-					{{!-- Chart footer --}}
-					<div class="tiles__content">
-						<h2>{{labels.download-this-time-series}}</h2>
-						<div class="chart-area__footer__actions">
-                            <form class="timeseries__filters nojs--hide">
-							<div class="nojs--hide">
+                    {{!-- Chart footer --}}
+                    <div class="tiles__content">
+                        <h2>{{labels.download-this-time-series}}</h2>
+                        <div class="chart-area__footer__actions">
+                                                        <form class="timeseries__filters nojs--hide">
+                            <div class="nojs--hide">
                                 <fieldset class="btn-group">
-                                    <legend id="data-download">{{labels.download-options}}</legend>
-                                    <div role="radiogroup" aria-labelledby="data-download">
-                                        <label for="unfiltered-download" class="btn btn--secondary btn--chart-control btn--chart-control--download btn--secondary-active">
-                                            {{labels.full-unfiltered-time-series}}
-                                            <input id="unfiltered-download" type="radio" name="type" data-chart-controls-type="unfiltered-download" aria-controls="unfiltered-download-controls" aria-expanded="true" checked>
-                                        </label>
-                                        <label for="filtered-download" class="btn btn--secondary btn--chart-control btn--chart-control--download">
-                                            {{labels.filtered-time-series}}
-                                            <input id="filtered-download" type="radio" name="type" data-chart-controls-type="filtered-download" aria-controls="filtered-download-controls" aria-expanded="false">
-                                        </label>
-                                    </div>
+                                        <legend id="data-download">{{labels.download-options}}</legend>
+                                        <div role="radiogroup" aria-labelledby="data-download">
+                                                <label for="unfiltered-download" class="btn btn--secondary btn--chart-control btn--chart-control--download btn--secondary-active">
+                                                        {{labels.full-unfiltered-time-series}}
+                                                        <input id="unfiltered-download" type="radio" name="type" data-chart-controls-type="unfiltered-download" aria-controls="unfiltered-download-controls" aria-expanded="true" checked>
+                                                </label>
+                                                <label for="filtered-download" class="btn btn--secondary btn--chart-control btn--chart-control--download">
+                                                        {{labels.filtered-time-series}}
+                                                        <input id="filtered-download" type="radio" name="type" data-chart-controls-type="filtered-download" aria-controls="filtered-download-controls" aria-expanded="false">
+                                                </label>
+                                        </div>
                                 </fieldset>
 
                                 {{!-- Unflitered --}}
                                 <div id="unfiltered-download-controls" class="chart-area__controls__download chart-area__controls__download--unfiltered width--22 padding-top--2 padding-bottom--2" aria-hidden="false">
-                                    <div class="chart-area__controls__custom__container">
-                                        <p class="flush">{{labels.download-full-time-series-as}}:</p>
-                                        <a href="{{uri}}/linechartimage" title="Download as an image" class="btn btn--primary" download="{{description.title}}">{{labels.image}}</a>
-                                        <a class="btn btn--primary" title="Download as csv" data-gtm-download-file="{{uri}}" data-gtm-download-type="csv" href="/generator?format=csv&uri={{uri}}">.csv</a>
-                                        <a class="btn btn--primary" title="Download as xls" data-gtm-download-file="{{uri}}" data-gtm-download-type="xls" href="/generator?format=xls&uri={{uri}}">.xls</a>
-                                    </div>
+                                        <div class="chart-area__controls__custom__container">
+                                                <p class="flush">{{labels.download-full-time-series-as}}:</p>
+                                                <a href="{{uri}}/linechartimage" title="Download as an image" class="btn btn--primary" download="{{description.title}}" aria-title="Download {{title}} as an {{labels.image}}">{{labels.image}}</a>
+                                                <a class="btn btn--primary" title="Download as csv" data-gtm-download-file="{{uri}}" data-gtm-download-type="csv" href="/generator?format=csv&uri={{uri}}" aria-title="Download {{title}} as csv">.csv</a>
+                                                <a class="btn btn--primary" title="Download as xls" data-gtm-download-file="{{uri}}" data-gtm-download-type="xls" href="/generator?format=xls&uri={{uri}}" aria-title="Download {{title}} as xls">.xls</a>
+                                        </div>
                                 </div>
                                 {{!-- Filtered - parameters added dynamically--}}
                                 <div id="filtered-download-controls" class="chart-area__controls__download chart-area__controls__download--filtered width--22 padding-top--2 padding-bottom--2" aria-hidden="true">
-                                    <div class="chart-area__controls__custom__container">
-                                        <p class="flush"> {{labels.download-filtered-time-series-as}}:</p>
-                                        <a href="{{uri}}/linechartimage" title="Download as an image" class="btn btn--primary dlCustomData"  download="{{description.title}}">{{labels.image}}</a>
-                                        <a class="btn btn--primary dlCustomData" title="Download as csv" data-gtm-download-file="{{uri}}" data-gtm-download-type="csv" href="/generator?format=csv&uri={{uri}}">.csv</a>
-                                        <a class="btn btn--primary dlCustomData" title="Download as xls" data-gtm-download-file="{{uri}}" data-gtm-download-type="xls" href="/generator?format=xls&uri={{uri}}">.xls</a>
-                                    </div>
+                                        <div class="chart-area__controls__custom__container">
+                                                <p class="flush"> {{labels.download-filtered-time-series-as}}:</p>
+                                                <a href="{{uri}}/linechartimage" title="Download as an image" class="btn btn--primary dlCustomData"  download="{{description.title}}" aria-title="Download {{title}} as an {{labels.image}}">{{labels.image}}</a>
+                                                <a class="btn btn--primary dlCustomData" title="Download as csv" data-gtm-download-file="{{uri}}" data-gtm-download-type="csv" href="/generator?format=csv&uri={{uri}}" aria-title="Download {{title}} as csv">.csv</a>
+                                                <a class="btn btn--primary dlCustomData" title="Download as xls" data-gtm-download-file="{{uri}}" data-gtm-download-type="xls" href="/generator?format=xls&uri={{uri}}" aria-title="Download {{title}} as xls">.xls</a>
+                                        </div>
                                 </div>
-                            </div>
-                            </form>
-
-                            {{!-- Show JS downloads options --}}
-							{{!-- <form method="get" action="{{uri}}/linechartimage" class="inline nojs--hide dlCustomData">
-							    <button id="download-custom-image" type="submit" class="btn btn--primary btn--small download-analytics">
-								Image
-								</button>
-								<input type="hidden" name="fileName" value="{{description.title}}" />
-							</form>
-							<form method="get" action="/generator" class="inline nojs--hide dlCustomData">
-								<button id="download-custom-csv" type="submit" name="format" value="csv" class="btn btn--primary btn--small download-analytics">
-								.csv
-								</button>
-								<button id="download-custom-excel" type="submit" name="format" value="xls" class="btn btn--primary btn--small download-analytics">
-								.xls
-								</button>
-								<input type="hidden" name="uri" value="{{uri}}" />
-								Series filter input
-								<input type="hidden" name="series" value="" />
-							</form> --}}
-                            {{!-- Show no-JS download options --}}
-                            <div class="js--hide">
-                                <a href="{{uri}}/linechartimage" title="Download as an image" class="btn btn--primary">Image</a>
+                        </div>
+                        </form>
+                        {{!-- Show no-JS download options --}}
+                        <div class="js--hide">
+                                <a href="{{uri}}/linechartimage" title="Download as an image" class="btn btn--primary" aria-title="Download {{title}} as an image">image</a>
                                 {{> partials/highcharts/download format='csv'}}
                                 {{> partials/highcharts/download format='xls'}}
-                            </div>
                         </div>
-						<!-- </div> -->
-					</div> {{!-- /tiles__content --}}
-                    <!--[if gt IE 8]><!--><noscript><![endif]-->
-						<div class="tiles__content js--hide">
-							<h2>{{labels.table}}</h2>
-							<table>
-								<thead>
-									<tr>
-										<th class="text-left" scope="col" role="columnheader">{{labels.period}}</th>
-										<th class="text-left">{{labels.value}}</th>
-									</tr>
-								</thead>
-								<tbody>
-									{{#each years}}
-									<tr>
-										<td>{{date}}</td>
-										<td>{{value}}</td>
-									</tr>
-									{{/each}}
-									{{#each quarters}}
-									<tr>
-										<td>{{date}}</td>
-										<td>{{value}}</td>
-									</tr>
-									{{/each}}
-									{{#each months}}
-									<tr>
-										<td>{{date}}</td>
-										<td>{{value}}</td>
-									</tr>
-									{{/each}}
-								</tbody>
-							</table>
-						</div>
-                        <!--[if gt IE 8]><!--></noscript><![endif]-->
-				</div> {{!-- /col --}}
-			</div> {{!-- /col-wrap --}}
-		{{/if_any}}
+                </div>
+                    </div> {{!-- /tiles__content --}}
+                                        <!--[if gt IE 8]><!--><noscript><![endif]-->
+                        <div class="tiles__content js--hide">
+                            <h2>{{labels.table}}</h2>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th class="text-left" scope="col" role="columnheader">{{labels.period}}</th>
+                                        <th class="text-left">{{labels.value}}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{#each years}}
+                                    <tr>
+                                        <td>{{date}}</td>
+                                        <td>{{value}}</td>
+                                    </tr>
+                                    {{/each}}
+                                    {{#each quarters}}
+                                    <tr>
+                                        <td>{{date}}</td>
+                                        <td>{{value}}</td>
+                                    </tr>
+                                    {{/each}}
+                                    {{#each months}}
+                                    <tr>
+                                        <td>{{date}}</td>
+                                        <td>{{value}}</td>
+                                    </tr>
+                                    {{/each}}
+                                </tbody>
+                            </table>
+                        </div>
+                                                <!--[if gt IE 8]><!--></noscript><![endif]-->
+                </div> {{!-- /col --}}
+            </div> {{!-- /col-wrap --}}
+        {{/if_any}}
 
-		<div class="meta-wrap meta-wrap--gallery margin-bottom padding-right-sm--1">
-			<div class="col-wrap">
-				{{#if_any section.markdown notes.0}}
-					<div class="col col--md-two-thirds col--lg-two-thirds meta__item padding-right-sm--1 padding-right-md--1">
-						{{md section.markdown}}
-                        {{#if notes.0}}
-						<h2>Notes</h2>
-						{{md notes.0}}
-                        {{/if}}
-					</div>
-				{{/if_any}}
-				<div class="col {{#if_any section.markdown notes.0}}col--md-one-third col--lg-one-third{{else}}col--md-one col--lg-one padding-left-md--1{{/if_any}} padding-right-md--1 padding-left-sm--1">
-                    <h2>{{labels.related-time-series}}</h2>
-                    {{#if_any relatedData relatedDatasets}}
-						<ul class="list--neutral box__content">
-							{{#each relatedData}}
-								{{#resolve this.uri filter="description"}}
-									<li class="flush"><a href="{{uri}}" data-gtm-type="related-timeseries" data-gtm-title="{{#minify}}{{#if description.cdid}}{{description.cdid}}: {{/if}}{{description.title}}{{/minify}}">{{#if description.cdid}}{{description.cdid}}
-										: {{/if}}{{description.title}}</a></li>
-								{{/resolve}}
-							{{/each}}
-						</ul>
-					{{/if_any}}
-					<div class="col col--md-14 col--lg-18">
-						{{#assign "path"}}
-						/timeseriestool?topic={{parentPath (parentPath uri)}}{{/assign}}
-						{{> partials/related/new-data relatedTitle=labels.view-and-download-all-related-time-series relatedUri=path}}
-					</div>
-				</div>
-			</div>
-		</div>
-
-        {{#resolveTimeSeriesList (parentPath uri) }}
-
-
-            {{#if_ne result.results.size 1}}
-
-            <div class="col col--lg-59 padding-top--0 padding-right--1 padding-bottom--0 padding-left--1 margin-left-md--0 margin-bottom--2 background--gallery" id="othertimeseries">
-                <h2 class="margin-top--3">Variations of this time series in other datasets</h2>
-                <ul class="list--neutral">
-                    {{#each result.results}}
-
-                        <li class="flush"><p class="flush">
-                        <a href="{{uri}}" data-gtm-type="variations-of-data" data-gtm-title="{{ description.cdid }}: {{#resolve description.datasetUri}}{{description.title}}{{/resolve}}">{{ description.cdid }}: {{#resolve description.datasetUri}}{{description.title}}{{/resolve}}</a> ({{description.datasetId}}), released on {{df description.releaseDate}}
-                        </p></li>
-                    {{/each}}
-                </ul>
-
+        <div class="meta-wrap meta-wrap--gallery margin-bottom padding-right-sm--1">
+            <div class="col-wrap">
+                {{#if_any section.markdown notes.0}}
+                    <div class="col col--md-two-thirds col--lg-two-thirds meta__item padding-right-sm--1 padding-right-md--1">
+                        {{md section.markdown}}
+                                                {{#if notes.0}}
+                        <h2>Notes</h2>
+                        {{md notes.0}}
+                                                {{/if}}
+                    </div>
+                {{/if_any}}
+                <div class="col {{#if_any section.markdown notes.0}}col--md-one-third col--lg-one-third{{else}}col--md-one col--lg-one padding-left-md--1{{/if_any}} padding-right-md--1 padding-left-sm--1">
+                                        <h2>{{labels.related-time-series}}</h2>
+                                        {{#if_any relatedData relatedDatasets}}
+                        <ul class="list--neutral box__content">
+                            {{#each relatedData}}
+                                {{#resolve this.uri filter="description"}}
+                                    <li class="flush"><a href="{{uri}}" data-gtm-type="related-timeseries" data-gtm-title="{{#minify}}{{#if description.cdid}}{{description.cdid}}: {{/if}}{{description.title}}{{/minify}}">{{#if description.cdid}}{{description.cdid}}
+                                        : {{/if}}{{description.title}}</a></li>
+                                {{/resolve}}
+                            {{/each}}
+                        </ul>
+                    {{/if_any}}
+                    <div class="col col--md-14 col--lg-18">
+                        {{#assign "path"}}
+                        /timeseriestool?topic={{parentPath (parentPath uri)}}{{/assign}}
+                        {{> partials/related/new-data relatedTitle=labels.view-and-download-all-related-time-series relatedUri=path}}
+                    </div>
+                </div>
             </div>
+        </div>
 
-            {{/if_ne}}
+                {{#resolveTimeSeriesList (parentPath uri) }}
 
-        {{/resolveTimeSeriesList}}
-	</div>
 
-	<div class="wrapper">
-		<div class="col-wrap flexbox__item">
-			{{#if relatedDocuments}}
-				<div class="col {{#if_all relatedDocuments relatedMethodology}}col--md-one-third col--lg-one-third{{else}}col--md-half col--lg-half{{/if_all}} background--mercury margin-bottom-sm--2 margin-bottom-md--2">
-					<div class="tiles__item tiles__item--nav-type flush-col print--hide">
-						<div class="background--gallery padding-top-md--2 padding-top-sm--2 padding-right-md--1 padding-right-sm--1 padding-bottom-sm--3 padding-bottom-md--4 padding-left-md--1 padding-left-sm--1 border-bottom--iron-md border-bottom--iron-sm height-md--10">
-							<h2 class="flush">
-								{{labels.publications-that-use-this-data}}
-							</h2>
-						</div>
-						<div class="tiles__content tiles__content--nav">
-							<ul class="list--neutral">
-								{{#each relatedDocuments}}
-									{{#resolve this.uri filter="title"}}
-										{{#assign "fullTitle"}}{{title}}{{#if edition}}{{#if_ne edition 'yes'}}: {{edition}}{{/if_ne}}{{/if}}{{/assign}}
-										<li>
-											<a href="{{uri}}" data-gtm-type="publications-using-data" data-gtm-title="{{fullTitle}}">
-												{{fullTitle}}
-											</a>
-										</li>
-									{{/resolve}}
-								{{/each}}
-							</ul>
-						</div>
-					</div>
-				</div>
-			{{/if}}
-			{{#if relatedMethodology}}
-				<div class="col {{#if_all relatedDocuments relatedMethodology}}col--md-one-third col--lg-one-third{{else}}col--md-half col--lg-half{{/if_all}} background--mercury margin-bottom-sm--2 margin-bottom-md--2">
-					<div class="background--gallery padding-top-md--2 padding-top-sm--2 padding-right-md--1 padding-right-sm--1 padding-bottom-sm--3 padding-bottom-md--4 padding-left-md--1 padding-left-sm--1 border-bottom--iron-md border-bottom--iron-sm height-md--10">
-						<h2 class="flush">
-							{{labels.methodology}}
-						</h2>
-					</div>
-					<div class="box__content padding-top-sm--1 padding-top-md--1 padding-bottom-sm--1 padding-bottom-md--2 padding-left-sm--1 padding-left-md--1 padding-right-sm--1 padding-right-md--1">
-						<ul class="list--neutral">
-							{{#each relatedMethodology}}
-								{{#resolve this.uri filter="title"}}
-									<li class="flush"><a href="{{uri}}">{{title}}</a></li>
-								{{/resolve}}
-							{{/each}}
-						</ul>
-					</div>
-				</div>
-			{{/if}}
-			<div class="col {{#if_all relatedDocuments relatedMethodology}}col--md-one-third col--lg-one-third{{else}}col--md-half col--lg-half{{/if_all}} background--mercury margin-bottom-sm--2 margin-bottom-md--2">
-				<div class="background--gallery padding-top-md--2 padding-top-sm--2 padding-right-md--1 padding-right-sm--1 padding-bottom-sm--3 padding-bottom-md--4 padding-left-md--1 padding-left-sm--1 border-bottom--iron-md border-bottom--iron-sm height-md--10">
-					<h2 class="flush">
-						{{labels.contact-details-for-this-data}}
-					</h2>
-				</div>
-				<div class="box__content padding-top-sm--1 padding-top-md--1 padding-bottom-sm--1 padding-bottom-md--2 padding-left-sm--1 padding-left-md--1 padding-right-sm--1 padding-right-md--1">
-					<address>
-						{{#if description.contact.name}}{{description.contact.name}}<br/>{{/if}}
-						<a href="mailto:{{description.contact.email}}">{{description.contact.email}}</a></br>
-						{{#if description.contact.telephone}}{{labels.telephone}}
-							: {{description.contact.telephone}}{{/if}}
-					</address>
-				</div>
-			</div>
-		</div>
-	</div>
+                        {{#if_ne result.results.size 1}}
+
+                        <div class="col col--lg-59 padding-top--0 padding-right--1 padding-bottom--0 padding-left--1 margin-left-md--0 margin-bottom--2 background--gallery" id="othertimeseries">
+                                <h2 class="margin-top--3">Variations of this time series in other datasets</h2>
+                                <ul class="list--neutral">
+                                        {{#each result.results}}
+
+                                                <li class="flush"><p class="flush">
+                                                <a href="{{uri}}" data-gtm-type="variations-of-data" data-gtm-title="{{ description.cdid }}: {{#resolve description.datasetUri}}{{description.title}}{{/resolve}}">{{ description.cdid }}: {{#resolve description.datasetUri}}{{description.title}}{{/resolve}}</a> ({{description.datasetId}}), released on {{df description.releaseDate}}
+                                                </p></li>
+                                        {{/each}}
+                                </ul>
+
+                        </div>
+
+                        {{/if_ne}}
+
+                {{/resolveTimeSeriesList}}
+    </div>
+
+    <div class="wrapper">
+        <div class="col-wrap flexbox__item">
+            {{#if relatedDocuments}}
+                <div class="col {{#if_all relatedDocuments relatedMethodology}}col--md-one-third col--lg-one-third{{else}}col--md-half col--lg-half{{/if_all}} background--mercury margin-bottom-sm--2 margin-bottom-md--2">
+                    <div class="tiles__item tiles__item--nav-type flush-col print--hide">
+                        <div class="background--gallery padding-top-md--2 padding-top-sm--2 padding-right-md--1 padding-right-sm--1 padding-bottom-sm--3 padding-bottom-md--4 padding-left-md--1 padding-left-sm--1 border-bottom--iron-md border-bottom--iron-sm height-md--10">
+                            <h2 class="flush">
+                                {{labels.publications-that-use-this-data}}
+                            </h2>
+                        </div>
+                        <div class="tiles__content tiles__content--nav">
+                            <ul class="list--neutral">
+                                {{#each relatedDocuments}}
+                                    {{#resolve this.uri filter="title"}}
+                                        {{#assign "fullTitle"}}{{title}}{{#if edition}}{{#if_ne edition 'yes'}}: {{edition}}{{/if_ne}}{{/if}}{{/assign}}
+                                        <li>
+                                            <a href="{{uri}}" data-gtm-type="publications-using-data" data-gtm-title="{{fullTitle}}">
+                                                {{fullTitle}}
+                                            </a>
+                                        </li>
+                                    {{/resolve}}
+                                {{/each}}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            {{/if}}
+            {{#if relatedMethodology}}
+                <div class="col {{#if_all relatedDocuments relatedMethodology}}col--md-one-third col--lg-one-third{{else}}col--md-half col--lg-half{{/if_all}} background--mercury margin-bottom-sm--2 margin-bottom-md--2">
+                    <div class="background--gallery padding-top-md--2 padding-top-sm--2 padding-right-md--1 padding-right-sm--1 padding-bottom-sm--3 padding-bottom-md--4 padding-left-md--1 padding-left-sm--1 border-bottom--iron-md border-bottom--iron-sm height-md--10">
+                        <h2 class="flush">
+                            {{labels.methodology}}
+                        </h2>
+                    </div>
+                    <div class="box__content padding-top-sm--1 padding-top-md--1 padding-bottom-sm--1 padding-bottom-md--2 padding-left-sm--1 padding-left-md--1 padding-right-sm--1 padding-right-md--1">
+                        <ul class="list--neutral">
+                            {{#each relatedMethodology}}
+                                {{#resolve this.uri filter="title"}}
+                                    <li class="flush"><a href="{{uri}}">{{title}}</a></li>
+                                {{/resolve}}
+                            {{/each}}
+                        </ul>
+                    </div>
+                </div>
+            {{/if}}
+            <div class="col {{#if_all relatedDocuments relatedMethodology}}col--md-one-third col--lg-one-third{{else}}col--md-half col--lg-half{{/if_all}} background--mercury margin-bottom-sm--2 margin-bottom-md--2">
+                <div class="background--gallery padding-top-md--2 padding-top-sm--2 padding-right-md--1 padding-right-sm--1 padding-bottom-sm--3 padding-bottom-md--4 padding-left-md--1 padding-left-sm--1 border-bottom--iron-md border-bottom--iron-sm height-md--10">
+                    <h2 class="flush">
+                        {{labels.contact-details-for-this-data}}
+                    </h2>
+                </div>
+                <div class="box__content padding-top-sm--1 padding-top-md--1 padding-bottom-sm--1 padding-bottom-md--2 padding-left-sm--1 padding-left-md--1 padding-right-sm--1 padding-right-md--1">
+                    <address>
+                        {{#if description.contact.name}}{{description.contact.name}}<br/>{{/if}}
+                        <a href="mailto:{{description.contact.email}}">{{description.contact.email}}</a></br>
+                        {{#if description.contact.telephone}}{{labels.telephone}}
+                            : {{description.contact.telephone}}{{/if}}
+                    </address>
+                </div>
+            </div>
+        </div>
+    </div>
 {{/partial}}
 
 {{> content/base/statistics typeLabel=labels.time-series}}
