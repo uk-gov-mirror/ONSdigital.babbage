@@ -10,6 +10,6 @@
     <button class="btn btn--secondary btn--mobile-table-show nojs--hide" aria-expanded="false" aria-live="assertive" data-gtm-title="{{{sub (sup title)}}}" data-gtm-type="view-table">View table</button>
 
     {{/resolveResource}}
-    <h5 class="print--hide font-size--h6">Download this table</h5>
+    <h5 class="print--hide font-size--h6"><span role="text">Download this table <span class="visuallyhidden">{{title}}</span></span></h5>
     <a href="/file?uri={{uri}}.xls" title="Download as xls" class="btn btn--primary print--hide" data-gtm-title="{{{sub (sup title)}}}" data-gtm-type="download-table-xls" aria-label="Download table {{title}} as xls">.xls</a>
 </div>
