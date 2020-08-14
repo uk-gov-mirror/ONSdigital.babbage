@@ -1,6 +1,6 @@
 <div class="js--show">
 
-    <div class="pym-interactive{{#if_eq full-width "true"}} pym-interactive--full-width margin-left--0{{/if_eq}}" id="{{id}}" data-url="{{url}}"></div>
+    <div class="pym-interactive{{#if_eq full-width "true"}} pym-interactive--full-width margin-left--0{{/if_eq}}" id="{{id}}" data-url="{{url}}" data-title="{{#if_null title}}{{labels.interactive-chart}}{{else}}{{title}}{{/if_null}}"></div>
 
     <details class="details">
         <summary class="details__summary">Embed code</summary>
