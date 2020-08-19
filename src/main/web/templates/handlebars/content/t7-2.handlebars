@@ -34,7 +34,7 @@
                             <ul class="list--neutral">
                                 {{#each downloads}}
                                     <li>
-                                        <a href="/file?uri={{concat uri "/" (fn file)}}">{{title}}</a>
+                                        <a href="/file?uri={{concat uri "/" (fn file)}}" aria-label="Download {{title}} as {{fe (concat uri "/" (fn file))}} ({{fs (concat uri "/"  (fn file))}})">{{title}}</a>
                                         ({{fs (concat uri "/"  (fn file))}} {{fe (concat uri "/" (fn file))}})
                                     </li>
                                 {{/each}}
@@ -60,7 +60,8 @@
                                         data-gtm-type="related-download" 
                                         data-gtm-title="{{title}}"
                                         data-gtm-download-file="{{file}}"
-                                        data-gtm-download-type="{{fe file}}" 
+                                        data-gtm-download-type="{{fe file}}"
+                                        aria-label="Download {{title}} as {{fe (concat uri "/" (fn file))}} ({{fs (concat uri "/"  (fn file))}})"
                                     >
                                         {{title}}</a> ({{fs (concat uri "/"  (fn file))}} {{fe (concat uri "/" (fn file))}})
                                 </li>
