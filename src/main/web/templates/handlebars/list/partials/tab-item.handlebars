@@ -1,6 +1,6 @@
 <li class="tab__item width-sm--6">
     {{#if active}}
-        <a href="/search?{{href}}?{{#if parameters.q}}q={{parameters.q.0}}{{else}}query={{parameters.query.0}}{{/if}}"
+        <a href="{{href}}?{{#if parameters.q}}q={{parameters.q.0}}{{else}}query={{parameters.query.0}}{{/if}}"
                 aria-current="page" aria-label="{{name}} ({{nf count alt=0}}). Current page.">
             <span class="tab__link tab__link--active" aria-label="Current page">{{name}} ({{nf count alt=0}})</span>
         </a>
