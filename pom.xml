@@ -136,7 +136,6 @@
             <version>9.1.20</version>
         </dependency>
 
-
         <dependency>
             <groupId>org.jsoup</groupId>
             <artifactId>jsoup</artifactId>
