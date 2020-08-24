@@ -2,7 +2,7 @@
     {{#if active}}
         <a href="{{href}}?{{#if parameters.q}}q={{parameters.q.0}}{{else}}query={{parameters.query.0}}{{/if}}"
                 aria-current="page" aria-label="{{name}} ({{nf count alt=0}}). Current page.">
-            <span class="tab__link tab__link--active" aria-label="Current page">{{name}} ({{nf count alt=0}})</span>
+            <span class="tab__link tab__link--active">{{name}} ({{nf count alt=0}})</span>
         </a>
     {{else}}
         <a href="{{href}}?{{#if parameters.q}}q={{parameters.q.0}}{{else}}query={{parameters.query.0}}{{/if}}" class="tab__link"
