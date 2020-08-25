@@ -69,7 +69,7 @@
 			</form>
 				
 			{{!-- RESULTS --}}
-			<div class="col col--md-34 col--lg-40 margin-left-md--1">
+			<section class="col col--md-34 col--lg-40 margin-left-md--1" aria-label="Search results">
 
 				<div id="results" class="results">
 
@@ -98,7 +98,7 @@
                     <div class="col col--md-22 col--lg-28">{{> list/partials/paginator paginator=result.paginator }}</div>
                     <div class="col col--md-12 col--lg-12 margin-top-md--2 padding-left--1">{{> list/filters/size }}</div>
                 </form>
-			</div>
+			</section>
 		</div>
 	</div>
 {{/partial}}
