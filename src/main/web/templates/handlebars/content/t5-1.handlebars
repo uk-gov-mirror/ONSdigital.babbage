@@ -46,7 +46,7 @@
                             <div class="nojs--hide">
                                 <fieldset class="btn-group">
                                         <legend id="data-download">{{labels.download-options}}</legend>
-                                        <div role="radiogroup" aria-labelledby="data-download">
+                                        <div class="chart-area__radiogroup" role="radiogroup" aria-labelledby="data-download">
                                                 <label for="unfiltered-download" class="btn btn--secondary btn--chart-control btn--chart-control--download btn--secondary-active">
                                                         {{labels.full-unfiltered-time-series}}
                                                         <input id="unfiltered-download" type="radio" name="type" data-chart-controls-type="unfiltered-download" aria-controls="unfiltered-download-controls" aria-expanded="true" checked>
@@ -59,7 +59,7 @@
                                 </fieldset>
 
                                 {{!-- Unflitered --}}
-                                <div id="unfiltered-download-controls" class="chart-area__controls__download chart-area__controls__download--unfiltered width--22 padding-top--2 padding-bottom--2" aria-hidden="false">
+                                <div id="unfiltered-download-controls" class="chart-area__controls__download chart-area__controls__download--unfiltered padding-top--2 padding-bottom--2" aria-hidden="false">
                                         <div class="chart-area__controls__custom__container">
                                                 <p class="flush">{{labels.download-full-time-series-as}}:</p>
                                                 <a href="{{uri}}/linechartimage" title="Download as an image" class="btn btn--primary" download="{{description.title}}" aria-label="Download {{description.title}} as an {{labels.image}}">{{labels.image}}</a>
@@ -68,7 +68,7 @@
                                         </div>
                                 </div>
                                 {{!-- Filtered - parameters added dynamically--}}
-                                <div id="filtered-download-controls" class="chart-area__controls__download chart-area__controls__download--filtered width--22 padding-top--2 padding-bottom--2" aria-hidden="true">
+                                <div id="filtered-download-controls" class="chart-area__controls__download chart-area__controls__download--filtered padding-top--2 padding-bottom--2" aria-hidden="true">
                                         <div class="chart-area__controls__custom__container">
                                                 <p class="flush"> {{labels.download-filtered-time-series-as}}:</p>
                                                 <a href="{{uri}}/linechartimage" title="Download as an image" class="btn btn--primary dlCustomData"  download="{{description.title}}" aria-label="Download {{description.title}} as an {{labels.image}}">{{labels.image}}</a>
