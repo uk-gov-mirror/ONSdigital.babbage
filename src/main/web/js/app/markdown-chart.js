@@ -18,12 +18,8 @@ $(function() {
     //set the annotation and chart size based on the viewport
     if ($("body").hasClass("viewport-sm")) {
         viewport = 'sm';
-        nominalWidth = 360;
-        smallWidth = 300
     }else if ($("body").hasClass("viewport-md")) {
         viewport = 'md';
-        nominalWidth = 520;
-        smallWidth = 250
     }else  {
         viewport = 'lg';
     }
