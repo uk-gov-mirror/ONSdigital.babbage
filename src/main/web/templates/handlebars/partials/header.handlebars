@@ -87,9 +87,9 @@
 					{{#each navigation}}
 					{{#if_eq this.type "taxonomy_landing_page"}}
 					<li class="primary-nav__item js-nav js-expandable {{#if_any (eq uri breadcrumb.1/uri)  (eq uri ../uri) }}primary-nav__item--active{{/if_any}}">
-                        <a class="primary-nav__link col col--md-8 col--lg-10" href="{{uri}}" aria-expanded="false" aria-label="{{description.title}} sub menu">
+                        <a class="primary-nav__link col col--md-8 col--lg-10" href="{{uri}}" aria-expanded="false" aria-label="{{description.title}} {{labels.sub-menu}}">
                             <span aria-hidden="true" class="expansion-indicator"></span>
-                            <span aria-label="{{description.title}} sub menu" role="text" class="submenu-title">
+                            <span aria-label="{{description.title}} {{labels.sub-menu}}" role="text" class="submenu-title">
                                 {{description.title}}
                             </span>
                         </a>
