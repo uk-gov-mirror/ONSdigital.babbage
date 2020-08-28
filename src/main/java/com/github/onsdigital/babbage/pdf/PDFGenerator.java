@@ -8,10 +8,13 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.dom4j.DocumentException;
 import org.jsoup.Jsoup;
 import org.jsoup.parser.Parser;
+// import org.jsoup.helper.W3CDom;
 import org.w3c.dom.Document;
-import org.xhtmlrenderer.pdf.ITextRenderer;
+import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
+// import org.xhtmlrenderer.pdf.ITextRenderer;
 import org.xhtmlrenderer.resource.XMLResource;
 import org.xml.sax.InputSource;
+import com.openhtmltopdf.outputdevice.helper.BaseRendererBuilder.FontStyle;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -23,6 +26,10 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
+import java.io.File;
+import java.net.URL;
+import java.net.URISyntaxException;
+import java.nio.file.Paths;
 import java.nio.file.Path;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -77,29 +84,39 @@ public class PDFGenerator {
     }
 
     public static void createPDF(String url, InputStream input, String outputFile)
-            throws IOException, DocumentException, com.lowagie.text.DocumentException {
+            throws IOException, DocumentException, com.lowagie.text.DocumentException, URISyntaxException {
 
         OutputStream os = null;
 
         try {
             os = new FileOutputStream(outputFile);
-            ITextRenderer renderer = new ITextRenderer(4.1666f, 3);
+            PdfRendererBuilder builder = new PdfRendererBuilder();
+            builder.useFastMode();
+            builder.usePdfUaAccessbility(true);
 
-            // Create a chain of custom classes to manipulate the HTML.
-            renderer.getSharedContext().setReplacedElementFactory(
-                    new HtmlImageReplacedElementFactory(
-                            new EquationImageInserter(
-                                    new ChartImageReplacedElementFactory(
-                                            renderer.getSharedContext().getReplacedElementFactory()))));
+
+            // // Create a chain of custom classes to manipulate the HTML.
+            // renderer.getSharedContext().setReplacedElementFactory(
+            //         new HtmlImageReplacedElementFactory(
+            //                 new EquationImageInserter(
+            //                         new ChartImageReplacedElementFactory(
+            //                                 renderer.getSharedContext().getReplacedElementFactory()))));
+
+            ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+            URL regularFontURL = classloader.getResource("OpenSans-Regular.ttf");
+            File regularFontFile = new File(regularFontURL.toURI());
+            builder.useFont(regularFontFile, "OpenSans", 400, FontStyle.NORMAL, true);
+
+            URL boldFontURL = classloader.getResource("OpenSans-Bold.ttf");
+            File boldFontFile = new File(boldFontURL.toURI());
+            builder.useFont(boldFontFile, "OpenSans", 700, FontStyle.NORMAL, true);
 
             Document doc = XMLResource.load(new InputSource(input)).getDocument();
-
-            renderer.setDocument(doc, url);
-            renderer.layout();
-            renderer.createPDF(os);
-
-            os.close();
-            os = null;
+            builder.withW3cDocument(doc, url);
+            builder.toStream(os);
+            builder.run();
+            // os.close();
+            // os = null;
 
         } catch (Exception ex) {
             error().exception(ex)

@@ -1,7 +1,9 @@
 <html {{> partials/subdomain-lang }}>
 <head>
-    <link href="css/pdf.css" media="print" rel="stylesheet" type="text/css" />
     <title>{{> partials/page-title}}</title>
+    <meta name="subject" content="Subject" />
+    <meta name="author" content="Author" />
+    <meta name="description" content="Description" />
     <style>
         @page {
             margin: 0.25in 0 0.5in 0;
@@ -9,14 +11,14 @@
 
             @bottom-right {
                 content: "Page " counter(page) " of " counter(pages);
-                font-family: Tahoma, Verdana, Arial, sans-serif !important;
+                font-family: 'OpenSans' !important;
                 font-size: 12px;
                 padding-right: 0.25in;
             }
         }
 
         * {
-            font-family: Tahoma, Verdana, Arial, sans-serif !important;
+            font-family: 'OpenSans' !important;
         }
 
         p, li {
