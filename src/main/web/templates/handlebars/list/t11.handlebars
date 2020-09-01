@@ -7,16 +7,20 @@
 {{#partial "block-list-tabs"}}
 	<li class="tab__item">
         {{#unless parameters.view.0}}
-            <span class="tab__link tab__link--active">Published releases</span>
+            <a href="/releasecalendar{{#if parameters.query.0}}?query={{parameters.query.0}}{{/if}}" aria-current="page" aria-label="Published releases. Current page.">
+                <span class="tab__link tab__link--active" aria-label="Current page">Published releases</span>
+            </a>
         {{else}}
-		    <a href="/releasecalendar{{#if parameters.query.0}}?query={{parameters.query.0}}{{/if}}" class="tab__link">Published releases</a>
+            <a href="/releasecalendar{{#if parameters.query.0}}?query={{parameters.query.0}}{{/if}}" class="tab__link" aria-label="Search for Published releases">Published releases</a>
         {{/unless}}
 	</li>
 	<li class="tab__item">
         {{#if_eq parameters.view.0 "upcoming"}}
-            <span class="tab__link tab__link--active">Upcoming releases</span>
+            <a href="/releasecalendar?view=upcoming{{#if parameters.query.0}}&query={{parameters.query.0}}{{/if}}" aria-current="page" aria-label="Upcoming releases. Current page.">
+                <span class="tab__link tab__link--active" aria-label="Current page">Upcoming releases</span>
+            </a>
         {{else}}
-		    <a href="/releasecalendar?view=upcoming{{#if parameters.query.0}}&query={{parameters.query.0}}{{/if}}" class="tab__link">Upcoming releases</a>
+            <a href="/releasecalendar?view=upcoming{{#if parameters.query.0}}&query={{parameters.query.0}}{{/if}}" class="tab__link" aria-label="Search for Upcoming releases">Upcoming releases</a>
         {{/if_eq}}
 	</li>
 {{/partial}}
