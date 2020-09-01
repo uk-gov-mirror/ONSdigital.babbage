@@ -8,7 +8,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.dom4j.DocumentException;
 import org.jsoup.Jsoup;
 import org.jsoup.parser.Parser;
-// import org.jsoup.helper.W3CDom;
+import org.jsoup.helper.W3CDom;
 import org.w3c.dom.Document;
 import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
 import com.openhtmltopdf.pdfboxout.PdfBoxRenderer;
@@ -49,23 +49,20 @@ public class PDFGenerator {
     private static final String URL = "http://localhost:8080";
 
     public static Path generatePdf(String uri, String fileName, Map<String, String> cookies, String pdfTable) {
-
         try {
             ContentResponse contentResponse = ContentClient.getInstance().getContent(uri);
-            String html;
+            Document doc;
             try (InputStream dataStream = contentResponse.getDataStream()) {
                 LinkedHashMap<String, Object> additionalData = new LinkedHashMap<>();
                 additionalData.put("pdf_style", true);
-                html = TemplateService.getInstance().renderTemplate("pdf/pdf", dataStream, additionalData);
-
+                String html = TemplateService.getInstance().renderTemplate("pdf/pdf", dataStream, additionalData);
                 html = html.replace("\"\"/>", " \"/>"); // img tags from markdown have an extra " at the end of the tag for some reason
-                html = Jsoup.parse(html, URL, Parser.xmlParser()).toString();
-                html = html.replace("&nbsp;", "&#160;");
+                doc = new W3CDom().fromJsoup(Jsoup.parse(html, URL, Parser.xmlParser()));
+                // html = html.replace("&nbsp;", "&#160;");
             }
 
             String outputFile = TEMP_DIRECTORY_PATH + "/" + fileName + ".pdf";
-            InputStream inputStream = new ByteArrayInputStream(html.getBytes());
-            createPDF(uri, inputStream, outputFile);
+            createPDF(uri, doc, outputFile);
 
             Path pdfFile = FileSystems.getDefault().getPath(TEMP_DIRECTORY_PATH).resolve(fileName + ".pdf");
             if (!Files.exists(pdfFile)) {
@@ -85,9 +82,9 @@ public class PDFGenerator {
         }
     }
 
-    public static void createPDF(String url, InputStream input, String outputFile)
+    public static void createPDF(String url, Document doc, String outputFile)
             throws IOException, DocumentException, com.lowagie.text.DocumentException, URISyntaxException {
-
+                
         OutputStream os = null;
 
         try {
@@ -113,17 +110,17 @@ public class PDFGenerator {
             URL boldFontURL = classloader.getResource("OpenSans-Bold.ttf");
             File boldFontFile = new File(boldFontURL.toURI());
             builder.useFont(boldFontFile, "OpenSans", 700, FontStyle.NORMAL, true);
-
-            Document doc = XMLResource.load(new InputSource(input)).getDocument();
             builder.withW3cDocument(doc, url);
             builder.toStream(os);
             try (PdfBoxRenderer renderer = builder.buildPdfRenderer()) {
+                // Create a chain of custom classes to manipulate the HTML.
+                ChainedReplacedElementFactory cef = new ChainedReplacedElementFactory(renderer.getSharedContext());
+                cef.addFactory(new ChartImageReplacedElementFactory(renderer.getOutputDevice()));
+
+                renderer.getSharedContext().setReplacedElementFactory(cef);
                 renderer.layout();
                 renderer.createPDF();
             }
-            // os.close();
-            // os = null;
-
         } catch (Exception ex) {
             error().exception(ex)
                     .data("url", url)
@@ -131,11 +128,12 @@ public class PDFGenerator {
                     .log("error creating PDF");
             throw ex;
         } finally {
+            info().log("Done creating pdf: " + outputFile);
             if (os != null) {
                 try {
                     os.close();
                 } catch (IOException e) {
-                    // ignore
+                    info().log("Close exception: " +  e);
                 }
             }
         }

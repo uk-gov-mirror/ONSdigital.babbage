@@ -56,7 +56,7 @@ public class PDFRequestHandler extends BaseRequestHandler {
         contentResponse = ContentClient.getInstance().getResource(requestedUri + "/page.pdf");
         BabbageContentBasedBinaryResponse response = new BabbageContentBasedBinaryResponse(contentResponse, contentResponse.getDataStream(), contentResponse.getMimeType());
         String contentDispositionHeader = "attachment; ";
-        contentDispositionHeader += contentResponse.getName() == null ? "" : "filename=\"" + getTitle(requestedUri) + "\"";
+        contentDispositionHeader += contentResponse.getName() == null ? "" : "filename=\"" + getTitle(requestedUri) + ".pdf\"";
         response.addHeader("Content-Disposition", contentDispositionHeader);
         return response;
     }
@@ -77,8 +77,6 @@ public class PDFRequestHandler extends BaseRequestHandler {
 
         if (StringUtils.isNotEmpty(edition))
             title += " " + edition;
-
-        title += ".pdf";
 
         return title;
     }
