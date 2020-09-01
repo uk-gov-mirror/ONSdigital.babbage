@@ -11,6 +11,8 @@ import org.jsoup.parser.Parser;
 // import org.jsoup.helper.W3CDom;
 import org.w3c.dom.Document;
 import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
+import com.openhtmltopdf.pdfboxout.PdfBoxRenderer;
+import com.openhtmltopdf.svgsupport.BatikSVGDrawer;
 // import org.xhtmlrenderer.pdf.ITextRenderer;
 import org.xhtmlrenderer.resource.XMLResource;
 import org.xml.sax.InputSource;
@@ -93,7 +95,8 @@ public class PDFGenerator {
             PdfRendererBuilder builder = new PdfRendererBuilder();
             builder.useFastMode();
             builder.usePdfUaAccessbility(true);
-
+            builder.useSVGDrawer(new BatikSVGDrawer());
+            builder.useHttpStreamImplementation(new OkHttpStreamFactory());
 
             // // Create a chain of custom classes to manipulate the HTML.
             // renderer.getSharedContext().setReplacedElementFactory(
@@ -114,7 +117,10 @@ public class PDFGenerator {
             Document doc = XMLResource.load(new InputSource(input)).getDocument();
             builder.withW3cDocument(doc, url);
             builder.toStream(os);
-            builder.run();
+            try (PdfBoxRenderer renderer = builder.buildPdfRenderer()) {
+                renderer.layout();
+                renderer.createPDF();
+            }
             // os.close();
             // os = null;
 
