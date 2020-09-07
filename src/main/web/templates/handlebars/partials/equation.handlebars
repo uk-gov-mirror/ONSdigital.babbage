@@ -2,7 +2,9 @@
 <div class="markdown-equation-container print--avoid-break">
 
     {{#resolveResource (concat uri (concat "/" (concat filename ".svg"))) }}
-        {{{resource}}}
+        <div class="scrollable-container">
+          {{{resource}}}
+        </div>
     {{/resolveResource}}
 
   {{!--<img src="/resource?uri={{ concat uri (concat "/" (concat filename ".png")) }}" >--}}

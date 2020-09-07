@@ -115,6 +115,7 @@ public class    ONSSearchResponse {
         }
 
         ArrayList<Map<String, Object>> nestedObjects = new ArrayList<>();
+        Object label = null;
         for (Map.Entry<String, Object> sourceEntry : source.entrySet()) {
             Object field = sourceEntry.getValue();
             if (saveIfNested(nestedObjects, field)) {
@@ -124,12 +125,19 @@ public class    ONSSearchResponse {
                     saveIfNested(nestedObjects, o);
                 }
             }
+            if (sourceEntry.getKey() == "title") {
+                label = field;
+            }
             HighlightField highlightedField = highlightedFields.remove(getFieldName(sourceEntry.getKey()));
             if (highlightedField == null) {//not found
                 continue;
             } else {
                 overlay(sourceEntry, field, highlightedField);
             }
+        }
+
+        if (label != null) {
+            source.put("label", label);
         }
 
         for (Map<String, Object> nestedObject : nestedObjects) {
@@ -176,5 +184,4 @@ public class    ONSSearchResponse {
             return fieldKey;
         }
     }
-
 }
