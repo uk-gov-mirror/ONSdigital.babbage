@@ -1,12 +1,12 @@
 {{!--Not having line breaks before and after the div markups breaks tables displaying on the page--}}
 <div class="markdown-table-container print--avoid-break">
-    <div class="scrollable-container">
+    <div class="scrollable-container" tabindex="0">
         <div class="markdown-table-wrap">
             {{{tableHtml}}}
         </div>
     </div>
 
-    <h5 class="print--hide font-size--h6"><span role="text">Download this table <span class="visuallyhidden">{{title}}</span></span></h5>
+    <h4 class="print--hide font-size--h6 padding-top--0"><span role="text">Download this table <span class="visuallyhidden">{{title}}</span></span></h4>
     <a href="/download/table?format=xlsx&uri={{uri}}.json" title="Download as xls" class="btn btn--primary print--hide" data-gtm-title="{{{sub (sup title)}}}" data-gtm-type="download-table-xlsx" aria-label="Download {{title}} as xls">.xls</a>
     <a href="/download/table?format=csv&uri={{uri}}.json" title="Download as csv" class="btn btn--primary print--hide" data-gtm-title="{{{sub (sup title)}}}" data-gtm-type="download-table-csv" aria-label="Download {{title}} as csv">.csv</a>
 </div>
