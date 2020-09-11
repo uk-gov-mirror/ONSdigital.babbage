@@ -89,7 +89,7 @@
 					<li class="primary-nav__item js-nav js-expandable {{#if_any (eq uri breadcrumb.1/uri)  (eq uri ../uri) }}primary-nav__item--active{{/if_any}}">
                         <a class="primary-nav__link col col--md-8 col--lg-10" href="{{uri}}" aria-expanded="false" aria-label="{{description.title}} {{labels.sub-menu}}">
                             <span aria-hidden="true" class="expansion-indicator"></span>
-                            <span aria-label="{{description.title}} {{labels.sub-menu}}" role="text" class="submenu-title">
+                            <span aria-label="{{description.title}} {{labels.sub-menu}}" class="submenu-title">
                                 {{description.title}}
                             </span>
                         </a>
@@ -110,7 +110,7 @@
 							{{labels.taking-part-in-a-survey}}
 						</a>
 					</li>
-                    <li class="language hide--md primary-nav__link">
+                    <li class="hide--md primary-nav__language">
                         {{#if_eq location.hostname (concat "cy." (replace location.hostname "cy." ""))}}
                             <a href="{{> partials/language-toggle language="en"}}" class="language__link">English (EN)</a>
                             <span> | Cymraeg (CY)</span>
