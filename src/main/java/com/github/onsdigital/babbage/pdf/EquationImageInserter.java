@@ -2,17 +2,16 @@ package com.github.onsdigital.babbage.pdf;
 
 import com.github.onsdigital.babbage.content.client.ContentClient;
 import com.github.onsdigital.babbage.content.client.ContentResponse;
-import com.lowagie.text.Image;
+import com.openhtmltopdf.extend.ReplacedElement;
+import com.openhtmltopdf.extend.ReplacedElementFactory;
+import com.openhtmltopdf.extend.UserAgentCallback;
+import com.openhtmltopdf.layout.LayoutContext;
+import com.openhtmltopdf.pdfboxout.PdfBoxImage;
+import com.openhtmltopdf.pdfboxout.PdfBoxImageElement;
+import com.openhtmltopdf.pdfboxout.PdfBoxOutputDevice;
+import com.openhtmltopdf.render.BlockBox;
 import org.apache.commons.io.IOUtils;
 import org.w3c.dom.Element;
-import org.xhtmlrenderer.extend.ReplacedElement;
-import org.xhtmlrenderer.extend.ReplacedElementFactory;
-import org.xhtmlrenderer.extend.UserAgentCallback;
-import org.xhtmlrenderer.layout.LayoutContext;
-import org.xhtmlrenderer.pdf.ITextFSImage;
-import org.xhtmlrenderer.pdf.ITextImageElement;
-import org.xhtmlrenderer.render.BlockBox;
-import org.xhtmlrenderer.simple.extend.FormSubmissionListener;
 
 import java.io.InputStream;
 
@@ -21,10 +20,10 @@ import static com.github.onsdigital.logging.v2.event.SimpleEvent.info;
 
 public class EquationImageInserter implements ReplacedElementFactory {
 
-    private final ReplacedElementFactory superFactory;
+    private PdfBoxOutputDevice outputDevice;
 
-    public EquationImageInserter(ReplacedElementFactory superFactory) {
-        this.superFactory = superFactory;
+    public EquationImageInserter(PdfBoxOutputDevice outputDevice) {
+        this.outputDevice = outputDevice;
     }
 
     @Override
@@ -55,14 +54,15 @@ public class EquationImageInserter implements ReplacedElementFactory {
 
                 try (InputStream inputStream = contentResponse.getDataStream()) {
                     byte[] bytes = IOUtils.toByteArray(inputStream);
-                    Image image = Image.getInstance(bytes);
-                    ITextFSImage fsImage = new ITextFSImage(image);
+                    PdfBoxImage fsImage = new PdfBoxImage(bytes, "");
+
 
                     if (fsImage != null) {
                         if ((cssWidth != -1) || (cssHeight != -1)) {
                             fsImage.scale(cssWidth, cssHeight);
                         }
-                        return new ITextImageElement(fsImage);
+                        this.outputDevice.realizeImage(fsImage);
+                        return new PdfBoxImageElement(element, fsImage, layoutContext.getSharedContext(), blockBox.getStyle().isImageRenderingInterpolate());
                     }
                 }
 
@@ -73,21 +73,20 @@ public class EquationImageInserter implements ReplacedElementFactory {
             }
         }
 
-        return superFactory.createReplacedElement(layoutContext, blockBox, userAgentCallback, cssWidth, cssHeight);
+        return null;
     }
 
     @Override
-    public void reset() {
-        superFactory.reset();
+    public boolean isReplacedElement(Element e) {
+        if (e == null) {
+            return false;
+        }
+        String nodeName = e.getNodeName();
+        String className = e.getAttribute("class");
+
+        boolean isReplaced = "div".equals(nodeName) && className.contains("markdown-equation-div");
+        return isReplaced;
+
     }
 
-    @Override
-    public void remove(Element e) {
-        superFactory.remove(e);
-    }
-
-    @Override
-    public void setFormSubmissionListener(FormSubmissionListener listener) {
-        superFactory.setFormSubmissionListener(listener);
-    }
 }
