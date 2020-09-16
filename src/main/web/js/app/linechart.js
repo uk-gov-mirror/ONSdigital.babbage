@@ -17,38 +17,72 @@ $(function () {
         });
     }
 
-    // Add accessibility enhancements to linechart controls
-    $('.btn--chart-control--download').on("keyup mouseup", function () {
-        var $activeButton = $(this), // button clicked
-            $activeControl = $('#' + $activeButton.find('input').attr('id') + '-controls'), //control (button) block related to clicked button
-            $activeInput = $activeButton.find('input'),
-            $buttons = $('.btn--chart-control--download'),
-            $controls = $('.chart-area__controls__download');
+    var ACTIVE_BUTTON_CLASS="btn--secondary-active";
+    var KEYS = {
+        end: 35,
+        home: 36,
+        left: 37,
+        right: 39,
+      };
 
-        // remove active class from all buttons
-        $buttons.each(function () {
-            var $input = $(this).find('input');
-            if ($input.attr('aria-expanded') == 'true') {
-                $input.attr('aria-expanded', 'false');
-                $input.prop('checked', false);
-            }
+    $('.js--linechart-filter-tabs').each(function(_, wrapper) {
+        var $wrapper = $(wrapper);
+        var tabs = [];
+
+        function switchActiveTab(index) {
+            var clampedIndex = Math.abs(index % tabs.length);
+            var tab = tabs[clampedIndex];
+
+            $wrapper.find('.' + ACTIVE_BUTTON_CLASS)
+                .removeClass(ACTIVE_BUTTON_CLASS)
+                .attr('tabindex', '-1')
+                .attr('aria-selected', 'false');
+
+            tab.$button.addClass(ACTIVE_BUTTON_CLASS)
+                .removeAttr('tabindex')
+                .attr('aria-selected', 'true')
+                .focus();
+
+            $wrapper.find('[role="tabpanel"]').attr('hidden', '');
+            tab.$panel.removeAttr('hidden');
+        }
+
+        $wrapper.find('[role="tablist"] button').each(function(_, button) {
+            var $button = $(button);
+            var $panel = $wrapper.find('#' + $button.attr('aria-controls'));
+
+            var currentIndex = tabs.length;
+            tabs.push({ $button: $button, $panel: $panel });
+
+            $button.on('click', function (e) {
+                e.preventDefault();
+                switchActiveTab(currentIndex);
+            });
+
+            $button.on('keydown', function (e) {
+                if (e.keyCode === KEYS.right) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    switchActiveTab(currentIndex + 1);
+                }
+                else if (e.keyCode === KEYS.left) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    switchActiveTab(currentIndex - 1);
+                }
+                else if (e.keyCode === KEYS.home) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    switchActiveTab(0)
+                }
+                else if (e.keyCode === KEYS.end) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    switchActiveTab(tabs.length - 1);
+                }
+            });
         });
-        $buttons.removeClass('btn--secondary-active');
-
-        // set all controls to hidden
-        $controls.each(function () {
-            if ($(this).attr('aria-hidden') == 'false') {
-                $(this).attr('aria-hidden', 'true');
-            }
-        });
-
-        // set active class on clicked button and unhide correct controls (button) block
-        $activeButton.addClass('btn--secondary-active');
-        $activeInput.attr('aria-expanded', 'true');
-        $activeInput.prop('checked', true);
-        $activeControl.attr('aria-hidden', 'false');
     });
-
 });
 
 var renderLineChart = function (timeseries) {
