@@ -60,18 +60,24 @@ $(function () {
             });
 
             $button.on('keydown', function (e) {
-                e.preventDefault();
-                e.stopPropagation();
                 if (e.keyCode === KEYS.right) {
+                    e.preventDefault();
+                    e.stopPropagation();
                     switchActiveTab(currentIndex + 1);
                 }
                 else if (e.keyCode === KEYS.left) {
+                    e.preventDefault();
+                    e.stopPropagation();
                     switchActiveTab(currentIndex - 1);
                 }
                 else if (e.keyCode === KEYS.home) {
+                    e.preventDefault();
+                    e.stopPropagation();
                     switchActiveTab(0)
                 }
                 else if (e.keyCode === KEYS.end) {
+                    e.preventDefault();
+                    e.stopPropagation();
                     switchActiveTab(tabs.length - 1);
                 }
             });
