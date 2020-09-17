@@ -7,7 +7,8 @@
                     <li>
                         <a data-gtm-title="{{title}}"
                            data-gtm-type="related-download"
-                           href="/file?uri={{absolute (concat uri "/" file)}}">{{title}}</a>
+                           aria-label="Download {{title}} as {{fe(concat uri "/" file)}} ({{fs(concat uri "/" file)}})"
+                           href="/file?uri={{absolute (concat uri "/" file)}}">{{title}} ({{fs(concat uri "/" file)}} {{fe(concat uri "/" file)}})</a>
                     </li>
                 {{/each}}
             </ul>

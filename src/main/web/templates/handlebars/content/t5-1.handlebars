@@ -31,62 +31,57 @@
 {{#partial "block-content"}}
 {{!-- Hide chart section if no data to draw the chart with --}}
 {{!-- TODO: Add isdatavailable to timeseries to do this check --}}
+    <div class="wrapper">
     {{#if_any years quarters months}}
-        <div class="wrapper">
             <div class="col-wrap">
                 <div class="col col--lg-one tiles__item margin-top-sm--4 margin-top-md--5 flush-bottom">
-
                     {{> partials/highcharts/linechart}}
 
                     {{!-- Chart footer --}}
                     <div class="tiles__content">
                         <h2><span role="text">{{labels.download-this-time-series}}<span class="visuallyhidden">{{description.title}}</span></span></h2>
                         <div class="chart-area__footer__actions">
-                                                        <form class="timeseries__filters nojs--hide">
-                            <div class="nojs--hide">
-                                <fieldset class="btn-group">
-                                        <legend id="data-download">{{labels.download-options}}</legend>
-                                        <div role="radiogroup" aria-labelledby="data-download">
-                                                <label for="unfiltered-download" class="btn btn--secondary btn--chart-control btn--chart-control--download btn--secondary-active">
-                                                        {{labels.full-unfiltered-time-series}}
-                                                        <input id="unfiltered-download" type="radio" name="type" data-chart-controls-type="unfiltered-download" aria-controls="unfiltered-download-controls" aria-expanded="true" checked>
-                                                </label>
-                                                <label for="filtered-download" class="btn btn--secondary btn--chart-control btn--chart-control--download">
-                                                        {{labels.filtered-time-series}}
-                                                        <input id="filtered-download" type="radio" name="type" data-chart-controls-type="filtered-download" aria-controls="filtered-download-controls" aria-expanded="false">
-                                                </label>
-                                        </div>
-                                </fieldset>
-
-                                {{!-- Unflitered --}}
-                                <div id="unfiltered-download-controls" class="chart-area__controls__download chart-area__controls__download--unfiltered width--22 padding-top--2 padding-bottom--2" aria-hidden="false">
-                                        <div class="chart-area__controls__custom__container">
-                                                <p class="flush">{{labels.download-full-time-series-as}}:</p>
-                                                <a href="{{uri}}/linechartimage" title="Download as an image" class="btn btn--primary" download="{{description.title}}" aria-title="Download {{title}} as an {{labels.image}}">{{labels.image}}</a>
-                                                <a class="btn btn--primary" title="Download as csv" data-gtm-download-file="{{uri}}" data-gtm-download-type="csv" href="/generator?format=csv&uri={{uri}}" aria-title="Download {{title}} as csv">.csv</a>
-                                                <a class="btn btn--primary" title="Download as xls" data-gtm-download-file="{{uri}}" data-gtm-download-type="xls" href="/generator?format=xls&uri={{uri}}" aria-title="Download {{title}} as xls">.xls</a>
-                                        </div>
+                            <div class="timeseries__filters nojs--hide js--linechart-filter-tabs">
+                                <div role="tablist" aria-label="{{labels.download-options}}" class="chart-area__radiogroup btn-group">
+                                    <button 
+                                        id="filtered-button" role="tab" aria-selected="true" aria-controls="unfiltered-download-controls"
+                                        class="btn btn--secondary btn--chart-control btn--chart-control--download btn--secondary-active">
+                                        {{labels.full-unfiltered-time-series}}
+                                    </button>
+                                    <button 
+                                        id="unfiltered-button" role="tab" aria-selected="false" aria-controls="filtered-download-controls" tabindex="-1"
+                                        class="btn btn--secondary btn--chart-control btn--chart-control--download">
+                                        {{labels.filtered-time-series}}
+                                    </button>
                                 </div>
-                                {{!-- Filtered - parameters added dynamically--}}
-                                <div id="filtered-download-controls" class="chart-area__controls__download chart-area__controls__download--filtered width--22 padding-top--2 padding-bottom--2" aria-hidden="true">
-                                        <div class="chart-area__controls__custom__container">
-                                                <p class="flush"> {{labels.download-filtered-time-series-as}}:</p>
-                                                <a href="{{uri}}/linechartimage" title="Download as an image" class="btn btn--primary dlCustomData"  download="{{description.title}}" aria-title="Download {{title}} as an {{labels.image}}">{{labels.image}}</a>
-                                                <a class="btn btn--primary dlCustomData" title="Download as csv" data-gtm-download-file="{{uri}}" data-gtm-download-type="csv" href="/generator?format=csv&uri={{uri}}" aria-title="Download {{title}} as csv">.csv</a>
-                                                <a class="btn btn--primary dlCustomData" title="Download as xls" data-gtm-download-file="{{uri}}" data-gtm-download-type="xls" href="/generator?format=xls&uri={{uri}}" aria-title="Download {{title}} as xls">.xls</a>
-                                        </div>
+                                <div tabindex="0" role="tabpanel" aria-labelledby="unfiltered-button" id="unfiltered-download-controls" 
+                                    class="chart-area__controls__download chart-area__controls__download--unfiltered padding-top--2 padding-bottom--2">
+                                    <div class="chart-area__controls__custom__container">
+                                        <p class="flush">{{labels.download-full-time-series-as}}:</p>
+                                        <a href="{{uri}}/linechartimage" title="Download as an image" class="btn btn--primary" download="{{description.title}}" aria-label="Download {{description.title}} as an {{labels.image}}">{{labels.image}}</a>
+                                        <a class="btn btn--primary" title="Download as csv" data-gtm-download-file="{{uri}}" data-gtm-download-type="csv" href="/generator?format=csv&uri={{uri}}" aria-label="Download {{description.title}} as csv">.csv</a>
+                                        <a class="btn btn--primary" title="Download as xls" data-gtm-download-file="{{uri}}" data-gtm-download-type="xls" href="/generator?format=xls&uri={{uri}}" aria-label="Download {{description.title}} as xls">.xls</a>
+                                    </div>
                                 </div>
-                        </div>
-                        </form>
-                        {{!-- Show no-JS download options --}}
-                        <div class="js--hide">
-                                <a href="{{uri}}/linechartimage" title="Download as an image" class="btn btn--primary" aria-title="Download {{title}} as an image">image</a>
+                                <div tabindex="0" role="tabpanel" aria-labelledby="filtered-button" id="filtered-download-controls" hidden="" 
+                                    class="chart-area__controls__download chart-area__controls__download--filtered padding-top--2 padding-bottom--2">
+                                    <div class="chart-area__controls__custom__container">
+                                        <p class="flush"> {{labels.download-filtered-time-series-as}}:</p>
+                                        <a href="{{uri}}/linechartimage" title="Download as an image" class="btn btn--primary dlCustomData"  download="{{description.title}}" aria-label="Download {{description.title}} as an {{labels.image}}">{{labels.image}}</a>
+                                        <a class="btn btn--primary dlCustomData" title="Download as csv" data-gtm-download-file="{{uri}}" data-gtm-download-type="csv" href="/generator?format=csv&uri={{uri}}" aria-label="Download {{description.title}} as csv">.csv</a>
+                                        <a class="btn btn--primary dlCustomData" title="Download as xls" data-gtm-download-file="{{uri}}" data-gtm-download-type="xls" href="/generator?format=xls&uri={{uri}}" aria-label="Download {{description.title}} as xls">.xls</a>
+                                    </div>
+                                </div>
+                            </div>
+                            {{!-- Show no-JS download options --}}
+                            <div class="js--hide">
+                                <a href="{{uri}}/linechartimage" title="Download as an image" class="btn btn--primary" aria-label="Download {{title}} as an image">image</a>
                                 {{> partials/highcharts/download format='csv'}}
                                 {{> partials/highcharts/download format='xls'}}
-                        </div>
-                </div>
+                            </div>
+                        </div>   
                     </div> {{!-- /tiles__content --}}
-                                        <!--[if gt IE 8]><!--><noscript><![endif]-->
+                    <!--[if gt IE 8]><!--><noscript><![endif]-->
                         <div class="tiles__content js--hide">
                             <h2>{{labels.table}}</h2>
                             <table>
@@ -118,10 +113,10 @@
                                 </tbody>
                             </table>
                         </div>
-                                                <!--[if gt IE 8]><!--></noscript><![endif]-->
+                    <!--[if gt IE 8]><!--></noscript><![endif]-->
                 </div> {{!-- /col --}}
             </div> {{!-- /col-wrap --}}
-        {{/if_any}}
+    {{/if_any}}
 
         <div class="meta-wrap meta-wrap--gallery margin-bottom padding-right-sm--1">
             <div class="col-wrap">

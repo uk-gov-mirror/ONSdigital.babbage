@@ -1,15 +1,13 @@
 {{!--Not having line breaks before and after the div markups breaks tables displaying on the page--}}
 <div class="markdown-table-container print--avoid-break">
-    <h4>{{{sub (sup title)}}}</h4>
+    <h3 class="font-size--18 margin-top--1">{{{sub (sup title)}}}</h3>
     {{#resolveResource (concat uri ".html")}}
-    <div class="markdown-table-wrap">
-        {{{resource}}}
-    </div>
-
-    {{!-- 'View table' button for mobile --}}
-    <button class="btn btn--secondary btn--mobile-table-show nojs--hide" aria-expanded="false" aria-live="assertive" data-gtm-title="{{{sub (sup title)}}}" data-gtm-type="view-table">View table</button>
-
+        <div class="scrollable-container">
+            <div class="markdown-table-wrap">
+                {{{resource}}}
+            </div>
+        </div>
     {{/resolveResource}}
-    <h5 class="print--hide font-size--h6"><span role="text">Download this table <span class="visuallyhidden">{{title}}</span></span></h5>
-    <a href="/file?uri={{uri}}.xls" title="Download as xls" class="btn btn--primary print--hide" data-gtm-title="{{{sub (sup title)}}}" data-gtm-type="download-table-xls" aria-label="Download table {{title}} as xls">.xls</a>
+    <h4 class="print--hide font-size--h6 margin-top--1 padding-top--0"><span role="text">Download this table <span class="visuallyhidden">{{title}}</span></span></h4>
+    <a href="/file?uri={{uri}}.xls" title="Download as xls" class="btn btn--primary print--hide" data-gtm-title="{{{sub (sup title)}}}" data-gtm-type="download-table-xls" aria-label="Download table {{title}} as xls ({{fs(concat uri ".xls")}})">.xls ({{fs(concat uri ".xls")}})</a>
 </div>

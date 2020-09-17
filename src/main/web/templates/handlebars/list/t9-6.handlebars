@@ -24,9 +24,9 @@
 					{{#each result.results}}
 					<li {{#if_all @first (eq result.paginator.currentPage 1)}}class="margin-bottom--double"{{/if_all}}>
                     {{#if_all @first (eq result.paginator.currentPage 1)}}<h3 class="flush">{{labels.previous-latest}}</h3>
-						<h3 class="flush stand-out-text">
+						<h2 class="flush stand-out-text font-size--h3">
 					{{else}}
-						<h3 class="flush">
+						<h2 class="flush font-size--h3">
 					{{/if_all}}
 						<a href="{{uri}}">{{description.title}}
 							{{#if description.edition}}

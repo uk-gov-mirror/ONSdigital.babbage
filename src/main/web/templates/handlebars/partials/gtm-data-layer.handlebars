@@ -21,7 +21,9 @@
     {{!-- Add title to dataLayer. Dont include the edition on dataset versions pages --}}
     var dataLayer = [{
         contentTitle: htmlUnescape("{{> partials/page-title}}{{#if description.edition}}{{#if_ne description.edition "Current"}}: {{description.edition}}{{/if_ne}}{{/if}}"),
-        analyticsOptOut: getUsageCookieValue()
+        analyticsOptOut: getUsageCookieValue(),
+        "gtm.whitelist": ["google","hjtc","lcl"],
+        "gtm.blacklist": ["customScripts","sp","adm","awct","k","d","j"]
     }];
 
     {{#if description.releaseDate}}

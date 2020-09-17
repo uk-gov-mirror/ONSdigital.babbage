@@ -18,8 +18,10 @@
 {{/partial}}
 
 {{#partial "block-filters"}}
-	<h4 class="filters__title">{{labels.content-types-to-show}}</h4>
-	{{> list/filters/data docCounts=counts.docCounts}}
+	<fieldset class="filters__fieldset">
+		<legend class="filters__title">{{labels.content-types-to-show}}</legend>
+		{{> list/filters/data docCounts=counts.docCounts}}
+	</fieldset>
 	<input class="sort__input" type="hidden" name="q" value="{{parameters.q.0}}">
 {{/partial}}
 
