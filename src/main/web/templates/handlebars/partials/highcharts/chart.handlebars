@@ -2,9 +2,9 @@
 
 
   <div class="markdown-chart-container panel--bottom-mar print--avoid-break">
-          <h4 class="flush--third--vertical">{{{sub (sup title)}}}</h4>
+          <h3 class="flush--third--vertical font-size--18 margin-top--0 padding-top--0 margin-top--0 margin-bottom--1">{{{sub (sup title)}}}</h3>
           {{#if subtitle}}
-              <h5 class="flush--third--bottom">{{{sub (sup subtitle)}}}</h5>
+              <h4 class="flush--third--bottom font-size--16 margin-top--0 padding-top--0">{{{sub (sup subtitle)}}}</h4>
           {{/if}}
    <div class="sm-multiple-holder">
   {{#each series}}
@@ -25,9 +25,9 @@
 
   {{#if_eq chartType "table"}}
   <div class="markdown-table-container panel--bottom-mar print--avoid-break">
-    <h4 class="flush--third--vertical">{{{sub (sup title)}}}</h4>
+    <h3 class="flush--third--vertical font-size--18 margin-top--0 padding-top--0">{{{sub (sup title)}}}</h3>
     {{#if subtitle}}
-        <h5 class="flush--third--bottom">{{{sub (sup subtitle)}}}</h5>
+        <h4 class="flush--third--bottom font-size--16 margin-top--0 padding-top--0">{{{sub (sup subtitle)}}}</h4>
     {{/if}}
 
     <table class="t1 table-chart">
@@ -56,9 +56,9 @@
 
     <div class="markdown-chart-container panel--bottom-mar print--avoid-break">
 
-      <h4 class="flush--third--vertical">{{{sub (sup title)}}}</h4>
+      <h3 class="flush--third--vertical font-size--18 padding-top--0 margin-bottom--1">{{{sub (sup title)}}}</h3>
         {{#if subtitle}}
-            <h5 class="flush--third--bottom">{{{sub (sup subtitle)}}}</h5>
+            <h4 class="flush--third--bottom font-size--16 padding-top--0 margin-top--0">{{{sub (sup subtitle)}}}</h4>
         {{/if}}
 
       <div class="scrollable-container">
@@ -76,15 +76,15 @@
 
 
 
-  {{#if source}}<h5 class="flush--third--bottom font-size--h6 clear-left">Source: {{source}}</h5>{{/if}}
+  {{#if source}}<h4 class="flush--third--bottom font-size--h6 clear-left">Source: {{source}}</h4>{{/if}}
       <div id="notes-{{filename}}" class="notes-holder-js">
   {{#if notes}}
-      <h6 class="flush--third--bottom js-notes-title">Notes:</h6>
+      <h5 class="flush--third--bottom js-notes-title font-size--16 padding-top--0">Notes:</h5>
       {{md notes}}
   {{/if}}
       </div>
   
-    <h5 class="print--hide font-size--h6 clear-left"><span role="text">Download this chart <span class="visuallyhidden">{{title}}</span></span></h5>
+    <h4 class="print--hide padding-top--0 margin-top--0 font-size--h6 clear-left"><span role="text">Download this chart <span class="visuallyhidden">{{title}}</span></span></h4>
 {{#if_ne chartType "small-multiples"}}
     <a class="btn btn--primary print--hide js-chart-image-src" data-filename="{{filename}}" href="/chartimage?uri={{uri}}" download="{{{sub (sup title)}}}" data-gtm-title="{{{sub (sup title)}}}" data-gtm-type="download-chart-image"  aria-label="Download {{title}} as an image">Image</a>
       {{else}}
