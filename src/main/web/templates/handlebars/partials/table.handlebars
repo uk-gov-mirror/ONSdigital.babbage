@@ -9,5 +9,5 @@
         </div>
     {{/resolveResource}}
     <h4 class="print--hide font-size--h6 margin-top--1 padding-top--0"><span role="text">Download this table <span class="visuallyhidden">{{title}}</span></span></h4>
-    <a href="/file?uri={{uri}}.xls" title="Download as xls" class="btn btn--primary print--hide" data-gtm-title="{{{sub (sup title)}}}" data-gtm-type="download-table-xls" aria-label="Download table {{title}} as xls">.xls</a>
+    <a href="/file?uri={{uri}}.xls" title="Download as xls" class="btn btn--primary print--hide" data-gtm-title="{{{sub (sup title)}}}" data-gtm-type="download-table-xls" aria-label="Download table {{title}} as xls ({{fs(concat uri ".xls")}})">.xls ({{fs(concat uri ".xls")}})</a>
 </div>
