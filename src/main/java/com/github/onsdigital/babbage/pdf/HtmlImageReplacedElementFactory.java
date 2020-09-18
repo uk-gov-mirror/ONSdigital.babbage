@@ -5,6 +5,14 @@ import com.github.onsdigital.babbage.content.client.ContentReadException;
 import com.github.onsdigital.babbage.content.client.ContentResponse;
 import com.lowagie.text.BadElementException;
 import com.lowagie.text.Image;
+import com.openhtmltopdf.extend.ReplacedElement;
+import com.openhtmltopdf.extend.ReplacedElementFactory;
+import com.openhtmltopdf.extend.UserAgentCallback;
+import com.openhtmltopdf.layout.LayoutContext;
+import com.openhtmltopdf.pdfboxout.PdfBoxImage;
+import com.openhtmltopdf.pdfboxout.PdfBoxImageElement;
+import com.openhtmltopdf.pdfboxout.PdfBoxOutputDevice;
+import com.openhtmltopdf.render.BlockBox;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -12,14 +20,6 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.slf4j.Logger;
 import org.w3c.dom.Element;
-import org.xhtmlrenderer.extend.ReplacedElement;
-import org.xhtmlrenderer.extend.ReplacedElementFactory;
-import org.xhtmlrenderer.extend.UserAgentCallback;
-import org.xhtmlrenderer.layout.LayoutContext;
-import org.xhtmlrenderer.pdf.ITextFSImage;
-import org.xhtmlrenderer.pdf.ITextImageElement;
-import org.xhtmlrenderer.render.BlockBox;
-import org.xhtmlrenderer.simple.extend.FormSubmissionListener;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -30,15 +30,16 @@ import static org.slf4j.LoggerFactory.getLogger;
 
 public class HtmlImageReplacedElementFactory implements ReplacedElementFactory {
 
-    private final ReplacedElementFactory superFactory;
+    private PdfBoxOutputDevice outputDevice;
+
     private static final Logger log = getLogger(HtmlImageReplacedElementFactory.class);
 
-    public HtmlImageReplacedElementFactory(ReplacedElementFactory superFactory) {
-        this.superFactory = superFactory;
+    public HtmlImageReplacedElementFactory(PdfBoxOutputDevice outputDevice) {
+        this.outputDevice = outputDevice;
     }
 
-    private final double scale = 2.5;
-    private final int maxWidth = 2000;
+    private final double scale = 16f;
+    private final int maxWidth = 14000;
 
     @Override
     public ReplacedElement createReplacedElement(
@@ -70,8 +71,11 @@ public class HtmlImageReplacedElementFactory implements ReplacedElementFactory {
 
                         try (InputStream input = contentResponse.getDataStream())
                         {
-                            ReplacedElement fsImage = getReplacedImage(cssWidth, cssHeight, input);
-                            if (fsImage != null) return fsImage;
+                            PdfBoxImage fsImage = getReplacedImage(cssWidth, cssHeight, input);
+                            if (fsImage != null) {
+                                this.outputDevice.realizeImage(fsImage);
+                                return new PdfBoxImageElement(element, fsImage, layoutContext.getSharedContext(), blockBox.getStyle().isImageRenderingInterpolate());
+                            }
                         }
                     }
 
@@ -80,8 +84,11 @@ public class HtmlImageReplacedElementFactory implements ReplacedElementFactory {
                     HttpResponse response = client.execute(new HttpGet(src));
 
                     try (InputStream input = response.getEntity().getContent()) {
-                        ReplacedElement fsImage = getReplacedImage(cssWidth, cssHeight, input);
-                        if (fsImage != null) return fsImage;
+                        PdfBoxImage fsImage = getReplacedImage(cssWidth, cssHeight, input);
+                        if (fsImage != null) {
+                            this.outputDevice.realizeImage(fsImage);
+                            return new PdfBoxImageElement(element, fsImage, layoutContext.getSharedContext(), blockBox.getStyle().isImageRenderingInterpolate());
+                        }
                     }
                 }
 
@@ -92,14 +99,14 @@ public class HtmlImageReplacedElementFactory implements ReplacedElementFactory {
 
         }
 
-        return superFactory.createReplacedElement(layoutContext, blockBox, userAgentCallback, cssWidth, cssHeight);
+        return null;
     }
 
-    private ReplacedElement getReplacedImage(int cssWidth, int cssHeight, InputStream input) throws IOException, BadElementException {
+    private PdfBoxImage getReplacedImage(int cssWidth, int cssHeight, InputStream input) throws IOException, BadElementException {
         byte[] bytes = IOUtils.toByteArray(input);
 
         Image image = Image.getInstance(bytes);
-        ITextFSImage fsImage = new ITextFSImage(image);
+        PdfBoxImage fsImage = new PdfBoxImage(bytes, "");
 
         if (fsImage != null) {
             if ((cssWidth != -1) || (cssHeight != -1)) {
@@ -113,23 +120,22 @@ public class HtmlImageReplacedElementFactory implements ReplacedElementFactory {
                     fsImage.scale(new Double(fsImage.getWidth() * scale).intValue(), new Double(fsImage.getHeight() * scale).intValue());
                 }
             }
-            return new ITextImageElement(fsImage);
+            return fsImage;
         }
         return null;
     }
 
     @Override
-    public void reset() {
-        superFactory.reset();
+    public boolean isReplacedElement(Element e) {
+        if (e == null) {
+            return false;
+        }
+
+        String tagName = e.getTagName();
+
+        boolean isReplaced = "img".equals(tagName);
+        return isReplaced;
+
     }
 
-    @Override
-    public void remove(Element e) {
-        superFactory.remove(e);
-    }
-
-    @Override
-    public void setFormSubmissionListener(FormSubmissionListener listener) {
-        superFactory.setFormSubmissionListener(listener);
-    }
 }

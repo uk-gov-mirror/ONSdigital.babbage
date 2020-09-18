@@ -83,13 +83,6 @@ public class PDFGenerator {
             builder.useSVGDrawer(new BatikSVGDrawer());
             builder.useHttpStreamImplementation(new OkHttpStreamFactory());
 
-            // // Create a chain of custom classes to manipulate the HTML.
-            // renderer.getSharedContext().setReplacedElementFactory(
-            //         new HtmlImageReplacedElementFactory(
-            //                 new EquationImageInserter(
-            //                         new ChartImageReplacedElementFactory(
-            //                                 renderer.getSharedContext().getReplacedElementFactory()))));
-
             ClassLoader classloader = Thread.currentThread().getContextClassLoader();
             URL regularFontURL = classloader.getResource("OpenSans-Regular.ttf");
             File regularFontFile = new File(regularFontURL.toURI());
@@ -105,6 +98,7 @@ public class PDFGenerator {
                 ChainedReplacedElementFactory cef = new ChainedReplacedElementFactory(renderer.getSharedContext());
                 cef.addFactory(new ChartImageReplacedElementFactory(renderer.getOutputDevice()));
                 cef.addFactory(new EquationImageInserter(renderer.getOutputDevice()));
+                cef.addFactory(new HtmlImageReplacedElementFactory(renderer.getOutputDevice()));
 
                 renderer.getSharedContext().setReplacedElementFactory(cef);
                 renderer.layout();

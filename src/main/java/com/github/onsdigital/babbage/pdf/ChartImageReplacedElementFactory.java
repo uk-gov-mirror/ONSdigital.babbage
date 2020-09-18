@@ -27,6 +27,9 @@ import static com.github.onsdigital.logging.v2.event.SimpleEvent.error;
 public class ChartImageReplacedElementFactory implements ReplacedElementFactory {
     private PdfBoxOutputDevice outputDevice;
 
+    private final double scale = 6f;
+    private final int maxWidth = 8000;
+
     public ChartImageReplacedElementFactory(PdfBoxOutputDevice outputDevice) {
         this.outputDevice = outputDevice;
     }   
@@ -67,6 +70,14 @@ public class ChartImageReplacedElementFactory implements ReplacedElementFactory 
                 if (fsImage != null) {
                     if ((cssWidth != -1) || (cssHeight != -1)) {
                         fsImage.scale(cssWidth, cssHeight);
+                    }
+                    else {
+                        if ((fsImage.getWidth() * scale) > maxWidth) {
+                            // pass -1 as height to maintain aspect ratio when setting width.
+                            fsImage.scale(maxWidth, -1);
+                        } else {
+                            fsImage.scale(new Double(fsImage.getWidth() * this.scale).intValue(), new Double(fsImage.getHeight() * this.scale).intValue());
+                        }
                     }
                     this.outputDevice.realizeImage(fsImage);
                     return new PdfBoxImageElement(element, fsImage, layoutContext.getSharedContext(), blockBox.getStyle().isImageRenderingInterpolate());

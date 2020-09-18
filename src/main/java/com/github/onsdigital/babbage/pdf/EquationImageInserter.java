@@ -22,6 +22,9 @@ public class EquationImageInserter implements ReplacedElementFactory {
 
     private PdfBoxOutputDevice outputDevice;
 
+    private final double scale = 8f;
+    private final int maxWidth = 14000;
+
     public EquationImageInserter(PdfBoxOutputDevice outputDevice) {
         this.outputDevice = outputDevice;
     }
@@ -60,6 +63,14 @@ public class EquationImageInserter implements ReplacedElementFactory {
                     if (fsImage != null) {
                         if ((cssWidth != -1) || (cssHeight != -1)) {
                             fsImage.scale(cssWidth, cssHeight);
+                        }
+                        else {
+                            if ((fsImage.getWidth() * scale) > maxWidth) {
+                                // pass -1 as height to maintain aspect ratio when setting width.
+                                fsImage.scale(maxWidth, -1);
+                            } else {
+                                fsImage.scale(new Double(fsImage.getWidth() * scale).intValue(), new Double(fsImage.getHeight() * scale).intValue());
+                            }
                         }
                         this.outputDevice.realizeImage(fsImage);
                         return new PdfBoxImageElement(element, fsImage, layoutContext.getSharedContext(), blockBox.getStyle().isImageRenderingInterpolate());
