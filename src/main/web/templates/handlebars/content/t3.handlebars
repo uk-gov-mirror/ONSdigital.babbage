@@ -48,17 +48,14 @@
 	{{!-- Hightlights block --}}
 	{{#if_any statsBulletins items highlightedContent}}
     <div class="padding-bottom-sm--2 padding-bottom-md--4">
-		<section>
-			<div class="wrapper">
-                <div class="col-wrap margin-bottom--2">
-                    <div class="col">
-                        <h2>{{labels.spotlight}}</h2>
-                    </div>
+		<section class="wrapper">
+                <h2>{{labels.spotlight}}</h2>
+                <div class="flex stretch flex-wrap-wrap content-space-between margin-bottom--2">
 
                     {{#if highlightedContent.0}}
 
                         {{#loop highlightedContent limit=2}}
-                            <div class="col col--md-half col--lg-half margin-bottom--2">
+                            <div class="col--md-half col--lg-half margin-bottom--2">
                                 {{resolve uri assign="highlighted"}}
                                 {{#if_eq highlighted.type "timeseries"}}
                                     {{> partials/t3/headline-data}}
@@ -77,7 +74,7 @@
                         {{resolve items.0.uri assign="highlighted"}}
                         {{!-- Check for data and print partial --}}
                         {{#if_any highlighted.years highlighted.quarters highlighted.months}}
-                            <div class="col col--md-half col--lg-half">
+                            <div class="col--md-half col--lg-half flex flex-direction--column">
                                 {{> partials/t3/headline-data}}
                             </div>
                         {{/if_any}}
@@ -87,13 +84,12 @@
                         {{resolve statsBulletins.0.uri filter="description" assign="bulletin"}}
                         {{#if bulletin}}
                         {{!-- Latest publication block --}}
-                        <div class="col {{#if_any highlighted.years highlighted.quarters highlighted.months}}col--md-half col--lg-half{{/if_any}}">
-                            <div class="background--gallery margin-top-md--1 margin-bottom-md--2 js-hover-click">
+                        <div foo="bar" class="flex flex-direction--column {{#if_any highlighted.years highlighted.quarters highlighted.months}}col--md-half col--lg-half{{/if_any}}">
+                            <div class="flex--1 background--gallery margin-top-md--1 js-hover-click flex flex-direction--column">
                                 <div class="background--abbey height--35 overflow--hidden">
-
                                     <img src="//cdn.ons.gov.uk/assets/images/latest-publications.png" class="width-md--23 width-lg--29 height-md--35" alt="" />
                                 </div>
-                                <div class="js-equal-height box__content padding-top-sm--2 padding-right-sm--1 padding-bottom-sm--2 padding-left-sm--1 padding-top-md--2 padding-right-md--1 padding-bottom-md--2 padding-left-md--1">
+                                <div class="flex--1 box__content padding-top-sm--2 padding-right-sm--1 padding-bottom-sm--2 padding-left-sm--1 padding-top-md--2 padding-right-md--1 padding-bottom-md--2 padding-left-md--1">
                                     <h3>
                                         <a class="underline-link" href="{{bulletin.uri}}">{{bulletin.description.title}}{{#if bulletin.description.edition}}: {{bulletin.description.edition}}{{/if}}</a>
                                     </h3>
@@ -120,7 +116,6 @@
                     {{/if}}
                 </div>
                 <a class="underline-link" href="#main">Back to top</a>
-			</div>{{!-- /wrapper --}}
 		</section>
     </div>
 	{{/if_any}}
@@ -173,7 +168,7 @@
         <section>
             <div class="wrapper">
                 <div class="col-wrap">
-                    <div class="col col--lg-two-thirds">
+                    <div class="col--lg-two-thirds">
                         <div class="background--mercury margin-top--0 margin-left-md--0 margin-bottom-sm--2 padding-top--0 padding-right--0 padding-bottom--2 padding-left--0">
                             <div class="background--gallery padding-top--0 padding-left--0 padding-right--0">
                                 <h2 id="methodology" class="tiles__title-h2 tiles__title-h2--nav font-size--h3">{{labels.methodology-related-to}} <span class="lowercase">{{description.title}}</span></h2>
@@ -198,7 +193,7 @@
 
                         </div>
                     </div>
-                    <div class="col col--lg-one-third">
+                    <div class="col--lg-one-third">
                         {{> partials/local-box}}
                     </div>
                 </div> {{!-- /col-wrap --}}
