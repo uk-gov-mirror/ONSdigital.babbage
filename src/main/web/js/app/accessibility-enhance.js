@@ -21,5 +21,11 @@ function highchartsAccessibilityAttrs(selector, labelText, removeAttrs) {
 }
 
 function timeseriesAccessibilityAttrs(removeAttrs) {
+    if (!removeAttrs) {
+        $('.timeseries__chart').attr('tabIndex', 0);
+    }
+    else {
+        $('.timeseries__chart').attr('tabIndex', -1);
+    }
     highchartsAccessibilityAttrs($('.timeseries__chart'), 'Interactive chart representing data, includes a table view option.', removeAttrs);
 }
