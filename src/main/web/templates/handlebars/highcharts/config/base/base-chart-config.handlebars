@@ -12,40 +12,21 @@ TODO: split out colours palette selection, axis alignment and positioning
 
 	Highcharts.setOptions({lang: {thousandsSep: ','}});
 
-	var HIGHLIGHT_COLOUR  = {{#if_eq palette "legacy"}}'gold';{{else}}'rgba(243,148,49,0.9)';{{/if_eq}}
+	var HIGHLIGHT_COLOUR  = 'rgba(243,148,49,0.9)';
 	var PLOTBAND_COLOUR  = '#E5E5E5';
 
 	// use rgba in order to set opacity/alpha
-	var legacy = [
-			'rgba(39,71,150,0.9)',
-			'rgba(245,148,47,0.9)',
-			'rgba(231,63,64,0.9)',
-			'rgba(123,202,226,0.9)',
-			'rgba(151,151,150,0.9)',
-			'rgba(233,225,23,0.9)',
-			'rgba(116,182,48,0.9)',
-			'rgba(103,71,150,0.9)',
-			'rgba(189,91,158,0.9)'
-		];
-	var bluemono = [
-			'rgba(0,100,185,0.9)',
-			'rgba(170,214,232,0.9)',
-			'rgba(17,41,65,0.9)',
-			'rgba(0,159,227,0.9)',
-			'rgba(91,197,242,0.9)'
-		];
-	var color = [						// use US spelling to keep consistency with Highcharts
-			'rgba(0,117,163,0.9)',		// blue
-			'rgba(226,188,34,0.9)',		// gold
-			'rgba(35,77,112,0.9)',		// dk blue
-			'rgba(54,173,217,0.9)',		// lt blue
-			'rgba(38,109,74,0.9)'		// green
-		];
-
-	// set chart palette based on chart object
-	var palette = legacy;
-	{{#if_eq palette "blue"}}palette = bluemono;{{/if_eq}}
-	{{#if_eq palette "colour"}}palette = color;{{/if_eq}}
+	var colours = [
+		'rgba(32, 96, 149, 1)',			// blue
+		'rgba(17, 140, 123, 1)',		// green
+		'rgba(0, 60, 87, 1)',			// dark blue/navy
+		'rgba(168, 189, 58, 1)',		// lime green
+		'rgba(39, 160, 204, 1)',		// light blue
+		'rgba(135, 26, 91, 1)',			// plum purple
+		'rgba(246, 96, 104, 1)',		// pink
+		'rgba(116, 108, 177, 1)', 		// light purple
+		'rgba(34, 208, 182, 1)'			// turquoise
+	];
 
 	var base = {{#if yMin }}{{yMin}}{{else}}0{{/if}};
 
@@ -119,7 +100,7 @@ TODO: split out colours palette selection, axis alignment and positioning
                 }
             } 
 		},
-		colors: palette,
+		colors: colours,
 		series: [],
 		title: {
 			text: "{{title}}"
