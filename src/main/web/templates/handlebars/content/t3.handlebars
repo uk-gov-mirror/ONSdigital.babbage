@@ -55,7 +55,7 @@
                     {{#if highlightedContent.0}}
 
                         {{#loop highlightedContent limit=2}}
-                            <div class="col--md-half col--lg-half margin-bottom--2">
+                            <div class="col--md-half col--lg-half margin-bottom--2 flex-col">
                                 {{resolve uri assign="highlighted"}}
                                 {{#if_eq highlighted.type "timeseries"}}
                                     {{> partials/t3/headline-data}}
@@ -74,7 +74,7 @@
                         {{resolve items.0.uri assign="highlighted"}}
                         {{!-- Check for data and print partial --}}
                         {{#if_any highlighted.years highlighted.quarters highlighted.months}}
-                            <div class="col--md-half col--lg-half flex flex-direction--column">
+                            <div class="col--md-half col--lg-half flex flex-direction--column flex-col">
                                 {{> partials/t3/headline-data}}
                             </div>
                         {{/if_any}}
@@ -84,7 +84,7 @@
                         {{resolve statsBulletins.0.uri filter="description" assign="bulletin"}}
                         {{#if bulletin}}
                         {{!-- Latest publication block --}}
-                        <div foo="bar" class="flex flex-direction--column {{#if_any highlighted.years highlighted.quarters highlighted.months}}col--md-half col--lg-half{{/if_any}}">
+                        <div class="flex-col flex flex-direction--column {{#if_any highlighted.years highlighted.quarters highlighted.months}}col--md-half col--lg-half{{/if_any}}">
                             <div class="flex--1 background--gallery margin-top-md--1 js-hover-click flex flex-direction--column">
                                 <div class="background--abbey height--35 overflow--hidden">
                                     <img src="//cdn.ons.gov.uk/assets/images/latest-publications.png" class="width-md--23 width-lg--29 height-md--35" alt="" />
