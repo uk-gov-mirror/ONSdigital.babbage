@@ -1,6 +1,6 @@
 {{#partial "block-content"}}
 
-<div class="border-top--iron-sm border-top--iron-md border-top--iron-lg overflow--hidden">
+<div class="border-top--grey4-sm border-top--grey4-md border-top--grey4-lg overflow--hidden">
     <div class="wrapper">
         <div class="col-wrap">
 
@@ -10,7 +10,7 @@
 
                 <div class="side-bar js-sticky-sidebar">
                     <h2 class="">On this page:</h2>
-                    <ul class="list--neutral border-bottom--iron-sm border-bottom--iron-md border-bottom--iron-lg">
+                    <ul class="list--neutral border-bottom--grey4-sm border-bottom--grey4-md border-bottom--grey4-lg">
                         {{resolve items.0.uri assign="data"}}
                         <li id="highlights-menu-item" class="side-bar__item"><a href="#highlights" class="js-scroll side-bar__link">Highlights</a></li>
                         {{#if items}}<li id="timeseries-menu-item" class="side-bar__item"><a href="#timeseries" class="js-scroll side-bar__link">Time series</a></li>{{/if}}
@@ -20,7 +20,7 @@
                         {{#if relatedMethodology}}<li id="methodology-menu-item" class="side-bar__item margin-bottom-md--4"><a href="#methodology" class="js-scroll side-bar__link">Methodology</a></li>{{/if}}
                     </ul>
 
-                    <div class="padding-top-sm--2 padding-bottom-sm--2 padding-left-sm--0 padding-right-sm--1 padding-top-md--2 padding-bottom-md--5 padding-left-md--0 padding-right-md--1 border-bottom--iron-sm border-bottom--iron-md">
+                    <div class="padding-top-sm--2 padding-bottom-sm--2 padding-left-sm--0 padding-right-sm--1 padding-top-md--2 padding-bottom-md--5 padding-left-md--0 padding-right-md--1 border-bottom--grey4-sm border-bottom--grey4-md">
                         <h2 class="flush">View all content related to this topic:</h2>
                         <ul class="nav-secondary__list">
                             {{#if_any items datasets}}<li class="nav-secondary__item"><a href="{{uri}}/datalist">All data</a></li>{{/if_any}}
@@ -34,7 +34,7 @@
 
             {{!-- Page content --}}
 
-            <div class="col col--md-34 col--lg-42 border-left--iron-md border-left--iron-lg">
+            <div class="col col--md-34 col--lg-42 border-left--grey4-md border-left--grey4-lg">
 
                 {{!-- Latest data/publication block --}}
                 <div class="padding-left-md--1 padding-bottom-md--2 margin-left--negative-one-fix overflow--hidden">
@@ -55,8 +55,8 @@
                                 {{!-- Latest publication block --}}
                                 <div class="col {{#if_any data.years data.quarters data.months}}col--md-16 col--lg-20 margin-left-md--1{{else}}col--md -33 col--lg-41{{/if_any}}">
                                     <!--<div class="clickable-wrap">-->
-                                        <div class="background--iron-light margin-bottom-md--2 js-hover-click">
-                                            <div class="background--abbey height--24 overflow--hidden">
+                                        <div class="background--grey4 margin-bottom-md--2 js-hover-click">
+                                            <div class="background--grey2 height--24 overflow--hidden">
 
                                                 <img src="{{#if_any (eq 'localhost' location.hostname) (eq '127.0.0.1' location.hostname)}}http://localhost:9000/dist/img/latest-publications.png{{else}}/assets/img/latest-publications.png{{/if_any}}" class="height--24 width--20" alt="" />
                                             </div>
@@ -77,7 +77,7 @@
                                                     {{/if}}
                                                 </ul>
                                                 </div>
-                                            <div class="background--iron-light box__content height--9 width--50 border-top--iron-sm border-top--iron-md padding-top-sm--2 padding-left-sm--1 padding-top-md--2 padding-left-md--1">
+                                            <div class="background--grey4 box__content height--9 width--50 border-top--grey4-sm border-top--grey4-md padding-top-sm--2 padding-left-sm--1 padding-top-md--2 padding-left-md--1">
                                                 <a href="{{bulletin.uri}}" class="block">Read this statistical bulletin</a>
                                             </div>
                                         </div>
@@ -106,7 +106,7 @@
                     <div id="user-requested-container" class="section-container">
                         {{!-- User requested data --}}
                         <h2 id="user-requested" class="section-title">User requested data</h2>
-                        <div class="background--iron-light margin-bottom-md--2 js-hover-click">
+                        <div class="background--grey4 margin-bottom-md--2 js-hover-click">
 
                             <div class="box__content padding-top-sm--3 padding-bottom-sm--2 padding-left-sm--1 padding-right-sm--1 padding-top-md--3 padding-right-md--1 padding-bottom-md--2 padding-left-md--1">
 								<span class="icon icon-arrow-right--dark float-right margin-top-md--2 margin-top-sm--2"></span>
@@ -132,8 +132,8 @@
                 <h2 id="methodology" class="section-title">Methodology related to {{description.title}}</h2>
                 <div class="col-wrap">
                     <div class="col col--lg-41 margin-left-lg--1 margin-bottom-sm--4 margin-bottom-md--4">
-                        <div class="background--iron">
-                                <ul class="list--neutral padding-top-sm--3 padding-bottom-sm--2 padding-left-sm--1 padding-right-sm--1 padding-top-md--3 padding-right-md--1 padding-bottom-md--2 padding-left-md--1 background--mercury flush">
+                        <div class="background--grey4">
+                                <ul class="list--neutral padding-top-sm--3 padding-bottom-sm--2 padding-left-sm--1 padding-right-sm--1 padding-top-md--3 padding-right-md--1 padding-bottom-md--2 padding-left-md--1 background--grey4 flush">
                                     {{#each relatedMethodology}}
                                     {{#resolve this.uri filter="description"}}
                                     <li class="flush-top"><a href="{{absolute uri}}">{{description.title}}</a></li>

@@ -118,7 +118,7 @@
             </div> {{!-- /col-wrap --}}
     {{/if_any}}
 
-        <div class="meta-wrap meta-wrap--gallery margin-bottom padding-right-sm--1">
+        <div class="meta-wrap meta-wrap--grey5 margin-bottom padding-right-sm--1">
             <div class="col-wrap">
                 {{#if_any section.markdown notes.0}}
                     <div class="col col--md-two-thirds col--lg-two-thirds meta__item padding-right-sm--1 padding-right-md--1">
@@ -155,7 +155,7 @@
 
                         {{#if_ne result.results.size 1}}
 
-                        <div class="col col--lg-59 padding-top--0 padding-right--1 padding-bottom--0 padding-left--1 margin-left-md--0 margin-bottom--2 background--gallery" id="othertimeseries">
+                        <div class="col col--lg-59 padding-top--0 padding-right--1 padding-bottom--0 padding-left--1 margin-left-md--0 margin-bottom--2 background--grey5" id="othertimeseries">
                                 <h2 class="margin-top--3">Variations of this time series in other datasets</h2>
                                 <ul class="list--neutral">
                                         {{#each result.results}}
@@ -176,9 +176,9 @@
     <div class="wrapper">
         <div class="col-wrap flexbox__item">
             {{#if relatedDocuments}}
-                <div class="col {{#if_all relatedDocuments relatedMethodology}}col--md-one-third col--lg-one-third{{else}}col--md-half col--lg-half{{/if_all}} background--mercury margin-bottom-sm--2 margin-bottom-md--2">
+                <div class="col {{#if_all relatedDocuments relatedMethodology}}col--md-one-third col--lg-one-third{{else}}col--md-half col--lg-half{{/if_all}} background--grey4 margin-bottom-sm--2 margin-bottom-md--2">
                     <div class="tiles__item tiles__item--nav-type flush-col print--hide">
-                        <div class="background--gallery padding-top-md--2 padding-top-sm--2 padding-right-md--1 padding-right-sm--1 padding-bottom-sm--3 padding-bottom-md--4 padding-left-md--1 padding-left-sm--1 border-bottom--iron-md border-bottom--iron-sm height-md--10">
+                        <div class="background--grey5 padding-top-md--2 padding-top-sm--2 padding-right-md--1 padding-right-sm--1 padding-bottom-sm--3 padding-bottom-md--4 padding-left-md--1 padding-left-sm--1 border-bottom--grey4-md border-bottom--grey4-sm height-md--10">
                             <h2 class="flush">
                                 {{labels.publications-that-use-this-data}}
                             </h2>
@@ -201,8 +201,8 @@
                 </div>
             {{/if}}
             {{#if relatedMethodology}}
-                <div class="col {{#if_all relatedDocuments relatedMethodology}}col--md-one-third col--lg-one-third{{else}}col--md-half col--lg-half{{/if_all}} background--mercury margin-bottom-sm--2 margin-bottom-md--2">
-                    <div class="background--gallery padding-top-md--2 padding-top-sm--2 padding-right-md--1 padding-right-sm--1 padding-bottom-sm--3 padding-bottom-md--4 padding-left-md--1 padding-left-sm--1 border-bottom--iron-md border-bottom--iron-sm height-md--10">
+                <div class="col {{#if_all relatedDocuments relatedMethodology}}col--md-one-third col--lg-one-third{{else}}col--md-half col--lg-half{{/if_all}} background--grey4 margin-bottom-sm--2 margin-bottom-md--2">
+                    <div class="background--grey5 padding-top-md--2 padding-top-sm--2 padding-right-md--1 padding-right-sm--1 padding-bottom-sm--3 padding-bottom-md--4 padding-left-md--1 padding-left-sm--1 border-bottom--grey4-md border-bottom--grey4-sm height-md--10">
                         <h2 class="flush">
                             {{labels.methodology}}
                         </h2>
@@ -218,8 +218,8 @@
                     </div>
                 </div>
             {{/if}}
-            <div class="col {{#if_all relatedDocuments relatedMethodology}}col--md-one-third col--lg-one-third{{else}}col--md-half col--lg-half{{/if_all}} background--mercury margin-bottom-sm--2 margin-bottom-md--2">
-                <div class="background--gallery padding-top-md--2 padding-top-sm--2 padding-right-md--1 padding-right-sm--1 padding-bottom-sm--3 padding-bottom-md--4 padding-left-md--1 padding-left-sm--1 border-bottom--iron-md border-bottom--iron-sm height-md--10">
+            <div class="col {{#if_all relatedDocuments relatedMethodology}}col--md-one-third col--lg-one-third{{else}}col--md-half col--lg-half{{/if_all}} background--grey4 margin-bottom-sm--2 margin-bottom-md--2">
+                <div class="background--grey5 padding-top-md--2 padding-top-sm--2 padding-right-md--1 padding-right-sm--1 padding-bottom-sm--3 padding-bottom-md--4 padding-left-md--1 padding-left-sm--1 border-bottom--grey4-md border-bottom--grey4-sm height-md--10">
                     <h2 class="flush">
                         {{labels.contact-details-for-this-data}}
                     </h2>

@@ -1,5 +1,5 @@
 {{#partial "block-main"}}
-    <div class="page-neutral-intro {{#if_eq type "home_page"}}background--astral{{else}}background--gallery{{/if_eq}}">
+    <div class="page-neutral-intro {{#if_eq type "home_page"}}background--sky-blue{{else}}background--grey5{{/if_eq}}">
         <div class="wrapper">
             <div class="col-wrap">
                 <div class="col">
@@ -77,7 +77,7 @@
                             <p class="tile-neutral-content__meta">
                                 {{> type-label type_code=this.type }}
                                 {{#if this.description.releaseDate}}
-                                    <span class="text--aluminium">|</span> Released on {{df this.description.releaseDate}}
+                                    <span class="text--grey3">|</span> Released on {{df this.description.releaseDate}}
                                 {{/if}}
                             </p>
                             {{#if_any this.description.summary this.description._abstract}}
