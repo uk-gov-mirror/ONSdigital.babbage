@@ -151,7 +151,7 @@
                                                         <ul class="list--neutral flush-top">
                                                             {{#each supplementaryFiles}}
                                                                 <li class="flush">
-                                                                    <a href="/file?uri={{concat uri "/" this.file}}">{{title}}</a>
+                                                                    <a href="/file?uri={{concat uri "/" this.file}}" aria-label="Download {{title}} as {{fe (concat uri "/" this.file)}}">{{title}}</a>
                                                                     ({{fs (concat uri "/" this.file)}}, {{fe (concat uri "/" this.file)}})
                                                                 </li>
                                                             {{/each}}
