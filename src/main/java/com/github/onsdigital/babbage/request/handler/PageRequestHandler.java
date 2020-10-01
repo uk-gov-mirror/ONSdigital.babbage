@@ -28,9 +28,7 @@ public class PageRequestHandler extends BaseRequestHandler {
     private static final String REQUEST_TYPE = "/";
     private static final String PDF = "pdf";
     private static final String PDF_STYLE = "pdf_style";
-    private static final String ENABLE_COOKIES_CONTROL = "EnableCookiesControl";
     private static final String ENABLE_COVID19_FEATURE = "EnableCovid19Feature";
-    private static final String ENABLE_JSONLD_CONTROL = "EnableJSONLDControl";
 
     @Override
     public BabbageResponse get(String uri, HttpServletRequest request) throws IOException, ContentReadException {
@@ -45,8 +43,6 @@ public class PageRequestHandler extends BaseRequestHandler {
                 additionalData.put(PDF_STYLE, true);
             }
             additionalData.put(ENABLE_COVID19_FEATURE, appConfig().handlebars().isEnableCovid19Feature());
-            additionalData.put(ENABLE_COOKIES_CONTROL, appConfig().handlebars().isEnableCookiesControl());
-            additionalData.put(ENABLE_JSONLD_CONTROL, appConfig().handlebars().isEnableJSONLDControl());
             String html = TemplateService.getInstance().renderContent(dataStream, additionalData);
             return new BabbageContentBasedStringResponse(contentResponse, html, TEXT_HTML);
         }

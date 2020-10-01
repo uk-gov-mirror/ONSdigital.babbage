@@ -22,9 +22,7 @@ export DEV_ENVIRONMENT="Y"
 export IS_PUBLISHING="Y"
 export RELOAD_TEMPLATES="Y"
 export TEMPLATES_DIR=src/main/web/templates/handlebars
-export ENABLE_COOKIES_CONTROL=false
 export ENABLE_COVID19_FEATURE=false
-export ENABLE_JSONLD_CONTROL=false
 
 # Development: reloadable
 java $JAVA_OPTS \
