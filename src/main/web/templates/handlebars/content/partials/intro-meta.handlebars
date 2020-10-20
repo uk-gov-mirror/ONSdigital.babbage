@@ -1,4 +1,4 @@
-{{#if description.releaseDate}}
+{{#if_all type "static_page" description.releaseDate}}
     <div class="meta-wrap meta-wrap--thin">
         <div class="wrapper">
             <dl class="col-wrap">
@@ -9,4 +9,6 @@
             </dl>
         </div>
     </div>
-{{/if}}
+{{/if_all}}
+
+
