@@ -72,8 +72,7 @@
 		performs type check on content type and decides which template to render  --}}
 
 		{{!-- Content --}}
-		{{#if_eq type "home_page"}} 						{{> content/t1}}
-		{{else if_eq type "home_page_census"}} 				{{> content/t1-2}}
+		{{#if_eq type "home_page_census"}} 				{{> content/t1-2}}
 		{{else if_eq type "taxonomy_landing_page"}} 		{{> content/t2}}
 		{{else if_eq type "product_page"}}
 			{{#if_eq parameters.test.0 "B"}} 				{{> content/t3-new}}
