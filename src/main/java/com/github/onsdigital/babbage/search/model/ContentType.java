@@ -8,7 +8,6 @@ import org.apache.commons.lang3.ArrayUtils;
  * Content types.
  */
 public enum ContentType {
-    home_page,
     home_page_census,
     taxonomy_landing_page,
     product_page,
