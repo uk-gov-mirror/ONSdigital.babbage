@@ -16,8 +16,6 @@ public class Handlebars implements AppConfig {
     private static final String TEMPLATES_SUFFIX_KEY = "TEMPLATES_SUFFIX";
     private static final String RELOAD_TEMPLATES_KEY = "RELOAD_TEMPLATES";
     private static final String ENABLE_COVID19_FEATURE = "ENABLE_COVID19_FEATURE";
-    private static final String ENABLE_COOKIES_CONTROL = "ENABLE_COOKIES_CONTROL";
-    private static final String ENABLE_JSONLD_CONTROL = "ENABLE_JSONLD_CONTROL";
 
     private final String defaultHandlebarsDatePattern;
     private final String mainContentTemplateName;
@@ -26,8 +24,6 @@ public class Handlebars implements AppConfig {
     private final String templatesSuffix;
     private final boolean reloadTemplateChanges;
     private final boolean enableCovid19Feature;
-    private final boolean enableCookiesControl;
-    private final boolean enableJSONLDControl;
 
     static Handlebars getInstance() {
         if (INSTANCE == null) {
@@ -49,8 +45,6 @@ public class Handlebars implements AppConfig {
         templatesSuffix = getValueOrDefault(TEMPLATES_SUFFIX_KEY, ".handlebars");
         reloadTemplateChanges = getStringAsBool(RELOAD_TEMPLATES_KEY, "N");
         enableCovid19Feature = Boolean.parseBoolean(getValue(ENABLE_COVID19_FEATURE));
-        enableCookiesControl = Boolean.parseBoolean(getValue(ENABLE_COOKIES_CONTROL));
-        enableJSONLDControl = Boolean.parseBoolean(getValue(ENABLE_JSONLD_CONTROL));
     }
 
     public String getHandlebarsDatePattern() {
@@ -77,16 +71,8 @@ public class Handlebars implements AppConfig {
         return reloadTemplateChanges;
     }
 
-    public boolean isEnableCookiesControl() {
-        return enableCookiesControl;
-    }
-
     public boolean isEnableCovid19Feature() {
         return enableCovid19Feature;
-    }
-
-    public boolean isEnableJSONLDControl() {
-        return enableJSONLDControl;
     }
 
     @Override
@@ -99,8 +85,6 @@ public class Handlebars implements AppConfig {
         config.put("templatesSuffix", templatesSuffix);
         config.put("reloadTemplateChanges", reloadTemplateChanges);
         config.put("enableCovid19Feature", enableCovid19Feature);
-        config.put("enableCookiesControl", enableCookiesControl);
-        config.put("enableJSONLDControl", enableJSONLDControl);
         return config;
     }
 }
