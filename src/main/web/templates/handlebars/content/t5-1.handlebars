@@ -34,11 +34,11 @@
     <div class="wrapper">
     {{#if_any years quarters months}}
             <div class="col-wrap">
-                <div class="col col--lg-one tiles__item margin-top-sm--4 margin-top-md--5 flush-bottom">
+                <div class="col col--lg-one margin-top-sm--4 margin-top-md--5 flush-bottom">
                     {{> partials/highcharts/linechart}}
 
                     {{!-- Chart footer --}}
-                    <div class="tiles__content">
+                    <div class="tiles__content tiles__item">
                         <h2><span role="text">{{labels.download-this-time-series}}<span class="visuallyhidden">{{description.title}}</span></span></h2>
                         <div class="chart-area__footer__actions">
                             <div class="timeseries__filters nojs--hide js--linechart-filter-tabs">
