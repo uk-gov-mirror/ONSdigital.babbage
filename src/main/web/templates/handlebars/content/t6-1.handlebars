@@ -53,26 +53,20 @@
     {{!-- Related boxes --}}
     {{#if_any relatedDocuments relatedData relatedMethodology}}
         <h2>{{labels.related}}</h2>
-        <div class="col-wrap margin-bottom-sm--2 margin-bottom-md--4">
+        <div class="margin-bottom-sm--2 margin-bottom-md--4 flex stretch flex-wrap-wrap content-space-between">
             {{#if_any relatedData relatedDatasets}}
-                <div class="col {{#if_all relatedDocuments relatedData relatedMethodology}}col--lg-one-third {{else}}col--lg-half{{/if_all}}">
-                    <div class="js-equal-height">
-                        {{>partials/related/data}}
-                    </div>
+                <div class="{{#if_all relatedDocuments relatedData relatedMethodology}}col--lg-one-third {{else}}col--lg-half{{/if_all}}">
+                    {{>partials/related/data}}
                 </div>
             {{/if_any}}
             {{#if relatedDocuments}}
-                <div class="col {{#if_all relatedDocuments relatedData relatedMethodology}}col--lg-one-third {{else}}col--lg-half{{/if_all}}">
-                    <div class="js-equal-height">
-                        {{>partials/related/documents}}
-                    </div>
+                <div class="{{#if_all relatedDocuments relatedData relatedMethodology}}col--lg-one-third {{else}}col--lg-half{{/if_all}}">
+                    {{>partials/related/documents}}
                 </div>
             {{/if}}
             {{#if relatedMethodology}}
-                <div class="col {{#if_all relatedDocuments relatedData relatedMethodology}}col--lg-one-third {{else}}col--lg-half{{/if_all}}">
-                    <div class="js-equal-height">
-                        {{>partials/related/methodology}}
-                    </div>
+                <div class="{{#if_all relatedDocuments relatedData relatedMethodology}}col--lg-one-third {{else}}col--lg-half{{/if_all}}">
+                    {{>partials/related/methodology}}
                 </div>
             {{/if}}
         </div>
