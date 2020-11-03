@@ -63,7 +63,7 @@
 				{{#if description.provisionalDate}}
 					{{description.provisionalDate}}
 				{{else}}
-					{{df description.releaseDate}}
+					{{df description.releaseDate outputFormat="d MMMM yyyy HH:mm"}}
 				{{/if}}
 				<span>
 					{{#if description.cancelled}}
@@ -83,7 +83,7 @@
 							<br>
 							<span class="flush">
 								<a href="{{uri}}#datechanges">
-                                    This date has been changed from {{df previousDate}} <span class="visuallyhidden">for {{{description.title}}}{{#if description.edition}}: {{{description.edition}}}{{/if}}</span>
+                                    This date has been changed from {{df previousDate outputFormat="d MMMM yyyy HH:mm"}} <span class="visuallyhidden">for {{{description.title}}}{{#if description.edition}}: {{{description.edition}}}{{/if}}</span>
                                 </a>
 							</span>
 						{{/last}}
