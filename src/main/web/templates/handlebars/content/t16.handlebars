@@ -14,19 +14,19 @@
         {{#if description.cancelled}}
             Proposed release date:
             <br/>
-            {{df description.releaseDate}}
+            {{df description.releaseDate outputFormat="d MMMM yyyy HH:mm"}}
         {{else}}
             {{#if description.finalised}}
                 {{labels.release-date}}:
                 <br>
-                {{df description.releaseDate}}
+                {{df description.releaseDate outputFormat="d MMMM yyyy HH:mm"}}
             {{else}}
                 Provisional release date:
                 <br>
                 {{#if description.provisionalDate}}
                     {{description.provisionalDate}}
                 {{else}}
-                    {{df description.releaseDate}}
+                    {{df description.releaseDate outputFormat="d MMMM yyyy HH:mm"}}
                 {{/if}}
             {{/if}}
         {{/if}}
@@ -305,7 +305,7 @@
                                                         <li class="margin-bottom overflow--hidden">
                                                             <dl>
                                                                 <dt class="col col--md-10 col--lg-10">Previous date:</dt>
-                                                                <dd class="col col--md-37 col--lg-49">{{df previousDate}}</dd>
+                                                                <dd class="col col--md-37 col--lg-49">{{df previousDate outputFormat="d MMMM yyyy HH:mm"}}</dd>
                                                                 <dt class="col col--md-10 col--lg-10">Reason for change:</dt>
                                                                 <dd class="col col--md-37 col--lg-49">{{changeNotice}}</dd>
                                                             </dl>
