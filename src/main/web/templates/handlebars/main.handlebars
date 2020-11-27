@@ -11,18 +11,8 @@
         {{#if_any (eq type "bulletin") (eq type "article") (eq type "compendium_landing_page") (eq type "compendium_chapter")}}
             <link rel="canonical" href="{{uri}}" />
         {{/if_any}}
-
-		<!--[if IE]><![endif]-->
-		<!--[if lte IE 8]>
-		<link rel="stylesheet" href="{{#if is_dev}}http://{{location.hostname}}:9000/dist{{else}}//cdn.ons.gov.uk/sixteens/24764b6{{/if}}/css/old-ie.css"/>
-		<![endif]-->
-        <!--[if IE 9]>
-              <link rel="stylesheet" type="text/css" href="{{#if is_dev}}http://{{location.hostname}}:9000/dist{{else}}//cdn.ons.gov.uk/sixteens/24764b6{{/if}}/css/ie-9.css">
-        <![endif]-->
-		<!--[if gt IE 9]><!-->
         <link rel="stylesheet" type="text/css" href="{{#if is_dev}}http://{{location.hostname}}:9000/dist{{else}}//cdn.ons.gov.uk/sixteens/24764b6{{/if}}/css/main.css">
 		{{#if pdf_style}}<link rel="stylesheet" type="text/css" href="{{#if is_dev}}http://localhost:9000/dist{{else}}//cdn.ons.gov.uk/sixteens/24764b6{{/if}}/css/pdf.css">{{/if}}
-        <![endif]-->
 
         {{> partials/gtm-data-layer }}
 
@@ -130,8 +120,6 @@
 			{{/if_eq}}
 		{{/if_eq}}
 
-
-        <!--[if gt IE 8]><!-->
         <script type="text/javascript" src="{{#if is_dev}}//{{location.hostname}}:9000/dist{{else}}//cdn.ons.gov.uk/sixteens/24764b6{{/if}}/js/main.js"></script>
         <script type="text/javascript" src="/js/app.js"></script>
 
@@ -142,8 +130,6 @@
             <script type="text/javascript" src="/js/third-party/highcharts-heatmap-5.0.7.js"></script>
             <script type="text/javascript" src="/js/third-party/highcharts-exporting-5.0.7.js"></script>
         {{/if}}
-
-        <![endif]-->
 
 	</body>
 </html>
