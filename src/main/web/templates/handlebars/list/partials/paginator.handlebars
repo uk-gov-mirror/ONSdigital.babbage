@@ -10,7 +10,7 @@
             {{#each paginator.pages}}
             <li class="margin-top-sm--0 margin-top-md--0">
                 {{#if_eq this paginator.currentPage}}
-                <a href="" class="page-link btn btn--plain btn--plain-active btn--block" aria-current="true" aria-label="Page {{this}} of {{paginator.numberOfPages}}">{{this}}</a>
+                <a href="" class="page-link btn btn--plain btn--plain-active btn--block" aria-current="true" aria-label="Current page {{this}} of {{paginator.numberOfPages}}">{{this}}</a>
                 {{else}}
                 <a href="{{location.pathname}}{{query_string exclude="page"}}page={{this}}" class="page-link btn btn--plain" aria-label="Page {{this}} of {{paginator.numberOfPages}}">
                     {{this}}
