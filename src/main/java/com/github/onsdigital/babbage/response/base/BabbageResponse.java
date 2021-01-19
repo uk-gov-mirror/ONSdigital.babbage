@@ -1,16 +1,12 @@
 package com.github.onsdigital.babbage.response.base;
 
 import com.github.onsdigital.babbage.response.util.CacheControlHelper;
-import org.apache.commons.lang3.CharEncoding;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
 
 import static com.github.onsdigital.babbage.configuration.ApplicationConfiguration.appConfig;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
@@ -24,7 +20,7 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 public abstract class BabbageResponse {
 
     private String mimeType = APPLICATION_JSON; //Default mimetype
-    private String charEncoding = CharEncoding.UTF_8;//Default encoding
+    private String charEncoding = StandardCharsets.UTF_8.name();//Default encoding
     private int status = HttpServletResponse.SC_OK;//Default status
     private Long maxAge;
     private Map<String, String> header;

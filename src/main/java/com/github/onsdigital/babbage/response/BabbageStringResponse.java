@@ -6,6 +6,7 @@ import org.apache.commons.io.IOUtils;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 public class BabbageStringResponse extends BabbageResponse {
 
@@ -44,7 +45,7 @@ public class BabbageStringResponse extends BabbageResponse {
     }
 
     protected void writeData( HttpServletResponse response) throws IOException {
-        IOUtils.write(getData(), response.getOutputStream());
+        IOUtils.write(getData(), response.getOutputStream(), StandardCharsets.UTF_8);
     }
 
     public String getData() {
