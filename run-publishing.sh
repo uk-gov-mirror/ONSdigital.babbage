@@ -17,7 +17,6 @@ export PACKAGE_PREFIX=com.github.onsdigital
 export DP_COLOURED_LOGGING=true
 export DP_LOGGING_FORMAT=pretty_json
 
-export PHANTOMJS_PATH=`which phantomjs`
 export DEV_ENVIRONMENT="Y"
 export IS_PUBLISHING="Y"
 export RELOAD_TEMPLATES="Y"

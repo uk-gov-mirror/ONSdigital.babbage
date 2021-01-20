@@ -17,7 +17,6 @@ public class Babbage implements AppConfig {
     private static final String DEV_ENVIRONMENT_KEY = "DEV_ENVIRONMENT";
     private static final String IS_PUBLISHING_KEY = "IS_PUBLISHING";
     private static final String REDIRECT_SECRET_KEY = "REDIRECT_SECRET";
-    private static final String PHANTOMJS_PATH_KEY = "PHANTOMJS_PATH";
     private static final String HIGHCHARTS_EXPORT_SERVER_KEY = "HIGHCHARTS_EXPORT_SERVER";
     private static final String GHOSTSCRIPT_PATH_KEY = "GHOSTSCRIPT_PATH";
     private static final String MATHJAX_EXPORT_SERVER_KEY = "MATHJAX_EXPORT_SERVER";
@@ -57,7 +56,6 @@ public class Babbage implements AppConfig {
     private final boolean isDevEnv;
     private final boolean isPublishing;
     private final String redirectSecret;
-    private final String phantomjsPath;
     private final int maxHighchartsServerConnections;
     private final String exportSeverUrl;
     private final String ghostscriptPath;
@@ -77,8 +75,6 @@ public class Babbage implements AppConfig {
         isPublishing = getStringAsBool(IS_PUBLISHING_KEY, "N");
 
         redirectSecret = getValueOrDefault(REDIRECT_SECRET_KEY, "secret");
-
-        phantomjsPath = getValueOrDefault(PHANTOMJS_PATH_KEY, "/usr/local/bin/phantomjs");
 
         maxHighchartsServerConnections = defaultIfBlank(getNumberValue("HIGHCHARTS_EXPORT_MAX_CONNECTION"), 50);
 
@@ -129,10 +125,6 @@ public class Babbage implements AppConfig {
         return publishCacheTimeout;
     }
 
-    public String getPhantomjsPath() {
-        return phantomjsPath;
-    }
-
     public int getDefaultCacheTime() {
         return defaultCacheTime;
     }
@@ -169,7 +161,6 @@ public class Babbage implements AppConfig {
         config.put("cacheEnabled", cacheEnabled);
         config.put("isDevEnv", isDevEnv);
         config.put("isPublishing", isPublishing);
-        config.put("phantomjsPath", phantomjsPath);
         config.put("maxHighchartsServerConnections", maxHighchartsServerConnections);
         config.put("exportSeverUrl", exportSeverUrl);
         config.put("ghostscriptPath", ghostscriptPath);

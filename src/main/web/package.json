@@ -35,7 +35,6 @@
         "uglify-js": "latest"
     },
     "devDependencies": {
-        "watch": "latest",
-        "phantomjs": "~1.9.17"
+        "watch": "latest"
     }
 }
