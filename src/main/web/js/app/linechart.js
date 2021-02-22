@@ -634,7 +634,6 @@ var renderLineChart = function (timeseries) {
                 var fromYear;
                 var fromMonth;
                 var fromQuarter;
-                e.preventDefault();
                 // toggleSelectedLink(elem);
                 // toggleTimePeriodButton(elem);
                 toggleSelectedButton();
