@@ -12,21 +12,40 @@ TODO: split out colours palette selection, axis alignment and positioning
 
 	Highcharts.setOptions({lang: {thousandsSep: ','}});
 
-	var HIGHLIGHT_COLOUR  = 'rgba(243,148,49,0.9)';
+	var HIGHLIGHT_COLOUR  = #F39431;
 	var PLOTBAND_COLOUR  = '#E5E5E5';
 
 	// use rgba in order to set opacity/alpha
-	var colours = [
-		'rgba(32, 96, 149, 1)',			// blue
-		'rgba(17, 140, 123, 1)',		// green
-		'rgba(0, 60, 87, 1)',			// dark blue/navy
-		'rgba(168, 189, 58, 1)',		// lime green
-		'rgba(39, 160, 204, 1)',		// light blue
-		'rgba(135, 26, 91, 1)',			// plum purple
-		'rgba(246, 96, 104, 1)',		// pink
-		'rgba(116, 108, 177, 1)', 		// light purple
-		'rgba(34, 208, 182, 1)'			// turquoise
+	var primary = [
+
+        #206095,    // blue
+        #27A0CC,    // light blue
+        #003C57,    // dark blue/navy
+        #118C7B,    // green
+        #A8BD3A     // lime green
 	];
+
+	var extended = [
+
+        #206095,    // blue
+        #27A0CC,    // light blue
+        #003C57,    // dark blue/navy
+        #118C7B,    // green
+        #A8BD3A,    // lime green
+        #871A5B,    // plum purple
+        #F66068,    // pink
+        #746CB1,    // light purple
+        #22D0B6     // turquoise
+    ];
+
+    var alternative = [
+
+        #206095,    // blue
+        #27A0CC,    // light blue
+        #871A5B,    // plum purple
+        #A8BD3A,    // lime green
+        #F66068     // pink
+    ]
 
 	var base = {{#if yMin }}{{yMin}}{{else}}0{{/if}};
 
