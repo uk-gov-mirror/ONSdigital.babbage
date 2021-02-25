@@ -47,6 +47,11 @@ TODO: split out colours palette selection, axis alignment and positioning
         #F66068     // pink
     ]
 
+    // set chart palette based on chart object
+    	var palette = primary;
+    	{{#if_eq palette "extended"}}palette = extended;{{/if_eq}}
+    	{{#if_eq palette "alternative"}}palette = alternative;{{/if_eq}}
+
 	var base = {{#if yMin }}{{yMin}}{{else}}0{{/if}};
 
 	var hasTooltip = '{{showTooltip}}';// cast it as a string to handle missing values
@@ -119,7 +124,7 @@ TODO: split out colours palette selection, axis alignment and positioning
                 }
             } 
 		},
-		colors: colours,
+		colors: palette,
 		series: [],
 		title: {
 			text: "{{title}}"
