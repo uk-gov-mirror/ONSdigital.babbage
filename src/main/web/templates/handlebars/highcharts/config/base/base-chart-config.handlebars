@@ -12,21 +12,45 @@ TODO: split out colours palette selection, axis alignment and positioning
 
 	Highcharts.setOptions({lang: {thousandsSep: ','}});
 
-	var HIGHLIGHT_COLOUR  = 'rgba(243,148,49,0.9)';
+	var HIGHLIGHT_COLOUR  = #F39431;
 	var PLOTBAND_COLOUR  = '#E5E5E5';
 
 	// use rgba in order to set opacity/alpha
-	var colours = [
-		'rgba(32, 96, 149, 1)',			// blue
-		'rgba(17, 140, 123, 1)',		// green
-		'rgba(0, 60, 87, 1)',			// dark blue/navy
-		'rgba(168, 189, 58, 1)',		// lime green
-		'rgba(39, 160, 204, 1)',		// light blue
-		'rgba(135, 26, 91, 1)',			// plum purple
-		'rgba(246, 96, 104, 1)',		// pink
-		'rgba(116, 108, 177, 1)', 		// light purple
-		'rgba(34, 208, 182, 1)'			// turquoise
+	var primary = [
+
+        #206095,    // ocean blue
+        #27A0CC,    // sky blue
+        #003C57,    // night blue
+        #118C7B,    // green
+        #A8BD3A     // spring green
 	];
+
+	var extended = [
+
+        #206095,    // ocean blue
+        #27A0CC,    // sky blue
+        #003C57,    // night blue
+        #118C7B,    // green
+        #A8BD3A,    // spring green
+        #871A5B,    // plum purple
+        #F66068,    // pink
+        #746CB1,    // light purple
+        #22D0B6     // turquoise
+    ];
+
+    var alternate = [
+
+        #206095,    // ocean-blue
+        #27A0CC,    // sky blue
+        #871A5B,    // plum purple
+        #A8BD3A,    // spring green
+        #F66068     // pink
+    ];
+
+    // set chart palette based on chart object
+    	var palette = primary;
+    	{{#if_eq palette "extended"}}palette = extended;{{/if_eq}}
+    	{{#if_eq palette "alternate"}}palette = alternate;{{/if_eq}}
 
 	var base = {{#if yMin }}{{yMin}}{{else}}0{{/if}};
 
@@ -100,7 +124,7 @@ TODO: split out colours palette selection, axis alignment and positioning
                 }
             } 
 		},
-		colors: colours,
+		colors: palette,
 		series: [],
 		title: {
 			text: "{{title}}"
@@ -183,10 +207,10 @@ TODO: split out colours palette selection, axis alignment and positioning
 				connectNulls: true{{/if}}
 			},
 			line: {
-				lineWidth: 2,
+				lineWidth: 3,
 				marker: {
 					enabled:{{#if showMarker }}true{{else}}false{{/if}},
-					radius: 2,
+					radius: 3,
 					symbol: "circle"
 				}
 			},

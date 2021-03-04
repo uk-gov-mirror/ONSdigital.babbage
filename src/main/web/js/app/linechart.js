@@ -709,7 +709,6 @@ var renderLineChart = function (timeseries) {
 
 
             $('[data-chart-control-custom-trigger-for]', element).on('click', function (e) {
-                e.preventDefault();
                 toggleSelectedButton();
                 toggleCollapsible();
 
