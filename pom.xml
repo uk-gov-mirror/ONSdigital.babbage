@@ -192,13 +192,19 @@
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-server</artifactId>
-            <version>9.4.35.v20201120</version>
+            <version>9.4.36.v20210114</version>
         </dependency>
 
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-client</artifactId>
             <version>9.4.35.v20201120</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-http</artifactId>
+            <version>9.4.36.v20210114</version>
         </dependency>
 
         <!-- Fasterxml Jackson dependencies - overrides vulnerable transitive dependencies
