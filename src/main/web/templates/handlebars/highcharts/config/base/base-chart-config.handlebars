@@ -15,18 +15,7 @@ TODO: split out colours palette selection, axis alignment and positioning
 	var HIGHLIGHT_COLOUR  = '#F39431';
 	var PLOTBAND_COLOUR  = '#E5E5E5';
 
-	// use rgba in order to set opacity/alpha
 	var primary = [
-
-        '#206095',    // ocean blue
-        '#27A0CC',    // sky blue
-        '#003C57',    // night blue
-        '#118C7B',    // green
-        '#A8BD3A'     // spring green
-	];
-
-	var extended = [
-
         '#206095',    // ocean blue
         '#27A0CC',    // sky blue
         '#003C57',    // night blue
@@ -39,7 +28,6 @@ TODO: split out colours palette selection, axis alignment and positioning
     ];
 
     var alternate = [
-
         '#206095',    // ocean-blue
         '#27A0CC',    // sky blue
         '#871A5B',    // plum purple
@@ -48,9 +36,8 @@ TODO: split out colours palette selection, axis alignment and positioning
     ];
 
     // set chart palette based on chart object
-    	var palette = primary;
-    	{{#if_eq palette "extended"}}palette = extended;{{/if_eq}}
-    	{{#if_eq palette "alternate"}}palette = alternate;{{/if_eq}}
+	var palette = primary;
+	{{#if_eq palette "alternate"}}palette = alternate;{{/if_eq}}
 
 	var base = {{#if yMin }}{{yMin}}{{else}}0{{/if}};
 
@@ -207,10 +194,10 @@ TODO: split out colours palette selection, axis alignment and positioning
 				connectNulls: true{{/if}}
 			},
 			line: {
-				lineWidth: 3,
+				lineWidth: 1,
 				marker: {
 					enabled:{{#if showMarker }}true{{else}}false{{/if}},
-					radius: 3,
+					radius: 1,
 					symbol: "circle"
 				}
 			},
