@@ -12,8 +12,8 @@
         {{#if_any (eq type "bulletin") (eq type "article") (eq type "compendium_landing_page") (eq type "compendium_chapter")}}
             <link rel="canonical" href="{{uri}}" />
         {{/if_any}}
-        <link rel="stylesheet" type="text/css" href="{{#if is_dev}}http://{{location.hostname}}:9000/dist{{else}}//cdn.ons.gov.uk/sixteens/47b8ed5{{/if}}/css/main.css">
-		{{#if pdf_style}}<link rel="stylesheet" type="text/css" href="{{#if is_dev}}http://localhost:9000/dist{{else}}//cdn.ons.gov.uk/sixteens/47b8ed5{{/if}}/css/pdf.css">{{/if}}
+        <link rel="stylesheet" type="text/css" href="{{#if is_dev}}http://{{location.hostname}}:9000/dist{{else}}//cdn.ons.gov.uk/sixteens/3ebd8e8{{/if}}/css/main.css">
+		{{#if pdf_style}}<link rel="stylesheet" type="text/css" href="{{#if is_dev}}http://localhost:9000/dist{{else}}//cdn.ons.gov.uk/sixteens/3ebd8e8{{/if}}/css/pdf.css">{{/if}}
 
         {{> partials/gtm-data-layer }}
 
@@ -31,7 +31,17 @@
 	<body class="{{type}}">
     <script>document.body.className = ((document.body.className) ? document.body.className + ' js' : 'js');</script>
     {{> partials/cookies-banner}}
-    <div style="background-color:#0B0C0C;height:48px">&nbsp;</div>
+    <div class="emergency-banner emergency-banner--notable-death" role="banner" data-nosnippet="">
+        <div class="wrapper">
+            <div class="col-wrap">
+                <div class="col col--md-two-thirds col--lg-two-thirds">
+                    <h2 class="emergency-banner__heading">His Royal Highness The Duke of Edinburgh</h2>
+                    <p class="emergency-banner__description">10 June 1921 to 9 April 2021</p>
+                    <a href="https://www.gov.uk/government/topical-events/hrh-the-duke-of-edinburgh" class="emergency-banner__link">Read about the arrangements following The Duke of Edinburgh’s death</a>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MBCBVQS"
@@ -122,7 +132,7 @@
 			{{/if_eq}}
 		{{/if_eq}}
 
-        <script type="text/javascript" src="{{#if is_dev}}//{{location.hostname}}:9000/dist{{else}}//cdn.ons.gov.uk/sixteens/47b8ed5{{/if}}/js/main.js"></script>
+        <script type="text/javascript" src="{{#if is_dev}}//{{location.hostname}}:9000/dist{{else}}//cdn.ons.gov.uk/sixteens/3ebd8e8{{/if}}/js/main.js"></script>
         <script type="text/javascript" src="/js/app.js"></script>
 
         {{!-- Add extra highcharts source files if page contains any charts --}}
