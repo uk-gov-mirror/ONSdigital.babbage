@@ -10,9 +10,8 @@
         return null
     }
 
-    // getUsageCookieValue reads the ons_cookie_policy to determine the user's usage preference. 
-    // When no policy is found, the user is opted out by default.
-    function getUsageCookieValue() {
+    // isUsageCookieAllowed reads the ons_cookie_policy to determine the user's usage preference. 
+    function isUsageCookieAllowed() {
         // ons_cookie_policy handler
         var policyCookie = document.cookie.match('(?:^|; )ons_cookie_policy=({.*?})');
         if (policyCookie) {
@@ -21,12 +20,10 @@
             var usageValue = extractValue("usage", policyCookie[1]);
             console.debug('usage is', usageValue);
 
-            // this needs to be the inverse - if usage is true the returned value is false and vice versa
-            // user is stating whether they are opting out of usage cookie
-            return (usageValue == "true") ? false : true
+            return (usageValue == "true") ? true : false
         }
         console.debug('no cookie found - opting out');
-        return true
+        return false
     }
 
     // unescape html entities
@@ -38,7 +35,6 @@
     {{!-- Add title to dataLayer. Dont include the edition on dataset versions pages --}}
     var dataLayer = [{
         contentTitle: htmlUnescape("{{> partials/page-title}}{{#if description.edition}}{{#if_ne description.edition "Current"}}: {{description.edition}}{{/if_ne}}{{/if}}"),
-        analyticsOptOut: getUsageCookieValue(),
         "gtm.whitelist": ["google","hjtc","lcl"],
         "gtm.blacklist": ["customScripts","sp","adm","awct","k","d","j"]
     }];
