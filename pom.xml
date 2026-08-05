@@ -317,6 +317,17 @@
                             <version>23.0</version>
                         </exclude>
                         <!-- End exclusion for DIS-3662 -->
+
+                        <!-- 
+                            Jira ticket to resolve: DIS-5260
+                        -->
+                        <exclude>
+                            <groupId>org.bouncycastle</groupId>
+                            <artifactId>bcprov-jdk18on</artifactId>
+                            <version>1.84</version>
+                        </exclude>
+                        <!-- End exclusion for DIS-5260 -->
+
                     </excludeCoordinates>
                     <excludeVulnerabilityIds>
                         <!-- Note - OSS Index suppressions are global, not per dependency -->
