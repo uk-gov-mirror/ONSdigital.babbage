@@ -12,8 +12,8 @@
         {{#if_any (eq type "bulletin") (eq type "article") (eq type "compendium_landing_page") (eq type "compendium_chapter")}}
             <link rel="canonical" href="{{uri}}" />
         {{/if_any}}
-        <link rel="stylesheet" type="text/css" href="{{#if is_dev}}http://localhost:9000/dist{{else}}//cdn.ons.gov.uk/sixteens/418c927{{/if}}/css/main.css">
-		{{#if pdf_style}}<link rel="stylesheet" type="text/css" href="{{#if is_dev}}http://localhost:9000/dist{{else}}//cdn.ons.gov.uk/sixteens/418c927{{/if}}/css/pdf.css">{{/if}}
+        <link rel="stylesheet" type="text/css" href="{{#if is_dev}}http://localhost:9000/dist{{else}}//cdn.ons.gov.uk/sixteens/b1829e6{{/if}}/css/main.css">
+		{{#if pdf_style}}<link rel="stylesheet" type="text/css" href="{{#if is_dev}}http://localhost:9000/dist{{else}}//cdn.ons.gov.uk/sixteens/b1829e6{{/if}}/css/pdf.css">{{/if}}
 
         {{> partials/gtm-data-layer }}
 
