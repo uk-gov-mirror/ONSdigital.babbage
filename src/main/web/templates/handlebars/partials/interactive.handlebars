@@ -1,22 +1,24 @@
-<div class="js--show">
+<div class="pym-interactive{{#if_eq full-width "true"}} pyminteractive--full-width margin-left--0{{/if_eq}}" id="{{id}}" data-url="{{url}}" data-title="{{#if_null title}}{{labels.interactive-chart}}{{else}}{{title}}{{/if_null}}"></div>
+<noscript>
+    <h3 class="font-size--18 margin-top--1">{{#if_null title}}{{labels.interactive-chart}}{{else}}{{title}}{{/if_null}}</h3>
+    <p>The embedded visualisation below may not display correctly without JavaScript enabled. <a class="underline-link" href="{{url}}">View it in full screen</a>.</p>
+    <iframe title="{{#if_null title}}{{labels.interactive-chart}}{{else}}{{title}}{{/if_null}}" width="100%" height="400px" class="margin-left--0" src="{{url}}"></iframe>
+</noscript>
+<details class="details">
+    <summary class="details__summary" role="button" aria-label="{{#if_null title}}{{labels.interactive-chart}}{{else}}{{title}}{{/if_null}} embed code">Embed code</summary>
+    <div class="details__body">
+        <label class="embed-code__label" for="embed-{{id}}">Embed this interactive</label>
+        <input class="embed-code__code width-md--31"
+    value='<iframe width="100%" src="{{#if (containsAny url "http" "https")}}{{url}}{{else}}{{#if is_dev}}http://{{location.host}}{{else}}https://{{location.hostname}}{{/if}}{{url}}{{/if}}"></iframe>'
+                id="embed-{{id}}"
+                name="embed-{{id}}"
+                readonly
+        />
+        <span class="embed-code__success-container">    
+            <button id="" data-id="{{id}}" type="button" class="btn btn--primary embed-code__button js-embed-code-copy">Copy</button>
+            <span role="status"></span>
+        </span>
+    </div>
+</details>
 
-    <div class="pym-interactive{{#if_eq full-width "true"}} pym-interactive--full-width margin-left--0{{/if_eq}}" id="{{id}}" data-url="{{url}}" data-title="{{#if_null title}}{{labels.interactive-chart}}{{else}}{{title}}{{/if_null}}"></div>
 
-    <details class="details">
-        <summary class="details__summary" role="button" aria-label="{{#if_null title}}{{labels.interactive-chart}}{{else}}{{title}}{{/if_null}} embed code">Embed code</summary>
-        <div class="details__body">
-            <label class="embed-code__label" for="embed-{{id}}">Embed this interactive</label>
-            <input class="embed-code__code width-md--31"
-        value='<iframe width="100%" src="{{#if (containsAny url "http" "https")}}{{url}}{{else}}{{#if is_dev}}http://{{location.host}}{{else}}https://{{location.hostname}}{{/if}}{{url}}{{/if}}"></iframe>'
-                   id="embed-{{id}}"
-                   name="embed-{{id}}"
-                   readonly
-            />
-            <span class="embed-code__success-container">
-                <button id="" data-id="{{id}}" type="button" class="btn btn--primary embed-code__button js-embed-code-copy">Copy</button>
-                <span role="status"></span>
-            </span>
-        </div>
-    </details>
-
-</div>
