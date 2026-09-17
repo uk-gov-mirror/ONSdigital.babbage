@@ -328,7 +328,10 @@
                         <exclude>CVE-2026-10050</exclude>
                         <!-- End DIS-4777 -->
 
-                        <!-- DIS-5047 -->
+                        <!-- 
+                            DIS-5047 
+                            This epic covers the upgrade of handlebars
+                        -->
                         <exclude>CVE-2026-55760</exclude>
                         <!-- End DIS-5047 -->
 
