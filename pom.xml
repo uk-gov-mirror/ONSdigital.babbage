@@ -15,7 +15,7 @@
         <handlebars-markdown-java-version>4.2.0</handlebars-markdown-java-version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <dp-logging.version>v2.1.0</dp-logging.version>
-        <fasterxml.jackson.version>2.22.1</fasterxml.jackson.version>
+        <fasterxml.jackson.version>2.22.2</fasterxml.jackson.version>
         <flying-saucer.version>9.4.1</flying-saucer.version>
         <mockito.version>3.12.4</mockito.version>
         <restolino.version>v0.8.3</restolino.version>
@@ -338,13 +338,6 @@
                         -->
                         <exclude>CVE-2026-13006</exclude>
                         <!-- End DIS-5085 -->
-
-
-                        <!-- DIS-5289 
-                            Covers upgrading jackson 
-                        -->
-                        <exclude>CVE-2026-68497</exclude>
-                        <!-- End DIS-5289 -->
                     </excludeVulnerabilityIds>
                 </configuration>
                 <executions>
