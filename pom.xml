@@ -330,7 +330,9 @@
                         <exclude>CVE-2026-19203</exclude>
                         <!-- End DIS-4777 -->
 
-                        <!-- DIS-5047 -->
+                        <!-- DIS-5047 
+                          Covers upgrade to handlebars.
+                        -->
                         <exclude>CVE-2026-55760</exclude>
                         <!-- End DIS-5047 -->
 
